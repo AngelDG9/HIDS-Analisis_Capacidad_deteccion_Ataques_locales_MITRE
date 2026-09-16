@@ -1,1 +1,24 @@
+# Recursos del profesor (read-only, material pesado/ajeno)
 _recursos/
+
+# Archivo de versiones anteriores de la documentación
+_archivo/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Logs y evidencias pesadas
+*.log
+*.mp4
+*.pcap
+*.pcapng
+
+# Entornos y editores
+.env
+.env.*
+.vscode/
+.idea/
