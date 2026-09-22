@@ -7,9 +7,12 @@
 
 ## Estado actual
 
-- **Fase:** 2 — Laboratorio Wazuh (F-02), plan **v2 aprobado por el humano** (2026-09-22, commit `afeb1d6`). Gate G0 superado.
-- **Paso:** T-04 hecha + **acceso portátil→sobremesa por SSH sobre Tailscale YA montado** + **repo clonado en el sobremesa** (`C:\TFG\...`) → **listos para ejecutar**.
-- **Siguiente acción:** **tarea 2.3** — fijar versión de Wazuh (G1) + añadir **adaptador NAT temporal** a ambas VMs + IPs estables → luego **T-05** (instalar Wazuh all-in-one).
+- **Fase:** 2 — Laboratorio Wazuh (F-02), plan **v2 aprobado**. Tareas **2.3, 2.4 y 2.5 hechas** y **verificadas (PASA)**.
+- **Paso:** **Wazuh 4.14.7** desplegado en `wazuh-server` (manager + indexer + dashboard **active**) y agente **`victima-linux` active** (ID 001) enviando telemetría. Red del laboratorio lista (**NAT temporal** + **IPs fijas** `192.168.65.128/129`).
+- **Siguiente acción:** **2.6** (detección-only) → **2.7** (diseño de los 4 RuleSets RS1..RS4 → **gate G2: decisión humana**) → 2.8 (activar RuleSets) → 2.9 (snapshot `lab-listo`) → 2.10 (baseline ~4 h) → 2.11/2.12 (cierre).
+- **G1 fijado (2026-09-22):** **Wazuh 4.14.7**, `wazuh-server` con 6 GB y **heap del indexer a 1 GB**.
+- **⚠️ Decisiones humanas pendientes:** (a) `unattended-upgrades` (deshabilitar o no); (b) aceptar la **desviación del resize del LV** de `wazuh-server` (16→48 GB, fuera del encargo, técnicamente sano); (c) limpiar el fichero basura `NUL` y commitear el lote de T-05.
+- **⚠️ Regla de oro pendiente:** el **NAT está conectado** en ambas VMs → hay que **desconectarlo antes** del baseline (2.10) y de los ataques (Fase 3).
 - **Reconocimiento (2026-09-22, sesión 5):** repo en el sobremesa limpio (`git status` sin cambios); `vmrun` en `C:\Program Files\VMware\VMware Workstation\vmrun.exe` (⚠️ el plan cita la ruta `(x86)`: corregir en los docs); **0 VMs en marcha**; `Soporte/Wazuh/{Configuracion,Reglas,Scripts}` y `Dataset/Legitimo/` **vacíos** (Fase 2 sin ejecutar).
 - **Pendiente de Fase 1:** presentar el **hito H1** al tutor.
 - **Decisiones humanas fijadas (2026-09-19):**
@@ -72,3 +75,9 @@
 - **Sesión 5:** retomada **en el sobremesa (Windows 10)**: plan v2 **aprobado** (commit `afeb1d6`),
   repo **clonado y limpio**, recon del laboratorio (`vmrun` localizado, VMs apagadas). Siguiente:
   tarea **2.3** (versión Wazuh + NAT temporal + IPs fijas).
+- **Sesión 6:** permisos de los agentes pasados a **V2** (allow por defecto + lista negra concreta;
+  el campo heredado `temperature` los invalidaba en silencio). **Tarea 2.3** hecha (NAT + IPs
+  fijas + internet verificado). **T-05 (2.4/2.5)** hecha: **Wazuh 4.14.7** all-in-one y agente
+  `victima-linux` **active**, con smoke test `rule.id 5710` OK. **Verificación del tester: PASA**
+  (con matices: resize del LV fuera de encargo, `unattended-upgrades` sin decidir, basura `NUL`).
+  G1 fijado: 4.14.7 + heap del indexer a 1 GB.
