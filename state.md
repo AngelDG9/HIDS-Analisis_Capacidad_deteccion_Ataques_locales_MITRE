@@ -7,9 +7,10 @@
 
 ## Estado actual
 
-- **Fase:** 2 — Laboratorio Wazuh (F-02), plan **v2** (acceso por Tailscale) → **pendiente de aprobación**.
-- **Paso:** T-04 hecha + **acceso portátil→sobremesa por SSH sobre Tailscale YA montado** (los agentes corren en el sobremesa).
-- **Siguiente acción:** aprobar plan v2 → commit/push → **clonar el repo en el sobremesa** → instalar **Wazuh**.
+- **Fase:** 2 — Laboratorio Wazuh (F-02), plan **v2 aprobado por el humano** (2026-09-22, commit `afeb1d6`). Gate G0 superado.
+- **Paso:** T-04 hecha + **acceso portátil→sobremesa por SSH sobre Tailscale YA montado** + **repo clonado en el sobremesa** (`C:\TFG\...`) → **listos para ejecutar**.
+- **Siguiente acción:** **tarea 2.3** — fijar versión de Wazuh (G1) + añadir **adaptador NAT temporal** a ambas VMs + IPs estables → luego **T-05** (instalar Wazuh all-in-one).
+- **Reconocimiento (2026-09-22, sesión 5):** repo en el sobremesa limpio (`git status` sin cambios); `vmrun` en `C:\Program Files\VMware\VMware Workstation\vmrun.exe` (⚠️ el plan cita la ruta `(x86)`: corregir en los docs); **0 VMs en marcha**; `Soporte/Wazuh/{Configuracion,Reglas,Scripts}` y `Dataset/Legitimo/` **vacíos** (Fase 2 sin ejecutar).
 - **Pendiente de Fase 1:** presentar el **hito H1** al tutor.
 - **Decisiones humanas fijadas (2026-09-19):**
   - Interpretación **amplia** del filtro inverso (DC de red no elegibles pero no anulan host; T1039).
@@ -68,3 +69,6 @@
 - **Sesión 4:** montaje del laboratorio (2 VMs Ubuntu + snapshots) y **acceso remoto**
   (Tailscale + OpenSSH en Windows 10); decisión de que los **agentes corran en el sobremesa**;
   `plan.md` de Fase 2 → **v2** (pendiente de aprobación).
+- **Sesión 5:** retomada **en el sobremesa (Windows 10)**: plan v2 **aprobado** (commit `afeb1d6`),
+  repo **clonado y limpio**, recon del laboratorio (`vmrun` localizado, VMs apagadas). Siguiente:
+  tarea **2.3** (versión Wazuh + NAT temporal + IPs fijas).
