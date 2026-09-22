@@ -1,0 +1,12 @@
+%% Topología del laboratorio — TFG HIDS (MITRE ATT&CK + Wazuh)
+%% Fuente del diagrama `topologia.png`.
+%% Para regenerar: pegar en https://mermaid.live → Export → PNG (guardar como topologia.png).
+
+flowchart TB
+    subgraph HOST["PC sobremesa — Windows 10 · VMware Workstation Pro 26H1"]
+        direction LR
+        WZ["wazuh-server<br/>Ubuntu Server 24.04<br/>192.168.65.128<br/>2 vCPU · 6 GB · 50 GB"]
+        VI["victima-linux<br/>Ubuntu Server 24.04<br/>192.168.65.129<br/>2 vCPU · 3 GB · 20 GB"]
+        WZ <-->|"red host-only VMnet1 · 192.168.65.0/24"| VI
+    end
+    LP["Portátil (plano de control)"] -.->|SSH| HOST
