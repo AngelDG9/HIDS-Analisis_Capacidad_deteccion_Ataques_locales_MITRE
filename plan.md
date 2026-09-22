@@ -420,3 +420,30 @@ state.md / roadmap.md / change-doc.md                (cierre)
 - **Decisión abierta [HUMANO]:** parche exacto de Wazuh (G1) y fuente externa de RS4 (G2).
 - **Decisión abierta [HUMANO]:** ¿se elimina el adaptador NAT tras las instalaciones o se
   mantiene desconectado? (Recomendación: mantener desconectado, §3.6).
+
+---
+
+## 12. Erratas detectadas durante la ejecución (2026-09-23)
+
+> Se conserva el texto aprobado tal cual; estas notas lo corrigen **sin alterar el diseño**.
+
+1. **`wazuh-execd` (§3.4, §5, §6.3, §8, §9):** el plan asume que es una **unidad systemd** que se puede
+   `stop`/`disable`. En Wazuh 4.14.7 **no existe como unidad**: es un **daemon interno** del manager,
+   arrancado por `wazuh-control` dentro de `wazuh-manager.service` (`Type=forking`), y **vuelve a
+   arrancar en cada reinicio del manager**. La garantía real de detección-only es que **no exista
+   ningún `<active-response>`** (ni en `ossec.conf` ni en los ficheros de reglas); el proceso parado es
+   evidencia adicional, **no** la garantía. Ver `deteccion_only.md` §1.2 y `rulesets_diseno.md` §5/§5.1
+   (checklist post-reinicio).
+2. **`<active-response>` del agente (§3.4):** el `ossec.conf` de fábrica del agente **sí trae** un bloque
+   `<active-response>` con `<disabled>no</disabled>`; se pasó a `<disabled>yes</disabled>`.
+3. **Algoritmo de clasificación de RuleSets (§3.5):** el criterio **por rango numérico** era imposible:
+   el ruleset default tiene `rule.id` **> 100000** (fireeye 150100+, sysmon 184665+, unbound 500000+).
+   Se clasifica **por fichero de origen** (lo que preserva el principio del plan). Ver `rulesets_diseno.md`
+   §1/§4, **enmendados**.
+4. **Disco de `wazuh-server` (§3.2, §7):** el LV raíz tenía 24 GB (16 GB libres, por debajo del mínimo de
+   20 GB del plan) → se amplió a **48 GB** sobre el mismo disco de 50 GB, sin pérdida. Desviación fuera del
+   encargo, **aceptada** y documentada en `runbook_instalacion_wazuh.md`.
+5. **Regla *smoke* `100000` (§3.5, tarea 2.8):** se retiró **antes del baseline** (2026-09-23) porque, al ser
+   **hija de `5710`**, **enmascaraba** la detección de RS1 y habría sesgado el catálogo de ruido normal.
+   RS3 queda **definida y vacía** en Fase 2 (se puebla en Fase 3). Ver `rulesets_diseno.md` §9 (norma
+   anti-enmascaramiento, aprobada por el humano el 2026-09-23).

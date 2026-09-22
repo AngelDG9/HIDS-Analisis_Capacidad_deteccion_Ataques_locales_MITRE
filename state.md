@@ -7,16 +7,14 @@
 
 ## Estado actual
 
-- **Fase:** 2 — Laboratorio Wazuh (F-02), plan **v2 aprobado**. Tareas **2.3 a 2.8 hechas** y **verificadas (PASA)**.
-- **Paso:** Wazuh 4.14.7 en `wazuh-server` + agente `victima-linux`; **modo detección-only** verificado; **4 capas (RS1..RS4)** activas y clasificables (`active_ruleset.txt`, sin colisiones; **RS4 vacía** por decisión G2).
-- **Siguiente acción:** **2.9** (desconectar el NAT de forma persistente + snapshot `lab-listo`) → **2.10** (baseline ~4 h) → **2.11/2.12** (cierre de fase + hito H2).
-- **G1/G2 fijados:** **Wazuh 4.14.7** (heap del indexer 1 GB); RuleSets aprobados con **RS4 vacía** (en Fase 3 se probarán reglas externas **curadas** contra los ataques del corpus, con el snapshot como red de seguridad).
-- **Desviaciones registradas:** resize del LV de `wazuh-server` (24→48 GB, fuera del encargo, sano → aceptada); el plan asumía mal que el agente no traía `<active-response>` de fábrica y que `wazuh-execd` era una unidad systemd; **el algoritmo de clasificación del diseño §4 era imposible** (el ruleset default tiene `rule.id` > 100000: fireeye 150100+, sysmon 184665+, unbound 500000+) → reclasificado **por fichero de origen**, lo que **preserva el principio** del diseño. **Pendiente enmendar §1/§4** de `rulesets_diseno.md` (documento aprobado en G2).
-- **⚠️ Riesgo metodológico ALTO para Fase 3:** en Wazuh una regla **hija** (`<if_sid>`) **sustituye** a la padre (un login fallido con la regla `100000` ya no genera `5710`). Si escribimos reglas propias hijas de reglas base, **taparemos detecciones de RS1** y falsearemos el recuento. **Hay que fijar la convención antes** de escribir reglas de ataque.
-- **⚠️ Reloj:** las VMs marcan **2026-09-22** y hoy es **2026-09-23** → **verificar hora/zona/NTP antes del baseline** (las ventanas `t0`/`t1` dependen de ello).
-- **⚠️ Regla de oro:** el **NAT sigue conectado** → se desconecta en **2.9**, antes del snapshot y del baseline.
-- **⚠️ Sin commitear** desde 2.6: `state.md`, `Soporte/Laboratorio/README.md` y los artefactos de 2.7/2.8.
-- **Reconocimiento (2026-09-22, sesión 5):** repo en el sobremesa limpio (`git status` sin cambios); `vmrun` en `C:\Program Files\VMware\VMware Workstation\vmrun.exe` (⚠️ el plan cita la ruta `(x86)`: corregir en los docs); **0 VMs en marcha**; `Soporte/Wazuh/{Configuracion,Reglas,Scripts}` y `Dataset/Legitimo/` **vacíos** (Fase 2 sin ejecutar).
+- **Fase:** 2 — Laboratorio Wazuh (F-02), plan **v2 aprobado**. Tareas **2.3 a 2.9 hechas** y **verificadas**.
+- **Paso:** laboratorio **listo para el baseline**. Modo detección-only · 4 capas definidas (`active_ruleset.txt` sin colisiones; **RS3 y RS4 vacías** en Fase 2) · **NAT desconectado** (persistente, reactivable) · relojes en `Europe/Madrid` · **snapshot `lab-listo`** en ambas VMs.
+- **Siguiente acción:** **2.10 baseline ~4 h** (scripts `baseline_actividad.sh` + `extraer_alertas.py`) → 2.11/2.12 (cierre de fase + hito H2). **Decidido: parar aquí antes de lanzarlo.**
+- **G1/G2 fijados:** **Wazuh 4.14.7** (heap del indexer 1 GB); RuleSets aprobados con **RS4 vacía** (en Fase 3 se probarán reglas externas **curadas**, con `lab-listo` como red de seguridad).
+- **Desviaciones y erratas registradas:** ver `plan.md` **§12** — resize del LV (24→48 GB, **aceptada**); el agente **sí** traía `<active-response>` de fábrica; **`wazuh-execd` no es unidad systemd** (daemon interno; vuelve en cada reinicio del manager, pero es **inerte**); el algoritmo de clasificación por rango era imposible → **por fichero de origen**; la regla *smoke* `100000` **retirada antes del baseline** por enmascarar RS1.
+- **⚠️ Norma anti-enmascaramiento (aprobada 2026-09-23, `rulesets_diseno.md` §9):** Wazuh emite **una alerta por evento**; una regla propia que case el mismo evento (**hija o hermana**) **suprime** la detección base. Prohibido `<if_sid>` sobre base que se quiera conservar; verificación obligatoria con `wazuh-logtest -v`; recuento `RS1∩RS3` declarado; aplica también a RS4 y cadenas multinivel.
+- **⚠️ Timestamps de Wazuh en UTC** (`+0000`) aunque las VMs estén en Madrid → las ventanas `t0`/`t1` y `extraer_alertas.py` deben trabajar en **UTC**.
+- **⚠️ Detalle del snapshot:** `lab-listo` se tomó **antes** de alinear `/etc/timezone` (la zona efectiva ya era correcta) → ese fichero legacy dice `Etc/UTC` dentro del snapshot; **sin efecto práctico**.
 - **Pendiente de Fase 1:** presentar el **hito H1** al tutor.
 - **Decisiones humanas fijadas (2026-09-19):**
   - Interpretación **amplia** del filtro inverso (DC de red no elegibles pero no anulan host; T1039).
@@ -84,3 +82,11 @@
   `victima-linux` **active**, con smoke test `rule.id 5710` OK. **Verificación del tester: PASA**
   (con matices: resize del LV fuera de encargo, `unattended-upgrades` sin decidir, basura `NUL`).
   G1 fijado: 4.14.7 + heap del indexer a 1 GB.
+- **Sesión 7:** **T-07 completo (2.6/2.7/2.8)** y **2.9**. Modo **detección-only** verificado y
+  **actualizaciones automáticas desactivadas**. Gate **G2 aprobado** (RuleSets RS1..RS4; **RS4 vacía**,
+  a probar en Fase 3 con reglas externas curadas). `active_ruleset.txt` **sin colisiones**.
+  **NAT desconectado** de forma persistente, relojes alineados y **snapshot `lab-listo`** en ambas VMs.
+  Hallazgos importantes: el agente **sí** traía `<active-response>` de fábrica; `wazuh-execd` **no** es
+  unidad systemd; el algoritmo de clasificación por rango era **imposible** → **por fichero de origen**;
+  y **la regla *smoke* `100000` enmascaraba `5710`** → **retirada antes del baseline** y norma
+  **anti-enmascaramiento** escrita (`rulesets_diseno.md` §9). Erratas registradas en `plan.md` §12.
