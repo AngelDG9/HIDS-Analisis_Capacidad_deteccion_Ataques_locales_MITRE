@@ -136,7 +136,9 @@ $ grep -v '^\s*#' /var/ossec/etc/ossec.conf | grep -c active-response
 (Comprobación adicional XML-aware: número de etiquetas `<active-response>` = **0**; y
 `grep -c active-response` sobre **todo** el fichero = **0**.)
 
-### 2.2 Ejecutor parado
+### 2.2 Ejecutor (`wazuh-execd`) — estado puntual, **no** la garantía
+
+En el momento de esta captura (2026-09-22) se había detenido el daemon; el estado era:
 
 ```
 $ systemctl is-enabled wazuh-execd   ->  not-found
@@ -146,6 +148,11 @@ $ ps -eo pid,cmd | grep '[w]azuh-execd'
 $ sudo /var/ossec/bin/wazuh-control status | grep execd
 wazuh-execd not running...
 ```
+
+> **⚠️ No es una garantía permanente.** Al **reiniciar el `wazuh-manager`** (o al arrancar la VM),
+> `wazuh-execd` **vuelve a arrancar** y puede estar corriendo. Es **inerte** porque no hay ningún
+> `<active-response>` que ejecutar. La garantía real es **0 `<active-response>`** (§2.1), **no** el
+> estado del proceso. Invariante verificable tras cada reinicio: `rulesets_diseno.md` **§5.1**.
 
 ### 2.3 Manager activo
 

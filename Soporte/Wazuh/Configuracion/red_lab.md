@@ -184,6 +184,12 @@ passphrase** y se instaló su parte pública en `~/.ssh/authorized_keys` de `ang
 
 ## 6. Notas y pendientes
 
+> **✅ Estado actual (2026-09-23, tarea 2.9):** el NAT **ya está desconectado de forma persistente**
+> (`ethernet1.startConnected = "FALSE"` en ambos `.vmx`, con backup `*.vmx.bak-20260923-010654-nat-off`).
+> `ens37` aparece **DOWN** y no hay ruta por defecto: las VMs **no tienen internet**; solo VMnet1.
+> Para reactivarlo (p. ej. Fase 3) y volver a desconectarlo, ver
+> `../Laboratorio/README.md` **§3.1**.
+
 - **NAT temporal:** `ens37` queda **presente** pero debe quedar **desconectado** en operación
   normal (baseline/ataques). Ver §3.6 del `plan.md`: regla de oro = **solo VMnet1 activa**.
 - Las IPs de `ens37` (192.168.183.x) son DHCP de VMnet8 y pueden cambiar; solo se usan para

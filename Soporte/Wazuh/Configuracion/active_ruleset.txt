@@ -4,7 +4,7 @@
 # Generado por : Soporte/Wazuh/Scripts/generar_active_ruleset.sh
 # Ejecutado en : wazuh-server (manager)
 # Wazuh        : v4.14.7
-# Fecha (UTC)  : 2026-09-22T22:53:52Z
+# Fecha (UTC)  : 2026-09-22T23:26:50Z
 # Determinista : sí (orden estable; re-ejecutable)
 #
 # Clasificación rule.id -> RS (rulesets_diseno.md §4), por ORIGEN de fichero:
@@ -23,7 +23,7 @@
 # RS    NOMBRE               MIN_ID   MAX_ID  N_RULES N_FICHEROS
 RS1   base(default)             1   500102     4471        167
 RS2   auditd                80700    80794       44          1
-RS3   propias              100000   100000        1          1
+RS3   propias                   -        -        0          0
 RS4   externas                  -        -        0          0   (vacía; reserva 100500-101000, opción A/G2)
 #
 # --- DETALLE POR FICHERO ---
@@ -196,7 +196,6 @@ RS1  99700  99702  3  /var/ossec/ruleset/rules/0997-maltiverse_rules.xml
 RS1  99800  99860  61  /var/ossec/ruleset/rules/0998-aws-security-hub-rules.xml
 RS1  99901  99920  20  /var/ossec/ruleset/rules/0999-malicious-ioc-rules.xml
 RS2  80700  80794  44  /var/ossec/ruleset/rules/0365-auditd_rules.xml
-RS3  100000  100000  1  /var/ossec/etc/rules/local_rules.xml
 #
 # --- CONTROL DE COLISIONES (rulesets_diseno.md §4) ---
 # duplicate_ids          : ninguna

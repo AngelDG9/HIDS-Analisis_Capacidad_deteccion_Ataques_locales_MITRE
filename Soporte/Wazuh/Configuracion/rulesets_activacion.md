@@ -8,7 +8,8 @@ solo se registra **qué se activó, cómo se verificó y los rangos reales**.
 - **Manager:** `wazuh-server` `192.168.65.128` · **Agente:** `victima-linux` `192.168.65.129` (ID `001`)
 - **Versión:** Wazuh **4.14.7-1**
 - **Manifiesto generado:** `Soporte/Wazuh/Configuracion/active_ruleset.txt`
-- **Modo:** detección-only (R-06) intacto (0 `<active-response>`, `wazuh-execd` parado)
+- **Modo:** detección-only (R-06) intacto (**0 `<active-response>`** en las 4 capas y en
+  `ossec.conf`; `wazuh-execd` puede estar corriendo tras un reinicio pero es **inerte**)
 
 ---
 
@@ -92,13 +93,20 @@ Muestra real (una alerta 80792 = `execve`):
 
 ## 3. RS3 — reglas propias (`local_rules.xml`)
 
+> **⚠️ Actualización 2026-09-23:** la regla *smoke* `100000` descrita en §3.1–§3.3 **fue RETIRADA**
+> del manager **antes del baseline**, por enmascarar `5710` (norma `rulesets_diseno.md` §9). En
+> consecuencia, **RS3 = 0 reglas** en Fase 2. El registro de la retirada y su evidencia están en
+> **§11** (más abajo). Las subsecciones §3.1–§3.3 se conservan como **estado histórico de 2.8**.
+
 ### 3.1 Despliegue
 
 - Fichero versionado: `Soporte/Wazuh/Reglas/local_rules.xml` (esqueleto + regla *smoke* `100000`,
   cabecera con la reserva **100000–100499**).
 - Desplegado en `/var/ossec/etc/rules/local_rules.xml` del manager, con **backup** del original
   en `/var/ossec/etc/rules/local_rules.xml.bak-tfg28` (el original traía una regla-ejemplo `100001`).
-- Manager reiniciado (`systemctl restart wazuh-manager`) y `wazuh-execd` vuelto a parar.
+- Manager reiniciado (`systemctl restart wazuh-manager`) y `wazuh-execd` vuelto a parar (capa
+  extra de evidencia; un reinicio posterior lo relanza y queda **inerte** — ver §5 y
+  `rulesets_diseno.md` §5.1).
 - **Sin `<active-response>`** (ver §5).
 
 ### 3.2 Verificación — RS3 DISPARA (`rule.id` 100000)
@@ -161,6 +169,13 @@ $ systemctl is-active wazuh-manager
 active
 ```
 
+> **⚠️ Estado de `wazuh-execd` (corrección 2026-09-23).** El `ps` "sin proceso" refleja solo la
+> captura de 2.8, cuando se había detenido el daemon. **No es una condición de la salvaguarda:** al
+> **reiniciar el `wazuh-manager`** (o la VM), `wazuh-execd` **vuelve a arrancar** y puede estar
+> corriendo — pero es **inerte**, porque no hay `<active-response>` que ejecutar. La salvaguarda se
+> reduce a las dos primeras comprobaciones (**0 `<active-response>`** en `ossec.conf` y en los
+> ficheros de reglas), recogidas como **invariante** en `rulesets_diseno.md` **§5.1**.
+
 El **generador aborta** (`exit 2`) si algún fichero de reglas contiene el elemento de respuesta
 activa. Nota: durante el despliegue, el propio **comentario** de cabecera de `local_rules.xml`
 contenía la cadena literal y la guarda saltó (comportamiento correcto); se reformuló el comentario
@@ -203,8 +218,11 @@ al repo). Es **determinista y re-ejecutable** (`exit 0` = sin colisiones).
 |---|---|---:|---:|---:|---:|
 | RS1 | base(default) | **1** | **500102** | 4471 | 167 |
 | RS2 | auditd | **80700** | **80794** | 44 | 1 |
-| RS3 | propias | **100000** | **100000** | 1 | 1 |
+| RS3 | propias | – | – | **0** | **0** |
 | RS4 | externas | – | – | 0 | 0 *(reserva 100500–101000)* |
+
+> **Nota (2026-09-23):** esta tabla y el `active_ruleset.txt` del repo se **regeneraron** tras retirar
+> la regla `100000` → **RS3 = 0** (antes: 1 regla, `100000`). Ver **§11**.
 
 **Control de colisiones (diseño §4):**
 
@@ -220,11 +238,11 @@ unknown_origin         : ninguno
 RESULTADO: SIN COLISIONES
 ```
 
-### 7.1 Ajuste necesario del algoritmo de clasificación (realidad vs. diseño)
+### 7.1 Ajuste del algoritmo de clasificación (realidad vs. diseño) — **ya enmendado (2026-09-23)**
 
-El diseño §4 definía RS1 como `1 ≤ rule.id ≤ 99999` y trataba como **colisión** un fichero default
-con IDs `≥ 100000`. **Eso no se sostiene con el ruleset real de 4.14.7:** el paquete default incluye
-ficheros legítimos con IDs altos —
+El diseño §4 **había definido** RS1 como `1 ≤ rule.id ≤ 99999` y trataba como **colisión** un fichero
+default con IDs `≥ 100000`. **Eso no se sostenía con el ruleset real de 4.14.7:** el paquete default
+incluye ficheros legítimos con IDs altos —
 
 | Fichero default | Rango de IDs |
 |---|---|
@@ -232,23 +250,25 @@ ficheros legítimos con IDs altos —
 | `0330-sysmon_rules.xml` | 184665–185013 |
 | `0335-unbound_rules.xml` | 500000–500102 |
 
-Aplicar el diseño al pie de la letra marcaría estos 3 ficheros como **colisión** y **abortaría** la
-activación (imposible generar el manifiesto). **Ajuste aplicado (mínimo, fiel a la intención):** la
-clasificación es **por ORIGEN de fichero** (que es la fuente de verdad de §1):
+Aplicar aquel diseño al pie de la letra hubiera marcado estos 3 ficheros como **colisión** y
+**abortado** la activación (imposible generar el manifiesto). **Ajuste que se aplicó (mínimo, fiel a
+la intención):** la clasificación es **por ORIGEN de fichero** (que es la fuente de verdad de §1):
 
 - `0365-auditd_rules.xml` → **RS2**;
-- `etc/rules/local_rules.xml` → **RS3**;
+- `etc/rules/local_rules.xml` → **RS3** *(en Fase 2 queda **sin fichero desplegado**: ver §11)*;
 - `etc/rules/external_*.xml` → **RS4**;
 - **resto** de `/var/ossec/ruleset/rules/*.xml` → **RS1** (incluidos los IDs altos del paquete).
 
 La **detección de colisiones** se mantiene para lo que de verdad es un choque: IDs duplicados entre
 ficheros, ficheros default que **invaden** `80700–80799` o la reserva de usuario `100000–101000`, y
 `RS3 ∩ RS4`. Los IDs default `> 101000` **no** son colisión (son del paquete, no de la reserva).
-Esto **no** afecta a la resolución de la muestra pedida: `5710→RS1`, `807xx→RS2`, `100000→RS3`.
+Esto **no** afecta a la resolución de la muestra pedida: `5710→RS1`, `807xx→RS2`.
 
-> **Recomendación para el planner/tester:** actualizar §4 de `rulesets_diseno.md` para reflejar el
-> criterio **por origen** (RS1 = complemento real del paquete) y acotar la regla de colisión a la
-> reserva de usuario, evitando el falso positivo con fireeye/sysmon/unbound.
+> **✅ Enmienda ya aplicada (2026-09-23).** Las secciones **§1 y §4** de `rulesets_diseno.md` **ya
+> fueron enmendadas** (bloques "✏️ Enmienda") para adoptar el criterio **por origen** y acotar la
+> colisión a la reserva de usuario (`100000–101000`), evitando el falso positivo con
+> fireeye/sysmon/unbound. Este apartado §7.1 queda como **registro histórico** del ajuste detectado
+> en 2.8; **no es una acción pendiente**.
 
 ---
 
@@ -261,7 +281,7 @@ Esto **no** afecta a la resolución de la muestra pedida: `5710→RS1`, `807xx�
 ############ 2) DETECCION-ONLY ############
 active-response en ossec.conf : 0
 bloques <command> (inertes)   : 7
-wazuh-execd                    : sin proceso (OK)
+wazuh-execd                    : inerte (su estado no es vinculante; ver §5)
 wazuh-manager                  : active
 
 ############ 3) MUESTRA DE ALERTAS RESUELTAS A RS ############
@@ -273,8 +293,10 @@ UNKNOWN                          : 0
 {"RS": "RS3", "rule_id": "100000", "description": "TFG smoke test (RS3): regla propia disparada"}
 ```
 
-- **0 `<active-response>`** en las 4 capas; `wazuh-execd` sin proceso. ✔
+- **0 `<active-response>`** en las 4 capas y en `ossec.conf`; `wazuh-execd` es **inerte** (puede
+  estar corriendo tras un reinicio; invariante `rulesets_diseno.md` §5.1). ✔
 - Muestra de alertas resuelta **sin ambigüedad**: `5710→RS1`, `807xx→RS2`, `100000→RS3`; **0 UNKNOWN**. ✔
+  *(Estado de 2.8. Tras la retirada del 2026-09-23 la muestra RS3 ya no se produce: **RS3 = 0**; ver **§11**.)*
 - `active_ruleset.txt` **sin colisiones**, con rangos **reales** de RS1/RS2. ✔
 
 ---
@@ -285,7 +307,7 @@ UNKNOWN                          : 0
 
 | Fichero | Estado |
 |---|---|
-| `Soporte/Wazuh/Reglas/local_rules.xml` | **nuevo** (RS3: esqueleto + smoke 100000) |
+| `Soporte/Wazuh/Reglas/local_rules.xml` | **nuevo** en 2.8 (esqueleto + smoke 100000) → **2026-09-23: esqueleto NO desplegable, regla `100000` comentada** (retirada; ver §11) |
 | `Soporte/Wazuh/Reglas/auditd_tfg.rules` | **nuevo** (RS2: reglas de auditoría) |
 | `Soporte/Wazuh/Reglas/external_reserved.xml` | **nuevo** (reserva RS4, solo documentación) |
 | `Soporte/Wazuh/Scripts/generar_active_ruleset.sh` | **nuevo** (manifiesto + colisiones + guarda) |
@@ -303,7 +325,8 @@ UNKNOWN                          : 0
 | `/etc/audit/rules.d/tfg.rules` | `victima-linux` | copia de `auditd_tfg.rules` |
 | `/var/ossec/etc/ossec.conf` | `victima-linux` | + `<localfile>` audit |
 | `/var/ossec/etc/ossec.conf.bak-tfg28` | `victima-linux` | backup previo |
-| `/var/ossec/etc/rules/local_rules.xml` | `wazuh-server` | copia de RS3 |
+| `/var/ossec/etc/rules/local_rules.xml` | `wazuh-server` | copia de RS3 — **ELIMINADA el 2026-09-23**; backup en `.bak-retirada-100000` (ver §11) |
+| `/var/ossec/etc/rules/local_rules.xml.bak-retirada-100000` | `wazuh-server` | backup previo a la retirada (contiene la regla `100000`) |
 | `/var/ossec/etc/rules/local_rules.xml.bak-tfg28` | `wazuh-server` | backup del original |
 
 ---
@@ -323,3 +346,64 @@ sudo systemctl restart wazuh-agent
 ```
 
 > La reversión **no** toca la red ni el modo detección-only.
+>
+> **Nota (2026-09-23):** desde la retirada de `100000`, el estado correcto de Fase 2 es **RS3 = 0**
+> (sin `local_rules.xml` desplegado). Para volver a él: `sudo rm -f /var/ossec/etc/rules/local_rules.xml
+> && sudo systemctl restart wazuh-manager`. Ver **§11**.
+
+---
+
+## 11. Retirada de la regla `100000` (2026-09-23) — antes del baseline
+
+**Qué se retiró:** la regla propia *smoke* **`100000`** (`Soporte/Wazuh/Reglas/local_rules.xml`),
+que era **hija de `5710`** (`<if_sid>5710</if_sid>`, login SSH con usuario inexistente).
+
+**Cuándo:** **2026-09-23**, **antes** de grabar el baseline legítimo (tarea 2.10).
+
+**Por qué (enmascaramiento de RS1):** en Wazuh, una regla **hija** que casa **sustituye** a la base:
+el evento produce **una sola alerta** (la hija `100000`), no `5710`. Si el baseline se grababa con la
+regla puesta, el **catálogo de ruido normal** habría quedado **sesgado**: habría **infravalorado**
+`5710` (RS1) y registrado `100000` como si fuera ruido de RS1. Eso es exactamente lo que prohíbe la
+norma anti-enmascaramiento (`rulesets_diseno.md` **§9**, aprobada por el humano el 2026-09-23). Por
+ello se retiró **ya**, no al empezar la Fase 3.
+
+**Cómo (en `wazuh-server`):**
+
+1. Backup: `cp -a /var/ossec/etc/rules/local_rules.xml .../local_rules.xml.bak-retirada-100000`.
+2. **Se eliminó** el fichero `/var/ossec/etc/rules/local_rules.xml` (no se dejó un `<group>` vacío:
+   un grupo sin reglas rompe el manager — ver §6).
+3. `systemctl restart wazuh-manager` → `active`, sin `CRITICAL`/`ERROR`.
+
+**Evidencia (salidas reales):**
+
+```
+# 1) reinicio sano (sin CRITICAL / ERROR / "without any rule")
+wazuh-manager: active
+errores CRITICAL/ERROR tras el arranque   : (sin CRITICAL/ERROR)
+ficheros de reglas de usuario en etc/rules: (ninguno -> RS3 = 0 reglas)
+
+# 2) login SSH fallido (usuario inexistente) DESPUES de retirar 100000
+#    -> la alerta vuelve a ser 5710 (RS1) y NO 100000
+{"timestamp":"2026-09-22T23:26:34.625+0000","rule":{"level":5,
+ "description":"sshd: Attempt to login using a non-existent user","id":"5710",
+ "groups":["syslog","sshd","authentication_failed","invalid_login"]},
+ "agent":{"id":"001","name":"victima-linux","ip":"192.168.65.129"},
+ "full_log":"Sep 22 23:26:32 victima-linux sshd[3540]: Invalid user tfg_noexiste_b from 192.168.65.128 port 33366"}
+
+# alertas nuevas con rule.id 100000 : (ninguna)   <- la regla retirada ya no dispara
+# resumen de rule.id de las alertas nuevas: 4x 5710 (+ ruido RS2 807xx)
+```
+
+**Conclusión:** tras la retirada, `5710` (RS1) **vuelve a emitirse** y **no** aparece `100000`. El
+manager queda **sano** (`active`, sin errores) y **RS3 = 0 reglas**.
+
+**Efecto en los artefactos:**
+
+- `active_ruleset.txt` **regenerado** → RS3 `MIN/MAX/N_RULES = –/–/0`; `RESULTADO: SIN COLISIONES`.
+- `Soporte/Wazuh/Reglas/local_rules.xml` → **esqueleto documentado NO desplegable**, con la regla
+  `100000` **comentada** como ejemplo histórico (fecha y motivo de la retirada).
+- `Soporte/Wazuh/Scripts/deploy_rs3_rs4.sh` → **no despliega** reglas propias en Fase 2 (y no crea
+  grupos vacíos); retira cualquier `local_rules.xml` desplegado.
+
+> Nota de reloj: los `timestamp` de las alertas son de **2026-09-22** (hora de las VMs), coherente
+> con el desfase de reloj ya registrado en `state.md`.

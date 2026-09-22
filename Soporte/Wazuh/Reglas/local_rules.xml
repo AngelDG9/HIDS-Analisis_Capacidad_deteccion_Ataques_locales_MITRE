@@ -1,26 +1,50 @@
 <!--
-  TFG · HIDS — Reglas propias (RuleSet RS3)
+  TFG · HIDS — Esqueleto de reglas propias (RuleSet RS3)
   ============================================================================
   Fichero versionado : Soporte/Wazuh/Reglas/local_rules.xml
-  Desplegado en      : /var/ossec/etc/rules/local_rules.xml  (manager wazuh-server)
-  Rango RESERVADO    : 100000–100499  (reglas propias del TFG)
-                       El rango oficial de Wazuh para reglas de usuario es
-                       100000–120000; el TFG reserva 100000–100499 para RS3.
+  Estado (Fase 2)    : ESQUELETO DOCUMENTADO — **NO DESPLEGABLE** en Fase 2
+  Despliegue         : NO se copia a /var/ossec/etc/rules/ durante la Fase 2
+                       (RS3 = 0 reglas; el baseline debe ser ruido puro RS1/RS2).
+
+  ⚠️ Retirada de la regla 100000 (2026-09-23)
+  ----------------------------------------------------------------------------
+  La regla *smoke* 100000 (hija de 5710, login SSH fallido) se RETIRÓ del manager
+  el 2026-09-23, ANTES del baseline (tarea 2.10), por decisión del orquestador.
+  Motivo: al ser hija (<if_sid>5710</if_sid>), Wazuh emite UNA sola alerta y la
+  hija SUSTITUYE a la base -> ENMASCARABA la detección de RS1 (5710) y habría
+  sesgado el catálogo de ruido del baseline (norma §9 de rulesets_diseno.md).
+  Evidencia: tras retirarla, un login SSH fallido vuelve a generar 5710 (y ya no
+  100000). Detalle y salidas reales en rulesets_activacion.md §11.
+
+  ⚠️ Un <group> VACÍO rompe el manager ("Group 'group' without any rule" ->
+  CRITICAL). Por eso este fichero NO se despliega mientras no tenga reglas
+  reales (igual que RS4): se deja solo documentado. En Fase 3, al escribir las
+  primeras reglas R/E/S, se añadirá su <group> con reglas y se desplegará
+  (el script deploy_rs3_rs4.sh solo despliega ficheros que contengan <rule>).
+
+  Rango RESERVADO: 100000-100499  (reglas propias del TFG)
+                   El rango oficial de Wazuh para reglas de usuario es
+                   100000-120000; el TFG reserva 100000-100499 para RS3.
 
   Convención (diseño `Soporte/Wazuh/Configuracion/rulesets_diseno.md` §3):
     - Cada regla nueva de Fase 3 toma el SIGUIENTE ID libre dentro del rango.
-    - PROHIBIDO el elemento de respuesta activa (active-response) dentro de <rule>
-      (modo detección-only, R-06 · rulesets_diseno.md §5). El generador
+    - PROHIBIDO el elemento de respuesta activa (`active-response`) dentro de
+      <rule> (modo detección-only, R-06 · rulesets_diseno.md §5). El generador
       `generar_active_ruleset.sh` aborta si aparece en cualquier fichero de reglas.
-
-  Fase 2: solo la regla *smoke* 100000 (temporal; se reasigna/elimina al escribir
-  las reglas R/E/S reales de Fase 3). Reutiliza la telemetría ya verificada
-  (rule.id 5710 = login SSH con usuario inexistente) para probar que RS3 está
-  activo sin cablear telemetría nueva.
+    - Anti-enmascaramiento (rulesets_diseno.md §9): NO usar <if_sid> hacia una
+      regla base RS1 si se quiere conservar su detección; verificar con
+      `wazuh-logtest -v` que la base sigue emitiéndose.
 -->
+
+<!--
+  Regla *smoke* 100000 — EJEMPLO HISTÓRICO, RETIRADA el 2026-09-23.
+  Enmascaraba la detección base 5710 (la hija sustituye a la madre) -> NO desplegar.
+  Se conserva aquí solo como ejemplo del formato y de la reserva de rango.
+
 <group name="tfg,smoke,">
   <rule id="100000" level="3">
     <if_sid>5710</if_sid>
     <description>TFG smoke test (RS3): regla propia disparada</description>
   </rule>
 </group>
+-->

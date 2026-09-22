@@ -113,8 +113,10 @@ curl -k -L -o /dev/null -s -w '%{http_code}\n' https://192.168.65.128/ # -> 200
 - URL: **`https://192.168.65.128/`**
 - Usuario: **`admin`** (contraseña en `wazuh-passwords.txt`, ver §7).
 
-> `wazuh-execd` queda **`inactive`** (por defecto tras la instalación). El paso explícito de
-> **modo detección-only** (R-06) se formaliza y verifica en la tarea **2.6 (T-07)**.
+> `wazuh-execd` queda **`inactive`** tras la instalación, **pero vuelve a arrancar** al reiniciar el
+> `wazuh-manager` (o la VM) — y es **inerte** mientras no exista ningún `<active-response>`. El paso
+> explícito de **modo detección-only** (R-06) se formaliza y verifica en la tarea **2.6 (T-07)**
+> (ver `deteccion_only.md` §1.2 y `rulesets_diseno.md` §5.1).
 
 ---
 
