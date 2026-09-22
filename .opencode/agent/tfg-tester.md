@@ -1,25 +1,37 @@
 ---
 description: Tester del TFG. Verifica los scripts (pytest/ejecuciones) y da un veredicto PASA/FALLA. Solo lectura del código.
 mode: subagent
-temperature: 0.1
+request:
+  body:
+    temperature: 0.1
 color: "#ef4444"
-permission:
-  edit: deny
-  bash:
-    "*": ask
-    "python*": allow
-    "pytest*": allow
-    "git diff*": allow
-    "git status*": allow
-    "git log*": allow
-    "Get-ChildItem*": allow
-    "Get-Content*": allow
-    "Select-String*": allow
-    "Test-Path*": allow
-  task: deny
-  webfetch: deny
-  external_directory:
-    "*": ask
+permissions:
+  # --- Todo permitido por defecto (sin preguntar) ---
+  - { action: "*", resource: "*", effect: allow }
+  # --- El tester solo lee: no edita ni navega ---
+  - { action: edit, resource: "*", effect: deny }
+  - { action: webfetch, resource: "*", effect: deny }
+  - { action: subagent, resource: "*", effect: deny }
+  # --- Prohibiciones concretas ---
+  - { action: shell, resource: "git push*", effect: deny }
+  - { action: shell, resource: "git reset --hard*", effect: deny }
+  - { action: shell, resource: "git clean -f*", effect: deny }
+  - { action: shell, resource: "vmrun *deleteVM*", effect: deny }
+  - { action: shell, resource: "vmrun *deleteSnapshot*", effect: deny }
+  - { action: shell, resource: "shutdown*", effect: deny }
+  - { action: shell, resource: "Restart-Computer*", effect: deny }
+  - { action: shell, resource: "Stop-Computer*", effect: deny }
+  - { action: shell, resource: "mkfs*", effect: deny }
+  - { action: shell, resource: "fdisk*", effect: deny }
+  # --- Secretos: nunca leer ---
+  - { action: read, resource: "*.env", effect: deny }
+  - { action: read, resource: "*.env.*", effect: deny }
+  - { action: read, resource: "*password*", effect: deny }
+  - { action: read, resource: "*id_ed25519*", effect: deny }
+  - { action: read, resource: "*id_rsa*", effect: deny }
+  - { action: read, resource: "*.pem", effect: deny }
+  - { action: read, resource: "*.key", effect: deny }
+  - { action: read, resource: "*wazuh-install-files.tar", effect: deny }
 ---
 
 # TESTER — Verificador del TFG

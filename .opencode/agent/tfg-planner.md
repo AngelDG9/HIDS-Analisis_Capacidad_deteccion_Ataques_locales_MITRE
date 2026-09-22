@@ -1,17 +1,27 @@
 ---
 description: Planificador del TFG. Diseña el plan de cada fase y lo escribe en su artefacto (plan.md). No implementa ni ejecuta.
 mode: subagent
-temperature: 0.4
+request:
+  body:
+    temperature: 0.4
 color: "#f59e0b"
-permission:
-  edit: allow
-  bash: deny
-  task: deny
-  skill: allow
-  webfetch: allow
-  websearch: allow
-  external_directory:
-    "*": ask
+permissions:
+  # --- Todo permitido por defecto, salvo shell (el planner no ejecuta) ---
+  - { action: "*", resource: "*", effect: allow }
+  - { action: shell, resource: "*", effect: deny }
+  - { action: subagent, resource: "*", effect: deny }
+  # --- Secretos: nunca leer ---
+  - { action: read, resource: "*.env", effect: deny }
+  - { action: read, resource: "*.env.*", effect: deny }
+  - { action: read, resource: "*password*", effect: deny }
+  - { action: read, resource: "*id_ed25519*", effect: deny }
+  - { action: read, resource: "*id_rsa*", effect: deny }
+  - { action: read, resource: "*.pem", effect: deny }
+  - { action: read, resource: "*.key", effect: deny }
+  - { action: read, resource: "*wazuh-install-files.tar", effect: deny }
+  # --- _recursos/ es material del profesor: solo lectura ---
+  - { action: edit, resource: "_recursos/*", effect: deny }
+  - { action: edit, resource: "*.env*", effect: deny }
 ---
 
 # PLANIFICADOR — Arquitecto del TFG

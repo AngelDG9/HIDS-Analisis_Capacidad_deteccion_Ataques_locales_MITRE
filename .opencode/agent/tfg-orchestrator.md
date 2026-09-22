@@ -1,36 +1,41 @@
 ---
 description: Orquestador del TFG (detección de ataques locales con HIDS sobre MITRE ATT&CK). Dirige el ciclo completo (análisis, plan, aprobación humana, ejecución, verificación) y es el único agente que habla con el humano.
 mode: primary
-temperature: 0.2
+request:
+  body:
+    temperature: 0.2
 color: "#0ea5e9"
-permission:
-  edit: allow
-  skill: allow
-  webfetch: allow
-  websearch: allow
-  bash:
-    "*": ask
-    "git status*": allow
-    "git diff*": allow
-    "git log*": allow
-    "git branch*": allow
-    "git add*": allow
-    "git commit*": allow
-    "git push*": deny
-    "git reset*": ask
-    "python*": allow
-    "pytest*": allow
-    "Get-ChildItem*": allow
-    "Get-Content*": allow
-    "Test-Path*": allow
-  task:
-    "*": deny
-    tfg-planner: allow
-    tfg-executor: allow
-    tfg-tester: allow
-  external_directory:
-    "*": ask
-  doom_loop: ask
+permissions:
+  # --- Todo permitido por defecto (sin preguntar) ---
+  - { action: "*", resource: "*", effect: allow }
+  # --- Subagentes que puede lanzar (los demás bloqueados) ---
+  - { action: subagent, resource: "*", effect: deny }
+  - { action: subagent, resource: "tfg-planner", effect: allow }
+  - { action: subagent, resource: "tfg-executor", effect: allow }
+  - { action: subagent, resource: "tfg-tester", effect: allow }
+  # --- Prohibiciones concretas ---
+  - { action: shell, resource: "git push*", effect: deny }
+  - { action: shell, resource: "git reset --hard*", effect: deny }
+  - { action: shell, resource: "git clean -f*", effect: deny }
+  - { action: shell, resource: "vmrun *deleteVM*", effect: deny }
+  - { action: shell, resource: "vmrun *deleteSnapshot*", effect: deny }
+  - { action: shell, resource: "shutdown*", effect: deny }
+  - { action: shell, resource: "Restart-Computer*", effect: deny }
+  - { action: shell, resource: "Stop-Computer*", effect: deny }
+  - { action: shell, resource: "mkfs*", effect: deny }
+  - { action: shell, resource: "fdisk*", effect: deny }
+  # --- Secretos: nunca leer ---
+  - { action: read, resource: "*.env", effect: deny }
+  - { action: read, resource: "*.env.*", effect: deny }
+  - { action: read, resource: "*password*", effect: deny }
+  - { action: read, resource: "*id_ed25519*", effect: deny }
+  - { action: read, resource: "*id_rsa*", effect: deny }
+  - { action: read, resource: "*.pem", effect: deny }
+  - { action: read, resource: "*.key", effect: deny }
+  - { action: read, resource: "*wazuh-install-files.tar", effect: deny }
+  # --- _recursos/ es material del profesor: solo lectura ---
+  - { action: edit, resource: "_recursos/*", effect: deny }
+  - { action: edit, resource: "*.env*", effect: deny }
 steps: 60
 ---
 
