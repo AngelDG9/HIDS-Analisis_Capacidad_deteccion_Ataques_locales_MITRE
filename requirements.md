@@ -20,7 +20,7 @@
 |----|-----------|------------------------|
 | R-01 | Trabajar sobre **MITRE ATT&CK Enterprise v19.1**. | La cabecera de las hojas indica versión y fecha. |
 | R-02 | El corpus se obtiene con un **script reproducible** (no a mano). | Ejecutarlo regenera el corpus; está versionado en git. |
-| R-03 | **Filtro inverso host**: incluir solo técnicas con telemetría endpoint; excluir las exclusivas de red pura. | `corpus_host.csv` con columna `host_eligible`; tests sobre técnicas conocidas (T1486 = YES, T1046 = NO). |
+| R-03 | **Filtro inverso host** (interpretación amplia): una técnica con ≥1 Data Component endpoint es válida; solo se excluyen las exclusivas de red pura. | `corpus_host.csv` con columna `host_eligible`; tests sobre técnicas conocidas (**T1486 = YES, T1595 = NO** red pura; **T1046 = YES híbrida**). |
 | R-04 | **Priorización R/E/S** (Ransomware, Exfiltración, Sabotaje). | Columna `priority` con ranking. |
 | R-05 | **Wazuh** como único HIDS del núcleo. | Resultados bajo `Estudio-Wazuh/` y `Dataset/Ataques/Resultados/Wazuh/`. |
 | R-06 | **Modo detección-only**: el HIDS nunca bloquea. | `active-response` desactivado; documentado. |
@@ -32,6 +32,12 @@
 | R-12 | **Atomic Red Team** como orquestador de ataques (custom si no cubre una técnica). | `Soporte/Ataques/atomic-red-team/` clonado y usable. |
 | R-13 | **Reproducibilidad por ataque**: cada ataque tiene artefacto ejecutable + README. | `Dataset/Ataques/Comandos/T<id>-<desc>/` con script + `README.md` (víctima, comando, validación). |
 | R-14 | **Arquitectura de agentes propia del TFG** (liviana). | `.opencode/` con `tfg-orchestrator`, `tfg-planner`, `tfg-executor`, `tfg-tester` + skill `tfg-flow`. |
+
+> **Nota R-03 (2026-09-19):** el criterio "T1046 = NO" del borrador se corrige a partir de los
+> datos reales de v19.1: T1046 es **híbrida** (DET0376 → AN1057/1058/1059/1060 incluye
+> `DC0032 Process Creation`) → `host_eligible=YES`. El caso negativo de red pura se verifica
+> con **T1595 = NO**. Aplicación de la interpretación amplia (técnica con ≥1 Data Component
+> endpoint = válida).
 
 ---
 

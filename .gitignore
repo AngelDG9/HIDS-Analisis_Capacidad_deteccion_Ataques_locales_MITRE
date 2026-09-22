@@ -17,6 +17,12 @@ venv/
 *.pcap
 *.pcapng
 
+# STIX MITRE ATT&CK (fichero grande ~53 MB; se regenera con
+# _artefactos/scripts/extraer_tecnicas_host.py). Se versionan la URL y el
+# sidecar .sha256, NO el .json.
+_artefactos/mitre/*.json
+!_artefactos/mitre/*.sha256
+
 # Entornos y editores
 .env
 .env.*

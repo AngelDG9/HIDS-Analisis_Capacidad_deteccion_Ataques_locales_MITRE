@@ -1,0 +1,231 @@
+{
+  "type": "bundle",
+  "id": "bundle--stix-mini-f01",
+  "spec_version": "2.1",
+  "objects": [
+    {
+      "type": "x-mitre-collection",
+      "id": "x-mitre-collection--stix-mini",
+      "name": "STIX mini de pruebas (fixture sintetico F-01)",
+      "x_mitre_version": "19.1"
+    },
+    {
+      "type": "x-mitre-tactic",
+      "id": "x-mitre-tactic--ta0040",
+      "name": "Impact",
+      "x_mitre_shortname": "impact",
+      "external_references": [{"source_name": "mitre-attack", "external_id": "TA0040"}]
+    },
+    {
+      "type": "x-mitre-tactic",
+      "id": "x-mitre-tactic--ta0010",
+      "name": "Exfiltration",
+      "x_mitre_shortname": "exfiltration",
+      "external_references": [{"source_name": "mitre-attack", "external_id": "TA0010"}]
+    },
+    {
+      "type": "x-mitre-tactic",
+      "id": "x-mitre-tactic--ta0009",
+      "name": "Collection",
+      "x_mitre_shortname": "collection",
+      "external_references": [{"source_name": "mitre-attack", "external_id": "TA0009"}]
+    },
+    {
+      "type": "x-mitre-tactic",
+      "id": "x-mitre-tactic--ta0007",
+      "name": "Discovery",
+      "x_mitre_shortname": "discovery",
+      "external_references": [{"source_name": "mitre-attack", "external_id": "TA0007"}]
+    },
+    {
+      "type": "x-mitre-tactic",
+      "id": "x-mitre-tactic--ta0043",
+      "name": "Reconnaissance",
+      "x_mitre_shortname": "reconnaissance",
+      "external_references": [{"source_name": "mitre-attack", "external_id": "TA0043"}]
+    },
+    {
+      "type": "x-mitre-tactic",
+      "id": "x-mitre-tactic--ta0002",
+      "name": "Execution",
+      "x_mitre_shortname": "execution",
+      "external_references": [{"source_name": "mitre-attack", "external_id": "TA0002"}]
+    },
+
+    {"type": "x-mitre-data-component", "id": "x-mitre-data-component--dc0039", "name": "File Creation", "external_references": [{"source_name": "mitre-attack", "external_id": "DC0039"}]},
+    {"type": "x-mitre-data-component", "id": "x-mitre-data-component--dc0055", "name": "File Access", "external_references": [{"source_name": "mitre-attack", "external_id": "DC0055"}]},
+    {"type": "x-mitre-data-component", "id": "x-mitre-data-component--dc0054", "name": "Drive Access", "external_references": [{"source_name": "mitre-attack", "external_id": "DC0054"}]},
+    {"type": "x-mitre-data-component", "id": "x-mitre-data-component--dc0061", "name": "File Modification", "external_references": [{"source_name": "mitre-attack", "external_id": "DC0061"}]},
+    {"type": "x-mitre-data-component", "id": "x-mitre-data-component--dc0032", "name": "Process Creation", "external_references": [{"source_name": "mitre-attack", "external_id": "DC0032"}]},
+    {"type": "x-mitre-data-component", "id": "x-mitre-data-component--dc0064", "name": "Command Execution", "external_references": [{"source_name": "mitre-attack", "external_id": "DC0064"}]},
+    {"type": "x-mitre-data-component", "id": "x-mitre-data-component--dc0102", "name": "Network Share Access", "external_references": [{"source_name": "mitre-attack", "external_id": "DC0102"}]},
+    {"type": "x-mitre-data-component", "id": "x-mitre-data-component--dc0078", "name": "Network Traffic Flow", "external_references": [{"source_name": "mitre-attack", "external_id": "DC0078"}]},
+    {"type": "x-mitre-data-component", "id": "x-mitre-data-component--dc0085", "name": "Network Traffic Content", "external_references": [{"source_name": "mitre-attack", "external_id": "DC0085"}]},
+    {"type": "x-mitre-data-component", "id": "x-mitre-data-component--dc0082", "name": "Network Connection Creation", "external_references": [{"source_name": "mitre-attack", "external_id": "DC0082"}]},
+
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--t1039",
+      "name": "Data from Network Shared Drive",
+      "external_references": [{"source_name": "mitre-attack", "external_id": "T1039"}],
+      "x_mitre_platforms": ["Linux", "Windows"],
+      "kill_chain_phases": [{"kill_chain_name": "mitre-attack", "phase_name": "collection"}]
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--t1486",
+      "name": "Data Encrypted for Impact",
+      "external_references": [{"source_name": "mitre-attack", "external_id": "T1486"}],
+      "x_mitre_platforms": ["Linux", "Windows"],
+      "kill_chain_phases": [{"kill_chain_name": "mitre-attack", "phase_name": "impact"}]
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--t1486-001",
+      "name": "Data Encrypted for Impact: Ransomware",
+      "external_references": [{"source_name": "mitre-attack", "external_id": "T1486.001"}],
+      "x_mitre_is_subtechnique": true,
+      "x_mitre_platforms": ["Linux", "Windows"],
+      "kill_chain_phases": [{"kill_chain_name": "mitre-attack", "phase_name": "impact"}]
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--t1046",
+      "name": "Network Service Discovery",
+      "external_references": [{"source_name": "mitre-attack", "external_id": "T1046"}],
+      "x_mitre_platforms": ["Linux", "Windows"],
+      "kill_chain_phases": [{"kill_chain_name": "mitre-attack", "phase_name": "discovery"}]
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--t1595",
+      "name": "Active Scanning",
+      "external_references": [{"source_name": "mitre-attack", "external_id": "T1595"}],
+      "x_mitre_platforms": ["PRE"],
+      "kill_chain_phases": [{"kill_chain_name": "mitre-attack", "phase_name": "reconnaissance"}]
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--t1059",
+      "name": "Command and Scripting Interpreter",
+      "external_references": [{"source_name": "mitre-attack", "external_id": "T1059"}],
+      "x_mitre_platforms": ["Linux", "Windows"],
+      "kill_chain_phases": [{"kill_chain_name": "mitre-attack", "phase_name": "execution"}]
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--t1074",
+      "name": "Data Staged",
+      "external_references": [{"source_name": "mitre-attack", "external_id": "T1074"}],
+      "x_mitre_platforms": ["Linux", "Windows"],
+      "kill_chain_phases": [{"kill_chain_name": "mitre-attack", "phase_name": "collection"}]
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--t9001",
+      "name": "Tecnica antigua deprecada (fixture)",
+      "external_references": [{"source_name": "mitre-attack", "external_id": "T9001"}],
+      "x_mitre_deprecated": true,
+      "x_mitre_platforms": ["Linux"],
+      "kill_chain_phases": [{"kill_chain_name": "mitre-attack", "phase_name": "impact"}]
+    },
+
+    {
+      "type": "x-mitre-detection-strategy",
+      "id": "x-mitre-detection-strategy--det0410",
+      "name": "Detection Strategy for Data from Network Shared Drive",
+      "external_references": [{"source_name": "mitre-attack", "external_id": "DET0410"}],
+      "x_mitre_analytic_refs": ["x-mitre-analytic--an1145"]
+    },
+    {
+      "type": "x-mitre-detection-strategy",
+      "id": "x-mitre-detection-strategy--det0215",
+      "name": "Detection of Multi-Platform File Encryption for Impact",
+      "external_references": [{"source_name": "mitre-attack", "external_id": "DET0215"}],
+      "x_mitre_analytic_refs": ["x-mitre-analytic--an0602"]
+    },
+    {
+      "type": "x-mitre-detection-strategy",
+      "id": "x-mitre-detection-strategy--det0376",
+      "name": "Behavioral Detection Strategy for Network Service Discovery",
+      "external_references": [{"source_name": "mitre-attack", "external_id": "DET0376"}],
+      "x_mitre_analytic_refs": ["x-mitre-analytic--an1057"]
+    },
+    {
+      "type": "x-mitre-detection-strategy",
+      "id": "x-mitre-detection-strategy--det0830",
+      "name": "Detection of Active Scanning",
+      "external_references": [{"source_name": "mitre-attack", "external_id": "DET0830"}],
+      "x_mitre_analytic_refs": ["x-mitre-analytic--an1962"]
+    },
+    {
+      "type": "x-mitre-detection-strategy",
+      "id": "x-mitre-detection-strategy--det1059",
+      "name": "Detection of Command and Scripting Interpreter",
+      "external_references": [{"source_name": "mitre-attack", "external_id": "DET1059"}],
+      "x_mitre_analytic_refs": ["x-mitre-analytic--an1059x"]
+    },
+
+    {
+      "type": "x-mitre-analytic",
+      "id": "x-mitre-analytic--an1145",
+      "name": "Analytic 1145",
+      "x_mitre_platforms": ["Windows"],
+      "x_mitre_log_source_references": [
+        {"x_mitre_data_component_ref": "x-mitre-data-component--dc0102", "name": "windows:event"},
+        {"x_mitre_data_component_ref": "x-mitre-data-component--dc0039", "name": "windows:event"},
+        {"x_mitre_data_component_ref": "x-mitre-data-component--dc0055", "name": "windows:event"},
+        {"x_mitre_data_component_ref": "x-mitre-data-component--dc0054", "name": "windows:event"}
+      ]
+    },
+    {
+      "type": "x-mitre-analytic",
+      "id": "x-mitre-analytic--an0602",
+      "name": "Analytic 0602",
+      "x_mitre_platforms": ["Linux"],
+      "x_mitre_log_source_references": [
+        {"x_mitre_data_component_ref": "x-mitre-data-component--dc0032", "name": "auditd:SYSCALL"},
+        {"x_mitre_data_component_ref": "x-mitre-data-component--dc0039", "name": "auditd:SYSCALL"},
+        {"x_mitre_data_component_ref": "x-mitre-data-component--dc0061", "name": "auditd:SYSCALL"}
+      ]
+    },
+    {
+      "type": "x-mitre-analytic",
+      "id": "x-mitre-analytic--an1057",
+      "name": "Analytic 1057",
+      "x_mitre_platforms": ["Windows"],
+      "x_mitre_log_source_references": [
+        {"x_mitre_data_component_ref": "x-mitre-data-component--dc0032", "name": "windows:event"},
+        {"x_mitre_data_component_ref": "x-mitre-data-component--dc0082", "name": "windows:event"}
+      ]
+    },
+    {
+      "type": "x-mitre-analytic",
+      "id": "x-mitre-analytic--an1962",
+      "name": "Analytic 1962",
+      "x_mitre_platforms": ["PRE"],
+      "x_mitre_log_source_references": [
+        {"x_mitre_data_component_ref": "x-mitre-data-component--dc0078", "name": "network:flow"},
+        {"x_mitre_data_component_ref": "x-mitre-data-component--dc0085", "name": "network:content"}
+      ]
+    },
+    {
+      "type": "x-mitre-analytic",
+      "id": "x-mitre-analytic--an1059x",
+      "name": "Analytic 1059",
+      "x_mitre_platforms": ["Linux"],
+      "x_mitre_log_source_references": [
+        {"x_mitre_data_component_ref": "x-mitre-data-component--dc0064", "name": "auditd:SYSCALL"},
+        {"x_mitre_data_component_ref": "x-mitre-data-component--dc0032", "name": "auditd:SYSCALL"}
+      ]
+    },
+
+    {"type": "relationship", "id": "rel--det0410-t1039", "relationship_type": "detects", "source_ref": "x-mitre-detection-strategy--det0410", "target_ref": "attack-pattern--t1039"},
+    {"type": "relationship", "id": "rel--det0215-t1486", "relationship_type": "detects", "source_ref": "x-mitre-detection-strategy--det0215", "target_ref": "attack-pattern--t1486"},
+    {"type": "relationship", "id": "rel--det0376-t1046", "relationship_type": "detects", "source_ref": "x-mitre-detection-strategy--det0376", "target_ref": "attack-pattern--t1046"},
+    {"type": "relationship", "id": "rel--det0830-t1595", "relationship_type": "detects", "source_ref": "x-mitre-detection-strategy--det0830", "target_ref": "attack-pattern--t1595"},
+    {"type": "relationship", "id": "rel--det1059-t1059", "relationship_type": "detects", "source_ref": "x-mitre-detection-strategy--det1059", "target_ref": "attack-pattern--t1059"},
+    {"type": "relationship", "id": "rel--sub-t1486-001", "relationship_type": "subtechnique-of", "source_ref": "attack-pattern--t1486-001", "target_ref": "attack-pattern--t1486"},
+    {"type": "relationship", "id": "rel--dc0061-t1074", "relationship_type": "detects", "source_ref": "x-mitre-data-component--dc0061", "target_ref": "attack-pattern--t1074"}
+  ]
+}

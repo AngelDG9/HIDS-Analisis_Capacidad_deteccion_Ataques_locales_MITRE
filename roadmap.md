@@ -10,7 +10,7 @@
 
 ```
 Fase 0 — Arranque del proyecto                         [~2 días]   ✔ hecho
-Fase 1 — Corpus MITRE (F-01)                           [~1 semana]
+Fase 1 — Corpus MITRE (F-01)                           [~1 semana]   ✔ hecho
 Fase 2 — Laboratorio Wazuh (F-02)                      [~1 semana]
 Fase 3 — Ataques y detección (F-03)                    [~2 semanas mes 1, escalable mes 2]
 Fase 4 — Robustez y rendimiento (η)                    [~1 semana]
@@ -38,7 +38,7 @@ laboratorio sale liso) + proto tabla de detecciones. Suficiente para demostrar a
 
 ---
 
-## Fase 1 — Corpus MITRE (F-01)
+## Fase 1 — Corpus MITRE (F-01) ✔
 
 **Objetivo:** obtener la lista reproducible de técnicas host-eligible y seleccionar el
 corpus de 12-15 priorizado R/E/S.
@@ -47,11 +47,13 @@ corpus de 12-15 priorizado R/E/S.
 |---|-------|------|
 | 1.1 | **T-01**: descargar el STIX v19.1. | [AUTO] |
 | 1.2 | **T-02**: script `extraer_tecnicas_host.py` con filtro inverso. | [AUTO] |
-| 1.3 | Tests sobre técnicas conocidas (T1486 = YES, T1046 = NO...). | [AUTO] |
+| 1.3 | Tests sobre técnicas conocidas (T1486 = YES; T1595 = NO red pura; T1046 = YES híbrida). | [AUTO] |
 | 1.4 | **T-03**: `corpus_host.csv` + `lista_tecnicas_validas.md` priorizada. | [AUTO] |
 | 1.5 | Validar la lista y elegir las 12-15 técnicas del corpus. | [HUMANO] |
 
 **DoD:** script reproducible + lista priorizada + corpus elegido en `Hojas/ATA_index.csv`.
+**✔ Cumplido (2026-09-19):** 625 técnicas host-eligible; corpus de **13 técnicas** en
+`Hojas/ATA_index.csv` (`ATA001`..`ATA013`). Verificación PASA; detalle en `change-doc.md`.
 
 ---
 
