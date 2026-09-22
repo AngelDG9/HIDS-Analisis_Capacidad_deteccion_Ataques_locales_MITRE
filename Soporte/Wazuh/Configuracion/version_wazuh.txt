@@ -1,0 +1,28 @@
+Wazuh — Versión REAL instalada (Fase 2 — tareas 2.4 y 2.5, T-05)
+Fecha de instalación: 2026-09-22
+Instalador: https://packages.wazuh.com/4.14/wazuh-install.sh (all-in-one)
+Línea: 4.14.x  ->  parche exacto instalado: 4.14.7-1
+
+Componentes en wazuh-server (192.168.65.128)
+  wazuh-manager   : 4.14.7-1   (WAZUH_VERSION="v4.14.7", WAZUH_REVISION="rc1", WAZUH_TYPE="server")  [/var/ossec/bin/wazuh-control info]
+  wazuh-indexer   : 4.14.7-1   (OpenSearch 2.19.5, JVM 21.0.10)                                      [/usr/share/wazuh-indexer/bin/opensearch --version]
+  wazuh-dashboard : 4.14.7-1                                                                         [dpkg -s wazuh-dashboard]
+
+Agente en victima-linux (192.168.65.129)
+  wazuh-agent     : 4.14.7-1   (WAZUH_VERSION="v4.14.7", WAZUH_REVISION="rc1", WAZUH_TYPE="agent")  [/var/ossec/bin/wazuh-control info]
+  Manager configurado: 192.168.65.128:1514 (tcp)  [/var/ossec/etc/ossec.conf]
+
+Nota de reproducibilidad
+  En 4.14.7 NO existen los comandos `wazuh-manager --version`, `wazuh-indexer --version`
+  ni `wazuh-dashboard --version` como binarios en PATH. Se usaron los equivalentes reales
+  (indicados entre corchetes) y `dpkg -s`, que coinciden en 4.14.7-1 para los tres paquetes.
+
+  Evidencia dpkg:
+    wazuh-manager   Version: 4.14.7-1
+    wazuh-indexer   Version: 4.14.7-1
+    wazuh-dashboard Version: 4.14.7-1
+
+  Repositorios de Wazuh CONGELADOS tras la instalación (evita actualizaciones accidentales):
+    wazuh-server : /etc/apt/sources.list.d/wazuh.list -> "deb ..." comentado a "#deb ..."
+                   (backup: /etc/apt/sources.list.d/wazuh.list.tfg-backup)
+    victima-linux: no se creó repo de Wazuh (agente instalado desde .deb) -> nada que congelar
