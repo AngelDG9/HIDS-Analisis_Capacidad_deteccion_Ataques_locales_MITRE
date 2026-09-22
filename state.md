@@ -7,12 +7,15 @@
 
 ## Estado actual
 
-- **Fase:** 2 — Laboratorio Wazuh (F-02), plan **v2 aprobado**. Tareas **2.3, 2.4 y 2.5 hechas** y **verificadas (PASA)**.
-- **Paso:** **Wazuh 4.14.7** desplegado en `wazuh-server` (manager + indexer + dashboard **active**) y agente **`victima-linux` active** (ID 001) enviando telemetría. Red del laboratorio lista (**NAT temporal** + **IPs fijas** `192.168.65.128/129`).
-- **Siguiente acción:** **2.6** (detección-only) → **2.7** (diseño de los 4 RuleSets RS1..RS4 → **gate G2: decisión humana**) → 2.8 (activar RuleSets) → 2.9 (snapshot `lab-listo`) → 2.10 (baseline ~4 h) → 2.11/2.12 (cierre).
-- **G1 fijado (2026-09-22):** **Wazuh 4.14.7**, `wazuh-server` con 6 GB y **heap del indexer a 1 GB**.
-- **⚠️ Decisiones humanas pendientes:** (a) `unattended-upgrades` (deshabilitar o no); (b) aceptar la **desviación del resize del LV** de `wazuh-server` (16→48 GB, fuera del encargo, técnicamente sano); (c) limpiar el fichero basura `NUL` y commitear el lote de T-05.
-- **⚠️ Regla de oro pendiente:** el **NAT está conectado** en ambas VMs → hay que **desconectarlo antes** del baseline (2.10) y de los ataques (Fase 3).
+- **Fase:** 2 — Laboratorio Wazuh (F-02), plan **v2 aprobado**. Tareas **2.3 a 2.8 hechas** y **verificadas (PASA)**.
+- **Paso:** Wazuh 4.14.7 en `wazuh-server` + agente `victima-linux`; **modo detección-only** verificado; **4 capas (RS1..RS4)** activas y clasificables (`active_ruleset.txt`, sin colisiones; **RS4 vacía** por decisión G2).
+- **Siguiente acción:** **2.9** (desconectar el NAT de forma persistente + snapshot `lab-listo`) → **2.10** (baseline ~4 h) → **2.11/2.12** (cierre de fase + hito H2).
+- **G1/G2 fijados:** **Wazuh 4.14.7** (heap del indexer 1 GB); RuleSets aprobados con **RS4 vacía** (en Fase 3 se probarán reglas externas **curadas** contra los ataques del corpus, con el snapshot como red de seguridad).
+- **Desviaciones registradas:** resize del LV de `wazuh-server` (24→48 GB, fuera del encargo, sano → aceptada); el plan asumía mal que el agente no traía `<active-response>` de fábrica y que `wazuh-execd` era una unidad systemd; **el algoritmo de clasificación del diseño §4 era imposible** (el ruleset default tiene `rule.id` > 100000: fireeye 150100+, sysmon 184665+, unbound 500000+) → reclasificado **por fichero de origen**, lo que **preserva el principio** del diseño. **Pendiente enmendar §1/§4** de `rulesets_diseno.md` (documento aprobado en G2).
+- **⚠️ Riesgo metodológico ALTO para Fase 3:** en Wazuh una regla **hija** (`<if_sid>`) **sustituye** a la padre (un login fallido con la regla `100000` ya no genera `5710`). Si escribimos reglas propias hijas de reglas base, **taparemos detecciones de RS1** y falsearemos el recuento. **Hay que fijar la convención antes** de escribir reglas de ataque.
+- **⚠️ Reloj:** las VMs marcan **2026-09-22** y hoy es **2026-09-23** → **verificar hora/zona/NTP antes del baseline** (las ventanas `t0`/`t1` dependen de ello).
+- **⚠️ Regla de oro:** el **NAT sigue conectado** → se desconecta en **2.9**, antes del snapshot y del baseline.
+- **⚠️ Sin commitear** desde 2.6: `state.md`, `Soporte/Laboratorio/README.md` y los artefactos de 2.7/2.8.
 - **Reconocimiento (2026-09-22, sesión 5):** repo en el sobremesa limpio (`git status` sin cambios); `vmrun` en `C:\Program Files\VMware\VMware Workstation\vmrun.exe` (⚠️ el plan cita la ruta `(x86)`: corregir en los docs); **0 VMs en marcha**; `Soporte/Wazuh/{Configuracion,Reglas,Scripts}` y `Dataset/Legitimo/` **vacíos** (Fase 2 sin ejecutar).
 - **Pendiente de Fase 1:** presentar el **hito H1** al tutor.
 - **Decisiones humanas fijadas (2026-09-19):**
