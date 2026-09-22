@@ -1,0 +1,214 @@
+# ============================================================================
+# active_ruleset.txt — Manifiesto de RuleSets activos (Fase 2 · tarea 2.8 · R-09)
+# ============================================================================
+# Generado por : Soporte/Wazuh/Scripts/generar_active_ruleset.sh
+# Ejecutado en : wazuh-server (manager)
+# Wazuh        : v4.14.7
+# Fecha (UTC)  : 2026-09-22T22:53:52Z
+# Determinista : sí (orden estable; re-ejecutable)
+#
+# Clasificación rule.id -> RS (rulesets_diseno.md §4), por ORIGEN de fichero:
+#   RS3  100000-100499  /var/ossec/etc/rules/local_rules.xml
+#   RS4  100500-101000  /var/ossec/etc/rules/external_*.xml
+#   RS2   80700-80799   /var/ossec/ruleset/rules/0365-auditd_rules.xml
+#   RS1   resto         /var/ossec/ruleset/rules/*.xml (excepto auditd)
+#   UNKNOWN             cualquier otro origen (se trata como colisión)
+#
+# NOTA DE REALIDAD: el ruleset default de Wazuh 4.14.7 incluye ficheros con
+# IDs > 101000 (fireeye 150100+, sysmon 184665+, unbound 500000+). Son del
+# paquete default y se clasifican como RS1 por ORIGEN. Ver
+# Soporte/Wazuh/Configuracion/rulesets_activacion.md.
+#
+# --- RESUMEN POR RULESET ---
+# RS    NOMBRE               MIN_ID   MAX_ID  N_RULES N_FICHEROS
+RS1   base(default)             1   500102     4471        167
+RS2   auditd                80700    80794       44          1
+RS3   propias              100000   100000        1          1
+RS4   externas                  -        -        0          0   (vacía; reserva 100500-101000, opción A/G2)
+#
+# --- DETALLE POR FICHERO ---
+# RS   MIN_ID  MAX_ID  N_RULES  FICHERO
+RS1  1  7  7  /var/ossec/ruleset/rules/0010-rules_config.xml
+RS1  500  752  63  /var/ossec/ruleset/rules/0015-ossec_rules.xml
+RS1  200  242  31  /var/ossec/ruleset/rules/0016-wazuh_rules.xml
+RS1  400  428  28  /var/ossec/ruleset/rules/0017-wazuh-api_rules.xml
+RS1  1001  10100  117  /var/ossec/ruleset/rules/0020-syslog_rules.xml
+RS1  3100  3191  19  /var/ossec/ruleset/rules/0025-sendmail_rules.xml
+RS1  3300  3399  27  /var/ossec/ruleset/rules/0030-postfix_rules.xml
+RS1  3500  3502  3  /var/ossec/ruleset/rules/0035-spamd_rules.xml
+RS1  3600  3651  5  /var/ossec/ruleset/rules/0040-imapd_rules.xml
+RS1  3700  3752  5  /var/ossec/ruleset/rules/0045-mailscanner_rules.xml
+RS1  3800  3852  5  /var/ossec/ruleset/rules/0050-ms-exchange_rules.xml
+RS1  3900  3911  7  /var/ossec/ruleset/rules/0055-courier_rules.xml
+RS1  4300  4386  33  /var/ossec/ruleset/rules/0065-pix_rules.xml
+RS1  4500  4560  16  /var/ossec/ruleset/rules/0070-netscreenfw_rules.xml
+RS1  4700  4724  12  /var/ossec/ruleset/rules/0075-cisco-ios_rules.xml
+RS1  4800  4851  12  /var/ossec/ruleset/rules/0080-sonicwall_rules.xml
+RS1  5500  5557  15  /var/ossec/ruleset/rules/0085-pam_rules.xml
+RS1  5600  5631  6  /var/ossec/ruleset/rules/0090-telnetd_rules.xml
+RS1  5700  5763  63  /var/ossec/ruleset/rules/0095-sshd_rules.xml
+RS1  6100  6106  7  /var/ossec/ruleset/rules/0100-solaris_bsm_rules.xml
+RS1  6200  6257  15  /var/ossec/ruleset/rules/0105-asterisk_rules.xml
+RS1  6300  6376  49  /var/ossec/ruleset/rules/0110-ms_dhcp_rules.xml
+RS1  7200  7209  10  /var/ossec/ruleset/rules/0115-arpwatch_rules.xml
+RS1  7300  7320  4  /var/ossec/ruleset/rules/0120-symantec-av_rules.xml
+RS1  7400  7425  5  /var/ossec/ruleset/rules/0125-symantec-ws_rules.xml
+RS1  7600  7613  5  /var/ossec/ruleset/rules/0130-trend-osce_rules.xml
+RS1  9300  9352  9  /var/ossec/ruleset/rules/0135-hordeimp_rules.xml
+RS1  9400  9403  4  /var/ossec/ruleset/rules/0140-roundcube_rules.xml
+RS1  9500  9551  8  /var/ossec/ruleset/rules/0145-wordpress_rules.xml
+RS1  9600  9611  3  /var/ossec/ruleset/rules/0150-cimserver_rules.xml
+RS1  9700  9771  12  /var/ossec/ruleset/rules/0155-dovecot_rules.xml
+RS1  9800  9820  3  /var/ossec/ruleset/rules/0160-vmpop3d_rules.xml
+RS1  9900  9953  8  /var/ossec/ruleset/rules/0165-vpopmail_rules.xml
+RS1  11100  11113  14  /var/ossec/ruleset/rules/0170-ftpd_rules.xml
+RS1  11200  11253  26  /var/ossec/ruleset/rules/0175-proftpd_rules.xml
+RS1  11300  11312  12  /var/ossec/ruleset/rules/0180-pure-ftpd_rules.xml
+RS1  11400  11452  7  /var/ossec/ruleset/rules/0185-vsftpd_rules.xml
+RS1  11500  11512  8  /var/ossec/ruleset/rules/0190-ms_ftpd_rules.xml
+RS1  12100  12149  49  /var/ossec/ruleset/rules/0195-named_rules.xml
+RS1  13100  13112  12  /var/ossec/ruleset/rules/0200-smbd_rules.xml
+RS1  14100  14151  10  /var/ossec/ruleset/rules/0205-racoon_rules.xml
+RS1  14200  14251  5  /var/ossec/ruleset/rules/0210-vpn_concentrator_rules.xml
+RS1  17101  17102  2  /var/ossec/ruleset/rules/0215-policy_rules.xml
+RS1  18100  18270  124  /var/ossec/ruleset/rules/0220-msauth_rules.xml
+RS1  7500  7550  16  /var/ossec/ruleset/rules/0225-mcafee_av_rules.xml
+RS1  7701  7720  20  /var/ossec/ruleset/rules/0230-ms-se_rules.xml
+RS1  19100  19153  20  /var/ossec/ruleset/rules/0235-vmware_rules.xml
+RS1  20100  20162  8  /var/ossec/ruleset/rules/0240-ids_rules.xml
+RS1  31100  31171  33  /var/ossec/ruleset/rules/0245-web_rules.xml
+RS1  30100  30411  40  /var/ossec/ruleset/rules/0250-apache_rules.xml
+RS1  31200  31251  8  /var/ossec/ruleset/rules/0255-zeus_rules.xml
+RS1  31300  31335  17  /var/ossec/ruleset/rules/0260-nginx_rules.xml
+RS1  31401  31430  13  /var/ossec/ruleset/rules/0265-php_rules.xml
+RS1  31501  31550  20  /var/ossec/ruleset/rules/0270-web_appsec_rules.xml
+RS1  35000  35095  22  /var/ossec/ruleset/rules/0275-squid_rules.xml
+RS1  40101  40601  13  /var/ossec/ruleset/rules/0280-attack_rules.xml
+RS1  40700  40705  6  /var/ossec/ruleset/rules/0285-systemd_rules.xml
+RS1  40900  40903  4  /var/ossec/ruleset/rules/0290-firewalld_rules.xml
+RS1  50100  50183  13  /var/ossec/ruleset/rules/0295-mysql_rules.xml
+RS1  50500  50581  13  /var/ossec/ruleset/rules/0300-postgresql_rules.xml
+RS1  51000  51093  12  /var/ossec/ruleset/rules/0305-dropbear_rules.xml
+RS1  51500  51557  44  /var/ossec/ruleset/rules/0310-openbsd_rules.xml
+RS1  52000  52004  5  /var/ossec/ruleset/rules/0315-apparmor_rules.xml
+RS1  52500  52511  12  /var/ossec/ruleset/rules/0320-clam_av_rules.xml
+RS1  53500  53508  9  /var/ossec/ruleset/rules/0325-opensmtpd_rules.xml
+RS1  184665  185013  39  /var/ossec/ruleset/rules/0330-sysmon_rules.xml
+RS1  500000  500102  6  /var/ossec/ruleset/rules/0335-unbound_rules.xml
+RS1  80000  80092  28  /var/ossec/ruleset/rules/0340-puppet_rules.xml
+RS1  80100  80140  41  /var/ossec/ruleset/rules/0345-netscaler_rules.xml
+RS1  80200  80499  67  /var/ossec/ruleset/rules/0350-amazon_rules.xml
+RS1  80500  80524  25  /var/ossec/ruleset/rules/0360-serv-u_rules.xml
+RS1  81100  81102  3  /var/ossec/ruleset/rules/0375-usb_rules.xml
+RS1  81300  81305  6  /var/ossec/ruleset/rules/0380-redis_rules.xml
+RS1  81400  81564  38  /var/ossec/ruleset/rules/0385-oscap_rules.xml
+RS1  44400  44503  104  /var/ossec/ruleset/rules/0390-fortiddos_rules.xml
+RS1  44600  81646  79  /var/ossec/ruleset/rules/0391-fortigate_rules.xml
+RS1  44640  44721  82  /var/ossec/ruleset/rules/0392-fortimail_rules.xml
+RS1  44730  44735  6  /var/ossec/ruleset/rules/0393-fortiauth_rules.xml
+RS1  81700  81710  11  /var/ossec/ruleset/rules/0395-hp_rules.xml
+RS1  81800  81806  7  /var/ossec/ruleset/rules/0400-openvpn_rules.xml
+RS1  81900  81904  5  /var/ossec/ruleset/rules/0405-rsa-auth-manager_rules.xml
+RS1  82000  82001  2  /var/ossec/ruleset/rules/0410-imperva_rules.xml
+RS1  64270  82105  12  /var/ossec/ruleset/rules/0415-sophos_rules.xml
+RS1  82200  82203  4  /var/ossec/ruleset/rules/0420-freeipa_rules.xml
+RS1  82400  82405  6  /var/ossec/ruleset/rules/0425-cisco-estreamer_rules.xml
+RS1  83000  83002  3  /var/ossec/ruleset/rules/0430-ms_wdefender_rules.xml
+RS1  83200  83202  3  /var/ossec/ruleset/rules/0435-ms_logs_rules.xml
+RS1  85000  85010  11  /var/ossec/ruleset/rules/0440-ms_sqlserver_rules.xml
+RS1  85500  85502  3  /var/ossec/ruleset/rules/0445-identity_guard_rules.xml
+RS1  85750  85761  12  /var/ossec/ruleset/rules/0450-mongodb_rules.xml
+RS1  86000  86006  7  /var/ossec/ruleset/rules/0455-docker_rules.xml
+RS1  86250  86255  6  /var/ossec/ruleset/rules/0460-jenkins_rules.xml
+RS1  86800  86807  8  /var/ossec/ruleset/rules/0470-vshell_rules.xml
+RS1  86600  86604  5  /var/ossec/ruleset/rules/0475-suricata_rules.xml
+RS1  86900  86906  7  /var/ossec/ruleset/rules/0480-qualysguard_rules.xml
+RS1  87000  87054  10  /var/ossec/ruleset/rules/0485-cylance_rules.xml
+RS1  87100  87106  7  /var/ossec/ruleset/rules/0490-virustotal_rules.xml
+RS1  87200  87203  4  /var/ossec/ruleset/rules/0495-proxmox-ve_rules.xml
+RS1  87300  87310  10  /var/ossec/ruleset/rules/0500-owncloud_rules.xml
+RS1  22401  22407  7  /var/ossec/ruleset/rules/0505-vuls_rules.xml
+RS1  87401  87427  27  /var/ossec/ruleset/rules/0510-ciscat_rules.xml
+RS1  87500  87508  9  /var/ossec/ruleset/rules/0515-exim_rules.xml
+RS1  23501  23508  8  /var/ossec/ruleset/rules/0520-vulnerability-detector_rules.xml
+RS1  87600  87614  15  /var/ossec/ruleset/rules/0525-openvas_rules.xml
+RS1  88000  89057  16  /var/ossec/ruleset/rules/0530-mysql_audit_rules.xml
+RS1  88100  88103  4  /var/ossec/ruleset/rules/0535-mariadb_rules.xml
+RS1  87700  87702  3  /var/ossec/ruleset/rules/0540-pfsense_rules.xml
+RS1  24000  24811  174  /var/ossec/ruleset/rules/0545-osquery_rules.xml
+RS1  17000  17000  1  /var/ossec/ruleset/rules/0550-kaspersky_rules.xml
+RS1  87801  87813  7  /var/ossec/ruleset/rules/0555-azure_rules.xml
+RS1  87900  87958  59  /var/ossec/ruleset/rules/0560-docker_integration_rules.xml
+RS1  18651  18668  18  /var/ossec/ruleset/rules/0565-ms_ipsec_rules.xml
+RS1  19000  19015  16  /var/ossec/ruleset/rules/0570-sca_rules.xml
+RS1  60000  60018  19  /var/ossec/ruleset/rules/0575-win-base_rules.xml
+RS1  60100  60232  130  /var/ossec/ruleset/rules/0580-win-security_rules.xml
+RS1  60600  61072  473  /var/ossec/ruleset/rules/0585-win-application_rules.xml
+RS1  61100  61138  39  /var/ossec/ruleset/rules/0590-win-system_rules.xml
+RS1  61600  61655  56  /var/ossec/ruleset/rules/0595-win-sysmon_rules.xml
+RS1  62100  62212  113  /var/ossec/ruleset/rules/0600-win-wdefender_rules.xml
+RS1  90499  90565  67  /var/ossec/ruleset/rules/0601-win-vipre_rules.xml
+RS1  67001  67010  10  /var/ossec/ruleset/rules/0602-win-wfirewall_rules.xml
+RS1  62600  62618  19  /var/ossec/ruleset/rules/0605-win-mcafee_rules.xml
+RS1  63100  63110  11  /var/ossec/ruleset/rules/0610-win-ms_logs_rules.xml
+RS1  63600  63618  19  /var/ossec/ruleset/rules/0615-win-ms-se_rules.xml
+RS1  64100  64110  11  /var/ossec/ruleset/rules/0620-win-generic_rules.xml
+RS1  64000  64033  34  /var/ossec/ruleset/rules/0625-cisco-asa_rules.xml
+RS1  65500  65501  2  /var/ossec/ruleset/rules/0625-mcafee_epo_rules.xml
+RS1  88200  88216  17  /var/ossec/ruleset/rules/0630-nextcloud_rules.xml
+RS1  66001  66004  4  /var/ossec/ruleset/rules/0635-owlh-zeek_rules.xml
+RS1  67100  67103  4  /var/ossec/ruleset/rules/0640-junos_rules.xml
+RS1  64200  64208  9  /var/ossec/ruleset/rules/0675-panda-paps_rules.xml
+RS1  64220  64239  20  /var/ossec/ruleset/rules/0680-checkpoint-smart1_rules.xml
+RS1  65000  65075  76  /var/ossec/ruleset/rules/0690-gcp_rules.xml
+RS1  65260  65302  43  /var/ossec/ruleset/rules/0695-f5_bigip_rules.xml
+RS1  64500  64508  9  /var/ossec/ruleset/rules/0700-paloalto_rules.xml
+RS1  70020  70030  11  /var/ossec/ruleset/rules/0705-sophos_fw_rules.xml
+RS1  70000  70008  7  /var/ossec/ruleset/rules/0715-freepbx_rules.xml
+RS1  91100  91449  321  /var/ossec/ruleset/rules/0750-github_rules.xml
+RS1  91531  91725  128  /var/ossec/ruleset/rules/0755-office365_rules.xml
+RS1  65600  65623  24  /var/ossec/ruleset/rules/0770-gitlab_rules.xml
+RS1  88800  88801  2  /var/ossec/ruleset/rules/0775-arbor_rules.xml
+RS1  150100  150150  5  /var/ossec/ruleset/rules/0780-fireeye_rules.xml
+RS1  89200  89217  9  /var/ossec/ruleset/rules/0785-huawei-usg_rules.xml
+RS1  92000  92081  82  /var/ossec/ruleset/rules/0800-sysmon_id_1.xml
+RS1  92101  92110  10  /var/ossec/ruleset/rules/0810-sysmon_id_3.xml
+RS1  92151  92157  7  /var/ossec/ruleset/rules/0820-sysmon_id_7.xml
+RS1  92200  92227  28  /var/ossec/ruleset/rules/0830-sysmon_id_11.xml
+RS1  92650  92657  8  /var/ossec/ruleset/rules/0840-win_event_channel.xml
+RS1  92600  92606  7  /var/ossec/ruleset/rules/0850-audit_rules.xml
+RS1  92300  92309  10  /var/ossec/ruleset/rules/0860-sysmon_id_13.xml
+RS1  92400  92403  4  /var/ossec/ruleset/rules/0870-sysmon_id_8.xml
+RS1  4100  4151  3  /var/ossec/ruleset/rules/0900-firewall_rules.xml
+RS1  91500  91530  31  /var/ossec/ruleset/rules/0905-cisco-ftd_rules.xml
+RS1  91000  91007  8  /var/ossec/ruleset/rules/0910-ms-exchange-proxylogon_rules.xml
+RS1  91801  91846  45  /var/ossec/ruleset/rules/0915-win-powershell_rules.xml
+RS1  89100  89101  2  /var/ossec/ruleset/rules/0920-oracledb_rules.xml
+RS1  42001  42009  9  /var/ossec/ruleset/rules/0925-eset-remote_rules.xml
+RS1  92501  92517  17  /var/ossec/ruleset/rules/0935-cloudflare-waf_rules.xml
+RS1  92900  92920  3  /var/ossec/ruleset/rules/0945-sysmon_id_10.xml
+RS1  89501  89502  2  /var/ossec/ruleset/rules/0950-sysmon_id_20.xml
+RS1  67011  67029  19  /var/ossec/ruleset/rules/0955-WEF-baseline_rules.xml
+RS1  89600  89609  10  /var/ossec/ruleset/rules/0960-macos_rules.xml
+RS1  99000  99082  27  /var/ossec/ruleset/rules/0990-amazon-security-lake_rules.xml
+RS1  99500  99658  99  /var/ossec/ruleset/rules/0995-microsoft-graph_rules.xml
+RS1  99700  99702  3  /var/ossec/ruleset/rules/0997-maltiverse_rules.xml
+RS1  99800  99860  61  /var/ossec/ruleset/rules/0998-aws-security-hub-rules.xml
+RS1  99901  99920  20  /var/ossec/ruleset/rules/0999-malicious-ioc-rules.xml
+RS2  80700  80794  44  /var/ossec/ruleset/rules/0365-auditd_rules.xml
+RS3  100000  100000  1  /var/ossec/etc/rules/local_rules.xml
+#
+# --- CONTROL DE COLISIONES (rulesets_diseno.md §4) ---
+# duplicate_ids          : ninguna
+# rs2_out_of_range       : ninguna
+# rs3_out_of_range       : ninguna
+# rs4_out_of_range       : ninguna
+# default_in_rs2_range   : ninguna
+# default_in_user_range  : ninguna
+# rs3_inter_rs4          : vacío
+# unknown_origin         : ninguno
+# RESULTADO: SIN COLISIONES
+# --- CONTROL ACTIVE-RESPONSE (rulesets_diseno.md §5) ---
+# ficheros con <active-response> : ninguno
+# (guarda del generador: aborta con exit 2 si aparece alguno)
+# ============================================================================

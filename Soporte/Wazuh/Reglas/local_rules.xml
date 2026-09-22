@@ -1,0 +1,26 @@
+<!--
+  TFG · HIDS — Reglas propias (RuleSet RS3)
+  ============================================================================
+  Fichero versionado : Soporte/Wazuh/Reglas/local_rules.xml
+  Desplegado en      : /var/ossec/etc/rules/local_rules.xml  (manager wazuh-server)
+  Rango RESERVADO    : 100000–100499  (reglas propias del TFG)
+                       El rango oficial de Wazuh para reglas de usuario es
+                       100000–120000; el TFG reserva 100000–100499 para RS3.
+
+  Convención (diseño `Soporte/Wazuh/Configuracion/rulesets_diseno.md` §3):
+    - Cada regla nueva de Fase 3 toma el SIGUIENTE ID libre dentro del rango.
+    - PROHIBIDO el elemento de respuesta activa (active-response) dentro de <rule>
+      (modo detección-only, R-06 · rulesets_diseno.md §5). El generador
+      `generar_active_ruleset.sh` aborta si aparece en cualquier fichero de reglas.
+
+  Fase 2: solo la regla *smoke* 100000 (temporal; se reasigna/elimina al escribir
+  las reglas R/E/S reales de Fase 3). Reutiliza la telemetría ya verificada
+  (rule.id 5710 = login SSH con usuario inexistente) para probar que RS3 está
+  activo sin cablear telemetría nueva.
+-->
+<group name="tfg,smoke,">
+  <rule id="100000" level="3">
+    <if_sid>5710</if_sid>
+    <description>TFG smoke test (RS3): regla propia disparada</description>
+  </rule>
+</group>

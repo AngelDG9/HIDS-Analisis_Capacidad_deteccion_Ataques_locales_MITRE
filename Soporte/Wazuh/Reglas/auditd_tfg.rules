@@ -1,0 +1,29 @@
+## TFG · HIDS — Reglas de auditoría del SO (RuleSet RS2)
+## ============================================================================
+## Fichero versionado : Soporte/Wazuh/Reglas/auditd_tfg.rules
+## Desplegado en      : /etc/audit/rules.d/tfg.rules  (victima-linux)
+## Carga              : `augenrules` (servicio auditd) al arrancar/reiniciar.
+##
+## Claves -k: se usan las claves RESERVADAS de Wazuh, definidas en el manager en
+## /var/ossec/etc/lists/audit-keys, para que disparen las reglas del ruleset
+## default 80780–80794 (RS2):
+##     audit-wazuh-w -> write      -> 80780 / 80781 ("Watch - Write access")
+##     audit-wazuh-r -> read       -> 80783 / 80784
+##     audit-wazuh-a -> attribute  -> 80786 / 80787
+##     audit-wazuh-x -> execute    -> 80789
+##     audit-wazuh-c -> command    -> 80792 ("Audit: Command: $(audit.exe)")
+##
+## Objetivo (diseño rulesets_diseno.md §1/§3.5): telemetría de PROCESOS (execve)
+## y de ESCRITURA/ATRIBUTOS sobre rutas relevantes del corpus, que es lo que
+## alimenta RS2. Sin este fichero, las reglas 80700–80799 nunca disparan.
+
+# 1) Procesos: toda ejecución de binario (execve) -> regla 80792 "Audit: Command"
+-a always,exit -F arch=b64 -S execve -k audit-wazuh-c
+-a always,exit -F arch=b32 -S execve -k audit-wazuh-c
+
+# 2) Syscalls de modificación de ficheros (crear/truncar/borrar/renombrar) -> 80780+ (write)
+-a always,exit -F arch=b64 -S creat,truncate,ftruncate,unlink,unlinkat,rename,renameat,renameat2 -k audit-wazuh-w
+
+# 3) Vigilancia (watch) de rutas relevantes del corpus -> reglas 80780/80781
+-w /etc -p wa -k audit-wazuh-w
+-w /home/angel/lab-legit -p wa -k audit-wazuh-w

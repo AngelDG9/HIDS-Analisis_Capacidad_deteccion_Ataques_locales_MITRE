@@ -1,0 +1,30 @@
+<!--
+  TFG · HIDS — Reserva del punto de carga de reglas EXTERNAS (RuleSet RS4)
+  ============================================================================
+  Fichero versionado : Soporte/Wazuh/Reglas/external_reserved.xml
+  Rango RESERVADO    : 100500–101000  (reglas externas / de comunidad)
+  Destino previsto   : /var/ossec/etc/rules/external_*.xml  (manager wazuh-server)
+
+  DECISIÓN DEL HUMANO (gate G2, 2026-09-23 · opción A):
+    RS4 queda VACÍA y DOCUMENTADA en Fase 2. NO se descargan reglas externas.
+    En Fase 3 se probará un conjunto pequeño y curado de reglas externas
+    orientadas al corpus, midiendo su aporte y su ruido contra el baseline
+    (ver `rulesets_diseno.md` §2).
+
+  ⚠️ ESTE FICHERO NO SE DESPLIEGA EN FASE 2.
+     Motivo comprobado en la tarea 2.8: Wazuh 4.14.7 RECHAZA un fichero de
+     reglas sin ninguna regla. Un `<group>` vacío provoca en analysisd:
+         ERROR: Group 'group' without any rule.
+         CRITICAL: (1220): Error loading the rules: 'etc/rules/external_reserved.xml'.
+     y el manager NO arranca. Por eso RS4 se deja SOLO documentada: el punto de
+     carga es el DIRECTORIO /var/ossec/etc/rules/, y en Fase 3 bastará con dejar
+     ahí un `external_<nombre>.xml` con reglas reales (IDs 100500–101000).
+
+  Convención para Fase 3 (si se activa RS4):
+    - Nombre del fichero: `external_*.xml` (el generador lo clasifica como RS4).
+    - IDs dentro de 100500–101000.
+    - Sin el elemento de respuesta activa (active-response): modo detección-only (R-06).
+    - Debe pasar el control de colisiones de `generar_active_ruleset.sh`.
+
+  Este fichero es SOLO un comentario de reserva: no define ninguna regla.
+-->
