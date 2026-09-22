@@ -8,7 +8,7 @@
 ## Estado actual
 
 - **Fase:** 1 — Corpus MITRE (F-01) **CERRADA** ✔ (verificación PASA).
-- **Paso:** cerrada; pendiente commit local de Fase 1 y presentar el **hito H1** al tutor.
+- **Paso:** cerrada y **commiteada** (`cfeaa3a`); pendiente presentar el **hito H1** al tutor.
 - **Siguiente acción:** **Fase 2 — Laboratorio Wazuh** (arranca con el humano: topología + VMs).
 - **Decisiones humanas fijadas (2026-09-19):**
   - Interpretación **amplia** del filtro inverso (DC de red no elegibles pero no anulan host; T1039).
@@ -29,7 +29,8 @@
   (697 técnicas; **625 host-eligible**), `Hojas/lista_tecnicas_validas.md`,
   `Hojas/ATA_index.csv` (**13 técnicas**).
 - Verificación `tfg-tester`: **PASA** (15 tests, reproducibilidad byte a byte). Detalle en `change-doc.md`.
-- Pendiente de cierre: **commit local** (sin push) + **hito H1** al tutor.
+- **Commit local:** `cfeaa3a Fase 1: corpus MITRE v19.1 (filtro inverso host) y 13 tecnicas seleccionadas`.
+- Pendiente: **hito H1** al tutor (el `push` lo hace el humano).
 
 ## Tareas transversales pendientes
 
