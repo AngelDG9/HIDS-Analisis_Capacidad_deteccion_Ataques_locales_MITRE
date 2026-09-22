@@ -42,5 +42,41 @@
 - [ ] Añadir adaptador NAT (internet) para instalar Wazuh.
 - [ ] Documentar los RuleSets y el baseline (Fase 2).
 
-## 7. Referencias
+## 7. Actualizaciones automáticas deshabilitadas (decisión de laboratorio)
+
+**Decisión (aprobada por el humano):** deshabilitar las actualizaciones automáticas del S.O. en
+**ambas** VMs para garantizar la **reproducibilidad** del laboratorio: que ningún parche se
+aplique solo y cambie versiones o binarios a mitad de la baseline o de los ataques.
+
+Aplicado el **2026-09-22** en `wazuh-server` (`192.168.65.128`) y `victima-linux`
+(`192.168.65.129`):
+
+```bash
+sudo systemctl disable --now unattended-upgrades.service
+sudo systemctl disable --now apt-daily.timer
+sudo systemctl disable --now apt-daily-upgrade.timer
+```
+
+> `apt-daily.service` y `apt-daily-upgrade.service` son unidades **static** (no se pueden
+> `disable`); las lanzaban los *timers* anteriores. Al deshabilitar los timers quedan sin
+> lanzador y `inactive`, por lo que **no procede** deshabilitarlas aparte.
+
+Estado verificado en **las dos** VMs:
+
+| Unidad | `is-enabled` | `is-active` |
+|---|---|---|
+| `unattended-upgrades.service` | `disabled` | `inactive` |
+| `apt-daily.timer` | `disabled` | `inactive` |
+| `apt-daily-upgrade.timer` | `disabled` | `inactive` |
+
+**Reversión** (volver a permitir parcheo automático):
+
+```bash
+sudo systemctl enable --now unattended-upgrades.service
+sudo systemctl enable --now apt-daily.timer
+sudo systemctl enable --now apt-daily-upgrade.timer
+```
+
+## 8. Referencias
 - Contexto del TFG: `context.md`
+- Modo detección-only: `../Wazuh/Configuracion/deteccion_only.md`
