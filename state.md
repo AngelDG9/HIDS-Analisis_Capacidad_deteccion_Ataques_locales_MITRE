@@ -7,9 +7,9 @@
 
 ## Estado actual
 
-- **Fase:** 2 — Laboratorio Wazuh (F-02), **en preparación** (T-04 montada en la práctica).
-- **Paso:** laboratorio levantado (2 VMs Ubuntu Server 24.04, host-only, snapshots hechos).
-- **Siguiente acción:** **planificar la Fase 2** (`plan.md`) → aprobación humana → T-05 (instalar Wazuh).
+- **Fase:** 2 — Laboratorio Wazuh (F-02), plan **v2** (acceso por Tailscale) → **pendiente de aprobación**.
+- **Paso:** T-04 hecha + **acceso portátil→sobremesa por SSH sobre Tailscale YA montado** (los agentes corren en el sobremesa).
+- **Siguiente acción:** aprobar plan v2 → commit/push → **clonar el repo en el sobremesa** → instalar **Wazuh**.
 - **Pendiente de Fase 1:** presentar el **hito H1** al tutor.
 - **Decisiones humanas fijadas (2026-09-19):**
   - Interpretación **amplia** del filtro inverso (DC de red no elegibles pero no anulan host; T1039).
@@ -29,7 +29,7 @@
   `_artefactos/scripts/extraer_tecnicas_host.py` + tests, `Hojas/corpus_host.csv`
   (697 técnicas; **625 host-eligible**), `Hojas/lista_tecnicas_validas.md`,
   `Hojas/ATA_index.csv` (**13 técnicas**).
-- Verificación `tfg-tester`: **PASA** (15 tests, reproducibilidad byte a byte). Detalle en `change-doc.md`.
+- Verificación `tfg-tester`: **PASA** (15 tests, reproducibilidad byte a byte). Detalle en `change-doc-fase1.md`.
 - **Commit local:** `cfeaa3a Fase 1: corpus MITRE v19.1 (filtro inverso host) y 13 tecnicas seleccionadas`.
 - Pendiente: **hito H1** al tutor (el `push` lo hace el humano).
 
@@ -44,8 +44,10 @@
   | `wazuh-server` | `192.168.65.128` | 2 | 6 GB | 50 GB |
   | `victima-linux` | `192.168.65.129` | 2 | 3 GB | 20 GB |
 
+- **Documentación T-04:** `Soporte/Laboratorio/README.md` + `topologia.png` + `topologia.mmd` ✔
 - **Verificado:** ping cruzado entre VMs OK; snapshots `base-limpia` hechos.
-- **Pendiente T-04:** documentar (`Soporte/Laboratorio/README.md` + `topologia.png`).
+- **Acceso:** portátil → sobremesa por **SSH sobre Tailscale** (`100.82.127.119`, usuario `angel`); los **agentes (opencode) corren en el sobremesa**. OpenSSH Server en Windows 10 habilitado ✔
+- **Pendiente:** clonar el repo en el sobremesa (`C:\TFG\...`).
 - ⚠️ **Sin internet todavía** (host-only): añadir adaptador **NAT** para instalar Wazuh.
 
 ## Tareas transversales pendientes
@@ -63,3 +65,6 @@
   las políticas de IA de la ETSI/US.
 - **Sesión 3:** Fase 1 completa — STIX v19.1, script de filtro inverso + tests, corpus (697 →
   625 host-eligible) y **selección humana de 13 técnicas**; verificación PASA y cierre.
+- **Sesión 4:** montaje del laboratorio (2 VMs Ubuntu + snapshots) y **acceso remoto**
+  (Tailscale + OpenSSH en Windows 10); decisión de que los **agentes corran en el sobremesa**;
+  `plan.md` de Fase 2 → **v2** (pendiente de aprobación).

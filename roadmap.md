@@ -53,7 +53,7 @@ corpus de 12-15 priorizado R/E/S.
 
 **DoD:** script reproducible + lista priorizada + corpus elegido en `Hojas/ATA_index.csv`.
 **✔ Cumplido (2026-09-19):** 625 técnicas host-eligible; corpus de **13 técnicas** en
-`Hojas/ATA_index.csv` (`ATA001`..`ATA013`). Verificación PASA; detalle en `change-doc.md`.
+`Hojas/ATA_index.csv` (`ATA001`..`ATA013`). Verificación PASA; detalle en `change-doc-fase1.md`.
 
 ---
 
@@ -61,13 +61,16 @@ corpus de 12-15 priorizado R/E/S.
 
 **Objetivo:** laboratorio reproducible con Wazuh detectando y controlable en remoto.
 
+> **Acceso:** los agentes (`opencode`) corren en el **sobremesa** (junto a las VMs); el portátil entra por **SSH sobre Tailscale**.
+
 | # | Tarea | Modo |
 |---|-------|------|
 | 2.1 | **T-04**: topología + importar VMs (VMware en el sobremesa, host-only). | [HUMANO] |
-| 2.2 | **T-05**: Wazuh server + agentes (Linux primero). | [MIXTO] |
-| 2.3 | **T-07**: detección-only + 4 RuleSets. | [AUTO] |
-| 2.4 | **T-06**: baseline legítimo ~4 h. | [AUTO] |
-| 2.5 | **T-08**: control por SSH y `vmrun`. | [MIXTO] |
+| 2.2 | **T-08 (acceso)**: SSH portátil→sobremesa sobre **Tailscale** + OpenSSH en Windows. | [HUMANO] ✔ |
+| 2.3 | **T-05**: Wazuh server + agentes (Linux primero). | [MIXTO] |
+| 2.4 | **T-07**: detección-only + 4 RuleSets. | [AUTO] |
+| 2.5 | **T-06**: baseline legítimo ~4 h. | [AUTO] |
+| 2.6 | **T-08 (cierre)**: documentar SSH + `vmrun` (local). | [MIXTO] |
 
 **DoD:** Wazuh con agentes activos, detección-only, baseline grabado y acceso remoto
 verificado desde el portátil.
@@ -108,8 +111,8 @@ detección de Wazuh.
 
 **Objetivo:** producir la memoria siguiendo el esqueleto de los TFGs hermanos.
 
-Se redacta con la pista de conocimiento (agentes `researcher`/`writer`/`reviewer` adaptados,
-**con fuentes verificadas N1/N2**). Incluye: Introducción y Estado del Arte, Base teórica
+Se redacta con un flujo de conocimiento (investigación → redacción → revisión),
+**con fuentes verificadas N1/N2**. Incluye: Introducción y Estado del Arte, Base teórica
 (MITRE + HIDS), Realización de ataques, Análisis de detecciones, Resultados, Conclusiones y
 Anexos (Instalación, Validación, Tabla Resumen de Ataques, Dificultades).
 

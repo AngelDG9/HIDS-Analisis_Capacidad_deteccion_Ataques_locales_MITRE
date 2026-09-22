@@ -86,7 +86,7 @@ T-01 → T-02 → T-03 → (selección de las 12-15 técnicas)
 
 ### F-02 — Laboratorio
 ```
-T-04 → T-05 → T-07 → T-06 → T-08
+T-04 → T-08 (acceso) → T-05 → T-07 → T-06 → T-08 (cierre)
 ```
 
 ### F-03 — Ataque y detección (por cada ataque)

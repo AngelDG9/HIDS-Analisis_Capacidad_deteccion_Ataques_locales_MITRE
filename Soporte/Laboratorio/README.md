@@ -36,7 +36,7 @@
 - **Snapshot base:** `base-limpia` en ambas (recién instaladas, sin Wazuh ni ataques).
 
 ## 5. Plano de control
-- Portátil Windows 11 (8 GB) → control remoto por **SSH** de las VMs del equipo anfitrión.
+- Portátil Windows 11 (8 GB) → **SSH al sobremesa** (vía Tailscale); los **agentes (opencode) corren en el sobremesa** y acceden a las VMs por la red host-only.
 
 ## 6. Pendientes
 - [ ] Añadir adaptador NAT (internet) para instalar Wazuh.

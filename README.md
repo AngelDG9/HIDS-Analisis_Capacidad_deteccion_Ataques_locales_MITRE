@@ -32,6 +32,12 @@ El proyecto se ejecuta con los agentes de opencode definidos en `.opencode/`:
 
 El ciclo de trabajo está descrito en la skill `tfg-flow` (`.opencode/skills/tfg-flow/`).
 
+## Acceso
+
+Los agentes (`opencode`) **corren en el PC sobremesa**, donde viven las VMs. El **portátil**
+entra al sobremesa por **SSH sobre Tailscale**; los agentes acceden a las VMs por la red
+host-only. Ver `Soporte/Laboratorio/README.md`.
+
 ## Estructura
 
 ```

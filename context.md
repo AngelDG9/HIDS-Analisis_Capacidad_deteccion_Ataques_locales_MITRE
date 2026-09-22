@@ -83,13 +83,17 @@ El profesor pide centrarse en (`guia_profesor.txt:37-46`):
 | Validación | Cada ataque se ejecuta **dos veces** (snapshot fresco); si difieren las alertas, `review=true`. |
 | SO víctima | **Linux primero**; Windows cuando una técnica lo exija. |
 | Orquestador de ataques | **Atomic Red Team** (tests atómicos por técnica); script custom si no cubre. |
-| Laboratorio | VMware en el **sobremesa** (16 GB), red **host-only**; el **portátil** (8 GB) es el plano de control. |
-| Acceso | Control remoto del portátil al sobremesa y a las VMs por **SSH**. |
+| Laboratorio | VMware en el **sobremesa** (16 GB), red **host-only**. Los **agentes (opencode) corren en el sobremesa**, junto a las VMs. |
+| Acceso | El **portátil** (8 GB) controla el sobremesa por **SSH sobre Tailscale**; los agentes, ya en el sobremesa, acceden a las VMs por la red host-only. |
 | Métrica | **η = √(CD·(1−FP))** (heredada). |
 | Identificador de ataque | **ATA<NNN>** (`ATA001`, `ATA002`, ...). |
 | Base de datos | **SQLite** (portada del diseño de los TFGs hermanos). |
 | Técnicas de captura | `rule.id` de Wazuh (análogo al `SID` de Snort). |
 | Git | Se trabaja en local. **`git push` lo hace el humano**, nunca los agentes. |
+
+> **Nota (corpus actual):** la selección vigente son **13 técnicas** (7 Impact / 3 Exfiltration /
+> 3 Collection), que **no** sigue el "1-2 por táctica"; la variedad por táctica queda **pendiente
+> de comentar con el tutor** (hito H1).
 
 ---
 
@@ -113,6 +117,8 @@ El profesor pide centrarse en (`guia_profesor.txt:37-46`):
 - **STIX bundle** — fichero oficial JSON con toda la matriz MITRE.
 - **VM / snapshot / vmrun / SSH** — máquina virtual; estado guardado al que revertir;
   herramienta de VMware por línea de comandos; acceso remoto por shell.
+- **Tailscale** — VPN de malla (WireGuard) que conecta el portátil con el sobremesa para el
+  acceso remoto.
 - **ATA<NNN>** — identificador único de cada ataque del corpus.
 
 ---
