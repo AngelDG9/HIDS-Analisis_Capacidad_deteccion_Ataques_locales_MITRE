@@ -7,15 +7,18 @@
 
 ## Estado actual
 
-- **Fase:** 2 — Laboratorio Wazuh (F-02), plan **v2 aprobado**. Tareas **2.3 a 2.9 hechas** y **verificadas**.
-- **Paso:** laboratorio **listo para el baseline**. Modo detección-only · 4 capas definidas (`active_ruleset.txt` sin colisiones; **RS3 y RS4 vacías** en Fase 2) · **NAT desconectado** (persistente, reactivable) · relojes en `Europe/Madrid` · **snapshot `lab-listo`** en ambas VMs.
-- **Siguiente acción:** **2.10 baseline ~4 h** (scripts `baseline_actividad.sh` + `extraer_alertas.py`) → 2.11/2.12 (cierre de fase + hito H2). **Decidido: parar aquí antes de lanzarlo.**
+- **Fase:** 2 — Laboratorio Wazuh (F-02), plan **v2 aprobado**. Tareas **2.3 a 2.9 hechas** y **verificadas**; **2.10 en curso**.
+- **Paso:** **🔴 VENTANA 1 DEL BASELINE CORRIENDO** en `victima-linux` (PID 3385, `nohup`, ciclos cada 5 min). **`t0 = 2026-09-23T00:45:00Z`** (02:45 CEST) · duración 240 min → **`t1` previsto `2026-09-23T04:45:00Z`** (06:45 CEST). Scan FIM forzado a las `00:46:07Z`. Vigilancia inicial: **~12 alertas/min en reposo**, disco del manager **25 GB libres** (holgado).
+- **Siguiente acción (2026-09-23 por la mañana):** 1) confirmar `END` en `/home/angel/lab-legit/baseline_log.txt` y que la ventana cerró sola; 2) **extraer** `Dataset/Legitimo/ruleids_legitimos.csv` con `_artefactos/scripts/extraer_alertas.py --desde 2026-09-23T00:45:00Z --hasta <t1>`; 3) **VENTANA 2** ese mismo día por la tarde (**14:00→18:00** ≈ `12:00Z`→`16:00Z`), revirtiendo antes la víctima a `lab-listo`; 4) comparar y cerrar (2.11/2.12).
+- **Decisión humana (2026-09-23):** baseline en **DOS ventanas de 4 h en horas distintas** (noche + tarde) para cubrir mejor el ciclo diario y poder medir la **estabilidad del ruido**. La 1ª incluye el mantenimiento diario (~06:25); la 2ª no.
 - **G1/G2 fijados:** **Wazuh 4.14.7** (heap del indexer 1 GB); RuleSets aprobados con **RS4 vacía** (en Fase 3 se probarán reglas externas **curadas**, con `lab-listo` como red de seguridad).
 - **Desviaciones y erratas registradas:** ver `plan.md` **§12** — resize del LV (24→48 GB, **aceptada**); el agente **sí** traía `<active-response>` de fábrica; **`wazuh-execd` no es unidad systemd** (daemon interno; vuelve en cada reinicio del manager, pero es **inerte**); el algoritmo de clasificación por rango era imposible → **por fichero de origen**; la regla *smoke* `100000` **retirada antes del baseline** por enmascarar RS1.
+- **Verificado antes de la ventana 1:** el *vulnerability-detector* del manager **no puede descargar CVE** (sin NAT) pero **solo produce errores de log, 0 alertas** → se deja intacto y documentado (no contamina el catálogo).
 - **⚠️ Norma anti-enmascaramiento (aprobada 2026-09-23, `rulesets_diseno.md` §9):** Wazuh emite **una alerta por evento**; una regla propia que case el mismo evento (**hija o hermana**) **suprime** la detección base. Prohibido `<if_sid>` sobre base que se quiera conservar; verificación obligatoria con `wazuh-logtest -v`; recuento `RS1∩RS3` declarado; aplica también a RS4 y cadenas multinivel.
 - **🔴 PENDIENTE OBLIGATORIO antes de escribir la primera regla de Fase 3:** construir el **pre-flight** del §9.8 (script que detecta si una regla RS3 con `<if_sid>` cuelga de una base RS1 y **falla** salvo solapamiento declarado). Hoy es **solo un compromiso escrito**: el script **no existe**. Y, si se quiere certeza, **comprobar empíricamente el caso "regla hermana"** (hoy solo está razonado, no demostrado en el laboratorio).
 - **⚠️ Timestamps de Wazuh en UTC** (`+0000`) aunque las VMs estén en Madrid → las ventanas `t0`/`t1` y `extraer_alertas.py` deben trabajar en **UTC**.
 - **⚠️ Detalle del snapshot:** `lab-listo` se tomó **antes** de alinear `/etc/timezone` (la zona efectiva ya era correcta) → ese fichero legacy dice `Etc/UTC` dentro del snapshot; **sin efecto práctico**.
+- **⚠️ Encargo del humano (apagar el PC al acabar la ventana):** **imposible por diseño** — las reglas de permisos prohíben `shutdown`/`Stop-Computer` en todos los agentes. Se apagan **solo las VMs** limpiamente (~06:50) vía `vmrun stop ... soft`. El PC del sobremesa queda encendido.
 - **Pendiente de Fase 1:** presentar el **hito H1** al tutor.
 - **Decisiones humanas fijadas (2026-09-19):**
   - Interpretación **amplia** del filtro inverso (DC de red no elegibles pero no anulan host; T1039).
