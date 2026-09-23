@@ -2,8 +2,8 @@
 fase: 2
 tarea: 2.10 (T-06 · R-08)
 nombre: Baseline legítimo — ventanas 1 y 2 (meta)
-version: 3
-status: en-curso (ventana 2)
+version: 4
+status: completada (ventanas 1 y 2 extraídas y comparadas)
 fecha: 2026-09-23
 fecha_extraccion: 2026-09-23
 autor: tfg-executor
@@ -11,18 +11,22 @@ autor: tfg-executor
 
 # Baseline legítimo — ventanas 1 y 2 (T-06 · R-08)
 
-> Este fichero documenta **las DOS ventanas** del baseline legítimo (T-06 · R-08):
+> Este fichero documenta **las DOS ventanas** del baseline legítimo (T-06 · R-08), ambas
+> **cerradas, extraídas y comparadas** (2026-09-23):
 >
 > - **Ventana 1 (noche) — CERRADA y extraída:** `t0` = **2026-09-23T00:45:00Z**,
->   `t1` = **2026-09-23T04:45:00Z** (240 min). Catálogo
->   `Dataset/Legitimo/ruleids_legitimos.csv` (12 `rule.id`, 0 `UNKNOWN`). Detalle en §1–§11.
-> - **Ventana 2 (tarde) — EN CURSO:** `t0` = **2026-09-23T12:00:01Z** (14:00:01 local),
->   prevista hasta `t1` ≈ **2026-09-23T16:00:01Z** (240 min). Detalle en **§12**.
+>   `t1` = **2026-09-23T04:45:00Z** (240 min). **6.837** alertas, 12 `rule.id`, 0 `UNKNOWN`.
+>   CSV individual: `Dataset/Legitimo/ruleids_legitimos_v1.csv`. Detalle en §1–§11.
+> - **Ventana 2 (tarde) — CERRADA y extraída:** `t0` = **2026-09-23T12:00:01Z** (14:00:01 local),
+>   `t1` = **2026-09-23T16:00:01Z** (18:00:01 local) (240 min). **6.737** alertas, 12 `rule.id`,
+>   0 `UNKNOWN`. CSV individual: `Dataset/Legitimo/ruleids_legitimos_v2.csv`. Detalle en **§12–§13**.
 >
-> El catálogo definitivo de ruido normal será **la unión de las dos ventanas** (fase de
-> agregación posterior). Las dos ventanas usan **el mismo script, sin cambios** y el mismo
-> procedimiento (revert de la víctima a `lab-listo` + scan FIM forzado al inicio) para ser
-> comparables.
+> **Catálogo definitivo (entregable R-08 para la Fase 3):** `Dataset/Legitimo/ruleids_legitimos.csv`
+> = **unión agregada** de las dos ventanas (12 `rule.id`, **13.574** alertas). Ver **§15**.
+> **Comparación v1 vs v2 y veredicto de estabilidad: §14.**
+>
+> Las dos ventanas usan **el mismo script, sin cambios** y el mismo procedimiento (revert de
+> la víctima a `lab-listo` + scan FIM forzado al inicio) para ser comparables.
 
 ## 1. Resumen
 
@@ -139,8 +143,21 @@ RS1 (PAM/sshd/sudo) o RS2 (auditd).
 - **Actividad sintética:** la actividad scripted no reproduce al 100 % el uso humano
   real; se mitiga con actividad natural (systemd, cron, SSH, rootcheck, auditd) y con el
   scan FIM forzado. El baseline **acota** el ruido normal, no lo agota.
+- **Sin usuario humano:** en ninguna de las dos ventanas hay interacción humana real; la
+  actividad es scripted + natural del sistema.
+- **4 h por ventana (2 ventanas):** se cubren dos franjas (noche 00:45–04:45Z y tarde
+  12:00–16:00Z). No cubre fin de semana ni el resto del día; el ciclo diario queda cubierto
+  solo parcialmente.
+- **El catálogo es un SUPERCONJUNTO del ruido esperable durante un ataque:** el script de
+  baseline **no correrá** durante las ejecuciones de la Fase 3, de modo que las reglas que
+  genera (p. ej. `80780`/`80781`/`80782`/`80790` de `lab-legit` y parte de `80792`)
+  **sobrestiman** el ruido normal. El catálogo **acota** el ruido (referencia para filtrar
+  FP), pero una coincidencia con el baseline **no basta** para declarar FP: exige revisión
+  humana en Fase 3.
 - **`rule_description` de reglas genéricas:** reglas como `80792` ("Audit: Command: …")
-  varían su descripción por evento; en el CSV se guarda la del **primer** evento visto.
+  varían su descripción por evento; en los CSV se guarda la del **primer** evento visto
+  (por eso `80791`/`80792`/`80782` muestran textos distintos entre v1 y v2 sin ser reglas
+  distintas).
 - La ventana **no incluye ataques** (eso es Fase 3); este baseline es el catálogo de ruido.
 - `/etc/timezone` dentro del snapshot quedó `Etc/UTC` (cosmético); la zona efectiva es
   `Europe/Madrid` y las marcas UTC de `alerts.json` son las usadas para `t0/t1`.
@@ -220,15 +237,19 @@ Frecuencias completas en el CSV; además aparecen `80730` (4, RS2) y `591` (1, R
   **distinta en cada regla**:
   - `80791` ("Deleted: var/run/."): lo genera **`wazuh-agentd`** reescribiendo su fichero de
     estado cada ~5–6 s.
-  - `80792` (`execve`) de auto-ruido: procede de **hijos de `wazuh-syscheckd`** (cwd
-    `/var/ossec`), **no** de un `execve` de `wazuh-agentd`.
+  - `80792` (`execve`) de auto-ruido: procede de **hijos de `wazuh-syscheckd`** y
+    **`wazuh-logcollector`** (cwd `/var/ossec`), **no** de un `execve` de `wazuh-agentd`.
+    Son **dos raíces**: `wazuh-syscheckd` → hijos `dash` + `ps` (la mayoría) y
+    `wazuh-logcollector` → hijos `dash` + `df`/`last`/`netstat|sed|sort` (coinciden con los
+    *localfiles* de `ossec.conf`).
 
   Las dos primeras reglas del catálogo son, por tanto, **candidatas naturales a FP**.
 
   > **Nota de corrección (2026-09-23):** la redacción anterior de este punto atribuía el
   > segundo foco de auto-ruido (`80792`, `execve`) a `wazuh-agentd`. Era **impreciso**: los
-  > eventos `80792` de auto-ruido provienen de **hijos de `wazuh-syscheckd`** (cwd
-  > `/var/ossec`). Corregido según el pendiente registrado en `state.md`.
+  > eventos `80792` de auto-ruido provienen de **hijos de `wazuh-syscheckd`** y
+  > **`wazuh-logcollector`** (cwd `/var/ossec`), verificado de forma independiente.
+  > Corregido según el pendiente registrado en `state.md`.
 - **Las reglas de autenticación RS1 (`5501`/`5502`/`5715`/`5402`) solo aparecen en los
   primeros ~14 min** (00:45:54–00:58:43Z; sesiones de puesta en marcha). Durante el resto
   de la ventana **no hay** actividad de login/sudo: en reposo, el ruido RS1 es ~0.
@@ -251,18 +272,21 @@ ssh angel@192.168.65.129 'setsid nohup bash /home/angel/baseline_actividad.sh 24
 sudo /var/ossec/bin/agent_control -r -u 001
 ```
 
-## 12. Ventana 2 (tarde) — en curso
+## 12. Ventana 2 (tarde) — cerrada y extraída
 
 > **Es la ventana 2 de 2.** Mismo script y mismo procedimiento que la ventana 1
 > (homogeneidad); solo cambia la **franja horaria** (tarde en vez de noche).
+> **Cerrada:** 48/48 ciclos, `END 2026-09-23T16:00:01Z`.
 
 | Campo | Valor |
 |---|---|
 | Actividad | Legítima y variada, **mismo script** que la ventana 1 (§5) |
 | **t0 (UTC)** | **2026-09-23T12:00:01Z** (`START` en `baseline_log.txt`) |
 | **t0 (local, Europe/Madrid/CEST)** | **2026-09-23 14:00:01** |
-| Duración prevista | **240 min** (4 h) → `t1` ≈ **2026-09-23T16:00:01Z** (18:00:01 local) |
-| Requisito | `t1 − t0 = 240 min ≥ 4 h` (R-08) |
+| Duración real | **240 min** (48/48 ciclos) |
+| **t1 real (UTC)** | **2026-09-23T16:00:01Z** (`END` en `baseline_log.txt`) |
+| **t1 real (local)** | **2026-09-23 18:00:01** |
+| Requisito | `t1 − t0 = 240 min ≥ 4 h` (R-08) ✔ |
 | Víctima | `victima-linux` (192.168.65.129), snapshot **`lab-listo`** (revert 2026-09-23 13:19 CEST) |
 | Manager | `wazuh-server` (192.168.65.128), **no revertido** (conserva las alertas de la ventana 1) |
 | NAT | **desconectado**; solo `VMnet1` activa |
@@ -294,7 +318,9 @@ sudo /var/ossec/bin/agent_control -r -u 001
 - Comando: `sudo /var/ossec/bin/agent_control -r -u 001` (manager).
 - **Hora: 2026-09-23T12:01:05Z** (local 14:01:05) → **t0 + 1:04** (la ventana 1 lo forzó a
   t0 + 1:07). Motivo: el ciclo FIM por defecto es de 12 h (`<frequency>43200</frequency>`).
-- Resultado: *(pendiente de extracción al cerrar la ventana)*.
+- Resultado: **0 alertas FIM/syscheck** en la ventana (víctima limpia; ninguna ruta
+  vigilada por FIM modificada) → **idéntico a la ventana 1** (que también dio 0).
+  Documentado como tal, sin interpretarlo como fallo.
 
 ### 12.4 Homogeneidad con la ventana 1
 
@@ -308,3 +334,192 @@ sudo /var/ossec/bin/agent_control -r -u 001
 | Scan FIM | t0 + 1:07 | **t0 + 1:04** |
 | Franja horaria | 02:45→06:45 local (**noche**) | **14:00→18:00 local (tarde)** |
 | Config Wazuh | sin cambios | **sin cambios** |
+
+---
+
+## 13. Extracción del catálogo (ventana 2) — resultados
+
+- **Script:** `_artefactos/scripts/extraer_alertas.py` (copia en el manager
+  `/home/angel/extraer_alertas.py`, sha256 `33c2ec4f…` = **idéntico** al del repo;
+  reutilizable en Fase 3).
+- **Comando exacto** (ejecutado en `wazuh-server`, como `root` para leer `/var/ossec`;
+  `sudo` interactivo, sin guardar secreto alguno):
+
+  ```bash
+  # en wazuh-server
+  sudo python3 /home/angel/extraer_alertas.py \
+      --desde 2026-09-23T12:00:01Z --hasta 2026-09-23T16:00:01Z \
+      --out /home/angel/ruleids_legitimos_v2.csv
+  ```
+  Salida del script:
+  `alertas leídas=27263 en_ventana=6737 no_json=0 rule_ids=12 unknown=0`.
+- **Artefactos generados:**
+  - `Dataset/Legitimo/ruleids_legitimos_v2.csv` (catálogo de la ventana 2, 12 filas + cabecera).
+  - `Dataset/Legitimo/baseline_log_ventana2.txt` (copia del log de la víctima: 48 ciclos,
+    `START 2026-09-23T12:00:01Z` / `END 2026-09-23T16:00:01Z`).
+
+### 13.1 Resumen cuantitativo (ventana 2)
+
+| Métrica | Valor |
+|---|---|
+| `rule.id` **distintos** | **12** |
+| Alertas totales en la ventana | **6737** |
+| Alertas leídas en `alerts.json` (total histórico) | 27263 (0 JSON inválido) |
+| **Reparto por capa** | **RS1 = 35** alertas (5 `rule.id`) · **RS2 = 6702** alertas (7 `rule.id`) |
+| RS3 / RS4 | 0 alertas (vacías en Fase 2) |
+| `UNKNOWN` (sin resolver a RS) | **0** ✔ |
+
+---
+
+## 14. Comparación v1 vs v2 — estabilidad del ruido
+
+> Comparación **honesta**, sin maquillar. Todos los `count` provienen de las dos
+> extracciones (`ruleids_legitimos_v1.csv` / `_v2.csv`) y del análisis directo de
+> `alerts.json` en el manager.
+
+### 14.1 Tipos de alerta (`rule.id`)
+
+| Conjunto | `rule.id` |
+|---|---|
+| **En AMBAS ventanas (12/12)** | 591, 5402, 5501, 5502, 5715, 80730, 80780, 80781, 80782, 80790, 80791, 80792 |
+| **Solo en v1** | *(ninguno)* |
+| **Solo en v2** | *(ninguno)* |
+
+Los **12 `rule.id` son exactamente los mismos** en las dos ventanas: **no aparece ni
+desaparece ninguna regla**.
+
+### 14.2 Frecuencia por regla
+
+| `rule_id` | RS | count v1 | count v2 | Δ (v2−v1) | Δ % |
+|---|---|---|---|---|---|
+| 591 | RS1 | 1 | 1 | 0 | 0,0 % |
+| 5402 | RS1 | 4 | 2 | −2 | −50,0 % |
+| 5501 | RS1 | 17 | 13 | −4 | −23,5 % |
+| 5502 | RS1 | 15 | 12 | −3 | −20,0 % |
+| 5715 | RS1 | 9 | 7 | −2 | −22,2 % |
+| 80730 | RS2 | 4 | 4 | 0 | 0,0 % |
+| 80780 | RS2 | 95 | 102 | +7 | +7,4 % |
+| 80781 | RS2 | 419 | 412 | −7 | −1,7 % |
+| 80782 | RS2 | 109 | 107 | −2 | −1,8 % |
+| 80790 | RS2 | 106 | 105 | −1 | −0,9 % |
+| 80791 | RS2 | 3239 | 3242 | +3 | +0,1 % |
+| 80792 | RS2 | 2819 | 2730 | −89 | −3,2 % |
+| **Total** | | **6837** | **6737** | **−100** | **−1,5 %** |
+
+### 14.3 Ritmo
+
+| Métrica | v1 | v2 |
+|---|---|---|
+| Alertas totales (240 min) | 6837 | 6737 |
+| Media bruta (total/240) | 28,49/min | 28,07/min |
+| **Ritmo en reposo** (sin el arranque) | **~24–25/min** | **~24–25/min** |
+| Exceso del pico de arranque sobre el reposo | ~939 (minuto 00) | ~907 (minuto 12) |
+
+Desglose horario normalizado (alertas/min; horas parciales indicadas):
+
+| Ventana | Reparto |
+|---|---|
+| **v1** | 00:45–00:59 → **86,6/min** (arranque) · 01 → 24,2 · 02 → 25,2 · 03 → 24,3 · 04:00–04:45 → 25,0 |
+| **v2** | 12 → **39,1/min** (incluye arranque) · 13 → 24,3 · 14 → 24,3 · 15 → 24,6 |
+
+En **régimen** (fuera del arranque), las dos ventanas van a **~24–25 alertas/min**,
+indistinguibles entre sí.
+
+### 14.4 Reparto por capa (RS1/RS2/RS3/RS4)
+
+| RS | v1 (alertas / `rule.id`) | v2 (alertas / `rule.id`) |
+|---|---|---|
+| **RS1** | 46 / 5 | 35 / 5 |
+| **RS2** | 6791 / 7 | 6702 / 7 |
+| **RS3** | 0 | 0 |
+| **RS4** | 0 | 0 |
+
+RS2 domina en ambas (~99,3 % en v1 y ~99,5 % en v2 del total). La diferencia de RS1
+(46 → 35) son las **sesiones SSH/sudo de puesta en marcha**, presentes **solo en los
+primeros ~11–14 min** de cada ventana; **no** es ruido de régimen.
+
+### 14.5 El auto-ruido — patrón y ritmo (verificado por `audit.exe`/`audit.cwd`)
+
+| Regla | Fuente (atribución) | v1 | v2 |
+|---|---|---|---|
+| **80791** | `wazuh-agentd` reescribiendo `var/run/` cada ~5 s | **2878** de 3239 (**88,9 %**) | **2876** de 3242 (**88,7 %**) |
+| **80792** | hijos de `wazuh-syscheckd` y `wazuh-logcollector` (`cwd=/var/ossec`, `execve`) | **807** de 2819 (28,6 %) | **806** de 2730 (29,5 %) |
+
+El patrón **se repite de forma casi idéntica**:
+- `80791`/`wazuh-agentd`: **2878 vs 2876** (Δ = −2) → **~12/min** en ambas ventanas.
+- `80792` con `cwd=/var/ossec` (auto-ruido de syscheckd/logcollector): **807 vs 806** (Δ = −1) →
+  **~3,4/min** en ambas.
+
+**Dos cifras distintas que NO deben confundirse:**
+
+- **Cuota de las dos reglas dominantes:** `80791+80792` suman **6058** alertas = **88,6 %**
+  del total en v1 y **5972** = **88,6 %** en v2. Es la **cuota de esas dos `rule.id` sobre el
+  total**, e incluye **todo** su tráfico (auto-ruido **y** actividad del script de baseline),
+  **no** solo auto-ruido.
+- **Auto-ruido real:** solo los eventos cuyo `exe`/`cwd` es del propio Wazuh
+  (`80791`/`wazuh-agentd` **2878** + `80792`/`cwd=/var/ossec` **807** ≈ **3685** alertas) =
+  **~54 %** del total en v1 (coherente con `state.md`). **Ésta es la cifra válida como base
+  de filtrado de FP**, no el 88,6 %.
+
+> **Nota de corrección (2026-09-23):** la redacción anterior etiquetaba el **88,6 %** como
+> "auto-ruido". Era **engañoso**: el 88,6 % es la cuota de las dos reglas dominantes sobre el
+> total; el **auto-ruido real** (solo eventos originados por el propio Wazuh) es **~54 %**.
+> Se distingue aquí para que la Fase 3 **no use el 88,6 %** como base para filtrar FP.
+
+### 14.6 Veredicto sobre la estabilidad
+
+**El ruido legítimo es ESTABLE entre las dos ventanas.** Evidencia:
+
+1. **Mismo catálogo:** 12/12 `rule.id` idénticos; ninguna regla exclusiva de una ventana.
+2. **Mismo reparto por capa:** RS1 = 5 reglas, RS2 = 7 reglas; RS3/RS4 vacías.
+3. **Mismo ritmo de régimen:** ~24–25 alertas/min en ambas (total −1,5 %).
+4. **Mismo auto-ruido dominante:** `80791`/`wazuh-agentd` 2878 vs 2876 y
+   `80792`/`syscheckd`+`logcollector` 807 vs 806 (Δ ≤ 2).
+
+**Divergencias detectadas (declaradas, sin maquillar):**
+
+- **RS1 de autenticación** (`5402`, `5501`, `5502`, `5715`): 46 → 35 alertas (−24 % en
+  conjunto). **Causa:** dependen del **número de sesiones SSH/sudo de puesta en marcha**, no
+  del régimen; en **ambas** ventanas ocurren **solo en los primeros ~11–14 min** y luego
+  **cesan** (en reposo, el ruido RS1 es ~0). Diferencia **absoluta pequeña** (11 alertas).
+- **`80792`** (la regla más variable): −89 alertas (**−3,2 %**). Mezcla `execve` del **script
+  de baseline**, de **systemd** y del **auto-ruido de syscheckd/logcollector**; es
+  intrínsecamente la más fluctuante, pero se mantiene **< 3,5 %**.
+- **`80780`**: +7 (**+7,4 %**) — la mayor variación **relativa**, pero **absoluta mínima**
+  (7 alertas).
+- **Descripciones de reglas genéricas** (`80782`, `80791`, `80792`): cambian porque el CSV
+  guarda la descripción del **primer** evento, y ésta varía por evento (p. ej. `80791`:
+  `…lab-legit/work/.` en v1 vs `…/run/user/1000/systemd/units/.` en v2). Es un **artefacto
+  de documentación**, no una divergencia de reglas.
+- **Mantenimiento diario:** la v1 incluyó el `cron.daily` (~04:25Z) y la v2 no; **no** produjo
+  pico distintivo ni `rule.id` nuevos (confirmado: la hora 04 de v1 va a 25,0/min, igual que
+  el reposo). Sin efecto en el catálogo.
+
+**Conclusión:** no hay divergencias **estructurales**. Las diferencias son de **ritmo fino**
+(≤ 3,5 % por regla; −1,5 % en el total) y de **actividad de puesta en marcha**, no del ruido
+de fondo. El catálogo puede considerarse **representativo y reproducible** en franjas
+horarias distintas.
+
+> **Nota metodológica (alcance real de "estable").** La comparación v1 vs v2 se hizo entre
+> **dos ejecuciones del mismo script determinista sobre el mismo snapshot**, de modo que la
+> **estabilidad observada era lo esperable**. Su **validez externa es limitada**: no cubre
+> **variabilidad humana** ni otras franjas horarias/semanales. Aquí "reproducible" significa
+> *determinismo del script y homogeneidad del procedimiento*, **no** que el catálogo cubra
+> toda la variabilidad del uso real. Para Fase 3, tratar el catálogo como **referencia de
+> ruido acotada**, no como inventario exhaustivo del ruido legítimo posible.
+
+---
+
+## 15. Catálogo agregado (entregable R-08) y cierre de la tarea 2.10
+
+- **Entregable R-08 para la Fase 3:** `Dataset/Legitimo/ruleids_legitimos.csv` = **unión
+  agregada** de las dos ventanas. Columnas:
+  `rule_id,rule_level,rule_description,groups,rs_origen,count_v1,count_v2,count_total,ventanas`
+  (`ventanas` ∈ {`v1`, `v2`, `v1+v2`}; en este caso las **12 filas son `v1+v2`**). El fichero
+  lleva una línea `#` de cabecera que describe qué es.
+- **CSV individuales (trazabilidad):** `Dataset/Legitimo/ruleids_legitimos_v1.csv` y
+  `Dataset/Legitimo/ruleids_legitimos_v2.csv`.
+- **Totales del catálogo:** **12 `rule.id`**, **13.574 alertas** (6.837 + 6.737), **0 `UNKNOWN`**.
+- **Tarea 2.10: COMPLETADA.** Dos ventanas de 4 h en franjas distintas (noche + tarde), mismo
+  script y mismo procedimiento, extraídas y comparadas; **estabilidad verificada (§14)**.
+
