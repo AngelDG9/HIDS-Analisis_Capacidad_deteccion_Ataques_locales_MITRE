@@ -2,16 +2,21 @@
 fase: 2
 tarea: 2.10 (T-06 · R-08)
 nombre: Baseline legítimo — Ventana 1 (meta)
-version: 1
-status: en_curso
+version: 2
+status: completado
 fecha: 2026-09-23
+fecha_extraccion: 2026-09-23
 autor: tfg-executor
 ---
 
 # Baseline legítimo — Ventana 1 (T-06 · R-08)
 
-> Estado: **ventana EN CURSO** al redactar este documento. `t1` aún no ha ocurrido;
-> la extracción de `ruleids_legitimos.csv` se hace **al terminar** (ver §10).
+> Estado: **ventana CERRADA y extraída**. `t1` = **2026-09-23T04:45:00Z**; catálogo
+> `Dataset/Legitimo/ruleids_legitimos.csv` generado (12 `rule.id`, 0 `UNKNOWN`).
+>
+> **Es la ventana 1 de 2.** La **2ª ventana** está prevista hoy **14:00→18:00 local**
+> (Europe/Madrid; ≈**12:00→16:00Z**), también ~4 h. El catálogo definitivo de ruido
+> normal será **la unión de las dos ventanas** (fase de agregación posterior).
 
 ## 1. Resumen
 
@@ -21,8 +26,10 @@ autor: tfg-executor
 | **t0 (UTC)** | **2026-09-23T00:45:00Z** |
 | **t0 (local, Europe/Madrid/CEST)** | **2026-09-23 02:45:00** |
 | Duración prevista | **240 min** (4 h) |
-| t1 previsto (UTC) | 2026-09-23T04:45:00Z (local 06:45:00) |
-| Requisito | `t1 − t0 ≥ 4 h` (R-08) |
+| **t1 real (UTC)** | **2026-09-23T04:45:00Z** (`END` en `baseline_log.txt`) |
+| **t1 real (local)** | **2026-09-23 06:45:00** |
+| **Duración real** | **240 min** (48/48 ciclos, 1 fallo de ciclo = 0) |
+| Requisito | `t1 − t0 = 240 min ≥ 4 h` (R-08) ✔ |
 | Víctima | `victima-linux` (192.168.65.129), snapshot `lab-listo` |
 | Manager | `wazuh-server` (192.168.65.128), **no revertido** (conserva las alertas) |
 | NAT | **desconectado** (`ens37` DOWN); solo `VMnet1` activa |
@@ -112,7 +119,7 @@ Script: `Soporte/Wazuh/Scripts/baseline_actividad.sh` (desplegado en
 | **Ritmo en reposo** | **~12/min** |
 | Picos cortos | 572 (00:46, FIM + arranque de ciclos), 62/100 (00:50/00:51), 53 (00:55) |
 | ¿Sostenido > 500/min? | **No** (los picos caen al minuto siguiente a ~12/min) |
-| `rule.id` distintos | 10 |
+| `rule.id` distintos | 10 (parcial; **total de la ventana = 12**, ver §10.1) |
 | Agentes | `victima-linux` 1005, `wazuh-server` 15 |
 | Top reglas | 80792 (execve, 783), 80791 (delete var/run, 170), 80781/80790 (lab-legit), 5501/5502 (PAM), 5715 (sshd), 5402 (sudo) |
 | Disco manager `/` | 48 G total, 21 G usados, **25 G libres** (46 %), estable |
@@ -132,18 +139,85 @@ RS1 (PAM/sshd/sudo) o RS2 (auditd).
 - `/etc/timezone` dentro del snapshot quedó `Etc/UTC` (cosmético); la zona efectiva es
   `Europe/Madrid` y las marcas UTC de `alerts.json` son las usadas para `t0/t1`.
 
-## 10. Pendiente al cerrar la ventana (t1)
+## 10. Extracción del catálogo (ventana 1) — resultados
 
-1. Confirmar `END <UTC>` en `/home/angel/lab-legit/baseline_log.txt` y verificar `t1 − t0 ≥ 4 h`.
-2. Extraer el CSV (mismo script reutilizable en Fase 3):
-   ```bash
-   # en el manager (root para leer /var/ossec)
-   sudo python3 extraer_alertas.py \
-       --desde 2026-09-23T00:45:00Z --hasta <t1_UTC> \
-       --out ruleids_legitimos.csv
-   ```
-3. Copiar el CSV a `Dataset/Legitimo/ruleids_legitimos.csv` y actualizar este documento
-   (estado → `completado`, `t1` real, nº de `rule.id`, `UNKNOWN`).
+- **Script:** `_artefactos/scripts/extraer_alertas.py` (copia en el manager
+  `/home/angel/extraer_alertas.py`; reutilizable en Fase 3).
+- **Comando exacto de extracción** (ejecutado en `wazuh-server`, como `root` para poder
+  leer `/var/ossec`; el parámetro `sudo` es interactivo y **no** se guarda en ningún fichero):
+
+  ```bash
+  # en wazuh-server
+  sudo python3 /home/angel/extraer_alertas.py \
+      --desde 2026-09-23T00:45:00Z --hasta 2026-09-23T04:45:00Z \
+      --out /home/angel/ruleids_legitimos.csv
+  ```
+  Salida del script:
+  `alertas leídas=14413 en_ventana=6837 no_json=0 rule_ids=12 unknown=0`.
+- **Artefactos generados:**
+  - `Dataset/Legitimo/ruleids_legitimos.csv` (catálogo, 12 filas + cabecera).
+  - `Dataset/Legitimo/baseline_log_ventana1.txt` (copia del log de la víctima: 48 ciclos,
+    `START 00:45:00Z` / `END 04:45:00Z`).
+
+### 10.1 Resumen cuantitativo (ventana 1)
+
+| Métrica | Valor |
+|---|---|
+| `rule.id` **distintos** (tamaño del catálogo) | **12** |
+| Alertas totales en la ventana | **6837** |
+| Alertas leídas en `alerts.json` (total histórico) | 14413 (0 JSON inválido) |
+| **Reparto por capa** | **RS1 = 46** alertas (5 `rule.id`) · **RS2 = 6791** alertas (7 `rule.id`) |
+| RS3 / RS4 | 0 alertas (vacías en Fase 2) |
+| `UNKNOWN` (sin resolver a RS) | **0** ✔ |
+
+### 10.2 Top-10 reglas por frecuencia (ventana 1)
+
+| # | `rule_id` | `count` | RS | Descripción (primer evento) |
+|---|---|---|---|---|
+| 1 | 80791 | 3239 | RS2 | Audit: Deleted: /home/angel/lab-legit/work/. |
+| 2 | 80792 | 2819 | RS2 | Audit: Command: /usr/bin/bash. |
+| 3 | 80781 | 419 | RS2 | Audit: Watch - Write access: /home/angel/lab-legit/work/doc_1.txt. |
+| 4 | 80782 | 109 | RS2 | Audit: Watch - Write access: /home/angel/lab-legit. |
+| 5 | 80790 | 106 | RS2 | Audit: Created: /home/angel/lab-legit/baseline_log.txt. |
+| 6 | 80780 | 95 | RS2 | Audit: Watch - Write access. |
+| 7 | 5501 | 17 | RS1 | PAM: Login session opened. |
+| 8 | 5502 | 15 | RS1 | PAM: Login session closed. |
+| 9 | 5715 | 9 | RS1 | sshd: authentication success. |
+| 10 | 5402 | 4 | RS1 | Successful sudo to ROOT executed. |
+
+Frecuencias completas en el CSV; además aparecen `80730` (4, RS2) y `591` (1, RS1).
+
+### 10.3 Patrones temporales observados
+
+- **Arranque (00:45–00:58Z):** mayor pico de la ventana. `00:46` = **572** alertas
+  (arranque del ciclo + scan FIM forzado 00:46:07Z), `00:58` = **247** (cierre de las
+  sesiones SSH de puesta en marcha). Tras ello, **ritmo de reposo ≈ 12/min**.
+- **Ciclo scripted cada 5 min:** firma estable de ~67 alertas en los minutos de ciclo
+  (`80792`/`80791`/`8078x`), con `apt list --installed` (→ `dpkg`/`apt` en `80792`) y
+  `journalctl`.
+- **Mantenimiento diario 06:25 local (04:25:02Z):** **SÍ se ve**, pero es **pequeño**.
+  Lo dispara `/etc/crontab` (`25 6 * * * root ... run-parts /etc/cron.daily`):
+  `run-parts` → `apport`, `apt-compat`, `logrotate` (cada uno **1×** `80792`, execve).
+  El minuto `04:25` suma **69** alertas frente a **67** de un ciclo normal (`04:20`):
+  el mantenimiento **no produce un pico distintivo** ni introduce **ningún `rule.id` nuevo**.
+- **`man-db.timer` (02:32:54Z ≈ 04:32 local):** `man-db.service` regenera la base de `man`
+  → ráfaga de **28** eventos audit (`80791` ×26, `80792` ×1, `80780` ×1). Ruido puntual,
+  **sin `rule.id` nuevos**.
+- **Ráfaga horaria a las `HH:08` (~100–110 alertas/h):** `apparmor_parser`,
+  `wazuh-modulesd`, `wazuh-agentd`, `systemd-detect-virt`, udev/snapd + **1×**
+  `80730` (SELinux permission check). Es el patrón recurrente más marcado aparte del ciclo.
+
+### 10.4 Observaciones para la Fase 3 (filtrado de FP)
+
+- **El ruido dominante es auto-ruido del HIDS:** `80791`/`80792` los generan en gran parte
+  el propio `wazuh-agentd` (reescritura de su fichero de estado cada ~6 s → "Deleted:
+  var/run/."; su `execve`) y el script de baseline, **no** actividad humana. Las dos
+  primeras reglas del catálogo son, por tanto, **candidatas naturales a FP**.
+- **Las reglas de autenticación RS1 (`5501`/`5502`/`5715`/`5402`) solo aparecen en los
+  primeros ~14 min** (00:45:54–00:58:43Z; sesiones de puesta en marcha). Durante el resto
+  de la ventana **no hay** actividad de login/sudo: en reposo, el ruido RS1 es ~0.
+- Esta ventana **no incluye ataques** (Fase 3) y **acota** el ruido normal; el catálogo
+  definitivo se consolidará con la ventana 2.
 
 ## 11. Reproducción
 

@@ -1,0 +1,13 @@
+rule_id,rule_level,rule_description,groups,count,first_seen,last_seen,rs_origen
+591,3,Log file rotated.,ossec,1,2026-09-23T01:41:58Z,2026-09-23T01:41:58Z,RS1
+5402,3,Successful sudo to ROOT executed.,syslog|sudo,4,2026-09-23T00:46:09Z,2026-09-23T00:58:11Z,RS1
+5501,3,PAM: Login session opened.,pam|syslog|authentication_success,17,2026-09-23T00:45:54Z,2026-09-23T00:58:43Z,RS1
+5502,3,PAM: Login session closed.,pam|syslog,15,2026-09-23T00:45:54Z,2026-09-23T00:58:43Z,RS1
+5715,3,sshd: authentication success.,syslog|sshd|authentication_success,9,2026-09-23T00:45:54Z,2026-09-23T00:58:43Z,RS1
+80730,3,Auditd: SELinux permission check.,audit|audit_selinux,4,2026-09-23T01:08:09Z,2026-09-23T04:08:42Z,RS2
+80780,3,Audit: Watch - Write access.,audit|audit_watch_write,95,2026-09-23T00:45:02Z,2026-09-23T04:40:12Z,RS2
+80781,3,Audit: Watch - Write access: /home/angel/lab-legit/work/doc_1.txt.,audit|audit_watch_write,419,2026-09-23T00:45:00Z,2026-09-23T04:40:12Z,RS2
+80782,3,Audit: Watch - Write access: /home/angel/lab-legit.,audit|audit_watch_write,109,2026-09-23T00:50:00Z,2026-09-23T04:40:12Z,RS2
+80790,3,Audit: Created: /home/angel/lab-legit/baseline_log.txt.,audit|audit_watch_create|audit_watch_write,106,2026-09-23T00:45:00Z,2026-09-23T04:40:12Z,RS2
+80791,3,Audit: Deleted: /home/angel/lab-legit/work/.,audit|audit_watch_delete|audit_watch_write,3239,2026-09-23T00:45:00Z,2026-09-23T04:44:58Z,RS2
+80792,3,Audit: Command: /usr/bin/bash.,audit|audit_command,2819,2026-09-23T00:45:00Z,2026-09-23T04:44:10Z,RS2
