@@ -1,22 +1,28 @@
 ---
 fase: 2
 tarea: 2.10 (T-06 · R-08)
-nombre: Baseline legítimo — Ventana 1 (meta)
-version: 2
-status: completado
+nombre: Baseline legítimo — ventanas 1 y 2 (meta)
+version: 3
+status: en-curso (ventana 2)
 fecha: 2026-09-23
 fecha_extraccion: 2026-09-23
 autor: tfg-executor
 ---
 
-# Baseline legítimo — Ventana 1 (T-06 · R-08)
+# Baseline legítimo — ventanas 1 y 2 (T-06 · R-08)
 
-> Estado: **ventana CERRADA y extraída**. `t1` = **2026-09-23T04:45:00Z**; catálogo
-> `Dataset/Legitimo/ruleids_legitimos.csv` generado (12 `rule.id`, 0 `UNKNOWN`).
+> Este fichero documenta **las DOS ventanas** del baseline legítimo (T-06 · R-08):
 >
-> **Es la ventana 1 de 2.** La **2ª ventana** está prevista hoy **14:00→18:00 local**
-> (Europe/Madrid; ≈**12:00→16:00Z**), también ~4 h. El catálogo definitivo de ruido
-> normal será **la unión de las dos ventanas** (fase de agregación posterior).
+> - **Ventana 1 (noche) — CERRADA y extraída:** `t0` = **2026-09-23T00:45:00Z**,
+>   `t1` = **2026-09-23T04:45:00Z** (240 min). Catálogo
+>   `Dataset/Legitimo/ruleids_legitimos.csv` (12 `rule.id`, 0 `UNKNOWN`). Detalle en §1–§11.
+> - **Ventana 2 (tarde) — EN CURSO:** `t0` = **2026-09-23T12:00:01Z** (14:00:01 local),
+>   prevista hasta `t1` ≈ **2026-09-23T16:00:01Z** (240 min). Detalle en **§12**.
+>
+> El catálogo definitivo de ruido normal será **la unión de las dos ventanas** (fase de
+> agregación posterior). Las dos ventanas usan **el mismo script, sin cambios** y el mismo
+> procedimiento (revert de la víctima a `lab-listo` + scan FIM forzado al inicio) para ser
+> comparables.
 
 ## 1. Resumen
 
@@ -210,9 +216,19 @@ Frecuencias completas en el CSV; además aparecen `80730` (4, RS2) y `591` (1, R
 ### 10.4 Observaciones para la Fase 3 (filtrado de FP)
 
 - **El ruido dominante es auto-ruido del HIDS:** `80791`/`80792` los generan en gran parte
-  el propio `wazuh-agentd` (reescritura de su fichero de estado cada ~6 s → "Deleted:
-  var/run/."; su `execve`) y el script de baseline, **no** actividad humana. Las dos
-  primeras reglas del catálogo son, por tanto, **candidatas naturales a FP**.
+  el propio HIDS y el script de baseline, **no** actividad humana. La atribución es
+  **distinta en cada regla**:
+  - `80791` ("Deleted: var/run/."): lo genera **`wazuh-agentd`** reescribiendo su fichero de
+    estado cada ~5–6 s.
+  - `80792` (`execve`) de auto-ruido: procede de **hijos de `wazuh-syscheckd`** (cwd
+    `/var/ossec`), **no** de un `execve` de `wazuh-agentd`.
+
+  Las dos primeras reglas del catálogo son, por tanto, **candidatas naturales a FP**.
+
+  > **Nota de corrección (2026-09-23):** la redacción anterior de este punto atribuía el
+  > segundo foco de auto-ruido (`80792`, `execve`) a `wazuh-agentd`. Era **impreciso**: los
+  > eventos `80792` de auto-ruido provienen de **hijos de `wazuh-syscheckd`** (cwd
+  > `/var/ossec`). Corregido según el pendiente registrado en `state.md`.
 - **Las reglas de autenticación RS1 (`5501`/`5502`/`5715`/`5402`) solo aparecen en los
   primeros ~14 min** (00:45:54–00:58:43Z; sesiones de puesta en marcha). Durante el resto
   de la ventana **no hay** actividad de login/sudo: en reposo, el ruido RS1 es ~0.
@@ -234,3 +250,61 @@ ssh angel@192.168.65.129 'setsid nohup bash /home/angel/baseline_actividad.sh 24
 # Scan FIM forzado (en el manager)
 sudo /var/ossec/bin/agent_control -r -u 001
 ```
+
+## 12. Ventana 2 (tarde) — en curso
+
+> **Es la ventana 2 de 2.** Mismo script y mismo procedimiento que la ventana 1
+> (homogeneidad); solo cambia la **franja horaria** (tarde en vez de noche).
+
+| Campo | Valor |
+|---|---|
+| Actividad | Legítima y variada, **mismo script** que la ventana 1 (§5) |
+| **t0 (UTC)** | **2026-09-23T12:00:01Z** (`START` en `baseline_log.txt`) |
+| **t0 (local, Europe/Madrid/CEST)** | **2026-09-23 14:00:01** |
+| Duración prevista | **240 min** (4 h) → `t1` ≈ **2026-09-23T16:00:01Z** (18:00:01 local) |
+| Requisito | `t1 − t0 = 240 min ≥ 4 h` (R-08) |
+| Víctima | `victima-linux` (192.168.65.129), snapshot **`lab-listo`** (revert 2026-09-23 13:19 CEST) |
+| Manager | `wazuh-server` (192.168.65.128), **no revertido** (conserva las alertas de la ventana 1) |
+| NAT | **desconectado**; solo `VMnet1` activa |
+| Ataques | ninguno |
+
+### 12.1 Comprobaciones previas a `t0` (idénticas a la ventana 1)
+
+- Ping cruzado 128↔129: **OK** (0 % pérdida).
+- Servicios manager: `wazuh-manager` / `wazuh-indexer` / `wazuh-dashboard` = **active**.
+- Agente `victima-linux` (ID **001**) en el manager: **Active**.
+- **Telemetría verificada antes de `t0`:** un `sudo id` en la víctima (11:18 UTC) generó
+  alertas nuevas (PAM/sudo) → el pipeline agente→manager funciona.
+- `/home/angel/lab-legit/` (víctima): **vacío** tras el revert → **mismo punto de partida**
+  que la ventana 1.
+- Reloj víctima: **`Europe/Madrid` (CEST, +0200), `synchronized: yes`**. El revert vuelve a
+  dejar `/etc/timezone` en `Etc/UTC` (cosmético; ver §2), sin efecto en `t0/t1` (UTC).
+
+### 12.2 Script y lanzamiento
+
+- **Mismo fichero, sin cambios:** `Soporte/Wazuh/Scripts/baseline_actividad.sh`
+  (sha256 `44f5845f610a28b95482350f48b95469038c017cf073e0f56222c530e184542d`, idéntico en
+  repo y víctima).
+- Lanzamiento con `nohup` (sobrevive a la desconexión SSH):
+  `setsid nohup bash /home/angel/baseline_actividad.sh 240`.
+- Log de la ventana: `/home/angel/lab-legit/baseline_log.txt` (timestamps UTC).
+
+### 12.3 Scan FIM forzado (dentro de la ventana)
+
+- Comando: `sudo /var/ossec/bin/agent_control -r -u 001` (manager).
+- **Hora: 2026-09-23T12:01:05Z** (local 14:01:05) → **t0 + 1:04** (la ventana 1 lo forzó a
+  t0 + 1:07). Motivo: el ciclo FIM por defecto es de 12 h (`<frequency>43200</frequency>`).
+- Resultado: *(pendiente de extracción al cerrar la ventana)*.
+
+### 12.4 Homogeneidad con la ventana 1
+
+| Aspecto | Ventana 1 | Ventana 2 |
+|---|---|---|
+| Script | `baseline_actividad.sh` (sha256 `44f5845f…`) | **idéntico** |
+| Duración | 240 min | **240 min** |
+| Ciclo | ~5 min | **~5 min** |
+| Snapshot víctima | `lab-listo` | **`lab-listo`** |
+| Manager revertido | No | **No** |
+| Scan FIM | t0 + 1:07 | **t0 + 1:04** |
+| Franja horaria | 02:45→06:45 local (**noche**) | **14:00→18:00 local (tarde)** |
+| Config Wazuh | sin cambios | **sin cambios** |
