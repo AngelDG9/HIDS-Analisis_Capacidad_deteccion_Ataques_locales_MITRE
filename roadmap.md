@@ -11,7 +11,7 @@
 ```
 Fase 0 — Arranque del proyecto                         [~2 días]   ✔ hecho
 Fase 1 — Corpus MITRE (F-01)                           [~1 semana]   ✔ hecho
-Fase 2 — Laboratorio Wazuh (F-02)                      [~1 semana]
+Fase 2 — Laboratorio Wazuh (F-02)                      [~1 semana]   ✔ hecho
 Fase 3 — Ataques y detección (F-03)                    [~2 semanas mes 1, escalable mes 2]
 Fase 4 — Robustez y rendimiento (η)                    [~1 semana]
 Fase 5 — Memoria y anexos (F-04)                       [~2-3 semanas]
@@ -74,6 +74,12 @@ corpus de 12-15 priorizado R/E/S.
 
 **DoD:** Wazuh con agentes activos, detección-only, baseline grabado y acceso remoto
 verificado desde el portátil.
+**✔ Cumplido (2026-09-23):** Wazuh **4.14.7** all-in-one + agente `victima-linux` **`active`**;
+**detección-only** y **4 capas** con `active_ruleset.txt` **sin colisiones** (RS3 y RS4 vacías en
+Fase 2, declarado); **baseline de 2 ventanas × 4 h** (12 `rule.id`, 13.574 alertas, 0 UNKNOWN,
+ruido **estable**); **NAT desconectado** y snapshot **`lab-listo`** en ambas VMs; acceso y `vmrun`
+documentados. Verificación **PASA**; detalle en **`change-doc-fase2.md`**.
+**Pendiente:** presentar el **hito H2** al tutor (`push` a cargo del humano).
 
 ---
 

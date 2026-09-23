@@ -7,11 +7,12 @@
 
 ## Estado actual
 
-- **Fase:** 2 — Laboratorio Wazuh (F-02), plan **v2 aprobado**. Tareas **2.3 a 2.10 hechas** y **verificadas (PASA)**.
-- **Paso:** **✅ BASELINE COMPLETADO** — 2 ventanas de 4 h (noche + tarde). **Catálogo agregado: 12 `rule.id`, 13.574 alertas, 0 UNKNOWN.** v1 = 6.837 · v2 = 6.737 (−1,5%) · **los 12 `rule.id` son los MISMOS en ambas** y el ritmo de régimen coincide (~24–25/min) → **ruido ESTABLE**.
+- **Fase:** 2 — Laboratorio Wazuh (F-02) **CERRADA ✔ (2026-09-23)**. Verificación del `tfg-tester`: **PASA**. Detalle en **`change-doc-fase2.md`**. Roadmap actualizado.
+- **Paso:** **laboratorio Wazuh operativo y baseline grabado.** Wazuh **4.14.7** (manager/indexer/dashboard `active`; agente 001 `victima-linux` `active`); **detección-only**; **4 capas** con `active_ruleset.txt` **sin colisiones** (RS3 y RS4 **vacías** en Fase 2, declarado); **NAT desconectado**; snapshot **`lab-listo`** en ambas VMs; **baseline de 2 ventanas × 4 h** → catálogo agregado **12 `rule.id`, 13.574 alertas, 0 UNKNOWN, ruido ESTABLE** (v1 6.837 / v2 6.737). Acceso y `vmrun` documentados (`ssh_setup.md`, `vmrun_config.md`).
 - **Hallazgo principal:** **~54% del ruido es auto-ruido del propio HIDS** — `80791` de **`wazuh-agentd`** reescribiendo su estado cada ~5 s (≈2.877 alertas por ventana) + `80792` de hijos de **`wazuh-syscheckd`** y **`wazuh-logcollector`** (cwd `/var/ossec`, ≈806). **Es la cifra válida como base de filtrado de FP** (el 88,6% es solo la cuota de esas dos reglas, **no** auto-ruido).
-- **Siguiente acción:** **2.11/2.12 — cierre de fase**: documentar SSH/`vmrun` (T-08 cierre), `tfg-tester`, `change-doc.md`, actualizar `roadmap.md` y preparar el **hito H2** para el tutor.
-- **⚠️ Antes de Fase 3 (no olvidar):** construir el **pre-flight anti-enmascaramiento** (§9.8) — sigue siendo **solo un compromiso escrito**.
+- **Siguiente acción:** 1) **presentar al tutor los hitos H1 (Fase 1, aún pendiente) y H2 (Fase 2)**; 2) arrancar la **Fase 3 (ataques)**: `plan.md` de Fase 3 → **gate humano** → piloto con 2-3 técnicas R/E/S.
+- **🔴 ANTES de la primera regla RS3 de Fase 3:** construir el **pre-flight anti-enmascaramiento** (§9.8) — hoy es **solo un compromiso escrito**; el script **no existe**. Y, si se quiere certeza, **comprobar empíricamente el caso "regla hermana"** (hoy razonado, no demostrado).
+- **Deuda menor:** la autenticación por **clave** en el nivel 1 (portátil→sobremesa) **no está habilitada** (`administrators_authorized_keys` no existe) → hoy funciona **por contraseña**, y así está declarado en `ssh_setup.md`.
 - **Limitaciones declaradas del baseline:** actividad **sintética** (servidor sin usuario humano); 2×4 h (no cubre ciclos semanales/mensuales); el catálogo es un **superconjunto** del ruido esperable durante un ataque (el script no correrá en Fase 3) → usarlo como **referencia acotada**, no como oráculo de FP; y la comparación v1/v2 mide **determinismo del procedimiento**, no variabilidad humana.
 - **Decisión humana (2026-09-23):** baseline en **DOS ventanas de 4 h en horas distintas** (noche + tarde) para cubrir mejor el ciclo diario y poder medir la **estabilidad del ruido**. La 1ª incluye el mantenimiento diario (~06:25); la 2ª no.
 - **G1/G2 fijados:** **Wazuh 4.14.7** (heap del indexer 1 GB); RuleSets aprobados con **RS4 vacía** (en Fase 3 se probarán reglas externas **curadas**, con `lab-listo` como red de seguridad).
@@ -97,3 +98,9 @@
   unidad systemd; el algoritmo de clasificación por rango era **imposible** → **por fichero de origen**;
   y **la regla *smoke* `100000` enmascaraba `5710`** → **retirada antes del baseline** y norma
   **anti-enmascaramiento** escrita (`rulesets_diseno.md` §9). Erratas registradas en `plan.md` §12.
+- **Sesión 8:** **baseline completo y Fase 2 CERRADA.** Baseline en **2 ventanas × 4 h** (noche
+  `00:45–04:45Z` y tarde `12:00–16:00Z`): **12 `rule.id`, 13.574 alertas, 0 UNKNOWN, ruido
+  ESTABLE**. Hallazgo: **~54% del ruido es auto-ruido del propio HIDS**. Verificaciones del tester
+  **PASA** (con correcciones de atribución y etiquetado aplicadas). Tareas 2.11 (documentar acceso
+  y `vmrun`) y 2.12 (cierre) completadas; `change-doc-fase2.md` escrito y `roadmap.md` actualizado.
+  VMs apagadas limpiamente con los snapshots `base-limpia` y `lab-listo` conservados.

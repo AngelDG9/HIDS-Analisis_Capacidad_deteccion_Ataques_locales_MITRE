@@ -68,7 +68,8 @@ Contenido verificado del estado congelado:
   (no hay nada que disparar). Invariante verificable tras cada reinicio: checklist en
   `../Wazuh/Configuracion/rulesets_diseno.md` **§5.1**.
 - **RS1..RS4** activas y clasificables por **fichero de origen** (`active_ruleset.txt`, sin
-  colisiones; RS2 `auditd` operativo; **RS4 vacía** por decisión G2).
+  colisiones; RS2 `auditd` operativo; **RS3 vacía** (0 reglas en Fase 2: la *smoke* `100000` se
+  retiró el 2026-09-23; se puebla en Fase 3) y **RS4 vacía** por decisión G2).
 - **NAT desconectado** (`ens37` DOWN, sin ruta por defecto, sin internet); host-only OK.
 - IPs estáticas `.128`/`.129`, zona **Europe/Madrid** y timesync de VMware Tools activo (§8).
 - El **manager no se revierte** durante los ataques (así el baseline permanece en el indexer).
@@ -77,12 +78,16 @@ Contenido verificado del estado congelado:
 
 ## 5. Plano de control
 - Portátil Windows 11 (8 GB) → **SSH al sobremesa** (vía Tailscale); los **agentes (opencode) corren en el sobremesa** y acceden a las VMs por la red host-only.
+- Detalle del acceso: **`ssh_setup.md`** (Nivel 1 portátil→sobremesa por Tailscale; Nivel 2 sobremesa→VMs por host-only, con clave).
+- Control de las VMs: **`vmrun_config.md`** (`vmrun` local, rutas, snapshots y reactivación del NAT).
 
 ## 6. Pendientes
 - [x] Añadir adaptador NAT (internet) para instalar Wazuh — hecho y **desconectado** en 2.9 (§3.1).
 - [x] Documentar los RuleSets — `../Wazuh/Configuracion/rulesets_diseno.md` + `active_ruleset.txt`.
-- [ ] Baseline legítimo ~4 h (**tarea 2.10**) y hito H2.
-- [ ] Cerrar la documentación de acceso (`ssh_setup.md`, `vmrun_config.md`) — tarea 2.11.
+- [x] Baseline legítimo ~4 h (**tarea 2.10**) — 2 ventanas, 13.574 alertas, catálogo agregado
+  (`Dataset/Legitimo/`).
+- [ ] Hito H2 — presentar la Fase 2 al tutor (pendiente).
+- [x] Documentación de acceso cerrada — `ssh_setup.md` + `vmrun_config.md` (tarea 2.11).
 
 ## 7. Actualizaciones automáticas deshabilitadas (decisión de laboratorio)
 
