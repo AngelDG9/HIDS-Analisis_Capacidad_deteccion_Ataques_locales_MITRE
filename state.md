@@ -24,12 +24,19 @@
 - **⚠️ Detalle del snapshot:** `lab-listo` se tomó **antes** de alinear `/etc/timezone` (la zona efectiva ya era correcta) → ese fichero legacy dice `Etc/UTC` dentro del snapshot; **sin efecto práctico**.
 - **⚠️ EL REPOSITORIO ES PÚBLICO** (confirmado por el humano el 2026-09-23): extremar la **higiene de secretos**. Auditoría del **historial completo** (2026-09-23): la contraseña del laboratorio, claves privadas y ficheros de credenciales **nunca** se han versionado ✔. Aun así: **jamás** escribir secretos en ficheros del repo.
 - **Pendiente de Fase 1:** presentar el **hito H1** al tutor.
+- **⏳ PENDIENTE DE LA TUTORÍA (decisiones abiertas):**
+  - **Tamaño final del corpus**: los **13** actuales son la **primera tanda**; el TFG tendrá **decenas o cientos** de ataques solo para Wazuh. Hay que confirmar el alcance.
+  - **Precio de la detección**: ¿se acepta medirlo en **ataques representativos** (declarándolo como limitación), o lo quiere en todos?
+  - **Windows** como víctima: ¿se necesita para alguna técnica, o todo en Linux?
+  - **Hitos H1 y H2**: siguen sin presentar.
+  - ⚠️ **Cifras desfasadas a corregir cuando se confirme el alcance:** `context.md` §3, `roadmap.md` (Fase 3) y `requirements.md` (T-03) siguen diciendo **"12-15 técnicas"**. **No se tocan hasta tener la cifra real** — cambiar un número inventado por otro no arregla nada.
+- **✅ DECIDIDO (2026-09-24):** el **corpus CRECE** (los 13 son la primera tanda, no el total del TFG); el **precio de la detección se mide SOLO en la Fase 4** y con **ataques representativos** (**cuántos y cuáles → al principio de la Fase 4**; si sobra tiempo, se amplía); **la Fase 3 NO se instrumenta** — un medidor dentro de la víctima generaría telemetría falsa (auditd captura cada `execve`) y **ensuciaría el recuento de detecciones**, que es el resultado principal.
 - **Decisiones humanas fijadas (2026-09-19):**
   - Interpretación **amplia** del filtro inverso (DC de red no elegibles pero no anulan host; T1039).
   - **T1046 = híbrida/válida** (ratificada; caso red pura → T1595).
   - **STIX en gitignore** + commit de URL/`.sha256` (repo ligero).
   - `Hojas/Mapeos.xlsx` **diferido** a Fase 3/5.
-  - **Corpus = 13 técnicas** (7 Impact / 3 Exfiltration / 3 Collection).
+  - **Corpus = 13 técnicas** (7 Impact / 3 Exfiltration / 3 Collection) → **primera tanda**; el corpus final será **mayor** (ver "Pendiente de la tutoría").
 
 ## Fase 0 — CERRADA ✔
 
