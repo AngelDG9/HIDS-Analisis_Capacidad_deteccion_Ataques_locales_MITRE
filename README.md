@@ -18,7 +18,7 @@ corpus de ataques locales mapeados a MITRE ATT&CK Enterprise, empezando por **Wa
 | [`requirements.md`](requirements.md) | Requisitos, tareas clave y flujos de trabajo. |
 | [`roadmap.md`](roadmap.md) | Secuenciación en fases con plazos e hitos. |
 | [`state.md`](state.md) | Estado vivo del proyecto (lo mantiene el agente `tfg-orchestrator`). |
-| [`_fases/`](_fases/) | Plan (`plan.md`) y cierre (`change-doc.md`) de cada fase cerrada. |
+| [`_fases/`](_fases/) | Plan (`plan.md`) y cierre (`change-doc.md`) de cada **bloque** cerrado; en la raíz vive siempre el `plan.md` del bloque en curso. |
 
 La documentación **operativa** vive en el repo: `Soporte/Laboratorio/` (topología, SSH y `vmrun`),
 `Soporte/Wazuh/Configuracion/` (runbooks y RuleSets) y `Dataset/` (baseline y, en Fase 3, ataques y
@@ -51,7 +51,7 @@ TFG/
 ├── plan.md                            (plan de la fase EN CURSO; se archiva al cerrar)
 ├── opencode.json · .gitignore
 ├── .opencode/                         (agentes y skills del TFG)
-├── _fases/                            (plan y change-doc de cada fase cerrada)
+├── _fases/                            (plan y cierre de cada bloque cerrado)
 ├── _artefactos/                       (matriz MITRE, scripts)
 ├── Hojas/                             (corpus, lista de técnicas, tablas, índices)
 ├── Dataset/                           (baseline legítimo, ataques y resultados)

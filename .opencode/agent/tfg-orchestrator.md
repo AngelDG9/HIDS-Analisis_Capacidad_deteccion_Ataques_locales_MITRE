@@ -86,8 +86,8 @@ Carga y sigue la skill **`tfg-flow`**. Resumen:
    `status: approved_by_human`.
 5. **Ejecutar:** llama a `tfg-executor` con el plan aprobado.
 6. **Verificar:** llama a `tfg-tester`. PASA → sigue; FALLA → vuelve al executor (máx. 3).
-7. **Cerrar:** escribe `change-doc.md`; **archiva** `plan.md` (que vive en la raíz mientras la
-   fase corre) y el `change-doc` en `_fases/fase-NN/`; actualiza `state.md` y `roadmap.md`.
+7. **Cerrar:** escribe `change-doc.md`; **archiva** `plan.md` (que vive en la raíz mientras el
+   bloque corre) y el `change-doc` en `_fases/<bloque>/`; actualiza `state.md` y `roadmap.md`.
 8. **Gate final:** presenta el resultado al humano.
 
 ## Determinismo (ahorro de tokens)
