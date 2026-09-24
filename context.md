@@ -45,7 +45,7 @@ Se consideran válidas las técnicas/subtécnicas:
 
 **Filtro inverso** (lo que NO entra): las técnicas cuyo **único** Data Component sea de red
 pura — `Network Connection Creation`, `Network Traffic Content`, `Network Traffic Flow`.
-Se descartan del todo `Network Share Access` e `Internet Scan: Response Content/Metadata`.
+`Network Share Access` e `Internet Scan: Response Content/Metadata` **no** otorgan elegibilidad (pero **no** anulan una técnica con telemetría host).
 
 ### Paso 2 — Implementar los ataques
 Localizar y usar las herramientas necesarias; capturar el proceso; guardar evidencias
@@ -79,7 +79,7 @@ El profesor pide centrarse en (`guia_profesor.txt:37-46`):
 | HIDS | **Wazuh** como núcleo. Velociraptor / tercero / Snort = extras. |
 | Corpus | **12-15 técnicas**, 1-2 por táctica, foco Ransomware/Exfiltración/Sabotaje. |
 | RuleSets | **4** (RS1 default → RS4 + externas), clasificando las alertas por origen sin repetir el ataque. |
-| Baseline | ~4 h de actividad legítima (VM en segundo plano). |
+| Baseline | 2 ventanas × 4 h de actividad legítima (VM en segundo plano). |
 | Validación | Cada ataque se ejecuta **dos veces** (snapshot fresco); si difieren las alertas, `review=true`. |
 | SO víctima | **Linux primero**; Windows cuando una técnica lo exija. |
 | Orquestador de ataques | **Atomic Red Team** (tests atómicos por técnica); script custom si no cubre. |

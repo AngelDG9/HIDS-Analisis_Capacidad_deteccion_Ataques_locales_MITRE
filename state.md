@@ -46,22 +46,22 @@
 - **Commit local:** `cfeaa3a Fase 1: corpus MITRE v19.1 (filtro inverso host) y 13 tecnicas seleccionadas`.
 - Pendiente: **hito H1** al tutor (el `push` lo hace el humano).
 
-## Fase 2 — Laboratorio Wazuh (en preparación)
+## Fase 2 — Laboratorio Wazuh (F-02) — CERRADA ✔ (2026-09-23)
 
+- **Plan v2 aprobado** (commit `afeb1d6`) y **repo clonado** en el sobremesa (`D:\TFG\...`).
 - **Hipervisor:** VMware Workstation **Pro 26H1** en el sobremesa (Windows 10, 16 GB, VMs en `D:\TFG-VMs`).
-- **Red host-only:** `VMnet1` = `192.168.65.0/24` (las VMs se ven entre sí y con el host).
-- **VMs** (Ubuntu Server **24.04.5 LTS**, usuario `angel`, snapshot `base-limpia`):
+- **Red:** `VMnet1` = `192.168.65.0/24` (las VMs se ven entre sí y con el host); adaptador **NAT** añadido para instalar y dejado **desconectado** (en operación normal, solo `VMnet1` activa).
+- **VMs** (Ubuntu Server **24.04.5 LTS**, usuario `angel`, snapshots `base-limpia` y `lab-listo`):
 
   | VM | IP | vCPU | RAM | Disco |
   |---|---|---|---|---|
   | `wazuh-server` | `192.168.65.128` | 2 | 6 GB | 50 GB |
   | `victima-linux` | `192.168.65.129` | 2 | 3 GB | 20 GB |
 
+- **Wazuh 4.14.7 operativo** (manager/indexer/dashboard + agente `victima-linux` `active`); detalle en **`change-doc-fase2.md`**.
 - **Documentación T-04:** `Soporte/Laboratorio/README.md` + `topologia.png` + `topologia.mmd` ✔
-- **Verificado:** ping cruzado entre VMs OK; snapshots `base-limpia` hechos.
+- **Verificado:** ping cruzado entre VMs OK; snapshots `base-limpia` y `lab-listo` hechos.
 - **Acceso:** portátil → sobremesa por **SSH sobre Tailscale** (`100.82.127.119`, usuario `angel`); los **agentes (opencode) corren en el sobremesa**. OpenSSH Server en Windows 10 habilitado ✔
-- **Pendiente:** clonar el repo en el sobremesa (`C:\TFG\...`).
-- ⚠️ **Sin internet todavía** (host-only): añadir adaptador **NAT** para instalar Wazuh.
 
 ## Tareas transversales pendientes
 

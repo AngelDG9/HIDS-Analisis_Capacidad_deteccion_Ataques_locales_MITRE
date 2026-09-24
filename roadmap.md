@@ -29,7 +29,7 @@ laboratorio sale liso) + proto tabla de detecciones. Suficiente para demostrar a
 | # | Tarea | Modo |
 |---|-------|------|
 | 0.1 | Repo, `.gitignore` y `README.md`. | [AUTO] |
-| 0.2 | Archivar los docs v1 en `_archivo/`. | [AUTO] |
+| 0.2 | Los docs v1 se sustituyeron por la versión slim en su sitio (no se archivó nada en `_archivo/`). | [AUTO] |
 | 0.3 | `opencode.json` + 4 agentes (`tfg-orchestrator`, `tfg-planner`, `tfg-executor`, `tfg-tester`) + skill `tfg-flow`. | [AUTO] |
 | 0.4 | Reescribir `context.md`, `requirements.md` y `roadmap.md` en versión slim. | [AUTO] |
 | 0.5 | Skeleton de carpetas. | [AUTO] |
@@ -57,7 +57,7 @@ corpus de 12-15 priorizado R/E/S.
 
 ---
 
-## Fase 2 — Laboratorio Wazuh (F-02)
+## Fase 2 — Laboratorio Wazuh (F-02) ✔
 
 **Objetivo:** laboratorio reproducible con Wazuh detectando y controlable en remoto.
 
@@ -69,7 +69,7 @@ corpus de 12-15 priorizado R/E/S.
 | 2.2 | **T-08 (acceso)**: SSH portátil→sobremesa sobre **Tailscale** + OpenSSH en Windows. | [HUMANO] ✔ |
 | 2.3 | **T-05**: Wazuh server + agentes (Linux primero). | [MIXTO] |
 | 2.4 | **T-07**: detección-only + 4 RuleSets. | [AUTO] |
-| 2.5 | **T-06**: baseline legítimo ~4 h. | [AUTO] |
+| 2.5 | **T-06**: baseline legítimo **2 ventanas × 4 h**. | [AUTO] |
 | 2.6 | **T-08 (cierre)**: documentar SSH + `vmrun` (local). | [MIXTO] |
 
 **DoD:** Wazuh con agentes activos, detección-only, baseline grabado y acceso remoto

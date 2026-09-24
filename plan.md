@@ -298,18 +298,20 @@ rango contenga ese `rule.id`.
 > "Wazuh con agentes activos, detección-only, baseline grabado y acceso remoto verificado desde
 > el portátil."
 
-- [ ] `wazuh-server` con servicios `wazuh-manager`, `wazuh-indexer`, `wazuh-dashboard` **active**.
-- [ ] Agente `victima-linux` **active** en el manager, apuntando a `192.168.65.128`.
-- [ ] **Detección-only** verificado (sin `active-response`, `wazuh-execd` inactive) y documentado (R-06).
-- [ ] **4 RuleSets** RS1..RS4 definidos, activos y con **`active_ruleset.txt`** que mapea
+- [x] `wazuh-server` con servicios `wazuh-manager`, `wazuh-indexer`, `wazuh-dashboard` **active**.
+- [x] Agente `victima-linux` **active** en el manager, apuntando a `192.168.65.128`.
+- [x] **Detección-only** verificado (sin `active-response`, `wazuh-execd` inactive) y documentado (R-06).
+- [x] **4 RuleSets** RS1..RS4 definidos, activos y con **`active_ruleset.txt`** que mapea
       `rule.id` → RS sin colisiones (R-09).
-- [ ] **Baseline ~4 h** con `Dataset/Legitimo/ruleids_legitimos.csv` y `baseline_meta.md` (R-08).
-- [ ] Snapshot **`lab-listo`** en ambas VMs.
-- [ ] **Acceso** verificado: `ssh angel@100.82.127.119` (portátil→sobremesa) y **`vmrun`**
+- [x] **Baseline ~4 h** con `Dataset/Legitimo/ruleids_legitimos.csv` y `baseline_meta.md` (R-08).
+- [x] Snapshot **`lab-listo`** en ambas VMs.
+- [x] **Acceso** verificado: `ssh angel@100.82.127.119` (portátil→sobremesa) y **`vmrun`**
       operativo **en local** en el sobremesa (T-08).
-- [ ] Runbooks en `Soporte/Wazuh/Configuracion/` y docs en `Soporte/Laboratorio/`.
-- [ ] Sin credenciales ni claves en git; `_recursos/` intacto; sin `git push`.
-- [ ] `tfg-tester` → **PASA**; `state.md`/`roadmap.md`/`change-doc.md` actualizados (hito H2).
+- [x] Runbooks en `Soporte/Wazuh/Configuracion/` y docs en `Soporte/Laboratorio/`.
+- [x] Sin credenciales ni claves en git; `_recursos/` intacto; sin `git push`.
+- [x] `tfg-tester` → **PASA**; `state.md`/`roadmap.md`/`change-doc.md` actualizados (hito H2).
+
+> Cumplido 2026-09-23 — ver `change-doc-fase2.md` y `state.md`.
 
 ---
 
@@ -447,3 +449,6 @@ state.md / roadmap.md / change-doc.md                (cierre)
    **hija de `5710`**, **enmascaraba** la detección de RS1 y habría sesgado el catálogo de ruido normal.
    RS3 queda **definida y vacía** en Fase 2 (se puebla en Fase 3). Ver `rulesets_diseno.md` §9 (norma
    anti-enmascaramiento, aprobada por el humano el 2026-09-23).
+6. **Baseline en 2 ventanas (§3.8):** se ejecutó como **2 ventanas de 4 h en horas distintas** (noche + tarde)
+   en lugar de una sola de ~4 h, para medir la **estabilidad del ruido**. Cumple y supera el requisito R-08.
+   Ver `Dataset/Legitimo/baseline_meta.md`.

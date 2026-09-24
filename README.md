@@ -19,6 +19,10 @@ corpus de ataques locales mapeados a MITRE ATT&CK Enterprise, empezando por **Wa
 | [`roadmap.md`](roadmap.md) | Secuenciación en fases con plazos e hitos. |
 | [`state.md`](state.md) | Estado vivo del proyecto (lo mantiene el agente `tfg-orchestrator`). |
 
+La documentación **operativa** vive en el repo: `Soporte/Laboratorio/` (topología, SSH y `vmrun`),
+`Soporte/Wazuh/Configuracion/` (runbooks y RuleSets) y `Dataset/` (baseline y, en Fase 3, ataques y
+resultados).
+
 Los recursos del profesor viven en `_recursos/` (no versionados).
 
 ## Cómo se trabaja

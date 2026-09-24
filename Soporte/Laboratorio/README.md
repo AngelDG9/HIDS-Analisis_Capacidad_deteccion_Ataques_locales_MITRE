@@ -84,7 +84,7 @@ Contenido verificado del estado congelado:
 ## 6. Pendientes
 - [x] Añadir adaptador NAT (internet) para instalar Wazuh — hecho y **desconectado** en 2.9 (§3.1).
 - [x] Documentar los RuleSets — `../Wazuh/Configuracion/rulesets_diseno.md` + `active_ruleset.txt`.
-- [x] Baseline legítimo ~4 h (**tarea 2.10**) — 2 ventanas, 13.574 alertas, catálogo agregado
+- [x] Baseline legítimo **2 ventanas × 4 h** (**tarea 2.10**) — 13.574 alertas, catálogo agregado
   (`Dataset/Legitimo/`).
 - [ ] Hito H2 — presentar la Fase 2 al tutor (pendiente).
 - [x] Documentación de acceso cerrada — `ssh_setup.md` + `vmrun_config.md` (tarea 2.11).

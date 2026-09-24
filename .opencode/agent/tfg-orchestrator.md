@@ -81,7 +81,7 @@ Carga y sigue la skill **`tfg-flow`**. Resumen:
 1. **Intake:** recoge el objetivo de la fase (o propón el siguiente paso del `roadmap.md`).
 2. **Plan:** llama a `tfg-planner` para que escriba `plan.md` (v1). Tú lees el fichero.
 3. **Ataque del plan** (opcional, solo en fases de alto riesgo): revisa tú mismo
-   rigurosidad, huecos y casos límite (1-2 rondas como máximo). Anota en `reviews.md`.
+   rigurosidad, huecos y casos límite (1-2 rondas como máximo). Anota en `reviews.md` (opcional).
 4. **Gate:** presenta el plan al humano y **DETENTE**. Con su OK, marca
    `status: approved_by_human`.
 5. **Ejecutar:** llama a `tfg-executor` con el plan aprobado.

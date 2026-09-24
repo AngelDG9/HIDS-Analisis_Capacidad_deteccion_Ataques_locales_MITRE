@@ -25,7 +25,7 @@
 | R-05 | **Wazuh** como único HIDS del núcleo. | Resultados bajo `Estudio-Wazuh/` y `Dataset/Ataques/Resultados/Wazuh/`. |
 | R-06 | **Modo detección-only**: el HIDS nunca bloquea. | `active-response` desactivado; documentado. |
 | R-07 | **Identificador único** `ATA<NNN>` por ataque. | `Hojas/ATA_index.csv` con `ata_id, tactica, tecnica, descripcion, artefacto, estado`. |
-| R-08 | **Baseline legítimo** del endpoint (~4 h). | `Dataset/Legitimo/` con los `rule.id` de actividad normal. |
+| R-08 | **Baseline legítimo** del endpoint (**2 ventanas × 4 h**). | `Dataset/Legitimo/` con los `rule.id` de actividad normal. |
 | R-09 | **4 RuleSets** con clasificación de alertas por origen (sin repetir el ataque). | Tabla comparativa RS1..RS4 por ataque. |
 | R-10 | **Métrica η = √(CD·(1−FP))** por ataque y por HIDS. | Columna de η en `Hojas/Detecciones.xlsx`. |
 | R-11 | **Doble iteración** de cada ataque representativo; si difiere, `review=true`. | `ATA<NNN>_iter{1,2}.csv` y aviso de revisión. |
@@ -49,7 +49,7 @@
 |----|-------|--------|
 | T-01 | Descargar la matriz MITRE Enterprise v19.1 en STIX/JSON. | `_artefactos/mitre/enterprise-attack-v19.1.json`. |
 | T-02 | Script `extraer_tecnicas_host.py`: parsea el STIX, extrae Data Components y aplica el filtro inverso (R-03). | `Hojas/corpus_host.csv`. |
-| T-03 | Generar la lista human-legible priorizada R/E/S y elegir el corpus (**12-15 técnicas**). | `Hojas/lista_tecnicas_validas.md` + `Hojas/ATA_index.csv` + pestaña de `Hojas/Mapeos.xlsx`. |
+| T-03 | Generar la lista human-legible priorizada R/E/S y elegir el corpus (**12-15 técnicas**). | `Hojas/lista_tecnicas_validas.md` + `Hojas/ATA_index.csv`. |
 
 ### Bloque B — Laboratorio
 
@@ -57,7 +57,7 @@
 |----|-------|--------|
 | T-04 | Definir topología (VMware en el sobremesa, red host-only) e importar las VMs del profesor. | `Soporte/Laboratorio/topologia.png` + `README.md`. |
 | T-05 | Levantar Wazuh (manager + indexer + dashboard) y conectar agentes (Linux primero; Windows después). | Runbooks en `Soporte/Wazuh/Configuracion/`. |
-| T-06 | Grabar baseline legítimo (~4 h) en VM limpia. | `Dataset/Legitimo/ruleids_legitimos.csv`. |
+| T-06 | Grabar baseline legítimo (**2 ventanas × 4 h**) en VM limpia. | `Dataset/Legitimo/ruleids_legitimos.csv`. |
 | T-07 | Configurar detección-only y los 4 RuleSets (RS1..RS4). | `Soporte/Wazuh/Configuracion/` + `active_ruleset.txt`. |
 | T-08 | Control remoto del laboratorio por SSH (y `vmrun` en el sobremesa). | `Soporte/Laboratorio/vmrun_config.md` + `ssh_setup.md`. |
 

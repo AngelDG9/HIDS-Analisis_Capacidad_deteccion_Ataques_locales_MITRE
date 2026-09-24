@@ -94,7 +94,7 @@ Script: `Soporte/Wazuh/Scripts/baseline_actividad.sh` (desplegado en
 - Determinista, sin secretos, re-ejecutable. La **actividad natural** (systemd, cron,
   SSH, rootcheck, auditd) se suma por sí sola.
 - Rango de telemetría afectado: auditd vigila `/home/angel/lab-legit` (`-w ... -p wa`),
-  por lo que la actividad dispara **RS2** (80780/80781/80790/80791) y `execve` → **80792**;
+  por lo que la actividad dispara **RS2** (80780/80781/80790) y `execve` → **80792**;
   FIM (`syscheck`) vigila `/etc,/usr/bin,/usr/sbin,/bin,/sbin,/boot` (no `lab-legit`).
 
 ## 6. Scan FIM forzado (dentro de la ventana)
