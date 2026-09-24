@@ -117,4 +117,4 @@ el **Programador de tareas de Windows**), nunca un proceso en segundo plano que 
 
 - Acceso SSH: `ssh_setup.md`.
 - Snapshot `lab-listo` (contenido y verificación): `README.md` §4.1.
-- Plan: `plan.md` §3.7 (snapshots) y §3.9 (acceso remoto).
+- Plan: `_fases/fase-02/plan.md` §3.7 (snapshots) y §3.9 (acceso remoto).

@@ -1,7 +1,7 @@
 # change-doc — Fase 1: Corpus MITRE (F-01)
 
 > Cierre de fase. Fecha: **2026-09-19**. Estado: **CERRADA** (verificación PASA).
-> Plan de referencia: `plan-fase1.md` (v3, `status: approved_by_human`).
+> Plan de referencia: `plan.md` (v3, `status: approved_by_human`).
 
 ---
 
@@ -34,7 +34,7 @@ Enterprise v19.1** con telemetría endpoint (filtro inverso host) y **elegir el 
 | `Hojas/lista_tecnicas_validas.md` | creado (lista priorizada) |
 | `Hojas/ATA_index.csv` | creado (13 técnicas) |
 | `.gitignore` | modificado (`_artefactos/mitre/*.json` ignorado; `.sha256` no) |
-| `plan-fase1.md` / `requirements.md` | actualizados (v3 / R-03) |
+| `plan.md` / `requirements.md` | actualizados (v3 / R-03) |
 
 **sha256 STIX:** `bdf1ce86a4e604214c5076d37ae4dcb322678afc528df8492e6fdc1b554f5da3`
 **URL:** `https://raw.githubusercontent.com/mitre-attack/attack-stix-data/master/enterprise-attack/enterprise-attack-19.1.json`

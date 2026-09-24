@@ -152,4 +152,4 @@ Comando puntual sin shell interactiva:
 
 - **Nunca** versionar claves privadas ni contraseñas; este repo solo guarda **dónde** están.
 - No se toca `_recursos/`.
-- Referencias: `README.md` (laboratorio), `vmrun_config.md` (control de VMs), `plan.md` §3.9.
+- Referencias: `README.md` (laboratorio), `vmrun_config.md` (control de VMs), `_fases/fase-02/plan.md` §3.9.

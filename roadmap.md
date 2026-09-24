@@ -53,7 +53,7 @@ corpus de 12-15 priorizado R/E/S.
 
 **DoD:** script reproducible + lista priorizada + corpus elegido en `Hojas/ATA_index.csv`.
 **✔ Cumplido (2026-09-19):** 625 técnicas host-eligible; corpus de **13 técnicas** en
-`Hojas/ATA_index.csv` (`ATA001`..`ATA013`). Verificación PASA; detalle en `change-doc-fase1.md`.
+`Hojas/ATA_index.csv` (`ATA001`..`ATA013`). Verificación PASA; detalle en `_fases/fase-01/change-doc.md`.
 
 ---
 
@@ -78,7 +78,7 @@ verificado desde el portátil.
 **detección-only** y **4 capas** con `active_ruleset.txt` **sin colisiones** (RS3 y RS4 vacías en
 Fase 2, declarado); **baseline de 2 ventanas × 4 h** (12 `rule.id`, 13.574 alertas, 0 UNKNOWN,
 ruido **estable**); **NAT desconectado** y snapshot **`lab-listo`** en ambas VMs; acceso y `vmrun`
-documentados. Verificación **PASA**; detalle en **`change-doc-fase2.md`**.
+documentados. Verificación **PASA**; detalle en **`_fases/fase-02/change-doc.md`**.
 **Pendiente:** presentar el **hito H2** al tutor (`push` a cargo del humano).
 
 ---

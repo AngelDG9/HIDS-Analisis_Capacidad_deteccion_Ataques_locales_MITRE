@@ -191,7 +191,7 @@ passphrase** y se instaló su parte pública en `~/.ssh/authorized_keys` de `ang
 > `../Laboratorio/README.md` **§3.1**.
 
 - **NAT temporal:** `ens37` queda **presente** pero debe quedar **desconectado** en operación
-  normal (baseline/ataques). Ver §3.6 del `plan.md`: regla de oro = **solo VMnet1 activa**.
+  normal (baseline/ataques). Ver §3.6 del `_fases/fase-02/plan.md`: regla de oro = **solo VMnet1 activa**.
 - Las IPs de `ens37` (192.168.183.x) son DHCP de VMnet8 y pueden cambiar; solo se usan para
   instalar software.
 - **No** se ejecutó `apt upgrade` ni se instaló Wazuh (eso es 2.4/2.5).

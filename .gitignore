@@ -1,9 +1,6 @@
 # Recursos del profesor (read-only, material pesado/ajeno)
 _recursos/
 
-# Archivo de versiones anteriores de la documentación
-_archivo/
-
 # Python
 __pycache__/
 *.py[cod]
@@ -29,7 +26,7 @@ _artefactos/mitre/*.json
 .vscode/
 .idea/
 
-# Secretos del laboratorio Wazuh (Fase 2, plan.md §3.10)
+# Secretos del laboratorio Wazuh (Fase 2, _fases/fase-02/plan.md §3.10)
 # Credenciales del dashboard/API e instalador: NUNCA a git.
 Soporte/Wazuh/Configuracion/*password*
 wazuh-install-files.tar

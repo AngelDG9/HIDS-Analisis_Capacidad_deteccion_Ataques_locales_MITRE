@@ -168,7 +168,7 @@ deb  [signed-by=/usr/share/keyrings/wazuh.gpg] https://packages.wazuh.com/4.x/ap
 > La línea original sigue apuntando a `4.x`; la versión queda fijada por los paquetes ya
 > instalados (4.14.7-1) y por el `dpkg` congelado, no por el repo.
 
-**Nota:** `unattended-upgrades` está `enabled` en el sistema. El plan (§7) contempla
+**Nota:** `unattended-upgrades` está `enabled` en el sistema. El plan (`_fases/fase-02/plan.md` §7) contempla
 deshabilitarlo como mitigación de reproducibilidad; **no** se ha tocado en esta tarea
 (pendiente de decisión del orquestador).
 

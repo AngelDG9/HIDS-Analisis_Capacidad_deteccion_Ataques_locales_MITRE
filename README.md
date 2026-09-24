@@ -18,6 +18,7 @@ corpus de ataques locales mapeados a MITRE ATT&CK Enterprise, empezando por **Wa
 | [`requirements.md`](requirements.md) | Requisitos, tareas clave y flujos de trabajo. |
 | [`roadmap.md`](roadmap.md) | Secuenciación en fases con plazos e hitos. |
 | [`state.md`](state.md) | Estado vivo del proyecto (lo mantiene el agente `tfg-orchestrator`). |
+| [`_fases/`](_fases/) | Plan (`plan.md`) y cierre (`change-doc.md`) de cada fase cerrada. |
 
 La documentación **operativa** vive en el repo: `Soporte/Laboratorio/` (topología, SSH y `vmrun`),
 `Soporte/Wazuh/Configuracion/` (runbooks y RuleSets) y `Dataset/` (baseline y, en Fase 3, ataques y
@@ -46,13 +47,16 @@ host-only. Ver `Soporte/Laboratorio/README.md`.
 
 ```
 TFG/
-├── context.md · requirements.md · roadmap.md · state.md
-├── opencode.json                      (config del proyecto)
+├── README.md · context.md · requirements.md · roadmap.md · state.md
+├── plan.md                            (plan de la fase EN CURSO; se archiva al cerrar)
+├── opencode.json · .gitignore
 ├── .opencode/                         (agentes y skills del TFG)
+├── _fases/                            (plan y change-doc de cada fase cerrada)
 ├── _artefactos/                       (matriz MITRE, scripts)
 ├── Hojas/                             (corpus, lista de técnicas, tablas, índices)
-├── Dataset/                           (artefactos de ataque y resultados)
+├── Dataset/                           (baseline legítimo, ataques y resultados)
 ├── Soporte/                           (Wazuh, laboratorio, configuraciones)
 ├── Bitacora/                          (registro por ataque ATA<NNN>)
-└── Estudio-Wazuh/                     (resumen y gráficas)
+├── Estudio-Wazuh/                     (resumen y gráficas)
+└── _recursos/                         (material del profesor; solo lectura)
 ```

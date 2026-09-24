@@ -18,7 +18,7 @@ por Wazuh) frente a ataques locales mapeados a MITRE ATT&CK Enterprise.
 | 4 | ⛔ GATE | Presenta el plan al humano y **se detiene**. Con su OK, marca `status: approved_by_human` en `plan.md`. |
 | 5 | EJECUTAR | Llama a `tfg-executor` con el plan aprobado. |
 | 6 | VERIFICAR | Llama a `tfg-tester`. PASA → cierra; FALLA → vuelve al executor (máx. 3 ciclos). |
-| 7 | CERRAR | Escribe `change-doc.md`; actualiza `state.md`, `roadmap.md` y `Bitacora/`. |
+| 7 | CERRAR | Escribe `change-doc.md`; **archiva** `plan.md` y el `change-doc` en `_fases/fase-NN/`; actualiza `state.md`, `roadmap.md` y `Bitacora/`. |
 | 8 | ⛔ GATE FINAL | Presenta el resultado al humano. |
 
 ## Ciclo por ataque (`ATA<NNN>`)
@@ -50,7 +50,8 @@ snapshot limpio de la VM víctima
   orquestador. Es la memoria externa: al retomar, se lee esto primero.
 - `Hojas/ATA_index.csv` — estado por ataque (`pendiente` / `en-curso` / `review` / `cerrado`).
 - `Bitacora/ATA<NNN>.json` — registro append-only por ataque.
-- `plan.md`, `reviews.md` (opcional), `change-doc.md` — artefactos por fase.
+- `plan.md` (mientras la fase corre, en la raíz), `reviews.md` (opcional) y `change-doc.md` —
+  artefactos por fase; al cerrarla, `plan.md` y el `change-doc` se archivan en `_fases/fase-NN/`.
 
 ## Reglas del flujo
 

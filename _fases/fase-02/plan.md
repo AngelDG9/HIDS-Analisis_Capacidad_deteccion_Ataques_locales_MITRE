@@ -311,7 +311,7 @@ rango contenga ese `rule.id`.
 - [x] Sin credenciales ni claves en git; `_recursos/` intacto; sin `git push`.
 - [x] `tfg-tester` → **PASA**; `state.md`/`roadmap.md`/`change-doc.md` actualizados (hito H2).
 
-> Cumplido 2026-09-23 — ver `change-doc-fase2.md` y `state.md`.
+> Cumplido 2026-09-23 — ver `change-doc.md` y `state.md`.
 
 ---
 

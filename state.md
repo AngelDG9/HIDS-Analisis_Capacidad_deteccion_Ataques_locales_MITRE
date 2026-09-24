@@ -7,7 +7,7 @@
 
 ## Estado actual
 
-- **Fase:** 2 — Laboratorio Wazuh (F-02) **CERRADA ✔ (2026-09-23)**. Verificación del `tfg-tester`: **PASA**. Detalle en **`change-doc-fase2.md`**. Roadmap actualizado.
+- **Fase:** 2 — Laboratorio Wazuh (F-02) **CERRADA ✔ (2026-09-23)**. Verificación del `tfg-tester`: **PASA**. Detalle en **`_fases/fase-02/change-doc.md`**. Roadmap actualizado.
 - **Paso:** **laboratorio Wazuh operativo y baseline grabado.** Wazuh **4.14.7** (manager/indexer/dashboard `active`; agente 001 `victima-linux` `active`); **detección-only**; **4 capas** con `active_ruleset.txt` **sin colisiones** (RS3 y RS4 **vacías** en Fase 2, declarado); **NAT desconectado**; snapshot **`lab-listo`** en ambas VMs; **baseline de 2 ventanas × 4 h** → catálogo agregado **12 `rule.id`, 13.574 alertas, 0 UNKNOWN, ruido ESTABLE** (v1 6.837 / v2 6.737). Acceso y `vmrun` documentados (`ssh_setup.md`, `vmrun_config.md`).
 - **Hallazgo principal:** **~54% del ruido es auto-ruido del propio HIDS** — `80791` de **`wazuh-agentd`** reescribiendo su estado cada ~5 s (≈2.877 alertas por ventana) + `80792` de hijos de **`wazuh-syscheckd`** y **`wazuh-logcollector`** (cwd `/var/ossec`, ≈806). **Es la cifra válida como base de filtrado de FP** (el 88,6% es solo la cuota de esas dos reglas, **no** auto-ruido).
 - **Siguiente acción:** 1) **presentar al tutor los hitos H1 (Fase 1, aún pendiente) y H2 (Fase 2)**; 2) arrancar la **Fase 3 (ataques)**: `plan.md` de Fase 3 → **gate humano** → piloto con 2-3 técnicas R/E/S.
@@ -16,7 +16,7 @@
 - **Limitaciones declaradas del baseline:** actividad **sintética** (servidor sin usuario humano); 2×4 h (no cubre ciclos semanales/mensuales); el catálogo es un **superconjunto** del ruido esperable durante un ataque (el script no correrá en Fase 3) → usarlo como **referencia acotada**, no como oráculo de FP; y la comparación v1/v2 mide **determinismo del procedimiento**, no variabilidad humana.
 - **Decisión humana (2026-09-23):** baseline en **DOS ventanas de 4 h en horas distintas** (noche + tarde) para cubrir mejor el ciclo diario y poder medir la **estabilidad del ruido**. La 1ª incluye el mantenimiento diario (~06:25); la 2ª no.
 - **G1/G2 fijados:** **Wazuh 4.14.7** (heap del indexer 1 GB); RuleSets aprobados con **RS4 vacía** (en Fase 3 se probarán reglas externas **curadas**, con `lab-listo` como red de seguridad).
-- **Desviaciones y erratas registradas:** ver `plan.md` **§12** — resize del LV (24→48 GB, **aceptada**); el agente **sí** traía `<active-response>` de fábrica; **`wazuh-execd` no es unidad systemd** (daemon interno; vuelve en cada reinicio del manager, pero es **inerte**); el algoritmo de clasificación por rango era imposible → **por fichero de origen**; la regla *smoke* `100000` **retirada antes del baseline** por enmascarar RS1.
+- **Desviaciones y erratas registradas:** ver `_fases/fase-02/plan.md` **§12** — resize del LV (24→48 GB, **aceptada**); el agente **sí** traía `<active-response>` de fábrica; **`wazuh-execd` no es unidad systemd** (daemon interno; vuelve en cada reinicio del manager, pero es **inerte**); el algoritmo de clasificación por rango era imposible → **por fichero de origen**; la regla *smoke* `100000` **retirada antes del baseline** por enmascarar RS1.
 - **Verificado antes de la ventana 1:** el *vulnerability-detector* del manager **no puede descargar CVE** (sin NAT) pero **solo produce errores de log, 0 alertas** → se deja intacto y documentado (no contamina el catálogo).
 - **⚠️ Norma anti-enmascaramiento (aprobada 2026-09-23, `rulesets_diseno.md` §9):** Wazuh emite **una alerta por evento**; una regla propia que case el mismo evento (**hija o hermana**) **suprime** la detección base. Prohibido `<if_sid>` sobre base que se quiera conservar; verificación obligatoria con `wazuh-logtest -v`; recuento `RS1∩RS3` declarado; aplica también a RS4 y cadenas multinivel.
 - **🔴 PENDIENTE OBLIGATORIO antes de escribir la primera regla de Fase 3:** construir el **pre-flight** del §9.8 (script que detecta si una regla RS3 con `<if_sid>` cuelga de una base RS1 y **falla** salvo solapamiento declarado). Hoy es **solo un compromiso escrito**: el script **no existe**. Y, si se quiere certeza, **comprobar empíricamente el caso "regla hermana"** (hoy solo está razonado, no demostrado en el laboratorio).
@@ -42,7 +42,7 @@
   `_artefactos/scripts/extraer_tecnicas_host.py` + tests, `Hojas/corpus_host.csv`
   (697 técnicas; **625 host-eligible**), `Hojas/lista_tecnicas_validas.md`,
   `Hojas/ATA_index.csv` (**13 técnicas**).
-- Verificación `tfg-tester`: **PASA** (15 tests, reproducibilidad byte a byte). Detalle en `change-doc-fase1.md`.
+- Verificación `tfg-tester`: **PASA** (15 tests, reproducibilidad byte a byte). Detalle en `_fases/fase-01/change-doc.md`.
 - **Commit local:** `cfeaa3a Fase 1: corpus MITRE v19.1 (filtro inverso host) y 13 tecnicas seleccionadas`.
 - Pendiente: **hito H1** al tutor (el `push` lo hace el humano).
 
@@ -58,7 +58,7 @@
   | `wazuh-server` | `192.168.65.128` | 2 | 6 GB | 50 GB |
   | `victima-linux` | `192.168.65.129` | 2 | 3 GB | 20 GB |
 
-- **Wazuh 4.14.7 operativo** (manager/indexer/dashboard + agente `victima-linux` `active`); detalle en **`change-doc-fase2.md`**.
+- **Wazuh 4.14.7 operativo** (manager/indexer/dashboard + agente `victima-linux` `active`); detalle en **`_fases/fase-02/change-doc.md`**.
 - **Documentación T-04:** `Soporte/Laboratorio/README.md` + `topologia.png` + `topologia.mmd` ✔
 - **Verificado:** ping cruzado entre VMs OK; snapshots `base-limpia` y `lab-listo` hechos.
 - **Acceso:** portátil → sobremesa por **SSH sobre Tailscale** (`100.82.127.119`, usuario `angel`); los **agentes (opencode) corren en el sobremesa**. OpenSSH Server en Windows 10 habilitado ✔
@@ -80,7 +80,7 @@
   625 host-eligible) y **selección humana de 13 técnicas**; verificación PASA y cierre.
 - **Sesión 4:** montaje del laboratorio (2 VMs Ubuntu + snapshots) y **acceso remoto**
   (Tailscale + OpenSSH en Windows 10); decisión de que los **agentes corran en el sobremesa**;
-  `plan.md` de Fase 2 → **v2** (pendiente de aprobación).
+  `_fases/fase-02/plan.md` de Fase 2 → **v2** (pendiente de aprobación).
 - **Sesión 5:** retomada **en el sobremesa (Windows 10)**: plan v2 **aprobado** (commit `afeb1d6`),
   repo **clonado y limpio**, recon del laboratorio (`vmrun` localizado, VMs apagadas). Siguiente:
   tarea **2.3** (versión Wazuh + NAT temporal + IPs fijas).
@@ -97,10 +97,10 @@
   Hallazgos importantes: el agente **sí** traía `<active-response>` de fábrica; `wazuh-execd` **no** es
   unidad systemd; el algoritmo de clasificación por rango era **imposible** → **por fichero de origen**;
   y **la regla *smoke* `100000` enmascaraba `5710`** → **retirada antes del baseline** y norma
-  **anti-enmascaramiento** escrita (`rulesets_diseno.md` §9). Erratas registradas en `plan.md` §12.
+  **anti-enmascaramiento** escrita (`rulesets_diseno.md` §9). Erratas registradas en `_fases/fase-02/plan.md` §12.
 - **Sesión 8:** **baseline completo y Fase 2 CERRADA.** Baseline en **2 ventanas × 4 h** (noche
   `00:45–04:45Z` y tarde `12:00–16:00Z`): **12 `rule.id`, 13.574 alertas, 0 UNKNOWN, ruido
   ESTABLE**. Hallazgo: **~54% del ruido es auto-ruido del propio HIDS**. Verificaciones del tester
   **PASA** (con correcciones de atribución y etiquetado aplicadas). Tareas 2.11 (documentar acceso
-  y `vmrun`) y 2.12 (cierre) completadas; `change-doc-fase2.md` escrito y `roadmap.md` actualizado.
+  y `vmrun`) y 2.12 (cierre) completadas; `_fases/fase-02/change-doc.md` escrito y `roadmap.md` actualizado.
   VMs apagadas limpiamente con los snapshots `base-limpia` y `lab-listo` conservados.

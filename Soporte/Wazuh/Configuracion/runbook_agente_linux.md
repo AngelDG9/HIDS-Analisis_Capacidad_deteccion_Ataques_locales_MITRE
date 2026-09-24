@@ -162,7 +162,7 @@ Alerta recibida en el **manager** (`/var/ossec/logs/alerts/alerts.json`):
   `wazuh-install-files.tar`, en `/home/angel` **de `wazuh-server`** (fuera del repo).
 - En este runbook solo se documenta **dónde** está y **cómo usarla sin imprimirla**; nunca
   su valor.
-- Patrones de secretos cubiertos en `.gitignore` (§3.10 del plan).
+- Patrones de secretos cubiertos en `.gitignore` (§3.10 de `_fases/fase-02/plan.md`).
 
 ---
 

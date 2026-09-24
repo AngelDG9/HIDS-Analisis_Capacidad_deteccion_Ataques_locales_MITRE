@@ -243,7 +243,7 @@ $ sudo pgrep -a -x wazuh-execd
 | **R-09** 4 RuleSets, clasificación por origen | §1 tabla + §4 (ataque **una** ejecución → RS por `rule.id`) + `active_ruleset.txt` |
 | **R-06** detección-only | §5 (0 `<active-response>` en las 4 capas y en `ossec.conf`; invariante §5.1; `wazuh-execd` inerte) |
 | **R-13** reproducibilidad | `generar_active_ruleset.sh` (2.8) + `local_rules.xml` versionado |
-| **T-07** | este diseño → activación (2.8) → gate G2 (plan §8) |
+| **T-07** | este diseño → activación (2.8) → gate G2 (`_fases/fase-02/plan.md` §8) |
 
 ---
 
