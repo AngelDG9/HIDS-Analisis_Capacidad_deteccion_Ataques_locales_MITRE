@@ -1,0 +1,2 @@
+# sink_http arrancado 2026-09-25T20:57:38Z bind=192.168.65.1 port=9090
+2026-09-25T20:58:50Z POST / from=192.168.65.129 len=11 sha256=188e4c90d05c7fa59bdca910c7659b87d04a78d41ea1ba65dd134583901f43e4 content_type=application/x-www-form-urlencoded

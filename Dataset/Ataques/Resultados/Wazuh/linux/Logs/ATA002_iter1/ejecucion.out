@@ -1,0 +1,15 @@
+﻿=====T0_OFFICIAL=====
+T0_OFFICIAL=2026-09-25T20:31:17Z
+=====ATTACK=====
+ATA002 ┬À T1485 Data Destruction (dd) ÔÇö GUID 38deee99-fd65-4031-bec8-bfa4f9f26146
+T0=2026-09-25T20:31:17Z
+1+0 records in
+1+0 records out
+1048576 bytes (1.0 MB, 1.0 MiB) copied, 0.00119018 s, 881 MB/s
+2048+0 records in
+2048+0 records out
+1048576 bytes (1.0 MB, 1.0 MiB) copied, 0.00527368 s, 199 MB/s
+--- estado final del objetivo ---
+-rw-rw-r-- 1 angel angel 1048576 Sep 25 22:31 /home/angel/lab-legit/ATA002_scratch_dd.txt
+T1_LOCAL=2026-09-25T20:31:17Z
+RC=0

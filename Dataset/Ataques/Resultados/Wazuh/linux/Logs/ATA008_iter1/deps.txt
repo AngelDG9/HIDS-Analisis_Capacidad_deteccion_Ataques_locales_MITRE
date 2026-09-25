@@ -1,0 +1,13 @@
+﻿A1
+/usr/bin/dd
+/usr/bin/python3
+/usr/bin/wget
+/usr/bin/curl
+A2
+GNU Wget 1.21.4 built on linux-gnu.
+A3
+Python 3.12.3
+A4
+gzip_tarfile_OK
+A5
+aa6eff0d613cf00a0668635c7182659ad13e1462d0ef45362e8551f890a7d32e  /home/angel/lab-attack/ATA008/ATA008_ataque.sh

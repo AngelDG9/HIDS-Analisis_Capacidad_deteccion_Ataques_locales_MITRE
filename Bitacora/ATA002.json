@@ -1,0 +1,89 @@
+{
+  "ata_id": "ATA002",
+  "tecnica": "T1485",
+  "tactica": "Impact",
+  "sistema": "linux",
+  "estado": "review",
+  "artefacto": "Dataset/Ataques/Comandos/T1485-Data_Destruction/",
+  "atomic": {
+    "fuente": "atomic-red-team",
+    "guid": "38deee99-fd65-4031-bec8-bfa4f9f26146",
+    "path": "atomics/T1485",
+    "commit": "388942adbd9641f4dfdcf079d7efe9a75ec0ac43"
+  },
+  "esperado_sha256": "970c5dfcc6c845e7e60fdfc4d5d010b17f6570d606514372abfbaf2aad1f17c7",
+  "ataque_sha256": "0a838e9732544b994aac16ecccf6dceda145e5a061d3ec73bcc9cf5bf3e27f16",
+  "iteraciones": [
+    {
+      "iter": 1,
+      "t0": "2026-09-25T20:31:17Z",
+      "t1": "2026-09-25T20:32:01Z",
+      "duracion_s": 44,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-25.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA002_iter1-Detalle.csv",
+      "detalle_sha256": "6394a752ae0a600f2d689054b95618c3d3e704e30d5ff884fc3c6380cf328061",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA002_iter1-Audited.csv",
+      "audited_sha256": "3f788ba5bfcacc6678b6328072ab1532dc7d32a87d1862da3599e3307685c69a",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA002_iter1-Revision.csv",
+      "revision_sha256": "68909d8b17ad366893aba15a3f34552ac311cde7c6ceb860a44162af7fc7f1f3",
+      "conteos": { "filas": 1014, "deteccion": 4, "auto_ruido": 606, "ruido_conocido": 404, "dudosa": 0 },
+      "rs": { "RS1": 14, "RS2": 1000, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 1022, "victima_linux": 1014, "otros_agentes_descartados": 8 },
+      "dudosas_resueltas": 128
+    },
+    {
+      "iter": 2,
+      "t0": "2026-09-25T20:36:17Z",
+      "t1": "2026-09-25T20:36:48Z",
+      "duracion_s": 31,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-25.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA002_iter2-Detalle.csv",
+      "detalle_sha256": "29bd7224d20ed6f9e3d6d03b01bc51b9b2f730ff655721bbb73d12acec02763a",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA002_iter2-Audited.csv",
+      "audited_sha256": "0ed6253e14617b8661f62d8537b03f51228f27c95997f30e68ef41ffe399e4c1",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA002_iter2-Revision.csv",
+      "revision_sha256": "a9efaa8555142ddb6974ee0d465277b923aa91b5915dfb9270239e67e77f780d",
+      "conteos": { "filas": 770, "deteccion": 4, "auto_ruido": 641, "ruido_conocido": 125, "dudosa": 0 },
+      "rs": { "RS1": 4, "RS2": 766, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 777, "victima_linux": 770, "otros_agentes_descartados": 7 },
+      "dudosas_resueltas": 49
+    }
+  ],
+  "revision_global": {
+    "decision_humana": "2026-09-25",
+    "filas": 177,
+    "veredicto": "ruido",
+    "motivo": "senal ambigua T1485-A2 (rule_group=audit_watch_write) demasiado amplia; ninguna fila toca la carpeta del ataque (lab-legit); churn de sistema; reglas ya en el catalogo del baseline",
+    "modo": "veredicto en bloque del humano (no fila a fila)"
+  },
+  "doble_iteracion": "review",
+  "doble_iteracion_detalle": {
+    "mismo_conjunto_rule_id_deteccion": true,
+    "rule_ids_deteccion": ["80781", "80790", "80792"],
+    "n1": 4,
+    "n2": 4,
+    "margen": 2,
+    "criterio_recuento_ok": true,
+    "sin_dudosas_sin_resolver": true,
+    "auto_ruido_delta": 35,
+    "ruido_conocido_delta": 279,
+    "motivo": "los 3 criterios formales pasan; FALLA la sanidad de ruido_conocido (404 vs 125, delta 279 >> 10%). Causa: iter1 capturo un arranque de maquina con mas churn (pico de execve de utilidades de sistema en el primer segundo de la ventana) que iter2. No es del ataque (deteccion identica 4 y 4)."
+  },
+  "eventos": [
+    { "ts": "2026-09-25T20:28:18Z", "tipo": "inicio", "detalle": "precondiciones OK: manager 4.14.7 (3 servicios active), agente 001 Active, 25 GB libres, auditd con watch lab-legit, diario ossec-alerts-25.json" },
+    { "ts": "2026-09-25T20:29:59Z", "tipo": "t0", "detalle": "iter1: revert victima a lab-listo (manager no revertido), scp artefacto, deps OK" },
+    { "ts": "2026-09-25T20:31:17Z", "tipo": "t0", "detalle": "iter1 t0" },
+    { "ts": "2026-09-25T20:32:01Z", "tipo": "t1", "detalle": "iter1 t1 (tras scan FIM forzado agent_control -r -u 001)" },
+    { "ts": "2026-09-25T20:33:00Z", "tipo": "extraido", "detalle": "iter1: _raw 1022 filas (1014 victima + 8 manager) -> Detalle 1014, 0 de otro agente" },
+    { "ts": "2026-09-25T20:33:30Z", "tipo": "filtrado", "detalle": "iter1 (pre-revision): deteccion=4 auto_ruido=606 ruido_conocido=276 dudosa=128" },
+    { "ts": "2026-09-25T20:36:17Z", "tipo": "t0", "detalle": "iter2: revert victima a lab-listo; t0" },
+    { "ts": "2026-09-25T20:36:48Z", "tipo": "t1", "detalle": "iter2 t1 (tras scan FIM forzado)" },
+    { "ts": "2026-09-25T20:37:50Z", "tipo": "extraido", "detalle": "iter2: _raw 777 filas (770 victima + 7 manager) -> Detalle 770, 0 de otro agente" },
+    { "ts": "2026-09-25T20:38:00Z", "tipo": "filtrado", "detalle": "iter2 (pre-revision): deteccion=4 auto_ruido=641 ruido_conocido=76 dudosa=49" },
+    { "ts": "2026-09-25T21:05:00Z", "tipo": "revision", "detalle": "veredicto global humano 2026-09-25: 177 dudosas (iter1 128, iter2 49) marcadas ruido; revisor=humano (veredicto en bloque); nota y justificacion en los ATA002_iterN-Revision.csv" },
+    { "ts": "2026-09-25T21:06:00Z", "tipo": "filtrado", "detalle": "re-ejecutado filtrar_ruido.py --revision: iter1 dudosa=0 ruido_conocido=404; iter2 dudosa=0 ruido_conocido=125; veredicto_humano=ruido" },
+    { "ts": "2026-09-25T21:07:00Z", "tipo": "cierre", "detalle": "criterio doble iteracion §6: 3 criterios formales OK (deteccion identica, delta 0, sin dudosas); sanidad ruido_conocido FALLA (404 vs 125, delta 279) por mas churn de arranque en iter1 -> review (no se cierra en silencio)" }
+  ]
+}

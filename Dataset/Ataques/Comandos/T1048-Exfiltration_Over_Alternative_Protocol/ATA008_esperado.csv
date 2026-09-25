@@ -1,0 +1,7 @@
+# ATA008_esperado.csv | ATA008 · T1048.002 Exfiltration Over Alternative Protocol | TFG HIDS · Fase 3 (T-09)
+# Redactado 2026-09-25 con los datos del paso 0, ANTES de ver ninguna alerta.
+# Gate humano: validado el 2026-09-25 (antes del primer t0).
+# Herramienta fijada en el paso 0: wget (GNU Wget 1.21.4) -> cierra la senal T1048-S1.
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1048-S1,deteccion,audit_exe,wget,Process Creation,T1048,exfiltracion con wget (execve 80792); el POST lo confirma sink.log en el host

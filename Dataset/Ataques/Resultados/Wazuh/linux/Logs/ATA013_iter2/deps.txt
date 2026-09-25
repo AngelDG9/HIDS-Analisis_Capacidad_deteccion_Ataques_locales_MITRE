@@ -1,0 +1,9 @@
+fecha_utc: 2026-09-25T21:49:21Z
+-- which --
+/usr/bin/python3
+/usr/bin/dd
+/usr/bin/wget
+/usr/bin/curl
+-- versions --
+Python 3.12.3
+gzip,tarfile OK

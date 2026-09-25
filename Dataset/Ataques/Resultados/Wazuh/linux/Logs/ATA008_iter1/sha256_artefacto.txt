@@ -1,0 +1,2 @@
+﻿aa6eff0d613cf00a0668635c7182659ad13e1462d0ef45362e8551f890a7d32e  /home/angel/lab-attack/ATA008/ATA008_ataque.sh
+188e4c90d05c7fa59bdca910c7659b87d04a78d41ea1ba65dd134583901f43e4  /home/angel/lab-attack/ATA008/src/artifact

@@ -1,0 +1,8 @@
+﻿/usr/bin/dd
+/usr/bin/python3
+/usr/bin/wget
+/usr/bin/curl
+dd (coreutils) 9.4
+Python 3.12.3
+gzip,tarfile OK
+sha256(remoto): 0a838e9732544b994aac16ecccf6dceda145e5a061d3ec73bcc9cf5bf3e27f16

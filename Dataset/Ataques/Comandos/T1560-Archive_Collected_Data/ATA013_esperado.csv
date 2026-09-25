@@ -1,0 +1,7 @@
+# ATA013_esperado.csv | ATA013 · T1560.002 Archive Collected Data | TFG HIDS · Fase 3 (T-09)
+# Redactado 2026-09-25 con los datos del paso 0, ANTES de ver ninguna alerta.
+# Gate humano: validado el 2026-09-25 (antes del primer t0).
+# /home/angel/lab-attack NO esta vigilado -> la tecnica solo se ve por execve de python3.
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1560-S1,deteccion,audit_exe,python3,Process Creation,T1560,archivado con la stdlib (execve 80792; el .gz no genera evento FIM/watch)

@@ -13,6 +13,9 @@ venv/
 *.mp4
 *.pcap
 *.pcapng
+# Excepción R-13 (fase-03-piloto): la evidencia de las ventanas de ataque
+# (times.log, sink.log) SÍ se versiona.
+!Dataset/Ataques/Resultados/**/Logs/**
 
 # STIX MITRE ATT&CK (fichero grande ~53 MB; se regenera con
 # _artefactos/scripts/extraer_tecnicas_host.py). Se versionan la URL y el

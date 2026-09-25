@@ -1,0 +1,121 @@
+{
+  "ata_id": "ATA008",
+  "tecnica": "T1048.002",
+  "tactica": "Exfiltration",
+  "sistema": "linux",
+  "estado": "review",
+  "artefacto": "Dataset/Ataques/Comandos/T1048-Exfiltration_Over_Alternative_Protocol/",
+  "atomic": {
+    "fuente": "atomic-red-team",
+    "guid": "7ccdfcfa-6707-46bc-b812-007ab6ff951c",
+    "path": "atomics/T1048.002",
+    "commit": "388942adbd9641f4dfdcf079d7efe9a75ec0ac43"
+  },
+  "esperado_sha256": "6adb1cca735aa125792eae73768884779c97a1b4a989dc93dd179fba1d0f7e57",
+  "ataque_sha256": "aa6eff0d613cf00a0668635c7182659ad13e1462d0ef45362e8551f890a7d32e",
+  "artefacto_exfil_sha256": "188e4c90d05c7fa59bdca910c7659b87d04a78d41ea1ba65dd134583901f43e4",
+  "receptor": {
+    "host": "192.168.65.1:9090",
+    "script": "Soporte/Ataques/receiver/sink_http.py",
+    "firewall_rule": "TFG-sink-9090",
+    "firewall_rule_estado": "retirada al cerrar el piloto (2026-09-26; ausencia verificada)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1,
+      "t0": "2026-09-25T20:54:48Z",
+      "t1": "2026-09-25T20:55:27Z",
+      "duracion_s": 39,
+      "snapshot": "lab-listo",
+      "revert": "2026-09-25T20:52:56Z",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-25.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA008_iter1-Detalle.csv",
+      "detalle_sha256": "ec5891c83d6d306b2023b3cdef28a084b71a858cc3f607c97ba1c5d5a39d072f",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA008_iter1-Audited.csv",
+      "audited_sha256": "97f38b2c7efe262a677eeb3ac123fbc00a6bf9cef41e5cdfe8a7441025b5d167",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA008_iter1-Revision.csv",
+      "revision_sha256": "72e4645a564b5138ead078cb2ed9bb08fd79d6dff3da7f3f6a1615f9f5ff8be4",
+      "conteos": { "filas": 666, "deteccion": 2, "auto_ruido": 602, "ruido_conocido": 62, "dudosa": 0 },
+      "rs": { "RS1": 3, "RS2": 663, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 674, "victima_linux": 666, "otros_agentes_descartados": 8 },
+      "sink_log": "Dataset/Ataques/Resultados/Wazuh/linux/Logs/ATA008_iter1/sink.log",
+      "sink_post": { "ts": "2026-09-25T20:54:47Z", "from": "192.168.65.129", "len": 11, "sha256": "188e4c90d05c7fa59bdca910c7659b87d04a78d41ea1ba65dd134583901f43e4" }
+    },
+    {
+      "iter": 2,
+      "t0": "2026-09-25T20:58:50Z",
+      "t1": "2026-09-25T20:59:31Z",
+      "duracion_s": 41,
+      "snapshot": "lab-listo",
+      "revert": "2026-09-25T20:57:41Z",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-25.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA008_iter2-Detalle.csv",
+      "detalle_sha256": "81a15a187221267f90599a60d4d1c546d3036e8f64653092fed826073d43eccb",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA008_iter2-Audited.csv",
+      "audited_sha256": "165e70505003039256790af72608c1f9d7abaf2c37253ebe549cea41ffb7d622",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA008_iter2-Revision.csv",
+      "revision_sha256": "d13dd81937510f057cb8bfec470b39e57cfb23d5b8bcf15b998507b97c654d04",
+      "conteos": { "filas": 724, "deteccion": 2, "auto_ruido": 603, "ruido_conocido": 119, "dudosa": 0 },
+      "rs": { "RS1": 4, "RS2": 720, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 731, "victima_linux": 724, "otros_agentes_descartados": 7 },
+      "sink_log": "Dataset/Ataques/Resultados/Wazuh/linux/Logs/ATA008_iter2/sink.log",
+      "sink_post": { "ts": "2026-09-25T20:58:50Z", "from": "192.168.65.129", "len": 11, "sha256": "188e4c90d05c7fa59bdca910c7659b87d04a78d41ea1ba65dd134583901f43e4" }
+    }
+  ],
+  "detecciones": [
+    { "rule_id": "80792", "rs": "RS2", "desc": "Audit: Command: /usr/bin/wget.", "evidencia": "audit_exe=/usr/bin/wget" },
+    { "rule_id": "80791", "rs": "RS2", "desc": "Audit: Deleted: index.html.tmp.", "evidencia": "audit_exe=/usr/bin/wget" }
+  ],
+  "dudosas_resueltas": {
+    "total": 7,
+    "veredicto_humano": "ruido",
+    "criterio": "fijado por el humano el 2026-09-25 (en bloque): las dudosas que son eventos PAM/sshd de las propias sesiones SSH del operador se marcan ruido (ajenas al ataque)",
+    "revisor": "humano (veredicto en bloque)",
+    "fecha": "2026-09-25",
+    "filas": [
+      { "iter": 1, "timestamp_utc": "2026-09-25T20:54:48.017Z", "rule_id": "5501", "desc": "PAM: Login session opened.", "motivo": "sin_campos", "correlacion": "sesion SSH del operador (t0/ataque)" },
+      { "iter": 1, "timestamp_utc": "2026-09-25T20:54:48.017Z", "rule_id": "5715", "desc": "sshd: authentication success.", "motivo": "sin_campos", "correlacion": "sesion SSH del operador (t0/ataque)" },
+      { "iter": 1, "timestamp_utc": "2026-09-25T20:54:49.933Z", "rule_id": "5502", "desc": "PAM: Login session closed.", "motivo": "sin_campos", "correlacion": "cierre de esa sesion SSH" },
+      { "iter": 2, "timestamp_utc": "2026-09-25T20:58:51.259Z", "rule_id": "5715", "desc": "sshd: authentication success.", "motivo": "sin_campos", "correlacion": "sesion SSH del operador (t0/ataque)" },
+      { "iter": 2, "timestamp_utc": "2026-09-25T20:58:51.261Z", "rule_id": "5501", "desc": "PAM: Login session opened.", "motivo": "sin_campos", "correlacion": "sesion SSH del operador (t0/ataque)" },
+      { "iter": 2, "timestamp_utc": "2026-09-25T20:58:51.274Z", "rule_id": "5502", "desc": "PAM: Login session closed.", "motivo": "sin_campos", "correlacion": "cierre de esa sesion SSH" },
+      { "iter": 2, "timestamp_utc": "2026-09-25T20:59:01.244Z", "rule_id": "5502", "desc": "PAM: Login session closed.", "motivo": "sin_campos", "correlacion": "cierre de la sesion SSH de t1" }
+    ]
+  },
+  "hallazgo_piloto": "El regla sin_campos del filtro convierte en dudosa toda alerta sin campos audit.* (PAM/sshd de las sesiones SSH del operador) -> cada ataque genera dudosas sistematicas. Mejora para el escalado: reconocer y excluir las sesiones del operador (o reordenar el criterio). Anotado en Soporte/Ataques/piloto_procedimiento.md; NO arreglado en el piloto.",
+  "doble_iteracion": "review",
+  "doble_iteracion_detalle": {
+    "mismo_conjunto_rule_id_deteccion": true,
+    "rule_ids_deteccion": ["80791", "80792"],
+    "n1": 2,
+    "n2": 2,
+    "margen": 2,
+    "criterio_recuento_ok": true,
+    "sin_dudosas_sin_resolver": true,
+    "auto_ruido_delta": 1,
+    "auto_ruido_limite": 60.2,
+    "auto_ruido_ok": true,
+    "ruido_conocido_n1": 62,
+    "ruido_conocido_n2": 119,
+    "ruido_conocido_delta": 57,
+    "ruido_conocido_limite": 6.2,
+    "ruido_conocido_ok": false,
+    "motivo": "los 3 criterios formales PASAN (dudosas resueltas: 7 -> ruido), pero la sanidad de ruido_conocido falla (62 vs 119, delta 57 >> 6,2) por la variabilidad del churn de arranque tras el revert; mismo hallazgo que ATA002."
+  },
+  "eventos": [
+    { "ts": "2026-09-25T21:01:37Z", "tipo": "inicio", "detalle": "fase B2 ATA008: receptor host 192.168.65.1:9090 arrancado; precondiciones OK (manager 3 servicios active, agente 001 Active, diario ossec-alerts-25.json)" },
+    { "ts": "2026-09-25T20:52:56Z", "tipo": "t0", "detalle": "iter1: revert victima a lab-listo (manager no revertido)" },
+    { "ts": "2026-09-25T20:54:48Z", "tipo": "t0", "detalle": "iter1 t0 (T0_OFFICIAL); ataque wget --post-file -> POST 200" },
+    { "ts": "2026-09-25T20:55:27Z", "tipo": "t1", "detalle": "iter1 t1 (tras scan FIM forzado agent_control -r -u 001)" },
+    { "ts": "2026-09-25T20:56:27Z", "tipo": "extraido", "detalle": "iter1: _raw 674 filas (666 victima + 8 manager) -> Detalle 666, 0 de otro agente" },
+    { "ts": "2026-09-25T20:57:00Z", "tipo": "filtrado", "detalle": "iter1: deteccion=2 auto_ruido=602 ruido_conocido=59 dudosa=3" },
+    { "ts": "2026-09-25T20:57:41Z", "tipo": "t0", "detalle": "iter2: revert victima a lab-listo" },
+    { "ts": "2026-09-25T20:58:50Z", "tipo": "t0", "detalle": "iter2 t0 (T0_OFFICIAL); ataque wget --post-file -> POST 200" },
+    { "ts": "2026-09-25T20:59:31Z", "tipo": "t1", "detalle": "iter2 t1 (tras scan FIM forzado)" },
+    { "ts": "2026-09-25T21:00:31Z", "tipo": "extraido", "detalle": "iter2: _raw 731 filas (724 victima + 7 manager) -> Detalle 724, 0 de otro agente" },
+    { "ts": "2026-09-25T21:00:45Z", "tipo": "filtrado", "detalle": "iter2: deteccion=2 auto_ruido=603 ruido_conocido=115 dudosa=4" },
+    { "ts": "2026-09-25T21:01:37Z", "tipo": "revision", "detalle": "criterio doble iteracion -> review (dudosas sin resolver 3 y 4; sanidad ruido_conocido falla). PAUSA: dudosas presentadas al humano, NO resueltas por el ejecutor." },
+    { "ts": "2026-09-25T21:45:00Z", "tipo": "revision", "detalle": "veredicto humano (en bloque) sobre las 7 dudosas: ruido (eventos PAM/sshd de las sesiones SSH del operador, ajenas al ataque). Re-ejecutado filtrar_ruido.py --revision -> dudosa=0; ruido_conocido 62 (iter1) y 119 (iter2)" },
+    { "ts": "2026-09-25T21:46:00Z", "tipo": "cierre", "detalle": "criterio de doble iteracion con datos finales: 3 criterios formales PASAN; sanidad ruido_conocido FALLA (62 vs 119, delta 57) -> review. Hallazgo sin_campos anotado (no arreglado)." }
+  ]
+}

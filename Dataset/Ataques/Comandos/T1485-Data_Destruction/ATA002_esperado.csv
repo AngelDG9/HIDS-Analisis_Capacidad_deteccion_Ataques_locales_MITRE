@@ -1,0 +1,10 @@
+# ATA002_esperado.csv | ATA002 · T1485 Data Destruction | TFG HIDS · Fase 3 (T-09)
+# Redactado 2026-09-25 con los datos del paso 0, ANTES de ver ninguna alerta.
+# Gate humano: validado el 2026-09-25 (antes del primer t0).
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+# Desviacion D1 (ver README.md): sin senal FIM (target en lab-legit, no en /etc);
+#   la deteccion se apoya en execve/watch de dd y se anade una ambigua de watch.
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1485-S1,deteccion,audit_exe,dd,Process Creation,T1485,execve de dd (80792) y eventos watch con audit_exe=/usr/bin/dd
+T1485-A1,ambigua,rule_id,80790,File Creation,T1485,creacion generica bajo watch; si no casa S1 queda dudosa
+T1485-A2,ambigua,rule_group,audit_watch_write,File Modification,T1485,evento watch en lab-legit (sustituye la senal FIM del plan; ver README D1)
