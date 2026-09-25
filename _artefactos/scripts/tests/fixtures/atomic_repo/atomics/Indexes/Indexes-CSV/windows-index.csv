@@ -1,0 +1,5 @@
+Tactic,Technique #,Technique Name,Test #,Test Name,Test GUID,Executor Name
+impact,T1486,Data Encrypted for Impact,3,PureLocker Ransom Note,10000000-0000-0000-0000-000000000003,command_prompt
+impact,T1490,Inhibit System Recovery,1,Windows test 1,10000000-0000-0000-0000-000000000010,powershell
+impact,T1490,Inhibit System Recovery,2,Windows test 2,10000000-0000-0000-0000-000000000011,powershell
+impact,T1491.001,Defacement: Internal Defacement,1,Windows sub test,10000000-0000-0000-0000-000000000020,powershell

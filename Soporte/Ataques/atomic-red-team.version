@@ -1,0 +1,7 @@
+# Sidecar de versión — Atomic Red Team (Fase 3, bloque fase-03-atomic, plan §2)
+# El clon NO se versiona (ver .gitignore); sí este sidecar (url + commit).
+url = https://github.com/redcanaryco/atomic-red-team.git
+commit = 388942adbd9641f4dfdcf079d7efe9a75ec0ac43
+fecha_commit = 2026-09-05 12:26:57 -0400
+clonado = 2026-09-25
+licencia = MIT

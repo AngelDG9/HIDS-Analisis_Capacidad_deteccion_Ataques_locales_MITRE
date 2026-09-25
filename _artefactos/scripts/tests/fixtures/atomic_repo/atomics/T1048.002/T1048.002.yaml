@@ -1,0 +1,3 @@
+attack_technique: T1048.002
+display_name: 'Exfiltration Over Alternative Protocol: Exfiltration Over Asymmetric Encrypted Non-C2 Protocol'
+atomic_tests: []

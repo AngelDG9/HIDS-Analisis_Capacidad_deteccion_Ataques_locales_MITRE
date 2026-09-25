@@ -1,0 +1,3 @@
+attack_technique: T1490
+display_name: Inhibit System Recovery
+atomic_tests: []

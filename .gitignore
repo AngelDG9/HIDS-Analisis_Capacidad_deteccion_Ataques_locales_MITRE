@@ -20,6 +20,11 @@ venv/
 _artefactos/mitre/*.json
 !_artefactos/mitre/*.sha256
 
+# Atomic Red Team (Fase 3, bloque fase-03-atomic, plan §2): el clon es pesado
+# (~0,6 GB, miles de ficheros) y NO se versiona; se versiona el sidecar
+# Soporte/Ataques/atomic-red-team.version (url + commit + licencia).
+Soporte/Ataques/atomic-red-team/
+
 # Entornos y editores
 .env
 .env.*

@@ -1,0 +1,7 @@
+# corpus de fixture para test_cobertura_atomic.py (NO es el corpus real)
+ata_id,tactica,tecnica,descripcion,artefacto,estado
+ATA001,Impact,T1486,Data Encrypted for Impact,,pendiente
+ATA003,Impact,T1490,Inhibit System Recovery,,pendiente
+ATA005,Impact,T1561,Disk Wipe,,pendiente
+ATA007,Impact,T1491,Defacement,,pendiente
+ATA008,Exfiltration,T1048,Exfiltration Over Alternative Protocol,,pendiente
