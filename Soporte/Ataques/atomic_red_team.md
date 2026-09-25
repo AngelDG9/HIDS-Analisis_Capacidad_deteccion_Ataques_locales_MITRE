@@ -28,6 +28,21 @@ como **catálogo de ataques** para las 13 técnicas del corpus (`Hojas/ATA_index
 - **Consecuencia:** el cajón **sobrevive a todos los reverts** y en ataque **no se necesita
   internet** (ver §5).
 
+### 2.1 ⚠️ Requisito en el host: **excluir esta carpeta del antivirus**
+
+En el **sobremesa**, la carpeta `Soporte/Ataques/atomic-red-team/` está **excluida de Windows
+Defender** (`Seguridad de Windows → Exclusiones → Carpeta`). **Es un requisito, no una comodidad:**
+la biblioteca incluye **payloads de ataque reales** (`.exe`, `.dll`, `.ps1`, HTML malicioso) y, **sin
+la exclusión**, Defender los pone **en cuarentena** → **el clon pierde ~43 ficheros y deja de coincidir
+con su commit** (`git status` deja de estar limpio). *(Observado el 2026-09-26.)*
+
+- **No afecta a las técnicas de Linux** (son scripts de shell/Python: `T1485`, `T1048.002`,
+  `T1560.002` quedaron intactas), pero **rompería las de Windows**.
+- **La carpeta está ignorada por git** → **nada de esto llega al repositorio** (ni público ni privado).
+- **Si el clon se quedara incompleto:** excluir **primero** y luego `git checkout -- .` dentro del
+  clon (restaura desde `.git` local, **sin internet**). Comprobar con `git status --short` (debe
+  quedar vacío).
+
 ## 3. Reproducción (receta + commit)
 
 El clon **NO se versiona** (miles de ficheros, ~0,6 GB en GitHub); se versiona el **sidecar**
