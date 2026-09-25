@@ -1,0 +1,6 @@
+# filtro_esperado_ejemplo.csv | fixture sintetico de senales esperadas (sin secretos)
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+EJ-S1,deteccion,audit_key,lab-attack*,File Modification,T1486,watch key del dir del ataque
+EJ-S2,deteccion,audit_exe,openssl,Command Execution,T1486,herramienta de cifrado
+EJ-S3,deteccion,rule_id,80790,File Creation,T1486,regla conocida pero la senal gana
+EJ-A1,ambigua,syscheck_path,/home/angel/lab-attack/*,File Modification,T1486,FIM del dir del ataque

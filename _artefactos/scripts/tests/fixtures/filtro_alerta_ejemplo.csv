@@ -1,0 +1,9 @@
+# filtro_alerta_ejemplo.csv | fixture sintetico (una fila por alerta; sin secretos)
+# Columnas = salida de `extraer_alertas.py --detail` (paso 0 confirmado)
+timestamp_utc,agent_name,rule_id,rule_level,rule_description,rule_groups,rs_origen,audit_exe,audit_cwd,audit_key,audit_type,audit_file,audit_dir,syscheck_path
+2026-09-23T10:00:00.100Z,victima-linux,80791,3,Audit: Deleted: var/run/.,audit|audit_watch_delete,RS2,/var/ossec/bin/wazuh-agentd,/var/ossec,audit-wazuh-w,SYSCALL,/var/ossec/var/run/wazuh-agentd.state,,
+2026-09-23T10:00:01.100Z,victima-linux,80792,3,Audit: Command: /usr/bin/ps.,audit|audit_command,RS2,/usr/bin/ps,/var/ossec,audit-wazuh-c,SYSCALL,/usr/bin/ps,,
+2026-09-23T10:00:02.100Z,victima-linux,80790,3,Audit: Created: /home/angel/lab-attack/secret.txt.,audit|audit_watch_create,RS2,/usr/bin/openssl,/home/angel,lab-attack-w,SYSCALL,/home/angel/lab-attack/secret.txt,,
+2026-09-23T10:00:03.100Z,victima-linux,550,7,Integrity checksum changed.,ossec|syscheck|syscheck_file,RS1,,,,,,,/home/angel/lab-attack/secret.txt
+2026-09-23T10:00:04.100Z,victima-linux,999999,3,Regla nueva no catalogada.,custom|nueva,UNKNOWN,/usr/bin/python3,/home/angel,audit-wazuh-c,SYSCALL,/home/angel/x.py,,
+2026-09-23T10:00:05.100Z,victima-linux,5501,3,PAM: Login session opened.,pam|syslog|authentication_success,RS1,,,,,,,
