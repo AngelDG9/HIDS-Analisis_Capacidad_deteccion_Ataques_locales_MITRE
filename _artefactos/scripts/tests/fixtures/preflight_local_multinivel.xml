@@ -1,0 +1,15 @@
+<!-- fixture MULTINIVEL (plan §6): cadena propia -> propia -> base.
+
+     A (100010) es hija de B (100011), y B es hija de la base 5710. C1 recorre el
+     grafo TRANSITIVAMENTE: aunque A no cuelga directamente de una base, la
+     cadena alcanza RS1 -> ENMASCARA (exit 1). -->
+<group name="tfg,preflight_fixture,">
+  <rule id="100010" level="3">
+    <if_sid>100011</if_sid>
+    <description>FIXTURE MULTINIVEL (RS3): A hija de B</description>
+  </rule>
+  <rule id="100011" level="3">
+    <if_sid>5710</if_sid>
+    <description>FIXTURE MULTINIVEL (RS3): B hija de 5710</description>
+  </rule>
+</group>

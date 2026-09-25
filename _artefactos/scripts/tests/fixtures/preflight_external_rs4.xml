@@ -1,0 +1,10 @@
+<!-- fixture RS4 (plan §6): regla EXTERNA (`external_*.xml`) con <if_sid> de base.
+
+     El ámbito anti-enmascaramiento cubre RS4 igual que RS3 (rulesets_diseno.md
+     §9.7): C1 debe detectar la cadena 100500 -> 5710 (RS1) -> FALLA (exit 1). -->
+<group name="tfg,preflight_fixture_rs4,">
+  <rule id="100500" level="3">
+    <if_sid>5710</if_sid>
+    <description>FIXTURE RS4: hija de 5710</description>
+  </rule>
+</group>

@@ -1,0 +1,4 @@
+# fixture DECLARADO (plan §6): el caso MALO + su fila tipo=cadena -> PASA.
+# (Se usa junto a capturas base==candidato, es decir C2 ejecutado sin cambios.)
+regla_propia,tipo,regla_base,motivo,revision_rs1,revisor,fecha
+100000,cadena,5710,fixture: solapamiento de cadena aceptado conscientemente,RS1∩RS3 contado una vez (rulesets_diseno.md §9.6),angel,2026-09-25

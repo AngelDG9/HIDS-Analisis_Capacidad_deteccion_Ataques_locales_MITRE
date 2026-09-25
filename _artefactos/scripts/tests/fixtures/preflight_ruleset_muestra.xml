@@ -1,0 +1,58 @@
+<!-- ============================================================================
+     preflight_ruleset_muestra.xml — muestras REALES de la forma de `<if_sid>`
+     en el ruleset base de Wazuh 4.14.7 (paso 0 de A2.2).
+
+     NO es un fichero desplegable: es documentación/evidencia de los formatos que
+     el parser de `preflight_enmascaramiento.py` debe soportar. Cada bloque cita el
+     fichero y la línea reales de `/var/ossec/ruleset/rules/`.
+
+     Hechos verificados (2026-09-25, wazuh-server, Wazuh 4.14.7):
+       - `<if_sid>`: 3.868 apariciones; 236 con varios ids.
+       - Separador de ids MÚLTIPLES: **coma `,`** (con o sin espacios).
+         `|` NO se usa (0 apariciones) y `<if_sid>` nunca es multilínea.
+       - `<if_matched_sid>`: id único (no se observaron multi-id).
+       - `<if_group>`: se usa SIN `<if_sid>`, acompañado de `<match>`.
+     ============================================================================ -->
+
+<!-- Forma 1 — <if_sid> de UN solo id.
+     Real: /var/ossec/ruleset/rules/0020-syslog_rules.xml:653 (regla 5402) -->
+<rule id="5402" level="3">
+  <if_sid>5400</if_sid>
+  <regex> ; USER=root ; COMMAND=| ; USER=root ; TSID=\S+ ; COMMAND=</regex>
+  <description>Successful sudo to ROOT executed.</description>
+</rule>
+
+<!-- Forma 2 — <if_sid> con VARIOS ids, separados por coma + espacio.
+     Real: /var/ossec/ruleset/rules/0240-ids_rules.xml:30 (regla 20102) -->
+<rule id="20102" level="0">
+  <if_sid>20100, 20101</if_sid>
+  <decoded_as>snort</decoded_as>
+</rule>
+
+<!-- Forma 3 — <if_sid> con VARIOS ids, SIN espacio tras la coma.
+     Real: /var/ossec/ruleset/rules/0780-fireeye_rules.xml:33 -->
+<rule id="150103" level="0">
+  <if_sid>150101,150102</if_sid>
+</rule>
+
+<!-- Forma 4 — <if_sid> con MUCHOS ids (cadena larga).
+     Real: /var/ossec/ruleset/rules/0999-malicious-ioc-rules.xml:53-54 (regla 99905) -->
+<rule id="99905" level="9">
+  <if_sid>31103, 31104, 31105, 31106, 31109, 31164, 31165, 31170, 31171</if_sid>
+</rule>
+
+<!-- Forma 5 — <if_matched_sid> (id único; relación con un evento anterior).
+     Real: /var/ossec/ruleset/rules/0175-proftpd_rules.xml:192-194 (regla 11252) -->
+<rule id="11252" level="10" frequency="12" timeframe="60">
+  <if_matched_sid>11201</if_matched_sid>
+  <same_source_ip />
+  <description>ProFTPD: Multiple connection attempts from same source.</description>
+</rule>
+
+<!-- Forma 6 — <if_group> SIN <if_sid>, con <match> (patrón "hermana" de base).
+     Real: /var/ossec/ruleset/rules/0365-auditd_rules.xml:313-317 (regla 80790, RS2) -->
+<rule id="80790" level="3">
+  <if_group>audit_watch_write</if_group>
+  <match>type=CREATE</match>
+  <description>Audit: Created: $(audit.file.name).</description>
+</rule>

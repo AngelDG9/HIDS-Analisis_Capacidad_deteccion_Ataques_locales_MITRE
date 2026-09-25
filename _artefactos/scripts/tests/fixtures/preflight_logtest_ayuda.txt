@@ -1,0 +1,14 @@
+usage: wazuh_logtest.py [-h] [-V] [-d] [-U rule:alert:decoder] [-l location]
+                        [-q] [-v]
+
+Tool for developing, tuning, and debugging rules.
+
+options:
+  -h, --help            show this help message and exit
+  -V                    Version and license message
+  -d                    Execute in debug mode
+  -U rule:alert:decoder
+                        Unit test. Refer to ruleset/testing/runtests.py
+  -l location           Use custom location. Default "stdin"
+  -q                    Quiet execution
+  -v                    Verbose (full) output/rule debugging

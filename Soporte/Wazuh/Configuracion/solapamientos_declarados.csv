@@ -1,0 +1,25 @@
+# ============================================================================
+# solapamientos_declarados.csv — solapamientos RS1/RS2 suprimidos por reglas
+# propias (RS3/RS4) que se ACEPTAN conscientemente (rulesets_diseno.md §9.5–§9.6).
+# ============================================================================
+# Lector : _artefactos/scripts/preflight_enmascaramiento.py
+#          (ignora las líneas que empiezan por '#'; ver preflight_enmascaramiento.md)
+#
+# Columnas:
+#   regla_propia : id (100000–100499 = RS3; 100500–101000 = RS4)
+#   tipo         : cadena | hermana   (cómo se produce el solapamiento)
+#   regla_base   : id de la regla base (RS1/RS2) cuya detección queda suprimida
+#   motivo       : por qué se acepta el solapamiento
+#   revision_rs1 : regla de recuento RS1∩RS3 aplicada (§9.6) — OBLIGATORIO
+#   revisor      : quién lo revisa
+#   fecha        : AAAA-MM-DD
+#
+# El pre-flight PASA la pareja (regla_propia, tipo, regla_base) SOLO si existe su
+# fila aquí. Sin fila -> FALLA (exit 1) y NO se despliega. Declarar es la única
+# vía de aceptar un solapamiento y queda trazado y versionado.
+#
+# ── EJEMPLO COMENTADO (NO activo) ───────────────────────────────────────────
+# 100000,cadena,5710,"smoke historico hijo de 5710; ya retirado (2026-09-23)","RS1∩RS3 contado una vez: el evento se marca RS1∩RS3 y RS1 se mide con y sin la regla",angel,2026-09-23
+# 100501,hermana,5710,"regla externa que refina el login fallido","RS1∩RS3 contado una vez",angel,2026-09-25
+# ────────────────────────────────────────────────────────────────────────────
+regla_propia,tipo,regla_base,motivo,revision_rs1,revisor,fecha

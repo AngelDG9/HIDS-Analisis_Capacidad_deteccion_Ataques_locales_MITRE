@@ -1,0 +1,11 @@
+<!-- fixture MALO (plan §6): regla propia HIJA de la base 5710.
+
+     Patrón del histórico 100000 (smoke de Fase 2, RETIRADO el 2026-09-23): al ser
+     hija (<if_sid>) la alerta propia SUSTITUYE a la base -> enmascara RS1.
+     C1 debe detectarlo (exit 1) salvo fila en `solapamientos_declarados.csv`. -->
+<group name="tfg,preflight_fixture,">
+  <rule id="100000" level="3">
+    <if_sid>5710</if_sid>
+    <description>FIXTURE MALO (RS3): hija de 5710</description>
+  </rule>
+</group>

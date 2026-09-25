@@ -1,0 +1,6 @@
+<!-- fixture: fichero de reglas propias SIN ninguna <rule> (solo comentario XML).
+
+     Reproduce el estado real de Fase 2 (`Soporte/Wazuh/Reglas/local_rules.xml`):
+     el esqueleto documentado no es desplegable y RS3 = 0 reglas.
+     El parser de `preflight_enmascaramiento.py` DEBE ignorar los comentarios XML
+     y devolver 0 reglas (no un error). -->

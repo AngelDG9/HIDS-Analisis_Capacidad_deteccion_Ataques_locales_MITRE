@@ -1,0 +1,12 @@
+<!-- fixture BUENO (plan §6): regla propia SUELTA.
+
+     Sin <if_sid>/<if_matched_sid> y con un match que no casa ningún evento real
+     del baseline -> no alcanza ninguna base (C1 limpio) y no suprime nada (C2
+     limpio). Con capturas que no muestran cambio -> PASA (exit 0). -->
+<group name="tfg,preflight_fixture,">
+  <rule id="100001" level="3">
+    <program_name>tfg-preflight-decoder-inexistente</program_name>
+    <match>tfg-marca-inexistente</match>
+    <description>FIXTURE BUENO (RS3): no solapa ninguna base</description>
+  </rule>
+</group>
