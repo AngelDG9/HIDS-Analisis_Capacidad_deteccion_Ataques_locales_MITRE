@@ -36,7 +36,9 @@ Modo de prueba trivial (sin /var/ossec, datos sintéticos embebidos):
 
 Fase 3 (A2.1) — además del agregado, admite:
     --detail  RUTA.csv    una fila por alerta (columnas §1.3 del plan, ampliadas
-                          con `audit_file`/`audit_dir` confirmadas en el paso 0)
+                          con `audit_file`/`audit_dir` confirmadas en el paso 0 y,
+                          desde H3 (fase-03-afinado), con los campos de origen
+                          `srcip`/`srcuser`/`dstuser`)
     --muestra RUTA.jsonl  líneas JSON CRUDAS representativas de la ventana
                           (hasta --max-por-regla por rule.id; por defecto 5)
 """
@@ -101,6 +103,13 @@ DETAIL_HEADER = [
     "audit_file",
     "audit_dir",
     "syscheck_path",
+    # Campos de ORIGEN (H3, fase-03-afinado): permiten evaluar la condición
+    # `srcip` de la regla `5715` (sesión del operador). Solo los emite `--detail`;
+    # el modo agregado y `--test` no cambian. El `OUT_HEADER` del filtro NO los
+    # vuelca, así que el esquema de los `-Audited.csv` (15 columnas) es estable.
+    "srcip",
+    "srcuser",
+    "dstuser",
 ]
 
 
@@ -312,6 +321,9 @@ def extract_detail(alert_lines, desde: datetime, hasta: datetime, id_map: dict[s
         audit_dir = (audit.get("directory", {}) or {}).get("name", "")
         syscheck = alert.get("syscheck", {}) or {}
         rid = str(rule.get("id", "")).strip() or "?"
+        srcip = str(data.get("srcip", "") or "")
+        srcuser = str(data.get("srcuser", "") or "")
+        dstuser = str(data.get("dstuser", "") or "")
 
         rows.append(
             [
@@ -329,6 +341,9 @@ def extract_detail(alert_lines, desde: datetime, hasta: datetime, id_map: dict[s
                 audit_file,
                 audit_dir,
                 syscheck.get("path", ""),
+                srcip,
+                srcuser,
+                dstuser,
             ]
         )
 

@@ -34,6 +34,10 @@ Soporte/Ataques/atomic-red-team/
 .vscode/
 .idea/
 
+# Directorios temporales de trabajo (H3/afinado, 2026-09-26): re-extracciones y
+# evidencias de pruebas de seguridad que NO se versionan.
+_artefactos/tmp/
+
 # Secretos del laboratorio Wazuh (Fase 2, _fases/fase-02/plan.md §3.10)
 # Credenciales del dashboard/API e instalador: NUNCA a git.
 Soporte/Wazuh/Configuracion/*password*

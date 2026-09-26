@@ -11,6 +11,14 @@
 - declaraciones: Soporte/Wazuh/Configuracion/solapamientos_declarados.csv sha256=43ce5a5d329fd9278142434a7a2aec695026d1f1dd86e9335083a00abd63290a n=0
 - logtest base: (no aportado)
 - logtest candidato: (no aportado)
+- logtest base C0: _artefactos/scripts/tests/fixtures/c0_logtest_python3_ls.txt sha256=112c177f3841f35ce9304c274f5b1a06dcc01040e36b303226adc86ef1a7fce8 n=2
+
+## C0 · base-contra-base (empírico, logtest con el ruleset base)
+
+Estado: **EJECUTADO**
+Eventos analizados: **2**
+Avisos (ganadora de fábrica con `level=0`: no emite alerta -> detección esperada silenciada):
+  - evento 1: ganadora `92600` (level 0) -> AVISO: detección esperada silenciada por regla de fábrica `92600`
 
 ## C1 · Cadena `<if_sid>`/`<if_matched_sid>` (estático, offline)
 
@@ -36,4 +44,4 @@ AVISO: no se aportaron las capturas `--logtest-base` y `--logtest-candidato`; **
 Avisos:
   - 0 reglas propias -> PASA trivial (C2 no se exige)
 
-RESULTADO: PASA
+RESULTADO: PASA (AVISOS: C0=1)

@@ -117,6 +117,11 @@ Verificar en la víctima: `ls -l`, `which` de la herramienta y el `sha256` del s
 
 ### Paso 4 — `t0`
 
+> ⚠️ **H2 — sellar `t0` tras el asentamiento.** Esperar **≥ 60–90 s** desde que el agente `001`
+> está `Active` **antes** de sellar `t0`. Así el **ruido de arranque queda FUERA de la ventana**
+> (ocurre antes de `t0`) y el ataque empieza ya en régimen → `[t0,t1]` es comparable entre
+> iteraciones **sin** recortar la ventana. Ver `Soporte/Ataques/criterio_doble_iteracion.md` §2.
+
 `date -u +%Y-%m-%dT%H:%M:%SZ` **en la víctima** → a `Logs/ATA<NNN>_iterN/times.log` y consola.
 El script del ataque **también** imprime `T0=…` al arrancar (doble registro).
 
@@ -209,8 +214,10 @@ veredictos y queda trazable). **No puede quedar ninguna `dudosa` sin resolver.**
 - Bitácora `Bitacora/ATA<NNN>.json` (append-only, esquema §8 del plan).
 - Fila de `Hojas/ATA_index.csv` (`en-curso` durante; `cerrado`/`review` al final). **Solo su fila.**
 
-Tras las **2 iteraciones** se aplica el criterio de doble iteración (§6 del plan: mismo conjunto de
-`rule_id` de `deteccion` + `|n2−n1| ≤ max(2, 10 %·n1)` + sin `dudosa`) → `iguales`/`review`.
+Tras las **2 iteraciones** se aplica el **criterio de doble iteración v2** (la **detección**
+decide: mismo conjunto de `rule_id` de `deteccion` + `|n2−n1| ≤ max(2, 10 %·n1)` + sin `dudosa`;
+las **sanidades** de `auto_ruido`/`ruido_conocido` **pasan a aviso**, no bloquean) →
+`iguales`/`review`. Regla completa: `Soporte/Ataques/criterio_doble_iteracion.md`.
 
 ---
 
@@ -257,6 +264,12 @@ Tras las **2 iteraciones** se aplica el criterio de doble iteración (§6 del pl
 - **Nota de mejora (escalado):** las señales esperadas se apoyan en el **nombre del proceso**
   (`dd`/`wget`/`python3`), que es **genérico**; en el escalado conviene hacerlas **más específicas**
   (p. ej. añadir la **carpeta del ataque** como señal).
+- **Convención H4 (2026-09-26) — señales ancladas al `cwd`:** en toda técnica que **escriba en la
+  carpeta del ataque** (`/home/angel/lab-attack/ATA<NNN>/`), cada señal `audit_exe` se **acompaña**
+  de una señal de contexto `audit_cwd=/home/angel/lab-attack/ATA<NNN>/*`. El `audit_cwd` **ancla**
+  el proceso al ataque y discrimina el churn (`/`, `var/ossec`…). Detalle y plantilla:
+  `Soporte/Ataques/plantilla_esperado.md`. El **esquema** del esperado **no** cambia (una señal
+  más). ⚠️ **No se tocan** los 3 `ATA<NNN>_esperado.csv` del piloto (rompería sus `sha256`).
 
 ---
 
@@ -297,4 +310,27 @@ La regla `sin_campos` de `filtrar_ruido.py` convierte en **`dudosa`** toda alert
 dudosas sistemáticas**. Mejora para el escalado: **reconocer y excluir las sesiones del operador**
 (o reordenar el criterio), para no acumular cientos de filas a revisar. *(En ATA013 se sumó una dudosa
 de otra naturaleza: la autoevaluación **SCA** `19004`, ajena al ataque.)*
+
+### H4 Señales genéricas
+
+Las señales `audit_exe` (`dd`/`wget`/`python3`) son **genéricas** (solo el nombre del proceso).
+Ver la convención H4 anclada al `cwd` en §5 y `Soporte/Ataques/plantilla_esperado.md`.
+
+---
+
+## 7. Afinado del escalado (bloque `fase-03-afinado`, 2026-09-26)
+
+Los hallazgos H2/H3/H4 de arriba quedan **resueltos** para el escalado (H1 es del bloque
+siguiente; **no** forma parte de este):
+
+- **H2 — criterio v2 vigente:** la detección decide; las sanidades pasan a aviso; ventana completa
+  `[t0,t1]` sin recortes; `t0` se sella **tras el asentamiento** (≥ 60–90 s con el agente
+  `Active`). Ver `Soporte/Ataques/criterio_doble_iteracion.md`.
+- **H3 — predicado `OPERADOR` (paso 1.5):** `5715` con `srcip ∈ OPERADOR_SRCIPS` y `19004` con
+  grupo `sca` se **auto-excluyen** (`motivo=operador:*`); **`5501`/`5502` NO** (quedan `dudosa`,
+  revisión humana — limitación declarada). Principio: **solo se auto-excluye lo demostrable**.
+  El `--detail` de `extraer_alertas.py` gana `srcip,srcuser,dstuser`. Ver
+  `Soporte/Wazuh/Configuracion/politica_filtrado_ruido.md` §3.bis.
+- **H4 — convención de señales:** `audit_exe` **+** `audit_cwd=/home/angel/lab-attack/ATA<NNN>/*`.
+  Ver `Soporte/Ataques/plantilla_esperado.md`.
 

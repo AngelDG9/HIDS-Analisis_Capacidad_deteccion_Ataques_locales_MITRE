@@ -3,8 +3,11 @@
 # tipo  in {deteccion, ambigua}
 # campo in {rule_id, rule_group, audit_exe, audit_cwd, audit_key, syscheck_path}
 # patron: literal o glob (* / ?); en audit_exe se compara ruta completa y nombre base
+# Convencion H4 (2026-09-26): audit_exe SIEMPRE acompanado de audit_cwd del ataque.
+# Ver Soporte/Ataques/plantilla_esperado.md. (EJEMPLO: no es un ataque ejecutado.)
 senal_id,tipo,campo,patron,dato_componente,tecnica,nota
-T1486-S1,deteccion,audit_key,lab-attack*,File Modification,T1486,watch key del directorio del ataque
-T1486-S2,deteccion,audit_exe,openssl,Command Execution,T1486,herramienta de cifrado
+T1486-S1,deteccion,audit_exe,openssl,Process Creation,T1486,herramienta de cifrado
+T1486-S2,deteccion,audit_cwd,/home/angel/lab-attack/ATA001/*,Process Creation,T1486,la senal de exe queda anclada al cwd del ataque
 T1486-S3,deteccion,rule_id,80790,File Creation,T1486,regla conocida: la senal gana al catalogo
+T1486-S4,deteccion,audit_key,lab-attack*,File Modification,T1486,watch key del directorio del ataque
 T1486-A1,ambigua,syscheck_path,/home/angel/lab-attack/*,File Modification,T1486,FIM del dir del ataque (puede ser legitimo)

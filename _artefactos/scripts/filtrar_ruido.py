@@ -10,12 +10,16 @@ copiado sin alterar) y etiquetada con una de cuatro categorías.
 
 Categorías y **orden exacto** de decisión (`plan.md` §2; gana el primero):
 
-    1. auto_ruido       si el ORIGEN es el propio Wazuh (por campos, no por rule.id)
-    2. deteccion        si casa una SEÑAL ESPERADA de tipo `deteccion`
-    3. dudosa           si casa una SEÑAL ESPERADA de tipo `ambigua`
-                        (o si no es evaluable ninguna señal: falta el campo)
-    4. deteccion        si rule.id NO está en el catálogo (motivo `novel`)
-    5. ruido_conocido   si rule.id SÍ está en el catálogo
+    1.   auto_ruido       si el ORIGEN es el propio Wazuh (por campos, no por rule.id)
+    2.   deteccion        si casa una SEÑAL ESPERADA de tipo `deteccion`
+    1.5  ruido_conocido   si casa el PREDICADO OPERADOR (H3 §4.1): `5715` con
+                          `srcip ∈ OPERADOR_SRCIPS` o `19004` con grupo `sca`
+                          (motivo `operador:<rule_id>`). `5501`/`5502` NO están en
+                          el predicado -> quedan `dudosa`.
+    3.   dudosa           si casa una SEÑAL ESPERADA de tipo `ambigua`
+                          (o si no es evaluable ninguna señal: falta el campo)
+    4.   deteccion        si rule.id NO está en el catálogo (motivo `novel`)
+    5.   ruido_conocido   si rule.id SÍ está en el catálogo
 
 `auto_ruido` es **categoría propia** y **nunca** cuenta como detección. Si una
 señal `deteccion` apuntara a un proceso de Wazuh se emite **CONFLICTO** por
@@ -65,6 +69,32 @@ WAZUH_PROCESOS = {
 }
 WAZUH_CWD = "/var/ossec"
 WAZUH_RUN_GLOB = "/var/ossec/var/run/*"
+
+# --------------------------------------------------------------------------
+# H3 (fase-03-afinado §4.1) — predicado OPERADOR
+#
+# Principio rector: **solo se auto-excluye lo DEMOSTRABLE como propio**; lo que
+# no se puede demostrar, se revisa (`dudosa`).
+#
+#   - `5715` (sshd: authentication success)  -> se auto-excluye SOLO si
+#     `srcip ∈ OPERADOR_SRCIPS` (la IP del host/sobremesa en VMnet1). Otra IP
+#     (atacante) -> NO se excluye. Si falta `srcip` -> condición NO satisfecha.
+#   - `19004` (grupo `sca`) -> se auto-excluye (autoevaluación del HIDS; regla +
+#     grupo, sin condición de origen).
+#   - `5501`/`5502` (PAM) -> **NUNCA** se auto-excluyen: el `full_log` no trae IP
+#     ni id. de sesión, así que la atribución al operador NO es demostrable ->
+#     quedan `dudosa` (revisión humana). Limitación declarada, lado seguro.
+# --------------------------------------------------------------------------
+OPERADOR_SRCIPS = {"192.168.65.1"}
+OPERADOR_5715_GRUPOS = {"sshd", "syslog", "authentication_success"}
+OPERADOR_19004_GRUPOS = {"sca"}
+
+# Reglas del predicado (rule_id -> grupos admisibles) para la garantía anti-frágil:
+# si una señal declarada casa una de estas reglas, se avisa por stderr (CONFLICTO).
+OPERADOR_REGLAS = {
+    "5715": OPERADOR_5715_GRUPOS,
+    "19004": OPERADOR_19004_GRUPOS,
+}
 
 SIGNAL_TIPOS = ("deteccion", "ambigua")
 SIGNAL_CAMPOS = (
@@ -228,6 +258,61 @@ def detectar_auto_ruido(row: dict):
 
 
 # --------------------------------------------------------------------------
+# Predicado OPERADOR (H3 §4.1) — regla ∧ contexto, solo lo demostrable
+# --------------------------------------------------------------------------
+def detectar_operador(row: dict):
+    """Devuelve `(rule_id, evidencia)` si la alerta es del operador/SCA de forma
+    **demostrable**, o `None` si no lo es (o si falta el campo de origen).
+
+    - `5715`: exige grupo (`sshd|syslog|authentication_success`) **y**
+      `srcip ∈ OPERADOR_SRCIPS`. Sin `srcip` -> no se cumple.
+    - `19004`: exige grupo `sca` (sin condición de origen).
+    - `5501`/`5502`: **no** pertenecen al predicado (nunca se auto-excluyen).
+    """
+    rid = str(row.get("rule_id") or "").strip()
+    grupos = {g for g in (row.get("rule_groups") or "").split("|") if g}
+    if rid == "5715":
+        if not (grupos & OPERADOR_5715_GRUPOS):
+            return None
+        srcip = (row.get("srcip") or "").strip()
+        if srcip in OPERADOR_SRCIPS:
+            return ("5715", f"srcip={srcip}")
+        return None
+    if rid == "19004":
+        if "sca" in grupos:
+            return ("19004", "rule_group=sca")
+        return None
+    return None
+
+
+def conflictos_operador(signals) -> list[str]:
+    """Garantía anti-frágil (H3 §4.1): si una señal declarada (`rule_id` o
+    `rule_group`) **casaría una regla del predicado**, se avisa. Evita que una
+    señal declarada se excluya en silencio (la detección va antes del paso 1.5)."""
+    out = []
+    for s in signals:
+        campo = s["campo"]
+        pat = s["patron"]
+        if campo == "rule_id":
+            hits = [rid for rid in OPERADOR_REGLAS if glob_match(rid, pat)]
+        elif campo == "rule_group":
+            hits = [
+                rid
+                for rid, gs in OPERADOR_REGLAS.items()
+                if any(glob_match(g, pat) for g in gs)
+            ]
+        else:
+            continue
+        for rid in hits:
+            out.append(
+                f"la señal {s['senal_id']} ({s['tipo']}, {campo}={pat}) casa la regla "
+                f"{rid} del predicado OPERADOR: prevalece la detección (no se resuelve "
+                "en silencio; revisar la señal)"
+            )
+    return out
+
+
+# --------------------------------------------------------------------------
 # Señales esperadas
 # --------------------------------------------------------------------------
 def _valor_campo(row: dict, campo: str):
@@ -301,6 +386,7 @@ def clasificar(row: dict, catalogo: set[str], signals, modo_baseline: bool, conf
     }
 
     auto = detectar_auto_ruido(row)
+    ev = None
     # Conflicto: señal deteccion que apunta a un proceso de Wazuh (se evalúa igual)
     if not modo_baseline and signals:
         ev = evaluar_senales(row, signals)
@@ -320,8 +406,8 @@ def clasificar(row: dict, catalogo: set[str], signals, modo_baseline: bool, conf
         return out
 
     # 2-3. señales esperadas (solo en modo ataque)
-    if not modo_baseline and signals:
-        ev = evaluar_senales(row, signals)
+    if ev is not None:
+        # 2. deteccion (gana a todo lo que sigue, incluido el paso 1.5)
         if ev["match_deteccion"] is not None:
             s, valor = ev["match_deteccion"]
             out["categoria"] = "deteccion"
@@ -329,6 +415,14 @@ def clasificar(row: dict, catalogo: set[str], signals, modo_baseline: bool, conf
             out["atribucion"] = _atribucion(s)
             out["evidencia"] = f"{s['campo']}={valor}"
             return out
+        # 1.5. OPERADOR (H3 §4.1) — solo lo DEMOSTRABLE
+        op = detectar_operador(row)
+        if op is not None:
+            out["categoria"] = "ruido_conocido"
+            out["motivo"] = f"operador:{op[0]}"
+            out["evidencia"] = op[1]
+            return out
+        # 3. dudosa (ambigua / sin_campos)
         if ev["match_ambigua"] is not None:
             s, valor = ev["match_ambigua"]
             out["categoria"] = "dudosa"
@@ -463,6 +557,7 @@ def main(argv=None) -> int:
         return EXIT_USAGE
 
     signals = []
+    conflictos: list[str] = []
     if not modo_baseline:
         try:
             signals = load_signals(esperado)
@@ -472,9 +567,10 @@ def main(argv=None) -> int:
         if not signals:
             print(f"ERROR: {esperado} no contiene señales", file=sys.stderr)
             return EXIT_NO_SIGNALS
+        # Garantía anti-frágil H3: señal declarada sobre una regla del predicado.
+        conflictos.extend(conflictos_operador(signals))
 
     # --- clasificación ---
-    conflictos: list[str] = []
     filas = []
     for r in alertas:
         c = clasificar(r, catalogo, signals, modo_baseline, conflictos)

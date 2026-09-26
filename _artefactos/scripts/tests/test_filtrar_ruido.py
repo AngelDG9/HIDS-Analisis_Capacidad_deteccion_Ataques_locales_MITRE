@@ -35,7 +35,8 @@ ALERTA_EJEMPLO = FIX / "filtro_alerta_ejemplo.csv"
 # utilidades
 # --------------------------------------------------------------------------
 def fila(ts, rid, exe="", cwd="", key="", typ="", file="", d="", syscheck="",
-         groups="", rs="RS1", agent="victima-linux", desc="x", level="3"):
+         groups="", rs="RS1", agent="victima-linux", desc="x", level="3",
+         srcip="", srcuser="", dstuser=""):
     return {
         "timestamp_utc": ts,
         "agent_name": agent,
@@ -51,6 +52,9 @@ def fila(ts, rid, exe="", cwd="", key="", typ="", file="", d="", syscheck="",
         "audit_file": file,
         "audit_dir": d,
         "syscheck_path": syscheck,
+        "srcip": srcip,
+        "srcuser": srcuser,
+        "dstuser": dstuser,
     }
 
 
@@ -274,6 +278,181 @@ def test_h_sin_señales_falla(tmp_path):
     assert rc != 0
     assert rc == fr.EXIT_NO_SIGNALS
     assert not out.exists()
+
+
+# --------------------------------------------------------------------------
+# H3 (fase-03-afinado §4.1) — predicado OPERADOR y golden del falso negativo
+# --------------------------------------------------------------------------
+# Señales NO relacionadas con las reglas del predicado: garantizan `sin_campos`
+# (ninguna señal evaluable) para las reglas sin campos `audit.*`.
+ESP_VACIO_ROWS = [
+    {"senal_id": "N1", "tipo": "deteccion", "campo": "audit_key",
+     "patron": "lab-attack*", "dato_componente": "File Modification",
+     "tecnica": "T1486", "nota": ""},
+    {"senal_id": "N2", "tipo": "ambigua", "campo": "syscheck_path",
+     "patron": "/home/angel/lab-attack/*", "dato_componente": "File Modification",
+     "tecnica": "T1486", "nota": ""},
+]
+
+
+def _corre_fila(tmp_path, alerta_fila, nombre):
+    esp = esperado_tmp(tmp_path, ESP_VACIO_ROWS, nombre=nombre + "-esperado.csv")
+    alerta = alerta_tmp(tmp_path, [alerta_fila], nombre=nombre + "-alerta.csv")
+    out = tmp_path / (nombre + "-Audited.csv")
+    rev = tmp_path / (nombre + "-Revision.csv")
+    rc = fr.main(["--alerta", str(alerta), "--ata", "ATA001", "--catalogo",
+                  str(CATALOGO), "--esperado", str(esp), "--out", str(out),
+                  "--rev-out", str(rev)])
+    assert rc == fr.EXIT_OK
+    return lee_salida(out)[0]
+
+
+def test_h3_5715_srcip_operador_autoexcluido(tmp_path):
+    """5715 con srcip del operador -> ruido_conocido / operador:5715, revision vacía."""
+    r = _corre_fila(
+        tmp_path,
+        fila("2026-09-25T20:31:20.000Z", "5715",
+             groups="syslog|sshd|authentication_success", rs="RS1",
+             desc="sshd: authentication success.", srcip="192.168.65.1",
+             dstuser="angel"),
+        "op5715",
+    )
+    assert r["categoria"] == "ruido_conocido"
+    assert r["motivo"] == "operador:5715"
+    assert r["revision"] == ""
+    assert r["evidencia"] == "srcip=192.168.65.1"
+
+
+def test_h3_golden_5715_srcip_ajeno_dudosa(tmp_path):
+    """⭐ GOLDEN: 5715 con srcip AJENO (atacante) -> NO se excluye -> dudosa."""
+    r = _corre_fila(
+        tmp_path,
+        fila("2026-09-25T20:31:20.000Z", "5715",
+             groups="syslog|sshd|authentication_success", rs="RS1",
+             desc="sshd: authentication success.", srcip="10.0.0.99",
+             dstuser="angel"),
+        "atk5715",
+    )
+    assert r["categoria"] == "dudosa"
+    assert r["categoria"] != "ruido_conocido"
+    assert r["motivo"] == "sin_campos"
+    assert r["revision"] == "pendiente"
+
+
+def test_h3_5715_sin_srcip_dudosa(tmp_path):
+    """⚠️ Si falta el campo de origen -> condición NO satisfecha -> dudosa."""
+    r = _corre_fila(
+        tmp_path,
+        fila("2026-09-25T20:31:20.000Z", "5715",
+             groups="syslog|sshd|authentication_success", rs="RS1",
+             desc="sshd: authentication success.", dstuser="angel"),
+        "sin5715",
+    )
+    assert r["categoria"] == "dudosa"
+    assert r["motivo"] == "sin_campos"
+
+
+def test_h3_5715_grupo_incorrecto_dudosa(tmp_path):
+    """CA-H3-d: un 5715 con grupo distinto NO entra en el predicado -> dudosa."""
+    r = _corre_fila(
+        tmp_path,
+        fila("2026-09-25T20:31:20.000Z", "5715", groups="audit|audit_command",
+             rs="RS2", desc="x", srcip="192.168.65.1"),
+        "grp5715",
+    )
+    assert r["categoria"] == "dudosa"
+
+
+@pytest.mark.parametrize("rid", ["5501", "5502"])
+def test_h3_golden_pam_nunca_autoexcluida(tmp_path, rid):
+    """⭐ GOLDEN: 5501/5502 con dstuser=angel -> NO auto-excluidas -> dudosa (decisión A)."""
+    groups = ("pam|syslog|authentication_success" if rid == "5501"
+              else "pam|syslog")
+    desc = ("PAM: Login session opened." if rid == "5501"
+            else "PAM: Login session closed.")
+    r = _corre_fila(
+        tmp_path,
+        fila("2026-09-25T20:31:20.000Z", rid, groups=groups, rs="RS1",
+             desc=desc, srcuser="angel", dstuser="angel"),
+        "pam" + rid,
+    )
+    assert r["categoria"] == "dudosa"
+    assert r["categoria"] != "ruido_conocido"
+    assert r["motivo"] == "sin_campos"
+    assert r["revision"] == "pendiente"
+
+
+def test_h3_19004_sca_autoexcluido(tmp_path):
+    """19004 con grupo sca -> auto-excluido (regla + grupo), sin condición de origen."""
+    r = _corre_fila(
+        tmp_path,
+        fila("2026-09-25T21:43:10.000Z", "19004", groups="sca", rs="RS1",
+             desc="SCA summary", level="7"),
+        "sca19004",
+    )
+    assert r["categoria"] == "ruido_conocido"
+    assert r["motivo"] == "operador:19004"
+    assert r["evidencia"] == "rule_group=sca"
+
+
+def test_h3_19004_grupo_incorrecto_no_operador(tmp_path, capsys):
+    """CA-H3-d: un 19004 sin grupo sca NO entra en el predicado → no es `operador:`."""
+    r = _corre_fila(
+        tmp_path,
+        fila("2026-09-25T21:43:10.000Z", "19004", groups="ossec", rs="RS1"),
+        "grp19004",
+    )
+    assert r["motivo"] != "operador:19004"
+    assert r["categoria"] in ("dudosa", "deteccion")
+
+
+def test_h3_senal_deteccion_sobre_predicado_gana_y_conflicto(tmp_path, capsys):
+    """CA-H3-b: señal deteccion declarada sobre 5715 -> deteccion + CONFLICTO por stderr."""
+    alerta = alerta_tmp(tmp_path, [
+        fila("2026-09-25T20:31:20.000Z", "5715",
+             groups="syslog|sshd|authentication_success", rs="RS1",
+             desc="sshd: authentication success.", srcip="192.168.65.1",
+             dstuser="angel"),
+    ], nombre="conf-alerta.csv")
+    esp = esperado_tmp(tmp_path, [
+        {"senal_id": "D1", "tipo": "deteccion", "campo": "rule_id",
+         "patron": "5715", "dato_componente": "Remote Login", "tecnica": "T1078",
+         "nota": ""},
+    ], nombre="conf-esperado.csv")
+    out = tmp_path / "conf-Audited.csv"
+    rc = fr.main(["--alerta", str(alerta), "--ata", "ATA001", "--catalogo",
+                  str(CATALOGO), "--esperado", str(esp), "--out", str(out)])
+    assert rc == fr.EXIT_OK
+    r = lee_salida(out)[0]
+    assert r["categoria"] == "deteccion"
+    assert r["motivo"] == "senal:D1"
+    err = capsys.readouterr().err
+    assert "CONFLICTO" in err
+    assert "5715" in err
+
+
+def test_h3_conflicto_por_rule_group(tmp_path, capsys):
+    """La garantía anti-frágil también cubre una señal rule_group que casa sca."""
+    alerta = alerta_tmp(tmp_path, [
+        fila("2026-09-25T21:43:10.000Z", "19004", groups="sca", rs="RS1"),
+    ], nombre="cg-alerta.csv")
+    esp = esperado_tmp(tmp_path, [
+        {"senal_id": "G1", "tipo": "ambigua", "campo": "rule_group",
+         "patron": "sca", "dato_componente": "x", "tecnica": "T1", "nota": ""},
+    ], nombre="cg-esperado.csv")
+    out = tmp_path / "cg-Audited.csv"
+    rc = fr.main(["--alerta", str(alerta), "--ata", "ATA001", "--catalogo",
+                  str(CATALOGO), "--esperado", str(esp), "--out", str(out)])
+    assert rc == fr.EXIT_OK
+    err = capsys.readouterr().err
+    assert "CONFLICTO" in err and "19004" in err
+
+
+def test_h3_columnas_origen_en_detail_header():
+    """CA-H3-e: el detalle gana srcip,srcuser,dstuser; el OUT_HEADER (15) no cambia."""
+    assert ea.DETAIL_HEADER[-3:] == ["srcip", "srcuser", "dstuser"]
+    assert len(fr.OUT_HEADER) == 15
+    assert "srcip" not in fr.OUT_HEADER
 
 
 # --------------------------------------------------------------------------

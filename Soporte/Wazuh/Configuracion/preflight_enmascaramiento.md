@@ -23,7 +23,39 @@ autor: tfg-executor
 
 ---
 
-## 1. Qué comprueba (dos chequeos, un mismo gate)
+## 1. Qué comprueba (tres chequeos, un mismo gate)
+
+### C0 · base-contra-base — empírico, **offline** (H1)
+
+Una regla de **fábrica** puede **silenciar la detección esperada** de una técnica
+**sin que intervenga ninguna regla propia**. Caso real del piloto: la regla base
+**`92600`** (`0850-audit_rules.xml`, `level 0`, grupo `audit`, campo
+`audit.exe ~ python`) es **hermana** de `80792` (`0365-auditd_rules.xml`, `level 3`)
+y **suprime** la alerta del `execve` de `python3` → un "0 detecciones" que, sin
+esta comprobación, se vería como un fallo del ataque y no como lo que es (un
+**punto ciego de fábrica**).
+
+**Cómo funciona (determinista, reutiliza el parser de C2):**
+
+1. Se captura `wazuh-logtest -v` de un conjunto corto de **eventos sintéticos**
+   derivados de las **señales esperadas** de la técnica (p. ej. una línea `audit`
+   de `execve` del `audit_exe` esperado), **con el ruleset base desplegado** (0
+   reglas propias). La captura se versiona (`c0_logtest_*.txt`).
+2. El chequeo **C0 offline** consume esa captura (`--logtest-base-c0`) y, para cada
+   evento, parsea la **regla ganadora** (`parse_logtest_detalle`, que expone `id` y
+   `level`).
+3. Si la ganadora tiene **`level=0`** (no emite alerta) → **AVISO**:
+   *"detección esperada silenciada por regla de fábrica `<id>`"*.
+
+> **Contrato:** un **AVISO de C0 NO cambia `PASA`/`FALLA`** (el silenciador es de
+> fábrica y **no** lo controlamos): añade una sección `## C0` al informe y aparece
+> en la línea final como `RESULTADO: PASA (AVISOS: C0=1)`. **Sin captura C0 →
+> `INCOMPLETO`** (nunca PASA en silencio), coherente con C2. Una captura C0
+> **presente pero sin eventos** también es `INCOMPLETO` (no se puede concluir).
+
+**Para qué sirve en el escalado:** el ejecutor lanza C0 **por técnica antes de
+medir**; si avisa, el "0 detecciones" de esa técnica queda **explicado**, no como
+sorpresa.
 
 ### C1 · Cadena `<if_sid>` / `<if_matched_sid>` — estático, **offline**, sin root
 
@@ -94,35 +126,43 @@ regla_propia,tipo,regla_base,motivo,revision_rs1,revisor,fecha
    como evidencia.
 3. **Tras cambiar el ruleset base** (regenerar `active_ruleset.txt`) → re-validar.
 
-### Procedimiento operativo (con las dos fases C1/C2)
+### Procedimiento operativo (con las tres fases C0/C1/C2)
 
 `wazuh-logtest` **no puede apuntar a otro directorio de reglas** (ver
-`preflight_demo_hermana.md` §1): C2 necesita las reglas **desplegadas**. Por eso el
-orden es:
+`preflight_demo_hermana.md` §1): C0 y C2 necesitan el ruleset **desplegado**. Por eso
+el orden es:
 
 ```text
+0) C0 base-contra-base (offline tras capturar una vez): con el ruleset base desplegado
+   (0 reglas propias) capturar `wazuh-logtest -v` sobre los eventos sintéticos de la
+   técnica y pasar la captura:
+     python _artefactos/scripts/preflight_enmascaramiento.py --logtest-base-c0 <c0.txt>
+   Sin captura C0 -> INCOMPLETO (nunca PASA en silencio).
+
 1) C1 offline sobre los ficheros candidatos del repo (barato, sin tocar el manager):
-     python _artefactos/scripts/preflight_enmascaramiento.py
+     python _artefactos/scripts/preflight_enmascaramiento.py --logtest-base-c0 <c0.txt>
    Si C1 FALLA (o hay no resolubles) -> rediseñar. NO desplegar.
 
 2) C2 (si C1 ha salido limpio): desplegar las reglas propias de forma
    TEMPORAL y REVERSIBLE, reiniciar el manager, capturar `wazuh-logtest -v`
    (candidato) sobre el conjunto de eventos, y RESTAURAR el estado (patrón de
    preflight_demo_hermana.md §5). Con las dos capturas:
-     python _artefactos/scripts/preflight_enmascaramiento.py --logtest-base <base.txt> --logtest-candidato <candidato.txt> --eventos <eventos.jsonl>
+     python _artefactos/scripts/preflight_enmascaramiento.py --logtest-base-c0 <c0.txt> --logtest-base <base.txt> --logtest-candidato <candidato.txt> --eventos <eventos.jsonl>
 
 3) Solo si el resultado es PASA (exit 0) la regla se despliega de forma definitiva.
 ```
 
-> **Atajo válido (estado actual):** con **0 reglas propias** el examen es **PASA
-> trivial** y **no exige C2**.
+> **Atajo válido (estado actual):** con **0 reglas propias** el examen **PASA
+> trivialmente** y **no exige C2** — pero **sí exige la captura C0** (es
+> base-contra-base y aplica siempre). Sin captura C0 → **INCOMPLETO**.
 
 ### Ejemplo (repo, 0 reglas propias)
 
 ```bash
 python _artefactos/scripts/preflight_enmascaramiento.py \
+    --logtest-base-c0 _artefactos/scripts/tests/fixtures/c0_logtest_python3_ls.txt \
     --out Soporte/Wazuh/Configuracion/preflight_informe.md
-# -> RESULTADO: PASA  (exit 0)
+# -> RESULTADO: PASA (AVISOS: C0=1)  (exit 0)  [el AVISO de C0 no bloquea]
 ```
 
 ---
@@ -131,7 +171,8 @@ python _artefactos/scripts/preflight_enmascaramiento.py \
 
 - **Informe legible** por stdout; con `--out` se escribe además en el fichero indicado
   (el ejemplo versionado es `preflight_informe.md`). Línea final
-  **`RESULTADO: PASA|FALLA|INCOMPLETO`**.
+  **`RESULTADO: PASA|FALLA|INCOMPLETO`**; si C0 emitió avisos, se añade el recuento
+  **`RESULTADO: PASA (AVISOS: C0=1)`** (el AVISO **no** cambia el resultado).
 - **Sin reloj** → misma entrada = informe **byte a byte** idéntico (R-13). Se
   normalizan las rutas a `/` para el mismo resultado en Windows y Linux.
 - **Códigos de salida:**
@@ -141,7 +182,7 @@ python _artefactos/scripts/preflight_enmascaramiento.py \
   | `0` | `PASA` | se puede desplegar |
   | `1` | `FALLA` | enmascaramiento **no declarado** |
   | `2` | — | uso / entrada (fichero ausente, capturas de distinto tamaño, declaración malformada) |
-  | `3` | `INCOMPLETO` | C2 no ejecutado **o** ancestro no resoluble |
+  | `3` | `INCOMPLETO` | C2 no ejecutado (con reglas propias), ancestro no resoluble, **C0 no ejecutado o captura C0 sin eventos** |
 
   **Solo `exit 0` permite desplegar.**
 
@@ -157,6 +198,7 @@ python _artefactos/scripts/preflight_enmascaramiento.py \
 | `--declaraciones` | `Soporte/Wazuh/Configuracion/solapamientos_declarados.csv` | solapamientos aceptados |
 | `--logtest-base` | — | captura `wazuh-logtest -v` sin reglas propias (C2) |
 | `--logtest-candidato` | — | captura `wazuh-logtest -v` con las propias (C2) |
+| `--logtest-base-c0` | — | captura `wazuh-logtest -v` con el ruleset base (C0 base-contra-base) |
 | `--eventos` | — | (opcional) JSONL de eventos para cotejar el nº de eventos |
 | `--out` | — | escribe además el informe en este fichero |
 
@@ -178,14 +220,30 @@ python _artefactos/scripts/preflight_enmascaramiento.py \
 - C2 compara **base vs candidato con la misma herramienta**; no contra el baseline
   vivo, porque `wazuh-logtest` no reproduce el estado de las reglas con memoria
   (`if_fts`/`frequency`) — ver `preflight_demo_hermana.md` §4.3.
+- **C0** solo marca como aviso las ganadoras de **`level=0`**; no modela otros
+  solapamientos de la base (p. ej. que una señal esperada caiga en una regla base
+  de nivel > 0 distinta). La captura C0 la produce el operador una vez por técnica
+  (con `wazuh-logtest`, que **no** permite apuntar a otro directorio de reglas):
+  fuera de esa captura, C0 no re-evalúa el ruleset.
+- C0 es **base-contra-base**: mide el ruleset de fábrica, **no** depende de que
+  existan reglas propias. Por eso su captura es **obligatoria** aunque RS3/RS4
+  estén vacías.
 
 ---
 
 ## 7. Verificación (`tfg-tester`)
 
 1. `pytest _artefactos/scripts/tests/test_preflight_enmascaramiento.py` → todo PASA
-   (offline, sin VMs), con los **8 casos del `plan.md` §6**.
-2. Pre-flight sobre el repo (**0 reglas propias**) → `PASA` (`exit 0`).
-3. Determinismo: dos ejecuciones con la misma entrada → informe **byte a byte**
+   (offline, sin VMs), con los **casos del `plan.md` §6** y los **golden de H1**
+   (`CA-H1-a/b/c`).
+2. **H1 · C0** (golden obligatorio, desde la fixture versionada
+   `tests/fixtures/c0_logtest_python3_ls.txt`):
+   - **`CA-H1-a`**: `python3` → ganadora `92600` (`level 0`) → **AVISA**;
+     `RESULTADO: PASA (AVISOS: C0=1)` (`exit 0`).
+   - **`CA-H1-b`**: `ls` (mismo `key`) → ganadora `80792` (`level 3`) → **NO avisa**.
+   - **`CA-H1-c`**: sin captura C0 → **`INCOMPLETO`** (`exit 3`); C1/C2 intactos.
+3. Pre-flight sobre el repo (**0 reglas propias**) **con la captura C0** → `PASA`
+   (`exit 0`, con AVISO `C0=1`).
+4. Determinismo: dos ejecuciones con la misma entrada → informe **byte a byte**
    idéntico.
-4. Los códigos de salida coinciden con los de este documento.
+5. Los códigos de salida coinciden con los de este documento.

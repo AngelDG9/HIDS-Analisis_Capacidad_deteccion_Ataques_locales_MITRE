@@ -8,8 +8,17 @@ herramienta es la operacionalización del §9.8 de
 `Soporte/Wazuh/Configuracion/rulesets_diseno.md`: convierte el compromiso escrito
 en un **examen con código de salida**.
 
-Dos chequeos, un mismo gate
----------------------------
+Tres chequeos, un mismo gate
+----------------------------
+* **C0 · base-contra-base (empírico, offline).** Una regla de **fábrica** puede
+  silenciar la detección esperada de una técnica sin que intervenga ninguna regla
+  propia (caso real del piloto: `92600`, `level 0`, hermana de `80792`, suprime el
+  `execve` de `python3`). Se consume una captura `wazuh-logtest -v` tomada con el
+  **ruleset base desplegado** (`--logtest-base-c0`) y, para cada evento, si la
+  **regla ganadora** tiene **`level=0`** se emite un **AVISO**: *detección esperada
+  silenciada por regla de fábrica `<id>`*. Reutiliza el parser de logtest
+  (`parse_logtest_detalle`). **Sin captura C0 → `INCOMPLETO`** (nunca se pasa en
+  silencio).
 * **C1 · Cadena `<if_sid>`/`<if_matched_sid>` (estático, offline).** Parsea las
   reglas propias candidatas (`local_rules.xml` = RS3; `external_*.xml` = RS4;
   **ignora comentarios XML**), construye el grafo *regla -> padres* y resuelve el
@@ -24,6 +33,13 @@ Dos chequeos, un mismo gate
   (con las propias). Si un evento cuya base ganaba RS1/RS2 pasa a ganarlo una
   propia -> **ENMASCARA (hermana)**. Sin capturas, C2 queda **NO EJECUTADO**
   (nunca se pasa en silencio) y el resultado es **INCOMPLETO**.
+
+Contrato de C0
+--------------
+Un **AVISO de C0 no cambia `PASA`/`FALLA`** (el silenciador es de fábrica y no lo
+controlamos): añade una sección `## C0` al informe y aparece en la línea final como
+`RESULTADO: PASA (AVISOS: C0=1)`. **Sin captura C0 → `INCOMPLETO`** (nunca PASA en
+silencio), coherente con el contrato de C2.
 
 Declaración (§9.5–§9.6)
 -----------------------
@@ -43,10 +59,11 @@ Códigos de salida::
     0  PASA        se puede desplegar
     1  FALLA       enmascaramiento NO declarado
     2  uso/entrada
-    3  INCOMPLETO  C2 no ejecutado o ancestro no resoluble
+    3  INCOMPLETO  C2 no ejecutado (con reglas propias), ancestro no resoluble,
+                   o C0 no ejecutado / captura C0 sin eventos
 
-**Solo `exit 0` permite desplegar.** Sin reglas propias -> PASA trivial, sin
-exigir C2.
+**Solo `exit 0` permite desplegar.** Con 0 reglas propias -> PASA trivial (no se
+exige C2), pero **sí** se exige la captura C0 (base-contra-base aplica siempre).
 """
 
 from __future__ import annotations
@@ -305,24 +322,68 @@ def c1_analizar(reglas_propias, rangos):
 _PHASE1 = "**Phase 1:"
 _PHASE3 = "**Phase 3:"
 _ID_LINE = re.compile(r"^\s*id:\s*'([^']*)'")
+_LEVEL_LINE = re.compile(r"^\s*level:\s*'([^']*)'")
 
 
-def parse_logtest(path: str):
-    """Extrae la regla ganadora de cada evento de una captura de `wazuh-logtest -v`."""
-    ganadoras = []
+def parse_logtest_detalle(path: str):
+    """Extrae `{id, level}` de la regla ganadora de cada evento de `wazuh-logtest -v`.
+
+    Un evento = un bloque `**Phase 3:`; dentro van `id:` y, a continuación,
+    `level:`. Un bloque sin `id` (p. ej. evento sin regla) no produce entrada.
+    """
+    eventos = []
+    pendiente = None
     en_phase3 = False
     with open(path, "r", encoding="utf-8", errors="replace") as fh:
         for line in fh:
             if line.startswith(_PHASE1):
+                if pendiente is not None:
+                    eventos.append(pendiente)
+                    pendiente = None
                 en_phase3 = False
             elif line.startswith(_PHASE3):
+                if pendiente is not None:
+                    eventos.append(pendiente)
+                pendiente = {}
                 en_phase3 = True
-            elif en_phase3:
-                m = _ID_LINE.match(line)
-                if m:
-                    ganadoras.append(m.group(1).strip())
-                    en_phase3 = False
-    return ganadoras
+            elif en_phase3 and pendiente is not None:
+                if "id" not in pendiente:
+                    m = _ID_LINE.match(line)
+                    if m:
+                        pendiente["id"] = m.group(1).strip()
+                        continue
+                if "id" in pendiente and "level" not in pendiente:
+                    m = _LEVEL_LINE.match(line)
+                    if m:
+                        pendiente["level"] = m.group(1).strip()
+                        en_phase3 = False
+    if pendiente is not None:
+        eventos.append(pendiente)
+    return [e for e in eventos if e.get("id")]
+
+
+def parse_logtest(path: str):
+    """Extrae solo el id de la regla ganadora de cada evento (compatibilidad C2)."""
+    return [e["id"] for e in parse_logtest_detalle(path)]
+
+
+def c0_analizar(path: str):
+    """C0: devuelve (eventos, avisos) de una captura logtest con el ruleset base.
+
+    `eventos` = lista de `{id, level}`. `avisos` = subconjunto con `level == 0`
+    (regla de fábrica que **no** emite alerta -> detección esperada silenciada),
+    enriquecido con el índice de evento 1-based.
+    """
+    eventos = parse_logtest_detalle(path)
+    avisos = []
+    for i, ev in enumerate(eventos, start=1):
+        try:
+            level = int(ev.get("level", ""))
+        except (TypeError, ValueError):
+            continue
+        if level == 0:
+            avisos.append({"evento": i, "id": ev["id"], "level": ev.get("level", "")})
+    return eventos, avisos
 
 
 def c2_analizar(base_path, cand_path, propias_por_id, rangos):
@@ -462,6 +523,39 @@ def construir_informe(datos) -> str:
     else:
         L.append(f"- logtest base: {_disp(datos['logtest_base']) if datos['logtest_base'] else '(no aportado)'}")
         L.append(f"- logtest candidato: {_disp(datos['logtest_candidato']) if datos['logtest_candidato'] else '(no aportado)'}")
+    if datos["c0_ejecutado"]:
+        L.append(_linea_entrada("logtest base C0", datos["logtest_c0"], n=len(datos["c0_ev"])))
+    else:
+        L.append(f"- logtest base C0: {_disp(datos['logtest_c0']) if datos['logtest_c0'] else '(no aportado)'}")
+    L.append("")
+
+    L.append("## C0 · base-contra-base (empírico, logtest con el ruleset base)")
+    L.append("")
+    if datos["c0_ejecutado"]:
+        L.append("Estado: **EJECUTADO**")
+        L.append(f"Eventos analizados: **{len(datos['c0_ev'])}**")
+        L.append("Avisos (ganadora de fábrica con `level=0`: no emite alerta -> detección esperada silenciada):")
+        if datos["c0_avisos"]:
+            for a in datos["c0_avisos"]:
+                L.append(
+                    f"  - evento {a['evento']}: ganadora `{a['id']}` (level 0) -> "
+                    f"AVISO: detección esperada silenciada por regla de fábrica `{a['id']}`"
+                )
+        else:
+            L.append("  - (ninguno)")
+        if datos["c0_vacio"]:
+            L.append("")
+            L.append(
+                "AVISO: la captura C0 no contiene ningún evento con regla ganadora; "
+                "no se puede concluir -> resultado **INCOMPLETO**."
+            )
+    else:
+        L.append("Estado: **NO EJECUTADO**")
+        L.append("")
+        L.append(
+            "AVISO: no se aportó la captura `--logtest-base-c0`; **C0 NO EJECUTADO** "
+            "(nunca se pasa en silencio) -> resultado **INCOMPLETO**."
+        )
     L.append("")
 
     L.append("## C1 · Cadena `<if_sid>`/`<if_matched_sid>` (estático, offline)")
@@ -545,7 +639,10 @@ def construir_informe(datos) -> str:
             L.append(f"  - {a}")
     L.append("")
 
-    L.append(f"RESULTADO: {datos['resultado']}")
+    sufijo = ""
+    if datos["c0_avisos"]:
+        sufijo = f" (AVISOS: C0={len(datos['c0_avisos'])})"
+    L.append(f"RESULTADO: {datos['resultado']}{sufijo}")
     L.append("")
     return "\n".join(L)
 
@@ -574,6 +671,10 @@ def main(argv=None) -> int:
     ap.add_argument("--declaraciones", default=DEFAULT_DECLARACIONES, help="CSV de solapamientos declarados")
     ap.add_argument("--logtest-base", help="captura wazuh-logtest -v SIN reglas propias")
     ap.add_argument("--logtest-candidato", help="captura wazuh-logtest -v CON las reglas propias")
+    ap.add_argument(
+        "--logtest-base-c0",
+        help="captura wazuh-logtest -v con el ruleset base (C0 base-contra-base)",
+    )
     ap.add_argument("--eventos", help="(opcional) JSONL de eventos para cotejar el nº de eventos")
     ap.add_argument("--out", help="escribe el informe también en este fichero")
     args = ap.parse_args(argv)
@@ -642,6 +743,16 @@ def main(argv=None) -> int:
                 )
                 return EXIT_USO
 
+    # --- C0 (base-contra-base) ---
+    c0_ejecutado = bool(args.logtest_base_c0)
+    c0_ev, c0_avisos = [], []
+    if c0_ejecutado:
+        if not os.path.isfile(args.logtest_base_c0):
+            print(f"ERROR: no existe la captura C0: {args.logtest_base_c0}", file=sys.stderr)
+            return EXIT_USO
+        c0_ev, c0_avisos = c0_analizar(args.logtest_base_c0)
+    c0_vacio = c0_ejecutado and not c0_ev
+
     # --- declaraciones aplicadas ---
     hallazgos = c1_hallazgos + c2_hallazgos
 
@@ -652,11 +763,18 @@ def main(argv=None) -> int:
     no_declarados = [h for h in hallazgos if estado_declaracion(h) == "NO DECLARADO"]
 
     # --- resultado ---
-    if not reglas_propias:
-        resultado = EXIT_PASA
-    elif no_declarados:
+    # Prioridad: FALLA (enmascaramiento no declarado) > INCOMPLETO > PASA.
+    # C0 es base-contra-base: su captura es obligatoria siempre (también con 0
+    # reglas propias); su ausencia (o una captura sin eventos) -> INCOMPLETO.
+    if no_declarados:
         resultado = EXIT_FALLA
-    elif c1_irresolubles or c2_irresolubles or not c2_ejecutado:
+    elif (
+        c1_irresolubles
+        or c2_irresolubles
+        or (reglas_propias and not c2_ejecutado)
+        or not c0_ejecutado
+        or c0_vacio
+    ):
         resultado = EXIT_INCOMPLETO
     else:
         resultado = EXIT_PASA
@@ -682,8 +800,13 @@ def main(argv=None) -> int:
         "c2_irresolubles": c2_irresolubles,
         "logtest_base": args.logtest_base,
         "logtest_candidato": args.logtest_candidato,
+        "logtest_c0": args.logtest_base_c0,
         "base_ev": base_ev,
         "cand_ev": cand_ev,
+        "c0_ejecutado": c0_ejecutado,
+        "c0_ev": c0_ev,
+        "c0_avisos": c0_avisos,
+        "c0_vacio": c0_vacio,
         "avisos": sorted(set(avisos + avisos_decl + [f"rangos solapados en {p}/{b}: {n}" for (p, b, n) in c1_ambiguedades])),
         "estado_declaracion": estado_declaracion,
         "rs_de": lambda rid: (propias_por_id[rid].rs if rid in propias_por_id else "?"),

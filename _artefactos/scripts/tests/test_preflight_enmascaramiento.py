@@ -29,6 +29,7 @@ REPO_LOCAL = ROOT / "Soporte" / "Wazuh" / "Reglas" / "local_rules.xml"
 BASE = FIX / "preflight_logtest_base.txt"
 CAND = FIX / "preflight_logtest_candidato.txt"
 EVENTOS = FIX / "preflight_eventos.jsonl"
+C0 = FIX / "c0_logtest_python3_ls.txt"
 
 LOCAL_EMPTY = FIX / "preflight_local_empty.xml"
 LOCAL_MALO = FIX / "preflight_local_malo.xml"
@@ -45,7 +46,7 @@ SIN_EXTERNAS = str(FIX / "preflight_no_existe_*.xml")
 
 
 def ejecutar(local, decl=DECL_VACIA, external=SIN_EXTERNAS, base=None, cand=None,
-             out=None, eventos=None):
+             out=None, eventos=None, c0=None):
     args = [
         "--local-rules", str(local),
         "--external-rules", str(external) if external is not SIN_EXTERNAS else SIN_EXTERNAS,
@@ -58,6 +59,8 @@ def ejecutar(local, decl=DECL_VACIA, external=SIN_EXTERNAS, base=None, cand=None
         args += ["--logtest-candidato", str(cand)]
     if eventos is not None:
         args += ["--eventos", str(eventos)]
+    if c0 is not None:
+        args += ["--logtest-base-c0", str(c0)]
     if out is not None:
         args += ["--out", str(out)]
     return pf.main(args)
@@ -78,7 +81,7 @@ def test_caso_malo_falla(capsys):
 # BUENO — regla propia suelta; capturas sin cambio -> PASA (exit 0)
 # --------------------------------------------------------------------------
 def test_caso_bueno_pasa(capsys):
-    rc = ejecutar(LOCAL_BUENO, base=BASE, cand=BASE, eventos=EVENTOS)
+    rc = ejecutar(LOCAL_BUENO, base=BASE, cand=BASE, eventos=EVENTOS, c0=C0)
     assert rc == pf.EXIT_PASA == 0
     salida = capsys.readouterr().out
     assert "RESULTADO: PASA" in salida
@@ -98,7 +101,7 @@ def test_caso_hermana_falla_sin_declarar(capsys):
 
 
 def test_caso_hermana_pasa_si_declarada(capsys):
-    rc = ejecutar(LOCAL_HERMANA, decl=DECL_HERMANA, base=BASE, cand=CAND, eventos=EVENTOS)
+    rc = ejecutar(LOCAL_HERMANA, decl=DECL_HERMANA, base=BASE, cand=CAND, eventos=EVENTOS, c0=C0)
     assert rc == pf.EXIT_PASA == 0
     salida = capsys.readouterr().out
     assert "[DECLARADO]" in salida
@@ -109,9 +112,11 @@ def test_caso_hermana_pasa_si_declarada(capsys):
 # DECLARADO — el caso MALO + fila tipo=cadena -> PASA
 # --------------------------------------------------------------------------
 def test_caso_declarado_pasa(capsys):
-    rc = ejecutar(LOCAL_MALO, decl=DECL_CADENA, base=BASE, cand=BASE)
+    rc = ejecutar(LOCAL_MALO, decl=DECL_CADENA, base=BASE, cand=BASE, c0=C0)
     assert rc == pf.EXIT_PASA == 0
-    assert "RESULTADO: PASA" in capsys.readouterr().out
+    salida = capsys.readouterr().out
+    # el AVISO de C0 (92600, level 0) NO cambia el PASA
+    assert "RESULTADO: PASA (AVISOS: C0=1)" in salida
 
 
 def test_declaracion_con_tipo_distinto_no_excusa(capsys):
@@ -155,13 +160,93 @@ def test_caso_incompleto(capsys):
 
 
 # --------------------------------------------------------------------------
+# H1 · C0 — base-contra-base (captura versionada c0_logtest_python3_ls.txt)
+# --------------------------------------------------------------------------
+def _repo_sin_externas():
+    return (REPO_LOCAL, ROOT / "Soporte" / "Wazuh" / "Reglas" / "external_*.xml")
+
+
+def test_c0_python3_avisa(capsys):
+    """CA-H1-a: python3 -> ganadora 92600 (level 0) -> AVISA (no bloquea)."""
+    local, ext = _repo_sin_externas()
+    rc = ejecutar(local, decl=DECL_VACIA, external=ext, c0=C0)
+    assert rc == pf.EXIT_PASA == 0
+    salida = capsys.readouterr().out
+    assert "## C0 · base-contra-base" in salida
+    assert "ganadora `92600` (level 0)" in salida
+    assert "AVISO: detección esperada silenciada por regla de fábrica `92600`" in salida
+    assert "RESULTADO: PASA (AVISOS: C0=1)" in salida
+
+
+def test_c0_ls_no_avisa(tmp_path, capsys):
+    """CA-H1-b: ls (mismo key) -> ganadora 80792 (level 3) -> NO avisa."""
+    texto = C0.read_text(encoding="utf-8")
+    partes = texto.split("**Phase 1:")
+    assert len(partes) == 3, "la captura C0 debe traer exactamente 2 eventos"
+    solo_ls = tmp_path / "c0_ls.txt"
+    solo_ls.write_text("**Phase 1:" + partes[2], encoding="utf-8")
+    eventos, avisos = pf.c0_analizar(str(solo_ls))
+    assert eventos == [{"id": "80792", "level": "3"}]
+    assert avisos == []
+    local, ext = _repo_sin_externas()
+    rc = ejecutar(local, decl=DECL_VACIA, external=ext, c0=solo_ls)
+    assert rc == pf.EXIT_PASA == 0
+    salida = capsys.readouterr().out
+    assert "AVISO: detección esperada silenciada por regla de fábrica" not in salida
+    assert "(AVISOS: C0=" not in salida
+    assert "RESULTADO: PASA" in salida
+
+
+def test_c0_sin_captura_incompleto(capsys):
+    """CA-H1-c: sin captura C0 -> INCOMPLETO (nunca PASA en silencio)."""
+    local, ext = _repo_sin_externas()
+    rc = ejecutar(local, decl=DECL_VACIA, external=ext)
+    assert rc == pf.EXIT_INCOMPLETO == 3
+    salida = capsys.readouterr().out
+    assert "C0 NO EJECUTADO" in salida
+    assert "RESULTADO: INCOMPLETO" in salida
+
+
+def test_c0_captura_vacia_incompleto(tmp_path, capsys):
+    """CA-H1-c: captura C0 presente pero sin eventos -> INCOMPLETO."""
+    vacia = tmp_path / "c0_vacia.txt"
+    vacia.write_text("", encoding="utf-8")
+    local, ext = _repo_sin_externas()
+    rc = ejecutar(local, decl=DECL_VACIA, external=ext, c0=vacia)
+    assert rc == pf.EXIT_INCOMPLETO == 3
+    salida = capsys.readouterr().out
+    assert "no contiene ningún evento" in salida
+    assert "RESULTADO: INCOMPLETO" in salida
+
+
+def test_parse_logtest_detalle_niveles():
+    """El parser reutilizado expone id y level de cada evento."""
+    assert pf.parse_logtest_detalle(str(C0)) == [
+        {"id": "92600", "level": "0"},
+        {"id": "80792", "level": "3"},
+    ]
+    # `parse_logtest` (compatibilidad C2) sigue devolviendo solo ids
+    assert pf.parse_logtest(str(C0)) == ["92600", "80792"]
+
+
+def test_c0_no_rompe_c1_c2(capsys):
+    """CA-H1-c: con C0 presente, C1/C2 conservan su lógica (hermana no declarada FALLA)."""
+    rc = ejecutar(LOCAL_HERMANA, base=BASE, cand=CAND, eventos=EVENTOS, c0=C0)
+    assert rc == pf.EXIT_FALLA == 1
+    salida = capsys.readouterr().out
+    assert "## C1 · Cadena" in salida
+    assert "## C2 · Hermana" in salida
+    assert "RESULTADO: FALLA" in salida
+
+
+# --------------------------------------------------------------------------
 # DETERMINISMO — dos ejecuciones, misma entrada -> informe byte a byte idéntico
 # --------------------------------------------------------------------------
 def test_determinismo_byte_a_byte(tmp_path):
     out1 = tmp_path / "informe1.md"
     out2 = tmp_path / "informe2.md"
     args = dict(local=LOCAL_HERMANA, decl=DECL_HERMANA, base=BASE, cand=CAND,
-                eventos=EVENTOS)
+                eventos=EVENTOS, c0=C0)
     assert ejecutar(out=out1, **args) == pf.EXIT_PASA
     assert ejecutar(out=out2, **args) == pf.EXIT_PASA
     b1, b2 = out1.read_bytes(), out2.read_bytes()
@@ -174,7 +259,8 @@ def test_determinismo_byte_a_byte(tmp_path):
 # --------------------------------------------------------------------------
 def test_repo_cero_reglas_pasa(capsys):
     rc = ejecutar(REPO_LOCAL, decl=DECL_VACIA,
-                  external=ROOT / "Soporte" / "Wazuh" / "Reglas" / "external_*.xml")
+                  external=ROOT / "Soporte" / "Wazuh" / "Reglas" / "external_*.xml",
+                  c0=C0)
     assert rc == pf.EXIT_PASA == 0
     salida = capsys.readouterr().out
     assert "Reglas propias analizadas: **0**" in salida

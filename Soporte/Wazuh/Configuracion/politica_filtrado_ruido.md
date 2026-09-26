@@ -1,10 +1,10 @@
 ---
 fase: 3
-tarea: A2.1 (T-11 · R-09/R-13)
+tarea: A2.1 (T-11 · R-09/R-13) · A3.0 (H3/H4)
 nombre: Política de filtrado de ruido y etiquetado auditado de alertas
-version: 1
+version: 2
 status: implementada
-fecha: 2026-09-25
+fecha: 2026-09-26
 autor: tfg-executor
 ---
 
@@ -21,7 +21,8 @@ autor: tfg-executor
   `extraer_alertas.py --detail`. Columnas: `timestamp_utc, agent_name, rule_id, rule_level,
   rule_description, rule_groups, rs_origen, audit_exe, audit_cwd, audit_key, audit_type,
   audit_file, audit_dir, syscheck_path` (nombres de campo **confirmados con datos reales** en el
-  paso 0, 2026-09-25).
+  paso 0, 2026-09-25) **más `srcip, srcuser, dstuser`** (añadidas en H3, 2026-09-26, para evaluar
+  la condición de origen de `5715`; el filtro las lee por nombre, no las vuelca al audited).
 - **Catálogo baseline:** `Dataset/Legitimo/ruleids_legitimos.csv` (12 `rule.id`, 13.574 alertas).
 - **Señales esperadas del ataque:** `Dataset/Ataques/Comandos/T<id>-<desc>/ATA<NNN>_esperado.csv`.
 - **Salida:** `Dataset/Ataques/Resultados/Wazuh/Auditado/ATA<NNN>_iter{N}-Audited.csv`.
@@ -34,15 +35,18 @@ Una alerta recibe **una** categoría; **gana el primero que casa**:
 
 1. **`auto_ruido`** — el origen es el propio Wazuh, **por campos** (no por `rule.id`) §3.
 2. **`deteccion`** — casa una señal esperada de tipo `deteccion`.
-3. **`dudosa`** — casa una señal esperada de tipo `ambigua`, **o** la alerta no permite evaluar
+3. **`ruido_conocido`** — **paso 1.5 (H3)**: casa el **predicado `OPERADOR`** §3.bis
+   (motivo `operador:<rule_id>`). Va **después** de las señales de detección y **antes** de
+   `dudosa`/`sin_campos`: si una señal `deteccion` casa la alerta, **gana la detección**.
+4. **`dudosa`** — casa una señal esperada de tipo `ambigua`, **o** la alerta no permite evaluar
    **ninguna** señal (falta el campo; motivo `sin_campos`).
-4. **`deteccion`** — `rule.id` **no** está en el catálogo (motivo `novel`).
-5. **`ruido_conocido`** — `rule.id` **sí** está en el catálogo (motivo `baseline`).
+5. **`deteccion`** — `rule.id` **no** está en el catálogo (motivo `novel`).
+6. **`ruido_conocido`** — `rule.id` **sí** está en el catálogo (motivo `baseline`).
 
 `categoria ∈ {deteccion, ruido_conocido, auto_ruido, dudosa}`.
 
-**Motivos:** `auto_ruido:<proceso>`, `senal:<senal_id>`, `ambigua:<senal_id>`, `sin_campos`,
-`novel`, `baseline`.
+**Motivos:** `auto_ruido:<proceso>`, `senal:<senal_id>`, `operador:<rule_id>`,
+`ambigua:<senal_id>`, `sin_campos`, `novel`, `baseline`.
 
 ## 3. `auto_ruido` — categoría propia (§3)
 
@@ -61,6 +65,49 @@ hay `exe`). La `evidencia` es el campo que decidió (`audit_exe=…`, `audit_cwd
 `auto_ruido` **no se mezcla** con `ruido_conocido` (así el ~54 % queda visible) y se reporta
 aparte en los conteos. Si una señal `deteccion` apuntara a un proceso de Wazuh, se emite
 **`CONFLICTO`** por `stderr` y **prevalece `auto_ruido`** (no se resuelve en silencio).
+
+## 3.bis Predicado `OPERADOR` — paso 1.5 (H3, 2026-09-26)
+
+> **Principio rector: solo se auto-excluye lo DEMOSTRABLE como propio. Lo que no se puede
+> demostrar, se revisa (`dudosa`).** Es el lado seguro contra falsos negativos silenciosos.
+
+Se aplica **después** de `auto_ruido` (1) y de las señales de **detección** (2), y **antes** de
+`dudosa`/`sin_campos` (3). Predicado explícito, con condición **estrecha** y por `rule_id` concreto
+(no por usuario ni por grupo genérico):
+
+| `rule_id` | Grupo requerido | Condición de exclusión | Motivo | Fundamento |
+|---|---|---|---|---|
+| **`5715`** (`sshd: authentication success`) | `sshd`/`syslog`/`authentication_success` | **`srcip ∈ OPERADOR_SRCIPS`** | `operador:5715` | Es **nuestra** sesión (host del operador). **Demostrable** por la IP. SSH del atacante desde otra IP → **NO** se excluye. |
+| **`19004`** (SCA summary) | `sca` | **sin** condición de origen: basta regla + grupo | `operador:19004` | Autoevaluación del HIDS, **inequívoca**; no es un login. |
+| **`5501`** (`PAM: Login session opened`) | — | **NINGUNA → NO se auto-excluye** | (queda `dudosa`/`sin_campos`) | El `full_log` **no trae IP ni id. de sesión**: la atribución al operador **no es demostrable**. |
+| **`5502`** (`PAM: Login session closed`) | — | **NINGUNA → NO se auto-excluye** | (queda `dudosa`/`sin_campos`) | Ídem. |
+
+- `OPERADOR_SRCIPS = {192.168.65.1}` (IP del **host/sobremesa en VMnet1**, confirmada con
+  `ipconfig` en el paso 0 el 2026-09-26 y con `data.srcip` real de los `5715` del piloto).
+- **Si falta el campo de origen (`srcip`)** → la condición **no** se satisface → `dudosa`.
+- Al excluir: `categoria=ruido_conocido`, `motivo=operador:<rule_id>`, `revision=""`, y
+  `evidencia` = el campo que lo demuestra (`srcip=…` / `rule_group=sca`).
+- **Nunca** se excluye una alerta de estas reglas si **no** cumple su condición.
+
+### Garantía anti-frágil (señal declarada sobre el predicado)
+
+Si el `esperado` del ataque **declara una señal** cuyo `campo=rule_id` (o `rule_group`) **casara
+una regla del predicado H3** (`5715`/`19004` y sus grupos), la herramienta emite **`CONFLICTO` por
+`stderr`** y **prevalece la detección** — la señal de detección va en el paso 2, **antes** del 1.5.
+Así una señal declarada **nunca** se excluye en silencio y queda aviso trazable.
+
+### Limitación declarada (residual)
+
+**`5501`/`5502` permanecen en revisión humana por diseño**: sin IP ni id. de sesión no se puede
+demostrar la atribución (un atacante con credenciales válidas, T1078, usaría el mismo usuario).
+**No es un defecto, es el lado seguro.** En el piloto fueron **13 filas** (ATA008 iter1=2,
+iter2=3, ATA013 iter1=6, iter2=2) → ≈2–6 por ventana, volumen asumible. Las PAM de ATA002 salen
+`baseline` (sus señales `rule_id`/`rule_group` sí son evaluables) y no pasan por aquí.
+
+> **Nota de trazabilidad (plegado de revisión):** las filas `5715` que el humano resolvió a mano en
+> el piloto ahora se auto-excluyen por el predicado y su `evidencia` cambia (`srcip=…`); su clave de
+> plegado ya no coincide y el filtro emite `AVISO: revisión con clave no encontrada`. Es **inocuo**:
+> el resultado final (`ruido_conocido`) es el mismo que el veredicto humano previo.
 
 ## 4. Señales esperadas — atribución (§2)
 
@@ -81,6 +128,13 @@ senal_id,tipo,campo,patron,dato_componente,tecnica,nota
 `evidencia` = `campo=valor` de la señal que casó. **Sin fichero de señales la herramienta falla
 ruidosamente** (`exit ≠ 0`, código 3); solo `--modo baseline` permite pasar una ventana sin
 ataque.
+
+> **Convención de señales (H4, 2026-09-26):** en una técnica que **escribe en la carpeta del
+> ataque** (`/home/angel/lab-attack/ATA<NNN>/`), toda señal `audit_exe` se **acompaña** de una
+> señal de contexto `audit_cwd=/home/angel/lab-attack/ATA<NNN>/*`. El `audit_cwd` **ancla** el
+> proceso al ataque y discrimina el churn (`/`, `var/ossec`…). Ver
+> `Soporte/Ataques/plantilla_esperado.md`. El **esquema** del esperado **no** cambia (cambia
+> el contenido: una señal más).
 
 ## 5. Dudosas y revisión humana (§4)
 
@@ -117,7 +171,9 @@ declarada sin ataque (plan §8-a). **No** sustituye al modo ataque.
 ## 8. Referencias
 
 - Código: `_artefactos/scripts/filtrar_ruido.py` (constantes `WAZUH_PROCESOS`, `SIGNAL_CAMPOS`,
-  `OUT_HEADER`).
+  `OUT_HEADER`, `OPERADOR_SRCIPS`, `OPERADOR_REGLAS`).
 - Extractores: `_artefactos/scripts/extraer_alertas.py` (`--detail`, `--muestra`).
 - Diseño de RuleSets: `Soporte/Wazuh/Configuracion/rulesets_diseno.md` §4.
 - Baseline: `Dataset/Legitimo/baseline_meta.md` §9 y §14.5.
+- Convención de señales (H4): `Soporte/Ataques/plantilla_esperado.md`.
+- Criterio de doble iteración (H2): `Soporte/Ataques/criterio_doble_iteracion.md`.
