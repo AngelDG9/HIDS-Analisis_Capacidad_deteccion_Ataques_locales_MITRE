@@ -1,0 +1,12 @@
+# ATA007_esperado.csv | ATA007 · T1491 Defacement | TFG HIDS · Fase 3 (T-09)
+# Redactado el 2026-09-26 con los datos del paso 0, ANTES de ver ninguna alerta.
+# Gate humano (2º): PENDIENTE de validacion ANTES del primer t0 de la tecnica.
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+# Convencion H4: cada senal audit_exe se acompana de audit_cwd de la carpeta del ataque.
+# Nota de metodo (ver README §9 / plan §3.1): las ESCRITURAS en la ruta vigilada
+#   compartida con el baseline se declaran AMBIGUA (nunca deteccion) -> van a dudosa.
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1491-S1,deteccion,audit_exe,cp,Process Creation,T1491,cp sobrescribe la pagina publica simulada
+T1491-S2,deteccion,audit_cwd,/home/angel/lab-attack/ATA007/*,Process Creation,T1491,ancla H4
+T1491-A1,ambigua,rule_id,80790,File Creation,T1491,creacion generica bajo watch (tambien en churn)
+T1491-A2,ambigua,rule_id,80781,File Modification,T1491,escritura en ruta vigilada (la tapa el baseline) -> va a dudosa/revision humana

@@ -1,0 +1,9 @@
+﻿2026-09-26T12:30:38Z
+=== staging ===
+total 100
+-rwxr-xr-x 1 angel angel  2144 Sep 26 14:29 ATA012_ataque.sh
+drwxrwxr-x 2 angel angel  4096 Sep 26 14:30 collected
+-rw-rw-r-- 1 angel angel 83086 Sep 26 14:30 collected.tar.gz
+-rw-rw-r-- 1 angel angel   252 Sep 26 14:30 ejecucion.out
+-rw-rw-r-- 1 angel angel    83 Sep 26 14:29 sha256_artefacto.txt
+99

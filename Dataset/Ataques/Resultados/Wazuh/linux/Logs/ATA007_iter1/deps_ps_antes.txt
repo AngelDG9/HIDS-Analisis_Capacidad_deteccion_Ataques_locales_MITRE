@@ -1,0 +1,47 @@
+﻿=== deps ===
+/usr/bin/cp
+/usr/bin/find
+/usr/bin/tar
+/usr/bin/systemctl
+
+=== ps_antes ===
+    PID    PPID COMMAND         COMMAND
+      1       0 systemd         /sbin/init
+      2       0 kthreadd        [kthreadd]
+      3       2 pool_workqueue_ [pool_workqueue_release]
+      4       2 kworker/R-rcu_g [kworker/R-rcu_g]
+      5       2 kworker/R-rcu_p [kworker/R-rcu_p]
+      6       2 kworker/R-slub_ [kworker/R-slub_]
+      7       2 kworker/R-netns [kworker/R-netns]
+      8       2 kworker/0:0-cgr [kworker/0:0-cgroup_free]
+      9       2 kworker/0:0H-ev [kworker/0:0H-events_highpri]
+     10       2 kworker/0:1-cgr [kworker/0:1-cgroup_free]
+     11       2 kworker/u256:0- [kworker/u256:0-ext4-rsv-conversion]
+     12       2 kworker/R-mm_pe [kworker/R-mm_pe]
+     13       2 rcu_tasks_kthre [rcu_tasks_kthread]
+     14       2 rcu_tasks_rude_ [rcu_tasks_rude_kthread]
+     15       2 rcu_tasks_trace [rcu_tasks_trace_kthread]
+     16       2 ksoftirqd/0     [ksoftirqd/0]
+     17       2 rcu_preempt     [rcu_preempt]
+     18       2 migration/0     [migration/0]
+     19       2 idle_inject/0   [idle_inject/0]
+     20       2 cpuhp/0         [cpuhp/0]
+     21       2 cpuhp/1         [cpuhp/1]
+     22       2 idle_inject/1   [idle_inject/1]
+     23       2 migration/1     [migration/1]
+     24       2 ksoftirqd/1     [ksoftirqd/1]
+     25       2 kworker/1:0-eve [kworker/1:0-events]
+     26       2 kworker/1:0H-kb [kworker/1:0H-kblockd]
+     27       2 kworker/u257:0- [kworker/u257:0-events_unbound]
+     28       2 kworker/u258:0- [kworker/u258:0-events_power_efficient]
+     29       2 kdevtmpfs       [kdevtmpfs]
+     30       2 kworker/R-inet_ [kworker/R-inet_]
+     31       2 kauditd         [kauditd]
+     32       2 kworker/0:2-eve [kworker/0:2-events]
+     33       2 khungtaskd      [khungtaskd]
+     34       2 oom_reaper      [oom_reaper]
+     35       2 kworker/u257:1- [kworker/u257:1-events_unbound]
+     36       2 kworker/u257:2- [kworker/u257:2-events_unbound]
+     37       2 kworker/R-write [kworker/R-write]
+     38       2 kcompactd0      [kcompactd0]
+     39       2 ksmd            [ksmd]

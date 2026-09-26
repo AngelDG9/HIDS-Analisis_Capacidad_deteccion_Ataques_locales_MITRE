@@ -45,6 +45,14 @@ echo '<contraseña del laboratorio>' | sudo -S /var/ossec/bin/agent_control -l  
 df -h /                                                                          # ABORTAR si < 10 GB libres
 ```
 
+**Extractor (sincronía repo ↔ manager — regla del §8.1):** antes de medir, comprobar que la copia
+**desplegada** en el manager coincide con la del **repo**; si no, **desplegarla**:
+
+```bash
+sha256sum /home/angel/extraer_alertas.py                 # en el manager
+# sha256 _artefactos/scripts/extraer_alertas.py          # en el repo -> deben coincidir
+```
+
 **Víctima (`victima-linux`, 192.168.65.129):**
 
 ```bash
@@ -197,8 +205,9 @@ python _artefactos/scripts/filtrar_ruido.py \
 - Localiza el esperado por
   `Dataset/Ataques/Comandos/*/ATA<NNN>_esperado.csv` (o pásalo con `--esperado`).
 - Si falta el esperado → **`exit 3`** (no se ejecuta el ataque sin esperado validado).
-- **Enganchón declarado:** el `--out` por defecto de `filtrar_ruido.py` no lleva `linux/`; aquí
-  se pasa explícito. (Actualizar el default es deuda del escalado.)
+- **Default arreglado (cabo 1, 2026-09-26):** el `--out`/`--rev-out` por defecto de
+  `filtrar_ruido.py` **ya incluye `linux/`** → `Dataset/Ataques/Resultados/Wazuh/linux/Auditado/`.
+  Aquí se sigue pasando **explícito** para que la ruta quede **visible en la evidencia** (traza).
 
 ### Paso 11 — Revisión de `dudosa`
 
@@ -211,6 +220,24 @@ veredictos y queda trazable). **No puede quedar ninguna `dudosa` sin resolver.**
 - Evidencia en `Logs/ATA<NNN>_iterN/`: `times.log`, `ejecucion.out`, `ps_antes.txt`/`ps_despues.txt`,
   `deps.txt`, `sha256_artefacto.txt` y (solo ATA008) `sink.log`.
 - Ficha `Dataset/Ataques/Resultados/Wazuh/linux/ATA<NNN>_meta.md` (esquema §7 del plan).
+
+**Plantilla obligatoria de la ficha (con desglose de detecciones):** cada ficha debe incluir,
+por iteración, las **DOS cifras** de detección y el **desglose esperadas/sorpresas**:
+
+```text
+## Detecciones — dos cifras (por iteración)
+- alertas de detección (recuento bruto): <N>
+- rule_id distintos que las originan:   <set>          ← número "limpio"
+- genuinas del ataque vs ajenas:        <g> / <a>       ← por anclaje (cwd de la carpeta del ataque)
+- desglose: esperadas (motivo=senal:…) = <E>  ·  sorpresas (motivo=novel) = <S>
+```
+
+> **Por qué dos cifras (hallazgo 2026-09-26):** las señales por proceso (`audit_exe`) y el ancla
+> por carpeta (`audit_cwd`) son **amplias**: capturan **todas** las alertas de ese proceso —incluidas
+> las de **escritura/creación** (`80790`/`80781`) o la **elevación**— y las **promueven a `deteccion`**
+> (el paso 2 gana al paso 3 `ambigua`). El recuento bruto puede ser **redundante** (el mismo evento
+> del `cp` visto por varias reglas) y puede incluir **procesos ajenos al ataque** (p. ej. `find` de
+> `update-motd.d` o `systemctl --user` del cierre de sesión del operador). Detalle y recomendación: §8.
 - Bitácora `Bitacora/ATA<NNN>.json` (append-only, esquema §8 del plan).
 - Fila de `Hojas/ATA_index.csv` (`en-curso` durante; `cerrado`/`review` al final). **Solo su fila.**
 
@@ -293,6 +320,10 @@ falta de telemetría: el `execve` de `python3` **sí** está en `audit.log`
   sí alertan (`80792`); **`python3` no**.
 - **Mejora para el escalado:** el pre-flight **C1** comprueba *nuestras* reglas contra la base, **no
   base-contra-base** → considerar ampliarlo para descubrir estos puntos ciegos de fábrica.
+  - ⚠️ **Puntero (cabo 5, 2026-09-26):** *esta referencia a **C1** es **histórica**.* El hallazgo
+    H1 quedó **resuelto** en el bloque `fase-03-afinado` como chequeo **C0** (**base-contra-base**,
+    `wazuh-logtest` con el ruleset base) — ver **§7**. La frase de arriba se conserva como
+    **trazabilidad de cómo se descubrió**, no como deuda vigente.
 
 ### H2 El ruido de arranque domina las ventanas cortas (doble iteración en `review`)
 
@@ -333,4 +364,44 @@ siguiente; **no** forma parte de este):
   `Soporte/Wazuh/Configuracion/politica_filtrado_ruido.md` §3.bis.
 - **H4 — convención de señales:** `audit_exe` **+** `audit_cwd=/home/angel/lab-attack/ATA<NNN>/*`.
   Ver `Soporte/Ataques/plantilla_esperado.md`.
+
+---
+
+## 8. Hallazgos del bloque `fase-03-piloto-custom` (2026-09-26)
+
+> Registrados al ejecutar ATA007 (T1491), ATA012 (T1119) y ATA004 (T1489) — el camino
+> **"ataque escrito por nosotros"**. Ver fichas `Dataset/Ataques/Resultados/Wazuh/linux/ATA00{4,7,12}_meta.md`.
+
+### 8.1 ⚠️ Repositorio y manager **desincronizados** (fallo de despliegue)
+
+- **Qué pasó:** el `extraer_alertas.py` **desplegado en el manager** seguía siendo la versión
+  **antigua** (sin `srcip/srcuser/dstuser`); el del **repo** ya traía las columnas nuevas de **H3**.
+  Consecuencia: el **predicado `OPERADOR`** no podía leer `srcip` → las sesiones del operador
+  (`5715`) **no se auto-excluían** y caían a `dudosa` (`sin_campos`).
+- **Arreglo:** `scp` del `extraer_alertas.py` del repo al manager (backup del anterior) y **re-extracción**
+  de las ventanas ya tomadas. Tras el arreglo: `5715` → `ruido_conocido` / `motivo=operador:5715` (`srcip=192.168.65.1`).
+- **LECCIÓN (regla operativa):** *el **repositorio** y lo **desplegado** en el manager deben ir en
+  **sincronía**: hay que **desplegar** los scripts modificados antes de medir; el pipeline usa la
+  **copia del manager**, no la del repo.* Añadir al **paso 0** un chequeo de `sha256` manager↔repo
+  de `extraer_alertas.py`.
+
+### 8.2 ⚠️ Las señales por proceso/carpeta son **amplias** (recuento bruto ≠ eventos)
+
+- **ATA007:** las escrituras del `cp` (`80790`, `80781`) —que el `esperado` declaró **`ambigua`**—
+  fueron **promovidas a `deteccion`** por la señal `T1491-S1` (`audit_exe=cp`), porque el mismo
+  evento del `cp` las arrastra. Recuento bruto **4 alertas / 3 `rule_id` distintos**.
+- **ATA012:** **3 `find` AJENOS** al ataque (`update-motd.d`: `landscape-sysinfo`, `update-notifier`,
+  `cwd=/`) disparados por el **login del operador** → contados como `deteccion` por `T1119-S1`
+  (`audit_exe=find`). Genuinas: **7** (iter1) / **8** (iter2) de **11**.
+- **ATA004:** **2 `systemctl --user`** del **cierre de sesión** del operador → contados como
+  `deteccion` por `T1489-S1` (`audit_exe=systemctl`). Genuinas: **3** de **5**.
+- **Observación de forma:** el patrón del ancla `audit_cwd=/home/angel/lab-attack/ATA<NNN>/*` **no
+  casa** el valor real del campo (que es la **carpeta sin barra final**: `/home/angel/lab-attack/ATA<NNN>`)
+  → el ancla queda **inerte**. Las detecciones funcionaron por las señales `audit_exe`, no por el ancla.
+- **RECOMENDACIÓN para el escalado:** *para ataques cuyo proceso también corre por el sistema,
+  **anclar la detección por el `audit_cwd` de la carpeta del ataque** (corrigiendo el patrón: sin `/*`
+  final) **y/o por el `rule_id` del `execve`** (p. ej. `80792`), **no** por `audit_exe` genérico.*
+- **Decisión:** **no se recalibran** los `esperado` ya validados (se escriben antes y no se ajustan
+  después); el sesgo se **documenta** y se corrigen las señales en los **ataques nuevos** del escalado.
+  En cada ficha se reportan las **dos cifras** y se **separan genuinas de ajenas**.
 

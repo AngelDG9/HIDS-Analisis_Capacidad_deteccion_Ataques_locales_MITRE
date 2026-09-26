@@ -1,0 +1,8 @@
+﻿T0=2026-09-26T12:39:50Z
+ATA004 ┬À T1489 Service Stop (systemctl) ÔÇö GUID 42e3a5bd-1e45-427f-aa08-2a65fa29a820
+T0=2026-09-26T12:39:50Z
+--- estado del servicio ANTES ---
+active
+--- estado del servicio DESPUES ---
+inactive
+T1_LOCAL=2026-09-26T12:39:50Z

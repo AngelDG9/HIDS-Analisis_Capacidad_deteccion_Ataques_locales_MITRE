@@ -467,6 +467,36 @@ def test_columnas_exactas_salida():
 
 
 # --------------------------------------------------------------------------
+# cabo 1 (fase-03-piloto-custom §6.1): default de --out/--rev-out por SO
+# --------------------------------------------------------------------------
+def test_default_audited_dir_bajo_linux():
+    """CA7: el default cae en `.../Wazuh/linux/Auditado` (guard de regresión)."""
+    norm = fr.DEFAULT_AUDITED_DIR.replace("\\", "/")
+    assert norm == "Dataset/Ataques/Resultados/Wazuh/linux/Auditado"
+
+
+def test_sin_out_escribe_bajo_linux_auditado(tmp_path, monkeypatch):
+    """CA7: sin `--out`, la salida aterriza en `<cwd>/…/Wazuh/linux/Auditado/`."""
+    monkeypatch.chdir(tmp_path)
+    alerta = alerta_tmp(tmp_path, [
+        fila("2026-09-23T10:00:00.000Z", "80790", exe="/usr/bin/cp",
+             cwd="/home/angel/lab-attack/ATA007", key="audit-wazuh-c", typ="SYSCALL"),
+    ], nombre="cabo1-alerta.csv")
+    esp = esperado_tmp(tmp_path, [
+        {"senal_id": "T1491-S1", "tipo": "deteccion", "campo": "audit_exe",
+         "patron": "cp", "dato_componente": "Process Creation", "tecnica": "T1491",
+         "nota": ""},
+    ], nombre="cabo1-esperado.csv")
+    rc = fr.main(["--alerta", str(alerta), "--ata", "ATA007",
+                  "--catalogo", str(CATALOGO), "--esperado", str(esp)])
+    assert rc == fr.EXIT_OK
+    out = tmp_path / fr.DEFAULT_AUDITED_DIR / "ATA007_iter1-Audited.csv"
+    assert out.is_file()
+    assert "linux" in out.parts and "Auditado" in out.parts
+
+
+
+# --------------------------------------------------------------------------
 # no regresión de extraer_alertas.py (--test y --detail offline)
 # --------------------------------------------------------------------------
 def test_extraer_test_mode_sigue_ok(capsys):

@@ -139,7 +139,9 @@ EXIT_USAGE = 2
 EXIT_NO_SIGNALS = 3
 
 DEFAULT_CATALOGO = "Dataset/Legitimo/ruleids_legitimos.csv"
-DEFAULT_AUDITED_DIR = "Dataset/Ataques/Resultados/Wazuh/Auditado"
+# Convención por SO (fase-03-afinado §5): los resultados viven bajo `.../Wazuh/linux/`.
+# El default de `--out`/`--rev-out` cae dentro del árbol versionado por SO (cabo 1).
+DEFAULT_AUDITED_DIR = "Dataset/Ataques/Resultados/Wazuh/linux/Auditado"
 DEFAULT_COMANDOS_DIR = "Dataset/Ataques/Comandos"
 
 

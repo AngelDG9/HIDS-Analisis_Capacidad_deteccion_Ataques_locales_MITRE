@@ -1,0 +1,100 @@
+{
+  "ata_id": "ATA007",
+  "tecnica": "T1491",
+  "tactica": "Impact",
+  "sistema": "linux",
+  "bloque": "fase-03-piloto-custom",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1491-Defacement/",
+  "atomic": {
+    "fuente": "custom",
+    "nota": "ataque manual escrito por el TFG; Atomic Red Team no tiene pruebas Linux para T1491"
+  },
+  "esperado_sha256": "1d2a7a8850210f84f82f5001fdc678c3c6f2b7bfecc8ab38f8dcc600e242d80c",
+  "ataque_sha256": "6918a2a8e0553ad2ef618c99ca4007e96c31ab818828108b880415a9b871ff4b",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA007_logtest.txt",
+    "logtest_sha256": "6e08fbd4ed4100602fe6ce2d00250c37c2b8752ea5ed50827f11ccd0abe617d1",
+    "preflight": "Soporte/Ataques/c0/ATA007_preflight.md",
+    "resultado": "PASA (C0 ejecutado, sin silenciadores de fabrica)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1,
+      "t0": "2026-09-26T12:05:06Z",
+      "t1": "2026-09-26T12:05:42Z",
+      "duracion_s": 36,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-26.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA007_iter1-Detalle.csv",
+      "detalle_sha256": "a6f95dec543fa2a00314271e9689949c325dfb41e8e048e958b6d0306b85ed24",
+      "detalle_raw_sha256": "c5b15e2267d349d77c8e9ae5bbf88f71ca5f7c53c36470e37d0381b6bfc79955",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA007_iter1-Audited.csv",
+      "audited_sha256": "931e273a636a811833a79711c955d8ea67b1d236f453e6d7b901645a67fe7a3d",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA007_iter1-Revision.csv",
+      "revision_sha256": "0b80d5bcd895358b89e226bec94104d55abb126737f4519aeaf67f7f81865ec9",
+      "conteos": { "filas": 737, "deteccion": 4, "auto_ruido": 609, "ruido_conocido": 124, "dudosa": 0 },
+      "rs": { "RS1": 4, "RS2": 733, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 744, "victima_linux": 737, "otros_agentes_descartados": 7 },
+      "detecciones": { "alertas": 4, "rule_id_distintos": ["80781", "80790", "80792"], "genuinas": 4, "ajenas": 0, "esperadas": 4, "sorpresas": 0 },
+      "dudosas_resueltas": 1
+    },
+    {
+      "iter": 2,
+      "t0": "2026-09-26T12:16:20Z",
+      "t1": "2026-09-26T12:16:55Z",
+      "duracion_s": 35,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-26.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA007_iter2-Detalle.csv",
+      "detalle_sha256": "2c072d68558b2e17d29007404030535ef26234868b1c2dc8823b4348c3f5339b",
+      "detalle_raw_sha256": "49dfe9da13f089251a0e70315fd6e413b5b4f937fd54ca64379286a164cc8d9e",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA007_iter2-Audited.csv",
+      "audited_sha256": "419ec9d638360fce07275c60d98da6b602eb8311d72620cde240c6e68a10841c",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA007_iter2-Revision.csv",
+      "revision_sha256": "5a10b0bf1f858e5b0f094fca78c67a473855c927fac4290c0e034470a7569fdc",
+      "conteos": { "filas": 748, "deteccion": 4, "auto_ruido": 620, "ruido_conocido": 124, "dudosa": 0 },
+      "rs": { "RS1": 4, "RS2": 744, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 756, "victima_linux": 748, "otros_agentes_descartados": 8 },
+      "detecciones": { "alertas": 4, "rule_id_distintos": ["80781", "80790", "80792"], "genuinas": 4, "ajenas": 0, "esperadas": 4, "sorpresas": 0 },
+      "dudosas_resueltas": 1
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-09-26",
+    "filas": 2,
+    "veredicto": "ruido",
+    "motivo": "senal ambigua T1491-A1 (80790) pre-declarada en el esperado validado: es el mkdir -p del setup del ataque, no la tecnica de defacement; criterio del orquestador",
+    "revisor": "orquestador"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": {
+    "criterio": "v2",
+    "mismo_conjunto_rule_id_deteccion": true,
+    "rule_ids_deteccion": ["80781", "80790", "80792"],
+    "n1": 4,
+    "n2": 4,
+    "margen": 2,
+    "criterio_recuento_ok": true,
+    "sin_dudosas_sin_resolver": true,
+    "auto_ruido_delta": 11,
+    "ruido_conocido_delta": 0,
+    "nota": "senal S1 (audit_exe=cp) ancha: promueve a deteccion las escrituras del mismo evento del cp (80790/80781), declaradas ambigua A1/A2; recuento bruto redundante -> 3 rule_id distintos"
+  },
+  "extraccion": {
+    "extractor": "extraer_alertas.py H3 (con srcip/srcuser/dstuser)",
+    "nota": "ventana re-extraida el 2026-09-26 tras desplegar el extractor H3 en el manager (corrige el gap de despliegue)"
+  },
+  "eventos": [
+    { "ts": "2026-09-26T12:05:06Z", "tipo": "t0", "detalle": "iter1 t0 (tras revert a lab-listo y asentamiento)" },
+    { "ts": "2026-09-26T12:05:42Z", "tipo": "t1", "detalle": "iter1 t1 (tras scan FIM forzado agent_control -r -u 001)" },
+    { "ts": "2026-09-26T12:05:42Z", "tipo": "extraido", "detalle": "iter1 raw 744 (737 victima + 7 otros) -> Detalle 737" },
+    { "ts": "2026-09-26T12:07:00Z", "tipo": "filtrado", "detalle": "iter1 deteccion=4 auto_ruido=609 ruido_conocido=123 dudosa=1; dudosa A1(80790) resuelta a ruido" },
+    { "ts": "2026-09-26T12:16:20Z", "tipo": "t0", "detalle": "iter2 t0 (revert a lab-listo + asentamiento)" },
+    { "ts": "2026-09-26T12:16:55Z", "tipo": "t1", "detalle": "iter2 t1 (tras scan FIM forzado)" },
+    { "ts": "2026-09-26T12:17:00Z", "tipo": "extraido", "detalle": "iter2 raw 756 (748 victima + 8 otros) -> Detalle 748" },
+    { "ts": "2026-09-26T12:18:00Z", "tipo": "filtrado", "detalle": "iter2 deteccion=4 auto_ruido=620 ruido_conocido=123 dudosa=1; dudosa A1(80790) resuelta a ruido" },
+    { "ts": "2026-09-26T14:20:00Z", "tipo": "re-extraido", "detalle": "ambas ventanas re-extraidas con el extractor H3; filtrado rehecho (dudosa A1 re-resuelta); sin cambios en deteccion" },
+    { "ts": "2026-09-26T14:40:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (4/4, mismo conjunto) -> iguales" }
+  ]
+}

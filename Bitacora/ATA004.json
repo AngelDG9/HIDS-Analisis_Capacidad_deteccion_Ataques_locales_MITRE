@@ -1,0 +1,105 @@
+{
+  "ata_id": "ATA004",
+  "tecnica": "T1489",
+  "tactica": "Impact",
+  "sistema": "linux",
+  "bloque": "fase-03-piloto-custom",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1489-Service_Stop/",
+  "atomic": {
+    "fuente": "atomic-red-team",
+    "guid": "42e3a5bd-1e45-427f-aa08-2a65fa29a820",
+    "path": "atomics/T1489/T1489.yaml",
+    "commit": "388942adbd9641f4dfdcf079d7efe9a75ec0ac43",
+    "nota": "control de ART; systemctl stop <servicio> (cron), elevation_required"
+  },
+  "esperado_sha256": "12d652ead1cfde829bf17181af54cdc9b85cb6fb904e7cb4b7b2f9ae4b367e91",
+  "ataque_sha256": "b6d8090857d26daed6817ce765dea10a0e845757cdcc47bbee95628823256755",
+  "elevacion": "echo '<contrasena del laboratorio>' | sudo -S bash ATA004_ataque.sh (solo stdin; sin secretos en el artefacto; sin sudo anidado)",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA004_logtest.txt",
+    "logtest_sha256": "1176b82b922e609901be08bf1a9798c70396f1d7505efb2204539ede5732133b",
+    "preflight": "Soporte/Ataques/c0/ATA004_preflight.md",
+    "resultado": "PASA (C0 ejecutado, sin silenciadores de fabrica)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1,
+      "t0": "2026-09-26T12:34:39Z",
+      "t1": "2026-09-26T12:35:15Z",
+      "duracion_s": 36,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-26.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA004_iter1-Detalle.csv",
+      "detalle_sha256": "cd76418f0433db5fbaac10a9c32994cea7db39c1c968b38682773198679e0624",
+      "detalle_raw_sha256": "a43272dec9289b726e2bd9dd62f9d47cb11396edfd029e69c131bfaea474410f",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA004_iter1-Audited.csv",
+      "audited_sha256": "169abec8cf63b2aa04cdbf865594968e2057ac60c103827551a47aad40cda5e0",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA004_iter1-Revision.csv",
+      "revision_sha256": "aad8d2c698a484bc37a0dca570c1749f76cc5773633d41cb3d84dadecd6e2877",
+      "conteos": { "filas": 751, "deteccion": 5, "auto_ruido": 622, "ruido_conocido": 124, "dudosa": 0 },
+      "rs": { "RS1": 7, "RS2": 744, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 758, "victima_linux": 751, "otros_agentes_descartados": 7 },
+      "detecciones": { "alertas": 5, "rule_id_distintos": ["80792"], "genuinas": 3, "ajenas": 2, "esperadas": 5, "sorpresas": 0 },
+      "estado_servicio": "cron active -> inactive",
+      "dudosas_resueltas": 3
+    },
+    {
+      "iter": 2,
+      "t0": "2026-09-26T12:39:50Z",
+      "t1": "2026-09-26T12:40:26Z",
+      "duracion_s": 36,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-26.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA004_iter2-Detalle.csv",
+      "detalle_sha256": "4cd666bb5c245cb308c4285759f33d4526175bba798f819eb5098a1f216de248",
+      "detalle_raw_sha256": "1ff9025b13e59c63106b7d061081e5752ddece2a6efc8a17792c56996f81aa15",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA004_iter2-Audited.csv",
+      "audited_sha256": "be50f932607e054c5676e99b62986493c7b59a3690e5ec04feb128dacd24955c",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA004_iter2-Revision.csv",
+      "revision_sha256": "859fd877056f7e63396327e96b20ca39eba627233978835dc757302d873f871d",
+      "conteos": { "filas": 738, "deteccion": 5, "auto_ruido": 604, "ruido_conocido": 129, "dudosa": 0 },
+      "rs": { "RS1": 7, "RS2": 731, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 746, "victima_linux": 738, "otros_agentes_descartados": 8 },
+      "detecciones": { "alertas": 5, "rule_id_distintos": ["80792"], "genuinas": 3, "ajenas": 2, "esperadas": 5, "sorpresas": 0 },
+      "estado_servicio": "cron active -> inactive",
+      "dudosas_resueltas": 3
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-09-26",
+    "filas": 6,
+    "veredicto": "ruido",
+    "motivo": "elevacion (A1: sudo en 80792/80780; A2: 5402 sudo a root) declarada ambigua en el esperado; parte del ataque pero no de la tecnica -> no infla; criterio del orquestador",
+    "revisor": "orquestador"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": {
+    "criterio": "v2",
+    "mismo_conjunto_rule_id_deteccion": true,
+    "rule_ids_deteccion": ["80792"],
+    "n1": 5,
+    "n2": 5,
+    "margen": 2,
+    "criterio_recuento_ok": true,
+    "sin_dudosas_sin_resolver": true,
+    "auto_ruido_delta": 18,
+    "ruido_conocido_delta": 5,
+    "nota": "5 alertas pero 1 solo rule_id (80792); 3 genuinas (systemctl is-active/stop/is-active del ataque, cwd=ATA004) y 2 ajenas (systemctl --user del cierre de sesion SSH del operador, cwd=/home/angel). El ancla S2 (audit_cwd=.../ATA004/*) NO caso el valor real -> el sudo quedo dudosa por A1 y se resolvio a ruido. No hubo detecciones 40700 (systemd/journald)"
+  },
+  "extraccion": {
+    "extractor": "extraer_alertas.py H3 (con srcip/srcuser/dstuser)",
+    "nota": "ambas ventanas con el extractor H3 ya desplegado"
+  },
+  "eventos": [
+    { "ts": "2026-09-26T12:34:39Z", "tipo": "t0", "detalle": "iter1 t0 (revert a lab-listo + asentamiento); ataque elevado con sudo -S" },
+    { "ts": "2026-09-26T12:34:39Z", "tipo": "ataque", "detalle": "systemctl stop cron -> cron inactive" },
+    { "ts": "2026-09-26T12:35:15Z", "tipo": "t1", "detalle": "iter1 t1 (tras scan FIM forzado)" },
+    { "ts": "2026-09-26T12:36:00Z", "tipo": "filtrado", "detalle": "iter1 deteccion=5 auto_ruido=622 ruido_conocido=121 dudosa=3 (A1/A2 elevacion); resueltas a ruido" },
+    { "ts": "2026-09-26T12:39:50Z", "tipo": "t0", "detalle": "iter2 t0 (revert a lab-listo + asentamiento); ataque elevado con sudo -S" },
+    { "ts": "2026-09-26T12:39:50Z", "tipo": "ataque", "detalle": "systemctl stop cron -> cron inactive" },
+    { "ts": "2026-09-26T12:40:26Z", "tipo": "t1", "detalle": "iter2 t1" },
+    { "ts": "2026-09-26T12:41:00Z", "tipo": "filtrado", "detalle": "iter2 deteccion=5 auto_ruido=604 ruido_conocido=126 dudosa=3; resueltas a ruido" },
+    { "ts": "2026-09-26T14:42:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (5/5, mismo rule_id) -> iguales" }
+  ]
+}

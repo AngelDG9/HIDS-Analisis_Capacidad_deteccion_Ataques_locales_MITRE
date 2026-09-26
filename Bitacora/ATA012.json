@@ -1,0 +1,103 @@
+{
+  "ata_id": "ATA012",
+  "tecnica": "T1119",
+  "tactica": "Collection",
+  "sistema": "linux",
+  "bloque": "fase-03-piloto-custom",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1119-Automated_Collection/",
+  "atomic": {
+    "fuente": "custom",
+    "nota": "ataque manual escrito por el TFG; Atomic Red Team no tiene pruebas Linux para T1119"
+  },
+  "esperado_sha256": "4486a26be6b21475c987b8e072409965d6d4e07864e943aecba589d71bf546f2",
+  "ataque_sha256": "d5ecb91973cbb50f9afef58a2f72726ae58370950418d35e3c86d015a583016e",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA012_logtest.txt",
+    "logtest_sha256": "029d45b59cf385f988d275afaa7c68ab5390f40d6a0f9849d6e754c2f8908f0b",
+    "preflight": "Soporte/Ataques/c0/ATA012_preflight.md",
+    "resultado": "PASA (C0 ejecutado n=3, sin silenciadores de fabrica)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1,
+      "t0": "2026-09-26T12:20:57Z",
+      "t1": "2026-09-26T12:21:33Z",
+      "duracion_s": 36,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-26.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA012_iter1-Detalle.csv",
+      "detalle_sha256": "d7ebe9de765b1add9151b0965e0a21eb6a391eee0d99a4f56dd8f1571ef68b4c",
+      "detalle_raw_sha256": "3629d683b721d39ed3585d6dee82676e074f82cedcd2b8b32a048eb72db92229",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA012_iter1-Audited.csv",
+      "audited_sha256": "fe893c058e37d0f5b1349b4b5bb89de4fc9c0141c5f0e479a314d6ab4f80a438",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA012_iter1-Revision.csv",
+      "revision_sha256": "b0f5007a68e18fd1e98601e91d827269899e5e63319e785c2b3c0d5b8b56ed16",
+      "conteos": { "filas": 751, "deteccion": 11, "auto_ruido": 619, "ruido_conocido": 121, "dudosa": 0 },
+      "rs": { "RS1": 3, "RS2": 748, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 758, "victima_linux": 751, "otros_agentes_descartados": 7 },
+      "detecciones": { "alertas": 11, "rule_id_distintos": ["80790", "80792"], "genuinas": 7, "ajenas": 4, "esperadas": 11, "sorpresas": 0 },
+      "dudosas_resueltas": 2
+    },
+    {
+      "iter": 2,
+      "t0": "2026-09-26T12:30:03Z",
+      "t1": "2026-09-26T12:30:38Z",
+      "duracion_s": 35,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-26.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA012_iter2-Detalle.csv",
+      "detalle_sha256": "d69cbb6a476202840d4529e14627843846c5989e77ea4ca413fdb73fb3db5805",
+      "detalle_raw_sha256": "4a2b0880de9e3817f95491bd0d1f6454100195b9661ec7bf4a5f8ed04fab2495",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA012_iter2-Audited.csv",
+      "audited_sha256": "44fbda3ca64f3f169da3055628d1e64beb4251639b56a21f0104afbd19c75e04",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA012_iter2-Revision.csv",
+      "revision_sha256": "7122b6af1066db2fccdb6bcd47d99e36fa6889dbfffb575e4eaa7b6ad4e77cb1",
+      "conteos": { "filas": 756, "deteccion": 11, "auto_ruido": 620, "ruido_conocido": 125, "dudosa": 0 },
+      "rs": { "RS1": 3, "RS2": 753, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 763, "victima_linux": 756, "otros_agentes_descartados": 7 },
+      "detecciones": { "alertas": 11, "rule_id_distintos": ["80790", "80792"], "genuinas": 8, "ajenas": 3, "esperadas": 11, "sorpresas": 0 },
+      "dudosas_resueltas": 2
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-09-26",
+    "filas": 4,
+    "veredicto": "ruido",
+    "motivo": "sesiones PAM del operador (5501/5502), ajenas al ataque; criterio fijado por el humano (sesiones del operador, ajenas al ataque)",
+    "revisor": "humano"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": {
+    "criterio": "v2",
+    "mismo_conjunto_rule_id_deteccion": true,
+    "rule_ids_deteccion": ["80790", "80792"],
+    "n1": 11,
+    "n2": 11,
+    "margen": 2,
+    "criterio_recuento_ok": true,
+    "sin_dudosas_sin_resolver": true,
+    "auto_ruido_delta": 1,
+    "ruido_conocido_delta": 4,
+    "nota": "11 alertas pero 2 rule_id distintos; 3-4 son find de update-motd.d ajenos al ataque (senal S1 audit_exe=find ancha) -> genuinas 7/8. S4 (audit_cwd) inerte: el patron con /* no casa el valor real sin barra final"
+  },
+  "extraccion": {
+    "extractor": "extraer_alertas.py H3 (con srcip/srcuser/dstuser)",
+    "nota": "iter1 re-extraida tras desplegar el extractor H3; 5715 del operador -> operador:5715 (antes dudosa). iter2 ya con el extractor nuevo"
+  },
+  "eventos": [
+    { "ts": "2026-09-26T12:20:57Z", "tipo": "t0", "detalle": "iter1 t0 (revert a lab-listo + asentamiento)" },
+    { "ts": "2026-09-26T12:21:33Z", "tipo": "t1", "detalle": "iter1 t1 (tras scan FIM forzado)" },
+    { "ts": "2026-09-26T12:21:35Z", "tipo": "extraido", "detalle": "iter1 raw 758 (751 victima + 7 otros) -> Detalle 751; extractor ANTIGUO (sin srcip) -> 5715 dudosa" },
+    { "ts": "2026-09-26T12:22:00Z", "tipo": "filtrado", "detalle": "iter1 deteccion=11 auto_ruido=619 ruido_conocido=118 dudosa=3 (5501,5502,5715)" },
+    { "ts": "2026-09-26T14:25:00Z", "tipo": "gap", "detalle": "DETECTADO gap de despliegue: extraer_alertas.py del manager obsoleto (sha 71ccca4a) vs repo H3 (sha 4019fda8)" },
+    { "ts": "2026-09-26T14:26:00Z", "tipo": "despliegue", "detalle": "desplegado extraer_alertas.py H3 en el manager (backup .bak-preH3-20260926); sha verificado = repo" },
+    { "ts": "2026-09-26T14:27:00Z", "tipo": "re-extraido", "detalle": "iter1 re-extraida con H3: 5715 -> ruido_conocido/operador:5715 (srcip=192.168.65.1); dudosas -> solo PAM 5501/5502" },
+    { "ts": "2026-09-26T14:28:00Z", "tipo": "revision", "detalle": "PAM 5501/5502 -> ruido (criterio humano); dudosa=0" },
+    { "ts": "2026-09-26T12:30:03Z", "tipo": "t0", "detalle": "iter2 t0 (revert a lab-listo + asentamiento)" },
+    { "ts": "2026-09-26T12:30:38Z", "tipo": "t1", "detalle": "iter2 t1" },
+    { "ts": "2026-09-26T12:31:00Z", "tipo": "extraido", "detalle": "iter2 raw 763 (756 victima + 7 otros) -> Detalle 756 (con extractor H3)" },
+    { "ts": "2026-09-26T12:32:00Z", "tipo": "filtrado", "detalle": "iter2 deteccion=11 auto_ruido=620 ruido_conocido=125 dudosa=0 tras resolver PAM a ruido" },
+    { "ts": "2026-09-26T14:40:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (11/11, mismo conjunto) -> iguales" }
+  ]
+}

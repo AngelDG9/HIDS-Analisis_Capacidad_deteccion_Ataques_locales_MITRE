@@ -25,9 +25,10 @@ autor: tfg-executor
   la condición de origen de `5715`; el filtro las lee por nombre, no las vuelca al audited).
 - **Catálogo baseline:** `Dataset/Legitimo/ruleids_legitimos.csv` (12 `rule.id`, 13.574 alertas).
 - **Señales esperadas del ataque:** `Dataset/Ataques/Comandos/T<id>-<desc>/ATA<NNN>_esperado.csv`.
-- **Salida:** `Dataset/Ataques/Resultados/Wazuh/Auditado/ATA<NNN>_iter{N}-Audited.csv`.
-- **Revisión:** `Dataset/Ataques/Resultados/Wazuh/Auditado/ATA<NNN>_iter{N}-Revision.csv`
-  (solo si hay filas dudosas).
+- **Salida:** `Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA<NNN>_iter{N}-Audited.csv`
+  (default de `--out`; convención por SO, cabo 1 del afinado).
+- **Revisión:** `Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA<NNN>_iter{N}-Revision.csv`
+  (default de `--rev-out`; solo si hay filas dudosas).
 
 ## 2. Categorías y **orden exacto** de decisión (§2)
 
