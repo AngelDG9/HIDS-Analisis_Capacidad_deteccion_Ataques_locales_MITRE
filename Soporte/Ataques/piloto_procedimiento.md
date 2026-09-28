@@ -358,8 +358,11 @@ siguiente; **no** forma parte de este):
   `[t0,t1]` sin recortes; `t0` se sella **tras el asentamiento** (≥ 60–90 s con el agente
   `Active`). Ver `Soporte/Ataques/criterio_doble_iteracion.md`.
 - **H3 — predicado `OPERADOR` (paso 1.5):** `5715` con `srcip ∈ OPERADOR_SRCIPS` y `19004` con
-  grupo `sca` se **auto-excluyen** (`motivo=operador:*`); **`5501`/`5502` NO** (quedan `dudosa`,
-  revisión humana — limitación declarada). Principio: **solo se auto-excluye lo demostrable**.
+  grupo `sca` se **auto-excluyen** (`motivo=operador:*`); **`5501`/`5502` NO** se auto-excluyen
+  (limitación declarada): caen a **`dudosa`/`sin_campos` solo si** el `esperado` **no** declara
+  ninguna señal de campo siempre evaluable; **si** declara `rule_id`/`rule_group`, `sin_campos`
+  **no** dispara → paso 6 → **`ruido_conocido`/`baseline`**. El caso `dudosa` lo resuelve el humano.
+  Principio: **solo se auto-excluye lo demostrable**.
   El `--detail` de `extraer_alertas.py` gana `srcip,srcuser,dstuser`. Ver
   `Soporte/Wazuh/Configuracion/politica_filtrado_ruido.md` §3.bis.
 - **H4 — convención de señales:** `audit_exe` **+** `audit_cwd=/home/angel/lab-attack/ATA<NNN>/*`.

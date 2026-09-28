@@ -92,7 +92,9 @@ echo '<contraseña del laboratorio>' | sudo -S bash ATA004_ataque.sh
   el **`execve` `80792`**. Para detectar por journald haría falta **regla propia (RS3)** o declarar la
   detección por el `rule_id` del `execve` (ver runbook §8.3).
 - **Matiz:** parte del recuento puede venir de la **elevación** → por eso `T1489-A1`/`T1489-A2`
-  se declaran **`ambigua`**. Las PAM `5501`/`5502` quedan `dudosa` (H3) y las resuelve el humano.
+  se declaran **`ambigua`**. Las PAM `5501`/`5502` **no** se auto-excluyen (H3): con este `esperado`
+  (declara `rule_id=5402`) `sin_campos` no dispara → salen **`ruido_conocido`/`baseline`** (solo
+  caerían a `dudosa` si el `esperado` no declarara ningún campo siempre evaluable).
 - **Control de ART:** confirma que la maquinaria de medición sigue funcionando igual con un ataque
   que **no** es manual.
 

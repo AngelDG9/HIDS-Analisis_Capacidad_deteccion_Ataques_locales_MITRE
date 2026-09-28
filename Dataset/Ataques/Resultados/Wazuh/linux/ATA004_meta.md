@@ -107,9 +107,11 @@ echo '<contraseña del laboratorio>' | sudo -S bash ATA004_ataque.sh   # una sol
 - **Efecto `journald`/`systemd` — hallazgo (`fase-03-cabos`, 2026-09-28):** **0** detecciones por grupo
   `systemd` (`40700`): **no es un silenciado, es una detección inexistente de fábrica**. La regla
   `40700` (agrupador de `0285-systemd_rules.xml`, Wazuh v4.14.7, pin del laboratorio) es
-  **`level="0"`** (no emite alerta); sus **hijas** `40701`–`40705` (level 2/5) **solo** disparan con
-  patrones de **fallo** (`Stale file handle`, `entered failed state`, `status=1/FAILURE`…). Una
-  **parada normal** (`systemctl stop cron`, mensajes `Stopping/Stopped`) **no casa ninguna hija** →
+  **`level="0"`** (no emite alerta). De sus **hijas**, las que alertan son **`40702`–`40704`**
+  (levels `2`/`5`/`5`) y **solo** con patrones de **fallo** (`Stale file handle`, `entered failed
+  state`, `status=1/FAILURE`…); `40701` **también** es `level="0"` y `40705` (level `5`) es
+  *"Time has been changed"*, **no** un fallo de servicio. Una
+  **parada normal** (`systemctl stop cron`, mensajes `Stopping/Stopped`) **no casa ninguna hija que alerte** →
   gana `40700` (level 0) → **no hay alerta journald**. La hipótesis queda **resuelta** (no "sin
   probar"): la detección efectiva del ataque es el **`execve` `80792`** (audit). Ver §10.5 y runbook §8.3.
 - **`dudosa` resueltas (3/iter, todas declaradas A1/A2):** `80792` (*execve* de `sudo`), `80780`
@@ -120,6 +122,23 @@ echo '<contraseña del laboratorio>' | sudo -S bash ATA004_ataque.sh   # una sol
   (`audit_cwd=/home/angel/lab-attack/ATA004/*`) **no casó** el valor real (`/home/angel/lab-attack/ATA004`,
   sin barra final) → **no** lo promovió a `deteccion` (al contrario de lo previsto en el gate); quedó
   `dudosa` por A1 y se resolvió a `ruido`.
+
+> **Verificación EN VIVO del `40700`** (`fase-03-cabos-cierre`, 2026-09-28, manager `wazuh-server`
+> `192.168.65.128`). Salida **literal** de
+> `sudo grep -n '<rule id="4070[0-5]"' /var/ossec/ruleset/rules/0285-systemd_rules.xml`:
+>
+> ```text
+> 13:  <rule id="40700" level="0">
+> 18:  <rule id="40701" level="0">
+> 24:  <rule id="40702" level="2">
+> 31:  <rule id="40703" level="5">
+> 38:  <rule id="40704" level="5">
+> 45:  <rule id="40705" level="5">
+> ```
+>
+> **→ `40700` es `level="0"` confirmado.** Cierra la salvedad *"`40700 = level 0` no verificado
+> en vivo"* del `change-doc` de `fase-03-cabos`; el hallazgo (una **parada normal** de servicio no
+> alerta por journald) queda **verificado en el ruleset de fábrica real**.
 
 ## 9. Doble iteración (criterio **v2**) — veredicto **`iguales`**
 
@@ -142,7 +161,9 @@ echo '<contraseña del laboratorio>' | sudo -S bash ATA004_ataque.sh   # una sol
 4. `lab-listo` prístino: `cron` vuelve a `active` al revertir; no se instaló nada.
 5. **Punto ciego de journald (hallazgo, `fase-03-cabos`, 2026-09-28):** la vía journald/systemd del
    ruleset de fábrica **no** alerta de una **parada normal** de servicio (`40700` es el agrupador
-   **`level=0`**; solo las hijas de **fallo** `40701`–`40705` alertan). Para una técnica que dependa de
+   **`level=0`**; solo alertan `40702`–`40704` —levels `2`/`5`/`5`, patrones de **fallo**—, mientras
+   `40701` también es `level=0` y `40705` es *"Time has been changed"*). Para una técnica que dependa de
    journald, la detección exige **regla propia (RS3)** o declararla por el **`rule_id` del `execve`**
    (`80792`). **Cabo del escalado** (confirmar con un C0 sobre una línea journald real y, si aplica,
-   escribir la regla). Ver §8.1 y runbook §8.3.
+   escribir la regla). Ver §8.1 y runbook §8.3. **Verificado en vivo** el 2026-09-28 (`fase-03-cabos-cierre`;
+   `40700` = `level="0"` leído en el manager, salida literal en §8.1).

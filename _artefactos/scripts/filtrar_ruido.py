@@ -15,7 +15,10 @@ Categorías y **orden exacto** de decisión (`plan.md` §2; gana el primero):
     1.5  ruido_conocido   si casa el PREDICADO OPERADOR (H3 §4.1): `5715` con
                           `srcip ∈ OPERADOR_SRCIPS` o `19004` con grupo `sca`
                           (motivo `operador:<rule_id>`). `5501`/`5502` NO están en
-                          el predicado -> quedan `dudosa`.
+                          el predicado -> caen a `dudosa`/`sin_campos` solo si el
+                          `esperado` no declara ninguna señal de campo siempre
+                          evaluable; si declara `rule_id`/`rule_group`, `sin_campos`
+                          no dispara -> paso 6 -> `ruido_conocido`/`baseline`.
     3.   dudosa           si casa una SEÑAL ESPERADA de tipo `ambigua`
                           (o si no es evaluable ninguna señal: falta el campo)
     4.   deteccion        si rule.id NO está en el catálogo (motivo `novel`)
@@ -82,8 +85,11 @@ WAZUH_RUN_GLOB = "/var/ossec/var/run/*"
 #   - `19004` (grupo `sca`) -> se auto-excluye (autoevaluación del HIDS; regla +
 #     grupo, sin condición de origen).
 #   - `5501`/`5502` (PAM) -> **NUNCA** se auto-excluyen: el `full_log` no trae IP
-#     ni id. de sesión, así que la atribución al operador NO es demostrable ->
-#     quedan `dudosa` (revisión humana). Limitación declarada, lado seguro.
+#     ni id. de sesión, así que la atribución al operador NO es demostrable. Su
+#     resultado depende del `esperado`: caen a `dudosa`/`sin_campos` solo si este
+#     no declara ninguna señal de campo siempre evaluable; si declara
+#     `rule_id`/`rule_group`, `sin_campos` no dispara -> paso 6 ->
+#     `ruido_conocido`/`baseline`. Limitación declarada, lado seguro.
 # --------------------------------------------------------------------------
 OPERADOR_SRCIPS = {"192.168.65.1"}
 OPERADOR_5715_GRUPOS = {"sshd", "syslog", "authentication_success"}

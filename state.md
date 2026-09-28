@@ -9,7 +9,7 @@
 
 - **Fase:** 3 — **en curso**. Preparación CERRADA · PILOTO CERRADO · AFINADO CERRADO · PILOTO-CUSTOM CERRADO · **CABOS CERRADOS ✔ (2026-09-28)**. Detalle en `_fases/fase-03-*/change-doc.md`.
 - **⚠️ Riesgo latente (integridad):** `core.autocrlf=true` **sin `.gitattributes`** → un `git checkout`/`stash`/`reset --hard` reescribiría los CSV a CRLF y **rompería la cadena de hashes**. **Añadir `.gitattributes`** (`*.csv text eol=lf`). **NO hacer `checkout`/`stash` sobre `esperado`/`Audited`.**
-- **⚠️ Cabos pequeños de cierre:** (a) verificar **en vivo** que la regla de fábrica **`40700` es `level=0`** (con las VMs encendidas: `grep -n '<rule id="4070[0-5]"' /var/ossec/ruleset/rules/0285-systemd_rules.xml`); (b) corregir **4 textos residuales** que siguen diciendo "`5501/5502` → `dudosa`" (docstring de `filtrar_ruido.py` ×2, `piloto_procedimiento.md`, `T1489/README.md`).
+- **✅ Cabos de cierre HECHOS (2026-09-28):** (a) el hallazgo del **`40700` CONFIRMADO en vivo** (`level="0"` leído en el manager; salida literal en la ficha de ATA004 §8.1); (b) corregidos los **4 textos residuales** (docstring de `filtrar_ruido.py` ×2, `piloto_procedimiento.md`, `T1489/README.md`); (c) añadido **`.gitattributes`** (`*.csv`/`*.json` → `eol=lf`) → los **`sha256` de los 9 ficheros no cambian**; (d) matizada en la ficha de ATA004 la descripción de las reglas hermanas del `40700` (alertan **`40702`-`40704`**; `40701` también es nivel 0; `40705` es cambio de hora).
 - **🎯 Resultados del piloto-custom (el camino "ataque manual" — 2 escritos por nosotros + 1 de ART):** los **3 se DETECTAN** (veredicto v2 `iguales`): **ATA007/T1491** (Defacement), **ATA012/T1119** (Automated Collection) y **ATA004/T1489** (Service Stop). **Cifra limpia = 1 evento (`80792`, el `execve`) por ataque**; el resto de alertas es **redundancia** o **ruido ajeno**. **0 sorpresas** (`novel`) en las 6 ventanas.
 - **⭐ Hallazgo 1 (diseño): el ancla de H4 NO funciona.** El patrón `…/ATA<NNN>/*` no casa el `cwd` real (sin barra) y, **aunque se corrija, no puede anclar**: el filtro evalúa las señales como **OR**, no como `exe AND cwd`. **H4 es aspiracional, no un mecanismo.**
 - **⭐ Hallazgo 2: las señales por `audit_exe` son ANCHAS** → cuentan como detección **procesos ajenos** (los `find` de `update-motd.d` y los `systemctl --user` del **login/cierre del operador**) y **promueven a `deteccion` las escrituras** que el plan quería `ambigua` (**CA13 no se cumple**).
@@ -155,7 +155,7 @@
 - **Sesión 13:** **AFINADO CERRADO (H1–H4)** antes de escalar: **H1** chequeo **C0 base-contra-base** en el
   pre-flight (golden real: `python3`→`92600` nivel 0 → **avisa**; `ls`→`80792` → no); **H2** criterio de doble
   iteración **v2** (la detección decide; sanidades a aviso; **ventana completa**, `t0` tras el asentamiento);
-  **H3** el filtro **solo auto-excluye lo demostrable** (`5715` con `srcip` del operador; **`5501/5502` → `dudosa`**;
+  **H3** el filtro **solo auto-excluye lo demostrable** (`5715` con `srcip` del operador; **`5501/5502` → `dudosa`** *(matizado en `fase-03-cabos`: solo si el `esperado` no declara campos siempre evaluables; si los declara → `baseline`)*;
   `19004` por grupo) — **prueba de seguridad reproducida**: detecciones intactas y **0 falsos negativos**;
   **H4** convención de señales (`audit_exe`+`audit_cwd`). **75 tests en verde** y **el piloto intacto (18/18 hashes)**.
   Verificación **PASA**.
