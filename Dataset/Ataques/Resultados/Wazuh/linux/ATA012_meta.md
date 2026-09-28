@@ -4,9 +4,9 @@ bloque: fase-03-piloto-custom
 ata_id: ATA012
 tecnica: T1119
 tactica: Collection
-version: 2
+version: 3
 status: cerrado
-fecha: 2026-09-26
+fecha: 2026-09-28
 ---
 
 # Ficha — ATA012 · T1119 Automated Collection (Linux / `victima-linux`)
@@ -14,6 +14,10 @@ fecha: 2026-09-26
 > Bloque `fase-03-piloto-custom` (camino **ataque escrito por nosotros**). Generada por
 > `tfg-executor`. **Sin secretos.** Estado **`cerrado`**: criterio de doble iteración **v2** →
 > **`iguales`** (detección idéntica; sin `dudosa` sin resolver).
+>
+> **Revisión (`fase-03-senales`, 2026-09-28):** recuento **re-generado** con el **ancla implícita
+> + evento de ejecución** (`filtrar_ruido.py`); `deteccion` **11→6/7** (3/4 ajenas → `dudosa` →
+> `ruido`); `Hojas/ATA_index.csv` **intacto** (sigue `cerrado`). Detalle en §8/§8.1/§9/§10.
 
 ## 1. Identificación
 
@@ -87,44 +91,53 @@ bash ATA012_ataque.sh     # find /etc ... | cp -t staging ; tar czf collected.ta
 
 | Iter | filas | deteccion | auto_ruido | ruido_conocido | dudosa | RS1 | RS2 | RS3 | RS4 |
 |---|---|---|---|---|---|---|---|---|---|
-| 1 | 751 | **11** | 619 | 121 | **0** | 3 | 748 | 0 | 0 |
-| 2 | 756 | **11** | 620 | 125 | **0** | 3 | 753 | 0 | 0 |
+| 1 | 751 | **6** | 619 | 126 | **0** | 3 | 748 | 0 | 0 |
+| 2 | 756 | **7** | 620 | 129 | **0** | 3 | 753 | 0 | 0 |
 
 ### 8.1 Detecciones — **dos cifras**, genuinas/ajenas y desglose esperadas/sorpresas
 
 | Iter | **alertas** detección | **`rule_id` distintos** | **genuinas / ajenas** | esperadas (`senal:…`) | sorpresas (`novel`) |
 |---|---|---|---|---|---|
-| 1 | 11 | 2 · `{80790,80792}` | **7 / 4** | 11 | 0 |
-| 2 | 11 | 2 · `{80790,80792}` | **8 / 3** | 11 | 0 |
+| 1 | 6 | 1 · `{80792}` | **6 / 0** | 6 (`T1119-S1/S2/S3`) | 0 |
+| 2 | 7 | 1 · `{80792}` | **7 / 0** | 7 (`T1119-S1/S2/S3`) | 0 |
 
-- **Motivos:** `T1119-S1` (`find`) ×8, `T1119-S2` (`cp`) ×1, `T1119-S3` (`tar`) ×2.
-- **Genuinas del ataque** (ancladas a `cwd=/home/angel/lab-attack/ATA012`): iter1 **7**
-  (`find`×4, `cp`×1, `tar`×2), iter2 **8** (`find`×5, `cp`×1, `tar`×2).
-- **Ajenas (falso positivo por señal ancha):** `find` de `update-motd.d`
-  (`landscape-sysinfo`/`update-notifier`, `cwd=/`) disparados por **el login SSH del operador** →
-  contados por `T1119-S1`. iter1: **3** de ese tipo (+1 `find` con `cwd` vacío, ambiguo) = 4; iter2: **3**.
-- **`dudosa` resueltas:** `5501`/`5502` (PAM del operador) → **`ruido`** (criterio fijado por el humano).
-  El `5715` del operador se **auto-excluye** (`operador:5715`, `srcip=192.168.65.1`) con el extractor H3 (ver §10).
+- **Motivos (iter1):** `T1119-S1` (`find`) ×4, `T1119-S2` (`cp`) ×1, `T1119-S3` (`tar` execve) ×1.
+  **(iter2):** `S1` ×5, `S2` ×1, `S3` ×1. Todas `80792` (`audit_command`), **ancladas** a
+  `cwd=/home/angel/lab-attack/ATA012` por `S4`.
+- **`fase-03-senales` (2026-09-28) — recuento limpio con el ancla implícita:** las **ajenas** ya
+  **no** cuentan como `deteccion`: los **3 `find` de `update-motd.d`** (`landscape-sysinfo`/
+  `update-notifier`, `cwd=/`) del **login SSH del operador** y el `find` con `cwd` vacío caen a
+  **`dudosa`/`sin_ancla:T1119-S1`**; la **escritura watch** del `tar` (`80790`) cae a
+  **`dudosa`/`sin_ancla:T1119-S3`** (el evento watch no es `audit_command`). El humano las
+  resolvió a **`ruido`**. *(Antes: 11 detección, 7/8 genuinas + 3/4 ajenas.)*
+- **`dudosa` (iter1=5, iter2=4) resueltas a `ruido`:** los 3 `find` ajenos + 1 `find` sin `cwd` +
+  1 `tar` watch (iter1); 3 `find` ajenos + 1 `tar` watch (iter2). Más las `5501`/`5502` (PAM del
+  operador) → **`ruido`** (criterio fijado por el humano). El `5715` del operador se **auto-excluye**
+  (`operador:5715`, `srcip=192.168.65.1`) con el extractor H3 (ver §10).
 
 ## 9. Doble iteración (criterio **v2**) — veredicto **`iguales`**
 
 | Criterio | Resultado |
 |---|---|
-| C1′ mismo conjunto de `rule_id` con `deteccion` | ✅ `{80790,80792}` == `{80790,80792}` |
-| C2′ `\|n2−n1\| ≤ max(2, 10 %·n1)` | ✅ `\|11−11\| = 0 ≤ 2` |
+| C1′ mismo conjunto de `rule_id` con `deteccion` | ✅ `{80792}` == `{80792}` |
+| C2′ `\|n2−n1\| ≤ max(2, 10 %·n1)` | ✅ `\|7−6\| = 1 ≤ 2` |
 | C3′ sin `dudosa` sin resolver | ✅ 0 y 0 |
 | Sanidad `auto_ruido` (aviso) | ✅ 619 vs 620 → Δ=1 |
-| Sanidad `ruido_conocido` (aviso) | ✅ 121 vs 125 → Δ=4 |
+| Sanidad `ruido_conocido` (aviso) | ✅ 126 vs 129 → Δ=3 |
+
+> **Nota (`fase-03-senales`, 2026-09-28):** cifras recalculadas con el **ancla implícita + evento
+> de ejecución**; `deteccion` pasa de **11/11** a **6/7** (3/4 ajenas → `dudosa` → `ruido`).
+> Veredicto v2 sigue **`iguales`**.
 
 ## 10. Limitaciones y hallazgos
 
-1. **Señal `audit_exe` ancha (hallazgo transversal):** el `find` del ataque y los `find` de
-   `update-motd.d` (login del operador) son indistinguibles por `audit_exe` → 3 ajenas contadas como
-   detección. **Recomendación:** anclar por `audit_cwd` de la carpeta del ataque (patrón corregido:
-   `/home/angel/lab-attack/ATA<NNN>` **sin** `/*`) y/o por `rule_id` del execve (runbook §8).
-2. **Ancla `audit_cwd` inerte en el `esperado`:** el patrón `/home/angel/lab-attack/ATA012/*` **no
-   casa** el valor real del campo (`/home/angel/lab-attack/ATA012`, sin barra final) → `S4` no
-   contribuyó; la detección vino de `S1/S2/S3` (`audit_exe`).
+1. **Señal `audit_exe` ancha — ✅ RESUELTO (`fase-03-senales`, 2026-09-28):** los `find` de
+   `update-motd.d` (login del operador) ya **no** se cuentan como `deteccion`: el ancla implícita
+   (`exe ∧ cwd-ancla ∧ audit_command`) los manda a **`dudosa`/`sin_ancla:T1119-S1`** → `ruido`.
+   Ver política §4 y runbook §8.2.
+2. **Ancla `audit_cwd` (✅ `fase-03-senales`):** el ancla `S4` (`audit_cwd=/home/angel/lab-attack/ATA012/*`)
+   ahora **sí casa** el valor real (`/home/angel/lab-attack/ATA012`, sin barra final) porque el match
+   prueba `cwd` **y** `cwd + "/"`. Antes era **inerte** (patrón `/*` vs `cwd` sin barra).
 3. **Gap de despliegue (runbook §8.1):** el `extraer_alertas.py` del manager estaba obsoleto; tras
    desplegar el **H3** y re-extraer, `5715` → `ruido_conocido` / `operador:5715`.
 4. `lab-listo` prístino: el staging se borra al revertir.

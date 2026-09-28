@@ -30,14 +30,14 @@
       "detalle_sha256": "d7ebe9de765b1add9151b0965e0a21eb6a391eee0d99a4f56dd8f1571ef68b4c",
       "detalle_raw_sha256": "3629d683b721d39ed3585d6dee82676e074f82cedcd2b8b32a048eb72db92229",
       "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA012_iter1-Audited.csv",
-      "audited_sha256": "a9ae95eb7527c822115b9a00ced518175b031f208391877490f6460230e0e71b",
+      "audited_sha256": "4603a61deaab33e07491579b72a4a6c9a73c04b96a4b07d971b12ef8f396e9a2",
       "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA012_iter1-Revision.csv",
-      "revision_sha256": "b0f5007a68e18fd1e98601e91d827269899e5e63319e785c2b3c0d5b8b56ed16",
-      "conteos": { "filas": 751, "deteccion": 11, "auto_ruido": 619, "ruido_conocido": 121, "dudosa": 0 },
+      "revision_sha256": "6163ff638448599ba30700f1ecca66ff3c0c7b5d849b9ce47c01186c722652d3",
+      "conteos": { "filas": 751, "deteccion": 6, "auto_ruido": 619, "ruido_conocido": 126, "dudosa": 0 },
       "rs": { "RS1": 3, "RS2": 748, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
       "ventana_raw": { "filas": 758, "victima_linux": 751, "otros_agentes_descartados": 7 },
-      "detecciones": { "alertas": 11, "rule_id_distintos": ["80790", "80792"], "genuinas": 7, "ajenas": 4, "esperadas": 11, "sorpresas": 0 },
-      "dudosas_resueltas": 2
+      "detecciones": { "alertas": 6, "rule_id_distintos": ["80792"], "genuinas": 6, "ajenas": 0, "esperadas": 6, "sorpresas": 0 },
+      "dudosas_resueltas": 7
     },
     {
       "iter": 2,
@@ -50,36 +50,36 @@
       "detalle_sha256": "d69cbb6a476202840d4529e14627843846c5989e77ea4ca413fdb73fb3db5805",
       "detalle_raw_sha256": "4a2b0880de9e3817f95491bd0d1f6454100195b9661ec7bf4a5f8ed04fab2495",
       "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA012_iter2-Audited.csv",
-      "audited_sha256": "22597be75415c913a5b056f83e3e70ddd2911b9d0e4095b7eac7102094ad4ac9",
+      "audited_sha256": "532b8c32fee50527e8f06b5fc19e168a85b3b73557b8aa38e66cf751ad03c254",
       "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA012_iter2-Revision.csv",
-      "revision_sha256": "7122b6af1066db2fccdb6bcd47d99e36fa6889dbfffb575e4eaa7b6ad4e77cb1",
-      "conteos": { "filas": 756, "deteccion": 11, "auto_ruido": 620, "ruido_conocido": 125, "dudosa": 0 },
+      "revision_sha256": "ef630a2948ac9deefc3d18e9969cde8aa5f461e7189f791033661f959de81d83",
+      "conteos": { "filas": 756, "deteccion": 7, "auto_ruido": 620, "ruido_conocido": 129, "dudosa": 0 },
       "rs": { "RS1": 3, "RS2": 753, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
       "ventana_raw": { "filas": 763, "victima_linux": 756, "otros_agentes_descartados": 7 },
-      "detecciones": { "alertas": 11, "rule_id_distintos": ["80790", "80792"], "genuinas": 8, "ajenas": 3, "esperadas": 11, "sorpresas": 0 },
-      "dudosas_resueltas": 2
+      "detecciones": { "alertas": 7, "rule_id_distintos": ["80792"], "genuinas": 7, "ajenas": 0, "esperadas": 7, "sorpresas": 0 },
+      "dudosas_resueltas": 6
     }
   ],
   "revision_global": {
-    "fecha": "2026-09-26",
-    "filas": 4,
+    "fecha": "2026-09-28",
+    "filas": 13,
     "veredicto": "ruido",
-    "motivo": "sesiones PAM del operador (5501/5502), ajenas al ataque; criterio fijado por el humano (sesiones del operador, ajenas al ataque)",
-    "revisor": "humano"
+    "motivo": "ajenas al ataque (find de update-motd.d del login del operador, cwd=/; find sin cwd) y escritura watch del tar (80790), fuera del ancla o no-execve; mas las sesiones PAM del operador (5501/5502). Criterio del humano (sesiones/FPs del operador, ajenas al ataque); el esperado declara las escrituras como no-deteccion",
+    "revisor": "humano / orquestador (criterio humano 2026-09-26)"
   },
   "doble_iteracion": "iguales",
   "doble_iteracion_detalle": {
     "criterio": "v2",
     "mismo_conjunto_rule_id_deteccion": true,
-    "rule_ids_deteccion": ["80790", "80792"],
-    "n1": 11,
-    "n2": 11,
+    "rule_ids_deteccion": ["80792"],
+    "n1": 6,
+    "n2": 7,
     "margen": 2,
     "criterio_recuento_ok": true,
     "sin_dudosas_sin_resolver": true,
     "auto_ruido_delta": 1,
-    "ruido_conocido_delta": 4,
-    "nota": "11 alertas pero 2 rule_id distintos; 3-4 son find de update-motd.d ajenos al ataque (senal S1 audit_exe=find ancha) -> genuinas 7/8. S4 (audit_cwd) inerte: el patron con /* no casa el valor real sin barra final"
+    "ruido_conocido_delta": 3,
+    "nota": "fase-03-senales (2026-09-28): con el ancla implicita + evento de ejecucion la deteccion es 6/7 (find x4/5, cp, tar; todos 80792 execve anclados a cwd=ATA012). Las 3 find ajenas (cwd=/), el find con cwd vacio y el tar watch caen a dudosa/sin_ancla -> ruido (antes contados como deteccion). S4 (audit_cwd) ya casa el cwd real sin barra final"
   },
   "extraccion": {
     "extractor": "extraer_alertas.py H3 (con srcip/srcuser/dstuser)",
@@ -99,6 +99,7 @@
     { "ts": "2026-09-26T12:31:00Z", "tipo": "extraido", "detalle": "iter2 raw 763 (756 victima + 7 otros) -> Detalle 756 (con extractor H3)" },
     { "ts": "2026-09-26T12:32:00Z", "tipo": "filtrado", "detalle": "iter2 deteccion=11 auto_ruido=620 ruido_conocido=125 dudosa=0 tras resolver PAM a ruido" },
     { "ts": "2026-09-26T14:40:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (11/11, mismo conjunto) -> iguales" },
-    { "ts": "2026-09-28T00:00:00Z", "tipo": "correccion", "detalle": "fase-03-cabos (cabo 2): cabecera del esperado arreglada (PENDIENTE -> validado el 2026-09-26); los 2 audited regenerados (unico cambio: el sha256 del esperado en la cabecera; determinismo re-verificado; cifras intactas); esperado_sha256 y audited_sha256 actualizados. Los -Revision.csv no se tocan (su cabecera cita el esperado previo; patron ya existente en el piloto)" }
+    { "ts": "2026-09-28T00:00:00Z", "tipo": "correccion", "detalle": "fase-03-cabos (cabo 2): cabecera del esperado arreglada (PENDIENTE -> validado el 2026-09-26); los 2 audited regenerados (unico cambio: el sha256 del esperado en la cabecera; determinismo re-verificado; cifras intactas); esperado_sha256 y audited_sha256 actualizados. Los -Revision.csv no se tocan (su cabecera cita el esperado previo; patron ya existente en el piloto)" },
+    { "ts": "2026-09-28T00:00:00Z", "tipo": "correccion", "detalle": "fase-03-senales: mecanismo de ancla implicita + evento de ejecucion (exe AND cwd-ancla AND audit_command). Regenerados los 2 -Audited.csv y los 2 -Revision.csv: deteccion 11/11 -> 6/7 (los 3 find de update-motd.d con cwd=/, el find con cwd vacio y el tar watch pasan a dudosa/sin_ancla:T1119-S1/S3 -> ruido); ruido_conocido 121/125 -> 126/129; dudosa final 0. Hashes actualizados; Hojas/ATA_index.csv intacto (sigue cerrado); determinismo re-verificado; el -Revision.csv queda con los veredictos explicitos (editable)" }
   ]
 }

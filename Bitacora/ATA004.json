@@ -34,15 +34,15 @@
       "detalle_sha256": "cd76418f0433db5fbaac10a9c32994cea7db39c1c968b38682773198679e0624",
       "detalle_raw_sha256": "a43272dec9289b726e2bd9dd62f9d47cb11396edfd029e69c131bfaea474410f",
       "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA004_iter1-Audited.csv",
-      "audited_sha256": "34a9649cd8b47322083ed9710dcc404bd209f09eca73e8a96c200699a57a29fe",
+      "audited_sha256": "348a1082b692bccccd76683639f59edc8a2ba1ecefa4d7f51f8b10ba1441ba54",
       "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA004_iter1-Revision.csv",
-      "revision_sha256": "aad8d2c698a484bc37a0dca570c1749f76cc5773633d41cb3d84dadecd6e2877",
-      "conteos": { "filas": 751, "deteccion": 5, "auto_ruido": 622, "ruido_conocido": 124, "dudosa": 0 },
+      "revision_sha256": "e1c5e83fb44b5a3b265e8141b256d5cdaafb06e809d49e6910590c98cec33a99",
+      "conteos": { "filas": 751, "deteccion": 3, "auto_ruido": 622, "ruido_conocido": 126, "dudosa": 0 },
       "rs": { "RS1": 7, "RS2": 744, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
       "ventana_raw": { "filas": 758, "victima_linux": 751, "otros_agentes_descartados": 7 },
-      "detecciones": { "alertas": 5, "rule_id_distintos": ["80792"], "genuinas": 3, "ajenas": 2, "esperadas": 5, "sorpresas": 0 },
+      "detecciones": { "alertas": 3, "rule_id_distintos": ["80792"], "genuinas": 3, "ajenas": 0, "esperadas": 3, "sorpresas": 0 },
       "estado_servicio": "cron active -> inactive",
-      "dudosas_resueltas": 3
+      "dudosas_resueltas": 5
     },
     {
       "iter": 2,
@@ -55,15 +55,15 @@
       "detalle_sha256": "4cd666bb5c245cb308c4285759f33d4526175bba798f819eb5098a1f216de248",
       "detalle_raw_sha256": "1ff9025b13e59c63106b7d061081e5752ddece2a6efc8a17792c56996f81aa15",
       "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA004_iter2-Audited.csv",
-      "audited_sha256": "88a62cb690e30a6a1ca5ae35caa9a6ede28da350f28383beec4f7159b6135639",
+      "audited_sha256": "8e0e8a2021fc355b4c10b9cfd099a56730647d66f0eccbb0e24ca483cc4fad87",
       "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA004_iter2-Revision.csv",
-      "revision_sha256": "859fd877056f7e63396327e96b20ca39eba627233978835dc757302d873f871d",
-      "conteos": { "filas": 738, "deteccion": 5, "auto_ruido": 604, "ruido_conocido": 129, "dudosa": 0 },
+      "revision_sha256": "fe06837effaa976790061e1d4940a5149607bee739498c4eae8f7ea0d0ed3a78",
+      "conteos": { "filas": 738, "deteccion": 3, "auto_ruido": 604, "ruido_conocido": 131, "dudosa": 0 },
       "rs": { "RS1": 7, "RS2": 731, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
       "ventana_raw": { "filas": 746, "victima_linux": 738, "otros_agentes_descartados": 8 },
-      "detecciones": { "alertas": 5, "rule_id_distintos": ["80792"], "genuinas": 3, "ajenas": 2, "esperadas": 5, "sorpresas": 0 },
+      "detecciones": { "alertas": 3, "rule_id_distintos": ["80792"], "genuinas": 3, "ajenas": 0, "esperadas": 3, "sorpresas": 0 },
       "estado_servicio": "cron active -> inactive",
-      "dudosas_resueltas": 3
+      "dudosas_resueltas": 5
     }
   ],
   "revision_global": {
@@ -78,14 +78,14 @@
     "criterio": "v2",
     "mismo_conjunto_rule_id_deteccion": true,
     "rule_ids_deteccion": ["80792"],
-    "n1": 5,
-    "n2": 5,
+    "n1": 3,
+    "n2": 3,
     "margen": 2,
     "criterio_recuento_ok": true,
     "sin_dudosas_sin_resolver": true,
     "auto_ruido_delta": 18,
     "ruido_conocido_delta": 5,
-    "nota": "5 alertas pero 1 solo rule_id (80792); 3 genuinas (systemctl is-active/stop/is-active del ataque, cwd=ATA004) y 2 ajenas (systemctl --user del cierre de sesion SSH del operador, cwd=/home/angel). El ancla S2 (audit_cwd=.../ATA004/*) NO caso el valor real -> el sudo quedo dudosa por A1 y se resolvio a ruido. No hubo detecciones 40700 (systemd/journald)"
+    "nota": "fase-03-senales (2026-09-28): con el ancla implicita (exe AND cwd-ancla AND audit_command) la deteccion son 3/3 genuinas (systemctl is-active/stop/is-active del ataque, cwd=ATA004). Las 2 ajenas (systemctl --user del cierre de sesion SSH del operador, cwd=/home/angel) caen a dudosa/sin_ancla:T1489-S1 y se resuelven a ruido. El ancla S2 (audit_cwd=.../ATA004/*) SI casa el cwd real. No hubo detecciones 40700 (systemd/journald)"
   },
   "extraccion": {
     "extractor": "extraer_alertas.py H3 (con srcip/srcuser/dstuser)",
@@ -101,6 +101,7 @@
     { "ts": "2026-09-26T12:40:26Z", "tipo": "t1", "detalle": "iter2 t1" },
     { "ts": "2026-09-26T12:41:00Z", "tipo": "filtrado", "detalle": "iter2 deteccion=5 auto_ruido=604 ruido_conocido=126 dudosa=3; resueltas a ruido" },
     { "ts": "2026-09-26T14:42:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (5/5, mismo rule_id) -> iguales" },
-    { "ts": "2026-09-28T00:00:00Z", "tipo": "correccion", "detalle": "fase-03-cabos (cabos 2 y 4): cabecera del esperado arreglada (PENDIENTE -> validado el 2026-09-26); los 2 audited regenerados (unico cambio: el sha256 del esperado en la cabecera; determinismo re-verificado; cifras intactas); esperado_sha256 y audited_sha256 actualizados. Hallazgo journald documentado: la regla de fabrica 40700 es level=0 (agrupador) -> la parada normal de un servicio no genera alerta; la deteccion efectiva es el execve 80792. Los -Revision.csv no se tocan (su cabecera cita el esperado previo; patron ya existente en el piloto)" }
+    { "ts": "2026-09-28T00:00:00Z", "tipo": "correccion", "detalle": "fase-03-cabos (cabos 2 y 4): cabecera del esperado arreglada (PENDIENTE -> validado el 2026-09-26); los 2 audited regenerados (unico cambio: el sha256 del esperado en la cabecera; determinismo re-verificado; cifras intactas); esperado_sha256 y audited_sha256 actualizados. Hallazgo journald documentado: la regla de fabrica 40700 es level=0 (agrupador) -> la parada normal de un servicio no genera alerta; la deteccion efectiva es el execve 80792. Los -Revision.csv no se tocan (su cabecera cita el esperado previo; patron ya existente en el piloto)" },
+    { "ts": "2026-09-28T00:00:00Z", "tipo": "correccion", "detalle": "fase-03-senales: mecanismo de ancla implicita + evento de ejecucion (exe AND cwd-ancla AND audit_command). Regenerados los 2 -Audited.csv y los 2 -Revision.csv en su sitio: deteccion 5/5 -> 3/3 (las 2 systemctl --user del cierre de sesion del operador pasan a dudosa/sin_ancla:T1489-S1 -> ruido); ruido_conocido 124/129 -> 126/131; dudosa final 0. Hashes (audited/revision) actualizados en esta bitacora y en la ficha (v3); Hojas/ATA_index.csv intacto (sigue cerrado); determinismo re-verificado (2 pasadas -> mismo sha256); el -Revision.csv queda con los veredictos explicitos (editable)" }
   ]
 }

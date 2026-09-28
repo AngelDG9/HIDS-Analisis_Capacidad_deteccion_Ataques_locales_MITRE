@@ -1,10 +1,10 @@
 ---
 fase: 3
-tarea: A2.1 (T-11 · R-09/R-13) · A3.0 (H3/H4)
+tarea: A2.1 (T-11 · R-09/R-13) · A3.0 (H3/H4) · A3.0 (ancla implícita + evento de ejecución)
 nombre: Política de filtrado de ruido y etiquetado auditado de alertas
-version: 3
+version: 4
 status: implementada
-fecha: 2026-09-26
+fecha: 2026-09-28
 autor: tfg-executor
 ---
 
@@ -35,19 +35,25 @@ autor: tfg-executor
 Una alerta recibe **una** categoría; **gana el primero que casa**:
 
 1. **`auto_ruido`** — el origen es el propio Wazuh, **por campos** (no por `rule.id`) §3.
-2. **`deteccion`** — casa una señal esperada de tipo `deteccion`.
+2. **`deteccion`** — casa una señal esperada de tipo `deteccion` **anclada** §2/§4: una señal
+   `audit_exe` solo casa si `exe ∧ cwd-ancla ∧` **evento de ejecución** (`audit_command`).
 3. **`ruido_conocido`** — **paso 1.5 (H3)**: casa el **predicado `OPERADOR`** §3.bis
    (motivo `operador:<rule_id>`). Va **después** de las señales de detección y **antes** de
    `dudosa`/`sin_campos`: si una señal `deteccion` casa la alerta, **gana la detección**.
-4. **`dudosa`** — casa una señal esperada de tipo `ambigua`, **o** la alerta no permite evaluar
-   **ninguna** señal (falta el campo; motivo `sin_campos`).
+4. **`dudosa`** — casa una señal esperada de tipo `ambigua` **o** casa un `audit_exe` de
+   detección pero **falla el ancla / el evento de ejecución** (motivo `sin_ancla:<senal_id>`) **o**
+   la alerta no permite evaluar **ninguna** señal (falta el campo; motivo `sin_campos`).
 5. **`deteccion`** — `rule.id` **no** está en el catálogo (motivo `novel`).
 6. **`ruido_conocido`** — `rule.id` **sí** está en el catálogo (motivo `baseline`).
 
 `categoria ∈ {deteccion, ruido_conocido, auto_ruido, dudosa}`.
 
 **Motivos:** `auto_ruido:<proceso>`, `senal:<senal_id>`, `operador:<rule_id>`,
-`ambigua:<senal_id>`, `sin_campos`, `novel`, `baseline`.
+`ambigua:<senal_id>`, `sin_ancla:<senal_id>`, `sin_campos`, `novel`, `baseline`.
+
+> **Lo que no ancla NO se descarta** (§2.3 del plan): una fila que casa un `audit_exe` de
+> detección pero falla el ancla o el evento de ejecución queda **`dudosa`** (`sin_ancla:*`,
+> `revision=pendiente`) — **nunca** `deteccion` **ni** `ruido_conocido`. La resuelve el humano.
 
 ## 3. `auto_ruido` — categoría propia (§3)
 
@@ -153,10 +159,37 @@ ataque.
 > `Soporte/Ataques/plantilla_esperado.md`. El **esquema** del esperado **no** cambia (cambia
 > el contenido: una señal más).
 
+### Ancla implícita + evento de ejecución (`fase-03-senales`, §2.2, 2026-09-28)
+
+**Ancla de un `esperado`** = el conjunto de señales `tipo=deteccion, campo=audit_cwd` que declara.
+Una señal `audit_cwd` de tipo `deteccion` es un **ancla**: es una **condición AND**, **no** un
+detector por sí sola.
+
+Si el `esperado` declara **≥1 ancla**, una señal `deteccion` con `campo=audit_exe` casa una fila
+**solo si** se cumplen **las tres**:
+
+1. el `audit_exe` casa el patrón (`full` **o** `basename`), **y**
+2. el `audit_cwd` de la fila casa el ancla (el match prueba el `cwd` **y** `cwd + "/"`, de modo
+   que el patrón `…/ATA<NNN>/*` casa el `cwd` real `…/ATA<NNN>`), **y**
+3. la fila es un **evento de ejecución** (`rule_groups` contiene **`audit_command`**); en un
+   evento `watch` (`audit_watch_*`) el `audit_exe` es el **causante de la escritura**, no "el
+   proceso del ataque".
+
+- Una fila que casa el `audit_exe` pero **falla** (2) o (3) → **`dudosa`** (motivo
+  **`sin_ancla:<senal_id>`**, `revision=pendiente`). `evidencia` = el campo que falló
+  (`audit_cwd=<cwd>` si falla (2); `audit_exe=<exe>` si falla (3)). **Nunca** `deteccion` **ni**
+  `ruido_conocido`. Si la fila **además** casa una señal `ambigua` declarada, gana el motivo
+  **`ambigua:<senal_id>`** (sigue siendo `dudosa`).
+- **Sin ancla declarada** se mantiene el comportamiento **legado** (el `audit_exe` casa solo) y
+  la herramienta emite un **`AVISO` por `stderr`** (no bloqueante) invitando a añadir el ancla.
+- Las demás señales `deteccion` (`rule_id`, `rule_group`, `audit_key`, `syscheck_path`) **no**
+  quedan condicionadas por el ancla.
+
 ## 5. Dudosas y revisión humana (§4)
 
-- `dudosa` = señal **ambigua** que casa, **o** `sin_campos`: la alerta no tiene **ningún** campo
-  evaluable para las señales declaradas.
+- `dudosa` = señal **ambigua** que casa, **o** fila que casa un `audit_exe` de detección pero
+  falla el ancla / el evento de ejecución (`sin_ancla:<senal_id>`), **o** `sin_campos`: la alerta
+  no tiene **ningún** campo evaluable para las señales declaradas.
 - La herramienta marca `revision=pendiente` y emite `ATA<NNN>_iter{N}-Revision.csv` con las filas
   dudosas **+ columnas `veredicto, nota, revisor, fecha`**.
 - El humano escribe `veredicto ∈ {deteccion, ruido}` (+ `nota`, `revisor`, `fecha`).
@@ -188,7 +221,7 @@ declarada sin ataque (plan §8-a). **No** sustituye al modo ataque.
 ## 8. Referencias
 
 - Código: `_artefactos/scripts/filtrar_ruido.py` (constantes `WAZUH_PROCESOS`, `SIGNAL_CAMPOS`,
-  `OUT_HEADER`, `OPERADOR_SRCIPS`, `OPERADOR_REGLAS`).
+  `OUT_HEADER`, `OPERADOR_SRCIPS`, `OPERADOR_REGLAS`, `AUDIT_CMD_GROUP`).
 - Extractores: `_artefactos/scripts/extraer_alertas.py` (`--detail`, `--muestra`).
 - Diseño de RuleSets: `Soporte/Wazuh/Configuracion/rulesets_diseno.md` §4.
 - Baseline: `Dataset/Legitimo/baseline_meta.md` §9 y §14.5.

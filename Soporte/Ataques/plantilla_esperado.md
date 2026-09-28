@@ -1,18 +1,20 @@
 ---
 fase: 3
-tarea: A3.0 (H4)
+tarea: A3.0 (H4) · A3.0 (ancla implícita + evento de ejecución)
 nombre: Plantilla y convención de señales esperadas por ataque
-version: 1
+version: 2
 status: vigente
-fecha: 2026-09-26
+fecha: 2026-09-28
 autor: tfg-executor
 ---
 
 # Plantilla de señales esperadas (`ATA<NNN>_esperado.csv`)
 
-> **Convención H4 (fase-03-afinado §5).** Fija **cómo se redactan** las señales esperadas de un
-> ataque para que las **10 técnicas nuevas nazcan específicas**. El **esquema** del fichero **no
-> cambia** (7 columnas); cambia el **contenido** (una señal de contexto más).
+> **Convención H4 (fase-03-afinado §5) · v2 (fase-03-senales).** Fija **cómo se redactan** las
+> señales esperadas de un ataque para que las **10 técnicas nuevas nazcan específicas**. El
+> **esquema** del fichero **no** cambia (7 columnas); cambia el **contenido** (una señal de
+> contexto más). En **v2** el ancla es un **mecanismo real** (AND `exe ∧ cwd ∧ audit_command`),
+> no aspiracional: ver `Soporte/Wazuh/Configuracion/politica_filtrado_ruido.md` §4.
 
 ---
 
@@ -27,21 +29,27 @@ senal_id,tipo,campo,patron,dato_componente,tecnica,nota
 - `patron`: literal o glob `*` / `?` (fnmatch).
 - Redactado **antes** de atacar y **validado por el humano** (gate).
 
-## 2. Convención H4 — anclar el proceso al `cwd` del ataque
+## 2. Convención H4 (v2) — anclar el proceso al `cwd` del ataque
 
 Toda técnica que **escriba en la carpeta del ataque** (`/home/angel/lab-attack/ATA<NNN>/`)
 **acompaña** cada señal `audit_exe` con una señal de **contexto de directorio**:
 
 ```csv
 T<id>-S1,deteccion,audit_exe,<herramienta>,Process Creation,T<id>,ejecucion de la herramienta (ver nota H4)
-T<id>-S2,deteccion,audit_cwd,/home/angel/lab-attack/ATA<NNN>/*,Process Creation,T<id>,la senal de exe queda anclada al cwd del ataque
+T<id>-S2,deteccion,audit_cwd,/home/angel/lab-attack/ATA<NNN>,Process Creation,T<id>,ancla H4 (cwd sin /*; el patron con /* tambien casa)
 ```
 
 - **Regla de redacción:** `audit_exe` (proceso) **más** `audit_cwd` (carpeta del ataque) cuando el
-  artefacto copia a `/home/angel/lab-attack/ATA<NNN>/`.
+  artefacto copia a `/home/angel/lab-attack/ATA<NNN>/`. **Obligatorio** en v2: una señal `audit_exe`
+  **sin** ancla deja el recuento ancho (el filtro emite un `AVISO`).
 - **Por qué:** el `audit_cwd` **ancla** el proceso al ataque y **discrimina el churn** (`/`,
   `var/ossec`…). Una señal de `audit_exe` sola es **genérica** (cualquier `python3`/`dd` la activa).
-- El `audit_cwd` se compara como **glob** contra el valor del campo (`/home/angel/lab-attack/ATA002/*`).
+- **Mecanismo (v2):** el ancla es una **condición AND**, no un detector: la señal `audit_exe` casa
+  solo si `exe ∧ cwd-ancla ∧` evento de ejecución (`audit_command`). Lo que casa el `exe` pero falla
+  el ancla o el evento → **`dudosa`** (`sin_ancla:<senal_id>`), nunca `deteccion` ni `ruido`.
+- **Patrón:** el `audit_cwd` se compara como **glob** contra el valor del campo; se prueba el `cwd`
+  **y** `cwd + "/"`, así que **tanto** `/home/angel/lab-attack/ATA<NNN>` (recomendado) **como**
+  `/home/angel/lab-attack/ATA<NNN>/*` (los `esperado` congelados) casan el `cwd` real.
 
 ## 3. Retrocompatibilidad verificada con datos reales
 

@@ -11,7 +11,9 @@ copiado sin alterar) y etiquetada con una de cuatro categorías.
 Categorías y **orden exacto** de decisión (`plan.md` §2; gana el primero):
 
     1.   auto_ruido       si el ORIGEN es el propio Wazuh (por campos, no por rule.id)
-    2.   deteccion        si casa una SEÑAL ESPERADA de tipo `deteccion`
+    2.   deteccion        si casa una SEÑAL ESPERADA de tipo `deteccion` (ANCLADA,
+                          §2.2: una señal `audit_exe` solo casa si `exe ∧ cwd-ancla
+                          ∧` evento de ejecución `audit_command`)
     1.5  ruido_conocido   si casa el PREDICADO OPERADOR (H3 §4.1): `5715` con
                           `srcip ∈ OPERADOR_SRCIPS` o `19004` con grupo `sca`
                           (motivo `operador:<rule_id>`). `5501`/`5502` NO están en
@@ -19,10 +21,28 @@ Categorías y **orden exacto** de decisión (`plan.md` §2; gana el primero):
                           `esperado` no declara ninguna señal de campo siempre
                           evaluable; si declara `rule_id`/`rule_group`, `sin_campos`
                           no dispara -> paso 6 -> `ruido_conocido`/`baseline`.
-    3.   dudosa           si casa una SEÑAL ESPERADA de tipo `ambigua`
-                          (o si no es evaluable ninguna señal: falta el campo)
+    3.   dudosa           si casa una SEÑAL ESPERADA de tipo `ambigua`, **o** si casa
+                          un `audit_exe` de detección pero falla el ancla / el evento
+                          de ejecución (motivo `sin_ancla:<senal_id>`), **o** si no es
+                          evaluable ninguna señal (falta el campo; motivo `sin_campos`)
     4.   deteccion        si rule.id NO está en el catálogo (motivo `novel`)
     5.   ruido_conocido   si rule.id SÍ está en el catálogo
+
+Ancla implícita (§2.2). Toda señal `tipo=deteccion, campo=audit_cwd` de un
+`esperado` es un **ancla** (una condición AND), **no** un detector por sí sola.
+Si el `esperado` declara ≥1 ancla, una señal `deteccion` con `campo=audit_exe`
+casa la fila **solo si** se cumplen las tres: (i) el `audit_exe` casa el patrón
+(`full` o `basename`), (ii) el `audit_cwd` de la fila casa el ancla — el match
+prueba el `cwd` **y** `cwd + "/"`, de modo que el patrón `…/ATA<NNN>/*` casa el
+`cwd` real `…/ATA<NNN>` (el `*` casa la cadena vacía) —, y (iii) la fila es un
+evento de ejecución (`rule_groups` contiene `audit_command`; en un evento `watch`
+el `audit_exe` es el causante de la escritura, no "el proceso del ataque").
+Una fila que casa el `audit_exe` pero **falla** el ancla o el evento de ejecución
+→ `dudosa` (motivo `sin_ancla:<senal_id>`; `evidencia` = el campo que falló),
+**nunca** `deteccion` ni `ruido_conocido`: nada se descarta en silencio. Si el
+`esperado` **no** declara ancla se mantiene el comportamiento **legado** (el
+`audit_exe` casa solo) y se emite un **`AVISO`** por `stderr` invitando a declarar
+el ancla (convención H4).
 
 `auto_ruido` es **categoría propia** y **nunca** cuenta como detección. Si una
 señal `deteccion` apuntara a un proceso de Wazuh se emite **CONFLICTO** por
@@ -72,6 +92,13 @@ WAZUH_PROCESOS = {
 }
 WAZUH_CWD = "/var/ossec"
 WAZUH_RUN_GLOB = "/var/ossec/var/run/*"
+
+# §2.2 — ancla implícita: una señal `deteccion` de proceso (`audit_exe`) solo
+# casa si el `audit_cwd` de la fila casa el ancla `audit_cwd` del `esperado` Y
+# la fila es un **evento de ejecución**. El grupo `audit_command` (execve) lo
+# distingue del evento `watch` (`audit_watch_*`), donde `audit_exe` es el
+# causante de la escritura, no el proceso del ataque.
+AUDIT_CMD_GROUP = "audit_command"
 
 # --------------------------------------------------------------------------
 # H3 (fase-03-afinado §4.1) — predicado OPERADOR
@@ -350,27 +377,100 @@ def _match_campo(row: dict, campo: str, patron: str):
     return True, glob_match(val, patron), val
 
 
+def _grupos(row: dict) -> list[str]:
+    return [g for g in (row.get("rule_groups") or "").split("|") if g]
+
+
+def es_evento_ejecucion(row: dict) -> bool:
+    """True si la fila es un `execve` (grupo `audit_command`), no un `watch`."""
+    return AUDIT_CMD_GROUP in _grupos(row)
+
+
+def _casa_ancla(cwd: str, anchors) -> bool:
+    """True si el `cwd` de la fila casa el patrón de alguna señal-ancla.
+
+    Prueba el `cwd` **y** `cwd + "/"`, para que el patrón `…/ATA<NNN>/*` case el
+    `cwd` real `…/ATA<NNN>` (el `*` casa la cadena vacía).
+    """
+    for a in anchors:
+        pat = a["patron"]
+        if glob_match(cwd, pat) or glob_match(cwd + "/", pat):
+            return True
+    return False
+
+
 def evaluar_senales(row: dict, signals):
-    """Devuelve dict con match_deteccion, match_ambigua, alguna_evaluable."""
+    """Devuelve dict con match_deteccion, match_ambigua, sin_ancla, alguna_evaluable.
+
+    - Las señales `tipo=deteccion, campo=audit_cwd` son el **ancla** (§2.2): se
+      consumen como condición, no detectan por sí solas.
+    - Una señal `deteccion` con `campo=audit_exe` solo casa si (i) el `exe` casa,
+      (ii) el `audit_cwd` de la fila casa el ancla y (iii) la fila es un evento
+      de ejecución. Si el `exe` casa pero falla (ii) o (iii) → `sin_ancla`.
+    - Sin ancla declarada, la señal `audit_exe` mantiene el comportamiento legado.
+    """
+    anchors = [
+        s for s in signals if s["tipo"] == "deteccion" and s["campo"] == "audit_cwd"
+    ]
     match_det = None
     match_amb = None
+    sin_ancla = None
     alguna_evaluable = False
     for s in signals:
-        evaluable, casa, valor = _match_campo(row, s["campo"], s["patron"])
+        campo = s["campo"]
+        if s["tipo"] == "deteccion" and campo == "audit_cwd":
+            # señal-ancla: no es un detector por sí sola (es la condición AND del
+            # `audit_exe`); solo cuenta para `sin_campos` si el campo existe.
+            if _valor_campo(row, "audit_cwd") is not None:
+                alguna_evaluable = True
+            continue
+        evaluable, casa, valor = _match_campo(row, campo, s["patron"])
         if not evaluable:
             continue
         alguna_evaluable = True
         if not casa:
             continue
-        if s["tipo"] == "deteccion" and match_det is None:
-            match_det = (s, valor)
+        if s["tipo"] == "deteccion":
+            if campo == "audit_exe" and anchors:
+                cwd = (row.get("audit_cwd") or "").strip()
+                if not _casa_ancla(cwd, anchors):
+                    if sin_ancla is None:
+                        sin_ancla = (s, f"audit_cwd={cwd}")
+                    continue
+                if not es_evento_ejecucion(row):
+                    if sin_ancla is None:
+                        sin_ancla = (s, f"audit_exe={valor}")
+                    continue
+            if match_det is None:
+                match_det = (s, valor)
         elif s["tipo"] == "ambigua" and match_amb is None:
             match_amb = (s, valor)
     return {
         "match_deteccion": match_det,
         "match_ambigua": match_amb,
+        "sin_ancla": sin_ancla,
         "alguna_evaluable": alguna_evaluable,
     }
+
+
+def avisos_ancla(signals) -> list[str]:
+    """`AVISO` (stderr, no bloqueante) por señal `audit_exe` de detección sin ancla.
+
+    Retrocompatibilidad: un `esperado` sin ancla mantiene el comportamiento legado
+    (el `audit_exe` casa solo) pero el recuento puede ser **ancho** (convención H4).
+    """
+    tiene_ancla = any(
+        s["tipo"] == "deteccion" and s["campo"] == "audit_cwd" for s in signals
+    )
+    if tiene_ancla:
+        return []
+    return [
+        f"la señal {s['senal_id']} (deteccion, audit_exe={s['patron']}) no declara "
+        "ancla audit_cwd: el recuento puede ser ancho (convención H4); añadir una "
+        "señal deteccion audit_cwd de la carpeta del ataque"
+        for s in signals
+        if s["tipo"] == "deteccion" and s["campo"] == "audit_exe"
+    ]
 
 
 def _atribucion(sig: dict) -> str:
@@ -430,7 +530,7 @@ def clasificar(row: dict, catalogo: set[str], signals, modo_baseline: bool, conf
             out["motivo"] = f"operador:{op[0]}"
             out["evidencia"] = op[1]
             return out
-        # 3. dudosa (ambigua / sin_campos)
+        # 3. dudosa (ambigua / sin_ancla / sin_campos)
         if ev["match_ambigua"] is not None:
             s, valor = ev["match_ambigua"]
             out["categoria"] = "dudosa"
@@ -438,6 +538,14 @@ def clasificar(row: dict, catalogo: set[str], signals, modo_baseline: bool, conf
             out["atribucion"] = _atribucion(s)
             out["revision"] = "pendiente"
             out["evidencia"] = f"{s['campo']}={valor}"
+            return out
+        if ev["sin_ancla"] is not None:
+            s, eviden = ev["sin_ancla"]
+            out["categoria"] = "dudosa"
+            out["motivo"] = f"sin_ancla:{s['senal_id']}"
+            out["atribucion"] = _atribucion(s)
+            out["revision"] = "pendiente"
+            out["evidencia"] = eviden
             return out
         if not ev["alguna_evaluable"]:
             out["categoria"] = "dudosa"
@@ -577,6 +685,9 @@ def main(argv=None) -> int:
             return EXIT_NO_SIGNALS
         # Garantía anti-frágil H3: señal declarada sobre una regla del predicado.
         conflictos.extend(conflictos_operador(signals))
+        # §2.2 — AVISO (no bloqueante) por señal `audit_exe` sin ancla declarada.
+        for aviso in avisos_ancla(signals):
+            print(f"AVISO: {aviso}", file=sys.stderr)
 
     # --- clasificación ---
     filas = []

@@ -4,15 +4,19 @@ bloque: fase-03-piloto-custom
 ata_id: ATA004
 tecnica: T1489
 tactica: Impact
-version: 2
+version: 3
 status: cerrado
-fecha: 2026-09-26
+fecha: 2026-09-28
 ---
 
 # Ficha — ATA004 · T1489 Service Stop (Linux / `victima-linux`)
 
 > Bloque `fase-03-piloto-custom` (control **de ART**). Generada por `tfg-executor`. **Sin
 > secretos.** Estado **`cerrado`**: criterio de doble iteración **v2** → **`iguales`**.
+>
+> **Revisión (`fase-03-senales`, 2026-09-28):** recuento **re-generado** con el **ancla implícita
+> + evento de ejecución** (`filtrar_ruido.py`); `deteccion` **5→3** (2 ajenas del operador →
+> `dudosa` → `ruido`); `Hojas/ATA_index.csv` **intacto** (sigue `cerrado`). Detalle en §8/§8.1/§9/§10.
 
 ## 1. Identificación
 
@@ -90,20 +94,26 @@ echo '<contraseña del laboratorio>' | sudo -S bash ATA004_ataque.sh   # una sol
 
 | Iter | filas | deteccion | auto_ruido | ruido_conocido | dudosa | RS1 | RS2 | RS3 | RS4 |
 |---|---|---|---|---|---|---|---|---|---|
-| 1 | 751 | **5** | 622 | 124 | **0** | 7 | 744 | 0 | 0 |
-| 2 | 738 | **5** | 604 | 129 | **0** | 7 | 731 | 0 | 0 |
+| 1 | 751 | **3** | 622 | 126 | **0** | 7 | 744 | 0 | 0 |
+| 2 | 738 | **3** | 604 | 131 | **0** | 7 | 731 | 0 | 0 |
 
 ### 8.1 Detecciones — **dos cifras**, genuinas/ajenas y desglose esperadas/sorpresas
 
 | Iter | **alertas** detección | **`rule_id` distintos** | **genuinas / ajenas** | esperadas (`senal:…`) | sorpresas (`novel`) |
 |---|---|---|---|---|---|
-| 1 | 5 | 1 · `{80792}` | **3 / 2** | 5 (`T1489-S1`) | 0 |
-| 2 | 5 | 1 · `{80792}` | **3 / 2** | 5 (`T1489-S1`) | 0 |
+| 1 | 3 | 1 · `{80792}` | **3 / 0** | 3 (`T1489-S1`) | 0 |
+| 2 | 3 | 1 · `{80792}` | **3 / 0** | 3 (`T1489-S1`) | 0 |
 
-- Las 5 alertas son `80792` (*Audit: Command: `/usr/bin/systemctl`*), todas por `T1489-S1`.
-- **Genuinas del ataque** (`cwd=/home/angel/lab-attack/ATA004`): **3** — las `systemctl is-active`/`stop`/`is-active`
-  del script. **Ajenas:** **2** `systemctl --user unset-environment SSH_AUTH_SOCK|GSM_SKIP_SSH_AGENT_WORKAROUND`
-  (`cwd=/home/angel`) del **cierre de sesión SSH del operador** → contadas por `T1489-S1` (señal ancha).
+- Las **3** detecciones son `80792` (*Audit: Command: `/usr/bin/systemctl`*), todas por `T1489-S1`,
+  y son **genuinas** (`cwd=/home/angel/lab-attack/ATA004`): las `systemctl is-active`/`stop`/`is-active`
+  del script. **0 ajenas contadas como detección.**
+- **`fase-03-senales` (2026-09-28) — recuento limpio con el ancla implícita:** las **2**
+  `systemctl --user unset-environment SSH_AUTH_SOCK|GSM_SKIP_SSH_AGENT_WORKAROUND`
+  (`cwd=/home/angel`) del **cierre de sesión SSH del operador** ya **no** se cuentan como
+  `deteccion`: caen a **`dudosa`/`sin_ancla:T1489-S1`** (la señal `S1` (`audit_exe=systemctl`)
+  casa el `exe` pero el `audit_cwd` `=/home/angel` **no** casa el ancla `S2`) y el humano las
+  resolvió a **`ruido`**. El ancla `S2` (`audit_cwd=/home/angel/lab-attack/ATA004/*`) ya **casa**
+  el `cwd` real (sin barra final) → las 3 genuinas se anclan. *(Antes: 5 detección, 3 genuinas + 2 ajenas.)*
 - **Efecto `journald`/`systemd` — hallazgo (`fase-03-cabos`, 2026-09-28):** **0** detecciones por grupo
   `systemd` (`40700`): **no es un silenciado, es una detección inexistente de fábrica**. La regla
   `40700` (agrupador de `0285-systemd_rules.xml`, Wazuh v4.14.7, pin del laboratorio) es
@@ -114,14 +124,15 @@ echo '<contraseña del laboratorio>' | sudo -S bash ATA004_ataque.sh   # una sol
   **parada normal** (`systemctl stop cron`, mensajes `Stopping/Stopped`) **no casa ninguna hija que alerte** →
   gana `40700` (level 0) → **no hay alerta journald**. La hipótesis queda **resuelta** (no "sin
   probar"): la detección efectiva del ataque es el **`execve` `80792`** (audit). Ver §10.5 y runbook §8.3.
-- **`dudosa` resueltas (3/iter, todas declaradas A1/A2):** `80792` (*execve* de `sudo`), `80780`
-  (*Watch-Write* por `sudo`) → A1 (`audit_exe=sudo`); `5402` (*Successful sudo to ROOT*) → A2.
-  → **`ruido`**, nota *"elevación (declarada ambigua en el esperado); parte del ataque pero no de la
-  técnica - no infla; criterio del orquestador"*.
-- **Ancla `audit_cwd` inerte:** el `sudo` corrió desde la carpeta del ataque, pero `S2`
-  (`audit_cwd=/home/angel/lab-attack/ATA004/*`) **no casó** el valor real (`/home/angel/lab-attack/ATA004`,
-  sin barra final) → **no** lo promovió a `deteccion` (al contrario de lo previsto en el gate); quedó
-  `dudosa` por A1 y se resolvió a `ruido`.
+- **`dudosa` (5/iter) resueltas a `ruido`:** 3 declaradas A1/A2 — `80792` (*execve* de `sudo`),
+  `80780` (*Watch-Write* por `sudo`) → A1 (`audit_exe=sudo`); `5402` (*Successful sudo to ROOT*) → A2,
+  nota *"elevación (…); no infla; criterio del orquestador"*. Más 2 **nuevas** (`fase-03-senales`):
+  las `systemctl --user` del cierre de sesión → `sin_ancla:T1489-S1`.
+- **Ancla `audit_cwd` (✅ `fase-03-senales`):** el ancla `S2`
+  (`audit_cwd=/home/angel/lab-attack/ATA004/*`) ahora **sí casa** el valor real
+  (`/home/angel/lab-attack/ATA004`, sin barra final) porque el match prueba `cwd` **y** `cwd + "/"`.
+  Antes era **inerte** (patrón `/*` vs `cwd` sin barra) — motivo por el que las detecciones
+  dependían solo de `audit_exe`. Ver runbook §8.2 y política §4.
 
 > **Verificación EN VIVO del `40700`** (`fase-03-cabos-cierre`, 2026-09-28, manager `wazuh-server`
 > `192.168.65.128`). Salida **literal** de
@@ -145,16 +156,21 @@ echo '<contraseña del laboratorio>' | sudo -S bash ATA004_ataque.sh   # una sol
 | Criterio | Resultado |
 |---|---|
 | C1′ mismo conjunto de `rule_id` con `deteccion` | ✅ `{80792}` == `{80792}` |
-| C2′ `\|n2−n1\| ≤ max(2, 10 %·n1)` | ✅ `\|5−5\| = 0 ≤ 2` |
+| C2′ `\|n2−n1\| ≤ max(2, 10 %·n1)` | ✅ `\|3−3\| = 0 ≤ 2` |
 | C3′ sin `dudosa` sin resolver | ✅ 0 y 0 |
 | Sanidad `auto_ruido` (aviso) | ✅ 622 vs 604 → Δ=18 |
-| Sanidad `ruido_conocido` (aviso) | ✅ 124 vs 129 → Δ=5 |
+| Sanidad `ruido_conocido` (aviso) | ✅ 126 vs 131 → Δ=5 |
+
+> **Nota (`fase-03-senales`, 2026-09-28):** las 6 cifras se recalcularon con el **ancla implícita**;
+> `deteccion` pasa de **5/5** a **3/3** (las 2 ajenas del operador → `dudosa` → `ruido`). El
+> veredicto v2 sigue **`iguales`** (`rule_id` de detección idéntico, recuento 0, sin dudosa pendiente).
 
 ## 10. Limitaciones y hallazgos
 
-1. **Señal `audit_exe` ancha (hallazgo transversal):** `systemctl --user` del cierre de sesión del
-   operador se contó como detección. **Recomendación:** anclar por `audit_cwd` de la carpeta del
-   ataque (patrón corregido) y/o `rule_id` del execve (runbook §8).
+1. **Señal `audit_exe` ancha — ✅ RESUELTO (`fase-03-senales`, 2026-09-28):** el `systemctl --user`
+   del cierre de sesión del operador **ya no** se cuenta como detección: el **ancla implícita**
+   (`exe ∧ cwd-ancla ∧ audit_command`) lo manda a **`dudosa`/`sin_ancla:T1489-S1`** → **`ruido`**.
+   Ver política §4 y runbook §8.2.
 2. **Elevación declarada `ambigua`:** A1/A2 evitaron que el `sudo`/`5402` inflaran el recuento; se
    resolvieron a `ruido`.
 3. **Gap de despliegue (runbook §8.1):** extractor H3 desplegado; `5715` del operador → `operador:5715`.

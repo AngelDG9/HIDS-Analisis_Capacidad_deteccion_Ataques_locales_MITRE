@@ -16,6 +16,15 @@
 > **no lleva normalización**: **evitar `git checkout` / `stash` / `reset` / clonar** sobre este
 > repositorio sin **recalcular** después las huellas afectadas. Los **binarios** (p. ej. `.png`)
 > **no** deben pasar por reglas de texto.
+>
+> - **El riesgo no es solo al clonar:** también salta con **`git add`/commit** y por tener
+>   **`core.autocrlf=true`** (hoy **activo** en este repo; reescribe LF→CRLF en Windows) —
+>   **cualquier** operación de git que toque los finales de línea cambia los **bytes** y por tanto
+>   el `sha256`.
+> - **Cadena de huellas:** `ATA<NNN>_esperado.csv` ↔ `ATA<NNN>_ataque.sh` ↔ `-Audited.csv` /
+>   `-Revision.csv` ↔ `Bitacora/ATA<NNN>.json` ↔ `ATA<NNN>_meta.md`. Los scripts calculan el
+>   `sha256` **de los bytes en disco** → hay que **re-pasarlos** (regenerar y actualizar las citas)
+>   tras **cualquier** operación de git que toque los finales de línea.
 
 ---
 
@@ -307,6 +316,10 @@ las **sanidades** de `auto_ruido`/`ruido_conocido` **pasan a aviso**, no bloquea
   el proceso al ataque y discrimina el churn (`/`, `var/ossec`…). Detalle y plantilla:
   `Soporte/Ataques/plantilla_esperado.md`. El **esquema** del esperado **no** cambia (una señal
   más). ⚠️ **No se tocan** los 3 `ATA<NNN>_esperado.csv` del piloto (rompería sus `sha256`).
+  - **✅ RESUELTO (`fase-03-senales`, 2026-09-28):** el ancla es ya un **mecanismo real** (AND
+    `exe ∧ cwd ∧ audit_command`); el filtro prueba el `cwd` **y** `cwd + "/"`, así que el patrón
+    congelado `…/ATA<NNN>/*` casa el `cwd` real. Lo que casa el `exe` pero falla el ancla o el
+    evento → **`dudosa`** (`sin_ancla:*`), nunca `deteccion`/`ruido`. Ver política §4.
 
 ---
 
@@ -417,6 +430,15 @@ siguiente; **no** forma parte de este):
 - **Decisión:** **no se recalibran** los `esperado` ya validados (se escriben antes y no se ajustan
   después); el sesgo se **documenta** y se corrigen las señales en los **ataques nuevos** del escalado.
   En cada ficha se reportan las **dos cifras** y se **separan genuinas de ajenas**.
+- **✅ RESUELTO (`fase-03-senales`, 2026-09-28) — hallazgos H-A (ancla inerte) y H-B (señal
+  ancha):** el filtro implementa la **ancla implícita + evento de ejecución**: una señal
+  `deteccion` con `campo=audit_exe` casa solo si `exe ∧ cwd-ancla ∧ audit_command`, y el `cwd` se
+  prueba **y** `cwd + "/"` (el patrón `…/ATA<NNN>/*` casa el `cwd` real sin editar los `esperado`).
+  Lo que casa el `exe` pero **falla** el ancla o el evento (los `find` `cwd=/`, los `systemctl
+  --user` del cierre de sesión, las **escrituras** `watch`) pasa a **`dudosa`** (`sin_ancla:*` /
+  `ambigua:*`), **nunca** `ruido_conocido`. Los 3 ataques del **piloto-custom** (ATA004/007/012)
+  se **regeneraron**; los 3 del **piloto** (ATA002/008/013, sin ancla) quedaron **byte a byte
+  idénticos**. Ver política §4 y fichas.
 
 ### 8.3 ⚠️ Punto ciego de journald — `40700` es `level="0"` (agrupador)
 

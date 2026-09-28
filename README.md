@@ -45,6 +45,15 @@ sobre los **bytes del fichero en disco**. El repo tiene finales de línea **mezc
 repositorio sin **recalcular** después las huellas afectadas. Los **binarios** (p. ej. `.png`)
 **no** deben pasar por reglas de texto.
 
+- **El riesgo no es solo al clonar:** también salta con **`git add`/commit** y por tener
+  **`core.autocrlf=true`** (hoy **activo** en este repo; reescribe LF→CRLF en Windows) —
+  **cualquier** operación de git que toque los finales de línea cambia los **bytes** y por tanto
+  el `sha256`.
+- **Cadena de huellas:** `ATA<NNN>_esperado.csv` ↔ `ATA<NNN>_ataque.sh` ↔ `-Audited.csv` /
+  `-Revision.csv` ↔ `Bitacora/ATA<NNN>.json` ↔ `ATA<NNN>_meta.md`. Los scripts calculan el
+  `sha256` **de los bytes en disco** → hay que **re-pasarlos** (regenerar y actualizar las citas)
+  tras **cualquier** operación de git que toque los finales de línea.
+
 ## Acceso
 
 Los agentes (`opencode`) **corren en el PC sobremesa**, donde viven las VMs. El **portátil**

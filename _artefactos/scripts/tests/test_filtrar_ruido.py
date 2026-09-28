@@ -456,6 +456,175 @@ def test_h3_columnas_origen_en_detail_header():
 
 
 # --------------------------------------------------------------------------
+# Ancla implícita + evento de ejecución (§2.2 — bloque `fase-03-senales`)
+# --------------------------------------------------------------------------
+EXE_FIND = {"senal_id": "S1", "tipo": "deteccion", "campo": "audit_exe",
+            "patron": "find", "dato_componente": "Process Creation",
+            "tecnica": "T1119", "nota": ""}
+EXE_CP = {"senal_id": "S1", "tipo": "deteccion", "campo": "audit_exe",
+          "patron": "cp", "dato_componente": "Process Creation",
+          "tecnica": "T1491", "nota": ""}
+ANCLA_012 = {"senal_id": "S4", "tipo": "deteccion", "campo": "audit_cwd",
+             "patron": "/home/angel/lab-attack/ATA012/*", "dato_componente": "Process Creation",
+             "tecnica": "T1119", "nota": "ancla H4"}
+ANCLA_007 = {"senal_id": "S2", "tipo": "deteccion", "campo": "audit_cwd",
+             "patron": "/home/angel/lab-attack/ATA007/*", "dato_componente": "Process Creation",
+             "tecnica": "T1491", "nota": "ancla H4"}
+
+
+def _con_esperado(tmp_path, alerta_fila, esperado_rows, nombre):
+    esp = esperado_tmp(tmp_path, esperado_rows, nombre=nombre + "-esperado.csv")
+    alerta = alerta_tmp(tmp_path, [alerta_fila], nombre=nombre + "-alerta.csv")
+    out = tmp_path / (nombre + "-Audited.csv")
+    rev = tmp_path / (nombre + "-Revision.csv")
+    rc = fr.main(["--alerta", str(alerta), "--ata", "ATA001", "--catalogo",
+                  str(CATALOGO), "--esperado", str(esp), "--out", str(out),
+                  "--rev-out", str(rev)])
+    assert rc == fr.EXIT_OK
+    return lee_salida(out)[0]
+
+
+def test_ancla_exe_cwd_y_exec_deteccion(tmp_path):
+    """CA2: `exe ∧ cwd-ancla ∧ audit_command` -> deteccion."""
+    r = _con_esperado(
+        tmp_path,
+        fila("2026-09-26T12:20:58.850Z", "80792", exe="/usr/bin/find",
+             cwd="/home/angel/lab-attack/ATA012", key="audit-wazuh-c", typ="SYSCALL",
+             groups="audit|audit_command", rs="RS2"),
+        [EXE_FIND, ANCLA_012], "ancla-ok",
+    )
+    assert r["categoria"] == "deteccion"
+    assert r["motivo"] == "senal:S1"
+    assert r["evidencia"] == "audit_exe=/usr/bin/find"
+
+
+def test_golden_falso_negativo_fuera_del_ancla(tmp_path):
+    """⭐ CA3: proceso del ataque desde OTRA carpeta -> dudosa (`sin_ancla`).
+
+    Ni `deteccion` ni `ruido_conocido`: no se descarta, va a revisión.
+    """
+    r = _con_esperado(
+        tmp_path,
+        fila("2026-09-26T12:20:58.724Z", "80792", exe="/usr/bin/find",
+             cwd="/tmp", key="audit-wazuh-c", typ="SYSCALL",
+             groups="audit|audit_command", rs="RS2"),
+        [EXE_FIND, ANCLA_012], "fuera-ancla",
+    )
+    assert r["categoria"] == "dudosa"
+    assert r["categoria"] != "deteccion"
+    assert r["categoria"] != "ruido_conocido"
+    assert r["motivo"] == "sin_ancla:S1"
+    assert r["revision"] == "pendiente"
+    assert r["evidencia"] == "audit_cwd=/tmp"
+
+
+def test_golden_falso_negativo_cwd_vacio(tmp_path):
+    """CA3: `audit_cwd` vacío tampoco ancla -> dudosa (`sin_ancla`)."""
+    r = _con_esperado(
+        tmp_path,
+        fila("2026-09-26T12:20:58.873Z", "80792", exe="/usr/bin/find",
+             cwd="", key="audit-wazuh-c", typ="SYSCALL",
+             groups="audit|audit_command", rs="RS2"),
+        [EXE_FIND, ANCLA_012], "cwd-vacio",
+    )
+    assert r["categoria"] == "dudosa"
+    assert r["motivo"] == "sin_ancla:S1"
+    assert r["evidencia"] == "audit_cwd="
+
+
+def test_ca13_watch_del_mismo_proceso_no_es_deteccion(tmp_path):
+    """CA4/CA13: evento watch del mismo proceso en el ancla -> ambigua -> dudosa."""
+    amb = {"senal_id": "A2", "tipo": "ambigua", "campo": "rule_id", "patron": "80781",
+           "dato_componente": "File Modification", "tecnica": "T1491", "nota": ""}
+    r = _con_esperado(
+        tmp_path,
+        fila("2026-09-26T12:05:07.074Z", "80781", exe="/usr/bin/cp",
+             cwd="/home/angel/lab-attack/ATA007", key="audit-wazuh-w", typ="SYSCALL",
+             groups="audit|audit_watch_write", rs="RS2"),
+        [EXE_CP, ANCLA_007, amb], "ca13-watch",
+    )
+    assert r["categoria"] == "dudosa"
+    assert r["motivo"] == "ambigua:A2"
+    assert r["categoria"] != "deteccion"
+
+
+def test_watch_sin_ambigua_es_sin_ancla_no_ruido(tmp_path):
+    """CA13: watch sin señal ambigua declarada -> dudosa (`sin_ancla`), nunca ruido."""
+    exe_tar = {"senal_id": "S3", "tipo": "deteccion", "campo": "audit_exe",
+               "patron": "tar", "dato_componente": "Process Creation",
+               "tecnica": "T1119", "nota": ""}
+    r = _con_esperado(
+        tmp_path,
+        fila("2026-09-26T12:20:58.866Z", "80790", exe="/usr/bin/tar",
+             cwd="/home/angel/lab-attack/ATA012", key="audit-wazuh-w", typ="SYSCALL",
+             groups="audit|audit_watch_create|audit_watch_write", rs="RS2"),
+        [exe_tar, ANCLA_012], "watch-sinancla",
+    )
+    assert r["categoria"] == "dudosa"
+    assert r["motivo"] == "sin_ancla:S3"
+    assert r["evidencia"] == "audit_exe=/usr/bin/tar"
+    assert r["categoria"] != "ruido_conocido"
+
+
+def test_patron_ancla_sin_barra_final_casa_cwd(tmp_path):
+    """CA6: el patrón `…/ATA<NNN>/*` casa el `cwd` real `…/ATA<NNN>` (y con barra)."""
+    a = _con_esperado(
+        tmp_path,
+        fila("2026-09-26T12:20:58.850Z", "80792", exe="/usr/bin/find",
+             cwd="/home/angel/lab-attack/ATA012", groups="audit|audit_command",
+             key="audit-wazuh-c", typ="SYSCALL", rs="RS2"),
+        [EXE_FIND, ANCLA_012], "sin-barra",
+    )
+    assert a["categoria"] == "deteccion"
+    b = _con_esperado(
+        tmp_path,
+        fila("2026-09-26T12:20:58.851Z", "80792", exe="/usr/bin/find",
+             cwd="/home/angel/lab-attack/ATA012/", groups="audit|audit_command",
+             key="audit-wazuh-c", typ="SYSCALL", rs="RS2"),
+        [EXE_FIND, ANCLA_012], "con-barra",
+    )
+    assert b["categoria"] == "deteccion"
+
+
+def test_ca5_legado_sin_ancla_deteccion_y_aviso(tmp_path, capsys):
+    """CA5: un `esperado` sin ancla mantiene el comportamiento legado + AVISO."""
+    esp = [{"senal_id": "S1", "tipo": "deteccion", "campo": "audit_exe",
+            "patron": "dd", "dato_componente": "Process Creation",
+            "tecnica": "T1485", "nota": ""}]
+    r = _con_esperado(
+        tmp_path,
+        fila("2026-09-25T20:31:18.348Z", "80792", exe="/usr/bin/dd",
+             cwd="/home/angel/lab-attack/ATA002", groups="audit|audit_command",
+             key="audit-wazuh-c", typ="SYSCALL", rs="RS2"),
+        esp, "legado",
+    )
+    assert r["categoria"] == "deteccion"
+    assert r["motivo"] == "senal:S1"
+    assert "AVISO" in capsys.readouterr().err
+
+
+def test_ancla_no_sustituye_a_otra_senal_deteccion(tmp_path):
+    """Otra señal `deteccion` (`audit_key`) no queda condicionada por el ancla."""
+    key_sig = {"senal_id": "K1", "tipo": "deteccion", "campo": "audit_key",
+               "patron": "lab-attack*", "dato_componente": "File Modification",
+               "tecnica": "T1491", "nota": ""}
+    r = _con_esperado(
+        tmp_path,
+        fila("2026-09-26T12:05:07.074Z", "80781", exe="/usr/bin/cp",
+             cwd="/home/angel", key="lab-attack-w", typ="SYSCALL",
+             groups="audit|audit_watch_write", rs="RS2"),
+        [key_sig, ANCLA_007], "otra-senal",
+    )
+    assert r["categoria"] == "deteccion"
+    assert r["motivo"] == "senal:K1"
+
+
+def test_constante_audit_cmd_group():
+    """§3: la constante del evento de ejecución está declarada y documentada."""
+    assert fr.AUDIT_CMD_GROUP == "audit_command"
+
+
+# --------------------------------------------------------------------------
 # columnas exactas §5
 # --------------------------------------------------------------------------
 def test_columnas_exactas_salida():
