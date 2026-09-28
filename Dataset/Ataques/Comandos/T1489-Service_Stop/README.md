@@ -80,9 +80,17 @@ echo '<contraseña del laboratorio>' | sudo -S bash ATA004_ataque.sh
 ## 7. Hipótesis de detección (control de ART)
 
 - **DETECTADO (con matiz):** `execve systemctl` → `80792` (nivel 3, **no** silenciado: la captura
-  C0 `Soporte/Ataques/c0/ATA004_logtest.txt` da ganadora `80792` level 3 → **no avisa**) **+** la
-  parada del *unit* en **journald/systemd** (grupo `systemd`, `40700`) **+** eventos de
-  **elevación/PAM** (`5402`, `5501`, `5502`).
+  C0 `Soporte/Ataques/c0/ATA004_logtest.txt` da ganadora `80792` level 3 → **no avisa**), **+** eventos
+  de **elevación/PAM** (`5402`, `5501`, `5502`).
+- **NO detectado por journald — hallazgo (`fase-03-cabos`, 2026-09-28):** la parada del *unit* **no**
+  generó alerta por el grupo `systemd` (`40700`). La regla `40700` (agrupador de
+  `0285-systemd_rules.xml`, Wazuh v4.14.7) es **`level="0"`** → **no emite alerta**; sus hijas
+  `40701`–`40705` (level 2/5) **solo** disparan con patrones de **fallo** (`Stale file handle`,
+  `entered failed state`, `status=1/FAILURE`…). Una parada **normal** (`systemctl stop cron`,
+  `Stopping/Stopped`) no casa ninguna hija → gana `40700` (level 0) → **0 alertas journald**. La
+  expectativa de `40700` era **estructuralmente imposible**, no "silenciada": la detección efectiva es
+  el **`execve` `80792`**. Para detectar por journald haría falta **regla propia (RS3)** o declarar la
+  detección por el `rule_id` del `execve` (ver runbook §8.3).
 - **Matiz:** parte del recuento puede venir de la **elevación** → por eso `T1489-A1`/`T1489-A2`
   se declaran **`ambigua`**. Las PAM `5501`/`5502` quedan `dudosa` (H3) y las resuelve el humano.
 - **Control de ART:** confirma que la maquinaria de medición sigue funcionando igual con un ataque

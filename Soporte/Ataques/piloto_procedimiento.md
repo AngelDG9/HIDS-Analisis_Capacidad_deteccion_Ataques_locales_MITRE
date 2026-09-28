@@ -405,3 +405,28 @@ siguiente; **no** forma parte de este):
   después); el sesgo se **documenta** y se corrigen las señales en los **ataques nuevos** del escalado.
   En cada ficha se reportan las **dos cifras** y se **separan genuinas de ajenas**.
 
+### 8.3 ⚠️ Punto ciego de journald — `40700` es `level="0"` (agrupador)
+
+> Añadido en el bloque `fase-03-cabos` (2026-09-28). **No** requirió VMs ni root: el hallazgo sale de
+> inspeccionar el ruleset de **fábrica** fijado por el laboratorio.
+
+- **Qué pasó (ATA004 · T1489 Service Stop):** se esperaban alertas de **journald/systemd**
+  (`40700`, grupo `systemd`) por la parada del servicio (`systemctl stop cron`) y salieron **0** en las
+  2 ventanas. La captura **C0** solo cubrió la línea `execve` de `systemctl` → la expectativa quedaba
+  **sin probar**.
+- **Causa (inspección del ruleset de fábrica, Wazuh v4.14.7, `0285-systemd_rules.xml`):** la regla
+  **`40700` es `level="0"`** — agrupador `<program_name>^systemd$|^systemctl$</program_name>`, **no
+  emite alerta**. Sus **hijas** `40701`–`40705` (level 2/5) **solo** disparan con patrones de **fallo**
+  (`Stale file handle`, `entered failed state`, `status=1/FAILURE`, `Time has been changed`…). Una
+  **parada normal** de servicio (`systemctl stop cron`, mensajes `Stopping`/`Stopped`) **no casa
+  ninguna hija** → gana `40700` (level 0) → **no hay alerta journald**.
+- **Conclusión:** la expectativa era **estructuralmente imposible** — **no** era una detección
+  "silenciada", era una detección **inexistente de fábrica**. La detección efectiva del ataque es el
+  **`execve` `80792`** (audit). La hipótesis queda **resuelta** (no "sin probar").
+- **CABO DEL ESCALADO:** si una técnica depende de **journald**, (1) confirmar empíricamente con un
+  **C0** sobre una **línea journald real** capturada en la víctima y (2) **escribir la regla propia
+  (RS3)** o declarar la detección por el **`rule_id` del `execve`**. Ver ficha `ATA004_meta.md`
+  §8.1/§10.5.
+- **Alcance:** se **documenta** (coste cero); **no** se extendió el C0 — exigiría VMs + root y una
+  línea journald sintética de formato no trivial (riesgo de `garbage-in`) sin aportar hallazgo nuevo.
+

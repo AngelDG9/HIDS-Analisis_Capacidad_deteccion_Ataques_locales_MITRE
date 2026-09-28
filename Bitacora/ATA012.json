@@ -10,7 +10,7 @@
     "fuente": "custom",
     "nota": "ataque manual escrito por el TFG; Atomic Red Team no tiene pruebas Linux para T1119"
   },
-  "esperado_sha256": "4486a26be6b21475c987b8e072409965d6d4e07864e943aecba589d71bf546f2",
+  "esperado_sha256": "650d518283cbff3463b5024ddea539e05347fa20cc988f9cf6f69d937fa89424",
   "ataque_sha256": "d5ecb91973cbb50f9afef58a2f72726ae58370950418d35e3c86d015a583016e",
   "c0": {
     "logtest": "Soporte/Ataques/c0/ATA012_logtest.txt",
@@ -30,7 +30,7 @@
       "detalle_sha256": "d7ebe9de765b1add9151b0965e0a21eb6a391eee0d99a4f56dd8f1571ef68b4c",
       "detalle_raw_sha256": "3629d683b721d39ed3585d6dee82676e074f82cedcd2b8b32a048eb72db92229",
       "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA012_iter1-Audited.csv",
-      "audited_sha256": "fe893c058e37d0f5b1349b4b5bb89de4fc9c0141c5f0e479a314d6ab4f80a438",
+      "audited_sha256": "a9ae95eb7527c822115b9a00ced518175b031f208391877490f6460230e0e71b",
       "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA012_iter1-Revision.csv",
       "revision_sha256": "b0f5007a68e18fd1e98601e91d827269899e5e63319e785c2b3c0d5b8b56ed16",
       "conteos": { "filas": 751, "deteccion": 11, "auto_ruido": 619, "ruido_conocido": 121, "dudosa": 0 },
@@ -50,7 +50,7 @@
       "detalle_sha256": "d69cbb6a476202840d4529e14627843846c5989e77ea4ca413fdb73fb3db5805",
       "detalle_raw_sha256": "4a2b0880de9e3817f95491bd0d1f6454100195b9661ec7bf4a5f8ed04fab2495",
       "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA012_iter2-Audited.csv",
-      "audited_sha256": "44fbda3ca64f3f169da3055628d1e64beb4251639b56a21f0104afbd19c75e04",
+      "audited_sha256": "22597be75415c913a5b056f83e3e70ddd2911b9d0e4095b7eac7102094ad4ac9",
       "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA012_iter2-Revision.csv",
       "revision_sha256": "7122b6af1066db2fccdb6bcd47d99e36fa6889dbfffb575e4eaa7b6ad4e77cb1",
       "conteos": { "filas": 756, "deteccion": 11, "auto_ruido": 620, "ruido_conocido": 125, "dudosa": 0 },
@@ -98,6 +98,7 @@
     { "ts": "2026-09-26T12:30:38Z", "tipo": "t1", "detalle": "iter2 t1" },
     { "ts": "2026-09-26T12:31:00Z", "tipo": "extraido", "detalle": "iter2 raw 763 (756 victima + 7 otros) -> Detalle 756 (con extractor H3)" },
     { "ts": "2026-09-26T12:32:00Z", "tipo": "filtrado", "detalle": "iter2 deteccion=11 auto_ruido=620 ruido_conocido=125 dudosa=0 tras resolver PAM a ruido" },
-    { "ts": "2026-09-26T14:40:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (11/11, mismo conjunto) -> iguales" }
+    { "ts": "2026-09-26T14:40:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (11/11, mismo conjunto) -> iguales" },
+    { "ts": "2026-09-28T00:00:00Z", "tipo": "correccion", "detalle": "fase-03-cabos (cabo 2): cabecera del esperado arreglada (PENDIENTE -> validado el 2026-09-26); los 2 audited regenerados (unico cambio: el sha256 del esperado en la cabecera; determinismo re-verificado; cifras intactas); esperado_sha256 y audited_sha256 actualizados. Los -Revision.csv no se tocan (su cabecera cita el esperado previo; patron ya existente en el piloto)" }
   ]
 }

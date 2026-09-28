@@ -4,7 +4,7 @@ bloque: fase-03-piloto-custom
 ata_id: ATA007
 tecnica: T1491
 tactica: Impact
-version: 1
+version: 2
 status: cerrado
 fecha: 2026-09-26
 ---
@@ -37,7 +37,7 @@ fecha: 2026-09-26
 Artefacto: `Dataset/Ataques/Comandos/T1491-Defacement/ATA007_ataque.sh`
 (`sha256=6918a2a8e0553ad2ef618c99ca4007e96c31ab818828108b880415a9b871ff4b`, idéntico en repo y víctima).
 Señales esperadas: `.../ATA007_esperado.csv`
-(`sha256=1d2a7a8850210f84f82f5001fdc678c3c6f2b7bfecc8ab38f8dcc600e242d80c`).
+(`sha256=c9ee94d5fc0ea3dc399f32ddb13fe12e3f336757ed9c92a9f3219e7db230f8b9`).
 Validación humana del `esperado` (CA5): **2026-09-26** (frontmatter de `plan.md`, gate).
 C0: `Soporte/Ataques/c0/ATA007_logtest.txt` (`sha256=6e08fbd4ed4100602fe6ce2d00250c37c2b8752ea5ed50827f11ccd0abe617d1`)
 → pre-flight **PASA** (C0 ejecutado, `n=1` evento, **sin silenciadores de fábrica**).
@@ -67,7 +67,12 @@ bash ATA007_ataque.sh          # cp del defacement sobre la página "pública" s
 ## 6. Evidencia
 
 `Dataset/Ataques/Resultados/Wazuh/linux/Logs/ATA007_iter{1,2}/`:
-`times.log`, `ejecucion.out`, `deps_ps_antes.txt`, `ps_despues.txt`, `sha256_artefacto.txt`.
+`times.log`, `ejecucion.out`, `deps_ps_antes.txt`, `ps_despues.txt`.
+
+> **Nota (`fase-03-cabos`, 2026-09-28):** este bloque **no** generó `sha256_artefacto.txt` (el fichero
+> no existe en ninguno de los 6 directorios de `Logs/`; solo lo generó el piloto). El `sha256` del
+> script consta en §2 y en `Bitacora/ATA007.json` (`ataque_sha256`) — **idéntico repo↔víctima**; no se
+> reconstruye evidencia post-hoc.
 
 ## 7. Ventana extraída
 

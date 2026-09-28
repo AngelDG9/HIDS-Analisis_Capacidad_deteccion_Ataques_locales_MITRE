@@ -1,6 +1,6 @@
 # ATA004_esperado.csv | ATA004 · T1489 Service Stop (ART) | TFG HIDS · Fase 3 (T-09)
 # Redactado el 2026-09-26 con los datos del paso 0, ANTES de ver ninguna alerta.
-# Gate humano (2º): PENDIENTE de validacion ANTES del primer t0 de la tecnica.
+# Gate humano (2º): validado el 2026-09-26 (antes del primer t0 de la tecnica).
 # Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
 # Convencion H4: cada senal audit_exe se acompana de audit_cwd de la carpeta del ataque.
 # La elevacion (sudo/PAM) se declara AMBIGUA para que no infle el recuento de deteccion.

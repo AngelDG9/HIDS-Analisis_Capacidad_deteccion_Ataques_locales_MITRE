@@ -1,6 +1,6 @@
 # ATA012_esperado.csv | ATA012 · T1119 Automated Collection | TFG HIDS · Fase 3 (T-09)
 # Redactado el 2026-09-26 con los datos del paso 0, ANTES de ver ninguna alerta.
-# Gate humano (2º): PENDIENTE de validacion ANTES del primer t0 de la tecnica.
+# Gate humano (2º): validado el 2026-09-26 (antes del primer t0 de la tecnica).
 # Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
 # Convencion H4: cada senal audit_exe se acompana de audit_cwd de la carpeta del ataque.
 # Nota: escribe en /home/angel/lab-attack/ATA012 (NO vigilado) -> deteccion por execve.

@@ -13,7 +13,7 @@
     "commit": "388942adbd9641f4dfdcf079d7efe9a75ec0ac43",
     "nota": "control de ART; systemctl stop <servicio> (cron), elevation_required"
   },
-  "esperado_sha256": "12d652ead1cfde829bf17181af54cdc9b85cb6fb904e7cb4b7b2f9ae4b367e91",
+  "esperado_sha256": "a4a53a3c3c4032d312e26c794164d02870354c9409dcae63bcb6d62552c98341",
   "ataque_sha256": "b6d8090857d26daed6817ce765dea10a0e845757cdcc47bbee95628823256755",
   "elevacion": "echo '<contrasena del laboratorio>' | sudo -S bash ATA004_ataque.sh (solo stdin; sin secretos en el artefacto; sin sudo anidado)",
   "c0": {
@@ -34,7 +34,7 @@
       "detalle_sha256": "cd76418f0433db5fbaac10a9c32994cea7db39c1c968b38682773198679e0624",
       "detalle_raw_sha256": "a43272dec9289b726e2bd9dd62f9d47cb11396edfd029e69c131bfaea474410f",
       "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA004_iter1-Audited.csv",
-      "audited_sha256": "169abec8cf63b2aa04cdbf865594968e2057ac60c103827551a47aad40cda5e0",
+      "audited_sha256": "34a9649cd8b47322083ed9710dcc404bd209f09eca73e8a96c200699a57a29fe",
       "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA004_iter1-Revision.csv",
       "revision_sha256": "aad8d2c698a484bc37a0dca570c1749f76cc5773633d41cb3d84dadecd6e2877",
       "conteos": { "filas": 751, "deteccion": 5, "auto_ruido": 622, "ruido_conocido": 124, "dudosa": 0 },
@@ -55,7 +55,7 @@
       "detalle_sha256": "4cd666bb5c245cb308c4285759f33d4526175bba798f819eb5098a1f216de248",
       "detalle_raw_sha256": "1ff9025b13e59c63106b7d061081e5752ddece2a6efc8a17792c56996f81aa15",
       "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA004_iter2-Audited.csv",
-      "audited_sha256": "be50f932607e054c5676e99b62986493c7b59a3690e5ec04feb128dacd24955c",
+      "audited_sha256": "88a62cb690e30a6a1ca5ae35caa9a6ede28da350f28383beec4f7159b6135639",
       "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA004_iter2-Revision.csv",
       "revision_sha256": "859fd877056f7e63396327e96b20ca39eba627233978835dc757302d873f871d",
       "conteos": { "filas": 738, "deteccion": 5, "auto_ruido": 604, "ruido_conocido": 129, "dudosa": 0 },
@@ -100,6 +100,7 @@
     { "ts": "2026-09-26T12:39:50Z", "tipo": "ataque", "detalle": "systemctl stop cron -> cron inactive" },
     { "ts": "2026-09-26T12:40:26Z", "tipo": "t1", "detalle": "iter2 t1" },
     { "ts": "2026-09-26T12:41:00Z", "tipo": "filtrado", "detalle": "iter2 deteccion=5 auto_ruido=604 ruido_conocido=126 dudosa=3; resueltas a ruido" },
-    { "ts": "2026-09-26T14:42:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (5/5, mismo rule_id) -> iguales" }
+    { "ts": "2026-09-26T14:42:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (5/5, mismo rule_id) -> iguales" },
+    { "ts": "2026-09-28T00:00:00Z", "tipo": "correccion", "detalle": "fase-03-cabos (cabos 2 y 4): cabecera del esperado arreglada (PENDIENTE -> validado el 2026-09-26); los 2 audited regenerados (unico cambio: el sha256 del esperado en la cabecera; determinismo re-verificado; cifras intactas); esperado_sha256 y audited_sha256 actualizados. Hallazgo journald documentado: la regla de fabrica 40700 es level=0 (agrupador) -> la parada normal de un servicio no genera alerta; la deteccion efectiva es el execve 80792. Los -Revision.csv no se tocan (su cabecera cita el esperado previo; patron ya existente en el piloto)" }
   ]
 }

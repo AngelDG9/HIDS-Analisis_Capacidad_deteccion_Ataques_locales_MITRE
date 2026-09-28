@@ -7,7 +7,9 @@
 
 ## Estado actual
 
-- **Fase:** 3 — **en curso**. **Preparación CERRADA**, **PILOTO CERRADO ✔**, **AFINADO CERRADO ✔** y **PILOTO-CUSTOM CERRADO ✔ (2026-09-26)**. Detalle en `_fases/fase-03-*/change-doc.md`. **⚠️ Antes de escalar hay que arreglar el DISEÑO de las señales.**
+- **Fase:** 3 — **en curso**. Preparación CERRADA · PILOTO CERRADO · AFINADO CERRADO · PILOTO-CUSTOM CERRADO · **CABOS CERRADOS ✔ (2026-09-28)**. Detalle en `_fases/fase-03-*/change-doc.md`.
+- **⚠️ Riesgo latente (integridad):** `core.autocrlf=true` **sin `.gitattributes`** → un `git checkout`/`stash`/`reset --hard` reescribiría los CSV a CRLF y **rompería la cadena de hashes**. **Añadir `.gitattributes`** (`*.csv text eol=lf`). **NO hacer `checkout`/`stash` sobre `esperado`/`Audited`.**
+- **⚠️ Cabos pequeños de cierre:** (a) verificar **en vivo** que la regla de fábrica **`40700` es `level=0`** (con las VMs encendidas: `grep -n '<rule id="4070[0-5]"' /var/ossec/ruleset/rules/0285-systemd_rules.xml`); (b) corregir **4 textos residuales** que siguen diciendo "`5501/5502` → `dudosa`" (docstring de `filtrar_ruido.py` ×2, `piloto_procedimiento.md`, `T1489/README.md`).
 - **🎯 Resultados del piloto-custom (el camino "ataque manual" — 2 escritos por nosotros + 1 de ART):** los **3 se DETECTAN** (veredicto v2 `iguales`): **ATA007/T1491** (Defacement), **ATA012/T1119** (Automated Collection) y **ATA004/T1489** (Service Stop). **Cifra limpia = 1 evento (`80792`, el `execve`) por ataque**; el resto de alertas es **redundancia** o **ruido ajeno**. **0 sorpresas** (`novel`) en las 6 ventanas.
 - **⭐ Hallazgo 1 (diseño): el ancla de H4 NO funciona.** El patrón `…/ATA<NNN>/*` no casa el `cwd` real (sin barra) y, **aunque se corrija, no puede anclar**: el filtro evalúa las señales como **OR**, no como `exe AND cwd`. **H4 es aspiracional, no un mecanismo.**
 - **⭐ Hallazgo 2: las señales por `audit_exe` son ANCHAS** → cuentan como detección **procesos ajenos** (los `find` de `update-motd.d` y los `systemctl --user` del **login/cierre del operador**) y **promueven a `deteccion` las escrituras** que el plan quería `ambigua` (**CA13 no se cumple**).
@@ -163,3 +165,8 @@
   las **señales por `audit_exe` son anchas** (cuentan procesos ajenos del login del operador); y un **gap de
   despliegue** (el extractor del manager estaba obsoleto → H3 inerte) **arreglado** con la lección de sincronía.
   Verificación **PASA** con **2 no-conformidades de diseño** (`CA13` y H4) a corregir antes de escalar.
+- **Sesión 15:** **CABOS CERRADOS (4 arreglos de registro)**: cita a un fichero inexistente corregida; cabeceras de
+  los 3 `esperado` con la **validación humana** (y **6 audited regenerados**, cifras **idénticas**); texto de las
+  PAM corregido; y **hallazgo resuelto**: la regla de fábrica **`40700` es `level=0`** → **parar un servicio no
+  alerta** de fábrica (la expectativa era imposible, no silenciada). Verificación **PASA**. **⚠️ Detectado riesgo
+  `autocrlf`** (rompería la cadena de hashes) y quedan **2 cabos pequeños** de cierre.

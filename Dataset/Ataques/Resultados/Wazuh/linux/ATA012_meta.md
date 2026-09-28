@@ -4,7 +4,7 @@ bloque: fase-03-piloto-custom
 ata_id: ATA012
 tecnica: T1119
 tactica: Collection
-version: 1
+version: 2
 status: cerrado
 fecha: 2026-09-26
 ---
@@ -37,7 +37,7 @@ fecha: 2026-09-26
 Artefacto: `Dataset/Ataques/Comandos/T1119-Automated_Collection/ATA012_ataque.sh`
 (`sha256=d5ecb91973cbb50f9afef58a2f72726ae58370950418d35e3c86d015a583016e`, idéntico repo↔víctima).
 Señales esperadas: `.../ATA012_esperado.csv`
-(`sha256=4486a26be6b21475c987b8e072409965d6d4e07864e943aecba589d71bf546f2`).
+(`sha256=650d518283cbff3463b5024ddea539e05347fa20cc988f9cf6f69d937fa89424`).
 Validación humana (CA5): **2026-09-26**.
 C0: `Soporte/Ataques/c0/ATA012_logtest.txt` (`sha256=029d45b59cf385f988d275afaa7c68ab5390f40d6a0f9849d6e754c2f8908f0b`)
 → pre-flight **PASA** (C0, `n=3` eventos `find`/`cp`/`tar`, **sin silenciadores de fábrica**).
@@ -66,7 +66,12 @@ bash ATA012_ataque.sh     # find /etc ... | cp -t staging ; tar czf collected.ta
 ## 6. Evidencia
 
 `Dataset/Ataques/Resultados/Wazuh/linux/Logs/ATA012_iter{1,2}/`:
-`times.log`, `ejecucion.out`, `deps_ps_antes.txt`, `ps_despues.txt`, `sha256_artefacto.txt`.
+`times.log`, `ejecucion.out`, `deps_ps_antes.txt`, `ps_despues.txt`.
+
+> **Nota (`fase-03-cabos`, 2026-09-28):** este bloque **no** generó `sha256_artefacto.txt` (el fichero
+> no existe en ninguno de los 6 directorios de `Logs/`; solo lo generó el piloto). El `sha256` del
+> script consta en §2 y en `Bitacora/ATA012.json` (`ataque_sha256`) — **idéntico repo↔víctima**; no se
+> reconstruye evidencia post-hoc.
 
 ## 7. Ventana extraída
 

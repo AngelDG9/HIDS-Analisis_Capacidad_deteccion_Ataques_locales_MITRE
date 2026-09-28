@@ -2,7 +2,7 @@
 fase: 3
 tarea: A2.1 (T-11 · R-09/R-13) · A3.0 (H3/H4)
 nombre: Política de filtrado de ruido y etiquetado auditado de alertas
-version: 2
+version: 3
 status: implementada
 fecha: 2026-09-26
 autor: tfg-executor
@@ -80,8 +80,8 @@ Se aplica **después** de `auto_ruido` (1) y de las señales de **detección** (
 |---|---|---|---|---|
 | **`5715`** (`sshd: authentication success`) | `sshd`/`syslog`/`authentication_success` | **`srcip ∈ OPERADOR_SRCIPS`** | `operador:5715` | Es **nuestra** sesión (host del operador). **Demostrable** por la IP. SSH del atacante desde otra IP → **NO** se excluye. |
 | **`19004`** (SCA summary) | `sca` | **sin** condición de origen: basta regla + grupo | `operador:19004` | Autoevaluación del HIDS, **inequívoca**; no es un login. |
-| **`5501`** (`PAM: Login session opened`) | — | **NINGUNA → NO se auto-excluye** | (queda `dudosa`/`sin_campos`) | El `full_log` **no trae IP ni id. de sesión**: la atribución al operador **no es demostrable**. |
-| **`5502`** (`PAM: Login session closed`) | — | **NINGUNA → NO se auto-excluye** | (queda `dudosa`/`sin_campos`) | Ídem. |
+| **`5501`** (`PAM: Login session opened`) | — | **NINGUNA → NO se auto-excluye** | `ruido_conocido` **o** `dudosa` (según el `esperado`; ver abajo) | El `full_log` **no trae IP ni id. de sesión**: la atribución al operador **no es demostrable**. **Cae a `dudosa`/`sin_campos` solo si** el `esperado` **no** declara ninguna señal de campo siempre evaluable; **si** declara `rule_id`/`rule_group`, `sin_campos` **no** dispara → cae al paso 6 → **`ruido_conocido`/`baseline`**. |
+| **`5502`** (`PAM: Login session closed`) | — | **NINGUNA → NO se auto-excluye** | `ruido_conocido` **o** `dudosa` (ídem) | Ídem. |
 
 - `OPERADOR_SRCIPS = {192.168.65.1}` (IP del **host/sobremesa en VMnet1**, confirmada con
   `ipconfig` en el paso 0 el 2026-09-26 y con `data.srcip` real de los `5715` del piloto).
@@ -100,10 +100,26 @@ Así una señal declarada **nunca** se excluye en silencio y queda aviso trazabl
 ### Limitación declarada (residual)
 
 **`5501`/`5502` permanecen en revisión humana por diseño**: sin IP ni id. de sesión no se puede
-demostrar la atribución (un atacante con credenciales válidas, T1078, usaría el mismo usuario).
-**No es un defecto, es el lado seguro.** En el piloto fueron **13 filas** (ATA008 iter1=2,
-iter2=3, ATA013 iter1=6, iter2=2) → ≈2–6 por ventana, volumen asumible. Las PAM de ATA002 salen
-`baseline` (sus señales `rule_id`/`rule_group` sí son evaluables) y no pasan por aquí.
+demostrar la atribución (un atacante con credenciales válidas, T1078, usaría el mismo usuario). Su
+resultado **no** depende del predicado `OPERADOR` (que no las exime), sino de si el `esperado` del
+ataque declara **alguna** señal de campo siempre evaluable:
+
+- **(a) `esperado` SIN ninguna señal de campo siempre evaluable** (p. ej. solo `audit_exe`/`audit_cwd`):
+  ninguna señal casa y `sin_campos` dispara → `5501`/`5502` caen a **`dudosa`** (`revision=pendiente`)
+  y las **resuelve el humano**. **Caso real: ATA012** (T1119; su `esperado` solo declara
+  `audit_exe`/`audit_cwd`) → `5501`/`5502` **`dudosa` → `ruido`**.
+- **(b) `esperado` CON `rule_id`/`rule_group`** (campo evaluable): `sin_campos` **no** dispara → la
+  alerta sigue al paso 6 y sale **`ruido_conocido`/`baseline`**. **Casos reales: ATA002, ATA004**
+  (declara `rule_id=5402`) **y ATA007** (declara `rule_id=80790`/`80781`).
+
+> **El `baseline` de (b) NO lo produce el predicado `OPERADOR`** (que exime **solo** `5715` y `19004`):
+> es un **efecto del orden de decisión** (el paso 1.5 no exime las PAM) combinado con que **otra**
+> señal del `esperado` sí es evaluable. `5501`/`5502` **siguen sin auto-excluirse** (lado seguro):
+> mientras el predicado no cambie, nunca se resuelven solas por el paso 1.5.
+
+**No es un defecto, es el lado seguro.** En el piloto fueron **13 filas** `dudosa` (ATA008 iter1=2,
+iter2=3, ATA013 iter1=6, iter2=2) → ≈2–6 por ventana, volumen asumible; en el piloto-custom: ATA012
+iter1=2, iter2=2.
 
 > **Nota de trazabilidad (plegado de revisión):** las filas `5715` que el humano resolvió a mano en
 > el piloto ahora se auto-excluyen por el predicado y su `evidencia` cambia (`srcip=…`); su clave de

@@ -4,7 +4,7 @@ bloque: fase-03-piloto-custom
 ata_id: ATA004
 tecnica: T1489
 tactica: Impact
-version: 1
+version: 2
 status: cerrado
 fecha: 2026-09-26
 ---
@@ -39,7 +39,7 @@ fecha: 2026-09-26
 Artefacto: `Dataset/Ataques/Comandos/T1489-Service_Stop/ATA004_ataque.sh`
 (`sha256=b6d8090857d26daed6817ce765dea10a0e845757cdcc47bbee95628823256755`, idéntico repo↔víctima).
 Señales esperadas: `.../ATA004_esperado.csv`
-(`sha256=12d652ead1cfde829bf17181af54cdc9b85cb6fb904e7cb4b7b2f9ae4b367e91`).
+(`sha256=a4a53a3c3c4032d312e26c794164d02870354c9409dcae63bcb6d62552c98341`).
 Validación humana (CA5): **2026-09-26**.
 C0: `Soporte/Ataques/c0/ATA004_logtest.txt` (`sha256=1176b82b922e609901be08bf1a9798c70396f1d7505efb2204539ede5732133b`)
 → pre-flight **PASA** (C0, `n=1` evento `systemctl`, **sin silenciadores de fábrica**).
@@ -69,7 +69,12 @@ echo '<contraseña del laboratorio>' | sudo -S bash ATA004_ataque.sh   # una sol
 ## 6. Evidencia
 
 `Dataset/Ataques/Resultados/Wazuh/linux/Logs/ATA004_iter{1,2}/`:
-`times.log`, `ejecucion.out`, `deps_ps_antes.txt`, `ps_despues.txt`, `sha256_artefacto.txt`.
+`times.log`, `ejecucion.out`, `deps_ps_antes.txt`, `ps_despues.txt`.
+
+> **Nota (`fase-03-cabos`, 2026-09-28):** este bloque **no** generó `sha256_artefacto.txt` (el fichero
+> no existe en ninguno de los 6 directorios de `Logs/`; solo lo generó el piloto). El `sha256` del
+> script consta en §2 y en `Bitacora/ATA004.json` (`ataque_sha256`) — **idéntico repo↔víctima**; no se
+> reconstruye evidencia post-hoc.
 
 ## 7. Ventana extraída
 
@@ -99,9 +104,14 @@ echo '<contraseña del laboratorio>' | sudo -S bash ATA004_ataque.sh   # una sol
 - **Genuinas del ataque** (`cwd=/home/angel/lab-attack/ATA004`): **3** — las `systemctl is-active`/`stop`/`is-active`
   del script. **Ajenas:** **2** `systemctl --user unset-environment SSH_AUTH_SOCK|GSM_SKIP_SSH_AGENT_WORKAROUND`
   (`cwd=/home/angel`) del **cierre de sesión SSH del operador** → contadas por `T1489-S1` (señal ancha).
-- **Efecto `journald`/`systemd`:** **no** hubo detecciones por grupo `systemd` (`40700`) — el `esperado`
-  no las declaró y no entraron por señales; no aparecieron `novel`. El `systemctl` (execve) fue la
-  detección efectiva.
+- **Efecto `journald`/`systemd` — hallazgo (`fase-03-cabos`, 2026-09-28):** **0** detecciones por grupo
+  `systemd` (`40700`): **no es un silenciado, es una detección inexistente de fábrica**. La regla
+  `40700` (agrupador de `0285-systemd_rules.xml`, Wazuh v4.14.7, pin del laboratorio) es
+  **`level="0"`** (no emite alerta); sus **hijas** `40701`–`40705` (level 2/5) **solo** disparan con
+  patrones de **fallo** (`Stale file handle`, `entered failed state`, `status=1/FAILURE`…). Una
+  **parada normal** (`systemctl stop cron`, mensajes `Stopping/Stopped`) **no casa ninguna hija** →
+  gana `40700` (level 0) → **no hay alerta journald**. La hipótesis queda **resuelta** (no "sin
+  probar"): la detección efectiva del ataque es el **`execve` `80792`** (audit). Ver §10.5 y runbook §8.3.
 - **`dudosa` resueltas (3/iter, todas declaradas A1/A2):** `80792` (*execve* de `sudo`), `80780`
   (*Watch-Write* por `sudo`) → A1 (`audit_exe=sudo`); `5402` (*Successful sudo to ROOT*) → A2.
   → **`ruido`**, nota *"elevación (declarada ambigua en el esperado); parte del ataque pero no de la
@@ -130,3 +140,9 @@ echo '<contraseña del laboratorio>' | sudo -S bash ATA004_ataque.sh   # una sol
    resolvieron a `ruido`.
 3. **Gap de despliegue (runbook §8.1):** extractor H3 desplegado; `5715` del operador → `operador:5715`.
 4. `lab-listo` prístino: `cron` vuelve a `active` al revertir; no se instaló nada.
+5. **Punto ciego de journald (hallazgo, `fase-03-cabos`, 2026-09-28):** la vía journald/systemd del
+   ruleset de fábrica **no** alerta de una **parada normal** de servicio (`40700` es el agrupador
+   **`level=0`**; solo las hijas de **fallo** `40701`–`40705` alertan). Para una técnica que dependa de
+   journald, la detección exige **regla propia (RS3)** o declararla por el **`rule_id` del `execve`**
+   (`80792`). **Cabo del escalado** (confirmar con un C0 sobre una línea journald real y, si aplica,
+   escribir la regla). Ver §8.1 y runbook §8.3.
