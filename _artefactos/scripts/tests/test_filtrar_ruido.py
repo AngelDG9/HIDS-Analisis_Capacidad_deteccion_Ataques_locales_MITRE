@@ -666,6 +666,170 @@ def test_sin_out_escribe_bajo_linux_auditado(tmp_path, monkeypatch):
 
 
 # --------------------------------------------------------------------------
+# fase-03-metrica — pertenencia al ataque, `artefacto_ataque` y guardarraíl
+# --------------------------------------------------------------------------
+ATTACK_012 = "/home/angel/lab-attack/ATA012"
+REAL_CSV = ROOT / "Dataset" / "Ataques" / "Resultados" / "Wazuh" / "linux" / "CSV"
+REAL_AUD = ROOT / "Dataset" / "Ataques" / "Resultados" / "Wazuh" / "linux" / "Auditado"
+
+
+def _esperado_real(ata):
+    hits = sorted((ROOT / "Dataset" / "Ataques" / "Comandos").glob("*/" + ata + "_esperado.csv"))
+    assert len(hits) == 1
+    return hits[0]
+
+
+def test_es_del_ataque_por_cwd_y_por_ruta():
+    """§3.1: pertenencia = cwd **o** ruta resuelta bajo la carpeta del ataque."""
+    assert fr.es_del_ataque(fila("2026-09-26T12:20:58.850Z", "80792", cwd=ATTACK_012), "ATA012")
+    assert fr.es_del_ataque(
+        fila("2026-09-26T12:20:58.850Z", "80792", cwd=ATTACK_012 + "/staging"), "ATA012")
+    # relativa resuelta contra el cwd
+    assert fr.es_del_ataque(
+        fila("2026-09-26T12:20:58.850Z", "80790", cwd=ATTACK_012,
+             file="collected.tar.gz"), "ATA012")
+    # ajenas / otra carpeta
+    assert not fr.es_del_ataque(fila("2026-09-26T12:20:58.850Z", "80792", cwd="/home/angel"), "ATA012")
+    assert not fr.es_del_ataque(fila("2026-09-26T12:20:58.850Z", "80792", cwd=ATTACK_012), "ATA004")
+    assert not fr.es_del_ataque(fila("2026-09-26T12:20:58.850Z", "80792"), "ATA012")
+
+
+def test_p2_p7_ninguna_fila_del_ataque_cae_en_ruido_ni_auto():
+    """P2/P7: un **solo** código sobre las 12 ventanas reales — 0 del ataque en ruido."""
+    catalogo = fr.load_catalogo(str(CATALOGO))
+    ventanas = sorted(REAL_CSV.glob("*-Detalle.csv"))
+    assert len(ventanas) == 12
+    revisadas = 0
+    for det in ventanas:
+        base = det.name.replace("-Detalle.csv", "")
+        ata = base.split("_iter")[0]
+        signals = fr.load_signals(str(_esperado_real(ata)))
+        with open(det, "r", encoding="utf-8", newline="") as fh:
+            rows = list(csv.DictReader(ln for ln in fh if not ln.lstrip().startswith("#")))
+        for r in rows:
+            if not fr.es_del_ataque(r, ata):
+                continue
+            revisadas += 1
+            c = fr.clasificar(r, catalogo, signals, False, [], ata)
+            assert c["categoria"] not in ("ruido_conocido", "auto_ruido"), (base, r.get("rule_id"))
+    assert revisadas == 121  # 39 deteccion + 82 huella (plan §1.2)
+
+
+def test_p3_ajena_sigue_ruido_conocido(tmp_path):
+    """P3 (no un cepo): una fila ajena (fuera de la carpeta) puede plegarse a ruido."""
+    alerta = alerta_tmp(tmp_path, [
+        fila("2026-09-26T12:20:58.724Z", "80792", exe="/usr/bin/find",
+             cwd="/", key="audit-wazuh-c", typ="SYSCALL",
+             groups="audit|audit_command", rs="RS2"),
+    ], nombre="p3-alerta.csv")
+    esp = esperado_tmp(tmp_path, [EXE_FIND, ANCLA_012], nombre="p3-esperado.csv")
+    out = tmp_path / "p3-Audited.csv"
+    rev = tmp_path / "p3-Revision.csv"
+    args = ["--alerta", str(alerta), "--ata", "ATA012", "--catalogo", str(CATALOGO),
+            "--esperado", str(esp), "--out", str(out), "--rev-out", str(rev)]
+    assert fr.main(args) == fr.EXIT_OK
+    assert lee_salida(out)[0]["categoria"] == "dudosa"
+    rev_rows = lee_salida(rev)
+    rev_rows[0]["veredicto"] = "ruido"
+    escribe_csv(rev, fr.OUT_HEADER + fr.REV_EXTRA, rev_rows)
+    assert fr.main(args + ["--revision", str(rev)]) == fr.EXIT_OK
+    assert lee_salida(out)[0]["categoria"] == "ruido_conocido"
+
+
+def test_p6a_golden_watch_en_carpeta_no_es_ruido(tmp_path):
+    """⭐ P6(a): un `watch` sobre la carpeta del ataque NO cae en `ruido_conocido`."""
+    exe_tar = {"senal_id": "T1119-S3", "tipo": "deteccion", "campo": "audit_exe",
+               "patron": "tar", "dato_componente": "Process Creation",
+               "tecnica": "T1119", "nota": ""}
+    ancla = {"senal_id": "T1119-S4", "tipo": "deteccion", "campo": "audit_cwd",
+             "patron": "/home/angel/lab-attack/ATA012/*", "dato_componente": "Process Creation",
+             "tecnica": "T1119", "nota": "ancla"}
+    esp = esperado_tmp(tmp_path, [exe_tar, ancla], nombre="p6a-esperado.csv")
+    alerta = alerta_tmp(tmp_path, [
+        fila("2026-09-26T12:20:58.866Z", "80790", exe="/usr/bin/tar",
+             cwd=ATTACK_012, key="audit-wazuh-w", typ="SYSCALL",
+             groups="audit|audit_watch_create|audit_watch_write", rs="RS2",
+             file="collected.tar.gz", desc="Audit: Created: /home/angel/lab-attack/ATA012/collected.tar.gz."),
+    ], nombre="p6a-alerta.csv")
+    out = tmp_path / "p6a-Audited.csv"
+    rev = tmp_path / "p6a-Revision.csv"
+    assert fr.main(["--alerta", str(alerta), "--ata", "ATA012", "--catalogo", str(CATALOGO),
+                    "--esperado", str(esp), "--out", str(out), "--rev-out", str(rev)]) == fr.EXIT_OK
+    r = lee_salida(out)[0]
+    assert r["categoria"] != "ruido_conocido"
+    assert r["categoria"] in ("dudosa", "deteccion", "artefacto_ataque")
+
+
+def test_p6b_p8_guardarrail_y_artefacto(tmp_path):
+    """⭐ P6(b)+P8: `ruido` sobre fila del ataque FALLA; `artefacto` la pliega sin inflar deteccion."""
+    exe_tar = {"senal_id": "T1119-S3", "tipo": "deteccion", "campo": "audit_exe",
+               "patron": "tar", "dato_componente": "Process Creation",
+               "tecnica": "T1119", "nota": ""}
+    ancla = {"senal_id": "T1119-S4", "tipo": "deteccion", "campo": "audit_cwd",
+             "patron": "/home/angel/lab-attack/ATA012/*", "dato_componente": "Process Creation",
+             "tecnica": "T1119", "nota": "ancla"}
+    alerta = alerta_tmp(tmp_path, [
+        fila("2026-09-26T12:20:58.866Z", "80790", exe="/usr/bin/tar", cwd=ATTACK_012,
+             key="audit-wazuh-w", typ="SYSCALL",
+             groups="audit|audit_watch_create|audit_watch_write", rs="RS2",
+             file="collected.tar.gz"),
+    ], nombre="p6b-alerta.csv")
+    esp = esperado_tmp(tmp_path, [exe_tar, ancla], nombre="p6b-esperado.csv")
+    out = tmp_path / "p6b-Audited.csv"
+    rev = tmp_path / "p6b-Revision.csv"
+    base = ["--alerta", str(alerta), "--ata", "ATA012", "--catalogo", str(CATALOGO),
+            "--esperado", str(esp), "--out", str(out), "--rev-out", str(rev)]
+    assert fr.main(base) == fr.EXIT_OK
+    assert lee_salida(out)[0]["categoria"] == "dudosa"
+
+    # P6(b): veredicto=ruido sobre fila del ataque -> FALLA (exit != 0), no escribe out
+    rev_rows = lee_salida(rev)
+    rev_rows[0]["veredicto"] = "ruido"
+    escribe_csv(rev, fr.OUT_HEADER + fr.REV_EXTRA, rev_rows)
+    out.unlink()
+    rc = fr.main(base + ["--revision", str(rev)])
+    assert rc == fr.EXIT_GUARDRAIL and rc != 0
+    assert not out.exists()
+
+    # P8: veredicto=artefacto -> artefacto_ataque, revision resuelta, NO infla deteccion
+    rev_rows[0]["veredicto"] = "artefacto"
+    rev_rows[0]["revisor"] = "angel"
+    escribe_csv(rev, fr.OUT_HEADER + fr.REV_EXTRA, rev_rows)
+    assert fr.main(base + ["--revision", str(rev)]) == fr.EXIT_OK
+    r = lee_salida(out)[0]
+    assert r["categoria"] == "artefacto_ataque"
+    assert r["revision"] == "resuelta"
+    assert r["veredicto_humano"] == "artefacto"
+    assert r["motivo"] == "del_ataque"
+    assert r["evidencia"].startswith("audit_cwd=")
+    assert not any(x["categoria"] == "deteccion" for x in lee_salida(out))
+
+
+def test_aviso_execve_no_declarado_en_artefacto(tmp_path, capsys):
+    """§3.2: un execve no declarado en la carpeta del ataque -> artefacto + AVISO."""
+    alerta = alerta_tmp(tmp_path, [
+        fila("2026-09-26T12:20:58.850Z", "80792", exe="/usr/bin/ls", cwd=ATTACK_012,
+             key="audit-wazuh-c", typ="SYSCALL", groups="audit|audit_command", rs="RS2"),
+    ], nombre="av-alerta.csv")
+    esp = esperado_tmp(tmp_path, [EXE_FIND, ANCLA_012], nombre="av-esperado.csv")
+    out = tmp_path / "av-Audited.csv"
+    assert fr.main(["--alerta", str(alerta), "--ata", "ATA012", "--catalogo", str(CATALOGO),
+                    "--esperado", str(esp), "--out", str(out)]) == fr.EXIT_OK
+    r = lee_salida(out)[0]
+    assert r["categoria"] == "artefacto_ataque"
+    assert r["motivo"] == "del_ataque"
+    assert r["evidencia"] == "audit_cwd=" + ATTACK_012
+    err = capsys.readouterr().err
+    assert "AVISO" in err and "no declarada" in err
+
+
+def test_artefacto_ataque_en_categorias_y_out_header_intacto():
+    assert "artefacto_ataque" in fr.CATEGORIAS
+    assert fr.ATTACK_ROOT == "/home/angel/lab-attack/"
+    assert len(fr.OUT_HEADER) == 15
+
+
+# --------------------------------------------------------------------------
 # no regresión de extraer_alertas.py (--test y --detail offline)
 # --------------------------------------------------------------------------
 def test_extraer_test_mode_sigue_ok(capsys):

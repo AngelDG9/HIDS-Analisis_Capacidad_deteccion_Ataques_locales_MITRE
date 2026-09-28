@@ -34,10 +34,10 @@
       "detalle_sha256": "cd76418f0433db5fbaac10a9c32994cea7db39c1c968b38682773198679e0624",
       "detalle_raw_sha256": "a43272dec9289b726e2bd9dd62f9d47cb11396edfd029e69c131bfaea474410f",
       "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA004_iter1-Audited.csv",
-      "audited_sha256": "348a1082b692bccccd76683639f59edc8a2ba1ecefa4d7f51f8b10ba1441ba54",
+      "audited_sha256": "430e685734962a4d84646e7701b10725ba3a70e81463a796549d6cdae1fdd1bb",
       "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA004_iter1-Revision.csv",
-      "revision_sha256": "e1c5e83fb44b5a3b265e8141b256d5cdaafb06e809d49e6910590c98cec33a99",
-      "conteos": { "filas": 751, "deteccion": 3, "auto_ruido": 622, "ruido_conocido": 126, "dudosa": 0 },
+      "revision_sha256": "e75b23e07ac367c2dde23d986ca746f6fc2f5155e69822753cec1d1afe5f2a1f",
+      "conteos": { "filas": 751, "deteccion": 3, "auto_ruido": 622, "ruido_conocido": 120, "dudosa": 0, "artefacto_ataque": 6 },
       "rs": { "RS1": 7, "RS2": 744, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
       "ventana_raw": { "filas": 758, "victima_linux": 751, "otros_agentes_descartados": 7 },
       "detecciones": { "alertas": 3, "rule_id_distintos": ["80792"], "genuinas": 3, "ajenas": 0, "esperadas": 3, "sorpresas": 0 },
@@ -55,10 +55,10 @@
       "detalle_sha256": "4cd666bb5c245cb308c4285759f33d4526175bba798f819eb5098a1f216de248",
       "detalle_raw_sha256": "1ff9025b13e59c63106b7d061081e5752ddece2a6efc8a17792c56996f81aa15",
       "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA004_iter2-Audited.csv",
-      "audited_sha256": "8e0e8a2021fc355b4c10b9cfd099a56730647d66f0eccbb0e24ca483cc4fad87",
+      "audited_sha256": "fdeb249937bb3694d6b684cc350d74c28cc7fd0bf7b8c49ce5104efc2c0abe63",
       "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA004_iter2-Revision.csv",
-      "revision_sha256": "fe06837effaa976790061e1d4940a5149607bee739498c4eae8f7ea0d0ed3a78",
-      "conteos": { "filas": 738, "deteccion": 3, "auto_ruido": 604, "ruido_conocido": 131, "dudosa": 0 },
+      "revision_sha256": "229263ba1a85aa618d76e2c3fc6674bc9ed0d92c49c72385ccbd04a7618fd928",
+      "conteos": { "filas": 738, "deteccion": 3, "auto_ruido": 604, "ruido_conocido": 125, "dudosa": 0, "artefacto_ataque": 6 },
       "rs": { "RS1": 7, "RS2": 731, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
       "ventana_raw": { "filas": 746, "victima_linux": 738, "otros_agentes_descartados": 8 },
       "detecciones": { "alertas": 3, "rule_id_distintos": ["80792"], "genuinas": 3, "ajenas": 0, "esperadas": 3, "sorpresas": 0 },
@@ -67,11 +67,11 @@
     }
   ],
   "revision_global": {
-    "fecha": "2026-09-26",
-    "filas": 6,
-    "veredicto": "ruido",
-    "motivo": "elevacion (A1: sudo en 80792/80780; A2: 5402 sudo a root) declarada ambigua en el esperado; parte del ataque pero no de la tecnica -> no infla; criterio del orquestador",
-    "revisor": "orquestador"
+    "fecha": "2026-09-28",
+    "filas": 10,
+    "veredicto": "mixto (8 ruido / 2 artefacto)",
+    "motivo": "5 dudosas por iteracion: elevacion declarada ambigua en el esperado (A1: sudo en 80792/80780; A2: 5402 sudo a root) -> ruido (parte del ataque pero no de la tecnica, no infla); y las 2 systemctl --user del cierre de sesion del operador (sin_ancla:T1489-S1) -> ruido. La unica fila DEL ATAQUE (80792 execve de sudo con cwd de la carpeta) se pliega con el veredicto nuevo artefacto (fase-03-metrica), nunca ruido",
+    "revisor": "orquestador / humano (criterio 2026-09-26; veredicto artefacto fase-03-metrica 2026-09-28)"
   },
   "doble_iteracion": "iguales",
   "doble_iteracion_detalle": {
@@ -102,6 +102,8 @@
     { "ts": "2026-09-26T12:41:00Z", "tipo": "filtrado", "detalle": "iter2 deteccion=5 auto_ruido=604 ruido_conocido=126 dudosa=3; resueltas a ruido" },
     { "ts": "2026-09-26T14:42:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (5/5, mismo rule_id) -> iguales" },
     { "ts": "2026-09-28T00:00:00Z", "tipo": "correccion", "detalle": "fase-03-cabos (cabos 2 y 4): cabecera del esperado arreglada (PENDIENTE -> validado el 2026-09-26); los 2 audited regenerados (unico cambio: el sha256 del esperado en la cabecera; determinismo re-verificado; cifras intactas); esperado_sha256 y audited_sha256 actualizados. Hallazgo journald documentado: la regla de fabrica 40700 es level=0 (agrupador) -> la parada normal de un servicio no genera alerta; la deteccion efectiva es el execve 80792. Los -Revision.csv no se tocan (su cabecera cita el esperado previo; patron ya existente en el piloto)" },
-    { "ts": "2026-09-28T00:00:00Z", "tipo": "correccion", "detalle": "fase-03-senales: mecanismo de ancla implicita + evento de ejecucion (exe AND cwd-ancla AND audit_command). Regenerados los 2 -Audited.csv y los 2 -Revision.csv en su sitio: deteccion 5/5 -> 3/3 (las 2 systemctl --user del cierre de sesion del operador pasan a dudosa/sin_ancla:T1489-S1 -> ruido); ruido_conocido 124/129 -> 126/131; dudosa final 0. Hashes (audited/revision) actualizados en esta bitacora y en la ficha (v3); Hojas/ATA_index.csv intacto (sigue cerrado); determinismo re-verificado (2 pasadas -> mismo sha256); el -Revision.csv queda con los veredictos explicitos (editable)" }
+    { "ts": "2026-09-28T00:00:00Z", "tipo": "correccion", "detalle": "fase-03-senales: mecanismo de ancla implicita + evento de ejecucion (exe AND cwd-ancla AND audit_command). Regenerados los 2 -Audited.csv y los 2 -Revision.csv en su sitio: deteccion 5/5 -> 3/3 (las 2 systemctl --user del cierre de sesion del operador pasan a dudosa/sin_ancla:T1489-S1 -> ruido); ruido_conocido 124/129 -> 126/131; dudosa final 0. Hashes (audited/revision) actualizados en esta bitacora y en la ficha (v3); Hojas/ATA_index.csv intacto (sigue cerrado); determinismo re-verificado (2 pasadas -> mismo sha256); el -Revision.csv queda con los veredictos explicitos (editable)" },
+    { "ts": "2026-09-28T00:00:00Z", "tipo": "correccion", "detalle": "fase-03-metrica (offline, sin VMs): anadida la categoria artefacto_ataque y la pertenencia al ataque por carpeta (ATTACK_ROOT + ata_id) + guardarrail de plegado + veredicto humano artefacto. Regenerados los 2 -Audited.csv y los 2 -Revision.csv: la unica fila DEL ATAQUE de cada ventana (80792 execve de sudo con cwd de la carpeta, antes plegada a ruido) pasa a veredicto artefacto -> artefacto_ataque (el guardarrail prohibe ruido sobre filas del ataque); las 6 filas/iter de la huella del ataque pasan a artefacto_ataque; ruido_conocido 126/131 -> 120/125; deteccion=3/3 (sin cambios). revision_global: 6 -> 10 filas, mixto (8 ruido / 2 artefacto). Hashes (audited/revision) actualizados; Hojas/ATA_index.csv intacto (cerrado); determinismo re-verificado" },
+    { "ts": "2026-09-28T00:00:00Z", "tipo": "correccion", "detalle": "fase-03-metrica ciclo 2 (correccion 2, coherencia): reescrita la nota de la fila artefacto (80792 execve de sudo) para que diga artefacto (es del ataque, pista floja -> artefacto, nunca ruido) y regenerada la cabecera de los -Revision.csv con los conteos del pase actual (ya incluye artefacto_ataque). Sin cambios de cifras (deteccion=3/3, artefacto_ataque=6/6, ruido_conocido=120/125). Hashes (audited/revision) actualizados" }
   ]
 }

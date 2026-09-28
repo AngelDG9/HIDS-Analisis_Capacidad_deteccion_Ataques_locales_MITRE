@@ -35,10 +35,10 @@
       "detalle_sha256": "ec4452c355cec6fd1b783dd332a0177f57e08909521bf7d729a36ff483703228",
       "detalle_raw_sha256": "47fc601dc132bfa52ccb934bdd9da803c22de1f6216d7010a4563109952054d6",
       "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA013_iter1-Audited.csv",
-      "audited_sha256": "2d9abb39e85d4c474264bf257169b419c30a400addfff112af02ca1b8168f2ab",
+      "audited_sha256": "5ee7792a30ca29823b9f0320c48bb924bf853364926d2bd040ec32543e4f6ad7",
       "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA013_iter1-Revision.csv",
-      "revision_sha256": "91b6c0095cbe6434b8b2e5f80834f9e1b7f67dfa365c16427ce7b15cbfb363be",
-      "conteos": { "filas": 841, "deteccion": 0, "auto_ruido": 621, "ruido_conocido": 220, "dudosa": 0 },
+      "revision_sha256": "c7e4b6d46a55d33f889d9b5abc4005ca7b41523595ecb3159a2b67758957cf47",
+      "conteos": { "filas": 841, "deteccion": 0, "auto_ruido": 621, "ruido_conocido": 214, "dudosa": 0, "artefacto_ataque": 6 },
       "rs": { "RS1": 8, "RS2": 833, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
       "ventana_raw": { "filas": 847, "victima_linux": 841, "otros_agentes_descartados": 6 },
       "dudosas_resueltas": 8
@@ -55,23 +55,23 @@
       "detalle_sha256": "1f39a524fd0b3ffe5a40be0a68d8cbc377d1b3b9326158d0a3acde513a99192d",
       "detalle_raw_sha256": "8579666e5845a1a7e3cc6072d35e2f6b749f6eab4dc99b74f9cd3c7506007c61",
       "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA013_iter2-Audited.csv",
-      "audited_sha256": "57ed6cdd50ee04be70ceb207b7aa15550211657ee68260330a9a28e478732e06",
+      "audited_sha256": "bf30a4bfd3d1a1cfe7a32bc8b0e8c02390022c3b01cfb283ffb7e01ac00c6dbe",
       "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA013_iter2-Revision.csv",
-      "revision_sha256": "a94a7f70c9445df169295797d124883530682c4a8f6253d4472eeec0bf884006",
-      "conteos": { "filas": 1032, "deteccion": 0, "auto_ruido": 886, "ruido_conocido": 146, "dudosa": 0 },
+      "revision_sha256": "eeca75c57623391deabc35a772097b55d27fda83a42d9a34a9225f725bd1a3ec",
+      "conteos": { "filas": 1032, "deteccion": 0, "auto_ruido": 886, "ruido_conocido": 140, "dudosa": 0, "artefacto_ataque": 6 },
       "rs": { "RS1": 4, "RS2": 1028, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
       "ventana_raw": { "filas": 1038, "victima_linux": 1032, "otros_agentes_descartados": 6 },
-      "dudosas_resueltas": 4
+      "dudosas_resueltas": 3
     }
   ],
   "detecciones": [],
   "hallazgo_principal": "ATA013 NO se detecta (0 detecciones). El execve de python3 SI esta en auditd (comm=python3 exe=/usr/bin/python3.12 key=audit-wazuh-c, audit 1790372583.956:3296) pero NO produjo alerta: la regla de fabrica 92600 (nivel 0, 'Executed python script', /var/ossec/ruleset/rules/0850-audit_rules.xml) casa el mismo evento y suprime la base 80792. Es enmascaramiento DENTRO del ruleset de fabrica de Wazuh (mismo fenomeno que demostro el pre-flight A2.2, pero sin reglas nuestras). Punto ciego silencioso. Mejora: el pre-flight C1 comprueba nuestras reglas contra la base, no base-contra-base.",
   "dudosas_resueltas": {
-    "total": 12,
+    "total": 11,
     "veredicto_humano": "ruido",
     "criterios": [
       "11 PAM/sshd = sesiones SSH del operador -> criterio fijado por el humano el 2026-09-25 (ajenas al ataque)",
-      "1 x 19004 (grupo sca) = autoevaluacion SCA del propio HIDS, ajena a T1560; no debe contar como deteccion (decision humana 2026-09-25)"
+      "19004 (grupo sca) = autoevaluacion SCA del propio HIDS, ajena a T1560: ya NO requiere revision humana, la auto-excluye el predicado OPERADOR (motivo operador:19004)"
     ],
     "revisor": "humano (veredicto en bloque)",
     "fecha": "2026-09-25",
@@ -86,8 +86,7 @@
       { "iter": 1, "timestamp_utc": "2026-09-25T21:43:15.389Z", "rule_id": "5502", "desc": "PAM: Login session closed.", "motivo": "sin_campos", "justificacion": "cierre de sesion SSH" },
       { "iter": 2, "timestamp_utc": "2026-09-25T21:49:30.363Z", "rule_id": "5501", "desc": "PAM: Login session opened.", "motivo": "sin_campos", "justificacion": "sesion SSH del operador" },
       { "iter": 2, "timestamp_utc": "2026-09-25T21:49:30.363Z", "rule_id": "5715", "desc": "sshd: authentication success.", "motivo": "sin_campos", "justificacion": "sesion SSH del operador" },
-      { "iter": 2, "timestamp_utc": "2026-09-25T21:49:30.364Z", "rule_id": "5502", "desc": "PAM: Login session closed.", "motivo": "sin_campos", "justificacion": "cierre de sesion SSH" },
-      { "iter": 2, "timestamp_utc": "2026-09-25T21:49:31.231Z", "rule_id": "19004", "desc": "SCA summary: CIS Ubuntu Linux 24.04 LTS Benchmark v1.0.0.: Score less than 50% (47)", "motivo": "sin_campos", "justificacion": "autoevaluacion SCA del propio HIDS, ajena a T1560" }
+      { "iter": 2, "timestamp_utc": "2026-09-25T21:49:30.364Z", "rule_id": "5502", "desc": "PAM: Login session closed.", "motivo": "sin_campos", "justificacion": "cierre de sesion SSH" }
     ]
   },
   "doble_iteracion": "review",
@@ -104,10 +103,10 @@
     "auto_ruido_delta": 265,
     "auto_ruido_limite": 62.1,
     "auto_ruido_ok": false,
-    "ruido_conocido_n1": 220,
-    "ruido_conocido_n2": 146,
+    "ruido_conocido_n1": 214,
+    "ruido_conocido_n2": 140,
     "ruido_conocido_delta": 74,
-    "ruido_conocido_limite": 22,
+    "ruido_conocido_limite": 21.4,
     "ruido_conocido_ok": false,
     "motivo": "los 3 criterios formales PASAN (deteccion 0 y 0; dudosas resueltas), pero las dos sanidades fallan por la variabilidad del ruido de arranque tras el revert. Mismo hallazgo que ATA002/ATA008."
   },
@@ -125,6 +124,8 @@
     { "ts": "2026-09-25T21:51:35Z", "tipo": "filtrado", "detalle": "iter2: deteccion=0 auto_ruido=886 ruido_conocido=142 dudosa=4" },
     { "ts": "2026-09-25T21:52:00Z", "tipo": "revision", "detalle": "PAUSA: iter2 tenia 1 dudosa de OTRA naturaleza (19004 SCA) -> presentada al humano" },
     { "ts": "2026-09-26T00:10:00Z", "tipo": "revision", "detalle": "decision humana 2026-09-25: 19004 = ruido (autoevaluacion SCA ajena a T1560). Plegadas las 4 dudosas -> dudosa=0, ruido_conocido=146" },
-    { "ts": "2026-09-26T00:12:00Z", "tipo": "cierre", "detalle": "criterio doble iteracion con datos finales: 3 criterios formales PASAN; sanidades auto_ruido (265>>62,1) y ruido_conocido (74>>22) FALLAN -> review. Hallazgos (enmascaramiento 92600, ruido de arranque, sin_campos) anotados, NO arreglados." }
+    { "ts": "2026-09-26T00:12:00Z", "tipo": "cierre", "detalle": "criterio doble iteracion con datos finales: 3 criterios formales PASAN; sanidades auto_ruido (265>>62,1) y ruido_conocido (74>>22) FALLAN -> review. Hallazgos (enmascaramiento 92600, ruido de arranque, sin_campos) anotados, NO arreglados." },
+    { "ts": "2026-09-28T00:00:00Z", "tipo": "correccion", "detalle": "fase-03-metrica (offline, sin VMs): anadida la categoria artefacto_ataque y la pertenencia al ataque por carpeta (ATTACK_ROOT + ata_id) + guardarrail de plegado + veredicto humano artefacto. Regenerados los 2 -Audited.csv con --revision sobre los MISMOS -Detalle.csv (determinista): las 6 filas/iter de la huella del propio ataque (execve 80792 con cwd=/home/angel/lab-attack/ATA013: bash/date/dirname/ls/cat..., antes en ruido_conocido) pasan a artefacto_ataque -> evidencia de que el ataque corrio pese a que deteccion=0 (enmascaramiento 92600); ruido_conocido 220/146 -> 214/140; deteccion=0/0 (sin cambios). Los -Revision.csv NO cambian (veredicto humano=ruido sobre PAM/SCA ajenos). Hashes actualizados (audited_sha256). Hojas/ATA_index.csv intacto (review)" },
+    { "ts": "2026-09-28T00:00:00Z", "tipo": "correccion", "detalle": "fase-03-metrica ciclo 3 (metadatos): los -Revision.csv se regeneran con la 1a pasada del codigo actual -> cabecera con el campo artefacto_ataque y conteos reales (ruido_conocido 212/142 -> 206/137; +artefacto_ataque 6/6) y se re-inyectan los MISMOS veredictos vigentes (8/3, ruido). La dudosa 19004 (SCA) de iter2 ya no procede: la auto-excluye el predicado OPERADOR (motivo operador:19004) -> el -Revision de iter2 pasa de 4 a 3 filas. El -Audited re-plegado sale byte-identico en el cuerpo y su cabecera cita el sha real del -Revision. Hashes (audited/revision) actualizados" }
   ]
 }

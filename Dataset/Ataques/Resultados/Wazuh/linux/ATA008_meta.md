@@ -4,9 +4,9 @@ bloque: fase-03-piloto
 ata_id: ATA008
 tecnica: T1048.002
 tactica: Exfiltration
-version: 2
+version: 3
 status: review
-fecha: 2026-09-25
+fecha: 2026-09-28
 ---
 
 # Ficha — ATA008 · T1048 Exfiltration Over Alternative Protocol (`wget`) (Linux / `victima-linux`)
@@ -14,9 +14,15 @@ fecha: 2026-09-25
 > Piloto `fase-03-piloto`. Generada por `tfg-executor`. **Sin secretos.**
 > Estado **`review`**: las **7 `dudosa`** quedaron **resueltas** por veredicto humano en bloque
 > (2026-09-25, **`ruido`**), pero el **chequeo de sanidad** del criterio de doble iteración (§6 del
-> plan) **falla** por el `ruido_conocido` (62 vs 119): es **variabilidad del churn de arranque** entre
+> plan) **falla** por el `ruido_conocido` (58 vs 115; *v2 fase-03-metrica*: 62 vs 119): es **variabilidad del churn de arranque** entre
 > las dos iteraciones, el **mismo hallazgo** ya declarado en ATA002, no un fallo de la maquinaria.
 > Los **3 criterios formales** del §6 **pasan**.
+>
+> **Revisión (`fase-03-metrica`, 2026-09-28):** se añade la **métrica de detección O1+O2** (§8.2) y
+> la categoría **`artefacto_ataque`**: las **4** filas por iteración de la **huella del propio ataque**
+> (`execve` con `cwd=/home/angel/lab-attack/ATA008`) **salen de `ruido_conocido`**
+> (`62→58` y `119→115`). **El veredicto no cambia** (`deteccion=2`) y **ninguna detección se pierde**.
+> `Hojas/ATA_index.csv` **intacto** (sigue `review`).
 
 ## 1. Identificación
 
@@ -112,10 +118,15 @@ Reparto por capa RS (Detalle): iter1 `RS2=663, RS1=3`; iter2 `RS2=720, RS1=4`. R
 
 ## 8. Resultado (conteos por categoría, con veredicto humano ya plegado)
 
-| Iter | filas | deteccion | auto_ruido | ruido_conocido | dudosa |
-|---|---|---|---|---|---|
-| 1 | 666 | **2** | 602 | 62 | **0** |
-| 2 | 724 | **2** | 603 | 119 | **0** |
+| Iter | filas | deteccion | auto_ruido | ruido_conocido | dudosa | artefacto_ataque |
+|---|---|---|---|---|---|---|
+| 1 | 666 | **2** | 602 | 58 | **0** | **4** |
+| 2 | 724 | **2** | 603 | 115 | **0** | **4** |
+
+**`artefacto_ataque` (4/iter, `fase-03-metrica`):** el **árbol de procesos del propio ataque**
+(`execve` `80792` con `cwd=/home/angel/lab-attack/ATA008`) que **antes** caía en `ruido_conocido`;
+ahora es `artefacto_ataque` (`motivo=del_ataque`, evidencia `audit_cwd=…`). **Nunca** se llama "ruido"
+a una fila del ataque (ver §8.2 y `politica_filtrado_ruido.md` §3.ter).
 
 **`deteccion` (idénticas en ambas, todas `audit_exe=/usr/bin/wget`, RS2):**
 `80792` — *Audit: Command: /usr/bin/wget.* (`execve` de `wget`, coincide con la señal `T1048-S1`);
@@ -131,6 +142,22 @@ Todas `motivo=sin_campos` (la única señal esperada es `audit_exe=wget`; no tie
 **Veredicto humano (bloque, 2026-09-25): `ruido`** → `revision=resuelta`, `veredicto_humano=ruido`
 (nota: *«criterio fijado por el humano el 2026-09-25 (sesiones del operador, ajenas al ataque)»*).
 
+### 8.2 Métrica de detección — **O1 + O2** (`fase-03-metrica`, decisión D1)
+
+> **Definición:** **O1** = *detectado sí/no* + `rule_id` + primera evidencia; **O2** = *acciones
+> cubiertas `k/m`* (señales `deteccion` ancladas ≥1 vez / total de señales `deteccion` no-ancla).
+> El **nº bruto de alertas** y los `rule_id` distintos son **anexo**, nunca el resultado.
+
+| Iter | O1 detectado | `rule_id` | primera evidencia | O2 acciones | desglose `deteccion`/`artefacto_ataque`/`ruido_conocido` | anexo: alertas / `rule_id` distintos |
+|---|---|---|---|---|---|---|
+| 1 | **sí** | `{80791, 80792}` | `2026-09-25T20:54:48.033Z` `audit_exe=/usr/bin/wget` | **1/1** (`T1048-S1`) | **2 / 4 / 58** | 2 / `{80791, 80792}` |
+| 2 | **sí** | `{80791, 80792}` | `2026-09-25T20:58:51.235Z` `audit_exe=/usr/bin/wget` | **1/1** (`T1048-S1`) | **2 / 4 / 115** | 2 / `{80791, 80792}` |
+
+- **O2 = 1/1:** la única acción declarada es el `execve` de `wget` (`T1048-S1`). El `80791`
+  (*Deleted: index.html.tmp*) es el borrado del temporal que **crea el propio `wget`** (mismo evento
+  del `wget`, no una acción independiente). *(ATA008 corre en modo **legado** de señales: su `esperado`
+  no declara ancla `audit_cwd`; el filtro emite `AVISO`. Ver política §4.)*
+
 ## 9. Doble iteración (§6) — veredicto `review`
 
 | Criterio | Resultado |
@@ -139,7 +166,7 @@ Todas `motivo=sin_campos` (la única señal esperada es `audit_exe=wget`; no tie
 | 2) `\|n2−n1\| ≤ max(2, 10 %·n1)` | ✅ `\|2−2\| = 0 ≤ 2` |
 | 3) Sin `dudosa` sin resolver | ✅ 0 y 0 (7 resueltas por el humano) |
 | **Sanidad** `auto_ruido` (≤ 10 %) | ✅ 602 vs 603 → `Δ=1 ≤ 60,2` |
-| **Sanidad** `ruido_conocido` (≤ 10 %) | ❌ **62 vs 119 → `Δ=57` (≫ 6,2)** |
+| **Sanidad** `ruido_conocido` (≤ 10 %) | ❌ **58 vs 115 → `Δ=57` (≫ 5,8)** |
 
 Los **3 criterios formales pasan**, pero el **chequeo de sanidad de `ruido_conocido` falla de forma
 clara** → por §6 **`review`** (no se cierra en silencio).
@@ -148,7 +175,7 @@ clara** → por §6 **`review`** (no se cierra en silencio).
 **idéntica**: 2 y 2, mismo conjunto de reglas, mismo `audit_exe`). Es **variabilidad del churn de
 arranque** tras el revert a `lab-listo`: los `ruido_conocido` son en su mayoría `execve`/`watch` de
 utilidades de sistema que se disparan al rearrancar servicios. Es el **mismo hallazgo que en ATA002**
-(allí `ruido_conocido` 404 vs 125). → **Traslado al escalado:** (a) esperar a que el arranque se
+(allí `ruido_conocido` 395 vs 116). → **Traslado al escalado:** (a) esperar a que el arranque se
 asiente antes de `t0`, y/o (b) usar un margen mayor / comparar solo el rango temporal de régimen.
 
 ## 10. Dudosas ATA008 — RESUELTAS ✔

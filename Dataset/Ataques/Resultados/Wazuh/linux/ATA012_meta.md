@@ -4,7 +4,7 @@ bloque: fase-03-piloto-custom
 ata_id: ATA012
 tecnica: T1119
 tactica: Collection
-version: 3
+version: 5
 status: cerrado
 fecha: 2026-09-28
 ---
@@ -18,6 +18,19 @@ fecha: 2026-09-28
 > **Revisión (`fase-03-senales`, 2026-09-28):** recuento **re-generado** con el **ancla implícita
 > + evento de ejecución** (`filtrar_ruido.py`); `deteccion` **11→6/7** (3/4 ajenas → `dudosa` →
 > `ruido`); `Hojas/ATA_index.csv` **intacto** (sigue `cerrado`). Detalle en §8/§8.1/§9/§10.
+>
+> **Revisión (`fase-03-metrica`, 2026-09-28):** se añade la **métrica O1+O2** (§8.2) y la categoría
+> **`artefacto_ataque`**: las **10** filas por iteración de la **huella del propio ataque**
+> (`execve`/efectos con `cwd`/ruta bajo `/home/angel/lab-attack/ATA012`) **salen de `ruido_conocido`**
+> (`126→116` y `129→119`). El `.tar.gz` creado por el ataque deja de ser `ruido`: el humano lo pliega
+> con el nuevo veredicto **`artefacto`** (nunca `ruido`). **El veredicto no cambia** (`deteccion=6/7`)
+> y **ninguna detección genuina se pierde**. `Hojas/ATA_index.csv` **intacto** (sigue `cerrado`).
+>
+> **Corrección (`fase-03-metrica`, ciclo 2, 2026-09-28):** coherentizada la fila `artefacto`
+> (`80790` *Created: …/collected.tar.gz*): la **nota** ya dice **`artefacto`** ("es del ataque, pista
+> floja → `artefacto`, nunca `ruido`") y la **cabecera** del `-Revision.csv` se regeneró con los
+> conteos del pase actual (ya incluye `artefacto_ataque`). **Sin cambios de cifras** (`deteccion=6/7`,
+> `artefacto_ataque=10/10`, `ruido_conocido=116/119`).
 
 ## 1. Identificación
 
@@ -89,10 +102,10 @@ bash ATA012_ataque.sh     # find /etc ... | cp -t staging ; tar czf collected.ta
 
 ## 8. Resultado (conteos por categoría y capa, con veredicto ya plegado)
 
-| Iter | filas | deteccion | auto_ruido | ruido_conocido | dudosa | RS1 | RS2 | RS3 | RS4 |
-|---|---|---|---|---|---|---|---|---|---|
-| 1 | 751 | **6** | 619 | 126 | **0** | 3 | 748 | 0 | 0 |
-| 2 | 756 | **7** | 620 | 129 | **0** | 3 | 753 | 0 | 0 |
+| Iter | filas | deteccion | auto_ruido | ruido_conocido | dudosa | artefacto_ataque | RS1 | RS2 | RS3 | RS4 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | 751 | **6** | 619 | 116 | **0** | **10** | 3 | 748 | 0 | 0 |
+| 2 | 756 | **7** | 620 | 119 | **0** | **10** | 3 | 753 | 0 | 0 |
 
 ### 8.1 Detecciones — **dos cifras**, genuinas/ajenas y desglose esperadas/sorpresas
 
@@ -110,10 +123,28 @@ bash ATA012_ataque.sh     # find /etc ... | cp -t staging ; tar czf collected.ta
   **`dudosa`/`sin_ancla:T1119-S1`**; la **escritura watch** del `tar` (`80790`) cae a
   **`dudosa`/`sin_ancla:T1119-S3`** (el evento watch no es `audit_command`). El humano las
   resolvió a **`ruido`**. *(Antes: 11 detección, 7/8 genuinas + 3/4 ajenas.)*
-- **`dudosa` (iter1=5, iter2=4) resueltas a `ruido`:** los 3 `find` ajenos + 1 `find` sin `cwd` +
-  1 `tar` watch (iter1); 3 `find` ajenos + 1 `tar` watch (iter2). Más las `5501`/`5502` (PAM del
-  operador) → **`ruido`** (criterio fijado por el humano). El `5715` del operador se **auto-excluye**
+- **`dudosa` resueltas:** los `find` ajenos (`cwd=/`) y el `find` sin `cwd` → **`ruido`**
+  (`sin_ancla:T1119-S1`); las `5501`/`5502` (PAM del operador) → **`ruido`**. La **escritura watch
+  del `tar`** (`80790`, `sin_ancla:T1119-S3`) es **DEL ATAQUE** (`cwd=/home/angel/lab-attack/ATA012`)
+  → **`artefacto`** (regla **D2/D5**, `fase-03-metrica`; nota actualizada en el ciclo 2: *"es del
+  ataque, pista floja -> artefacto, nunca ruido"*). El `5715` del operador se **auto-excluye**
   (`operador:5715`, `srcip=192.168.65.1`) con el extractor H3 (ver §10).
+
+### 8.2 Métrica de detección — **O1 + O2** (`fase-03-metrica`, decisión D1)
+
+> **Definición:** **O1** = *detectado sí/no* + `rule_id` + primera evidencia; **O2** = *acciones
+> cubiertas `k/m`* (señales `deteccion` ancladas ≥1 vez / total de señales `deteccion` no-ancla).
+> El **nº bruto de alertas** y los `rule_id` distintos son **anexo**, nunca el resultado.
+
+| Iter | O1 detectado | `rule_id` | primera evidencia | O2 acciones | desglose `deteccion`/`artefacto_ataque`/`ruido_conocido` | anexo: alertas / `rule_id` distintos |
+|---|---|---|---|---|---|---|
+| 1 | **sí** | `{80792}` | `2026-09-26T12:20:58.850Z` `audit_exe=/usr/bin/find` | **3/3** (`S1`/`S2`/`S3`) | **6 / 10 / 116** | 6 / `{80792}` |
+| 2 | **sí** | `{80792}` | `2026-09-26T12:30:04.598Z` `audit_exe=/usr/bin/find` | **3/3** (`S1`/`S2`/`S3`) | **7 / 10 / 119** | 7 / `{80792}` |
+
+- **O2 = 3/3:** las **3 acciones** declaradas (`find`/`cp`/`tar`, señales `S1`/`S2`/`S3`) se anclan
+  ≥1 vez en ambas iteraciones, todas al `cwd` del ataque (`S4`). Es la única técnica con `m=3`
+  (las demás declaran 1 acción). Las **10** filas `artefacto_ataque`/iter son el staging del ataque
+  (`execve` del árbol + el `.tar.gz` creado).
 
 ## 9. Doble iteración (criterio **v2**) — veredicto **`iguales`**
 
@@ -123,7 +154,7 @@ bash ATA012_ataque.sh     # find /etc ... | cp -t staging ; tar czf collected.ta
 | C2′ `\|n2−n1\| ≤ max(2, 10 %·n1)` | ✅ `\|7−6\| = 1 ≤ 2` |
 | C3′ sin `dudosa` sin resolver | ✅ 0 y 0 |
 | Sanidad `auto_ruido` (aviso) | ✅ 619 vs 620 → Δ=1 |
-| Sanidad `ruido_conocido` (aviso) | ✅ 126 vs 129 → Δ=3 |
+| Sanidad `ruido_conocido` (aviso) | ✅ 116 vs 119 → Δ=3 |
 
 > **Nota (`fase-03-senales`, 2026-09-28):** cifras recalculadas con el **ancla implícita + evento
 > de ejecución**; `deteccion` pasa de **11/11** a **6/7** (3/4 ajenas → `dudosa` → `ruido`).

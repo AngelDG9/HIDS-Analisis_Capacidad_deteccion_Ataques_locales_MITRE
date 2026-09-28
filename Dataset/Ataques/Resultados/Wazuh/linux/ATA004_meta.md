@@ -4,7 +4,7 @@ bloque: fase-03-piloto-custom
 ata_id: ATA004
 tecnica: T1489
 tactica: Impact
-version: 3
+version: 5
 status: cerrado
 fecha: 2026-09-28
 ---
@@ -17,6 +17,18 @@ fecha: 2026-09-28
 > **Revisión (`fase-03-senales`, 2026-09-28):** recuento **re-generado** con el **ancla implícita
 > + evento de ejecución** (`filtrar_ruido.py`); `deteccion` **5→3** (2 ajenas del operador →
 > `dudosa` → `ruido`); `Hojas/ATA_index.csv` **intacto** (sigue `cerrado`). Detalle en §8/§8.1/§9/§10.
+>
+> **Revisión (`fase-03-metrica`, 2026-09-28):** se añade la **métrica O1+O2** (§8.2) y la categoría
+> **`artefacto_ataque`**: las **6** filas por iteración de la **huella del propio ataque** (`execve`
+> con `cwd=/home/angel/lab-attack/ATA004`) **salen de `ruido_conocido`** (`126→120` y `131→125`).
+> **El veredicto no cambia** (`deteccion=3`) y **ninguna detección genuina se pierde**.
+> `Hojas/ATA_index.csv` **intacto** (sigue `cerrado`).
+>
+> **Corrección (`fase-03-metrica`, ciclo 2, 2026-09-28):** coherentizada la fila `artefacto`
+> (`80792` *execve* de `sudo`): la **nota** ya dice **`artefacto`** ("es del ataque, pista floja →
+> `artefacto`, nunca `ruido`") y la **cabecera** del `-Revision.csv` se regeneró con los conteos del
+> pase actual (ya incluye `artefacto_ataque`). **Sin cambios de cifras** (`deteccion=3/3`,
+> `artefacto_ataque=6/6`, `ruido_conocido=120/125`).
 
 ## 1. Identificación
 
@@ -92,10 +104,10 @@ echo '<contraseña del laboratorio>' | sudo -S bash ATA004_ataque.sh   # una sol
 
 ## 8. Resultado (conteos por categoría y capa, con veredicto ya plegado)
 
-| Iter | filas | deteccion | auto_ruido | ruido_conocido | dudosa | RS1 | RS2 | RS3 | RS4 |
-|---|---|---|---|---|---|---|---|---|---|
-| 1 | 751 | **3** | 622 | 126 | **0** | 7 | 744 | 0 | 0 |
-| 2 | 738 | **3** | 604 | 131 | **0** | 7 | 731 | 0 | 0 |
+| Iter | filas | deteccion | auto_ruido | ruido_conocido | dudosa | artefacto_ataque | RS1 | RS2 | RS3 | RS4 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | 751 | **3** | 622 | 120 | **0** | **6** | 7 | 744 | 0 | 0 |
+| 2 | 738 | **3** | 604 | 125 | **0** | **6** | 7 | 731 | 0 | 0 |
 
 ### 8.1 Detecciones — **dos cifras**, genuinas/ajenas y desglose esperadas/sorpresas
 
@@ -124,10 +136,13 @@ echo '<contraseña del laboratorio>' | sudo -S bash ATA004_ataque.sh   # una sol
   **parada normal** (`systemctl stop cron`, mensajes `Stopping/Stopped`) **no casa ninguna hija que alerte** →
   gana `40700` (level 0) → **no hay alerta journald**. La hipótesis queda **resuelta** (no "sin
   probar"): la detección efectiva del ataque es el **`execve` `80792`** (audit). Ver §10.5 y runbook §8.3.
-- **`dudosa` (5/iter) resueltas a `ruido`:** 3 declaradas A1/A2 — `80792` (*execve* de `sudo`),
-  `80780` (*Watch-Write* por `sudo`) → A1 (`audit_exe=sudo`); `5402` (*Successful sudo to ROOT*) → A2,
-  nota *"elevación (…); no infla; criterio del orquestador"*. Más 2 **nuevas** (`fase-03-senales`):
-  las `systemctl --user` del cierre de sesión → `sin_ancla:T1489-S1`.
+- **`dudosa` (5/iter) resueltas:** `80792` (*execve* de `sudo`) es **DEL ATAQUE**
+  (`cwd=/home/angel/lab-attack/ATA004`) → **`artefacto`** (regla **D2/D5**, `fase-03-metrica`; nota
+  actualizada en el ciclo 2: *"es del ataque pero no es la tecnica (pista floja) -> artefacto, nunca
+  ruido"*); `80780` (*Watch-Write* por `sudo`, A1) y `5402` (*Successful sudo to ROOT*, A2) →
+  **`ruido`** (elevación declarada `ambigua`: parte del ataque pero no de la técnica). Más 2
+  **nuevas** (`fase-03-senales`): las `systemctl --user` del cierre de sesión → `sin_ancla:T1489-S1`
+  → **`ruido`**.
 - **Ancla `audit_cwd` (✅ `fase-03-senales`):** el ancla `S2`
   (`audit_cwd=/home/angel/lab-attack/ATA004/*`) ahora **sí casa** el valor real
   (`/home/angel/lab-attack/ATA004`, sin barra final) porque el match prueba `cwd` **y** `cwd + "/"`.
@@ -151,6 +166,21 @@ echo '<contraseña del laboratorio>' | sudo -S bash ATA004_ataque.sh   # una sol
 > en vivo"* del `change-doc` de `fase-03-cabos`; el hallazgo (una **parada normal** de servicio no
 > alerta por journald) queda **verificado en el ruleset de fábrica real**.
 
+### 8.2 Métrica de detección — **O1 + O2** (`fase-03-metrica`, decisión D1)
+
+> **Definición:** **O1** = *detectado sí/no* + `rule_id` + primera evidencia; **O2** = *acciones
+> cubiertas `k/m`* (señales `deteccion` ancladas ≥1 vez / total de señales `deteccion` no-ancla).
+> El **nº bruto de alertas** y los `rule_id` distintos son **anexo**, nunca el resultado.
+
+| Iter | O1 detectado | `rule_id` | primera evidencia | O2 acciones | desglose `deteccion`/`artefacto_ataque`/`ruido_conocido` | anexo: alertas / `rule_id` distintos |
+|---|---|---|---|---|---|---|
+| 1 | **sí** | `{80792}` | `2026-09-26T12:34:39.493Z` `audit_exe=/usr/bin/systemctl` | **1/1** (`T1489-S1`) | **3 / 6 / 120** | 3 / `{80792}` |
+| 2 | **sí** | `{80792}` | `2026-09-26T12:39:50.908Z` `audit_exe=/usr/bin/systemctl` | **1/1** (`T1489-S1`) | **3 / 6 / 125** | 3 / `{80792}` |
+
+- **O2 = 1/1:** la única acción declarada es la ejecución de `systemctl` (`T1489-S1`), anclada al
+  `cwd` del ataque (`S2`). Las **3 alertas** son las llamadas `is-active`/`stop`/`is-active` del script
+  (mismo `rule_id` `80792`). Las **6** filas `artefacto_ataque`/iter son la huella del árbol del ataque.
+
 ## 9. Doble iteración (criterio **v2**) — veredicto **`iguales`**
 
 | Criterio | Resultado |
@@ -159,7 +189,7 @@ echo '<contraseña del laboratorio>' | sudo -S bash ATA004_ataque.sh   # una sol
 | C2′ `\|n2−n1\| ≤ max(2, 10 %·n1)` | ✅ `\|3−3\| = 0 ≤ 2` |
 | C3′ sin `dudosa` sin resolver | ✅ 0 y 0 |
 | Sanidad `auto_ruido` (aviso) | ✅ 622 vs 604 → Δ=18 |
-| Sanidad `ruido_conocido` (aviso) | ✅ 126 vs 131 → Δ=5 |
+| Sanidad `ruido_conocido` (aviso) | ✅ 120 vs 125 → Δ=5 |
 
 > **Nota (`fase-03-senales`, 2026-09-28):** las 6 cifras se recalcularon con el **ancla implícita**;
 > `deteccion` pasa de **5/5** a **3/3** (las 2 ajenas del operador → `dudosa` → `ruido`). El

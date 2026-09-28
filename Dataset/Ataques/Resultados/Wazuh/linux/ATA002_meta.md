@@ -4,9 +4,9 @@ bloque: fase-03-piloto
 ata_id: ATA002
 tecnica: T1485
 tactica: Impact
-version: 2
+version: 3
 status: review
-fecha: 2026-09-25
+fecha: 2026-09-28
 ---
 
 # Ficha — ATA002 · T1485 Data Destruction (Linux / `victima-linux`)
@@ -16,6 +16,13 @@ fecha: 2026-09-25
 > `ruido`), pero el **chequeo de sanidad** del criterio de doble iteración (§6 del plan) **falla**
 > por el `ruido_conocido` (iter1 capturó un arranque de máquina con mucho más churn que iter2).
 > **Hallazgo declarado** (ver §9), no un fallo de la maquinaria.
+>
+> **Revisión (`fase-03-metrica`, 2026-09-28):** se añade la **métrica de detección O1+O2** (§8.2) y
+> la categoría **`artefacto_ataque`**: las **9** filas por iteración de la **huella del propio ataque**
+> (su árbol de procesos `execve` `80792` con `cwd=/home/angel/lab-attack/ATA002`) **salen de
+> `ruido_conocido`** (`404→395` y `125→116`). **El veredicto no cambia** (`deteccion=4`, 5 detectados
+> / 1 no a nivel global) y **ninguna detección genuina se pierde**. `Hojas/ATA_index.csv` **intacto**
+> (sigue `review`).
 
 ## 1. Identificación
 
@@ -95,14 +102,19 @@ Reparto por capa RS (Detalle): iter1 `RS2=1000, RS1=14`; iter2 `RS2=766, RS1=4`.
 
 ## 8. Resultado (conteos por categoría, con veredicto humano ya plegado)
 
-| Iter | filas | deteccion | auto_ruido | ruido_conocido | dudosa |
-|---|---|---|---|---|---|
-| 1 | 1014 | **4** | 606 | 404 | **0** |
-| 2 | 770 | **4** | 641 | 125 | **0** |
+| Iter | filas | deteccion | auto_ruido | ruido_conocido | dudosa | artefacto_ataque |
+|---|---|---|---|---|---|---|
+| 1 | 1014 | **4** | 606 | 395 | **0** | **9** |
+| 2 | 770 | **4** | 641 | 116 | **0** | **9** |
 
 **`deteccion` (idénticas en ambas, todas `audit_exe=/usr/bin/dd`):** `80792`×2 (execve de `dd`),
 `80790`×1 (Created bajo watch), `80781`×1 (Watch-Write bajo watch). → **Wazuh detecta el ataque**
 por las reglas de auditd de fábrica (RS2).
+
+**`artefacto_ataque` (9/iter, `fase-03-metrica`):** el **árbol de procesos del propio ataque**
+(`execve` `80792`: `bash`, `date`, `dd`… con `cwd=/home/angel/lab-attack/ATA002`) que **antes** caía
+en `ruido_conocido`; ahora es `artefacto_ataque` (`motivo=del_ataque`, evidencia `audit_cwd=…`).
+**Nunca** se llama "ruido" a una fila del ataque (ver §8.2 y `politica_filtrado_ruido.md` §3.ter).
 
 **`dudosa` resueltas (177):** iter1 128 (`80791`×120, `80780`×6, `80782`×2), iter2 49 (`80791`×48,
 `80780`×1). Señal ambigua `T1485-A2` (`rule_group=audit_watch_write`) **demasiado amplia**: ninguna
@@ -110,6 +122,24 @@ fila toca `/home/angel/lab-legit` (0 con `lab-legit` en la ruta); eran eventos w
 (`/run/systemd`, `/run/user`, sockets gnupg…). **Veredicto humano (bloque, 2026-09-25): `ruido`**
 (aprobado; sus reglas ya están en el catálogo del baseline) → `revision=resuelta`,
 `veredicto_humano=ruido` en los `-Audited.csv`.
+
+### 8.2 Métrica de detección — **O1 + O2** (`fase-03-metrica`, decisión D1)
+
+> **Definición (política §2 / runbook §12):** **O1** = *detectado sí/no* + los `rule_id` que lo
+> originan + primera evidencia; **O2** = *acciones cubiertas `k/m`* (señales `deteccion` del `esperado`
+> ancladas ≥1 vez / total de señales `deteccion` no-ancla). El **nº bruto de alertas** y los `rule_id`
+> distintos son **anexo** (transparencia), **nunca** el resultado.
+
+| Iter | O1 detectado | `rule_id` | primera evidencia | O2 acciones | desglose `deteccion`/`artefacto_ataque`/`ruido_conocido` | anexo: alertas / `rule_id` distintos |
+|---|---|---|---|---|---|---|
+| 1 | **sí** | `{80792, 80790, 80781}` | `2026-09-25T20:31:18.348Z` `audit_exe=/usr/bin/dd` | **1/1** (`T1485-S1`) | **4 / 9 / 395** | 4 / `{80792, 80790, 80781}` |
+| 2 | **sí** | `{80792, 80790, 80781}` | `2026-09-25T20:36:18.795Z` `audit_exe=/usr/bin/dd` | **1/1** (`T1485-S1`) | **4 / 9 / 116** | 4 / `{80792, 80790, 80781}` |
+
+- **O2 = 1/1:** la única acción declarada es el `execve` de `dd` (`T1485-S1`), que se ve en **ambas**
+  iteraciones. Las **2 filas `watch`** (`80790`/`80781`) arrastradas por el `exe` son **el mismo
+  evento** del `dd` (no acciones independientes); el nº bruto de **4** lo reparte entre `2 execve` +
+  `2 watch`. *(ATA002 corre en modo **legado** de señales: su `esperado` no declara ancla `audit_cwd`;
+  el filtro emite `AVISO`. Ver política §4.)*
 
 ## 9. Doble iteración (§6) — veredicto `review`
 
@@ -119,14 +149,14 @@ fila toca `/home/angel/lab-legit` (0 con `lab-legit` en la ruta); eran eventos w
 | 2) `\|n2−n1\| ≤ max(2, 10 %·n1)` | ✅ `\|4−4\| = 0 ≤ 2` |
 | 3) Sin `dudosa` sin resolver | ✅ 0 y 0 (177 resueltas por el humano) |
 | **Sanidad** `auto_ruido` (≤ 10 %) | ✅ 606 vs 641 → `Δ=35 ≤ 60,6` |
-| **Sanidad** `ruido_conocido` (≤ 10 %) | ❌ **404 vs 125 → `Δ=279` (≫ 40,4)** |
+| **Sanidad** `ruido_conocido` (≤ 10 %) | ❌ **395 vs 116 → `Δ=279` (≫ 39,5)** |
 
 Los **3 criterios formales** pasan, pero el **chequeo de sanidad de `ruido_conocido` falla de forma
 clara** → por §6 **`review`** (no se cierra en silencio).
 
 **Por qué, con números (hallazgo):** la diferencia **no** viene del ataque, viene del **arranque de
 la máquina**. Los `ruido_conocido` se concentran en un **pico en el primer segundo** de cada ventana
-(iter1: 266 eventos a `20:31:17` + 96 a `20:31:18`; iter2: 81 a `20:36:18` + 43 a `20:36:28`), y son
+(iter1: 266 eventos a `20:31:17` + 87 a `20:31:18`; iter2: 72 a `20:36:18` + 43 a `20:36:28`), y son
 `execve` de utilidades de sistema (`dash` 88 vs 22, `cat` 20 vs 6, `env` 16 vs 5, `uname` 12 vs 4,
 `find` 12 vs 3, `systemd-executor` 11 vs 3) bajo `80792`, más `watch` `80791`/`80780`. **Iter1
 capturó un arranque de máquina con más churn que iter2** (tras el revert, el `lab-listo` rearranca

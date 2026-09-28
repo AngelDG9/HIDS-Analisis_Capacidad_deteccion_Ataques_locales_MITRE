@@ -230,9 +230,17 @@ python _artefactos/scripts/filtrar_ruido.py \
 
 ### Paso 11 — Revisión de `dudosa`
 
-Abrir `ATA<NNN>_iterN-Revision.csv`, rellenar `veredicto` (`deteccion`/`ruido`), `nota`,
-`revisor`, `fecha`; re-ejecutar el paso 10 añadiendo `--revision <…>-Revision.csv` (pliega los
-veredictos y queda trazable). **No puede quedar ninguna `dudosa` sin resolver.**
+Abrir `ATA<NNN>_iterN-Revision.csv`, rellenar `veredicto` ∈ **{`deteccion`, `ruido`, `artefacto`}**
++ `nota`, `revisor`, `fecha`; re-ejecutar el paso 10 añadiendo `--revision <…>-Revision.csv`
+(pliega los veredictos y queda trazable). **No puede quedar ninguna `dudosa` sin resolver.**
+
+- **`deteccion`**: la fila **es** la detección de la técnica.
+- **`ruido`**: ajena al ataque (p. ej. los `find` de `update-motd.d` del login del operador, las
+  sesiones PAM `5501`/`5502`). ⛔ **Prohibido** sobre una fila **dentro** de
+  `/home/angel/lab-attack/ATA<NNN>/`: la herramienta **falla** (`exit=4`) — elige `deteccion` o
+  `artefacto`.
+- **`artefacto`**: **es el ataque, pero no es la detección de la técnica** (p. ej. la escritura
+  `watch` del `.tar.gz` que **creó** el ataque). Mapea a `artefacto_ataque`.
 
 ### Paso 12 — Guardar
 
@@ -240,23 +248,26 @@ veredictos y queda trazable). **No puede quedar ninguna `dudosa` sin resolver.**
   `deps.txt`, `sha256_artefacto.txt` y (solo ATA008) `sink.log`.
 - Ficha `Dataset/Ataques/Resultados/Wazuh/linux/ATA<NNN>_meta.md` (esquema §7 del plan).
 
-**Plantilla obligatoria de la ficha (con desglose de detecciones):** cada ficha debe incluir,
-por iteración, las **DOS cifras** de detección y el **desglose esperadas/sorpresas**:
+**Métrica de detección (bloque `fase-03-metrica`, decisión D1 = O1+O2):** la ficha reporta, por
+iteración, la métrica **O1** (detección **Sí/No** + los `rule_id` que la originan + primera
+evidencia) y **O2** (`acciones cubiertas k/m` = señales `deteccion` del `esperado` que se anclaron
+≥1 vez / total de señales `deteccion`), **más** el desglose de categorías
+`deteccion` / `artefacto_ataque` / `ruido_conocido`. El **nº bruto de alertas** y los
+**`rule_id` distintos** quedan como **anexo** (transparencia), **nunca** como resultado.
 
 ```text
-## Detecciones — dos cifras (por iteración)
-- alertas de detección (recuento bruto): <N>
-- rule_id distintos que las originan:   <set>          ← número "limpio"
-- genuinas del ataque vs ajenas:        <g> / <a>       ← por anclaje (cwd de la carpeta del ataque)
-- desglose: esperadas (motivo=senal:…) = <E>  ·  sorpresas (motivo=novel) = <S>
+## Métrica de detección — O1 + O2 (por iteración)
+- detectado (O1): <sí/no>   ·   rule_id: <set>   ·   primera evidencia: <evidencia>
+- acciones cubiertas (O2): <k>/<m> = <señales deteccion ancladas ≥1 vez>/<señales deteccion del esperado>
+- desglose: deteccion = <D>  ·  artefacto_ataque = <A>  ·  ruido_conocido = <R>
+- anexo (transparencia, NO resultado): alertas de detección (bruto) = <N>  ·  rule_id distintos = <set>
 ```
 
-> **Por qué dos cifras (hallazgo 2026-09-26):** las señales por proceso (`audit_exe`) y el ancla
-> por carpeta (`audit_cwd`) son **amplias**: capturan **todas** las alertas de ese proceso —incluidas
-> las de **escritura/creación** (`80790`/`80781`) o la **elevación**— y las **promueven a `deteccion`**
-> (el paso 2 gana al paso 3 `ambigua`). El recuento bruto puede ser **redundante** (el mismo evento
-> del `cp` visto por varias reglas) y puede incluir **procesos ajenos al ataque** (p. ej. `find` de
-> `update-motd.d` o `systemctl --user` del cierre de sesión del operador). Detalle y recomendación: §8.
+> **Por qué O1+O2 (hallazgo 2026-09-28):** el **nº bruto** es **inválido** (redundancia: 1 acción
+> → N reglas; procesos ajenos) y los **`rule_id` distintos** inflan (ATA007 = 3 `rule_id` para
+> **1** acción). O1 es comparable entre las 13 técnicas e inmune a la redundancia; O2 da
+> granularidad reutilizando el `esperado` ya validado por el humano. **Anexo:** el nº bruto y los
+> `rule_id` distintos solo se citan como transparencia.
 - Bitácora `Bitacora/ATA<NNN>.json` (append-only, esquema §8 del plan).
 - Fila de `Hojas/ATA_index.csv` (`en-curso` durante; `cerrado`/`review` al final). **Solo su fila.**
 
@@ -464,4 +475,44 @@ siguiente; **no** forma parte de este):
   §8.1/§10.5.
 - **Alcance:** se **documenta** (coste cero); **no** se extendió el C0 — exigiría VMs + root y una
   línea journald sintética de formato no trivial (riesgo de `garbage-in`) sin aportar hallazgo nuevo.
+
+---
+
+## 9. Hallazgo y arreglo del bloque `fase-03-metrica` (2026-09-28) — métrica + pertenencia al ataque
+
+> **Offline** (sin VMs): se re-filtran los **mismos** `-Detalle.csv`. Ver `plan.md` del bloque
+> `fase-03-metrica` y la política §2/§3.ter/§5.
+
+### 9.1 El defecto (sistemático)
+
+La huella del **propio ataque** (su árbol de procesos `execve`, y el fichero que crea) caía en
+**`ruido_conocido`** porque el filtro decidía por catálogo **sin mirar la ubicación**: `80792` está
+en el catálogo (es genérico) → cualquier `execve` no declarado salía "ruido". Medido: **84 filas**
+en las 12 ventanas (**78** son huella **dentro** de la carpeta del ataque —las marca la regla
+automática— + **6** que pliega el humano con el veredicto `artefacto`: **2** `sudo`, **2**
+`Created: …/collected.tar.gz` y **2** `mkdir public_site` del *setup* de ATA007 en `lab-legit`).
+Ninguna se queda en "ruido".
+
+### 9.2 El arreglo (D2 = opción B completa)
+
+- **Categoría nueva `artefacto_ataque`** (paso 3.5): fila **del ataque** (`audit_cwd` o ruta bajo
+  `ATTACK_ROOT/<ATA_id>`) que no casó detección → `artefacto_ataque`, **nunca** `ruido_conocido`.
+- **Ancla por ruta** (mejora C): el ancla prueba también `audit_file`/`audit_dir`/`syscheck_path`.
+- **Guardarraíl de plegado**: `veredicto=ruido` sobre una fila del ataque → **`exit=4`**.
+- **Tercer veredicto `artefacto`** (D5): "es el ataque, no cuenta como detección" → `artefacto_ataque`.
+- **`AVISO`** por execve no declarado en la carpeta del ataque (posible detección no declarada).
+
+### 9.3 Métrica de detección (D1 = O1+O2)
+
+`detectado = sí/no` + `rule_id` + primera evidencia (**O1**); **acciones cubiertas `k/m`** (**O2**);
+`deteccion`/`artefacto_ataque`/`ruido_conocido` como desglose. El **nº bruto** y los `rule_id`
+distintos quedan como **anexo** (transparencia). Ver paso 12.
+
+### 9.4 Resultado
+
+**No cambia ningún veredicto** (5 detectados / ATA013 **no**) y **ninguna detección genuina se
+pierde**: `deteccion` sigue en **39** filas en total; `ruido_conocido` **baja en 84** (1.836 →
+1.752); aparece `artefacto_ataque` **= 84**. Cadena de huellas (`esperado`/`-Detalle` ↔
+`-Audited`/`-Revision` ↔ bitácora ↔ ficha) recalculada; `-Detalle.csv`, los `esperado` (incl.
+pilotos) y `Hojas/ATA_index.csv` **intactos**.
 

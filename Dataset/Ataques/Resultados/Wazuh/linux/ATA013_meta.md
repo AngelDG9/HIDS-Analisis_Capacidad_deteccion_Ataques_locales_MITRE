@@ -4,9 +4,9 @@ bloque: fase-03-piloto
 ata_id: ATA013
 tecnica: T1560.002
 tactica: Collection
-version: 1
+version: 2
 status: review
-fecha: 2026-09-25
+fecha: 2026-09-28
 ---
 
 # Ficha — ATA013 · T1560 Archive Collected Data (`gzip` en Python) (Linux / `victima-linux`)
@@ -17,6 +17,13 @@ fecha: 2026-09-25
 > **arranque** entre iteraciones (mismo hallazgo que ATA002/ATA008). Los **3 criterios formales
 > pasan**. Resultado de detección: **0 detecciones** en ambas iteraciones (ver §11: enmascaramiento
 > por una regla de fábrica de Wazuh).
+>
+> **Revisión (`fase-03-metrica`, 2026-09-28):** se añade la **métrica de detección O1+O2** (§8.2) y
+> la categoría **`artefacto_ataque`**: las **6** filas por iteración de la **huella del propio ataque**
+> (`execve` `80792`: `bash`, `date`, `dirname`, `ls`, `cat`… con `cwd=/home/angel/lab-attack/ATA013`)
+> **salen de `ruido_conocido`** (`220→214` y `146→140`). Aunque **`deteccion=0`** (enmascaramiento
+> `92600`, §11.1), el **ataque deja 6 filas `artefacto_ataque` visibles** en su carpeta: es evidencia
+> de que **corrió**. `Hojas/ATA_index.csv` **intacto** (sigue `review`).
 
 ## 1. Identificación
 
@@ -106,16 +113,38 @@ Reparto por capa RS (Detalle): iter1 `RS2=833, RS1=8`; iter2 `RS2=1028, RS1=4`. 
 
 ## 8. Resultado (conteos por categoría, con veredicto humano ya plegado)
 
-| Iter | filas | deteccion | auto_ruido | ruido_conocido | dudosa |
-|---|---|---|---|---|---|
-| 1 | 841 | **0** | 621 | 220 | **0** |
-| 2 | 1032 | **0** | 886 | 146 | **0** |
+| Iter | filas | deteccion | auto_ruido | ruido_conocido | dudosa | artefacto_ataque |
+|---|---|---|---|---|---|---|
+| 1 | 841 | **0** | 621 | 214 | **0** | **6** |
+| 2 | 1032 | **0** | 886 | 140 | **0** | **6** |
 
 **`deteccion` = 0** en ambas iteraciones: **Wazuh (de fábrica) NO detecta el ataque**. Ver §11 para la
 causa raíz demostrada (enmascaramiento por la regla de fábrica `92600`, nivel 0).
 
-**`dudosa` resueltas (12: 8 + 4):** ver §10. Todas `motivo=sin_campos` y todas `veredicto=ruido`
-(11 PAM/sshd de las sesiones SSH del operador + 1 `19004` SCA).
+**`artefacto_ataque` (6/iter, `fase-03-metrica`):** el **árbol de procesos del propio ataque**
+(`execve` `80792` con `cwd=/home/angel/lab-attack/ATA013`) que **antes** caía en `ruido_conocido`;
+ahora es `artefacto_ataque` (`motivo=del_ataque`). **Es evidencia de que el ataque corrió** aunque su
+señal declarada (`python3`) quede enmascarada: el filtro emite **`AVISO`** *"posible señal de detección
+no declarada"* por cada execve no declarado (ver §8.2 y `politica_filtrado_ruido.md` §3.ter).
+
+### 8.2 Métrica de detección — **O1 + O2** (`fase-03-metrica`, decisión D1)
+
+> **Definición:** **O1** = *detectado sí/no* + `rule_id` + primera evidencia; **O2** = *acciones
+> cubiertas `k/m`* (señales `deteccion` ancladas ≥1 vez / total de señales `deteccion` no-ancla).
+> El **nº bruto de alertas** y los `rule_id` distintos son **anexo**, nunca el resultado.
+
+| Iter | O1 detectado | `rule_id` | primera evidencia | O2 acciones | desglose `deteccion`/`artefacto_ataque`/`ruido_conocido` | anexo: alertas / `rule_id` distintos |
+|---|---|---|---|---|---|---|
+| 1 | **no** | `{}` | — | **0/1** (`T1560-S1`) | **0 / 6 / 214** | 0 / `{}` |
+| 2 | **no** | `{}` | — | **0/1** (`T1560-S1`) | **0 / 6 / 140** | 0 / `{}` |
+
+- **O2 = 0/1:** la única acción declarada (`execve` de `python3`, `T1560-S1`) **no** produce detección:
+  la regla de fábrica `92600` (nivel 0) suprime la base `80792` (§11.1). **O1 = no** en ambas
+  iteraciones. La huella del ataque (`6` filas `artefacto_ataque`/iter) **no** cuenta como detección.
+
+**`dudosa` resueltas (11: 8 + 3):** ver §10. Todas `motivo=sin_campos` y todas `veredicto=ruido`
+(11 PAM/sshd de las sesiones SSH del operador; el `19004` SCA ya **no** es `dudosa`: lo auto-excluye
+el predicado `OPERADOR`).
 
 ## 9. Doble iteración (§6) — veredicto `review`
 
@@ -123,9 +152,9 @@ causa raíz demostrada (enmascaramiento por la regla de fábrica `92600`, nivel 
 |---|---|
 | 1) Mismo conjunto de `rule_id` con `deteccion` | ✅ `{}` == `{}` (ninguna detección en ambas) |
 | 2) `\|n2−n1\| ≤ max(2, 10 %·n1)` | ✅ `\|0−0\| = 0 ≤ 2` |
-| 3) Sin `dudosa` sin resolver | ✅ 0 y 0 (12 resueltas por el humano) |
+| 3) Sin `dudosa` sin resolver | ✅ 0 y 0 (11 resueltas por el humano) |
 | **Sanidad** `auto_ruido` (≤ 10 %) | ❌ **621 vs 886 → `Δ=265` (≫ 62,1)** |
-| **Sanidad** `ruido_conocido` (≤ 10 %) | ❌ **220 vs 146 → `Δ=74` (≫ 22)** |
+| **Sanidad** `ruido_conocido` (≤ 10 %) | ❌ **214 vs 140 → `Δ=74` (≫ 21,4)** |
 
 Los **3 criterios formales pasan**, pero **las dos sanidades fallan de forma clara** → por §6
 **`review`** (no se cierra en silencio). Las **detecciones son idénticas** (0 y 0): la diferencia la
@@ -148,15 +177,16 @@ Todas `motivo=sin_campos` (ninguna señal del `esperado` es evaluable: no hay ca
 | 2 | `2026-09-25T21:49:30.363Z` | 5501 | PAM: Login session opened. | `ruido` | sesión SSH del operador |
 | 2 | `2026-09-25T21:49:30.363Z` | 5715 | sshd: authentication success. | `ruido` | sesión SSH del operador |
 | 2 | `2026-09-25T21:49:30.364Z` | 5502 | PAM: Login session closed. | `ruido` | cierre de sesión SSH |
-| 2 | `2026-09-25T21:49:31.231Z` | **19004** | **SCA summary: CIS Ubuntu Linux 24.04 LTS Benchmark v1.0.0.: Score less than 50% (47)** | `ruido` | **autoevaluación SCA del propio HIDS**, ajena a T1560 |
 
 - **11 PAM/sshd** → `ruido` con el **criterio fijado por el humano (2026-09-25)** para las sesiones
   del operador (nota en el `-Revision.csv`).
-- **1 × `19004` (grupo `sca`)** → `ruido` por **decisión humana (2026-09-25)**: es la
-  **autoevaluación SCA periódica del propio agente Wazuh** (se dispara ~30 s tras arrancar el agente;
-  hoy salió 3 veces: 20:30:38, 21:42:25 —fuera de ventana— y 21:49:31 —dentro de iter2—), **ajena al
-  ataque**; **no debe contar como detección**. Nota en el `-Revision.csv`. *Deuda:* añadir `19004`/grupo
-  `sca` al catálogo de ruido (no estaba porque el SCA no corrió en las 2×4 h del baseline).
+- **`19004` (grupo `sca`)** ya **no** es `dudosa`: lo **auto-excluye** el predicado `OPERADOR`
+  (`motivo=operador:19004`, política §3.bis) → `ruido_conocido`. Es la **autoevaluación SCA periódica
+  del propio agente Wazuh** (se dispara ~30 s tras arrancar el agente; hoy salió 3 veces: 20:30:38,
+  21:42:25 —fuera de ventana— y 21:49:31 —dentro de iter2—), **ajena al ataque** y **no** cuenta como
+  detección. Por eso el `-Revision.csv` de iter2 pasa de **4 a 3** filas (solo PAM/sshd), de forma
+  **determinista** (paso 1.5), sin revisión humana. *Deuda (resuelta por el predicado):* añadir
+  `19004`/grupo `sca` al catálogo de ruido.
 
 ## 11. Hallazgos y limitaciones (el valor del piloto) ⭐
 

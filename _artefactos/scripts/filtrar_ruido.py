@@ -12,7 +12,7 @@ Categorías y **orden exacto** de decisión (`plan.md` §2; gana el primero):
 
     1.   auto_ruido       si el ORIGEN es el propio Wazuh (por campos, no por rule.id)
     2.   deteccion        si casa una SEÑAL ESPERADA de tipo `deteccion` (ANCLADA,
-                          §2.2: una señal `audit_exe` solo casa si `exe ∧ cwd-ancla
+                          §2.2: una señal `audit_exe` solo casa si `exe ∧ cwd-ancla/ruta
                           ∧` evento de ejecución `audit_command`)
     1.5  ruido_conocido   si casa el PREDICADO OPERADOR (H3 §4.1): `5715` con
                           `srcip ∈ OPERADOR_SRCIPS` o `19004` con grupo `sca`
@@ -25,8 +25,30 @@ Categorías y **orden exacto** de decisión (`plan.md` §2; gana el primero):
                           un `audit_exe` de detección pero falla el ancla / el evento
                           de ejecución (motivo `sin_ancla:<senal_id>`), **o** si no es
                           evaluable ninguna señal (falta el campo; motivo `sin_campos`)
+    3.5  artefacto_ataque si la fila es "DEL ATAQUE" (`audit_cwd` o ruta —`audit_file`/
+                          `audit_dir`/`syscheck_path` resuelta contra el `cwd`— bajo
+                          `ATTACK_ROOT/<ATA_id>`) y NO casó una detección declarada
+                          (motivo `del_ataque`). **Nunca** `ruido_conocido`.
     4.   deteccion        si rule.id NO está en el catálogo (motivo `novel`)
-    5.   ruido_conocido   si rule.id SÍ está en el catálogo
+    5.   ruido_conocido   si rule.id SÍ está en el catálogo (motivo `baseline`);
+                          tras el arreglo, solo contiene filas que **no** son del ataque
+
+Pertenencia al ataque (§3, bloque `fase-03-metrica`). `ATTACK_ROOT` =
+`/home/angel/lab-attack/`; la carpeta del ataque se deriva del `--ata`
+(`ATTACK_ROOT + ata_id`), de modo que **también cubre a los 3 del piloto**
+(ATA002/008/013) **sin editar** su `esperado`. Es una prueba **demostrable**: esa
+carpeta la crea y usa solo el ataque. La `evidencia` de una fila `artefacto_ataque`
+es el campo que demostró la pertenencia (`audit_cwd=…` / `audit_file=…`).
+
+Guardarraíl de plegado (§3.2). En `--revision`, un `veredicto=ruido` sobre una fila
+**del ataque** hace **fallar** la herramienta (`exit != 0`, código 4) indicando la
+fila: el humano debe elegir `deteccion` **o** el tercer veredicto **`artefacto`**
+(que pliega a `artefacto_ataque`, `revision=resuelta`, `veredicto_humano=artefacto`).
+Un `veredicto=artefacto` sobre una fila ajena también se admite (mapea igual).
+
+`AVISO` (§3.2). Una fila `artefacto_ataque` con grupo `audit_command` (execve de un
+binario **no declarado**) emite **`AVISO`** *"posible señal de detección no
+declarada"* por `stderr` (transparencia; p. ej. las 6 filas `80792` de ATA013).
 
 Ancla implícita (§2.2). Toda señal `tipo=deteccion, campo=audit_cwd` de un
 `esperado` es un **ancla** (una condición AND), **no** un detector por sí sola.
@@ -34,9 +56,14 @@ Si el `esperado` declara ≥1 ancla, una señal `deteccion` con `campo=audit_exe
 casa la fila **solo si** se cumplen las tres: (i) el `audit_exe` casa el patrón
 (`full` o `basename`), (ii) el `audit_cwd` de la fila casa el ancla — el match
 prueba el `cwd` **y** `cwd + "/"`, de modo que el patrón `…/ATA<NNN>/*` casa el
-`cwd` real `…/ATA<NNN>` (el `*` casa la cadena vacía) —, y (iii) la fila es un
-evento de ejecución (`rule_groups` contiene `audit_command`; en un evento `watch`
-el `audit_exe` es el causante de la escritura, no "el proceso del ataque").
+`cwd` real `…/ATA<NNN>` (el `*` casa la cadena vacía) — **o** alguna ruta
+(`audit_file`/`audit_dir`/`syscheck_path`, resuelta contra el `cwd`) casa el ancla
+(mejora C, §3.2; así un `watch` del `.tar.gz` creado en la carpeta del ataque queda
+anclado), y (iii) la fila es un evento de ejecución (`rule_groups` contiene
+`audit_command`; en un evento `watch` el `audit_exe` es el causante de la escritura,
+no "el proceso del ataque") — como (iii) no se cumple en un `watch`, este sigue
+yendo a `dudosa` (`sin_ancla`; la escritura es `artefacto_ataque` si el humano no la
+cuenta como detección).
 Una fila que casa el `audit_exe` pero **falla** el ancla o el evento de ejecución
 → `dudosa` (motivo `sin_ancla:<senal_id>`; `evidencia` = el campo que falló),
 **nunca** `deteccion` ni `ruido_conocido`: nada se descarta en silencio. Si el
@@ -59,7 +86,10 @@ el modo explícito `--modo baseline` permite pasar una ventana sin ataque.
 
 El fichero de revisión (`ATA<NNN>_iter{N}-Revision.csv`) contiene las filas
 dudosas + columnas `veredicto,nota,revisor,fecha` para el humano. Al re-ejecutar
-con `--revision <fichero>` los veredictos se pliegan (`revision=resuelta`).
+con `--revision <fichero>` los veredictos se pliegan (`revision=resuelta`); el
+`veredicto` admite `deteccion` (`→ deteccion`), `ruido` (`→ ruido_conocido`;
+**prohibido** sobre una fila del ataque, §3.2) y `artefacto`
+(`→ artefacto_ataque`).
 
 Determinismo (R-13): la salida no contiene reloj y depende solo de las entradas;
 misma entrada -> salida **byte a byte** idéntica.
@@ -73,12 +103,17 @@ import fnmatch
 import glob
 import hashlib
 import os
+import posixpath
 import sys
 
 # --------------------------------------------------------------------------
 # Constantes (deben coincidir con `Soporte/Wazuh/Configuracion/politica_filtrado_ruido.md`)
 # --------------------------------------------------------------------------
-CATEGORIAS = ("deteccion", "ruido_conocido", "auto_ruido", "dudosa")
+CATEGORIAS = ("deteccion", "ruido_conocido", "auto_ruido", "dudosa", "artefacto_ataque")
+
+# §3 (fase-03-metrica) — raíz de las carpetas de ataque. La carpeta del ataque se
+# deriva del `--ata` (`ATTACK_ROOT + ata_id`); prueba DEMOSTRABLE de pertenencia.
+ATTACK_ROOT = "/home/angel/lab-attack/"
 
 # §3 — procesos del propio Wazuh (se comparan por nombre base de `audit.exe`)
 WAZUH_PROCESOS = {
@@ -170,6 +205,7 @@ REV_EXTRA = ["veredicto", "nota", "revisor", "fecha"]
 EXIT_OK = 0
 EXIT_USAGE = 2
 EXIT_NO_SIGNALS = 3
+EXIT_GUARDRAIL = 4  # §3.2: veredicto=ruido sobre una fila DEL ATAQUE (prohibido)
 
 DEFAULT_CATALOGO = "Dataset/Legitimo/ruleids_legitimos.csv"
 # Convención por SO (fase-03-afinado §5): los resultados viven bajo `.../Wazuh/linux/`.
@@ -293,6 +329,51 @@ def detectar_auto_ruido(row: dict):
 
 
 # --------------------------------------------------------------------------
+# Pertenencia al ataque (§3, fase-03-metrica) — prueba DEMOSTRABLE por carpeta
+# --------------------------------------------------------------------------
+def _ruta_posix_abs(value: str, cwd: str) -> str:
+    """Resuelve una ruta POSIX (absoluta o relativa al `cwd`) **sin** `os.path`.
+
+    No usa `os.path.normpath` a propósito: en Windows convertiría `/` en `\\` y
+    rompería la comparación con `ATTACK_ROOT` (rutas POSIX de la víctima Linux).
+    """
+    v = (value or "").strip().strip('"')
+    if not v:
+        return ""
+    if v.startswith("/"):
+        return posixpath.normpath(v)
+    if cwd:
+        return posixpath.normpath(cwd.rstrip("/") + "/" + v.lstrip("/"))
+    return posixpath.normpath(v)
+
+
+def _bajo_carpeta(path: str, carpeta: str) -> bool:
+    p = (path or "").rstrip("/")
+    return bool(p) and (p == carpeta or p.startswith(carpeta + "/"))
+
+
+def es_del_ataque(row: dict, ata_id: str) -> str:
+    """Devuelve la evidencia (`campo=valor`) si la fila es DEL ATAQUE, o "".
+
+    "Del ataque" = `audit_cwd` o ruta (`audit_file`/`audit_dir`/`syscheck_path`,
+    resuelta contra el `cwd`) bajo `ATTACK_ROOT/<ata_id>`. La carpeta la crea y usa
+    solo el ataque -> prueba demostrable (no depende de que el `esperado` declare ancla).
+    """
+    if not ata_id:
+        return ""
+    carpeta = (ATTACK_ROOT.rstrip("/") + "/" + ata_id).rstrip("/")
+    cwd = (row.get("audit_cwd") or "").strip()
+    if _bajo_carpeta(cwd, carpeta):
+        return f"audit_cwd={cwd}"
+    for field in ("audit_file", "audit_dir", "syscheck_path"):
+        raw = row.get(field) or ""
+        p = _ruta_posix_abs(raw, cwd)
+        if p and _bajo_carpeta(p, carpeta):
+            return f"{field}={raw}"
+    return ""
+
+
+# --------------------------------------------------------------------------
 # Predicado OPERADOR (H3 §4.1) — regla ∧ contexto, solo lo demostrable
 # --------------------------------------------------------------------------
 def detectar_operador(row: dict):
@@ -386,15 +467,25 @@ def es_evento_ejecucion(row: dict) -> bool:
     return AUDIT_CMD_GROUP in _grupos(row)
 
 
-def _casa_ancla(cwd: str, anchors) -> bool:
-    """True si el `cwd` de la fila casa el patrón de alguna señal-ancla.
+def _casa_ancla(row: dict, anchors) -> bool:
+    """True si el `cwd` **o** una ruta de la fila casa un patrón de señal-ancla.
 
     Prueba el `cwd` **y** `cwd + "/"`, para que el patrón `…/ATA<NNN>/*` case el
-    `cwd` real `…/ATA<NNN>` (el `*` casa la cadena vacía).
+    `cwd` real `…/ATA<NNN>` (el `*` casa la cadena vacía). **Mejora C (§3.2):**
+    prueba además `audit_file`/`audit_dir`/`syscheck_path` resueltos contra el
+    `cwd`, de modo que una ruta dentro de la carpeta del ataque también ancla
+    (p. ej. el `.tar.gz` creado por el ataque).
     """
+    cwd = (row.get("audit_cwd") or "").strip()
+    valores = [cwd, cwd + "/"]
+    for field in ("audit_file", "audit_dir", "syscheck_path"):
+        p = _ruta_posix_abs(row.get(field) or "", cwd)
+        if p:
+            valores.append(p)
+            valores.append(p + "/")
     for a in anchors:
         pat = a["patron"]
-        if glob_match(cwd, pat) or glob_match(cwd + "/", pat):
+        if any(glob_match(v, pat) for v in valores):
             return True
     return False
 
@@ -433,7 +524,7 @@ def evaluar_senales(row: dict, signals):
         if s["tipo"] == "deteccion":
             if campo == "audit_exe" and anchors:
                 cwd = (row.get("audit_cwd") or "").strip()
-                if not _casa_ancla(cwd, anchors):
+                if not _casa_ancla(row, anchors):
                     if sin_ancla is None:
                         sin_ancla = (s, f"audit_cwd={cwd}")
                     continue
@@ -482,8 +573,18 @@ def _atribucion(sig: dict) -> str:
 # --------------------------------------------------------------------------
 # Clasificación (§2)
 # --------------------------------------------------------------------------
-def clasificar(row: dict, catalogo: set[str], signals, modo_baseline: bool, conflictos: list):
+def clasificar(
+    row: dict,
+    catalogo: set[str],
+    signals,
+    modo_baseline: bool,
+    conflictos: list,
+    ata_id: str = "",
+):
     rid = str(row.get("rule_id") or "").strip()
+    # §3 pertenencia al ataque (prueba demostrable por carpeta); se arrastra en la
+    # fila como clave privada `_pertenencia` para el guardarraíl de plegado.
+    pertenencia = "" if modo_baseline else es_del_ataque(row, ata_id)
     out = {
         "categoria": "",
         "motivo": "",
@@ -491,6 +592,7 @@ def clasificar(row: dict, catalogo: set[str], signals, modo_baseline: bool, conf
         "revision": "",
         "veredicto_humano": "",
         "evidencia": "",
+        "_pertenencia": pertenencia,
     }
 
     auto = detectar_auto_ruido(row)
@@ -554,6 +656,14 @@ def clasificar(row: dict, catalogo: set[str], signals, modo_baseline: bool, conf
             out["evidencia"] = ""
             return out
 
+    # 3.5. artefacto_ataque (§3.2, fase-03-metrica) — fila DEL ATAQUE que NO casó
+    # una detección declarada. Nunca cae en ruido_conocido. Es determinista.
+    if not modo_baseline and out["_pertenencia"]:
+        out["categoria"] = "artefacto_ataque"
+        out["motivo"] = "del_ataque"
+        out["evidencia"] = out["_pertenencia"]
+        return out
+
     # 4-5. catálogo
     if rid not in catalogo:
         # En modo baseline la ventana se declara sin ataque: una novedad no puede
@@ -600,7 +710,8 @@ def construir_comentario(nombre, ata, it, modo, entradas, conteos) -> str:
         parts.append(f"{etiqueta}={path} sha256={sha}")
     parts.append(
         "conteos: filas={filas} deteccion={deteccion} auto_ruido={auto_ruido} "
-        "ruido_conocido={ruido_conocido} dudosa={dudosa}".format(**conteos)
+        "ruido_conocido={ruido_conocido} dudosa={dudosa} "
+        "artefacto_ataque={artefacto_ataque}".format(**conteos)
     )
     parts.append("columnas: " + ",".join(OUT_HEADER))
     return "# " + " | ".join(parts)
@@ -692,7 +803,7 @@ def main(argv=None) -> int:
     # --- clasificación ---
     filas = []
     for r in alertas:
-        c = clasificar(r, catalogo, signals, modo_baseline, conflictos)
+        c = clasificar(r, catalogo, signals, modo_baseline, conflictos, args.ata)
         fila = {
             "ata_id": args.ata,
             "iter": args.iter,
@@ -706,6 +817,16 @@ def main(argv=None) -> int:
             **c,
         }
         filas.append(fila)
+
+    # §3.2 — AVISO (stderr, no bloqueante): execve no declarado que solo es artefacto
+    avisos_artefacto = [
+        f"rule_id={f['rule_id']} timestamp={f['timestamp_utc']}: execve no declarado "
+        f"en {f['evidencia']} -> artefacto_ataque (posible señal de detección no declarada)"
+        for f in filas
+        if f["categoria"] == "artefacto_ataque"
+        and f["motivo"] == "del_ataque"
+        and AUDIT_CMD_GROUP in [g for g in (f.get("rule_groups") or "").split("|") if g]
+    ]
 
     filas.sort(key=lambda x: (x["timestamp_utc"], x["rule_id"], x["evidencia"]))
 
@@ -725,6 +846,7 @@ def main(argv=None) -> int:
             )
             rev_map[clave] = rr
         usadas = set()
+        violaciones = []
         for fila in filas:
             if fila["categoria"] != "dudosa":
                 continue
@@ -733,10 +855,25 @@ def main(argv=None) -> int:
             if rr is None:
                 continue
             veredicto = (rr.get("veredicto") or "").strip().lower()
-            if veredicto not in ("deteccion", "ruido"):
+            if veredicto not in ("deteccion", "ruido", "artefacto"):
                 continue
+            # §3.2 guardarraíl: prohibido plegar a `ruido` una fila DEL ATAQUE.
+            if veredicto == "ruido":
+                pertenencia = fila.get("_pertenencia", "")
+                if pertenencia:
+                    violaciones.append((clave, pertenencia))
+                    continue
             usadas.add(clave)
-            fila["categoria"] = "deteccion" if veredicto == "deteccion" else "ruido_conocido"
+            if veredicto == "deteccion":
+                fila["categoria"] = "deteccion"
+            elif veredicto == "ruido":
+                fila["categoria"] = "ruido_conocido"
+            else:  # artefacto
+                fila["categoria"] = "artefacto_ataque"
+                fila["motivo"] = "del_ataque"
+                pertenencia = fila.get("_pertenencia", "")
+                if pertenencia:
+                    fila["evidencia"] = pertenencia
             fila["revision"] = "resuelta"
             fila["veredicto_humano"] = veredicto
             extras = []
@@ -757,6 +894,15 @@ def main(argv=None) -> int:
                     f"AVISO: revisión con clave no encontrada en la ventana (ignorada): {clave}",
                     file=sys.stderr,
                 )
+        if violaciones:
+            for clave, pertenencia in violaciones:
+                print(
+                    f"ERROR: veredicto=ruido PROHIBIDO sobre una fila DEL ATAQUE "
+                    f"(§3.2): key={clave} pertenencia={pertenencia}; usar "
+                    "'deteccion' o 'artefacto'.",
+                    file=sys.stderr,
+                )
+            return EXIT_GUARDRAIL
 
     # --- salidas ---
     out = args.out or os.path.join(
@@ -773,6 +919,7 @@ def main(argv=None) -> int:
         "auto_ruido": sum(1 for f in filas if f["categoria"] == "auto_ruido"),
         "ruido_conocido": sum(1 for f in filas if f["categoria"] == "ruido_conocido"),
         "dudosa": sum(1 for f in filas if f["categoria"] == "dudosa"),
+        "artefacto_ataque": sum(1 for f in filas if f["categoria"] == "artefacto_ataque"),
     }
     entradas = [("alerta", args.alerta, sha256_file(args.alerta))]
     entradas.append(("catalogo", args.catalogo, sha256_file(args.catalogo)))
@@ -797,10 +944,14 @@ def main(argv=None) -> int:
     for c in conflictos:
         print(f"CONFLICTO: {c}", file=sys.stderr)
 
+    for a in avisos_artefacto:
+        print(f"AVISO: {a}", file=sys.stderr)
+
     print(
         f"filas={conteos['filas']} deteccion={conteos['deteccion']} "
         f"auto_ruido={conteos['auto_ruido']} "
-        f"ruido_conocido={conteos['ruido_conocido']} dudosa={conteos['dudosa']} -> {out}"
+        f"ruido_conocido={conteos['ruido_conocido']} dudosa={conteos['dudosa']} "
+        f"artefacto_ataque={conteos['artefacto_ataque']} -> {out}"
     )
     if dudosas:
         print(f"revisión pendiente: {len(dudosas)} filas -> {rev_out}")

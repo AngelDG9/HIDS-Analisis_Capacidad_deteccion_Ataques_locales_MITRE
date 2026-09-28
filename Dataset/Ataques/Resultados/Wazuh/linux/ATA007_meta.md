@@ -4,7 +4,7 @@ bloque: fase-03-piloto-custom
 ata_id: ATA007
 tecnica: T1491
 tactica: Impact
-version: 4
+version: 6
 status: cerrado
 fecha: 2026-09-28
 ---
@@ -25,6 +25,17 @@ fecha: 2026-09-28
 > ataque; el doble conteo del mismo evento se evita **al contar**, no al clasificar). `deteccion`
 > **2→4** por ventana; las **13** dudosas de **procesos ajenos** (ATA004/ATA012) siguen **`ruido`**.
 > Detalle en §8.1.
+>
+> **Revisión (`fase-03-metrica`, 2026-09-28):** se añade la **métrica O1+O2** (§8.2) y la categoría
+> **`artefacto_ataque`**: las huellas del propio ataque **salen de `ruido_conocido`** (`124→117` y
+> `124→119`). **El veredicto no cambia** (`deteccion=4/4`) y **ninguna detección genuina se pierde**.
+> `Hojas/ATA_index.csv` **intacto** (sigue `cerrado`).
+>
+> **Corrección (`fase-03-metrica`, ciclo 2, 2026-09-28):** el `mkdir -p` del **setup** (`80790`
+> *Created: public_site.*, 1/iter) **pasa de `ruido` a `artefacto`** (regla **D2/D5**): es del ataque
+> (demostrable en `ATA007_ataque.sh` y en §8.1) pero está **fuera** de `ATTACK_ROOT` → no lo cubre la
+> regla de pertenencia; es una **pista floja** → `artefacto`, **nunca `ruido`**. `artefacto_ataque`
+> **7/5 → 8/6**; `ruido_conocido` **117/119 → 116/118**; `deteccion=4/4` (sin cambios).
 
 ## 1. Identificación
 
@@ -98,10 +109,10 @@ bash ATA007_ataque.sh          # cp del defacement sobre la página "pública" s
 
 ## 8. Resultado (conteos por categoría y capa, con veredicto ya plegado)
 
-| Iter | filas | deteccion | auto_ruido | ruido_conocido | dudosa | RS1 | RS2 | RS3 | RS4 |
-|---|---|---|---|---|---|---|---|---|---|
-| 1 | 737 | **4** | 609 | 124 | **0** | 4 | 733 | 0 | 0 |
-| 2 | 748 | **4** | 620 | 124 | **0** | 4 | 744 | 0 | 0 |
+| Iter | filas | deteccion | auto_ruido | ruido_conocido | dudosa | artefacto_ataque | RS1 | RS2 | RS3 | RS4 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | 737 | **4** | 609 | 116 | **0** | **8** | 4 | 733 | 0 | 0 |
+| 2 | 748 | **4** | 620 | 118 | **0** | **6** | 4 | 744 | 0 | 0 |
 
 ### 8.1 Detecciones — **dos cifras** y desglose esperadas/sorpresas
 
@@ -127,10 +138,28 @@ bash ATA007_ataque.sh          # cp del defacement sobre la página "pública" s
   `audit_exe` no ancla). El humano las **ratificó a `deteccion`** por su **naturaleza** (el efecto
   del ataque), **no** por la señal ancha.
 - **`dudosa` (3/iter) resueltas:** `80790` *Created: public_site.* (el `mkdir -p` del **setup**,
-  A1) → **`ruido`** (no es la técnica); las **2 escrituras del `cp`** (A1/A2) → **`deteccion`**
+  A1) → **`artefacto`** *(corrección `fase-03-metrica` ciclo 2, regla D2/D5 2026-09-28: es del ataque
+  —demostrable en `ATA007_ataque.sh` y en la ficha §8.1— pero está **fuera de `lab-attack`** → no lo
+  cubre la regla de pertenencia; **pista floja → `artefacto`, nunca `ruido`***); las **2 escrituras
+  del `cp`** (A1/A2) → **`deteccion`**
   *(ratificación humana 2026-09-28: "es el ataque (la escritura del defacement); es el mismo evento
   ya contado por el `execve` del `cp` — se reporta con las dos cifras"; firma
   `revisor=humano (ratificacion 2026-09-28)`).*
+
+### 8.2 Métrica de detección — **O1 + O2** (`fase-03-metrica`, decisión D1)
+
+> **Definición:** **O1** = *detectado sí/no* + `rule_id` + primera evidencia; **O2** = *acciones
+> cubiertas `k/m`* (señales `deteccion` ancladas ≥1 vez / total de señales `deteccion` no-ancla).
+> El **nº bruto de alertas** y los `rule_id` distintos son **anexo**, nunca el resultado.
+
+| Iter | O1 detectado | `rule_id` | primera evidencia | O2 acciones | desglose `deteccion`/`artefacto_ataque`/`ruido_conocido` | anexo: alertas / `rule_id` distintos |
+|---|---|---|---|---|---|---|
+| 1 | **sí** | `{80792, 80790, 80781}` | `2026-09-26T12:05:07.066Z` `audit_exe=/usr/bin/cp` | **1/1** (`T1491-S1`) | **4 / 8 / 116** | 4 / `{80792, 80790, 80781}` |
+| 2 | **sí** | `{80792, 80790, 80781}` | `2026-09-26T12:16:21.407Z` `audit_exe=/usr/bin/cp` | **1/1** (`T1491-S1`) | **4 / 6 / 118** | 4 / `{80792, 80790, 80781}` |
+
+- **O2 = 1/1:** la única acción declarada es el `execve` del `cp` (`T1491-S1`), anclado por `S2`. Las
+  2 alertas `watch` (`80790`/`80781`) son el **mismo evento** (el `cp`), **no** acciones independientes.
+  Las filas `artefacto_ataque`/iter son la huella del árbol del ataque (`execve` no declarados).
 
 ## 9. Doble iteración (criterio **v2**) — veredicto **`iguales`**
 
@@ -140,7 +169,7 @@ bash ATA007_ataque.sh          # cp del defacement sobre la página "pública" s
 | C2′ `\|n2−n1\| ≤ max(2, 10 %·n1)` | ✅ `\|4−4\| = 0 ≤ 2` |
 | C3′ sin `dudosa` sin resolver | ✅ 0 y 0 |
 | Sanidad `auto_ruido` (aviso) | ✅ 609 vs 620 → Δ=11 |
-| Sanidad `ruido_conocido` (aviso) | ✅ 124 vs 124 → Δ=0 |
+| Sanidad `ruido_conocido` (aviso) | ✅ 116 vs 118 → Δ=2 |
 
 > **Nota (`fase-03-senales`, 2026-09-28):** cifras recalculadas con el **ancla implícita + evento
 > de ejecución**; `deteccion` pasa de **4/4** a **2/2** (las 2 escrituras watch → `dudosa` →

@@ -1,8 +1,8 @@
 ---
 fase: 3
-tarea: A2.1 (T-11 · R-09/R-13) · A3.0 (H3/H4) · A3.0 (ancla implícita + evento de ejecución)
+tarea: A2.1 (T-11 · R-09/R-13) · A3.0 (H3/H4) · A3.0 (ancla implícita + evento de ejecución) · A3.0 (métrica + pertenencia al ataque)
 nombre: Política de filtrado de ruido y etiquetado auditado de alertas
-version: 4
+version: 6
 status: implementada
 fecha: 2026-09-28
 autor: tfg-executor
@@ -12,8 +12,18 @@ autor: tfg-executor
 
 > Política **de la herramienta** `_artefactos/scripts/filtrar_ruido.py` (Fase 3 · A2.1).
 > Este documento y el código deben coincidir **literalmente**: si se cambia uno, se cambia el
-> otro. Referencia de decisión: `plan.md` (bloque `fase-03-filtro`) §2–§5 y `Dataset/Legitimo/
-> baseline_meta.md` §9.
+> otro. Referencia de decisión: `plan.md` (bloques `fase-03-filtro` §2–§5, `fase-03-senales` §2.2
+> y `fase-03-metrica` §2–§3) y `Dataset/Legitimo/baseline_meta.md` §9.
+>
+> **v5 (`fase-03-metrica`, 2026-09-28):** se añade la categoría **`artefacto_ataque`** (la huella
+> del propio ataque **nunca** cae en `ruido_conocido`), la **pertenencia al ataque por carpeta**
+> (`ATTACK_ROOT = /home/angel/lab-attack/`, derivada del `--ata`), el **ancla por ruta** (mejora C),
+> el **tercer veredicto humano `artefacto`** y el **guardarraíl de plegado**.
+>
+> **v6 (`fase-03-metrica` ciclo 2, 2026-09-28):** se **declara la limitación** de la pertenencia —
+> es **mecánica** y cubre **solo** `ATTACK_ROOT/<ATA_id>`; una fila del ataque **fuera** de esa
+> carpeta (el `mkdir` de ATA007 en `lab-legit`) se atribuye por el **veredicto humano** (`artefacto`)
+> y **nunca** puede quedarse en `ruido` (§3.ter).
 
 ## 1. Entradas y salidas
 
@@ -36,24 +46,34 @@ Una alerta recibe **una** categoría; **gana el primero que casa**:
 
 1. **`auto_ruido`** — el origen es el propio Wazuh, **por campos** (no por `rule.id`) §3.
 2. **`deteccion`** — casa una señal esperada de tipo `deteccion` **anclada** §2/§4: una señal
-   `audit_exe` solo casa si `exe ∧ cwd-ancla ∧` **evento de ejecución** (`audit_command`).
+   `audit_exe` solo casa si `exe ∧ cwd-ancla/ruta ∧` **evento de ejecución** (`audit_command`).
 3. **`ruido_conocido`** — **paso 1.5 (H3)**: casa el **predicado `OPERADOR`** §3.bis
    (motivo `operador:<rule_id>`). Va **después** de las señales de detección y **antes** de
    `dudosa`/`sin_campos`: si una señal `deteccion` casa la alerta, **gana la detección**.
 4. **`dudosa`** — casa una señal esperada de tipo `ambigua` **o** casa un `audit_exe` de
    detección pero **falla el ancla / el evento de ejecución** (motivo `sin_ancla:<senal_id>`) **o**
    la alerta no permite evaluar **ninguna** señal (falta el campo; motivo `sin_campos`).
-5. **`deteccion`** — `rule.id` **no** está en el catálogo (motivo `novel`).
-6. **`ruido_conocido`** — `rule.id` **sí** está en el catálogo (motivo `baseline`).
+5. **`artefacto_ataque`** — **paso 3.5 (A3.0, §3)**: la fila es **DEL ATAQUE**
+   (`audit_cwd` o ruta —`audit_file`/`audit_dir`/`syscheck_path` resuelta contra el `cwd`— bajo
+   `ATTACK_ROOT/<ATA_id>`) y **no** casó una detección declarada (motivo `del_ataque`).
+   **Nunca** cae en `ruido_conocido`.
+6. **`deteccion`** — `rule.id` **no** está en el catálogo (motivo `novel`).
+7. **`ruido_conocido`** — `rule.id` **sí** está en el catálogo (motivo `baseline`). Tras el
+   arreglo, **solo** contiene filas que **no** son del ataque.
 
-`categoria ∈ {deteccion, ruido_conocido, auto_ruido, dudosa}`.
+`categoria ∈ {deteccion, ruido_conocido, auto_ruido, dudosa, artefacto_ataque}`.
 
 **Motivos:** `auto_ruido:<proceso>`, `senal:<senal_id>`, `operador:<rule_id>`,
-`ambigua:<senal_id>`, `sin_ancla:<senal_id>`, `sin_campos`, `novel`, `baseline`.
+`ambigua:<senal_id>`, `sin_ancla:<senal_id>`, `sin_campos`, `del_ataque`, `novel`, `baseline`.
 
 > **Lo que no ancla NO se descarta** (§2.3 del plan): una fila que casa un `audit_exe` de
 > detección pero falla el ancla o el evento de ejecución queda **`dudosa`** (`sin_ancla:*`,
 > `revision=pendiente`) — **nunca** `deteccion` **ni** `ruido_conocido`. La resuelve el humano.
+
+> **Aclaración (§3.4, v5):** el `sin_ancla` es `dudosa` **en la clasificación automática**. Si el
+> humano pliega a `ruido`, la fila pasa a `ruido_conocido` **conservando el motivo** — y eso
+> **solo** es legítimo si la fila **no** es del ataque. Sobre una fila del ataque, `ruido` está
+> **prohibido** (§5); el humano elige `deteccion` o `artefacto`.
 
 ## 3. `auto_ruido` — categoría propia (§3)
 
@@ -132,6 +152,31 @@ iter1=2, iter2=2.
 > plegado ya no coincide y el filtro emite `AVISO: revisión con clave no encontrada`. Es **inocuo**:
 > el resultado final (`ruido_conocido`) es el mismo que el veredicto humano previo.
 
+## 3.ter Pertenencia al ataque y `artefacto_ataque` (A3.0 · v5)
+
+> **Condición dura (rectora):** *nada que pueda ser del ataque se descarta; si no se demuestra
+> ajeno, va a revisión.* Y, además: **la huella del propio ataque nunca se llama "ruido"**.
+
+- **"Fila del ataque"** = fila cuyo `audit_cwd` **o** cuya ruta (`audit_file`, `audit_dir`,
+  `syscheck_path`, resuelta contra el `cwd` si es relativa) cae **bajo**
+  `ATTACK_ROOT/<ATA_id>` (constante `ATTACK_ROOT = "/home/angel/lab-attack/"`; el `<ATA_id>` se
+  deriva del `--ata`, así **también** cubre a los 3 del piloto sin editar su `esperado`).
+  Es una prueba **demostrable**: esa carpeta la crea y usa solo el ataque.
+- **Paso 3.5:** una fila del ataque que **no** casó una señal `deteccion` declarada →
+  **`artefacto_ataque`** (`motivo=del_ataque`). Es **determinista** → **no** requiere revisión
+  humana. `evidencia` = el campo que demostró la pertenencia (`audit_cwd=…` / `audit_file=…`),
+  para que un revisor lo compruebe desde el propio `-Audited.csv`.
+- **`AVISO` por execve no declarado:** una fila `artefacto_ataque` con grupo `audit_command`
+  (execve de un binario **no declarado** por el `esperado`) emite **`AVISO`** por `stderr`
+  (*"posible señal de detección no declarada"*). Transparencia: no se oculta una detección.
+- **No es un cepo:** las filas **ajenas** (fuera de la carpeta) **siguen** su curso normal
+  (`ruido_conocido` por baseline, o `dudosa`→`ruido` por veredicto humano).
+- **Limitación declarada — la pertenencia es mecánica (ciclo 2, v6):** la regla de pertenencia cubre
+  **solo** `ATTACK_ROOT/<ATA_id>`. Una fila del ataque **fuera** de esa carpeta —**caso real: el
+  `mkdir -p` del *setup* de ATA007 en `lab-legit`** (`80790` *Created: public_site.*)— **no** la
+  cubre la regla automática: se atribuye **por el veredicto humano** (`artefacto`) y **nunca** puede
+  quedarse en `ruido`.
+
 ## 4. Señales esperadas — atribución (§2)
 
 Fichero `ATA<NNN>_esperado.csv`, columnas:
@@ -169,8 +214,9 @@ Si el `esperado` declara **≥1 ancla**, una señal `deteccion` con `campo=audit
 **solo si** se cumplen **las tres**:
 
 1. el `audit_exe` casa el patrón (`full` **o** `basename`), **y**
-2. el `audit_cwd` de la fila casa el ancla (el match prueba el `cwd` **y** `cwd + "/"`, de modo
-   que el patrón `…/ATA<NNN>/*` casa el `cwd` real `…/ATA<NNN>`), **y**
+2. el `audit_cwd` de la fila **o** una de sus rutas casa el ancla (el match prueba el `cwd` **y**
+   `cwd + "/"`, de modo que el patrón `…/ATA<NNN>/*` casa el `cwd` real `…/ATA<NNN>`; **mejora C
+   (v5):** prueba además `audit_file`/`audit_dir`/`syscheck_path` resueltos contra el `cwd`), **y**
 3. la fila es un **evento de ejecución** (`rule_groups` contiene **`audit_command`**); en un
    evento `watch` (`audit_watch_*`) el `audit_exe` es el **causante de la escritura**, no "el
    proceso del ataque".
@@ -192,13 +238,22 @@ Si el `esperado` declara **≥1 ancla**, una señal `deteccion` con `campo=audit
   no tiene **ningún** campo evaluable para las señales declaradas.
 - La herramienta marca `revision=pendiente` y emite `ATA<NNN>_iter{N}-Revision.csv` con las filas
   dudosas **+ columnas `veredicto, nota, revisor, fecha`**.
-- El humano escribe `veredicto ∈ {deteccion, ruido}` (+ `nota`, `revisor`, `fecha`).
-- Al re-ejecutar con `--revision <fichero>` los veredictos se **pliegan**:
-  `revision=resuelta`, `veredicto_humano` ∈ {`deteccion`,`ruido`}, y la categoría pasa a
-  `deteccion` (si `deteccion`) o `ruido_conocido` (si `ruido`). `revisor`, `fecha` y `nota` se
-  anexan a `evidencia` (`;revisor=…;fecha=…;nota=…`) para no alterar las columnas fijas de §6.
+- El humano escribe `veredicto ∈ {deteccion, ruido, artefacto}` (+ `nota`, `revisor`, `fecha`):
+  - **`deteccion`** → `categoria=deteccion`, `revision=resuelta`, `veredicto_humano=deteccion`.
+  - **`ruido`** → `categoria=ruido_conocido`, `revision=resuelta`, `veredicto_humano=ruido`.
+    **Prohibido** sobre una fila **del ataque** (§3.ter): el guardarraíl hace **fallar** la
+    herramienta (`exit != 0`, código 4) indicando la fila.
+  - **`artefacto`** (tercer veredicto, v5) → `categoria=artefacto_ataque`,
+    `revision=resuelta`, `veredicto_humano=artefacto`, `motivo=del_ataque`, `evidencia` = la
+    ruta/campo que demuestra la pertenencia. Para "es el ataque, pero **no** cuenta como
+    detección de la técnica" (p. ej. la escritura `watch` del `.tar.gz` que creó el ataque).
+- Al re-ejecutar con `--revision <fichero>` los veredictos se **pliegan**. `revisor`, `fecha` y
+  `nota` se anexan a `evidencia` (`;revisor=…;fecha=…;nota=…`) para no alterar las columnas fijas
+  de §6.
 - La clave de plegado es `(timestamp_utc, rule_id, agent_name, evidencia)`; una revisión cuya
   clave no aparezca en la ventana se avisa y se ignora.
+- **El `--rev-out` no se reescribe** si no quedan `dudosa` sin resolver (así no se borran los
+  veredictos ya escritos por el humano).
 
 ## 6. Salida audited — columnas exactas (§5)
 
@@ -209,8 +264,10 @@ rule_description, categoria, motivo, atribucion, revision, veredicto_humano, evi
 
 - `rs_origen` se **copia sin alterar** del extractor (RS1..RS4/UNKNOWN): la herramienta **no**
   tiene lógica de RS (compatibilidad con RS3/RS4 cuando se pueblen).
-- Cabecera `#` con rutas y `sha256` de las entradas + conteos, **sin reloj**. Orden estable por
+- Cabecera `#` con rutas y `sha256` de las entradas + conteos (`filas`, `deteccion`, `auto_ruido`,
+  `ruido_conocido`, `dudosa`, `artefacto_ataque`), **sin reloj**. Orden estable por
   `(timestamp_utc, rule_id, evidencia)`. Misma entrada → salida **byte a byte** idéntica (R-13).
+- `OUT_HEADER` **no cambia** (15 columnas): la categoría nueva viaja en `categoria`.
 
 ## 7. Modo `--modo baseline` (§2)
 
@@ -221,7 +278,10 @@ declarada sin ataque (plan §8-a). **No** sustituye al modo ataque.
 ## 8. Referencias
 
 - Código: `_artefactos/scripts/filtrar_ruido.py` (constantes `WAZUH_PROCESOS`, `SIGNAL_CAMPOS`,
-  `OUT_HEADER`, `OPERADOR_SRCIPS`, `OPERADOR_REGLAS`, `AUDIT_CMD_GROUP`).
+  `OUT_HEADER`, `OPERADOR_SRCIPS`, `OPERADOR_REGLAS`, `AUDIT_CMD_GROUP`, `CATEGORIAS`,
+  `ATTACK_ROOT`).
+- Métrica y pertenencia: `plan.md` bloque `fase-03-metrica` §2–§3; `Soporte/Ataques/
+  criterio_doble_iteracion.md`.
 - Extractores: `_artefactos/scripts/extraer_alertas.py` (`--detail`, `--muestra`).
 - Diseño de RuleSets: `Soporte/Wazuh/Configuracion/rulesets_diseno.md` §4.
 - Baseline: `Dataset/Legitimo/baseline_meta.md` §9 y §14.5.

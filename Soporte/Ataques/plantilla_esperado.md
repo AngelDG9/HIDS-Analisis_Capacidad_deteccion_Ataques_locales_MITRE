@@ -1,8 +1,8 @@
 ---
 fase: 3
-tarea: A3.0 (H4) · A3.0 (ancla implícita + evento de ejecución)
+tarea: A3.0 (H4) · A3.0 (ancla implícita + evento de ejecución) · A3.0 (pertenencia al ataque)
 nombre: Plantilla y convención de señales esperadas por ataque
-version: 2
+version: 4
 status: vigente
 fecha: 2026-09-28
 autor: tfg-executor
@@ -10,11 +10,15 @@ autor: tfg-executor
 
 # Plantilla de señales esperadas (`ATA<NNN>_esperado.csv`)
 
-> **Convención H4 (fase-03-afinado §5) · v2 (fase-03-senales).** Fija **cómo se redactan** las
+> **Convención H4 (fase-03-afinado §5) · v4 (fase-03-metrica ciclo 2).** Fija **cómo se redactan** las
 > señales esperadas de un ataque para que las **10 técnicas nuevas nazcan específicas**. El
 > **esquema** del fichero **no** cambia (7 columnas); cambia el **contenido** (una señal de
 > contexto más). En **v2** el ancla es un **mecanismo real** (AND `exe ∧ cwd ∧ audit_command`),
-> no aspiracional: ver `Soporte/Wazuh/Configuracion/politica_filtrado_ruido.md` §4.
+> no aspiracional: ver `Soporte/Wazuh/Configuracion/politica_filtrado_ruido.md` §4. En **v3** se
+> añade la **pertenencia al ataque por carpeta** y el **veredicto humano `artefacto`**
+> (política §3.ter/§5). En **v4** se declara que la pertenencia es **mecánica** y cubre **solo**
+> `ATTACK_ROOT/<ATA_id>`: una fila del ataque **fuera** de esa carpeta se atribuye por el
+> **veredicto humano** (`artefacto`), **nunca** `ruido`.
 
 ---
 
@@ -86,6 +90,17 @@ T1486-A1,ambigua,syscheck_path,/home/angel/lab-attack/*,File Modification,T1486,
    el predicado `OPERADOR` (`5715`/`19004`), el filtro **avisa** y **gana la detección**.
 4. ⚠️ **No se re-escriben** los `ATA<NNN>_esperado.csv` del **piloto** (cambiar un esperado invalida
    el `sha256` de sus `-Audited.csv`).
+5. **Pertenencia al ataque (v3) — nada del ataque se llama "ruido".** La carpeta
+   `/home/angel/lab-attack/ATA<NNN>/` es la **prueba demostrable** de pertenencia (la crea y usa
+   solo el ataque). Toda fila del ataque que **no** case una señal `deteccion` declarada cae en
+   **`artefacto_ataque`** (nunca `ruido_conocido`), y un `watch` sobre un fichero creado por el
+   ataque **no** debe plegarse a `ruido`: usa el veredicto humano **`artefacto`** ("es el ataque,
+   pero no cuenta como detección"). Un execve no declarado en la carpeta emite **`AVISO`**
+   (posible detección no declarada) → valora declararlo.
+   **(v4) La pertenencia es mecánica y cubre solo esa carpeta.** Una fila del ataque **fuera** de
+   `/home/angel/lab-attack/ATA<NNN>/` (p. ej. el `mkdir` de *setup* de ATA007 en `lab-legit`) **no**
+   la cubre la regla automática: se demuestra **a mano** (guion/ficha) y se pliega con el veredicto
+   humano **`artefacto`** — **nunca** `ruido`.
 
 ## 6. Referencias
 
