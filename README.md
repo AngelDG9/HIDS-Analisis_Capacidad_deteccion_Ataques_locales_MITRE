@@ -37,6 +37,14 @@ El proyecto se ejecuta con los agentes de opencode definidos en `.opencode/`:
 
 El ciclo de trabajo está descrito en la skill `tfg-flow` (`.opencode/skills/tfg-flow/`).
 
+## ⚠️ Huellas y finales de línea
+
+Las huellas (`sha256`) que enlazan `esperado` ↔ `audited` ↔ bitácora ↔ ficha se calculan
+sobre los **bytes del fichero en disco**. El repo tiene finales de línea **mezclados** y
+**no lleva normalización**: **evitar `git checkout` / `stash` / `reset` / clonar** sobre este
+repositorio sin **recalcular** después las huellas afectadas. Los **binarios** (p. ej. `.png`)
+**no** deben pasar por reglas de texto.
+
 ## Acceso
 
 Los agentes (`opencode`) **corren en el PC sobremesa**, donde viven las VMs. El **portátil**
