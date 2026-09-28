@@ -30,13 +30,13 @@
       "detalle_sha256": "a6f95dec543fa2a00314271e9689949c325dfb41e8e048e958b6d0306b85ed24",
       "detalle_raw_sha256": "c5b15e2267d349d77c8e9ae5bbf88f71ca5f7c53c36470e37d0381b6bfc79955",
       "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA007_iter1-Audited.csv",
-      "audited_sha256": "db533cec89ec351bf4f4b659d58ed94a2fae39a99ef2edabfe6c0ff05bee1477",
+      "audited_sha256": "8cb6e5b885bbab73c18e913df687f9802813e181455267514e3b31dafae03202",
       "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA007_iter1-Revision.csv",
-      "revision_sha256": "a4df4db331247ea9902ef588e7ad118439da98f65d041748d774b9023c8830db",
-      "conteos": { "filas": 737, "deteccion": 2, "auto_ruido": 609, "ruido_conocido": 126, "dudosa": 0 },
+      "revision_sha256": "52b40e8e0af501e25690d8ca3b74db360e025ed8558dfc24b34df9eafc105b31",
+      "conteos": { "filas": 737, "deteccion": 4, "auto_ruido": 609, "ruido_conocido": 124, "dudosa": 0 },
       "rs": { "RS1": 4, "RS2": 733, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
       "ventana_raw": { "filas": 744, "victima_linux": 737, "otros_agentes_descartados": 7 },
-      "detecciones": { "alertas": 2, "rule_id_distintos": ["80792"], "genuinas": 2, "ajenas": 0, "esperadas": 2, "sorpresas": 0 },
+      "detecciones": { "alertas": 4, "rule_id_distintos": ["80792", "80790", "80781"], "genuinas": 4, "ajenas": 0, "esperadas": 4, "sorpresas": 0 },
       "dudosas_resueltas": 3
     },
     {
@@ -50,36 +50,36 @@
       "detalle_sha256": "2c072d68558b2e17d29007404030535ef26234868b1c2dc8823b4348c3f5339b",
       "detalle_raw_sha256": "49dfe9da13f089251a0e70315fd6e413b5b4f937fd54ca64379286a164cc8d9e",
       "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA007_iter2-Audited.csv",
-      "audited_sha256": "3c3e67f7d7d855b9d8f772b69a92528060abb8f272f7d0eb831e2cbb1fc4681b",
+      "audited_sha256": "8eac4220b2562193172d5012d354f8d23437acd4b8a3254f01adfe914236efda",
       "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA007_iter2-Revision.csv",
-      "revision_sha256": "1e6cc7fcbe8404553f45b7fe2898497aae905af75789812673b615ecb25909e2",
-      "conteos": { "filas": 748, "deteccion": 2, "auto_ruido": 620, "ruido_conocido": 126, "dudosa": 0 },
+      "revision_sha256": "87a3917f28a99a1379b9dad53e9b2536d24acf90d3b6a12bf46dae00b0d95056",
+      "conteos": { "filas": 748, "deteccion": 4, "auto_ruido": 620, "ruido_conocido": 124, "dudosa": 0 },
       "rs": { "RS1": 4, "RS2": 744, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
       "ventana_raw": { "filas": 756, "victima_linux": 748, "otros_agentes_descartados": 8 },
-      "detecciones": { "alertas": 2, "rule_id_distintos": ["80792"], "genuinas": 2, "ajenas": 0, "esperadas": 2, "sorpresas": 0 },
+      "detecciones": { "alertas": 4, "rule_id_distintos": ["80792", "80790", "80781"], "genuinas": 4, "ajenas": 0, "esperadas": 4, "sorpresas": 0 },
       "dudosas_resueltas": 3
     }
   ],
   "revision_global": {
     "fecha": "2026-09-28",
     "filas": 6,
-    "veredicto": "ruido",
-    "motivo": "escrituras watch del cp (80790/80781) + el mkdir -p del setup (80790), declaradas ambigua A1/A2 en el esperado validado (nunca deteccion); el evento watch no es audit_command -> sin_ancla/ambigua -> ruido; criterio del humano (2026-09-26)",
-    "revisor": "orquestador (criterio humano 2026-09-26)"
+    "veredicto": "mixto (2 ruido / 4 deteccion)",
+    "motivo": "ratificacion humana (fase-03-senales-ratificacion): de las 6 dudosas de ATA007, las 4 escrituras del defacement (80790/80781, 2 por iteracion) pasan a deteccion — son el ataque; el doble conteo del mismo evento se evita AL CONTAR (se reportan las dos cifras: alertas y rule_id distintos), no al clasificar. Las 2 restantes (80790 Created: public_site., el mkdir -p del setup) siguen en ruido (no es la tecnica). Las 13 dudosas de procesos ajenos (ATA004/ATA012) siguen en ruido (sin cambio)",
+    "revisor": "humano (ratificacion 2026-09-28)"
   },
   "doble_iteracion": "iguales",
   "doble_iteracion_detalle": {
     "criterio": "v2",
     "mismo_conjunto_rule_id_deteccion": true,
-    "rule_ids_deteccion": ["80792"],
-    "n1": 2,
-    "n2": 2,
+    "rule_ids_deteccion": ["80792", "80790", "80781"],
+    "n1": 4,
+    "n2": 4,
     "margen": 2,
     "criterio_recuento_ok": true,
     "sin_dudosas_sin_resolver": true,
     "auto_ruido_delta": 11,
     "ruido_conocido_delta": 0,
-    "nota": "fase-03-senales (2026-09-28): con el ancla implicita + evento de ejecucion la deteccion es 2/2 (los 2 execve del cp, 80792, cwd=ATA007). Las 2 escrituras watch del cp (80790/80781) caen a dudosa/ambigua A1/A2 -> ruido (CA13 cerrado). Recuento limpio = 1 rule_id"
+    "nota": "fase-03-senales-ratificacion (2026-09-28): 4 alertas de deteccion por ventana con 3 rule_id distintos ({80792} execve del cp anclado por S1+S2, y {80790,80781} escrituras watch del defacement ratificadas por el humano). El numero de acciones sigue siendo 1 (el cp); las escrituras son el mismo evento ya contado por su execve -> se reportan las dos cifras"
   },
   "extraccion": {
     "extractor": "extraer_alertas.py H3 (con srcip/srcuser/dstuser)",
@@ -97,6 +97,7 @@
     { "ts": "2026-09-26T14:20:00Z", "tipo": "re-extraido", "detalle": "ambas ventanas re-extraidas con el extractor H3; filtrado rehecho (dudosa A1 re-resuelta); sin cambios en deteccion" },
     { "ts": "2026-09-26T14:40:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (4/4, mismo conjunto) -> iguales" },
     { "ts": "2026-09-28T00:00:00Z", "tipo": "correccion", "detalle": "fase-03-cabos (cabo 2): cabecera del esperado arreglada (PENDIENTE -> validado el 2026-09-26); los 2 audited regenerados (unico cambio: el sha256 del esperado en la cabecera; determinismo re-verificado; cifras intactas); esperado_sha256 y audited_sha256 actualizados. Los -Revision.csv no se tocan (su cabecera cita el esperado previo; patron ya existente en el piloto)" },
-    { "ts": "2026-09-28T00:00:00Z", "tipo": "correccion", "detalle": "fase-03-senales: mecanismo de ancla implicita + evento de ejecucion (exe AND cwd-ancla AND audit_command). Regenerados los 2 -Audited.csv y los 2 -Revision.csv: deteccion 4/4 -> 2/2 (las 2 escrituras watch del cp, 80790/80781, pasan a dudosa/ambigua A1/A2 -> ruido; CA13 cerrado); ruido_conocido 124/124 -> 126/126; dudosa final 0. Hashes actualizados; Hojas/ATA_index.csv intacto (sigue cerrado); determinismo re-verificado; el -Revision.csv queda con los veredictos explicitos (editable)" }
+    { "ts": "2026-09-28T00:00:00Z", "tipo": "correccion", "detalle": "fase-03-senales: mecanismo de ancla implicita + evento de ejecucion (exe AND cwd-ancla AND audit_command). Regenerados los 2 -Audited.csv y los 2 -Revision.csv: deteccion 4/4 -> 2/2 (las 2 escrituras watch del cp, 80790/80781, pasan a dudosa/ambigua A1/A2 -> ruido; CA13 cerrado); ruido_conocido 124/124 -> 126/126; dudosa final 0. Hashes actualizados; Hojas/ATA_index.csv intacto (sigue cerrado); determinismo re-verificado; el -Revision.csv queda con los veredictos explicitos (editable)" },
+    { "ts": "2026-09-28T00:00:00Z", "tipo": "ratificacion", "detalle": "fase-03-senales-ratificacion: el humano ratifica las 4 escrituras del defacement (80790/80781, 2 por iteracion) como deteccion en los -Revision.csv (veredicto ruido -> deteccion; firma revisor=humano (ratificacion 2026-09-28); nota: es el ataque, el mismo evento ya contado por el execve del cp, se reporta con las dos cifras). Re-plegado determinista: deteccion 2 -> 4 por ventana; ruido_conocido 126 -> 124; las 13 dudosas de procesos ajenos (ATA004/ATA012) siguen ruido y sus ficheros quedan byte a byte identicos; las 2 del setup de ATA007 siguen ruido. Hashes (audited/revision) y conteos actualizados" }
   ]
 }
