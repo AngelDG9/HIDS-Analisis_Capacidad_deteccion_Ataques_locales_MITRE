@@ -1,0 +1,112 @@
+{
+  "ata_id": "ATA009",
+  "tecnica": "T1567",
+  "tactica": "Exfiltration",
+  "sistema": "linux",
+  "bloque": "fase-03-escalado",
+  "tanda": "B",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1567-Exfiltration_Over_Web_Service/",
+  "atomic": {
+    "fuente": "custom",
+    "nota": "ataque manual (ART T1567 Linux usa rclone->nube o terraform+AWS -> no ejecutable sin NAT); subida por curl POST al receptor local del HOST (sink_http.py). Decision D4-A: se reutiliza el receptor del piloto"
+  },
+  "esperado_sha256": "40900f47b1b62e65f16c85d276cdc80499eba1e038340ceb0cc9ca3147350385",
+  "ataque_sha256": "a3788fc77420ae529901063840769250694f3743fb21b392419c08d834fa2070",
+  "validacion_humana_esperado": "APROBADO 2026-09-29",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA009_logtest.txt",
+    "logtest_sha256": "47242630787b62307108eb12ce8f17b014baeb5a457ed1ff448ca8ea1957937a",
+    "preflight": "Soporte/Ataques/c0/ATA009_preflight.md",
+    "preflight_sha256": "6887255ae50afe3c2fcb78ed73c30a742a2837b578a211fd00ea1e2bec897b23",
+    "resultado": "PASA (1 evento curl -> 80792 level 3; sin silenciador de fabrica)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1,
+      "t0": "2026-09-28T23:13:17Z",
+      "t1": "2026-09-28T23:13:58Z",
+      "t1_local": "2026-09-28T23:13:18Z",
+      "duracion_s": 41,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-28.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA009_iter1-Detalle.csv",
+      "detalle_sha256": "5c3063bc31179d33a2d950fc1291786e74328f4b1d50def9d161c8df519b3de0",
+      "detalle_raw_sha256": "a773dbd7d1506fb2d75f58ce4276cae92ab100427718a800d3e303ca43374271",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA009_iter1-Audited.csv",
+      "audited_sha256": "7ed805862863f674ccc5b36ba54c07fd73a56ec04c253dfd9bdf1880ba7625c4",
+      "revision": null,
+      "revision_sha256": null,
+      "conteos": { "filas": 645, "deteccion": 1, "auto_ruido": 636, "ruido_conocido": 0, "dudosa": 0, "artefacto_ataque": 8 },
+      "rs": { "RS1": 0, "RS2": 645, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 653, "victima_linux": 645, "otros_agentes_descartados": 8 },
+      "detecciones": { "alertas": 1, "rule_id_distintos": ["80792"], "esperadas": 1, "sorpresas": 0, "evidencia": "audit_exe=/usr/bin/curl, cwd=/home/angel/lab-attack/ATA009" },
+      "metrico_o1": "si", "metrico_o2": "1/1",
+      "dudosas_resueltas": 0,
+      "efecto": { "sink_log": "Dataset/Ataques/Resultados/Wazuh/linux/Logs/ATA009_iter1/sink.log", "sink_log_sha256": "bd9db2dc29a81baea18aa3cd7cb39cf7b616b5876710e392267e43b94cd3f824", "post": "/api/upload/informe_ventas_2026-Q3.csv", "from": "192.168.65.129", "len": 153, "sha256_cuerpo": "8122d8091521358fddb88ce7371a6a68367cb73c248e244d037e08ca07a83e79", "sha256_fichero_local": "8122d8091521358fddb88ce7371a6a68367cb73c248e244d037e08ca07a83e79", "coincide": true }
+    },
+    {
+      "iter": 2,
+      "t0": "2026-09-28T23:17:15Z",
+      "t1": "2026-09-28T23:17:56Z",
+      "t1_local": "2026-09-28T23:17:16Z",
+      "duracion_s": 41,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-28.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA009_iter2-Detalle.csv",
+      "detalle_sha256": "e74e6c1a14fcd1141d8bb2bb87ee49527ce003e58b7fe064bb2ec5b5a2f75853",
+      "detalle_raw_sha256": "83c57e29acd3f8641f262506a7b27f963d2cff4304fca8e869c4419948c2f8b5",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA009_iter2-Audited.csv",
+      "audited_sha256": "59c5039f4dc7414558330f1a3817e3bc8eccb3cb4801b4cbada304731d44928e",
+      "revision": null,
+      "revision_sha256": null,
+      "conteos": { "filas": 645, "deteccion": 1, "auto_ruido": 636, "ruido_conocido": 1, "dudosa": 0, "artefacto_ataque": 7 },
+      "rs": { "RS1": 0, "RS2": 645, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 652, "victima_linux": 645, "otros_agentes_descartados": 7 },
+      "detecciones": { "alertas": 1, "rule_id_distintos": ["80792"], "esperadas": 1, "sorpresas": 0, "evidencia": "audit_exe=/usr/bin/curl, cwd=/home/angel/lab-attack/ATA009" },
+      "metrico_o1": "si", "metrico_o2": "1/1",
+      "dudosas_resueltas": 0,
+      "efecto": { "sink_log": "Dataset/Ataques/Resultados/Wazuh/linux/Logs/ATA009_iter2/sink.log", "sink_log_sha256": "14db16c78791184c1039de5918003ca796ee985762abf549cdb7e4051c299ed2", "post": "/api/upload/informe_ventas_2026-Q3.csv", "from": "192.168.65.129", "len": 153, "sha256_cuerpo": "8122d8091521358fddb88ce7371a6a68367cb73c248e244d037e08ca07a83e79", "sha256_fichero_local": "8122d8091521358fddb88ce7371a6a68367cb73c248e244d037e08ca07a83e79", "coincide": true }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-09-29",
+    "filas": 0,
+    "veredicto": "sin dudosas",
+    "motivo": "dudosa=0 en ambas iteraciones -> no se genera -Revision.csv",
+    "revisor": "executor tanda B"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": {
+    "criterio": "v2",
+    "mismo_conjunto_rule_id_deteccion": true,
+    "rule_ids_deteccion": ["80792"],
+    "n1": 1,
+    "n2": 1,
+    "margen": 2,
+    "criterio_recuento_ok": true,
+    "sin_dudosas_sin_resolver": true,
+    "auto_ruido_delta": 0,
+    "ruido_conocido_delta": 1,
+    "nota": "1 alerta 80792/ventana = execve de curl anclado al cwd del ataque; O2 1/1 (T1567-S1). Exfiltracion confirmada por sink.log (sha256 identico)"
+  },
+  "extraccion": {
+    "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)",
+    "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-28.json (NO alerts.json)",
+    "aislamiento": "filtro a agent_name == victima-linux"
+  },
+  "prueba_de_efecto": "sink.log del HOST: POST /api/upload/informe_ventas_2026-Q3.csv from=192.168.65.129 len=153 sha256=8122d809...; identico al sha256 local del fichero. HTTP=200. Sin NAT; receptor local",
+  "receptor": {
+    "script": "Soporte/Ataques/receiver/sink_http.py",
+    "bind": "192.168.65.1:9090",
+    "firewall": "NO se creo regla (el puerto ya era alcanzable); TFG-sink-9090 verificado ausente (CA10)",
+    "parado_tras_t1": true
+  },
+  "eventos": [
+    { "ts": "2026-09-28T23:13:17Z", "tipo": "t0", "detalle": "iter1 t0 (tras revert + 95 s asentamiento; receptor levantado antes)" },
+    { "ts": "2026-09-28T23:13:58Z", "tipo": "t1", "detalle": "iter1 t1 (tras scan FIM forzado)" },
+    { "ts": "2026-09-28T23:17:15Z", "tipo": "t0", "detalle": "iter2 t0 (receptor relanzado para iter2)" },
+    { "ts": "2026-09-28T23:17:56Z", "tipo": "t1", "detalle": "iter2 t1" },
+    { "ts": "2026-09-28T23:18:40Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (1/1, {80792}) -> iguales" }
+  ]
+}

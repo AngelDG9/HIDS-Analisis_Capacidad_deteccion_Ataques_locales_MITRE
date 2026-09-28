@@ -32,7 +32,7 @@
 
 ```text
 preflight (manager+agente+relojes+espacio+NAT)
-  → (ATA008) receptor en el HOST + puerto 9090 alcanzable
+  → (ATA008; tanda B: ATA009/ATA010) receptor en el HOST + puerto 9090 alcanzable
     → stop/revert/start víctima (lab-listo)      [el manager NO se revierte]
       → esperar agente 001 Active
         → scp del script (+ dir de la técnica) a /home/angel/lab-attack/ATA<NNN>/
@@ -84,7 +84,7 @@ python3 -c "import gzip,tarfile; print('gzip,tarfile OK')"
 
 **NAT:** desconectado (regla de oro). No reconectar.
 
-**(Solo ATA008) receptor + firewall:** en el **HOST**:
+**(ATA008 y tanda B: ATA009/ATA010) receptor + firewall:** en el **HOST**:
 
 ```powershell
 python "Soporte\Ataques\receiver\sink_http.py" --bind 192.168.65.1 --port 9090 `
@@ -99,6 +99,11 @@ netsh advfirewall firewall add rule name="TFG-sink-9090" dir=in action=allow pro
 ```
 
 > ⚠️ **Retirar al cerrar el piloto:** `netsh advfirewall firewall delete rule name="TFG-sink-9090"`.
+>
+> **Tanda B (`fase-03-escalado`):** el **mismo receptor** sirve para **ATA009 (T1567)** y
+> **ATA010 (T1041)**; cambia solo el `--log` (`…/Logs/ATA010_iterN/sink.log`) y el endpoint que usa
+> el cliente (`/api/upload/…` en ATA009, `/c2/beacon` en ATA010). Pasos concretos y retirada:
+> `Dataset/Ataques/Comandos/T1567-Exfiltration_Over_Web_Service/README.md` §9.
 
 ---
 

@@ -1,0 +1,9 @@
+ATA011 · T1074 Data Staged (mkdir + cp) — custom (manual)
+T0=2026-09-28T23:07:57Z
+--- STAGING (contenido) ---
+total 12
+-rw-rw-r-- 1 angel angel 144 Sep 29 01:07 clientes_activos_2026.csv
+-rw-rw-r-- 1 angel angel 153 Sep 29 01:07 informe_ventas_2026-Q3.csv
+-rw-rw-r-- 1 angel angel 125 Sep 29 01:07 plantilla_proveedores_2026.csv
+STAGING=OK (3 ficheros reunidos; manifiesto con sha256)
+T1_LOCAL=2026-09-28T23:07:58Z

@@ -1,0 +1,6 @@
+ATA009 · T1567 Exfiltration Over Web Service (curl POST) — custom (manual)
+T0=2026-09-28T23:13:17Z
+--- FICHERO A EXFILTRAR (sha256) ---
+8122d8091521358fddb88ce7371a6a68367cb73c248e244d037e08ca07a83e79  /home/angel/lab-attack/ATA009/informe_ventas_2026-Q3.csv
+HTTP=200 enviado=153B
+T1_LOCAL=2026-09-28T23:13:18Z

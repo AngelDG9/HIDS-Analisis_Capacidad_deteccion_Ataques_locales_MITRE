@@ -1,0 +1,11 @@
+# ATA010_esperado.csv | ATA010 · T1041 Exfiltration Over C2 Channel | TFG HIDS · Fase 3 (escalado, tanda B)
+# Redactado el 2026-09-29 con los datos del paso 0, ANTES de ver ninguna alerta.
+# Gate humano (tanda B): APROBADO 2026-09-29 (CA1: se valida ANTES del primer t0).
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+# Convencion H4: cada senal audit_exe se acompana de audit_cwd de la carpeta del ataque.
+# El proceso corre con cwd=/home/angel/lab-attack/ATA010 (NO vigilado) -> deteccion por execve.
+# El EFECTO es una conexion de red saliente al receptor-C2 del HOST: NO hay escritura local
+#   vigilada -> NO se declaran senales ambigua.
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1041-S1,deteccion,audit_exe,curl,Process Creation,T1041,cliente del canal C2 (check-in/beacon; execve 80792); el POST lo confirma sink.log en el host
+T1041-S2,deteccion,audit_cwd,/home/angel/lab-attack/ATA010/*,Process Creation,T1041,ancla H4 (cwd del ataque)

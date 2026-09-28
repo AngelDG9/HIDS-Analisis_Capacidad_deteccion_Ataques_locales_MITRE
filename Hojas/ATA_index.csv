@@ -8,8 +8,8 @@ ATA005,Impact,T1561,Disk Wipe,Dataset/Ataques/Comandos/T1561-Disk_Wipe/,cerrado
 ATA006,Impact,T1565,Data Manipulation,Dataset/Ataques/Comandos/T1565-Data_Manipulation/,cerrado
 ATA007,Impact,T1491,Defacement,Dataset/Ataques/Comandos/T1491-Defacement/,cerrado
 ATA008,Exfiltration,T1048,Exfiltration Over Alternative Protocol,Dataset/Ataques/Comandos/T1048-Exfiltration_Over_Alternative_Protocol/,review
-ATA009,Exfiltration,T1567,Exfiltration Over Web Service,,pendiente
-ATA010,Exfiltration,T1041,Exfiltration Over C2 Channel,,pendiente
-ATA011,Collection,T1074,Data Staged,,pendiente
+ATA009,Exfiltration,T1567,Exfiltration Over Web Service,Dataset/Ataques/Comandos/T1567-Exfiltration_Over_Web_Service/,cerrado
+ATA010,Exfiltration,T1041,Exfiltration Over C2 Channel,Dataset/Ataques/Comandos/T1041-Exfiltration_Over_C2_Channel/,cerrado
+ATA011,Collection,T1074,Data Staged,Dataset/Ataques/Comandos/T1074-Data_Staged/,cerrado
 ATA012,Collection,T1119,Automated Collection,Dataset/Ataques/Comandos/T1119-Automated_Collection/,cerrado
 ATA013,Collection,T1560,Archive Collected Data,Dataset/Ataques/Comandos/T1560-Archive_Collected_Data/,review

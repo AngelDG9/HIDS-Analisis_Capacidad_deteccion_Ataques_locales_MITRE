@@ -1,0 +1,12 @@
+# ATA011_esperado.csv | ATA011 · T1074 Data Staged | TFG HIDS · Fase 3 (escalado, tanda B)
+# Redactado el 2026-09-29 con los datos del paso 0, ANTES de ver ninguna alerta.
+# Gate humano (tanda B): APROBADO 2026-09-29 (CA1: se valida ANTES del primer t0).
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+# Convencion H4: cada senal audit_exe se acompana de audit_cwd de la carpeta del ataque.
+# Todo el ataque ocurre en /home/angel/lab-attack/ATA011 (NO vigilado) -> la deteccion es
+#   por execve. NO hay efecto en /home/angel/lab-legit -> NO se declaran senales ambigua
+#   (evita el error de ATA003: una ambigua amplia por rule_group capturaba churn ajeno).
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1074-S1,deteccion,audit_exe,mkdir,Process Creation,T1074,creacion del directorio de puesta en escena (execve 80792)
+T1074-S2,deteccion,audit_exe,cp,Process Creation,T1074,reunion de los datos simulados en el staging (execve 80792)
+T1074-S3,deteccion,audit_cwd,/home/angel/lab-attack/ATA011/*,Process Creation,T1074,ancla H4 (cwd del ataque)

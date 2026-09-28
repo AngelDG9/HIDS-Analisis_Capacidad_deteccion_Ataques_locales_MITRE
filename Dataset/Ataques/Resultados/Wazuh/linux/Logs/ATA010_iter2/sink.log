@@ -1,0 +1,2 @@
+# sink_http arrancado 2026-09-28T23:23:23Z bind=192.168.65.1 port=9090
+2026-09-28T23:25:32Z POST /c2/beacon from=192.168.65.129 len=86 sha256=8d21e366840a3c4bee5f8e7402555a26fcd977a181e7ee8924aecf72535e0ad8 content_type=application/x-www-form-urlencoded

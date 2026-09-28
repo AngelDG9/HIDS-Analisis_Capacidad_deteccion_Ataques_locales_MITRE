@@ -1,0 +1,6 @@
+ATA010 · T1041 Exfiltration Over C2 Channel (curl beacon) — custom (manual)
+T0=2026-09-28T23:25:32Z
+--- BEACON C2 (sha256) ---
+8d21e366840a3c4bee5f8e7402555a26fcd977a181e7ee8924aecf72535e0ad8  /home/angel/lab-attack/ATA010/beacon_c2.txt
+HTTP=200 enviado=86B
+T1_LOCAL=2026-09-28T23:25:33Z

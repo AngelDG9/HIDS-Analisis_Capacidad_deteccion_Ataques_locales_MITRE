@@ -1,0 +1,5 @@
+mkdir=/usr/bin/mkdir
+cp=/usr/bin/cp
+sha256sum=/usr/bin/sha256sum
+curl=/usr/bin/curl
+wget=/usr/bin/wget

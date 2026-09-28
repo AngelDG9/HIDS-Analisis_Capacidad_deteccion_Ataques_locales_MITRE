@@ -1,0 +1,10 @@
+--- manifiesto ---
+f00580e875d2829bca9160e0041b72816d52228b8c80472c753df6ca4e80bdeb  ./clientes_activos_2026.csv
+8122d8091521358fddb88ce7371a6a68367cb73c248e244d037e08ca07a83e79  ./informe_ventas_2026-Q3.csv
+471591cef8dfd0f3c5438da6525504175590023fa1a033a78ccb648c4b33460e  ./plantilla_proveedores_2026.csv
+--- recomprobacion ---
+./clientes_activos_2026.csv: OK
+./informe_ventas_2026-Q3.csv: OK
+./plantilla_proveedores_2026.csv: OK
+--- recuento ---
+3

@@ -1,0 +1,2 @@
+# sink_http arrancado 2026-09-28T23:11:06Z bind=192.168.65.1 port=9090
+2026-09-28T23:13:18Z POST /api/upload/informe_ventas_2026-Q3.csv from=192.168.65.129 len=153 sha256=8122d8091521358fddb88ce7371a6a68367cb73c248e244d037e08ca07a83e79 content_type=text/csv
