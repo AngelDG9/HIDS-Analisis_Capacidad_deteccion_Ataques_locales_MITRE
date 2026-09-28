@@ -1,0 +1,13 @@
+=== ATA001 iter2 ===
+T0=2026-09-28T21:22:17Z
+ATA001 · T1486 Data Encrypted for Impact (openssl enc AES-256-CBC) — GUID 142752dc-ca71-443b-9359-cf6f497315f1
+T0=2026-09-28T21:22:17Z
+--- estado final ---
+-rw-rw-r-- 1 angel angel 183 Sep 28 23:22 /home/angel/lab-attack/ATA001/datos_clientes_2026.csv
+-rw-rw-r-- 1 angel angel 208 Sep 28 23:22 /home/angel/lab-attack/ATA001/datos_clientes_2026.csv.enc
+-rw-rw-r-- 1 angel angel 183 Sep 28 23:22 /home/angel/lab-attack/ATA001/datos_clientes_2026.recovered.csv
+sha256 plain     = e0658f329f902edac677445b4c9dcb80ff04c86f04abc02ad2185eb7c57396e2
+sha256 recovered = e0658f329f902edac677445b4c9dcb80ff04c86f04abc02ad2185eb7c57396e2
+ROUNDTRIP=OK (el ciphertext es valido y reversible con la clave)
+T1_LOCAL=2026-09-28T21:22:17Z
+T1_LOCAL=2026-09-28T21:22:17Z

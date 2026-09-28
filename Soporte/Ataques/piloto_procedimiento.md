@@ -516,3 +516,20 @@ pierde**: `deteccion` sigue en **39** filas en total; `ruido_conocido` **baja en
 `-Audited`/`-Revision` ↔ bitácora ↔ ficha) recalculada; `-Detalle.csv`, los `esperado` (incl.
 pilotos) y `Hojas/ATA_index.csv` **intactos**.
 
+---
+
+## 10. Escalado (bloque `fase-03-escalado`) — alcance y limitación declarada
+
+> Añadido al abrir el escalado (**tanda A**, 2026-09-28). Aplica a **todas** las técnicas nuevas.
+
+- **Realismo acotado (declarado).** *"La técnica y el comando son reales; el alcance es de
+  laboratorio (no se destruye la máquina); el entorno no tiene usuarios/servicios reales y las rutas
+  del ataque son conocidas por el analista."* Los datos de juguete llevan **nombres creíbles**
+  (escena de empresa: web pública, datos de clientes falsos, copias de seguridad simuladas) para que
+  la ventana se parezca a un caso realista, pero **no son datos reales**. La nota consta en el
+  **README de cada técnica** y aquí.
+- **Alcance de ATA006** (decisión humana 2026-09-28): la técnica es el **cambio de contenido**
+  (`sed -i`); se **retiran** `touch`/`chmod` (falsear fecha/modo = **T1070.006 Timestomp**, otra
+  técnica) para no ensuciar la atribución.
+
+

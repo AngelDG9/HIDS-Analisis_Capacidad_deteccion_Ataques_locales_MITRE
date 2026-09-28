@@ -4,9 +4,9 @@ bloque: fase-03-piloto-custom
 ata_id: ATA007
 tecnica: T1491
 tactica: Impact
-version: 6
+version: 7
 status: cerrado
-fecha: 2026-09-28
+fecha: 2026-09-29
 ---
 
 # Ficha — ATA007 · T1491 Defacement (Linux / `victima-linux`)
@@ -36,6 +36,14 @@ fecha: 2026-09-28
 > (demostrable en `ATA007_ataque.sh` y en §8.1) pero está **fuera** de `ATTACK_ROOT` → no lo cubre la
 > regla de pertenencia; es una **pista floja** → `artefacto`, **nunca `ruido`**. `artefacto_ataque`
 > **7/5 → 8/6**; `ruido_conocido` **117/119 → 116/118**; `deteccion=4/4` (sin cambios).
+>
+> **Corrección (`fase-03-escalado`, criterio único, 2026-09-29):** las **4 escrituras del
+> defacement** (`80790`/`80781`, 2 por iteración) **pasan de `deteccion` a `artefacto`**: son
+> **EFECTO** del ataque (la escritura del `cp`), **no** una detección independiente; **la detección
+> es el `execve` del `cp`** (`80792`). Criterio **único** del bloque: la **escritura bajo `watch`**
+> se clasifica como **`artefacto_ataque`** (efecto), **nunca `deteccion`**. `deteccion` **4→2** por
+> ventana; `artefacto_ataque` **8/6 → 10/8**; `ruido_conocido`/`auto_ruido` sin cambios. **El
+> veredicto del ataque NO cambia** (sigue **DETECTADO** por el `execve`). Detalle en §8/§8.1/§9.
 
 ## 1. Identificación
 
@@ -111,40 +119,28 @@ bash ATA007_ataque.sh          # cp del defacement sobre la página "pública" s
 
 | Iter | filas | deteccion | auto_ruido | ruido_conocido | dudosa | artefacto_ataque | RS1 | RS2 | RS3 | RS4 |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 1 | 737 | **4** | 609 | 116 | **0** | **8** | 4 | 733 | 0 | 0 |
-| 2 | 748 | **4** | 620 | 118 | **0** | **6** | 4 | 744 | 0 | 0 |
+| 1 | 737 | **2** | 609 | 116 | **0** | **10** | 4 | 733 | 0 | 0 |
+| 2 | 748 | **2** | 620 | 118 | **0** | **8** | 4 | 744 | 0 | 0 |
 
-### 8.1 Detecciones — **dos cifras** y desglose esperadas/sorpresas
+### 8.1 Detecciones — desglose esperadas/sorpresas
 
 | Iter | **alertas** detección | **`rule_id` distintos** | **genuinas / ajenas** | esperadas (`senal:…`) | sorpresas (`novel`) |
 |---|---|---|---|---|---|
-| 1 | **4** | **3** · `{80792, 80790, 80781}` | **4 / 0** | 2 (`T1491-S1`) + 2 (`A1/A2` ratificadas) | 0 |
-| 2 | **4** | **3** · `{80792, 80790, 80781}` | **4 / 0** | 2 (`T1491-S1`) + 2 (`A1/A2` ratificadas) | 0 |
+| 1 | **2** | **1** · `{80792}` | **2 / 0** | 2 (`T1491-S1`) | 0 |
+| 2 | **2** | **1** · `{80792}` | **2 / 0** | 2 (`T1491-S1`) | 0 |
 
-- **Dos cifras (ratificación 2026-09-28):** cada ventana tiene **4 alertas** de detección con
-  **3 `rule_id` distintos** (`80792`, `80790`, `80781`). Desglose: **2 alertas / 1 `rule_id`**
-  (`80792`, el **`execve` del `cp`** — `audit_command`, `cwd=/home/angel/lab-attack/ATA007`,
-  ancladas por `T1491-S1` (`audit_exe=cp`) + el ancla `T1491-S2` (`audit_cwd`)) **+ 2 alertas /
-  2 `rule_id`** (`80790` *Created: index.html*, `80781` *Write access: index.html* — las
-  **escrituras watch del defacement**, **ratificadas por el humano como `deteccion`**).
-- **El doble conteo se evita al contar:** las **2 escrituras** (`80790`/`80781`) son **el mismo
-  evento** del `cp` que ya cuenta su `execve` (`80792`); por eso la ficha reporta **siempre las dos
-  cifras** (*alertas* y *`rule_id` distintos*) y **no** deben sumarse como acciones independientes.
-  El incremento de esta ratificación es **+4 alertas / +2 `rule_id`** (`{80790, 80781}`); el total de
-  la ventana es **4 alertas / 3 `rule_id`** (`{80792, 80790, 80781}`).
-- **`fase-03-senales` (2026-09-28) — `CA13` cerrado:** las escrituras watch (`80790`/`80781`) que
-  antes se **promovían a `deteccion`** por la señal `S1` ancha ahora caen a
-  **`dudosa`/`ambigua:T1491-A1`/`A2`** (el evento `watch` **no** es `audit_command` → la señal
-  `audit_exe` no ancla). El humano las **ratificó a `deteccion`** por su **naturaleza** (el efecto
-  del ataque), **no** por la señal ancha.
-- **`dudosa` (3/iter) resueltas:** `80790` *Created: public_site.* (el `mkdir -p` del **setup**,
-  A1) → **`artefacto`** *(corrección `fase-03-metrica` ciclo 2, regla D2/D5 2026-09-28: es del ataque
-  —demostrable en `ATA007_ataque.sh` y en la ficha §8.1— pero está **fuera de `lab-attack`** → no lo
-  cubre la regla de pertenencia; **pista floja → `artefacto`, nunca `ruido`***); las **2 escrituras
-  del `cp`** (A1/A2) → **`deteccion`**
-  *(ratificación humana 2026-09-28: "es el ataque (la escritura del defacement); es el mismo evento
-  ya contado por el `execve` del `cp` — se reporta con las dos cifras"; firma
-  `revisor=humano (ratificacion 2026-09-28)`).*
+- **La detección es el `execve` del `cp` (`80792`):** **2 alertas/ventana** de `80792`
+  (`audit_command`, `cwd=/home/angel/lab-attack/ATA007`), **ancladas** por `T1491-S1`
+  (`audit_exe=cp`) + el ancla `T1491-S2` (`audit_cwd`). **El ataque está DETECTADO** (O1 = sí).
+- **Las escrituras `watch` (`80790`/`80781`) NO son detección** — son el **EFECTO** del mismo `cp`
+  (criterio **único** `fase-03-escalado`, 2026-09-29): el evento `watch` **no** es `audit_command`,
+  así que la señal `audit_exe` no ancla; se clasifican como **`artefacto_ataque`** (efecto), **nunca
+  `deteccion` ni `ruido`**. (`fase-03-senales`, 2026-09-28, ya cerró `CA13` en ese sentido.)
+- **`dudosa` (3/iter) resueltas → `artefacto` (6/6):** el `mkdir -p` del **setup** (`80790`
+  *Created: public_site.*, **fuera** de `lab-attack` → no lo cubre la regla de pertenencia; **pista
+  floja → `artefacto`, nunca `ruido`**; regla D2/D5, 2026-09-28) **y** las **2 escrituras del `cp`**
+  (`80790` *Created: index.html*, `80781` *Write access: index.html*; criterio único 2026-09-29).
+  Firma de estas últimas: `revisor=humano (criterio unico 2026-09-29)`.
 
 ### 8.2 Métrica de detección — **O1 + O2** (`fase-03-metrica`, decisión D1)
 
@@ -154,19 +150,20 @@ bash ATA007_ataque.sh          # cp del defacement sobre la página "pública" s
 
 | Iter | O1 detectado | `rule_id` | primera evidencia | O2 acciones | desglose `deteccion`/`artefacto_ataque`/`ruido_conocido` | anexo: alertas / `rule_id` distintos |
 |---|---|---|---|---|---|---|
-| 1 | **sí** | `{80792, 80790, 80781}` | `2026-09-26T12:05:07.066Z` `audit_exe=/usr/bin/cp` | **1/1** (`T1491-S1`) | **4 / 8 / 116** | 4 / `{80792, 80790, 80781}` |
-| 2 | **sí** | `{80792, 80790, 80781}` | `2026-09-26T12:16:21.407Z` `audit_exe=/usr/bin/cp` | **1/1** (`T1491-S1`) | **4 / 6 / 118** | 4 / `{80792, 80790, 80781}` |
+| 1 | **sí** | `{80792}` | `2026-09-26T12:05:07.066Z` `audit_exe=/usr/bin/cp` | **1/1** (`T1491-S1`) | **2 / 10 / 116** | 2 / `{80792}` |
+| 2 | **sí** | `{80792}` | `2026-09-26T12:16:21.407Z` `audit_exe=/usr/bin/cp` | **1/1** (`T1491-S1`) | **2 / 8 / 118** | 2 / `{80792}` |
 
 - **O2 = 1/1:** la única acción declarada es el `execve` del `cp` (`T1491-S1`), anclado por `S2`. Las
-  2 alertas `watch` (`80790`/`80781`) son el **mismo evento** (el `cp`), **no** acciones independientes.
-  Las filas `artefacto_ataque`/iter son la huella del árbol del ataque (`execve` no declarados).
+  alertas `watch` (`80790`/`80781`) son el **mismo evento** (el `cp`) y se cuentan como
+  **`artefacto_ataque`** (efecto), **no** como detección. Las filas `artefacto_ataque`/iter son la
+  huella del árbol del ataque (`execve` no declarados) **más** esas escrituras del `cp`.
 
 ## 9. Doble iteración (criterio **v2**) — veredicto **`iguales`**
 
 | Criterio | Resultado |
 |---|---|
-| C1′ mismo conjunto de `rule_id` con `deteccion` | ✅ `{80792, 80790, 80781}` == `{80792, 80790, 80781}` |
-| C2′ `\|n2−n1\| ≤ max(2, 10 %·n1)` | ✅ `\|4−4\| = 0 ≤ 2` |
+| C1′ mismo conjunto de `rule_id` con `deteccion` | ✅ `{80792}` == `{80792}` |
+| C2′ `\|n2−n1\| ≤ max(2, 10 %·n1)` | ✅ `\|2−2\| = 0 ≤ 2` |
 | C3′ sin `dudosa` sin resolver | ✅ 0 y 0 |
 | Sanidad `auto_ruido` (aviso) | ✅ 609 vs 620 → Δ=11 |
 | Sanidad `ruido_conocido` (aviso) | ✅ 116 vs 118 → Δ=2 |
@@ -178,6 +175,11 @@ bash ATA007_ataque.sh          # cp del defacement sobre la página "pública" s
 > **Nota (`fase-03-senales-ratificacion`, 2026-09-28):** el humano **ratifica** las 4 escrituras a
 > **`deteccion`** → `deteccion` **2/2 → 4/4**, con el **mismo conjunto de `rule_id`**
 > (`{80792, 80790, 80781}`) en ambas iteraciones. Veredicto v2 sigue **`iguales`**.
+>
+> **Nota (`fase-03-escalado`, criterio único, 2026-09-29):** ⚠️ **reemplaza** la ratificación de
+> 2026-09-28. Las 4 escrituras `watch` pasan a **`artefacto_ataque`** (efecto, no detección) →
+> `deteccion=2/2`, **mismo conjunto de `rule_id`** (`{80792}`) en ambas iteraciones. **El ataque
+> sigue DETECTADO**; veredicto v2 sigue **`iguales`**.
 
 ## 10. Limitaciones y hallazgos (para la memoria)
 
@@ -187,9 +189,10 @@ bash ATA007_ataque.sh          # cp del defacement sobre la página "pública" s
    `CA13` queda **cerrado en el artefacto**. Ver política §4 y runbook §8.2.
 2. **Baseline que "tapa" la escritura (§3.1 del plan):** la ruta `lab-legit` es la que trabaja la
    actividad legítima; por eso A1/A2 se declararon **`ambigua`** en el `esperado` (revisión humana),
-   nunca señal `deteccion`. La **ratificación humana (2026-09-28)** elevó el **veredicto** de esas
-   filas a `deteccion` (son el ataque), pero la **señal** sigue siendo `ambigua`: el filtro **no**
-   las promueve por sí solo.
+   nunca señal `deteccion`. La **corrección del 2026-09-29 (criterio único `fase-03-escalado`)**
+   mantiene esas filas como **`artefacto_ataque`** (efecto del ataque, **no** detección): la **señal**
+   sigue siendo `ambigua` y el filtro **no** las promueve por sí solo; la detección del ataque es el
+   `execve` del `cp` (`80792`).
 3. **Gap de despliegue (runbook §8.1):** el `extraer_alertas.py` del manager estaba obsoleto (sin
    `srcip`); se **desplegó** la versión del repo y se **re-extrajo** esta ventana.
 4. `lab-listo` prístino: no se instaló nada; el `public_site/` creado desaparece al revertir.

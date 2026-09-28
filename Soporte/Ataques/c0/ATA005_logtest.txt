@@ -1,0 +1,414 @@
+Starting wazuh-logtest v4.14.7
+Type one log per line
+
+
+**Phase 1: Completed pre-decoding.
+	full event: 'type=SYSCALL msg=audit(1790629820.803:4047): arch=c000003e syscall=59 success=yes exit=0 a0=613e449601a0 a1=613e44957410 a2=613e44955a30 a3=613e44960220 items=2 ppid=3672 pid=3676 auid=1000 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=20 comm="dd" exe="/usr/bin/dd" subj=unconfined key="audit-wazuh-c"ARCH=x86_64 SYSCALL=execve AUID="angel" UID="root" GID="root" EUID="root" SUID="root" FSUID="root" EGID="root" SGID="root" FSGID="root"type=EXECVE msg=audit(1790629820.803:4047): argc=6 a0="dd" a1="if=/dev/zero" a2="of=/tmp/_c0_dd.bin" a3="bs=1" a4="count=1" a5="status=none"type=CWD msg=audit(1790629820.803:4047): cwd="/home/angel"type=PATH msg=audit(1790629820.803:4047): item=0 name="/usr/bin/dd" inode=606 dev=fc:00 mode=0100755 ouid=0 ogid=0 rdev=00:00 nametype=NORMAL cap_fp=0 cap_fi=0 cap_fe=0 cap_fver=0 cap_frootid=0OUID="root" OGID="root"type=PATH msg=audit(1790629820.803:4047): item=1 name="/lib64/ld-linux-x86-64.so.2" inode=15245 dev=fc:00 mode=0100755 ouid=0 ogid=0 rdev=00:00 nametype=NORMAL cap_fp=0 cap_fi=0 cap_fe=0 cap_fver=0 cap_frootid=0OUID="root" OGID="root"type=PROCTITLE msg=audit(1790629820.803:4047): proctitle=64640069663D2F6465762F7A65726F006F663D2F746D702F5F63305F64642E62696E0062733D3100636F756E743D31007374617475733D6E6F6E65type=EXECVE msg=audit(1790629822.851:4085): argc=4 a0="grep" a1="-aF" a2="audit(1790629820.803:4047)" a3="/var/log/audit/audit.log"'
+
+**Phase 2: Completed decoding.
+	name: 'auditd'
+	parent: 'auditd'
+	audit.arch: 'c000003e'
+	audit.auid: '1000'
+	audit.command: 'dd'
+	audit.egid: '0'
+	audit.euid: '0'
+	audit.exe: '/usr/bin/dd'
+	audit.execve.a0: 'dd'
+	audit.execve.a1: 'if=/dev/zero'
+	audit.execve.a2: 'of=/tmp/_c0_dd.bin'
+	audit.execve.a3: 'bs=1'
+	audit.execve.a4: 'count=1'
+	audit.execve.a5: 'status=none'
+	audit.execve.argc: '6'
+	audit.exit: '0'
+	audit.file.inode: '606'
+	audit.file.mode: '0100755'
+	audit.file.name: '/usr/bin/dd'
+	audit.fsgid: '0'
+	audit.fsuid: '0'
+	audit.gid: '0'
+	audit.id: '4047'
+	audit.key: 'audit-wazuh-c'
+	audit.pid: '3676'
+	audit.ppid: '3672'
+	audit.session: '20'
+	audit.sgid: '0'
+	audit.success: 'yes'
+	audit.suid: '0'
+	audit.syscall: '59'
+	audit.tty: '(none)'
+	audit.type: 'SYSCALL'
+	audit.uid: '0'
+
+**Rule debugging:
+	Trying rule: 1 - Generic template for all syslog rules.
+		*Rule 1 matched
+		*Trying child rules
+	Trying rule: 600 - Active Response Messages Grouped
+	Trying rule: 650 - Active Response JSON Messages Grouped
+	Trying rule: 200 - Grouping of wazuh rules.
+	Trying rule: 400 - Rules for Wazuh API events.
+	Trying rule: 420 - Rules for Wazuh API events.
+	Trying rule: 2100 - NFS rules grouped.
+	Trying rule: 2507 - OpenLDAP group.
+	Trying rule: 2550 - rshd messages grouped.
+	Trying rule: 2701 - Ignoring procmail messages.
+	Trying rule: 2800 - Pre-match rule for smartd.
+	Trying rule: 5100 - Pre-match rule for kernel messages.
+	Trying rule: 5200 - Ignoring hpiod for producing useless logs.
+	Trying rule: 2830 - Crontab rule group.
+	Trying rule: 5300 - Initial grouping for su messages.
+	Trying rule: 5905 - useradd failed.
+	Trying rule: 5400 - Initial group for sudo messages.
+	Trying rule: 9100 - PPTPD messages grouped.
+	Trying rule: 9200 - Squid syslog messages grouped.
+	Trying rule: 2900 - Dpkg (Debian Package) log.
+	Trying rule: 2930 - Yum logs.
+	Trying rule: 2931 - Yum logs.
+	Trying rule: 2940 - NetworkManager grouping.
+	Trying rule: 2943 - nouveau driver grouping.
+	Trying rule: 2962 - Perdition custom app group.
+	Trying rule: 3100 - Grouping of the sendmail rules.
+	Trying rule: 3190 - Grouping of the smf-sav sendmail milter rules.
+	Trying rule: 3300 - Grouping of the postfix reject rules.
+	Trying rule: 3320 - Grouping of the postfix rules.
+	Trying rule: 3390 - Grouping of the clamsmtpd rules.
+	Trying rule: 3395 - Grouping of the postfix warning rules.
+	Trying rule: 3500 - Grouping for the spamd rules
+	Trying rule: 3600 - Grouping of the imapd rules.
+	Trying rule: 3700 - Grouping of mailscanner rules.
+	Trying rule: 3800 - Grouping of Exchange rules.
+	Trying rule: 3900 - Grouping for the courier rules.
+	Trying rule: 4500 - Grouping for the Netscreen Firewall rules
+	Trying rule: 4700 - Grouping of Cisco IOS rules
+	Trying rule: 4800 - SonicWall messages grouped.
+	Trying rule: 5500 - Grouping of the pam_unix rules.
+	Trying rule: 5556 - unix_chkpwd grouping.
+	Trying rule: 5600 - Grouping for the telnetd rules
+	Trying rule: 5700 - SSHD messages grouped.
+	Trying rule: 6100 - Solaris BSM Auditing messages grouped.
+	Trying rule: 6200 - Asterisk messages grouped.
+	Trying rule: 6300 - Grouping for the MS-DHCP ipv4 rules.
+	Trying rule: 6350 - Grouping for the MS-DHCP ipv6 rules.
+	Trying rule: 7200 - Arpwatch messages grouped.
+	Trying rule: 7300 - Grouping of Symantec AV rules.
+	Trying rule: 7400 - Grouping of Symantec Web Security rules.
+	Trying rule: 7600 - Grouping of Trend OSCE rules.
+	Trying rule: 9300 - Grouping for the Horde imp rules.
+	Trying rule: 9400 - Roundcube messages grouped.
+	Trying rule: 9500 - Wordpress messages grouped.
+	Trying rule: 9600 - cimserver messages grouped.
+	Trying rule: 9700 - Dovecot Messages Grouped.
+	Trying rule: 9770 - dovecot-info grouping.
+	Trying rule: 9800 - Grouping for the vm-pop3d rules.
+	Trying rule: 9900 - Grouping for the vpopmail rules.
+	Trying rule: 11100 - Grouping for the ftpd rules.
+	Trying rule: 11200 - Grouping for the proftpd rules.
+	Trying rule: 11300 - Grouping for the pure-ftpd rules.
+	Trying rule: 11310 - Rule grouping for pure ftpd transfers.
+	Trying rule: 11400 - Grouping for the vsftpd rules.
+	Trying rule: 11500 - Grouping for the Microsoft ftp rules.
+	Trying rule: 12100 - Grouping of the named rules
+	Trying rule: 13100 - Grouping for the smbd rules.
+	Trying rule: 13106 - Grouping for the nmbd rules.
+	Trying rule: 14100 - Grouping of racoon rules.
+	Trying rule: 14200 - Grouping of Cisco VPN concentrator rules
+	Trying rule: 19100 - VMWare messages grouped.
+	Trying rule: 19101 - VMWare ESX syslog messages grouped.
+	Trying rule: 30100 - Apache: Messages grouped.
+	Trying rule: 31200 - Grouping of Zeus rules.
+	Trying rule: 31300 - Nginx messages grouped.
+	Trying rule: 31404 - PHP Warning message.
+	Trying rule: 31405 - PHP Fatal error.
+	Trying rule: 31406 - PHP Parse error.
+	Trying rule: 40700 - Systemd rules
+	Trying rule: 40900 - firewalld grouping
+	Trying rule: 50100 - MySQL messages grouped.
+	Trying rule: 50500 - PostgreSQL messages grouped.
+	Trying rule: 51000 - Grouping for dropbear rules.
+	Trying rule: 51500 - Grouping of bsd_kernel alerts
+	Trying rule: 51521 - Grouping for groupdel rules.
+	Trying rule: 51523 - No core dumps.
+	Trying rule: 51525 - ftp-proxy cannot connect to a server.
+	Trying rule: 51526 - Hard drive is dying.
+	Trying rule: 51527 - CARP master to backup.
+	Trying rule: 51528 - Duplicate IPv6 address.
+	Trying rule: 51529 - Could not load a firmware.
+	Trying rule: 51530 - hotplugd could not open a file.
+	Trying rule: 51532 - Bad ntp peer.
+	Trying rule: 51550 - doas grouping
+	Trying rule: 52500 - Clamd messages grouped.
+	Trying rule: 52501 - ClamAV: database update
+	Trying rule: 53500 - OpenSMTPd grouping.
+	Trying rule: 500000 - Unbound grouping.
+	Trying rule: 80000 - Puppet Master messages grouped.
+	Trying rule: 80001 - Puppet Agent messages grouped.
+	Trying rule: 80100 - Netscaler messages grouped.
+	Trying rule: 80200 - AWS alert.
+	Trying rule: 80500 - Serv-u messages grouped.
+	Trying rule: 80700 - Audit: Messages grouped.
+		*Rule 80700 matched
+		*Trying child rules
+	Trying rule: 92600 - Executed python script.
+	Trying rule: 80740 - Auditd: Replay attack detected.
+	Trying rule: 80702 - Auditd: Daemon Start / Resume FAILED.
+	Trying rule: 80703 - Auditd: Daemon End.
+	Trying rule: 80704 - Auditd: Daemon Abort.
+	Trying rule: 80710 - Auditd: Device enables promiscuous mode.
+	Trying rule: 80711 - Auditd: Process ended abnormally.
+	Trying rule: 80712 - Auditd: Execution of a file ended abnormally.
+	Trying rule: 80721 - Auditd: User becomes root.
+	Trying rule: 80731 - Auditd: SELinux mode (enforcing, permissive, off) is changed.
+	Trying rule: 80732 - Auditd: SELinux error.
+	Trying rule: 80714 - Auditd: File or a directory access ended abnormally.
+	Trying rule: 80715 - Auditd: Failure of the Abstract Machine Test Utility (AMTU) detected.
+	Trying rule: 80716 - Auditd: Maximum amount of Discretionary Access Control (DAC) or Mandatory Access Control (MAC) failures reached.
+	Trying rule: 80717 - Auditd: Role-Based Access Control (RBAC) failure detected.
+	Trying rule: 80793 - Audit: Passwd was used to lock an account.
+	Trying rule: 80794 - Audit: Passwd was used to unlock an account.
+	Trying rule: 80713 - Auditd: File is made executable.
+	Trying rule: 92603 - A file was copied to this system over SSH using SCP.
+	Trying rule: 92604 - Processes running for all users were queried with ps command.
+	Trying rule: 92605 - Executed recursive query of all files using ls command.
+	Trying rule: 92606 - A file was copied to this system over SSH using LSCPU.
+	Trying rule: 80722 - Auditd: Account login attempt ended abnormally.
+	Trying rule: 80723 - Auditd: Limit of failed login attempts reached.
+	Trying rule: 80724 - Auditd: Login attempt from a forbidden location.
+	Trying rule: 80726 - Auditd: Login attempt is made at a time when it is prevented.
+	Trying rule: 80741 - Auditd: Group ID changed.
+	Trying rule: 80742 - Auditd: User ID changed.
+	Trying rule: 80725 - Auditd: Login attempt reached the maximum amount of concurrent sessions.
+	Trying rule: 80705 - Auditd: Configuration changed.
+	Trying rule: 80718 - Auditd: User-space account addition ended abnormally.
+	Trying rule: 80719 - Auditd: User-space account deletion ended abnormally.
+	Trying rule: 80720 - Auditd: User-space account modification ended abnormally.
+	Trying rule: 80730 - Auditd: SELinux permission check.
+	Trying rule: 80780 - Audit: Watch - Write access.
+	Trying rule: 80783 - Audit: Watch - Read access.
+	Trying rule: 80786 - Audit: Watch - Change attribute.
+	Trying rule: 80789 - Audit: Watch - Execute access: $(audit.file.name).
+	Trying rule: 80792 - Audit: Command: $(audit.exe).
+		*Rule 80792 matched
+		*Trying child rules
+	Trying rule: 92600 - Executed python script.
+	Trying rule: 92603 - A file was copied to this system over SSH using SCP.
+	Trying rule: 92604 - Processes running for all users were queried with ps command.
+	Trying rule: 92605 - Executed recursive query of all files using ls command.
+	Trying rule: 92606 - A file was copied to this system over SSH using LSCPU.
+
+**Phase 3: Completed filtering (rules).
+	id: '80792'
+	level: '3'
+	description: 'Audit: Command: /usr/bin/dd.'
+	groups: '['audit', 'audit_command']'
+	firedtimes: '1'
+	gdpr: '['IV_30.1.g']'
+	mail: 'False'
+**Alert to be generated.
+
+
+**Phase 1: Completed pre-decoding.
+	full event: 'type=SYSCALL msg=audit(1790629820.804:4048): arch=c000003e syscall=59 success=yes exit=0 a0=613e4495fe60 a1=613e44957410 a2=613e44955a30 a3=613e4495fda0 items=2 ppid=3672 pid=3677 auid=1000 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=20 comm="shred" exe="/usr/bin/shred" subj=unconfined key="audit-wazuh-c"ARCH=x86_64 SYSCALL=execve AUID="angel" UID="root" GID="root" EUID="root" SUID="root" FSUID="root" EGID="root" SGID="root" FSGID="root"type=EXECVE msg=audit(1790629820.804:4048): argc=5 a0="shred" a1="-n" a2="1" a3="-u" a4="/tmp/_c0_shred.txt"type=CWD msg=audit(1790629820.804:4048): cwd="/home/angel"type=PATH msg=audit(1790629820.804:4048): item=0 name="/usr/bin/shred" inode=1090 dev=fc:00 mode=0100755 ouid=0 ogid=0 rdev=00:00 nametype=NORMAL cap_fp=0 cap_fi=0 cap_fe=0 cap_fver=0 cap_frootid=0OUID="root" OGID="root"type=PATH msg=audit(1790629820.804:4048): item=1 name="/lib64/ld-linux-x86-64.so.2" inode=15245 dev=fc:00 mode=0100755 ouid=0 ogid=0 rdev=00:00 nametype=NORMAL cap_fp=0 cap_fi=0 cap_fe=0 cap_fver=0 cap_frootid=0OUID="root" OGID="root"type=PROCTITLE msg=audit(1790629820.804:4048): proctitle=7368726564002D6E0031002D75002F746D702F5F63305F73687265642E747874type=EXECVE msg=audit(1790629822.874:4091): argc=4 a0="grep" a1="-aF" a2="audit(1790629820.804:4048)" a3="/var/log/audit/audit.log"'
+
+**Phase 2: Completed decoding.
+	name: 'auditd'
+	parent: 'auditd'
+	audit.arch: 'c000003e'
+	audit.auid: '1000'
+	audit.command: 'shred'
+	audit.egid: '0'
+	audit.euid: '0'
+	audit.exe: '/usr/bin/shred'
+	audit.execve.a0: 'shred'
+	audit.execve.a1: '-n'
+	audit.execve.a2: '1'
+	audit.execve.a3: '-u'
+	audit.execve.a4: '/tmp/_c0_shred.txt'
+	audit.execve.argc: '5'
+	audit.exit: '0'
+	audit.file.inode: '1090'
+	audit.file.mode: '0100755'
+	audit.file.name: '/usr/bin/shred'
+	audit.fsgid: '0'
+	audit.fsuid: '0'
+	audit.gid: '0'
+	audit.id: '4048'
+	audit.key: 'audit-wazuh-c'
+	audit.pid: '3677'
+	audit.ppid: '3672'
+	audit.session: '20'
+	audit.sgid: '0'
+	audit.success: 'yes'
+	audit.suid: '0'
+	audit.syscall: '59'
+	audit.tty: '(none)'
+	audit.type: 'SYSCALL'
+	audit.uid: '0'
+
+**Rule debugging:
+	Trying rule: 1 - Generic template for all syslog rules.
+		*Rule 1 matched
+		*Trying child rules
+	Trying rule: 600 - Active Response Messages Grouped
+	Trying rule: 650 - Active Response JSON Messages Grouped
+	Trying rule: 200 - Grouping of wazuh rules.
+	Trying rule: 400 - Rules for Wazuh API events.
+	Trying rule: 420 - Rules for Wazuh API events.
+	Trying rule: 2100 - NFS rules grouped.
+	Trying rule: 2507 - OpenLDAP group.
+	Trying rule: 2550 - rshd messages grouped.
+	Trying rule: 2701 - Ignoring procmail messages.
+	Trying rule: 2800 - Pre-match rule for smartd.
+	Trying rule: 5100 - Pre-match rule for kernel messages.
+	Trying rule: 5200 - Ignoring hpiod for producing useless logs.
+	Trying rule: 2830 - Crontab rule group.
+	Trying rule: 5300 - Initial grouping for su messages.
+	Trying rule: 5905 - useradd failed.
+	Trying rule: 5400 - Initial group for sudo messages.
+	Trying rule: 9100 - PPTPD messages grouped.
+	Trying rule: 9200 - Squid syslog messages grouped.
+	Trying rule: 2900 - Dpkg (Debian Package) log.
+	Trying rule: 2930 - Yum logs.
+	Trying rule: 2931 - Yum logs.
+	Trying rule: 2940 - NetworkManager grouping.
+	Trying rule: 2943 - nouveau driver grouping.
+	Trying rule: 2962 - Perdition custom app group.
+	Trying rule: 3100 - Grouping of the sendmail rules.
+	Trying rule: 3190 - Grouping of the smf-sav sendmail milter rules.
+	Trying rule: 3300 - Grouping of the postfix reject rules.
+	Trying rule: 3320 - Grouping of the postfix rules.
+	Trying rule: 3390 - Grouping of the clamsmtpd rules.
+	Trying rule: 3395 - Grouping of the postfix warning rules.
+	Trying rule: 3500 - Grouping for the spamd rules
+	Trying rule: 3600 - Grouping of the imapd rules.
+	Trying rule: 3700 - Grouping of mailscanner rules.
+	Trying rule: 3800 - Grouping of Exchange rules.
+	Trying rule: 3900 - Grouping for the courier rules.
+	Trying rule: 4500 - Grouping for the Netscreen Firewall rules
+	Trying rule: 4700 - Grouping of Cisco IOS rules
+	Trying rule: 4800 - SonicWall messages grouped.
+	Trying rule: 5500 - Grouping of the pam_unix rules.
+	Trying rule: 5556 - unix_chkpwd grouping.
+	Trying rule: 5600 - Grouping for the telnetd rules
+	Trying rule: 5700 - SSHD messages grouped.
+	Trying rule: 6100 - Solaris BSM Auditing messages grouped.
+	Trying rule: 6200 - Asterisk messages grouped.
+	Trying rule: 6300 - Grouping for the MS-DHCP ipv4 rules.
+	Trying rule: 6350 - Grouping for the MS-DHCP ipv6 rules.
+	Trying rule: 7200 - Arpwatch messages grouped.
+	Trying rule: 7300 - Grouping of Symantec AV rules.
+	Trying rule: 7400 - Grouping of Symantec Web Security rules.
+	Trying rule: 7600 - Grouping of Trend OSCE rules.
+	Trying rule: 9300 - Grouping for the Horde imp rules.
+	Trying rule: 9400 - Roundcube messages grouped.
+	Trying rule: 9500 - Wordpress messages grouped.
+	Trying rule: 9600 - cimserver messages grouped.
+	Trying rule: 9700 - Dovecot Messages Grouped.
+	Trying rule: 9770 - dovecot-info grouping.
+	Trying rule: 9800 - Grouping for the vm-pop3d rules.
+	Trying rule: 9900 - Grouping for the vpopmail rules.
+	Trying rule: 11100 - Grouping for the ftpd rules.
+	Trying rule: 11200 - Grouping for the proftpd rules.
+	Trying rule: 11300 - Grouping for the pure-ftpd rules.
+	Trying rule: 11310 - Rule grouping for pure ftpd transfers.
+	Trying rule: 11400 - Grouping for the vsftpd rules.
+	Trying rule: 11500 - Grouping for the Microsoft ftp rules.
+	Trying rule: 12100 - Grouping of the named rules
+	Trying rule: 13100 - Grouping for the smbd rules.
+	Trying rule: 13106 - Grouping for the nmbd rules.
+	Trying rule: 14100 - Grouping of racoon rules.
+	Trying rule: 14200 - Grouping of Cisco VPN concentrator rules
+	Trying rule: 19100 - VMWare messages grouped.
+	Trying rule: 19101 - VMWare ESX syslog messages grouped.
+	Trying rule: 30100 - Apache: Messages grouped.
+	Trying rule: 31200 - Grouping of Zeus rules.
+	Trying rule: 31300 - Nginx messages grouped.
+	Trying rule: 31404 - PHP Warning message.
+	Trying rule: 31405 - PHP Fatal error.
+	Trying rule: 31406 - PHP Parse error.
+	Trying rule: 40700 - Systemd rules
+	Trying rule: 40900 - firewalld grouping
+	Trying rule: 50100 - MySQL messages grouped.
+	Trying rule: 50500 - PostgreSQL messages grouped.
+	Trying rule: 51000 - Grouping for dropbear rules.
+	Trying rule: 51500 - Grouping of bsd_kernel alerts
+	Trying rule: 51521 - Grouping for groupdel rules.
+	Trying rule: 51523 - No core dumps.
+	Trying rule: 51525 - ftp-proxy cannot connect to a server.
+	Trying rule: 51526 - Hard drive is dying.
+	Trying rule: 51527 - CARP master to backup.
+	Trying rule: 51528 - Duplicate IPv6 address.
+	Trying rule: 51529 - Could not load a firmware.
+	Trying rule: 51530 - hotplugd could not open a file.
+	Trying rule: 51532 - Bad ntp peer.
+	Trying rule: 51550 - doas grouping
+	Trying rule: 52500 - Clamd messages grouped.
+	Trying rule: 52501 - ClamAV: database update
+	Trying rule: 53500 - OpenSMTPd grouping.
+	Trying rule: 500000 - Unbound grouping.
+	Trying rule: 80000 - Puppet Master messages grouped.
+	Trying rule: 80001 - Puppet Agent messages grouped.
+	Trying rule: 80100 - Netscaler messages grouped.
+	Trying rule: 80200 - AWS alert.
+	Trying rule: 80500 - Serv-u messages grouped.
+	Trying rule: 80700 - Audit: Messages grouped.
+		*Rule 80700 matched
+		*Trying child rules
+	Trying rule: 92600 - Executed python script.
+	Trying rule: 80740 - Auditd: Replay attack detected.
+	Trying rule: 80702 - Auditd: Daemon Start / Resume FAILED.
+	Trying rule: 80703 - Auditd: Daemon End.
+	Trying rule: 80704 - Auditd: Daemon Abort.
+	Trying rule: 80710 - Auditd: Device enables promiscuous mode.
+	Trying rule: 80711 - Auditd: Process ended abnormally.
+	Trying rule: 80712 - Auditd: Execution of a file ended abnormally.
+	Trying rule: 80721 - Auditd: User becomes root.
+	Trying rule: 80731 - Auditd: SELinux mode (enforcing, permissive, off) is changed.
+	Trying rule: 80732 - Auditd: SELinux error.
+	Trying rule: 80714 - Auditd: File or a directory access ended abnormally.
+	Trying rule: 80715 - Auditd: Failure of the Abstract Machine Test Utility (AMTU) detected.
+	Trying rule: 80716 - Auditd: Maximum amount of Discretionary Access Control (DAC) or Mandatory Access Control (MAC) failures reached.
+	Trying rule: 80717 - Auditd: Role-Based Access Control (RBAC) failure detected.
+	Trying rule: 80793 - Audit: Passwd was used to lock an account.
+	Trying rule: 80794 - Audit: Passwd was used to unlock an account.
+	Trying rule: 80713 - Auditd: File is made executable.
+	Trying rule: 92603 - A file was copied to this system over SSH using SCP.
+	Trying rule: 92604 - Processes running for all users were queried with ps command.
+	Trying rule: 92605 - Executed recursive query of all files using ls command.
+	Trying rule: 92606 - A file was copied to this system over SSH using LSCPU.
+	Trying rule: 80722 - Auditd: Account login attempt ended abnormally.
+	Trying rule: 80723 - Auditd: Limit of failed login attempts reached.
+	Trying rule: 80724 - Auditd: Login attempt from a forbidden location.
+	Trying rule: 80726 - Auditd: Login attempt is made at a time when it is prevented.
+	Trying rule: 80741 - Auditd: Group ID changed.
+	Trying rule: 80742 - Auditd: User ID changed.
+	Trying rule: 80725 - Auditd: Login attempt reached the maximum amount of concurrent sessions.
+	Trying rule: 80705 - Auditd: Configuration changed.
+	Trying rule: 80718 - Auditd: User-space account addition ended abnormally.
+	Trying rule: 80719 - Auditd: User-space account deletion ended abnormally.
+	Trying rule: 80720 - Auditd: User-space account modification ended abnormally.
+	Trying rule: 80730 - Auditd: SELinux permission check.
+	Trying rule: 80780 - Audit: Watch - Write access.
+	Trying rule: 80783 - Audit: Watch - Read access.
+	Trying rule: 80786 - Audit: Watch - Change attribute.
+	Trying rule: 80789 - Audit: Watch - Execute access: $(audit.file.name).
+	Trying rule: 80792 - Audit: Command: $(audit.exe).
+		*Rule 80792 matched
+		*Trying child rules
+	Trying rule: 92600 - Executed python script.
+	Trying rule: 92603 - A file was copied to this system over SSH using SCP.
+	Trying rule: 92604 - Processes running for all users were queried with ps command.
+	Trying rule: 92605 - Executed recursive query of all files using ls command.
+	Trying rule: 92606 - A file was copied to this system over SSH using LSCPU.
+
+**Phase 3: Completed filtering (rules).
+	id: '80792'
+	level: '3'
+	description: 'Audit: Command: /usr/bin/shred.'
+	groups: '['audit', 'audit_command']'
+	firedtimes: '2'
+	gdpr: '['IV_30.1.g']'
+	mail: 'False'
+**Alert to be generated.
+

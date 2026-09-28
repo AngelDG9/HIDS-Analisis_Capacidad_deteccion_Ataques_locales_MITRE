@@ -1,0 +1,102 @@
+{
+  "ata_id": "ATA003",
+  "tecnica": "T1490",
+  "tactica": "Impact",
+  "sistema": "linux",
+  "bloque": "fase-03-escalado",
+  "tanda": "A",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1490-Inhibit_System_Recovery/",
+  "atomic": {
+    "fuente": "custom",
+    "nota": "ataque manual (ART solo trae pruebas Windows); SIMULACION segura: solo copias mock; sin systemctl/journald (decision humana; systemctl ya cubierto en ATA004)"
+  },
+  "esperado_sha256": "c81d87e34faf54f4550a22543e7f0e23647dc0e847768fe05f78ff25fbc37311",
+  "ataque_sha256": "43eade0b3002a95565cc1d69855b236d698d0f04cc9337cf05dab31df9ac6a3b",
+  "validacion_humana_esperado": "APROBADO 2026-09-28",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA003_logtest.txt",
+    "logtest_sha256": "ffabd7073909c04cf1cb00754993e123cefa5f8a5053a5169f68b1c18dfe01b8",
+    "preflight": "Soporte/Ataques/c0/ATA003_preflight.md",
+    "preflight_sha256": "bdf55cb1bcea44b13ea48089683c6a3f1d3b74d7ccb09237e77029193a5d3bd9",
+    "resultado": "PASA (rm -> 80792 level 3; sin silenciador de fabrica; no se usa journald)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1,
+      "t0": "2026-09-28T21:42:33Z",
+      "t1": "2026-09-28T21:43:04Z",
+      "duracion_s": 31,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-28.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA003_iter1-Detalle.csv",
+      "detalle_sha256": "8cb451e7d5418a603e6634a69a7bc635e865ae660568b1c7f8e5ce08171a563b",
+      "detalle_raw_sha256": "cef702e6a8d16239239e185c627eaf8cf2df1bb7371d55b75de32aa7c6a39293",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA003_iter1-Audited.csv",
+      "audited_sha256": "16ab6908b72ce004f15235a9f6cbeeda69c659c35b87e867c29749dd4f42e119",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA003_iter1-Revision.csv",
+      "revision_sha256": "6a3bf7841cc4d704d5baf86886fff400a330b9e5a2413c649ef3435d492c833b",
+      "conteos": { "filas": 675, "deteccion": 1, "auto_ruido": 605, "ruido_conocido": 48, "dudosa": 0, "artefacto_ataque": 21 },
+      "rs": { "RS1": 1, "RS2": 674, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 681, "victima_linux": 675, "otros_agentes_descartados": 6 },
+      "detecciones": { "alertas": 1, "rule_id_distintos": ["80792"], "esperadas": 1, "sorpresas": 0, "evidencia": "audit_exe=/usr/bin/rm" },
+      "metrico_o1": "si", "metrico_o2": "1/1",
+      "dudosas_resueltas": 51
+    },
+    {
+      "iter": 2,
+      "t0": "2026-09-28T21:46:53Z",
+      "t1": "2026-09-28T21:47:24Z",
+      "duracion_s": 31,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-28.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA003_iter2-Detalle.csv",
+      "detalle_sha256": "682d47a3ec7b5fef1ab6c19147c492101c3977220f6c7211b58b2cdb91533a7b",
+      "detalle_raw_sha256": "2e4f2649d88c0220efdfe1eaf1e0c93431afdaa56d88858da0c4329d565013a1",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA003_iter2-Audited.csv",
+      "audited_sha256": "01a36a1658a8fd59de91196766291cc070bea53051037a5f6ba0d347d6cb62a7",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA003_iter2-Revision.csv",
+      "revision_sha256": "9586d7835de3cef43bb20b439f227a5eb24b7e71b5ebc19f74c9642da322d546",
+      "conteos": { "filas": 687, "deteccion": 1, "auto_ruido": 616, "ruido_conocido": 49, "dudosa": 0, "artefacto_ataque": 21 },
+      "rs": { "RS1": 2, "RS2": 685, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 693, "victima_linux": 687, "otros_agentes_descartados": 6 },
+      "detecciones": { "alertas": 1, "rule_id_distintos": ["80792"], "esperadas": 1, "sorpresas": 0, "evidencia": "audit_exe=/usr/bin/rm" },
+      "metrico_o1": "si", "metrico_o2": "1/1",
+      "dudosas_resueltas": 51
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-09-28",
+    "filas": 102,
+    "veredicto": "mixto (20 artefacto / 82 ruido)",
+    "motivo": "10 por iteracion = artefacto (efecto del ataque bajo watch: 80790 Created x5 del setup + 80791 Deleted x5 del rm -rf, todos sobre copias_seguridad). 41 por iteracion = ruido (churn de sesion systemd/PAM del operador: borrados en /run/systemd/..., /run/user/1000/... al cerrar la SSH; ajenos al ataque). HALLAZGO: la senal ambigua T1490-A2 (rule_group=audit_watch_write) es ancha y captura el churn del operador",
+    "revisor": "executor tanda A"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": {
+    "criterio": "v2",
+    "mismo_conjunto_rule_id_deteccion": true,
+    "rule_ids_deteccion": ["80792"],
+    "n1": 1,
+    "n2": 1,
+    "margen": 2,
+    "criterio_recuento_ok": true,
+    "sin_dudosas_sin_resolver": true,
+    "auto_ruido_delta": 11,
+    "ruido_conocido_delta": 1,
+    "nota": "1 alerta de 80792 por ventana = execve de rm; O2 1/1 (T1490-S1)"
+  },
+  "extraccion": {
+    "extractor": "extraer_alertas.py H3 (sha256 repo==manager)",
+    "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-28.json (NO alerts.json)",
+    "aislamiento": "filtro a agent_name == victima-linux"
+  },
+  "prueba_de_efecto": "BORRADO=OK: las 4 copias mock (backup_full_2026-08.tar, backup_incremental_2026-09-15.tar, export_clientes_2026-08.csv, dump_postgres_2026-09.dump) pasan de EXISTE a NO EXISTE",
+  "eventos": [
+    { "ts": "2026-09-28T21:42:33Z", "tipo": "t0", "detalle": "iter1 t0 (tras revert + 90 s asentamiento)" },
+    { "ts": "2026-09-28T21:43:04Z", "tipo": "t1", "detalle": "iter1 t1 (tras scan FIM forzado)" },
+    { "ts": "2026-09-28T21:46:53Z", "tipo": "t0", "detalle": "iter2 t0" },
+    { "ts": "2026-09-28T21:47:24Z", "tipo": "t1", "detalle": "iter2 t1" },
+    { "ts": "2026-09-28T21:48:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (1/1, {80792}) -> iguales. Tanda A cerrada" }
+  ]
+}

@@ -694,25 +694,50 @@ def test_es_del_ataque_por_cwd_y_por_ruta():
     assert not fr.es_del_ataque(fila("2026-09-26T12:20:58.850Z", "80792"), "ATA012")
 
 
+# Lista blanca (justificada) de ventanas que legítimamente podrían NO aportar ninguna fila
+# "del ataque". A fecha 2026-09-29 está VACÍA: las 20 ventanas del corpus (10 ataques × 2
+# iteraciones) aportan ≥1 fila cada una. Si en el futuro un ataque no dejara rastro en
+# `lab-attack` (cwd/ruta), hay que declararlo AQUÍ con su motivo — nunca relajar el test.
+VENTANAS_SIN_FILAS_DEL_ATAQUE = {
+    # "<base>-Detalle.csv": "motivo por el que no aporta filas del ataque",
+}
+
+
 def test_p2_p7_ninguna_fila_del_ataque_cae_en_ruido_ni_auto():
-    """P2/P7: un **solo** código sobre las 12 ventanas reales — 0 del ataque en ruido."""
+    """P2/P7: un **solo** código sobre **todas** las ventanas reales — 0 del ataque en ruido.
+
+    Descubre las ventanas existentes en `.../linux/CSV/` (sin números fijos: el corpus crece
+    por tandas) y valida, **ventana a ventana**, dos invariantes:
+
+    1. **Cada** ventana aporta **≥1 fila "del ataque"** (o está declarada en
+       `VENTANAS_SIN_FILAS_DEL_ATAQUE` con justificación). Esto evita que el test pase "en
+       vacío" si una ventana dejara de aportar filas del ataque.
+    2. Ninguna fila DEL ATAQUE cae en `ruido_conocido`/`auto_ruido`.
+    """
     catalogo = fr.load_catalogo(str(CATALOGO))
     ventanas = sorted(REAL_CSV.glob("*-Detalle.csv"))
-    assert len(ventanas) == 12
-    revisadas = 0
+    assert ventanas, "no se encontraron ventanas *-Detalle.csv en el corpus"
+    vacias_no_declaradas = []
     for det in ventanas:
         base = det.name.replace("-Detalle.csv", "")
         ata = base.split("_iter")[0]
         signals = fr.load_signals(str(_esperado_real(ata)))
         with open(det, "r", encoding="utf-8", newline="") as fh:
             rows = list(csv.DictReader(ln for ln in fh if not ln.lstrip().startswith("#")))
+        revisadas_ventana = 0
         for r in rows:
             if not fr.es_del_ataque(r, ata):
                 continue
-            revisadas += 1
+            revisadas_ventana += 1
             c = fr.clasificar(r, catalogo, signals, False, [], ata)
             assert c["categoria"] not in ("ruido_conocido", "auto_ruido"), (base, r.get("rule_id"))
-    assert revisadas == 121  # 39 deteccion + 82 huella (plan §1.2)
+        if revisadas_ventana == 0 and base not in VENTANAS_SIN_FILAS_DEL_ATAQUE:
+            vacias_no_declaradas.append(base)
+    # Cada ventana debe aportar filas del ataque o estar declarada explícitamente y justificada.
+    assert not vacias_no_declaradas, (
+        "ventanas SIN filas 'del ataque' y sin justificar en "
+        "VENTANAS_SIN_FILAS_DEL_ATAQUE: " + ", ".join(vacias_no_declaradas)
+    )
 
 
 def test_p3_ajena_sigue_ruido_conocido(tmp_path):

@@ -1,0 +1,12 @@
+# ATA003_esperado.csv | ATA003 · T1490 Inhibit System Recovery | TFG HIDS · Fase 3 (escalado, tanda A)
+# Redactado el 2026-09-28 con los datos del paso 0, ANTES de ver ninguna alerta.
+# Gate humano (tanda A): APROBADO 2026-09-28 (CA1: se valida ANTES del primer t0).
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+# Convencion H4: cada senal audit_exe se acompana de audit_cwd de la carpeta del ataque.
+# El proceso corre con cwd=/home/angel/lab-attack/ATA003; el EFECTO (borrado) es en
+#   /home/angel/lab-legit (VIGILADO) -> el borrado bajo watch se declara AMBIGUA.
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1490-S1,deteccion,audit_exe,rm,Process Creation,T1490,borrado de los puntos de recuperacion mock (execve 80792)
+T1490-S2,deteccion,audit_cwd,/home/angel/lab-attack/ATA003/*,Process Creation,T1490,ancla H4 (cwd del ataque)
+T1490-A1,ambigua,rule_id,80781,File Modification,T1490,borrado/escritura en la ruta vigilada lab-legit
+T1490-A2,ambigua,rule_group,audit_watch_write,File Modification,T1490,evento watch en lab-legit (la tapa el baseline) -> dudosa

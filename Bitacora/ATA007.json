@@ -30,13 +30,13 @@
       "detalle_sha256": "a6f95dec543fa2a00314271e9689949c325dfb41e8e048e958b6d0306b85ed24",
       "detalle_raw_sha256": "c5b15e2267d349d77c8e9ae5bbf88f71ca5f7c53c36470e37d0381b6bfc79955",
       "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA007_iter1-Audited.csv",
-      "audited_sha256": "7d8cd39d8dc41cfc193eec025baeea1894f4c0579e19695fc2a59fcd367cd463",
+      "audited_sha256": "b9e4f93e275da43efd55aeaeddacda67bc6af73bb70397905302e500016c062c",
       "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA007_iter1-Revision.csv",
-      "revision_sha256": "abbed5f25b0380bc01012bc7f34ff2acd3d1905d8aea78f4249b3fc2190faf3a",
-      "conteos": { "filas": 737, "deteccion": 4, "auto_ruido": 609, "ruido_conocido": 116, "dudosa": 0, "artefacto_ataque": 8 },
+      "revision_sha256": "8fe002e5a80587e4c70b2b793c009aacb4138493bb72b887c623c9b37934c06b",
+      "conteos": { "filas": 737, "deteccion": 2, "auto_ruido": 609, "ruido_conocido": 116, "dudosa": 0, "artefacto_ataque": 10 },
       "rs": { "RS1": 4, "RS2": 733, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
       "ventana_raw": { "filas": 744, "victima_linux": 737, "otros_agentes_descartados": 7 },
-      "detecciones": { "alertas": 4, "rule_id_distintos": ["80792", "80790", "80781"], "genuinas": 4, "ajenas": 0, "esperadas": 4, "sorpresas": 0 },
+      "detecciones": { "alertas": 2, "rule_id_distintos": ["80792"], "genuinas": 2, "ajenas": 0, "esperadas": 2, "sorpresas": 0 },
       "dudosas_resueltas": 3
     },
     {
@@ -50,36 +50,36 @@
       "detalle_sha256": "2c072d68558b2e17d29007404030535ef26234868b1c2dc8823b4348c3f5339b",
       "detalle_raw_sha256": "49dfe9da13f089251a0e70315fd6e413b5b4f937fd54ca64379286a164cc8d9e",
       "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA007_iter2-Audited.csv",
-      "audited_sha256": "e0ae51241a88d7edc8cb222a11c32cd632ca947da6956fe32ae4d06339833772",
+      "audited_sha256": "af01c021a3f10ac196501092bf190fab838e296d7ec35e5749bdeebc088ee07b",
       "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA007_iter2-Revision.csv",
-      "revision_sha256": "c4e7bca50a8768c3f4331d4497147932d750890124d29d62d79e517caadc4e9c",
-      "conteos": { "filas": 748, "deteccion": 4, "auto_ruido": 620, "ruido_conocido": 118, "dudosa": 0, "artefacto_ataque": 6 },
+      "revision_sha256": "3387d62b96735cfebff53a988a0592f0c970d92210a801314ff7c09aeaa4c8e5",
+      "conteos": { "filas": 748, "deteccion": 2, "auto_ruido": 620, "ruido_conocido": 118, "dudosa": 0, "artefacto_ataque": 8 },
       "rs": { "RS1": 4, "RS2": 744, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
       "ventana_raw": { "filas": 756, "victima_linux": 748, "otros_agentes_descartados": 8 },
-      "detecciones": { "alertas": 4, "rule_id_distintos": ["80792", "80790", "80781"], "genuinas": 4, "ajenas": 0, "esperadas": 4, "sorpresas": 0 },
+      "detecciones": { "alertas": 2, "rule_id_distintos": ["80792"], "genuinas": 2, "ajenas": 0, "esperadas": 2, "sorpresas": 0 },
       "dudosas_resueltas": 3
     }
   ],
   "revision_global": {
-    "fecha": "2026-09-28",
+    "fecha": "2026-09-29",
     "filas": 6,
-    "veredicto": "mixto (4 deteccion / 2 artefacto)",
-    "motivo": "ratificacion humana (fase-03-senales-ratificacion): de las 6 dudosas de ATA007, las 4 escrituras del defacement (80790/80781, 2 por iteracion) pasan a deteccion — son el ataque; el doble conteo del mismo evento se evita AL CONTAR (se reportan las dos cifras: alertas y rule_id distintos), no al clasificar. Las 2 restantes (80790 Created: public_site., el mkdir -p del setup) pasan de ruido a artefacto (regla D2/D5, correccion 2026-09-28): el mkdir es del ataque (demostrable en ATA007_ataque.sh y en la ficha 8.1) pero esta fuera de /home/angel/lab-attack -> no lo cubre la regla de pertenencia; es una pista floja -> artefacto, nunca ruido. Las 13 dudosas de procesos ajenos (ATA004/ATA012) siguen en ruido (sin cambio)",
-    "revisor": "humano (ratificacion 2026-09-28)"
+    "veredicto": "artefacto (6)",
+    "motivo": "criterio unico del bloque fase-03-escalado (2026-09-29, D5): las 4 escrituras del defacement (80790/80781, 2 por iteracion) pasan de deteccion a artefacto — son el EFECTO del ataque (la escritura del cp), NO una deteccion independiente; la deteccion es el execve del cp (80792). Se unifica el criterio: la escritura bajo watch se clasifica como artefacto_ataque (efecto), nunca deteccion. Las 2 restantes (80790 Created: public_site., el mkdir -p del setup) siguen artefacto (regla D2/D5, 2026-09-28). El veredicto del ataque NO cambia (sigue DETECTADO por el cp). Las 13 dudosas de procesos ajenos (ATA004/ATA012) siguen en ruido (sin cambio)",
+    "revisor": "humano (criterio unico 2026-09-29)"
   },
   "doble_iteracion": "iguales",
   "doble_iteracion_detalle": {
     "criterio": "v2",
     "mismo_conjunto_rule_id_deteccion": true,
-    "rule_ids_deteccion": ["80792", "80790", "80781"],
-    "n1": 4,
-    "n2": 4,
+    "rule_ids_deteccion": ["80792"],
+    "n1": 2,
+    "n2": 2,
     "margen": 2,
     "criterio_recuento_ok": true,
     "sin_dudosas_sin_resolver": true,
     "auto_ruido_delta": 11,
     "ruido_conocido_delta": 2,
-    "nota": "fase-03-senales-ratificacion (2026-09-28): 4 alertas de deteccion por ventana con 3 rule_id distintos ({80792} execve del cp anclado por S1+S2, y {80790,80781} escrituras watch del defacement ratificadas por el humano). El numero de acciones sigue siendo 1 (el cp); las escrituras son el mismo evento ya contado por su execve -> se reportan las dos cifras"
+    "nota": "criterio unico fase-03-escalado (2026-09-29): 2 alertas de deteccion por ventana, mismo rule_id ({80792} execve del cp anclado por S1+S2). Las escrituras watch (80790/80781) pasan a artefacto_ataque (efecto del ataque, no deteccion) -> ya no cuentan como deteccion. El numero de acciones sigue siendo 1 (el cp)"
   },
   "extraccion": {
     "extractor": "extraer_alertas.py H3 (con srcip/srcuser/dstuser)",
@@ -101,6 +101,7 @@
     { "ts": "2026-09-28T00:00:00Z", "tipo": "ratificacion", "detalle": "fase-03-senales-ratificacion: el humano ratifica las 4 escrituras del defacement (80790/80781, 2 por iteracion) como deteccion en los -Revision.csv (veredicto ruido -> deteccion; firma revisor=humano (ratificacion 2026-09-28); nota: es el ataque, el mismo evento ya contado por el execve del cp, se reporta con las dos cifras). Re-plegado determinista: deteccion 2 -> 4 por ventana; ruido_conocido 126 -> 124; las 13 dudosas de procesos ajenos (ATA004/ATA012) siguen ruido y sus ficheros quedan byte a byte identicos; las 2 del setup de ATA007 siguen ruido. Hashes (audited/revision) y conteos actualizados" },
     { "ts": "2026-09-28T00:00:00Z", "tipo": "correccion", "detalle": "fase-03-metrica (offline, sin VMs): anadida la categoria artefacto_ataque y la pertenencia al ataque por carpeta (ATTACK_ROOT + ata_id) + guardarrail de plegado + veredicto humano artefacto. Regenerados los 2 -Audited.csv con --revision sobre los MISMOS -Detalle.csv (determinista): las 7/5 filas de la huella del propio ataque (execve con cwd de la carpeta, antes en ruido_conocido) pasan a artefacto_ataque; ruido_conocido 124/124 -> 117/119 (delta 2); deteccion=4/4 (sin cambios, mismo conjunto de rule_id). Los -Revision.csv NO cambian (los 4 veredictos deteccion + los 2 ruido siguen igual). Hashes actualizados (audited_sha256). Hojas/ATA_index.csv intacto (cerrado)" },
     { "ts": "2026-09-28T00:00:00Z", "tipo": "correccion", "detalle": "fase-03-metrica ciclo 2 (correccion 1, regla D2/D5): las 2 filas del mkdir del setup del ataque (80790 Created: public_site., 1/iter, fuera de /home/angel/lab-attack -> no las cubre la regla de pertenencia) pasan de veredicto ruido a artefacto (revisor=humano (regla D2/D5, bloque fase-03-metrica), 2026-09-28); re-plegado determinista: artefacto_ataque 7/5 -> 8/6, ruido_conocido 117/119 -> 116/118, deteccion=4/4 (sin cambios, mismo conjunto de rule_id). Hashes (audited/revision) actualizados" },
-    { "ts": "2026-09-28T00:00:00Z", "tipo": "correccion", "detalle": "fase-03-metrica ciclo 3 (metadatos): los -Revision.csv se regeneran con la 1a pasada del codigo actual -> cabecera con el campo artefacto_ataque y conteos reales (ruido_conocido 123/123 -> 116/118; +artefacto_ataque 7/5) y se re-inyectan los MISMOS veredictos vigentes (deteccion/artefacto, 3/3); el -Audited re-plegado sale byte-identico en el cuerpo y su cabecera cita el sha real del -Revision. Hashes (audited/revision) actualizados" }
+    { "ts": "2026-09-28T00:00:00Z", "tipo": "correccion", "detalle": "fase-03-metrica ciclo 3 (metadatos): los -Revision.csv se regeneran con la 1a pasada del codigo actual -> cabecera con el campo artefacto_ataque y conteos reales (ruido_conocido 123/123 -> 116/118; +artefacto_ataque 7/5) y se re-inyectan los MISMOS veredictos vigentes (deteccion/artefacto, 3/3); el -Audited re-plegado sale byte-identico en el cuerpo y su cabecera cita el sha real del -Revision. Hashes (audited/revision) actualizados" },
+    { "ts": "2026-09-29T00:00:00Z", "tipo": "correccion", "detalle": "fase-03-escalado (criterio unico 2026-09-29, D5, offline): las 4 escrituras del defacement (80790/80781, 2 por iteracion) pasan de veredicto deteccion a artefacto en los -Revision.csv (revisor=humano (criterio unico 2026-09-29)); re-plegado determinista: deteccion 4/4 -> 2/2 (solo el execve del cp, 80792), artefacto_ataque 8/6 -> 10/8, ruido_conocido 116/118 y auto_ruido 609/620 sin cambios; el veredicto del ataque NO cambia (sigue DETECTADO por el cp). Hashes (audited/revision) y conteos actualizados; Hojas/ATA_index.csv intacto (cerrado)" }
   ]
 }

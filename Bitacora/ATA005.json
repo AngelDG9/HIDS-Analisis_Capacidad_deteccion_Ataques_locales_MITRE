@@ -1,0 +1,102 @@
+{
+  "ata_id": "ATA005",
+  "tecnica": "T1561",
+  "tactica": "Impact",
+  "sistema": "linux",
+  "bloque": "fase-03-escalado",
+  "tanda": "A",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1561-Disk_Wipe/",
+  "atomic": {
+    "fuente": "custom",
+    "nota": "ataque manual (ART no tiene pruebas para T1561); SIMULACION segura: nunca se toca un disco real (guardarrailes en el guion)"
+  },
+  "esperado_sha256": "f048ecf572b568316ded3145a6f4afeba3782c13c68b80692c2042a33a063991",
+  "ataque_sha256": "58a2bddb48dc8871d122869bf1a370c6aff7100880d75c1d4e9f0937059b5658",
+  "validacion_humana_esperado": "APROBADO 2026-09-28",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA005_logtest.txt",
+    "logtest_sha256": "58ea13da1b2dacfb244ff0bfa496292ae0a117cac94202c5494be178a5bd225c",
+    "preflight": "Soporte/Ataques/c0/ATA005_preflight.md",
+    "preflight_sha256": "91f5e952bd4f3a12e56df41224a2cc581b773d9e4d6d207c29db678b258ef768",
+    "resultado": "PASA (dd y shred -> 80792 level 3; sin silenciador de fabrica)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1,
+      "t0": "2026-09-28T21:34:35Z",
+      "t1": "2026-09-28T21:35:06Z",
+      "duracion_s": 31,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-28.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA005_iter1-Detalle.csv",
+      "detalle_sha256": "cf6fc5722eb7493f0c60d0fc2568cffa05242b65c2e37d43082ebae83f5f4e77",
+      "detalle_raw_sha256": "9c3005dc864d7e59dd4480c7ca0517b08854bb90452b2829d42434676c12f15b",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA005_iter1-Audited.csv",
+      "audited_sha256": "6582f692563dd4ba061549743c0e11845751be2b1d76098c889f011e5f586745",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA005_iter1-Revision.csv",
+      "revision_sha256": "526b42c438ddd0d44054d55d3c2e9900d768aac7ea379d5ce2a4e847100c24dd",
+      "conteos": { "filas": 695, "deteccion": 3, "auto_ruido": 603, "ruido_conocido": 51, "dudosa": 0, "artefacto_ataque": 38 },
+      "rs": { "RS1": 1, "RS2": 694, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 701, "victima_linux": 695, "otros_agentes_descartados": 6 },
+      "detecciones": { "alertas": 3, "rule_id_distintos": ["80792"], "esperadas": 3, "sorpresas": 0, "evidencia": "audit_exe=/usr/bin/dd; audit_exe=/usr/bin/shred" },
+      "metrico_o1": "si", "metrico_o2": "2/2",
+      "dudosas_resueltas": 24
+    },
+    {
+      "iter": 2,
+      "t0": "2026-09-28T21:38:34Z",
+      "t1": "2026-09-28T21:39:05Z",
+      "duracion_s": 31,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-28.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA005_iter2-Detalle.csv",
+      "detalle_sha256": "faa754f63ba1a2a1bc096a62da71c893c0fb3224657ff7928d024ffa5cb4676c",
+      "detalle_raw_sha256": "32fc4d4a1d3c9a3d41fcc5176d7de65c8f5920bc553e9909b8af87396c929545",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA005_iter2-Audited.csv",
+      "audited_sha256": "fcb4fc647fd568664077dd8b1394ef4ce8c81fe4c1d99050be80b0d5db9292d8",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA005_iter2-Revision.csv",
+      "revision_sha256": "cc4162ccf6d4bfc866bb3b059815c2960908aaafbb54cfe5cc3830a780816c3b",
+      "conteos": { "filas": 712, "deteccion": 3, "auto_ruido": 622, "ruido_conocido": 49, "dudosa": 0, "artefacto_ataque": 38 },
+      "rs": { "RS1": 2, "RS2": 710, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 718, "victima_linux": 712, "otros_agentes_descartados": 6 },
+      "detecciones": { "alertas": 3, "rule_id_distintos": ["80792"], "esperadas": 3, "sorpresas": 0, "evidencia": "audit_exe=/usr/bin/dd; audit_exe=/usr/bin/shred" },
+      "metrico_o1": "si", "metrico_o2": "2/2",
+      "dudosas_resueltas": 25
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-09-28",
+    "filas": 49,
+    "veredicto": "mixto (46 artefacto / 3 ruido)",
+    "motivo": "23 eventos watch de shred por iteracion (80791 Deleted / 80780 Write) DENTRO de la carpeta del ataque -> artefacto (del ataque, no deteccion declarada). 5502 PAM del operador (1 en iter1, 2 en iter2) -> ruido",
+    "revisor": "executor tanda A"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": {
+    "criterio": "v2",
+    "mismo_conjunto_rule_id_deteccion": true,
+    "rule_ids_deteccion": ["80792"],
+    "n1": 3,
+    "n2": 3,
+    "margen": 2,
+    "criterio_recuento_ok": true,
+    "sin_dudosas_sin_resolver": true,
+    "auto_ruido_delta": 19,
+    "ruido_conocido_delta": 2,
+    "nota": "3 alertas de 80792 por ventana = execve de dd x2 (creacion + sobrescritura) y shred x1; O2 2/2 (T1561-S1 dd, T1561-S2 shred)"
+  },
+  "extraccion": {
+    "extractor": "extraer_alertas.py H3 (sha256 repo==manager)",
+    "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-28.json (NO alerts.json)",
+    "aislamiento": "filtro a agent_name == victima-linux"
+  },
+  "prueba_de_efecto": "WIPE=OK: sha256 antes 83ee4724... != despues (iter1 b4bfb6c3..., iter2 a95032d5...) con tamano estable (33554432 B)",
+  "eventos": [
+    { "ts": "2026-09-28T21:34:35Z", "tipo": "t0", "detalle": "iter1 t0 (tras revert + 90 s asentamiento)" },
+    { "ts": "2026-09-28T21:35:06Z", "tipo": "t1", "detalle": "iter1 t1 (tras scan FIM forzado)" },
+    { "ts": "2026-09-28T21:38:34Z", "tipo": "t0", "detalle": "iter2 t0" },
+    { "ts": "2026-09-28T21:39:05Z", "tipo": "t1", "detalle": "iter2 t1" },
+    { "ts": "2026-09-28T21:40:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (3/3, {80792}) -> iguales" }
+  ]
+}

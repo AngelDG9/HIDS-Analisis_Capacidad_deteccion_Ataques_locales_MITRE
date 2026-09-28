@@ -1,0 +1,11 @@
+=== ATA006 iter2 ===
+T0=2026-09-28T21:30:38Z
+ATA006 · T1565 Data Manipulation (sed -i) — custom (manual)
+T0=2026-09-28T21:30:38Z
+--- ANTES (hash) ---
+e0658f329f902edac677445b4c9dcb80ff04c86f04abc02ad2185eb7c57396e2  /home/angel/lab-legit/datos_clientes_2026.csv
+--- DESPUES (hash) ---
+d306ff9b9947a91e9fafa91b668466a93fc1b66d4008a11ea7d2f2455b496fc1  /home/angel/lab-legit/datos_clientes_2026.csv
+MANIPULACION=OK (marcadores inyectados presentes; contenido alterado)
+T1_LOCAL=2026-09-28T21:30:38Z
+T1_LOCAL=2026-09-28T21:30:38Z

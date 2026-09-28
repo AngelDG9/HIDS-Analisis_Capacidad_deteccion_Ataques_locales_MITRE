@@ -1,0 +1,104 @@
+{
+  "ata_id": "ATA001",
+  "tecnica": "T1486",
+  "tactica": "Impact",
+  "sistema": "linux",
+  "bloque": "fase-03-escalado",
+  "tanda": "A",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1486-Data_Encrypted_for_Impact/",
+  "atomic": {
+    "fuente": "ART",
+    "guid": "142752dc-ca71-443b-9359-cf6f497315f1",
+    "prueba": "Encrypt files using openssl",
+    "nota": "unico de los 7 del escalado que usa ART tal cual; desviacion declarada a openssl enc simetrico"
+  },
+  "esperado_sha256": "359cac966880a2bb7701a05f19c9c5e67d92c4b3d043fb9acb7b571efe4008b9",
+  "ataque_sha256": "a4137192e108c1f74be317991dd64b47e7220736a3db9c8b08b41f6d60417139",
+  "validacion_humana_esperado": "APROBADO 2026-09-28",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA001_logtest.txt",
+    "logtest_sha256": "b73d6f291b0d4ee3a23ceb239528f44a6628f089ea338ab247c3190474151923",
+    "preflight": "Soporte/Ataques/c0/ATA001_preflight.md",
+    "preflight_sha256": "ad3fb368168a8766f0fc7c9557bd2164906bdb6d49971168c9b1d6a9e9101d1f",
+    "resultado": "PASA (ganadora 80792 level 3; sin silenciador de fabrica)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1,
+      "t0": "2026-09-28T21:16:13Z",
+      "t1": "2026-09-28T21:16:53Z",
+      "duracion_s": 40,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-28.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA001_iter1-Detalle.csv",
+      "detalle_sha256": "3f3c115b914a3715f94d964c8ddc2e4d5b8f824dc5d317599f9e2308e2e25db6",
+      "detalle_raw_sha256": "ed767f4a27c919b6acae1ff3a29ac4b70ffa3f84b49544bf62d48da128722cbf",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA001_iter1-Audited.csv",
+      "audited_sha256": "fa3ae0474cb048fb5d2eb7a379bd3e6389441b35af99fcda8d9a10732c901eb8",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA001_iter1-Revision.csv",
+      "revision_sha256": "27640c33d92d2dba006526ad088fd68c0053ed28f21a6d7c13b060e1053dcd4a",
+      "conteos": { "filas": 689, "deteccion": 2, "auto_ruido": 626, "ruido_conocido": 48, "dudosa": 0, "artefacto_ataque": 13 },
+      "rs": { "RS1": 1, "RS2": 688, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 695, "victima_linux": 689, "otros_agentes_descartados": 6 },
+      "detecciones": { "alertas": 2, "rule_id_distintos": ["80792"], "esperadas": 2, "sorpresas": 0, "evidencia": "audit_exe=/usr/bin/openssl (cifrado + descifrado de prueba)" },
+      "metrico_o1": "si", "metrico_o2": "1/1",
+      "dudosas_resueltas": 1
+    },
+    {
+      "iter": 2,
+      "t0": "2026-09-28T21:22:17Z",
+      "t1": "2026-09-28T21:22:48Z",
+      "duracion_s": 31,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-28.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA001_iter2-Detalle.csv",
+      "detalle_sha256": "fc9de7d551543b836ecc764bcc294cdae738ab48ccfe50f261308d7f10f42d29",
+      "detalle_raw_sha256": "40dac15e975239b8288774d92c3d2c31bce7942d02c1310ccfb8e8c568bae70f",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA001_iter2-Audited.csv",
+      "audited_sha256": "6dcc5ade68f6f17af240acb1d6c2d2230142fffcd9af0e1e74f32a6b3d1a7140",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA001_iter2-Revision.csv",
+      "revision_sha256": "98d1436d69c55623b736576da16f3ffe798f5edad9eaa594b15418ab33e68f65",
+      "conteos": { "filas": 667, "deteccion": 2, "auto_ruido": 604, "ruido_conocido": 48, "dudosa": 0, "artefacto_ataque": 13 },
+      "rs": { "RS1": 1, "RS2": 666, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 673, "victima_linux": 667, "otros_agentes_descartados": 6 },
+      "detecciones": { "alertas": 2, "rule_id_distintos": ["80792"], "esperadas": 2, "sorpresas": 0, "evidencia": "audit_exe=/usr/bin/openssl (cifrado + descifrado de prueba)" },
+      "metrico_o1": "si", "metrico_o2": "1/1",
+      "dudosas_resueltas": 1
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-09-28",
+    "filas": 2,
+    "veredicto": "ruido (2)",
+    "motivo": "5502 PAM Login session closed (cierre de la sesion SSH del operador); ajeno al ataque",
+    "revisor": "executor tanda A"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": {
+    "criterio": "v2",
+    "mismo_conjunto_rule_id_deteccion": true,
+    "rule_ids_deteccion": ["80792"],
+    "n1": 2,
+    "n2": 2,
+    "margen": 2,
+    "criterio_recuento_ok": true,
+    "sin_dudosas_sin_resolver": true,
+    "auto_ruido_delta": 22,
+    "ruido_conocido_delta": 0,
+    "nota": "2 alertas de 80792 por ventana = 2 execve de openssl (cifrado + descifrado de prueba); O2 1/1 (T1486-S1)"
+  },
+  "extraccion": {
+    "extractor": "extraer_alertas.py H3 (sha256 repo==manager)",
+    "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-28.json (NO alerts.json)",
+    "aislamiento": "filtro a agent_name == victima-linux"
+  },
+  "prueba_de_efecto": "ROUNDTRIP=OK: sha256(plain)==sha256(recovered)==e0658f32... en ambas iteraciones",
+  "eventos": [
+    { "ts": "2026-09-28T21:16:13Z", "tipo": "t0", "detalle": "iter1 t0 (tras revert lab-listo + 90 s asentamiento)" },
+    { "ts": "2026-09-28T21:16:53Z", "tipo": "t1", "detalle": "iter1 t1 (tras scan FIM forzado)" },
+    { "ts": "2026-09-28T21:22:17Z", "tipo": "t0", "detalle": "iter2 t0" },
+    { "ts": "2026-09-28T21:22:48Z", "tipo": "t1", "detalle": "iter2 t1" },
+    { "ts": "2026-09-28T21:23:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (2/2, {80792}) -> iguales" }
+  ]
+}

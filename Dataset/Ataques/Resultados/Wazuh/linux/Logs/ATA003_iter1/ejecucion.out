@@ -1,0 +1,15 @@
+=== ATA003 iter1 ===
+T0=2026-09-28T21:42:33Z
+ATA003 · T1490 Inhibit System Recovery (rm -rf de copias mock) — custom (manual)
+T0=2026-09-28T21:42:33Z
+--- ANTES ---
+existe: /home/angel/lab-legit/copias_seguridad
+total 16
+-rw-rw-r-- 1 angel angel 108 Sep 28 23:42 backup_full_2026-08.tar
+-rw-rw-r-- 1 angel angel 115 Sep 28 23:42 backup_incremental_2026-09-15.tar
+-rw-rw-r-- 1 angel angel  61 Sep 28 23:42 dump_postgres_2026-09.dump
+-rw-rw-r-- 1 angel angel 134 Sep 28 23:42 export_clientes_2026-08.csv
+--- DESPUES ---
+BORRADO=OK (las copias de seguridad ya no existen)
+T1_LOCAL=2026-09-28T21:42:33Z
+T1_LOCAL=2026-09-28T21:42:33Z

@@ -1,0 +1,9 @@
+dd=/usr/bin/dd
+shred=/usr/bin/shred
+openssl=/usr/bin/openssl
+sed=/usr/bin/sed
+grep=/usr/bin/grep
+rm=/usr/bin/rm
+mkdir=/usr/bin/mkdir
+sha256sum=/usr/bin/sha256sum
+stat=/usr/bin/stat

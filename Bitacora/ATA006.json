@@ -1,0 +1,103 @@
+{
+  "ata_id": "ATA006",
+  "tecnica": "T1565",
+  "tactica": "Impact",
+  "sistema": "linux",
+  "bloque": "fase-03-escalado",
+  "tanda": "A",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1565-Data_Manipulation/",
+  "atomic": {
+    "fuente": "custom",
+    "nota": "ataque manual (ART no tiene pruebas para T1565); alcance: cambio de contenido; SIN timestomp (touch/chmod retirados = T1070.006)"
+  },
+  "esperado_sha256": "981fc6dec6309e5a0f9815209b29742f775f1399a8659c55969f760fd3c80020",
+  "ataque_sha256": "df1a242b8ca78d893fa27ce11da616df8041586d816d7d53221033da5c23d98c",
+  "validacion_humana_esperado": "APROBADO 2026-09-28",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA006_logtest.txt",
+    "logtest_sha256": "1bc1533d31a43eecbf41555c4d94ff5be1996ed0c88007dcca403b1f07ec883e",
+    "preflight": "Soporte/Ataques/c0/ATA006_preflight.md",
+    "preflight_sha256": "99f343cee9aa621c788435a79b055a462d371fa2d7f3dcc6b99b72e6acacc106",
+    "resultado": "PASA (ganadora 80792 level 3; sin silenciador de fabrica)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1,
+      "t0": "2026-09-28T21:26:19Z",
+      "t1": "2026-09-28T21:26:50Z",
+      "duracion_s": 31,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-28.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA006_iter1-Detalle.csv",
+      "detalle_sha256": "490652220be6af10c507effc2f280e8847a86afac60a240fdb17ca06e737b458",
+      "detalle_raw_sha256": "34d3de8fae121205d34c860947c35697a516a31ab18a77a58efb51ba01816ecf",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA006_iter1-Audited.csv",
+      "audited_sha256": "24d8daff89acc85c64610a62b1a19e57fc8caa996b59046162910db0cc551c3c",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA006_iter1-Revision.csv",
+      "revision_sha256": "79a4b24e50e6f685ccaffd517ffbc509dc5d1c4881e5308350a103591c6b2796",
+      "conteos": { "filas": 678, "deteccion": 2, "auto_ruido": 605, "ruido_conocido": 49, "dudosa": 0, "artefacto_ataque": 22 },
+      "rs": { "RS1": 2, "RS2": 676, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 684, "victima_linux": 678, "otros_agentes_descartados": 6 },
+      "detecciones": { "alertas": 2, "rule_id_distintos": ["80792"], "esperadas": 2, "sorpresas": 0, "evidencia": "audit_exe=/usr/bin/sed (replace + append)" },
+      "metrico_o1": "si", "metrico_o2": "1/1",
+      "dudosas_resueltas": 9
+    },
+    {
+      "iter": 2,
+      "t0": "2026-09-28T21:30:38Z",
+      "t1": "2026-09-28T21:31:09Z",
+      "duracion_s": 31,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-28.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA006_iter2-Detalle.csv",
+      "detalle_sha256": "d06d8be896f565db5022cbc427a5b7efd9505e4cca8bb72f9b9d401043adb815",
+      "detalle_raw_sha256": "94d66fc486d79d61f388f3e1658e780918ae2f64bf3d56ba011cf93fc07a5587",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA006_iter2-Audited.csv",
+      "audited_sha256": "d0f7a6f54eda054dea93617b0f5af44351edcd0d86c91fba3a918fd4ec85bbcc",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA006_iter2-Revision.csv",
+      "revision_sha256": "362094d35038c79d9ebc4c010481323de66b34683ff71029cc80d2d730dfb03c",
+      "conteos": { "filas": 692, "deteccion": 2, "auto_ruido": 621, "ruido_conocido": 47, "dudosa": 0, "artefacto_ataque": 22 },
+      "rs": { "RS1": 1, "RS2": 691, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 698, "victima_linux": 692, "otros_agentes_descartados": 6 },
+      "detecciones": { "alertas": 2, "rule_id_distintos": ["80792"], "esperadas": 2, "sorpresas": 0, "evidencia": "audit_exe=/usr/bin/sed (replace + append)" },
+      "metrico_o1": "si", "metrico_o2": "1/1",
+      "dudosas_resueltas": 9
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-09-29",
+    "filas": 18,
+    "veredicto": "artefacto (18)",
+    "motivo": "efecto del ataque bajo watch (80790 Created x3, 80781 Write x4, 80791 Deleted x2, por iteracion): es el ataque (carpeta/cwd) pero NO la deteccion declarada (el esperado los marca ambigua) -> artefacto, nunca ruido. RATIFICADO por el humano (2026-09-29): la deteccion es el execve del sed (80792); las escrituras/borrados bajo watch son artefacto_ataque (efecto), NO deteccion",
+    "revisor": "humano (ratificacion 2026-09-29)"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": {
+    "criterio": "v2",
+    "mismo_conjunto_rule_id_deteccion": true,
+    "rule_ids_deteccion": ["80792"],
+    "n1": 2,
+    "n2": 2,
+    "margen": 2,
+    "criterio_recuento_ok": true,
+    "sin_dudosas_sin_resolver": true,
+    "auto_ruido_delta": 16,
+    "ruido_conocido_delta": 2,
+    "nota": "2 alertas de 80792 por ventana = 2 execve de sed (replace + append); O2 1/1 (T1565-S1)"
+  },
+  "extraccion": {
+    "extractor": "extraer_alertas.py H3 (sha256 repo==manager)",
+    "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-28.json (NO alerts.json)",
+    "aislamiento": "filtro a agent_name == victima-linux"
+  },
+  "prueba_de_efecto": "MANIPULACION=OK: sha256 antes e0658f32... != despues d306ff9b...; marcadores 999999 y 'Mallory Consulting SL' presentes",
+  "eventos": [
+    { "ts": "2026-09-28T21:26:19Z", "tipo": "t0", "detalle": "iter1 t0 (tras revert + 90 s asentamiento)" },
+    { "ts": "2026-09-28T21:26:50Z", "tipo": "t1", "detalle": "iter1 t1 (tras scan FIM forzado)" },
+    { "ts": "2026-09-28T21:30:38Z", "tipo": "t0", "detalle": "iter2 t0" },
+    { "ts": "2026-09-28T21:31:09Z", "tipo": "t1", "detalle": "iter2 t1" },
+    { "ts": "2026-09-28T21:32:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (2/2, {80792}) -> iguales" },
+    { "ts": "2026-09-29T00:00:00Z", "tipo": "correccion", "detalle": "fase-03-escalado (ratificacion humana, offline): las 18 filas del efecto bajo watch en lab-legit (80790/80781/80791, 9/iter) quedan ratificadas por el humano como artefacto (revisor=humano (ratificacion 2026-09-29), fecha 2026-09-29); re-plegado determinista con la MISMAS cifras: deteccion=2/2 (solo el execve del sed, 80792), artefacto_ataque=22/22, ruido_conocido 49/47 y auto_ruido 605/621 sin cambios; cambia solo la evidencia (firma/nota) de las 18 filas. Hashes (audited/revision) actualizados; Hojas/ATA_index.csv intacto (cerrado). (Punto 10.2 de la ficha cerrado)" }
+  ]
+}

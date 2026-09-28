@@ -1,11 +1,11 @@
 # ATA_index.csv | MITRE ATT&CK Enterprise v19.1 | corpus elegido 2026-09-19
 ata_id,tactica,tecnica,descripcion,artefacto,estado
-ATA001,Impact,T1486,Data Encrypted for Impact,,pendiente
+ATA001,Impact,T1486,Data Encrypted for Impact,Dataset/Ataques/Comandos/T1486-Data_Encrypted_for_Impact/,cerrado
 ATA002,Impact,T1485,Data Destruction,Dataset/Ataques/Comandos/T1485-Data_Destruction/,review
-ATA003,Impact,T1490,Inhibit System Recovery,,pendiente
+ATA003,Impact,T1490,Inhibit System Recovery,Dataset/Ataques/Comandos/T1490-Inhibit_System_Recovery/,cerrado
 ATA004,Impact,T1489,Service Stop,Dataset/Ataques/Comandos/T1489-Service_Stop/,cerrado
-ATA005,Impact,T1561,Disk Wipe,,pendiente
-ATA006,Impact,T1565,Data Manipulation,,pendiente
+ATA005,Impact,T1561,Disk Wipe,Dataset/Ataques/Comandos/T1561-Disk_Wipe/,cerrado
+ATA006,Impact,T1565,Data Manipulation,Dataset/Ataques/Comandos/T1565-Data_Manipulation/,cerrado
 ATA007,Impact,T1491,Defacement,Dataset/Ataques/Comandos/T1491-Defacement/,cerrado
 ATA008,Exfiltration,T1048,Exfiltration Over Alternative Protocol,Dataset/Ataques/Comandos/T1048-Exfiltration_Over_Alternative_Protocol/,review
 ATA009,Exfiltration,T1567,Exfiltration Over Web Service,,pendiente
