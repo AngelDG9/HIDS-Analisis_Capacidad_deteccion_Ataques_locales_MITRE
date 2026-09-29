@@ -1,0 +1,12 @@
+# ATA043_esperado.csv | ATA043 · T1567.004 Exfiltration Over Webhook | TFG HIDS · Fase 3 (ampliacion-2, tanda C)
+# Redactado el 2026-09-29 con los datos del paso 0, ANTES de ver ninguna alerta.
+# Gate humano: APROBADO 2026-09-29 (validación humana)
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+# Convencion H4: cada senal audit_exe se acompana de audit_cwd de la carpeta del ataque.
+# BINARIO REAL verificado en el paso 0: `wget` -> /usr/bin/wget (GNU Wget 1.21.4).
+# El EFECTO es un POST JSON al endpoint webhook LOCAL del receptor del HOST (`/hook`) ->
+#   NO hay escritura local vigilada -> NO se declaran senales ambigua. La prueba del efecto
+#   la da el `sink.log` (sha256 del cuerpo JSON == sha256 del payload enviado).
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1567.004-S1,deteccion,audit_exe,wget,Process Creation,T1567.004,POST del payload JSON al endpoint webhook local del HOST (/hook) (execve 80792)
+T1567.004-S2,deteccion,audit_cwd,/home/angel/lab-attack/ATA043/*,Process Creation,T1567.004,ancla H4 (cwd del ataque)

@@ -1,0 +1,20 @@
+ATA037 · T1561.001 Disk Content Wipe (SOLO imagen loop) — custom
+T0=2026-09-29T10:44:19Z
+imagen_creada=/home/angel/lab-attack/ATA037/disk.img (16777216 bytes)
+tipo_imagen=regular file
+--- estructura (ANTES del wipe) ---
+/home/angel/lab-attack/ATA037/disk.img: Linux rev 1.0 ext4 filesystem data, UUID=9aec0f92-8795-4d1d-ae0f-263e26b5c4be (extents) (64bit) (large files) (huge files)
+loop_asignado=/dev/loop0
+montaje_antes=OK
+sha_dato_antes=bb9f8df61474d25e71fa00722318cd387396ca1736605e1248821cc0de3d3af8
+sha_dato_despues=20c32ac7960a741d98c234b0aa34683ce42e8b1c1143042150dfed87eec5f46d
+--- estructura (DESPUES del wipe) ---
+/home/angel/lab-attack/ATA037/disk.img: Linux rev 1.0 ext4 filesystem data, UUID=9aec0f92-8795-4d1d-ae0f-263e26b5c4be (extents) (64bit) (large files) (huge files)
+blkid_tras_wipe=reconoce_ext4
+montaje_despues=SI
+--- estado final ---
+sha_dato_antes  =bb9f8df61474d25e71fa00722318cd387396ca1736605e1248821cc0de3d3af8
+sha_dato_despues=20c32ac7960a741d98c234b0aa34683ce42e8b1c1143042150dfed87eec5f46d
+loop_residual=0
+DISK_CONTENT_WIPE=OK (contenido del disco sobrescrito; estructura intacta y montable)
+T1_LOCAL=2026-09-29T10:44:20Z

@@ -1,0 +1,3 @@
+2ad637b8797a4c6e22a5da27f698f31c9da4088367df78a795414d1a6721d9e6  /home/angel/lab-share/incoming/ATA040/clientes.csv
+b5c25b1a11f3e25998ed228122476a0352b894f14221cc9a94257705601a810d  /home/angel/lab-share/incoming/ATA040/nominas.csv
+1011daaaa9e7a03a133476dad85bec06a61f30d21a13150b598105a8e35de115  /home/angel/lab-share/incoming/ATA040/facturas.csv

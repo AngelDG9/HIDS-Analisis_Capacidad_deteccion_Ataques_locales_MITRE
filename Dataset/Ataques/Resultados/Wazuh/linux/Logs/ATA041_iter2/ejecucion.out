@@ -1,0 +1,16 @@
+ATA041 ┬À T1048.002 Asymmetric Encrypted Non-C2 (openssl pkeyutl RSA + curl) ÔÇö custom
+T0=2026-09-29T11:58:02Z
+--- FICHERO ORIGINAL (a cifrar) ---
+69ae035970a4663b3a45bbe0c24adc33affa9b0feac41d7273260cf94520b854  /home/angel/lab-attack/ATA041/extracto_clientes_2026.txt
+bytes_original=173
+HTTP=200 enviado=256B
+--- estado final ---
+-rw-rw-r-- 1 angel angel 173 Sep 29 13:58 /home/angel/lab-attack/ATA041/extracto_clientes_2026.txt
+-rw-rw-r-- 1 angel angel 256 Sep 29 13:58 /home/angel/lab-attack/ATA041/extracto_clientes_2026.txt.enc
+-rw-rw-r-- 1 angel angel 173 Sep 29 13:58 /home/angel/lab-attack/ATA041/roundtrip_verificado.txt
+sha256 original        = 69ae035970a4663b3a45bbe0c24adc33affa9b0feac41d7273260cf94520b854
+sha256 enviado (cifr.) = 1c8a32227da6096fd2c89a2563da25b82c133af11e979ec578a0e0c427984268
+sha256 roundtrip       = 69ae035970a4663b3a45bbe0c24adc33affa9b0feac41d7273260cf94520b854
+CIFRADO_ASIMETRICO=OK (blob cifrado con RSA enviado por HTTP; roundtrip identico al original)
+T1_LOCAL=2026-09-29T11:58:04Z
+RC=0

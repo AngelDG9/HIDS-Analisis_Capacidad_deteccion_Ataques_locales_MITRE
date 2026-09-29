@@ -1,0 +1,13 @@
+# ATA042_esperado.csv | ATA042 · T1048.003 Unencrypted Non-C2 Protocol | TFG HIDS · Fase 3 (ampliacion-2, tanda C)
+# Redactado el 2026-09-29 con los datos del paso 0, ANTES de ver ninguna alerta.
+# Gate humano: APROBADO 2026-09-29 (validación humana)
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+# Convencion H4: cada senal audit_exe se acompana de audit_cwd de la carpeta del ataque.
+# BINARIO REAL verificado en el paso 0: `nc` es un enlace -> /usr/bin/nc.openbsd; el execve
+#   registra `/usr/bin/nc.openbsd` -> se declara el nombre REAL (no `nc`).
+# El EFECTO es un envio por TCP crudo al receptor del HOST -> NO hay escritura local vigilada
+#   -> NO se declaran senales ambigua. La prueba del efecto la da el `sink.log`
+#   (sha256 del fichero EN CLARO == sha256 enviado).
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1048.003-S1,deteccion,audit_exe,nc.openbsd,Process Creation,T1048.003,envio EN CLARO por TCP crudo al receptor del HOST (binario REAL /usr/bin/nc.openbsd; execve 80792)
+T1048.003-S2,deteccion,audit_cwd,/home/angel/lab-attack/ATA042/*,Process Creation,T1048.003,ancla H4 (cwd del ataque)

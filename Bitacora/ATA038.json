@@ -1,0 +1,85 @@
+{
+  "ata_id": "ATA038",
+  "tecnica": "T1529",
+  "tactica": "Impact",
+  "sistema": "linux",
+  "bloque": "fase-03-ampliacion-2",
+  "tanda": "B",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1529-System_Shutdown_Reboot/",
+  "atomic": { "fuente": "custom", "nota": "reinicio de la VM VICTIMA con sudo shutdown -r +1 (shutdown/reboot son enlaces a /usr/bin/systemctl); guardarrail duro: se exige hostname==victima-linux y IP 192.168.65.129 (aborta si aparece la IP del manager 192.168.65.128); t1 lo sella el operador tras la reconexion; red de seguridad = snapshot lab-listo" },
+  "esperado_sha256": "197e72ad0987d6e6401dcfd02529da02659d83a3559600bf7a26595487c68423",
+  "ataque_sha256": "554cd462fb831c1b2153dd0ea0e9ce3fc30a00550e4bdc068b2879df58190ec9",
+  "validacion_humana_esperado": "APROBADO 2026-09-29",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA038_logtest.txt",
+    "logtest_sha256": "e7179c7315a09ddc9931c629306c1b80814760da771e4b354d42eb0df6a3591b",
+    "preflight": "Soporte/Ataques/c0/ATA038_preflight.md",
+    "preflight_sha256": "f0f315090474372a8d83a9b8c9ec0567e015bb677fdb9669d5a068a4de1f4bcf",
+    "resultado": "PASA (1 evento /usr/bin/systemctl -> 80792 level 3; sin silenciador)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1, "t0": "2026-09-29T10:54:50Z", "t1": "2026-09-29T10:58:15Z", "duracion_s": 205, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA038_iter1-Detalle.csv",
+      "detalle_sha256": "6f8b618ace8c06a5f23830bdb97bf2de861879ba1d7889b22941830b6c542031",
+      "detalle_raw_sha256": "3d5be4cd5ccfa720e71a9cb2b6ce053a3d3c44dbb1300c2d036ec099de0450d6",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA038_iter1-Audited.csv",
+      "audited_sha256": "45dd24784baad702c6280a00efa26080328f4bf6a13e265690a52650d97f6106",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA038_iter1-Revision.csv",
+      "revision_sha256": "649a6ab7c899030248a63bd84351b3e4280f753c93b73c6e700f046d3a4a17e0",
+      "conteos": { "filas": 2103, "deteccion": 3, "auto_ruido": 1667, "ruido_conocido": 424, "dudosa": 0, "artefacto_ataque": 9 },
+      "rs": { "RS1": 16, "RS2": 2087, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 2135, "victima_linux": 2103, "otros_agentes_descartados": 32 },
+      "detecciones": { "alertas": 3, "rule_id_distintos": ["80792", "506", "503"], "esperadas": 2, "sorpresas": 1, "evidencia": "80792 execve systemctl (S1) 10:54:52.743Z + 506 agent stopped (novel, sorpresa) 10:55:51.475Z + 503 agent started (S3) 10:56:07.707Z" },
+      "metrico_o1": "si", "metrico_o2": "2/3", "dudosas_resueltas": 7,
+      "efecto": { "boot_id_antes": "bdd0155b-c10a-499d-b372-16bb1a758f2f", "boot_id_despues": "db1dae2f-b9fa-40e4-84e9-f0b4bad5bea8", "wazuh_agent_tras_arranque": "active", "resultado": "REBOOT=OK" }
+    },
+    {
+      "iter": 2, "t0": "2026-09-29T11:02:58Z", "t1": "2026-09-29T11:06:16Z", "duracion_s": 198, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA038_iter2-Detalle.csv",
+      "detalle_sha256": "853bc1d9222ea71662ffffc8a55d6f5ac1b518b4bcfb91e8f3669900b675b215",
+      "detalle_raw_sha256": "bd8f669c7ea1acd878c6a035d4cc6828e37a5ed4ae5b2810fc0cc510ba21e4ca",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA038_iter2-Audited.csv",
+      "audited_sha256": "4754fec6804bd32d78789e019495b59bb69ddd54eb5d28ecdba38e9d172ad352",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA038_iter2-Revision.csv",
+      "revision_sha256": "0af721501ff262a9db9a960f0b94aa275fdd1bbff024efcce22fc928e3de57c9",
+      "conteos": { "filas": 2120, "deteccion": 3, "auto_ruido": 1635, "ruido_conocido": 471, "dudosa": 0, "artefacto_ataque": 11 },
+      "rs": { "RS1": 16, "RS2": 2104, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 2145, "victima_linux": 2120, "otros_agentes_descartados": 25 },
+      "detecciones": { "alertas": 3, "rule_id_distintos": ["80792", "506", "503"], "esperadas": 2, "sorpresas": 1, "evidencia": "80792 execve systemctl (S1) 11:03:00.820Z + 506 agent stopped (novel, sorpresa) 11:03:59.332Z + 503 agent started (S3) 11:04:15.028Z" },
+      "metrico_o1": "si", "metrico_o2": "2/3", "dudosas_resueltas": 8,
+      "efecto": { "boot_id_antes": "34711a82-5da8-4599-b486-2210d71192c0", "boot_id_despues": "cf8fe4df-8b22-42bf-99a3-51ebb392a021", "wazuh_agent_tras_arranque": "active", "resultado": "REBOOT=OK" }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-09-29", "filas": 15,
+    "veredicto": "ruido (15)",
+    "motivo": "iter1: 7 filas; iter2: 8 filas = 80792 systemctl con cwd=/home/angel (churn del login/motd del operador, no anclable) + 1x 80781 (escritura en /var/log/ durante el arranque). Ajenas al ataque -> ruido (criterio ratificado: login del operador = ruido). Cero filas del ataque en ruido.",
+    "revisor": "executor ampliacion-2 tanda B"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": { "criterio": "v2", "mismo_conjunto_rule_id_deteccion": true, "rule_ids_deteccion": ["80792", "506", "503"], "n1": 3, "n2": 3, "margen": 2, "criterio_recuento_ok": true, "sin_dudosas_sin_resolver": true, "auto_ruido_delta": 32, "ruido_conocido_delta": 47 },
+  "esperado_imprecision": "El esperado declaro S4=504 (agent disconnected) pero el manager emitio 506 (agent stopped) en ambas iteraciones -> S4 no disparo (O2 2/3) y 506 es sorpresa (novel). No se re-escribe el esperado (firmado antes).",
+  "extraccion": { "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)", "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json", "aislamiento": "filtro a agent_name == victima-linux" },
+  "prueba_de_efecto": "la VM victima se reinicia: boot_id distinto (pre_reboot.txt vs post_reboot.txt), uptime reiniciado y wazuh-agent 'active'/agente 001 'Active' tras el arranque.",
+  "receptor": { "aplica": false, "nota": "no hay receptor de red" },
+  "guardarrailes": { "solo_vm_victima": true, "hostname_check": "victima-linux", "ip_check": "192.168.65.129", "manager_ip_aborta": true, "snapshot_red_seguridad": "lab-listo", "reinicio_ordenado": true },
+  "hallazgos": [
+    "Capa nueva: el HIDS ve el cierre/arranque de la VM por el estado del agente (506 agent stopped, 503 agent started), ademas del execve del comando (80792).",
+    "journald/systemd (40700) es level=0 -> no alerta por un apagado normal.",
+    "Imprecision declarada del esperado: se declaro 504 pero el manager emitio 506 -> sorpresa en ambas iteraciones.",
+    "Alternativa KISS (T1074.001) NO aplicada: la medida quedo limpia (churn de arranque -> baseline; solo las reglas de estado del agente son novel)."
+  ],
+  "eventos": [
+    { "ts": "2026-09-29T10:54:50Z", "tipo": "t0", "detalle": "iter1 t0; reboot programado +1 min (10:55:50)" },
+    { "ts": "2026-09-29T10:55:50Z", "tipo": "reboot", "detalle": "iter1 reinicio de la VM victima" },
+    { "ts": "2026-09-29T10:58:15Z", "tipo": "t1", "detalle": "iter1 t1 (operador, tras reconexion + asentamiento)" },
+    { "ts": "2026-09-29T11:02:58Z", "tipo": "t0", "detalle": "iter2 t0; reboot programado +1 min" },
+    { "ts": "2026-09-29T11:03:58Z", "tipo": "reboot", "detalle": "iter2 reinicio de la VM victima" },
+    { "ts": "2026-09-29T11:06:16Z", "tipo": "t1", "detalle": "iter2 t1" },
+    { "ts": "2026-09-29T11:08:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (3/3, {80792,506,503}) -> iguales" }
+  ]
+}

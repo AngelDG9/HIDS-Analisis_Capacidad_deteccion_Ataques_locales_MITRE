@@ -1,0 +1,23 @@
+ATA036 · T1565.003 Runtime Data Manipulation (ptrace/memoria) — custom
+T0=2026-09-29T10:35:01Z
+--- payload ---
+-rwx------ 1 angel angel 16800 Sep 29 12:35 /home/angel/lab-attack/ATA036/memedit
+-rwx------ 1 angel angel 16264 Sep 29 12:35 /home/angel/lab-attack/ATA036/target
+53ee76e60a16ba921e3774b6a62455f18b696cd7c4ae8d5c383605cb91e1587e  /home/angel/lab-attack/ATA036/target
+8205ab6af66e92fb70576f80fb1f85abe52c157a4e549887c45c13105952de0c  /home/angel/lab-attack/ATA036/memedit
+target_pid=2990
+target_exe=/home/angel/lab-attack/ATA036/target
+--- ANTES (dato en memoria) ---
+SALDO=1000
+SALDO=1000
+FOUND addr=0x5c6fc9a53020 old=SALDO=1000 new=SALDO=9999
+FOUND addr=0x5c6fdc700480 old=SALDO=1000 new=SALDO=9999
+FOUND addr=0x7ffcd1253f30 old=SALDO=1000 new=SALDO=9999
+memedit_rc=0
+--- DESPUES (dato en memoria) ---
+SALDO=9999
+SALDO=9999
+ocurrencias_antes=5
+ocurrencias_despues=3
+RUNTIME_DATA_MANIPULATION=OK (dato del proceso EN EJECUCION cambiado en memoria)
+T1_LOCAL=2026-09-29T10:35:09Z

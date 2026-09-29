@@ -28,3 +28,18 @@ ATA025,Impact,T1496.001,Compute Hijacking,Dataset/Ataques/Comandos/T1496.001-Com
 ATA026,Impact,T1565.002,Transmitted Data Manipulation,Dataset/Ataques/Comandos/T1565.002-Transmitted_Data_Manipulation/,cerrado
 ATA027,Impact,T1561.002,Disk Structure Wipe,Dataset/Ataques/Comandos/T1561.002-Disk_Structure_Wipe/,cerrado
 ATA028,Collection,T1056.003,Web Portal Capture,Dataset/Ataques/Comandos/T1056.003-Web_Portal_Capture/,cerrado
+ATA029,Collection,T1005,Data from Local System,Dataset/Ataques/Comandos/T1005-Data_from_Local_System/,cerrado
+ATA030,Collection,T1560.001,Archive via Utility,Dataset/Ataques/Comandos/T1560.001-Archive_via_Utility/,cerrado
+ATA031,Impact,T1667,Email Bombing,Dataset/Ataques/Comandos/T1667-Email_Bombing/,cerrado
+ATA032,Impact,T1565.001,Stored Data Manipulation,Dataset/Ataques/Comandos/T1565.001-Stored_Data_Manipulation/,cerrado
+ATA033,Impact,T1491.001,Internal Defacement,Dataset/Ataques/Comandos/T1491.001-Internal_Defacement/,cerrado
+ATA034,Collection,T1560.003,Archive via Custom Method,Dataset/Ataques/Comandos/T1560.003-Archive_via_Custom_Method/,cerrado
+ATA035,Collection,T1056.004,Credential API Hooking,Dataset/Ataques/Comandos/T1056.004-Credential_API_Hooking/,review
+ATA036,Impact,T1565.003,Runtime Data Manipulation,Dataset/Ataques/Comandos/T1565.003-Runtime_Data_Manipulation/,cerrado
+ATA037,Impact,T1561.001,Disk Content Wipe,Dataset/Ataques/Comandos/T1561.001-Disk_Content_Wipe/,cerrado
+ATA038,Impact,T1529,System Shutdown/Reboot,Dataset/Ataques/Comandos/T1529-System_Shutdown_Reboot/,cerrado
+ATA039,Collection,T1039,Data from Network Shared Drive,Dataset/Ataques/Comandos/T1039-Data_from_Network_Shared_Drive/,cerrado
+ATA040,Collection,T1074.002,Remote Data Staging,Dataset/Ataques/Comandos/T1074.002-Remote_Data_Staging/,cerrado
+ATA041,Exfiltration,T1048.002,Asymmetric Encrypted Non-C2 Protocol,Dataset/Ataques/Comandos/T1048.002-Asymmetric_Encrypted_Non-C2/,cerrado
+ATA042,Exfiltration,T1048.003,Unencrypted Non-C2 Protocol,Dataset/Ataques/Comandos/T1048.003-Unencrypted_Non-C2/,cerrado
+ATA043,Exfiltration,T1567.004,Exfiltration Over Webhook,Dataset/Ataques/Comandos/T1567.004-Exfiltration_Over_Webhook/,cerrado

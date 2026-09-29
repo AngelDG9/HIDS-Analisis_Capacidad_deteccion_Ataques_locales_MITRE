@@ -1,0 +1,14 @@
+# ATA032_esperado.csv | ATA032 · T1565.001 Stored Data Manipulation | TFG HIDS · Fase 3 (ampliacion-2, tanda A)
+# Redactado el 2026-09-29 con los datos del paso 0, ANTES de ver ninguna alerta.
+# Gate humano: APROBADO 2026-09-29 (validación humana)
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+# Convencion H4: cada senal audit_exe se acompana de audit_cwd de la carpeta del ataque.
+# El objeto es un ACTIVO CONCRETO (ledger con integridad) en lab-legit (VIGILADO):
+#   las escrituras van por el watch -> AMBIGUA acotada por rule_id -> artefacto.
+# OJO con el `sed -i` de ATA006/T1565: alli era un fichero de datos generico; aqui
+#   el objeto declarado es el ledger de finanzas (misma herramienta, distinto activo).
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1565.001-S1,deteccion,audit_exe,/usr/bin/sed,Process Creation,T1565.001,manipulacion del ledger en reposo con sed -i (execve 80792)
+T1565.001-S2,deteccion,audit_cwd,/home/angel/lab-attack/ATA032/*,Process Creation,T1565.001,ancla H4 (cwd del ataque)
+T1565.001-A1,ambigua,rule_id,80790,File Creation,T1565.001,creacion de fichero bajo el watch de lab-legit (efecto del ataque)
+T1565.001-A2,ambigua,rule_id,80781,File Modification,T1565.001,escritura en ruta vigilada lab-legit (ledger; efecto del ataque)

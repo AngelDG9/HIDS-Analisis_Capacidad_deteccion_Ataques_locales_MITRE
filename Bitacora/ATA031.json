@@ -1,0 +1,80 @@
+{
+  "ata_id": "ATA031",
+  "tecnica": "T1667",
+  "tactica": "Impact",
+  "sistema": "linux",
+  "bloque": "fase-03-ampliacion-2",
+  "tanda": "A",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1667-Email_Bombing/",
+  "atomic": { "fuente": "custom", "nota": "saturacion de un Maildir SIMULADO por volumen: 25 entregas cp acotadas en lab-legit/Maildir/new; cota dura N<=50; sin MTA; sin sudo" },
+  "esperado_sha256": "53cce8b94362be74f18c616a5ffcc01f8b11df7c94840e112a119ab95fe35b89",
+  "ataque_sha256": "fb9670d743ac64dbdd5d6e6800db0a803b8c2b44c2dd0bfcec59da70fac887db",
+  "validacion_humana_esperado": "APROBADO 2026-09-29",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA031_logtest.txt",
+    "logtest_sha256": "ec5d6feeaccb417ba60afad524c62971031f5b2678035081182fe9de92c5c0bd",
+    "preflight": "Soporte/Ataques/c0/ATA031_preflight.md",
+    "preflight_sha256": "2f417f0e5e38987d1b0d38dfbb712289b34900ff11e22f1c6cc6f75c053c560a",
+    "resultado": "PASA (1 evento cp -> 80792 level 3; sin silenciador)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1, "t0": "2026-09-29T09:17:13Z", "t1": "2026-09-29T09:17:45Z", "duracion_s": 32, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA031_iter1-Detalle.csv",
+      "detalle_sha256": "40ae53a989519c8d4310d8e18147f2272729f6d4384d1b7ec878f540aa5b0ffe",
+      "detalle_raw_sha256": "6d9b2bbe497b89b05cc9faca79be51dcb0ae7262c8caca7e30954e8de57070e8",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA031_iter1-Audited.csv",
+      "audited_sha256": "e512670ec2e28e17e2ceb27e16b30dc2eb9cd7b83e78dd28197bd6b19ca70097",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA031_iter1-Revision.csv",
+      "revision_sha256": "d96de15d8aadf3399234ee90ef580f01023b4f25586d2015193e4bac50c04a28",
+      "conteos": { "filas": 1049, "deteccion": 25, "auto_ruido": 623, "ruido_conocido": 357, "dudosa": 0, "artefacto_ataque": 44 },
+      "rs": { "RS1": 14, "RS2": 1035, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 1055, "victima_linux": 1050, "otros_agentes_descartados": 5 },
+      "detecciones": { "alertas": 25, "rule_id_distintos": ["80792"], "esperadas": 25, "sorpresas": 0, "evidencia": "25x execve cp (80792) anclados al cwd; primera 09:17:15.231Z" },
+      "metrico_o1": "si", "metrico_o2": "1/1", "dudosas_resueltas": 27,
+      "efecto": { "mensajes_antes": 0, "mensajes_despues": 25, "delta_mensajes": 25, "tamano": "104K", "resultado": "EMAIL_BOMBING=OK" }
+    },
+    {
+      "iter": 2, "t0": "2026-09-29T09:21:09Z", "t1": "2026-09-29T09:21:41Z", "duracion_s": 32, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA031_iter2-Detalle.csv",
+      "detalle_sha256": "cb5a05bde5d934dfade5ac27733bd4a8f1960d4af1d250e172758a10bc01f501",
+      "detalle_raw_sha256": "99b2642a1d8d0b1c0d3542c8326b51b6771d88cf8f20865618fcd7b68d391b29",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA031_iter2-Audited.csv",
+      "audited_sha256": "19a4985f669d0ac768252bd8e1e5c7226437c36b5fd727596635b00983473caf",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA031_iter2-Revision.csv",
+      "revision_sha256": "ca4041b283e3c3903c0c236f278d5c94c4c7af01cac4c8d31d38fcd4ec745597",
+      "conteos": { "filas": 1046, "deteccion": 25, "auto_ruido": 619, "ruido_conocido": 358, "dudosa": 0, "artefacto_ataque": 44 },
+      "rs": { "RS1": 14, "RS2": 1032, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 1052, "victima_linux": 1047, "otros_agentes_descartados": 5 },
+      "detecciones": { "alertas": 25, "rule_id_distintos": ["80792"], "esperadas": 25, "sorpresas": 0, "evidencia": "25x execve cp (80792) anclados al cwd; primera 09:21:10.388Z" },
+      "metrico_o1": "si", "metrico_o2": "1/1", "dudosas_resueltas": 27,
+      "efecto": { "mensajes_antes": 0, "mensajes_despues": 25, "delta_mensajes": 25, "tamano": "104K", "resultado": "EMAIL_BOMBING=OK" }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-09-29", "filas": 54,
+    "veredicto": "artefacto (54 = 27/iter 80790 del watch del Maildir y sus 25 mensajes)",
+    "motivo": "54 = 80790 (creacion del Maildir simulado + 25 mensajes, 27/iter) = EFECTO del ataque -> artefacto (es el ataque, no es la deteccion declarada). Cero filas del ataque en ruido. PAM 5501/5502 -> ruido_conocido/baseline (no dudosa: el esperado declara rule_id).",
+    "revisor": "executor ampliacion-2 tanda A"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": { "criterio": "v2", "mismo_conjunto_rule_id_deteccion": true, "rule_ids_deteccion": ["80792"], "n1": 25, "n2": 25, "margen": 2, "criterio_recuento_ok": true, "sin_dudosas_sin_resolver": true, "auto_ruido_delta": 4, "ruido_conocido_delta": 1 },
+  "extraccion": { "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)", "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json", "aislamiento": "filtro a agent_name == victima-linux" },
+  "prueba_de_efecto": "el Maildir simulado pasa de 0 a 25 mensajes (delta=25), tamano 104K -> saturacion por volumen demostrada.",
+  "receptor": { "aplica": false, "nota": "no hay receptor de red" },
+  "hallazgos": [
+    "El volumen se ve por la repeticion del execve (25 alertas) y por el watch (creacion masiva); no hay regla especifica de bombardeo (R9).",
+    "Sin MTA local -> no hay capa syslog de correo (el plan lo contemplaba como 'posible'; no aplica).",
+    "Asimetria conocida: PAM 5501/5502 van a baseline (no a dudosa) porque el esperado declara rule_id (runbook 12.3)."
+  ],
+  "eventos": [
+    { "ts": "2026-09-29T09:17:13Z", "tipo": "t0", "detalle": "iter1 t0 (revert lab-listo + 90 s asentamiento)" },
+    { "ts": "2026-09-29T09:17:45Z", "tipo": "t1", "detalle": "iter1 t1 (tras scan FIM forzado)" },
+    { "ts": "2026-09-29T09:21:09Z", "tipo": "t0", "detalle": "iter2 t0" },
+    { "ts": "2026-09-29T09:21:41Z", "tipo": "t1", "detalle": "iter2 t1" },
+    { "ts": "2026-09-29T09:24:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (25/25, {80792}) -> iguales" }
+  ]
+}

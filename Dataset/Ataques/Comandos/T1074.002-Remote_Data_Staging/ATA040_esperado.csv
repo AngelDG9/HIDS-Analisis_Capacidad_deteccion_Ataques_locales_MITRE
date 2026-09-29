@@ -1,0 +1,14 @@
+# ATA040_esperado.csv | ATA040 · T1074.002 Remote Data Staging | TFG HIDS · Fase 3 (ampliacion-2, tanda C)
+# Redactado el 2026-09-29 con los datos del paso 0, ANTES de ver ninguna alerta.
+# Gate humano: APROBADO 2026-09-29 (validación humana)
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+# Convencion H4: cada senal audit_exe se acompana de audit_cwd de la carpeta del ataque.
+# PASO 0: mismo recurso compartido que ATA039 (daemon rsync del manager; no hay cliente
+#   NFS/SMB offline). Aqui se usa el modulo ESCRIBIBLE `incoming` para el STAGING REMOTO.
+#   El cliente es `rsync`; el EFECTO (datos copiados al servidor) NO es visible para el HIDS
+#   de host -> la prueba real es el sha256 coincidente en el recurso remoto del manager.
+#   NO se declaran senales ambigua: la semilla se escribe bajo lab-attack/ATA040 (pertenencia
+#   automatica -> artefacto_ataque).
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1074.002-S1,deteccion,audit_exe,rsync,Process Creation,T1074.002,cliente rsync que envia el material recolectado al recurso remoto (modulo incoming) del manager (execve 80792)
+T1074.002-S2,deteccion,audit_cwd,/home/angel/lab-attack/ATA040/*,Process Creation,T1074.002,ancla H4 (cwd del ataque)

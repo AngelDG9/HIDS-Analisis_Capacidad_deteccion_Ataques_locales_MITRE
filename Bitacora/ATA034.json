@@ -1,0 +1,76 @@
+{
+  "ata_id": "ATA034",
+  "tecnica": "T1560.003",
+  "tactica": "Collection",
+  "sistema": "linux",
+  "bloque": "fase-03-ampliacion-2",
+  "tanda": "B",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1560.003-Archive_via_Custom_Method/",
+  "atomic": { "fuente": "custom", "nota": "archivado por METODO PROPIO con builtins de bash (read/printf/redireccion) y contenedor casero 'ATA034-CUSTOM-ARCHIVE v1'; sin tar/zip/gzip ni binario externo EN EL BUCLE DE ARCHIVADO (ejecutado con PATH=/nonexistent); MATIZ: el arnes SI ejecuta coreutils de setup/evidencia (date/mkdir/cat/sha256sum...) -> esos execve son del ataque y caen en artefacto_ataque; sin sudo" },
+  "esperado_sha256": "a2f615624ba3631102e6454b0caef8559ad79fa7e7751dbbeb4e81d48eb7a763",
+  "ataque_sha256": "559f54ae22938e222c692b8718a6e4d8374ab4cb3156615e28d2520ca4d4259e",
+  "validacion_humana_esperado": "APROBADO 2026-09-29",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA034_logtest.txt",
+    "logtest_sha256": "fb6992bc11d0b4ae0fb6157f0ce93fcf39ecedffb66a84528f8c1cb0671bf247",
+    "preflight": "Soporte/Ataques/c0/ATA034_preflight.md",
+    "preflight_sha256": "f903b4b8ac21e6cc25e9d44211464d4b995cdcbcbff2e6e52f71eae82f619255",
+    "resultado": "PASA (1 evento shell_c0 -> 80792 level 3; el interprete SI alerta, pero es generico; sin silenciador)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1, "t0": "2026-09-29T10:09:13Z", "t1": "2026-09-29T10:09:50Z", "duracion_s": 37, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA034_iter1-Detalle.csv",
+      "detalle_sha256": "611eac0b83573d7cf595222a35f029f4e1636d41217f12009ff7ad5dad93e877",
+      "detalle_raw_sha256": "cb934b93a28c328aeef0aa82c9aa6000d0abaa945ad9efa995b96d99dfe7ba14",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA034_iter1-Audited.csv",
+      "audited_sha256": "7a5c8b0c1ab52c62ec5122bd53194685f3e3542d7b8b18efaf1a13afa1efda0b",
+      "revision": null,
+      "revision_sha256": null,
+      "conteos": { "filas": 769, "deteccion": 0, "auto_ruido": 617, "ruido_conocido": 125, "dudosa": 0, "artefacto_ataque": 27 },
+      "rs": { "RS1": 1, "RS2": 768, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 775, "victima_linux": 769, "otros_agentes_descartados": 6 },
+      "detecciones": { "alertas": 0, "rule_id_distintos": [], "esperadas": 0, "sorpresas": 0, "evidencia": "sin deteccion (la operacion de archivar con builtins no ejecuta binario; el arnes si ejecuta coreutils -> sus execve son del ataque y caen en artefacto_ataque)" },
+      "metrico_o1": "no", "metrico_o2": "n/a (0/0)", "dudosas_resueltas": 0,
+      "efecto": { "formato": "ATA034-CUSTOM-ARCHIVE v1", "reconstruidos_sha256_ok": "3/3", "archivado_sin_binario_externo": true, "resultado": "ARCHIVE_CUSTOM=OK" }
+    },
+    {
+      "iter": 2, "t0": "2026-09-29T10:14:11Z", "t1": "2026-09-29T10:14:44Z", "duracion_s": 33, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA034_iter2-Detalle.csv",
+      "detalle_sha256": "022c5ba706213220144390c9de3c5bd47a8b59d5a7ac69b748a6b178798538a5",
+      "detalle_raw_sha256": "9a28f9c0fca32ba37717f23b30afbf392c0156e85ec87a4c334de43b09d75a8a",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA034_iter2-Audited.csv",
+      "audited_sha256": "b946aba6c2f5acf3eaab210a1be1b43c20a61366a6ce9a7b78fc5bc43edef67d",
+      "revision": null,
+      "revision_sha256": null,
+      "conteos": { "filas": 921, "deteccion": 0, "auto_ruido": 605, "ruido_conocido": 287, "dudosa": 0, "artefacto_ataque": 29 },
+      "rs": { "RS1": 10, "RS2": 911, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 927, "victima_linux": 921, "otros_agentes_descartados": 6 },
+      "detecciones": { "alertas": 0, "rule_id_distintos": [], "esperadas": 0, "sorpresas": 0, "evidencia": "sin deteccion (la operacion de archivar con builtins no ejecuta binario; el arnes si ejecuta coreutils -> sus execve son del ataque y caen en artefacto_ataque)" },
+      "metrico_o1": "no", "metrico_o2": "n/a (0/0)", "dudosas_resueltas": 0,
+      "efecto": { "formato": "ATA034-CUSTOM-ARCHIVE v1", "reconstruidos_sha256_ok": "3/3", "archivado_sin_binario_externo": true, "resultado": "ARCHIVE_CUSTOM=OK" }
+    }
+  ],
+  "revision_global": { "fecha": "2026-09-29", "filas": 0, "veredicto": "sin dudosas", "motivo": "dudosa=0 en las 2 ventanas (no hubo filas 80790/80781: las escrituras del ataque caen en lab-attack, no bajo el watch -w)", "revisor": "executor ampliacion-2 tanda B" },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": { "criterio": "v2", "mismo_conjunto_rule_id_deteccion": true, "rule_ids_deteccion": [], "n1": 0, "n2": 0, "margen": 2, "criterio_recuento_ok": true, "sin_dudosas_sin_resolver": true, "auto_ruido_delta": 12, "ruido_conocido_delta": 162 },
+  "extraccion": { "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)", "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json", "aislamiento": "filtro a agent_name == victima-linux" },
+  "prueba_de_efecto": "el .arc tiene formato propio (ATA034-CUSTOM-ARCHIVE v1) y la reconstruccion reproduce los 3 ficheros con sha256 identico (3/3); el BUCLE DE ARCHIVADO corrio con PATH=/nonexistent -> ninguna herramienta externa implicada en la operacion de archivar (el arnes de setup/evidencia si ejecuta coreutils, lo que genera execve).",
+  "receptor": { "aplica": false, "nota": "no hay receptor de red" },
+  "hallazgos": [
+    "Punto ciego por AUSENCIA de telemetria de la OPERACION: el metodo propio (builtins) no ejecuta binario -> el bucle de archivado no deja rastro (distinto del silenciamiento 92600 de ATA013). MATIZ: el arnes SI ejecuta coreutils (date/mkdir/cat/sha256sum...) -> esos execve son del ataque y caen en artefacto_ataque.",
+    "El interprete (bash) SI alerta por 80792, pero es generico: no identifica la tecnica y no se declara como deteccion (queda artefacto_ataque).",
+    "La conclusion DEPENDE de la implementacion: con binario propio compilado -> execve -> detectable (como ATA030); con python3 -> suprimido por 92600 (ATA013). No es 'la tecnica es indetectable': es que el HIDS no distingue el archivado casero dentro de un interprete.",
+    "Trio de archivo completo: utility (ATA030, detectado) / library (ATA013, no por 92600) / custom (ATA034, no por ausencia de telemetria de la operacion de archivar)."
+  ],
+  "eventos": [
+    { "ts": "2026-09-29T10:09:13Z", "tipo": "t0", "detalle": "iter1 t0 (revert lab-listo + asentamiento ~95 s)" },
+    { "ts": "2026-09-29T10:09:50Z", "tipo": "t1", "detalle": "iter1 t1 (tras scan FIM forzado)" },
+    { "ts": "2026-09-29T10:14:11Z", "tipo": "t0", "detalle": "iter2 t0" },
+    { "ts": "2026-09-29T10:14:44Z", "tipo": "t1", "detalle": "iter2 t1" },
+    { "ts": "2026-09-29T10:16:00Z", "tipo": "cierre", "detalle": "criterio v2: sin deteccion en ambas (∅==∅) -> iguales" }
+  ]
+}

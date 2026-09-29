@@ -12,7 +12,7 @@
 Fase 0 — Arranque del proyecto                         [~2 días]   ✔ hecho
 Fase 1 — Corpus MITRE (F-01)                           [~1 semana]   ✔ hecho
 Fase 2 — Laboratorio Wazuh (F-02)                      [~1 semana]   ✔ hecho
-Fase 3 — Ataques y detección (F-03)                    [~2 semanas mes 1, escalable mes 2]   🔶 EN CURSO (28 técnicas · 27 detectadas)
+Fase 3 — Ataques y detección (F-03)                    [~2 semanas mes 1, escalable mes 2]   🔶 EN CURSO (43 técnicas · 41 detectadas)
 Fase 4 — Robustez y rendimiento (η)                    [~1 semana]
 Fase 5 — Memoria y anexos (F-04)                       [~2-3 semanas]
 ```
@@ -96,13 +96,16 @@ documentados. Verificación **PASA**; detalle en **`_fases/fase-02/change-doc.md
 | 3.5 🔶 | **Ampliar el corpus por rondas** (rondas de **15**, en **tandas de 5**; factibilidad Linux sin NAT). | [AUTO] + [HUMANO] |
 | 3.6 | **Bloque de EVASIÓN** (2ª pasada, versiones **disfrazadas**) — **cuando la cobertura P1 esté cerrada**. | [AUTO] + [HUMANO] |
 
-**🔶 EN CURSO (2026-09-29).** **28 técnicas** ejecutadas (**56 ventanas**) → **27 DETECTADAS / 1 NO**
-(`ATA013/T1560.002` — **punto ciego de fábrica**: la regla `92600` suprime el `execve` de `python3`; el
-ataque **sí** dejó 6 rastros). Métrica **congelada** (SÍ/NO + `rule_id` + acciones `k/m`); `dudosa=0`.
-**Rondas:** 1ª = 13 técnicas (`fase-03-escalado`) · 2ª = **15 técnicas** (`fase-03-ampliacion`, 3 tandas) ·
-siguientes = **rondas de 15** hasta cubrir las **~58 técnicas P1 con Linux**.
-**Pendiente:** seguir ampliando (~**30** P1-Linux restantes) → **después, la EVASIÓN** → Windows →
-**Fase 4** (precio de la detección) → **Fase 5** (memoria). *(El total host-eligible es **625**: P1 89 · P2 459 · P3 77; de las 89 P1, **71 citan Linux**.)*
+**🔶 EN CURSO (2026-09-29).** **43 técnicas** ejecutadas (**86 ventanas**) → **41 DETECTADAS / 2 NO**
+(`ATA013/T1560.002` — regla `92600` suprime el `execve` de `python3`— y **`ATA034/T1560.003`** — método propio
+con *builtins*: sin `execve` de la operación). **⭐ Hallazgo:** la *misma* técnica de archivar es **detectada**
+con utilidad, **suprimida** con librería y **sin telemetría** con método propio → **lo que decide es la
+implementación**. Métrica **congelada**; `dudosa=0`. Por táctica: **Impact 19/19 · Exfiltration 10/10 ·
+Collection 12/14**.
+**Rondas:** 1ª = 13 (`fase-03-escalado`) · 2ª = **15** (`fase-03-ampliacion`) · 3ª = **15** (`fase-03-ampliacion-2`).
+**Pendiente (R13):** la **piscina P1-Linux está casi agotada** (~29 restantes, muchas no factibles sin NAT) →
+**decidir: abrir P2 o cerrar P1** → después, **EVASIÓN** → **Windows** → **Fase 4** (precio de la detección) →
+**Fase 5** (memoria). *(Host-eligible total: **625** = P1 89 · P2 459 · P3 77; de las 89 P1, **~72 citan Linux**.)*
 
 **DoD:** ✔ corpus cerrado con filas en `ATA_index.csv`, CSV por ataque y primer balance de
 detección de Wazuh.

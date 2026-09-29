@@ -1,0 +1,2 @@
+# sink_http arrancado 2026-09-29T12:05:56Z bind=192.168.65.1 port=9090
+2026-09-29T12:06:00Z POST /hook from=192.168.65.129 len=179 sha256=1b28889aee458c4f2c8a8053220383815a1ca5347be73e731ffdaee3ffdbe997 content_type=application/json

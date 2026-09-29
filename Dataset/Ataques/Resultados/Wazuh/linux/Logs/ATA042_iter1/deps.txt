@@ -1,0 +1,16 @@
+--- deps ---
+rsync=/usr/bin/rsync
+openssl=/usr/bin/openssl
+curl=/usr/bin/curl
+nc.openbsd=/usr/bin/nc.openbsd
+wget=/usr/bin/wget
+sha256sum=/usr/bin/sha256sum
+stat=/usr/bin/stat
+awk=/usr/bin/awk
+find=/usr/bin/find
+criteria=NO
+--- sha256 ataque ---
+ee9e427b29810e9385b06cf4b1210e11d8299bacca0989833302faa8c1f8e856  ATA042_ataque.sh
+--- host ---
+victima-linux
+2026-09-29T12:00:40Z

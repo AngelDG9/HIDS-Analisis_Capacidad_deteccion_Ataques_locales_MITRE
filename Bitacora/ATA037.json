@@ -1,0 +1,81 @@
+{
+  "ata_id": "ATA037",
+  "tecnica": "T1561.001",
+  "tactica": "Impact",
+  "sistema": "linux",
+  "bloque": "fase-03-ampliacion-2",
+  "tanda": "B",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1561.001-Disk_Content_Wipe/",
+  "atomic": { "fuente": "custom", "nota": "contenido de una IMAGEN DE FICHERO desechable (lab-attack/ATA037/disk.img): dd ceros + mkfs.ext4 (mke2fs) + mount loop + escribir dato + dd urandom in place (wipe de CONTENIDO) + umount/remount; SOLO la imagen (guardarrail duro: regular file bajo lab-attack/ATA037, aborta con /dev/ o si no es regular). sudo solo para mount/umount/losetup." },
+  "esperado_sha256": "1177844722b5482a1a893f04953506b658a59a983d0aaf9f1fe2b0f7fc3a3755",
+  "ataque_sha256": "4e11e9a473f4d50ac83dc761e4afe51bc530ca16e995c84a40736d3c0e66d8ae",
+  "validacion_humana_esperado": "APROBADO 2026-09-29",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA037_logtest.txt",
+    "logtest_sha256": "18321e9b11ab46f5c6d3922714858339adcc6d4411ad544703116ee96ac7c3c0",
+    "preflight": "Soporte/Ataques/c0/ATA037_preflight.md",
+    "preflight_sha256": "ea027de313324aa32fb4482086ea4581f5f2c5ee113a2f190cd748aa2b58554e",
+    "resultado": "PASA (5 eventos dd/mke2fs/mount/umount/losetup -> 80792 level 3; binario real mkfs.ext4->/usr/sbin/mke2fs; sin silenciador)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1, "t0": "2026-09-29T10:44:19Z", "t1": "2026-09-29T10:44:51Z", "duracion_s": 32, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA037_iter1-Detalle.csv",
+      "detalle_sha256": "401e559041d4b027e5d3ae998f0ff00cbf6cc4bc43d7ebed0ce78604a9dca3b9",
+      "detalle_raw_sha256": "992e42b8944c48e9141a063f0c1b8fd770551c21332aab8e681adff74d895212",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA037_iter1-Audited.csv",
+      "audited_sha256": "0052db6fcb85c66c44143594b6767094ae5f6ada722d1849b34942aa26a38589",
+      "revision": null,
+      "revision_sha256": null,
+      "conteos": { "filas": 1052, "deteccion": 14, "auto_ruido": 612, "ruido_conocido": 393, "dudosa": 0, "artefacto_ataque": 33 },
+      "rs": { "RS1": 37, "RS2": 1015, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 1058, "victima_linux": 1052, "otros_agentes_descartados": 6 },
+      "detecciones": { "alertas": 14, "rule_id_distintos": ["80792"], "esperadas": 14, "sorpresas": 0, "evidencia": "5 herramientas de disco (dd x3, mke2fs, mount x2, umount x2, losetup x6) ancladas al cwd; primera 10:44:20Z dd" },
+      "metrico_o1": "si", "metrico_o2": "5/5", "dudosas_resueltas": 0,
+      "efecto": { "sha_dato_antes": "bb9f8df61474d25e71fa00722318cd387396ca1736605e1248821cc0de3d3af8", "sha_dato_despues": "20c32ac7960a741d98c234b0aa34683ce42e8b1c1143042150dfed87eec5f46d", "estructura_tras_wipe": "ext4", "remonta": true, "loop_residual": 0, "resultado": "DISK_CONTENT_WIPE=OK" }
+    },
+    {
+      "iter": 2, "t0": "2026-09-29T10:48:38Z", "t1": "2026-09-29T10:49:11Z", "duracion_s": 33, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA037_iter2-Detalle.csv",
+      "detalle_sha256": "b07ddfa7109424d90cd884b89302981849cf8bc6f565e40e7a84acaf9d856263",
+      "detalle_raw_sha256": "dff2fe8dc068717085f195dbfacd55b1287f2bca812913824492735d96cf4d68",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA037_iter2-Audited.csv",
+      "audited_sha256": "23247e687fbf527c2384e3aa9ddd5a2ed82c23c318b70ca96eb827d3476f89cf",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA037_iter2-Revision.csv",
+      "revision_sha256": "81c7d6997bf00da73da2930089feaefa28610f6dbb55f6c9c9a0e2d6790bb4ff",
+      "conteos": { "filas": 1049, "deteccion": 13, "auto_ruido": 607, "ruido_conocido": 392, "dudosa": 0, "artefacto_ataque": 37 },
+      "rs": { "RS1": 37, "RS2": 1012, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 1056, "victima_linux": 1049, "otros_agentes_descartados": 7 },
+      "detecciones": { "alertas": 13, "rule_id_distintos": ["80792"], "esperadas": 13, "sorpresas": 0, "evidencia": "5 herramientas de disco (dd x3, mke2fs, mount x2, umount x2, losetup x5) ancladas al cwd; primera 10:48:39Z dd" },
+      "metrico_o1": "si", "metrico_o2": "5/5", "dudosas_resueltas": 1,
+      "efecto": { "sha_dato_antes": "bb9f8df61474d25e71fa00722318cd387396ca1736605e1248821cc0de3d3af8", "sha_dato_despues": "49d8997f14e91ef13a6c8cd7f2adf3181e9fe849a02fecb61102640854a0a27d", "estructura_tras_wipe": "ext4", "remonta": true, "loop_residual": 0, "resultado": "DISK_CONTENT_WIPE=OK" }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-09-29", "filas": 1,
+    "veredicto": "artefacto (1)",
+    "motivo": "1 = 80792 /usr/sbin/losetup SIN cwd (setup loop del ataque): es el ataque (crea el loop sobre la imagen) pero NO la deteccion declarada anclada -> artefacto. Cero filas del ataque en ruido.",
+    "revisor": "executor ampliacion-2 tanda B"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": { "criterio": "v2", "mismo_conjunto_rule_id_deteccion": true, "rule_ids_deteccion": ["80792"], "n1": 14, "n2": 13, "margen": 2, "criterio_recuento_ok": true, "sin_dudosas_sin_resolver": true, "auto_ruido_delta": 5, "ruido_conocido_delta": 1 },
+  "extraccion": { "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)", "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json", "aislamiento": "filtro a agent_name == victima-linux" },
+  "prueba_de_efecto": "el CONTENIDO del dato cambia (sha256 antes != despues) y la ESTRUCTURA sigue intacta: file -s dice ext4, blkid reconoce y la imagen SIGUE montando tras el wipe; 0 loops residuales. Contraste con ATA027/T1561.002 (estructura destruida, ya no montaba).",
+  "receptor": { "aplica": false, "nota": "no hay receptor de red" },
+  "guardarrailes": { "solo_imagen_fichero": true, "tipo_imagen": "regular file", "dev_en_ruta": false, "loop_residual": 0, "montajes_residuales": 0 },
+  "hallazgos": [
+    "Capa local (execve): el HIDS ve las herramientas de disco, no el borrado como tal.",
+    "Pareja de disco: T1561.001 (contenido, estructura intacta) vs T1561.002/ATA027 (estructura destruida) -> misma deteccion (80792), distinto efecto.",
+    "audit_exe con el binario REAL: mkfs.ext4 -> /usr/sbin/mke2fs (declarado como REAL; evita perder O2 como en ATA027)."
+  ],
+  "eventos": [
+    { "ts": "2026-09-29T10:44:19Z", "tipo": "t0", "detalle": "iter1 t0 (revert lab-listo + asentamiento)" },
+    { "ts": "2026-09-29T10:44:51Z", "tipo": "t1", "detalle": "iter1 t1" },
+    { "ts": "2026-09-29T10:48:38Z", "tipo": "t0", "detalle": "iter2 t0" },
+    { "ts": "2026-09-29T10:49:11Z", "tipo": "t1", "detalle": "iter2 t1" },
+    { "ts": "2026-09-29T10:51:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (13/14, {80792}) -> iguales" }
+  ]
+}

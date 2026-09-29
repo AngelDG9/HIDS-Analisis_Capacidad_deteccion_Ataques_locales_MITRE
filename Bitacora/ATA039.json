@@ -1,0 +1,81 @@
+{
+  "ata_id": "ATA039",
+  "tecnica": "T1039",
+  "tactica": "Collection",
+  "sistema": "linux",
+  "bloque": "fase-03-ampliacion-2",
+  "tanda": "C",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1039-Data_from_Network_Shared_Drive/",
+  "atomic": { "fuente": "custom", "nota": "recoleccion de un recurso compartido de red LOCAL (servidor de ficheros = manager) via daemon rsync (rsync://192.168.65.128:9873/share, solo VMnet1). Sin cliente NFS/SMB offline -> no se monta FS; 'montar'=arrancar daemon, 'desmontar'=pararlo y borrar ~/lab-share. Guardarrail: el recurso debe ser 192.168.65.128:9873 y el destino bajo lab-attack/ATA039" },
+  "esperado_sha256": "9a0421f602585efab2f56470233de217e3db31f794e3d1c75ba01253ad8a8261",
+  "ataque_sha256": "4b8724645a38d5b6e51c58ec7ec824dbf2971115bd5596033b52fd9185e6c8c5",
+  "validacion_humana_esperado": "APROBADO 2026-09-29",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA039_logtest.txt",
+    "logtest_sha256": "52fc71ff52517822a3c40eb95ca3a41076a71d287e3361bd1738368048ed86d6",
+    "preflight": "Soporte/Ataques/c0/ATA039_preflight.md",
+    "preflight_sha256": "7ccfc01deac6bb98ce13322bbc16b5986f4e5f19b90b4d7e65a5d9a6383bc9b9",
+    "resultado": "PASA (1 evento /usr/bin/rsync -> 80792 level 3; sin silenciador de fabrica)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1, "t0": "2026-09-29T11:42:42Z", "t1": "2026-09-29T11:43:15Z", "duracion_s": 33, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA039_iter1-Detalle.csv",
+      "detalle_sha256": "7e8136299d03d3f8c080068718ed03f1245b8a24ffee4c1122b30256d8bc7cd2",
+      "detalle_raw_sha256": "fcbba586571aed3f03177b288f667719f6c0107a16098f575759d252a07a0a30",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA039_iter1-Audited.csv",
+      "audited_sha256": "9b4fe1bb7d87e4ec89ef328401c83482e7e5d4f81e27c959ca3305a574695d54",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA039_iter1-Revision.csv",
+      "revision_sha256": "122f04b1dccd9752d637792f11079859039e2312b57b7266bfa7db0c66e10245",
+      "conteos": { "filas": 943, "deteccion": 3, "auto_ruido": 613, "ruido_conocido": 306, "dudosa": 0, "artefacto_ataque": 21 },
+      "rs": { "RS1": 10, "RS2": 933, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 949, "victima_linux": 942, "otros_agentes_descartados": 7 },
+      "detecciones": { "alertas": 3, "rule_id_distintos": ["80792"], "esperadas": 1, "sorpresas": 0, "evidencia": "80792 execve /usr/bin/rsync (S1, anclado) 11:42:44.137Z; 3 ocurrencias (listado + recoleccion)" },
+      "metrico_o1": "si", "metrico_o2": "1/1", "dudosas_resueltas": 9,
+      "efecto": { "transporte": "rsync daemon", "ficheros": 2, "sha256_origen_manager": ["2ad637b8797a4c6e22a5da27f698f31c9da4088367df78a795414d1a6721d9e6", "b5c25b1a11f3e25998ed228122476a0352b894f14221cc9a94257705601a810d"], "coincide": true, "resultado": "RECOLECCION=OK (sha256 local == sha256 del recurso remoto)" }
+    },
+    {
+      "iter": 2, "t0": "2026-09-29T11:46:41Z", "t1": "2026-09-29T11:47:13Z", "duracion_s": 32, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA039_iter2-Detalle.csv",
+      "detalle_sha256": "ee929b5580f139aab2a5721e019ac95b019f5c9399d374163a5c0585dcc0e231",
+      "detalle_raw_sha256": "afd465211850cb6bc607b97e8e9e40c068d5992376519dab3e7666e2f510db6c",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA039_iter2-Audited.csv",
+      "audited_sha256": "73a97d1f37024af7de3cad20d7fc0daeb03b60efd08845400c102774aff5564e",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA039_iter2-Revision.csv",
+      "revision_sha256": "817a8c48b25c79633e6331133cfd246f3a959d8e1634b621ffa3a04941f64463",
+      "conteos": { "filas": 1107, "deteccion": 3, "auto_ruido": 623, "ruido_conocido": 460, "dudosa": 0, "artefacto_ataque": 21 },
+      "rs": { "RS1": 1, "RS2": 1106, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 1113, "victima_linux": 1106, "otros_agentes_descartados": 7 },
+      "detecciones": { "alertas": 3, "rule_id_distintos": ["80792"], "esperadas": 1, "sorpresas": 0, "evidencia": "80792 execve /usr/bin/rsync (S1, anclado) 11:46:43.541Z; 3 ocurrencias" },
+      "metrico_o1": "si", "metrico_o2": "1/1", "dudosas_resueltas": 3,
+      "efecto": { "transporte": "rsync daemon", "ficheros": 2, "sha256_origen_manager": ["2ad637b8797a4c6e22a5da27f698f31c9da4088367df78a795414d1a6721d9e6", "b5c25b1a11f3e25998ed228122476a0352b894f14221cc9a94257705601a810d"], "coincide": true, "resultado": "RECOLECCION=OK (sha256 local == sha256 del recurso remoto)" }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-09-29", "filas": 12,
+    "veredicto": "artefacto (4: 80791 watch 'Deleted' audit_exe=rsync, huella del ataque) + ruido (8: PAM 5501/5502 del login del operador)",
+    "motivo": "iter1: 9 filas (2x 80791 -> artefacto; 7 PAM -> ruido); iter2: 3 filas (2x 80791 -> artefacto; 1 PAM -> ruido). Criterio ratificado: login del operador = ruido. Cero filas del ataque en ruido.",
+    "revisor": "executor ampliacion-2 tanda C"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": { "criterio": "v2", "mismo_conjunto_rule_id_deteccion": true, "rule_ids_deteccion": ["80792"], "n1": 3, "n2": 3, "margen": 2, "criterio_recuento_ok": true, "sin_dudosas_sin_resolver": true, "auto_ruido_delta": 10, "ruido_conocido_delta": 154 },
+  "extraccion": { "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)", "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json", "aislamiento": "filtro a agent_name == victima-linux" },
+  "prueba_de_efecto": "recoleccion del recurso compartido: el sha256 de los ficheros copiados en la victima coincide con el del recurso en el manager (finanzas/ventas_2026.csv 2ad637b8..., rrhh/nominas_2026.csv b5c25b1a...). Sin NAT; daemon rsync local",
+  "receptor": { "aplica": false, "nota": "no usa receptor HTTP; usa el recurso compartido (daemon rsync del manager, puerto 9873)" },
+  "guardarrailes": { "destino_lab": true, "sin_montaje_fs": "declarado (no hay cliente NFS/SMB offline)", "datos_juguete": true },
+  "hallazgos": [
+    "El recurso compartido se sirve con el daemon rsync del manager (sin cliente NFS/SMB offline disponible).",
+    "El HIDS de host ve el PROCESO cliente (rsync), no la red; la prueba es el sha256 coincidente.",
+    "Leer no deja rastro (auditd -p wa): la deteccion es el execve del lector."
+  ],
+  "eventos": [
+    { "ts": "2026-09-29T11:42:42Z", "tipo": "t0", "detalle": "iter1 t0 (revert lab-listo + 90 s asentamiento; daemon rsync levantado antes)" },
+    { "ts": "2026-09-29T11:43:15Z", "tipo": "t1", "detalle": "iter1 t1 (tras scan FIM forzado)" },
+    { "ts": "2026-09-29T11:46:41Z", "tipo": "t0", "detalle": "iter2 t0" },
+    { "ts": "2026-09-29T11:47:13Z", "tipo": "t1", "detalle": "iter2 t1" },
+    { "ts": "2026-09-29T12:20:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (3/3, {80792}) -> iguales" }
+  ]
+}

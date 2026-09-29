@@ -1,0 +1,13 @@
+# ATA031_esperado.csv | ATA031 · T1667 Email Bombing | TFG HIDS · Fase 3 (ampliacion-2, tanda A)
+# Redactado el 2026-09-29 con los datos del paso 0, ANTES de ver ninguna alerta.
+# Gate humano: APROBADO 2026-09-29 (validación humana)
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+# Convencion H4: cada senal audit_exe se acompana de audit_cwd de la carpeta del ataque.
+# El buzon es un Maildir SIMULADO en lab-legit (VIGILADO): las entregas por VOLUMEN
+#   son escrituras -> watch (AMBIGUA acotada por rule_id) -> dudosa -> artefacto.
+# NO hay MTA local: no se espera syslog de MTA (declarado en README §5).
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1667-S1,deteccion,audit_exe,/usr/bin/cp,Process Creation,T1667,entrega de cada mensaje del bombardeo (execve 80792)
+T1667-S2,deteccion,audit_cwd,/home/angel/lab-attack/ATA031/*,Process Creation,T1667,ancla H4 (cwd del ataque)
+T1667-A1,ambigua,rule_id,80790,File Creation,T1667,creacion masiva de mensajes bajo el watch de lab-legit (efecto del ataque)
+T1667-A2,ambigua,rule_id,80781,File Modification,T1667,escritura en ruta vigilada lab-legit (efecto del ataque)

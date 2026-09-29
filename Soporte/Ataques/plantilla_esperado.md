@@ -76,10 +76,17 @@ formato** (no un ataque ejecutado). Muestra la convención `audit_exe` + `audit_
 senal_id,tipo,campo,patron,dato_componente,tecnica,nota
 T1486-S1,deteccion,audit_exe,openssl,Process Creation,T1486,herramienta de cifrado
 T1486-S2,deteccion,audit_cwd,/home/angel/lab-attack/ATA001/*,Process Creation,T1486,la senal de exe queda anclada al cwd del ataque
-T1486-S3,deteccion,rule_id,80790,File Creation,T1486,regla conocida: la senal gana al catalogo
+T1486-S3,deteccion,rule_id,80782,File Creation,T1486,creacion bajo watch -> 80782 (verificado en el corpus); la senal gana al catalogo
 T1486-S4,deteccion,audit_key,lab-attack*,File Modification,T1486,watch key del directorio del ataque
 T1486-A1,ambigua,syscheck_path,/home/angel/lab-attack/*,File Modification,T1486,FIM del dir del ataque (puede ser legitimo)
 ```
+
+> **⚠️ Corrección (2026-09-29, verificado en el corpus):** la **creación** de un fichero dentro de la
+> carpeta del ataque **no** llega como `80790` (*Audit: Created*), sino como **`80782`**
+> (*Audit: Watch - Write access*); según el caso pueden aparecer también **`80780`/`80781`/`80791`**.
+> Declarar `80790` como señal de creación produce **señales muertas** (nunca casan): **los próximos
+> `ATA<NNN>_esperado.csv` deben usar `80782`** para la creación vigilada del `.arc`/artefacto. Los
+> `esperado` ya firmados **no se reescriben** (§5, regla 4).
 
 ## 5. Reglas de oro
 

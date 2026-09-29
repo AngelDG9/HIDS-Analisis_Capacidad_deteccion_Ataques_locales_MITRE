@@ -1,0 +1,5 @@
+ata=ATA038
+host=victima-linux
+uptime_antes=up 2 minutes
+boot_id_antes=bdd0155b-c10a-499d-b372-16bb1a758f2f
+t0=2026-09-29T10:54:50Z

@@ -1,0 +1,12 @@
+ATA033 · T1491.001 Internal Defacement (cp sobre webroot interno) — custom
+T0=2026-09-29T09:34:26Z
+--- ANTES (sha256) ---
+667f1dd99608dcb65c674d3737703a05e70f51e46aa55f3fe10fdc06c3ffb49f
+--- DESPUES (sha256) ---
+3bab3a83873cb4207c66108e55ca9eafa8157297081145478e8ec39c3920def6
+--- cabecera del fichero servido ---
+<!doctype html>
+<html lang="es">
+<head>
+DEFACEMENT=OK (webroot interno reescrito: sha256 antes != despues; marcador presente)
+T1_LOCAL=2026-09-29T09:34:27Z

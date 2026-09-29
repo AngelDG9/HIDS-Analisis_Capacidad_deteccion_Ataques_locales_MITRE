@@ -1,0 +1,5 @@
+host=victima-linux
+uptime_despues=up 4 minutes
+boot_id_despues=db1dae2f-b9fa-40e4-84e9-f0b4bad5bea8
+wazuh_agent=active
+t1=T1=2026-09-29T10:58:15Z

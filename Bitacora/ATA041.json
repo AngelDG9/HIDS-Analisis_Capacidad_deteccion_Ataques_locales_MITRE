@@ -1,0 +1,81 @@
+{
+  "ata_id": "ATA041",
+  "tecnica": "T1048.002",
+  "tactica": "Exfiltration",
+  "sistema": "linux",
+  "bloque": "fase-03-ampliacion-2",
+  "tanda": "C",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1048.002-Asymmetric_Encrypted_Non-C2/",
+  "atomic": { "fuente": "custom", "nota": "exfiltracion con cifrado ASIMETRICO real: par RSA EFIMERO (openssl genpkey) + pkeyutl -encrypt + envio HTTP del blob cifrado (curl) + pkeyutl -decrypt (round-trip). Distinto de ATA008 (wget POST sin cifrar) y ATA019 (cifrado simetrico por TCP). Claves efimeras de juguete; cero credenciales reales" },
+  "esperado_sha256": "8fe608a68195898455f5ca11d1d8114a57ddb3bf7b02018a725875d7a4024fbe",
+  "ataque_sha256": "bedfd720bcd65168338bd416191a7cc65d3a9b5811f38f7df1616ac91584a990",
+  "validacion_humana_esperado": "APROBADO 2026-09-29",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA041_logtest.txt",
+    "logtest_sha256": "6366418df437668bc410822560c779ad0a94627554ac5cda59aef461f82b1667",
+    "preflight": "Soporte/Ataques/c0/ATA041_preflight.md",
+    "preflight_sha256": "72922dbbbc9bcabece8310dd00d1a3259bf7fe110add7a985d41fe0d4248df69",
+    "resultado": "PASA (2 eventos /usr/bin/openssl y /usr/bin/curl -> 80792 level 3; sin silenciador de fabrica)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1, "t0": "2026-09-29T11:55:23Z", "t1": "2026-09-29T11:55:55Z", "duracion_s": 32, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA041_iter1-Detalle.csv",
+      "detalle_sha256": "40b02c5a154f2714184070279eb0e94d5bb4820290dc81453f065d210f088cd2",
+      "detalle_raw_sha256": "96b2afd879c3b5facd96df64e00f1699953acc318ebcc59c8c8e84ce4ca9bb92",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA041_iter1-Audited.csv",
+      "audited_sha256": "2c5d14b903523a703ca40a6749286d13d0eacbe7d1305884ddadbb4136709eb8",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA041_iter1-Revision.csv",
+      "revision_sha256": "5fa005dc7b886b6fd4f66ffaaf04bbd0da39ec49918608b0933535e5804caf2a",
+      "conteos": { "filas": 1108, "deteccion": 5, "auto_ruido": 625, "ruido_conocido": 464, "dudosa": 0, "artefacto_ataque": 14 },
+      "rs": { "RS1": 4, "RS2": 1104, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 1114, "victima_linux": 1107, "otros_agentes_descartados": 7 },
+      "detecciones": { "alertas": 5, "rule_id_distintos": ["80792"], "esperadas": 2, "sorpresas": 0, "evidencia": "80792 openssl x4 (genpkey, pubout, encrypt, decrypt) 11:55:25.606Z.. + 80792 curl x1 (POST /exfil/ATA041) 11:55:25.613Z; anclados al cwd" },
+      "metrico_o1": "si", "metrico_o2": "2/2", "dudosas_resueltas": 3,
+      "efecto": { "sink_log": "Dataset/Ataques/Resultados/Wazuh/linux/Logs/ATA041_iter1/sink.log", "sink_log_sha256": "6d222519cc28dab3bfab39d6b5718aa90e84a6a88f8bb65a2fdd7c7c8ea6f886", "transporte": "HTTP", "from": "192.168.65.129", "len": 256, "sha256_enviado_cifrado": "a3f7d8b41b51dc39a98a760636a8c47145f02744e1b181b724a4f2610028ab98", "sha256_sink": "a3f7d8b41b51dc39a98a760636a8c47145f02744e1b181b724a4f2610028ab98", "sha256_original": "69ae035970a4663b3a45bbe0c24adc33affa9b0feac41d7273260cf94520b854", "roundtrip_ok": true, "coincide": true }
+    },
+    {
+      "iter": 2, "t0": "2026-09-29T11:58:02Z", "t1": "2026-09-29T11:58:35Z", "duracion_s": 33, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA041_iter2-Detalle.csv",
+      "detalle_sha256": "f9f8904e01debd0ae20dcc81ab998bb175ee1144ebe60a34b20b52895924d085",
+      "detalle_raw_sha256": "40ab6f96da94259e1cb5916f98fcbabb7d5a32405266ea3e08fe6a7a76651da5",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA041_iter2-Audited.csv",
+      "audited_sha256": "4d16b393525b3bdb81182433680b051f41039f0b32865238f86d9f3f9fa3e85f",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA041_iter2-Revision.csv",
+      "revision_sha256": "19028e1166d14c443a0a428b461fb49cf422e6cb0f78ed00bcefd391c9fdb919",
+      "conteos": { "filas": 1099, "deteccion": 5, "auto_ruido": 612, "ruido_conocido": 467, "dudosa": 0, "artefacto_ataque": 15 },
+      "rs": { "RS1": 7, "RS2": 1092, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 1105, "victima_linux": 1098, "otros_agentes_descartados": 7 },
+      "detecciones": { "alertas": 5, "rule_id_distintos": ["80792"], "esperadas": 2, "sorpresas": 0, "evidencia": "80792 openssl x4 11:58:05.007Z.. + 80792 curl x1 11:58:05.016Z; anclados al cwd" },
+      "metrico_o1": "si", "metrico_o2": "2/2", "dudosas_resueltas": 5,
+      "efecto": { "sink_log": "Dataset/Ataques/Resultados/Wazuh/linux/Logs/ATA041_iter2/sink.log", "sink_log_sha256": "4a150a3bcf059e9041c560979f4a982836640c02601cb37bb77c67c8682b0027", "transporte": "HTTP", "from": "192.168.65.129", "len": 256, "sha256_enviado_cifrado": "1c8a32227da6096fd2c89a2563da25b82c133af11e979ec578a0e0c427984268", "sha256_sink": "1c8a32227da6096fd2c89a2563da25b82c133af11e979ec578a0e0c427984268", "sha256_original": "69ae035970a4663b3a45bbe0c24adc33affa9b0feac41d7273260cf94520b854", "roundtrip_ok": true, "coincide": true }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-09-29", "filas": 8,
+    "veredicto": "ruido (8: PAM 5501/5502 del login del operador)",
+    "motivo": "iter1: 3 filas; iter2: 5 filas, todas PAM de la sesion del operador -> ruido (criterio ratificado). Cero filas del ataque en ruido.",
+    "revisor": "executor ampliacion-2 tanda C"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": { "criterio": "v2", "mismo_conjunto_rule_id_deteccion": true, "rule_ids_deteccion": ["80792"], "n1": 5, "n2": 5, "margen": 2, "criterio_recuento_ok": true, "sin_dudosas_sin_resolver": true, "auto_ruido_delta": 13, "ruido_conocido_delta": 3 },
+  "extraccion": { "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)", "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json", "aislamiento": "filtro a agent_name == victima-linux" },
+  "prueba_de_efecto": "sink.log (HTTP): len=256 con sha256 del blob CIFRADO identico al enviado (a3f7d8b4... iter1, 1c8a3222... iter2); roundtrip descifrado == original (69ae0359...). Cifrado ASIMETRICO (RSA efimero). Sin NAT",
+  "receptor": { "script": "Soporte/Ataques/receiver/sink_http.py", "bind": "192.168.65.1:9090", "firewall": "NO se creo regla (los puertos ya eran alcanzables); TFG-sink-9090 verificado ausente", "parado_tras_t1": true },
+  "guardarrailes": { "endpoint_lab": true, "claves_efimeras": true, "sin_credenciales_reales": true, "sin_ambigua": true },
+  "hallazgos": [
+    "Cifrado asimetrico real (RSA efimero) distinto de ATA008 (sin cifrado) y ATA019 (simetrico).",
+    "El HIDS ve el PROCESO (openssl/curl), no la red NI el contenido; la prueba es el sink.log (sha del cifrado) + round-trip.",
+    "Claves efimeras generadas en lab-attack: al revertir la VM desaparecen; sin residuo de secretos."
+  ],
+  "eventos": [
+    { "ts": "2026-09-29T11:55:23Z", "tipo": "t0", "detalle": "iter1 t0 (revert lab-listo + 90 s asentamiento; receptor levantado antes)" },
+    { "ts": "2026-09-29T11:55:55Z", "tipo": "t1", "detalle": "iter1 t1 (tras scan FIM forzado)" },
+    { "ts": "2026-09-29T11:58:02Z", "tipo": "t0", "detalle": "iter2 t0" },
+    { "ts": "2026-09-29T11:58:35Z", "tipo": "t1", "detalle": "iter2 t1" },
+    { "ts": "2026-09-29T12:20:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (5/5, {80792}) -> iguales" }
+  ]
+}

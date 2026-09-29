@@ -1,0 +1,2 @@
+/home/angel/lab-attack/ATA037/disk.img: Linux rev 1.0 ext4 filesystem data, UUID=ddd1d1e4-380b-4afa-bf37-2cbd6f1752e6 (extents) (64bit) (large files) (huge files)
+blkid_tras_wipe=reconoce_ext4

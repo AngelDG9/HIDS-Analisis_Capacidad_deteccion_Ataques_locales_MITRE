@@ -1,0 +1,81 @@
+{
+  "ata_id": "ATA036",
+  "tecnica": "T1565.003",
+  "tactica": "Impact",
+  "sistema": "linux",
+  "bloque": "fase-03-ampliacion-2",
+  "tanda": "B",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1565.003-Runtime_Data_Manipulation/",
+  "atomic": { "fuente": "custom", "nota": "manipulacion de un dato EN MEMORIA de un proceso de laboratorio: memedit se adjunta por ptrace (PTRACE_ATTACH) al proceso target, localiza 'SALDO=1000' en las regiones escribibles (/proc/<pid>/maps + process_vm_readv) y lo sobrescribe con PTRACE_POKEDATA; payload precompilado (.b64) porque la victima no tiene gcc/gdb; sin sudo; solo el proceso de laboratorio (guardarrail: readlink -f /proc/<pid>/exe == $BASE/target)" },
+  "esperado_sha256": "f3e5315cf3ad1e1c47d5d04480aef283682ac9915a5874de37e7608775d94510",
+  "ataque_sha256": "c7d1933231d62b5fb09d380f192e01bf37e88a4c7fbd345cf8e83b9bea68e5db",
+  "validacion_humana_esperado": "APROBADO 2026-09-29",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA036_logtest.txt",
+    "logtest_sha256": "dec1d6141491fe5beae6bdb12cb5d01efcc38b4861933b2661c8d7d0a179c19a",
+    "preflight": "Soporte/Ataques/c0/ATA036_preflight.md",
+    "preflight_sha256": "1b2f6a0032b10d2fd51e45dbfd01661942003f8cb1ad5c05844c68b4b0f0b24e",
+    "resultado": "PASA (1 evento memedit_c0 -> 80792 level 3; sin silenciador)"
+  },
+  "incidente": {
+    "fecha": "2026-09-29",
+    "iter": "1 (primer intento, DESCARTADO)",
+    "motivo": "PTRACE_ATTACH: Operation not permitted por kernel.yama.ptrace_scope=1 (un proceso no padre no puede adjuntarse). El efecto NO se logro -> ventana descartada y repetida.",
+    "arreglo": "el proceso de laboratorio target se declara trazable con prctl(PR_SET_PTRACER, PR_SET_PTRACER_ANY); sin sudo y sin cambiar el sysctl del sistema. Se recompilo el payload y se repitieron las 2 iteraciones."
+  },
+  "iteraciones": [
+    {
+      "iter": 1, "t0": "2026-09-29T10:35:01Z", "t1": "2026-09-29T10:35:40Z", "duracion_s": 39, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA036_iter1-Detalle.csv",
+      "detalle_sha256": "23458d61081e1514223ed89dadf8d6b899d294bec5637c980a3f02e81384ca64",
+      "detalle_raw_sha256": "96e26ad23a74dbdbad523f28149d5fe0398b69f46d447e04dda6f4630a712008",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA036_iter1-Audited.csv",
+      "audited_sha256": "72799d44309217ec7a84404c6a38b3fdc8eb6f8a6d690d60432f4b789cbb627d",
+      "revision": null,
+      "revision_sha256": null,
+      "conteos": { "filas": 937, "deteccion": 1, "auto_ruido": 621, "ruido_conocido": 294, "dudosa": 0, "artefacto_ataque": 21 },
+      "rs": { "RS1": 10, "RS2": 927, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 943, "victima_linux": 937, "otros_agentes_descartados": 6 },
+      "detecciones": { "alertas": 1, "rule_id_distintos": ["80792"], "esperadas": 1, "sorpresas": 0, "evidencia": "execve memedit (80792) anclado al cwd; primera 10:35:05.238Z audit_exe=/home/angel/lab-attack/ATA036/memedit" },
+      "metrico_o1": "si", "metrico_o2": "1/1", "dudosas_resueltas": 0,
+      "efecto": { "target_pid": 2990, "antes": "SALDO=1000", "despues": "SALDO=9999", "resultado": "RUNTIME_DATA_MANIPULATION=OK" }
+    },
+    {
+      "iter": 2, "t0": "2026-09-29T10:39:20Z", "t1": "2026-09-29T10:39:59Z", "duracion_s": 39, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA036_iter2-Detalle.csv",
+      "detalle_sha256": "a583aa38cd89f32c542ad0b3bea694da4296a1a41319c4566671d752cb061dff",
+      "detalle_raw_sha256": "406ecb03bf850da174c6089366beaed2759d87641d8a9f5b5015d9e8980a46e2",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA036_iter2-Audited.csv",
+      "audited_sha256": "e9bb6bef4adcd795b9ba725677e34023014515849bc3e98b131dea6e1adcc373",
+      "revision": null,
+      "revision_sha256": null,
+      "conteos": { "filas": 955, "deteccion": 1, "auto_ruido": 641, "ruido_conocido": 292, "dudosa": 0, "artefacto_ataque": 21 },
+      "rs": { "RS1": 11, "RS2": 944, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 961, "victima_linux": 955, "otros_agentes_descartados": 6 },
+      "detecciones": { "alertas": 1, "rule_id_distintos": ["80792"], "esperadas": 1, "sorpresas": 0, "evidencia": "execve memedit (80792) anclado al cwd; primera 10:39:24.518Z audit_exe=/home/angel/lab-attack/ATA036/memedit" },
+      "metrico_o1": "si", "metrico_o2": "1/1", "dudosas_resueltas": 0,
+      "efecto": { "target_pid": 3018, "antes": "SALDO=1000", "despues": "SALDO=9999", "resultado": "RUNTIME_DATA_MANIPULATION=OK" }
+    }
+  ],
+  "revision_global": { "fecha": "2026-09-29", "filas": 0, "veredicto": "sin dudosas", "motivo": "dudosa=0 en las 2 ventanas", "revisor": "executor ampliacion-2 tanda B" },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": { "criterio": "v2", "mismo_conjunto_rule_id_deteccion": true, "rule_ids_deteccion": ["80792"], "n1": 1, "n2": 1, "margen": 2, "criterio_recuento_ok": true, "sin_dudosas_sin_resolver": true, "auto_ruido_delta": 20, "ruido_conocido_delta": 2 },
+  "extraccion": { "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)", "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json", "aislamiento": "filtro a agent_name == victima-linux" },
+  "prueba_de_efecto": "target_state.log muestra el dato ANTES (SALDO=1000) y DESPUES (SALDO=9999) del proceso EN EJECUCION; memedit localiza el dato en la memoria del proceso (3 direcciones: .data, heap y pila) y lo sobrescribe con PTRACE_POKEDATA.",
+  "receptor": { "aplica": false, "nota": "no hay receptor de red" },
+  "hallazgos": [
+    "Capa poco cubierta: el HIDS ve la herramienta (memedit) pero no la manipulacion en memoria (ni ptrace ni la escritura en /proc/<pid>/mem generan evento con este ruleset).",
+    "yama ptrace_scope=1: el proceso de laboratorio se declara trazable con PR_SET_PTRACER_ANY; en un caso real, si el objetivo no es trazable haria falta CAP_SYS_PTRACE (sudo)."
+  ],
+  "eventos": [
+    { "ts": "2026-09-29T10:31:19Z", "tipo": "intento-fallido", "detalle": "iter1 (1er intento) ptrace_scope=1 -> PTRACE_ATTACH denegado; ventana DESCARTADA" },
+    { "ts": "2026-09-29T10:35:01Z", "tipo": "t0", "detalle": "iter1 t0 (payload corregido; revert lab-listo + asentamiento)" },
+    { "ts": "2026-09-29T10:35:40Z", "tipo": "t1", "detalle": "iter1 t1" },
+    { "ts": "2026-09-29T10:39:20Z", "tipo": "t0", "detalle": "iter2 t0" },
+    { "ts": "2026-09-29T10:39:59Z", "tipo": "t1", "detalle": "iter2 t1" },
+    { "ts": "2026-09-29T10:42:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (1/1, {80792}) -> iguales" }
+  ]
+}

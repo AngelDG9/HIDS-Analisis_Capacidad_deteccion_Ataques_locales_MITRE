@@ -1,0 +1,20 @@
+ATA034 · T1560.003 Archive via Custom Method (builtins, sin utilidad) — custom
+T0=2026-09-29T10:14:11Z
+--- cabecera del archivo propio ---
+ATA034-CUSTOM-ARCHIVE v1
+FILE informe_interno.txt
+.)eteuguj ed sotad( 3Q oicogen ed nemuser :odalumis onretni emrofnI
+elpmaxe.adalumis-aserpme@noiccerid :otcatnoC
+END informe_interno.txt 2
+FILE clientes.csv
+--- sha256 del archivo propio ---
+99a19e1f0c36218da50314fc33fa7d1f323c23ba6b5a9b07c30a19bf4993e113  /home/angel/lab-attack/ATA034/collected_ATA034.arc
+--- estado final ---
+total 12
+-rw-rw-r-- 1 angel angel  83 Sep 29 12:14 clientes.csv
+-rw-rw-r-- 1 angel angel  44 Sep 29 12:14 credenciales_servicio.txt
+-rw-rw-r-- 1 angel angel 113 Sep 29 12:14 informe_interno.txt
+reconstruidos_sha256_ok=3/3
+nota: el ARCHIVADO se hizo con PATH=/nonexistent (solo builtins; ningun binario externo)
+ARCHIVE_CUSTOM=OK (formato propio + reconstruccion 3/3 con sha256 identico; sin binario externo)
+T1_LOCAL=2026-09-29T10:14:12Z

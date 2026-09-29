@@ -1,0 +1,8 @@
+ATA032 · T1565.001 Stored Data Manipulation (sed -i sobre ledger) — custom
+T0=2026-09-29T09:25:48Z
+--- ANTES (sha256) ---
+6888bf39a5458a72d65e9b105e39efb9d68e9dd62795cb4bfaea4e1594ae233a
+--- DESPUES (sha256) ---
+1d2f79b03b683eb77aa5eea6bcaec9b7ae5d282b1832a90124a2cc5c6375b03d
+MANIPULACION=OK (ledger alterado: sha256 antes != despues; marcadores presentes)
+T1_LOCAL=2026-09-29T09:25:50Z

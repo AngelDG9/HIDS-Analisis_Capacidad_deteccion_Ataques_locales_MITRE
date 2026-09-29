@@ -1,0 +1,12 @@
+ATA029 · T1005 Data from Local System (recoleccion dirigida con cp) — custom
+T0=2026-09-29T09:02:07Z
+--- ficheros declarados en la lista: empleados_2026.csv notas_direccion.txt config_servicio.conf ---
+--- estado final ---
+total 12
+-rw-rw-r-- 1 angel angel  80 Sep 29 11:02 config_servicio.conf
+-rw-rw-r-- 1 angel angel 115 Sep 29 11:02 empleados_2026.csv
+-rw-rw-r-- 1 angel angel  74 Sep 29 11:02 notas_direccion.txt
+ficheros_recolectados=3/3
+coincidencias_sha256=3/3
+RECOLECCION=OK (3/3 ficheros dirigidos copiados con sha256 identico)
+T1_LOCAL=2026-09-29T09:02:08Z

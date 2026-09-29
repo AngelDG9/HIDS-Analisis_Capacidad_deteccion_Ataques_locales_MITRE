@@ -1,0 +1,79 @@
+{
+  "ata_id": "ATA029",
+  "tecnica": "T1005",
+  "tactica": "Collection",
+  "sistema": "linux",
+  "bloque": "fase-03-ampliacion-2",
+  "tanda": "A",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1005-Data_from_Local_System/",
+  "atomic": { "fuente": "custom", "nota": "recoleccion dirigida (lista declarada de 3 ficheros) de lab-legit/srv_data a lab-attack/ATA029/loot con cp; sin sudo; guardarrail: origen bajo lab-legit/srv_data y salida bajo lab-attack/ATA029" },
+  "esperado_sha256": "a4925402ed671577badd6f330db179e770f31849d8b277dc2effe65902cbcec0",
+  "ataque_sha256": "05719a168d64ef9470a5f77d21790e13c9cc4d2bc3b657db0994381bf3bfee38",
+  "validacion_humana_esperado": "APROBADO 2026-09-29",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA029_logtest.txt",
+    "logtest_sha256": "0857503711bc5a67f13b13408d29db276e32fb759fc5f2a4bedb5c2dace4b352",
+    "preflight": "Soporte/Ataques/c0/ATA029_preflight.md",
+    "preflight_sha256": "bfa74917e45da4f916ed9833fd3f972dba1cf58a27226ab864af337f1547c404",
+    "resultado": "PASA (1 evento cp -> 80792 level 3; sin silenciador)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1, "t0": "2026-09-29T08:56:28Z", "t1": "2026-09-29T08:57:05Z", "duracion_s": 37, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA029_iter1-Detalle.csv",
+      "detalle_sha256": "b8c79e44e3a23dba02e45ce9f520a804a74f1a858d8b97460d59e604e17b20ba",
+      "detalle_raw_sha256": "f090e6a56cfd64f01cde5df2e7bc932bd276ac0855a6e7a80af812a80ad56219",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA029_iter1-Audited.csv",
+      "audited_sha256": "0f8b08cecef2b871a0d352c354bc6430c6ecb0b92c33e79fbec4b31379662f7f",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA029_iter1-Revision.csv",
+      "revision_sha256": "2dc4c0a6d4242ff357b454fa76b79491adbe94352d4455fd10f8ea59e778f742",
+      "conteos": { "filas": 770, "deteccion": 3, "auto_ruido": 622, "ruido_conocido": 119, "dudosa": 0, "artefacto_ataque": 26 },
+      "rs": { "RS1": 4, "RS2": 766, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 776, "victima_linux": 771, "otros_agentes_descartados": 5 },
+      "detecciones": { "alertas": 3, "rule_id_distintos": ["80792"], "esperadas": 3, "sorpresas": 0, "evidencia": "3x execve cp (80792) anclados al cwd del ataque; primera 08:56:29.062Z audit_exe=/usr/bin/cp" },
+      "metrico_o1": "si", "metrico_o2": "1/1", "dudosas_resueltas": 4,
+      "efecto": { "ficheros_recolectados": "3/3", "coincidencias_sha256": "3/3", "resultado": "RECOLECCION=OK" }
+    },
+    {
+      "iter": 2, "t0": "2026-09-29T09:02:07Z", "t1": "2026-09-29T09:02:40Z", "duracion_s": 33, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA029_iter2-Detalle.csv",
+      "detalle_sha256": "ef54ffb483ef63ff98c040c0d0c57b30bbd9050d4d02486e3cac6e42c035719c",
+      "detalle_raw_sha256": "c7b54e793d70dc1d0f192873008965da6cf5bb906c047ca2ff2325f6c0751b49",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA029_iter2-Audited.csv",
+      "audited_sha256": "87b41374f4b1fc7eaa6b8453ed18540e61dbf58d23bf37b53b018dca5e2d3a2e",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA029_iter2-Revision.csv",
+      "revision_sha256": "ed9bc12ab27fc32cd02d549301e06a2b61d3997545006a77180735246943b231",
+      "conteos": { "filas": 1013, "deteccion": 3, "auto_ruido": 619, "ruido_conocido": 358, "dudosa": 0, "artefacto_ataque": 33 },
+      "rs": { "RS1": 13, "RS2": 1000, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 1020, "victima_linux": 1014, "otros_agentes_descartados": 6 },
+      "detecciones": { "alertas": 3, "rule_id_distintos": ["80792"], "esperadas": 3, "sorpresas": 0, "evidencia": "3x execve cp (80792) anclados al cwd del ataque; primera 09:02:08.978Z audit_exe=/usr/bin/cp" },
+      "metrico_o1": "si", "metrico_o2": "1/1", "dudosas_resueltas": 4,
+      "efecto": { "ficheros_recolectados": "3/3", "coincidencias_sha256": "3/3", "resultado": "RECOLECCION=OK" }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-09-29", "filas": 8,
+    "veredicto": "artefacto (8)",
+    "motivo": "8 = 80790 del watch de lab-legit (creacion de srv_data + los 3 ficheros de la semilla, 4/iter) = EFECTO del ataque -> artefacto (es el ataque, no es la deteccion declarada). Cero filas del ataque en ruido.",
+    "revisor": "executor ampliacion-2 tanda A"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": { "criterio": "v2", "mismo_conjunto_rule_id_deteccion": true, "rule_ids_deteccion": ["80792"], "n1": 3, "n2": 3, "margen": 2, "criterio_recuento_ok": true, "sin_dudosas_sin_resolver": true, "auto_ruido_delta": 3, "ruido_conocido_delta": 239 },
+  "extraccion": { "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)", "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json", "aislamiento": "filtro a agent_name == victima-linux" },
+  "prueba_de_efecto": "los 3 ficheros declarados (empleados_2026.csv, notas_direccion.txt, config_servicio.conf) se copian de lab-legit/srv_data a lab-attack/ATA029/loot con sha256 identico (3/3). Leer no deja rastro: el watch -p wa NO audita la lectura; la deteccion es el execve del lector.",
+  "receptor": { "aplica": false, "nota": "no hay receptor de red" },
+  "hallazgos": [
+    "Leccion 'leer no deja rastro' confirmada: -p wa no audita lectura -> la recoleccion se detecta por el execve del lector (cp), no por el acceso.",
+    "Deteccion solo por execve (un unico rule_id 80792): el HIDS de host no ve la 'recoleccion' como tal (R9)."
+  ],
+  "eventos": [
+    { "ts": "2026-09-29T08:56:28Z", "tipo": "t0", "detalle": "iter1 t0 (revert lab-listo + 90 s asentamiento)" },
+    { "ts": "2026-09-29T08:57:05Z", "tipo": "t1", "detalle": "iter1 t1 (tras scan FIM forzado)" },
+    { "ts": "2026-09-29T09:02:07Z", "tipo": "t0", "detalle": "iter2 t0" },
+    { "ts": "2026-09-29T09:02:40Z", "tipo": "t1", "detalle": "iter2 t1" },
+    { "ts": "2026-09-29T09:05:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (3/3, {80792}) -> iguales" }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "ata_id": "ATA032",
+  "tecnica": "T1565.001",
+  "tactica": "Impact",
+  "sistema": "linux",
+  "bloque": "fase-03-ampliacion-2",
+  "tanda": "A",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1565.001-Stored_Data_Manipulation/",
+  "atomic": { "fuente": "custom", "nota": "manipulacion EN REPOSO de un ledger simulado (sed -i replace+append) en lab-legit/finanzas; sin sudo; guardarrail: objetivo exactamente el ledger de lab-legit. Distinto de ATA026/T1565.002 (en transito)" },
+  "esperado_sha256": "9565e51046b70ba378b0cf03eacf763cddc18ba9eae76538f960161473afa0e6",
+  "ataque_sha256": "bd5640562e60c36540631cb814efd462c83249f534681bc9a0d6f5ac3a621723",
+  "validacion_humana_esperado": "APROBADO 2026-09-29",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA032_logtest.txt",
+    "logtest_sha256": "2615829b8d14a5d23a1a161824de857be8186d34fe5ab1b0aab06752e175f962",
+    "preflight": "Soporte/Ataques/c0/ATA032_preflight.md",
+    "preflight_sha256": "4ebb1c417788b2e2755c19976f84c599c93c7dfd68390539d36b13ab7151c9b6",
+    "resultado": "PASA (1 evento sed -> 80792 level 3; sin silenciador)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1, "t0": "2026-09-29T09:25:48Z", "t1": "2026-09-29T09:26:21Z", "duracion_s": 33, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA032_iter1-Detalle.csv",
+      "detalle_sha256": "c49a152d1413bbf8e1e22e3bb24cfffba133cfdbf45b9d84cb377ae25d7f22b0",
+      "detalle_raw_sha256": "81cbdb0bca81a0594009931d28e3b48c56fdbd8a4bc86d8490d729d8cbf3837c",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA032_iter1-Audited.csv",
+      "audited_sha256": "b72d4cd409b227583472f64cf85c7c0233eeba098f9da37377886660166d1b7e",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA032_iter1-Revision.csv",
+      "revision_sha256": "cc5326529371a78bcff45802b23a3b6d506a31b000a910ac7edcc6e8d1c3e7f2",
+      "conteos": { "filas": 1006, "deteccion": 2, "auto_ruido": 617, "ruido_conocido": 358, "dudosa": 0, "artefacto_ataque": 29 },
+      "rs": { "RS1": 14, "RS2": 992, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 1012, "victima_linux": 1007, "otros_agentes_descartados": 5 },
+      "detecciones": { "alertas": 2, "rule_id_distintos": ["80792"], "esperadas": 2, "sorpresas": 0, "evidencia": "2x execve sed -i (80792) anclados al cwd; primera 09:25:50.131Z audit_exe=/usr/bin/sed" },
+      "metrico_o1": "si", "metrico_o2": "1/1", "dudosas_resueltas": 10,
+      "efecto": { "sha_antes": "6888bf39a5458a72d65e9b105e39efb9d68e9dd62795cb4bfaea4e1594ae233a", "sha_despues": "1d2f79b03b683eb77aa5eea6bcaec9b7ae5d282b1832a90124a2cc5c6375b03d", "resultado": "MANIPULACION=OK" }
+    },
+    {
+      "iter": 2, "t0": "2026-09-29T09:29:49Z", "t1": "2026-09-29T09:30:21Z", "duracion_s": 32, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA032_iter2-Detalle.csv",
+      "detalle_sha256": "35193f3e1c2cc4f16f9a2932e83118a3c315b68cafaa5cc409ec215c56dcd947",
+      "detalle_raw_sha256": "f6dee55a250c44ecaa5e58cb32d4c1f26bb848aab951086e44b31827eecc511e",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA032_iter2-Audited.csv",
+      "audited_sha256": "bf44b7fe83cd1b75c47798337ffb159e460e5a51113ff1c459445b73344e9a7e",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA032_iter2-Revision.csv",
+      "revision_sha256": "11a094c8e6cb3d8d1643b6de8e2b71a233a1153d4b00c2072f9ad9644617b969",
+      "conteos": { "filas": 1009, "deteccion": 2, "auto_ruido": 617, "ruido_conocido": 362, "dudosa": 0, "artefacto_ataque": 28 },
+      "rs": { "RS1": 14, "RS2": 995, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 1015, "victima_linux": 1010, "otros_agentes_descartados": 5 },
+      "detecciones": { "alertas": 2, "rule_id_distintos": ["80792"], "esperadas": 2, "sorpresas": 0, "evidencia": "2x execve sed -i (80792) anclados al cwd; primera 09:29:50.859Z" },
+      "metrico_o1": "si", "metrico_o2": "1/1", "dudosas_resueltas": 10,
+      "efecto": { "sha_antes": "6888bf39a5458a72d65e9b105e39efb9d68e9dd62795cb4bfaea4e1594ae233a", "sha_despues": "1d2f79b03b683eb77aa5eea6bcaec9b7ae5d282b1832a90124a2cc5c6375b03d", "resultado": "MANIPULACION=OK" }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-09-29", "filas": 20,
+    "veredicto": "artefacto (20 = 10/iter 80790/80781/80791 del watch del ledger y los temporales de sed)",
+    "motivo": "20 = watch de lab-legit (creacion del ledger + ficheros temporales sedXXXX, escrituras y borrados) = EFECTO del ataque -> artefacto. Cero filas del ataque en ruido.",
+    "revisor": "executor ampliacion-2 tanda A"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": { "criterio": "v2", "mismo_conjunto_rule_id_deteccion": true, "rule_ids_deteccion": ["80792"], "n1": 2, "n2": 2, "margen": 2, "criterio_recuento_ok": true, "sin_dudosas_sin_resolver": true, "auto_ruido_delta": 0, "ruido_conocido_delta": 4 },
+  "extraccion": { "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)", "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json", "aislamiento": "filtro a agent_name == victima-linux" },
+  "prueba_de_efecto": "el ledger simulado cambia de contenido: sha256 antes (6888bf39...) != despues (1d2f79b0...); marcadores '999999.99' y 'Ajuste manual no autorizado' presentes.",
+  "receptor": { "aplica": false, "nota": "no hay receptor de red" },
+  "hallazgos": [
+    "El contenido en reposo NO se ve por FIM (syscheck no vigila lab-legit); se ve por el watch de auditd (80790/80781/80791), declarado ambigua -> artefacto. La deteccion es el execve de sed (80792).",
+    "Solapamiento declarado con ATA006/T1565 (misma herramienta sed -i): aqui el objeto es un activo concreto con integridad (ledger de finanzas).",
+    "sed -i deja trazas de su mecanica (temporales sedXXXX creados/borrados): efecto, artefacto."
+  ],
+  "eventos": [
+    { "ts": "2026-09-29T09:25:48Z", "tipo": "t0", "detalle": "iter1 t0 (revert lab-listo + 90 s asentamiento)" },
+    { "ts": "2026-09-29T09:26:21Z", "tipo": "t1", "detalle": "iter1 t1 (tras scan FIM forzado)" },
+    { "ts": "2026-09-29T09:29:49Z", "tipo": "t0", "detalle": "iter2 t0" },
+    { "ts": "2026-09-29T09:30:21Z", "tipo": "t1", "detalle": "iter2 t1" },
+    { "ts": "2026-09-29T09:32:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (2/2, {80792}) -> iguales" }
+  ]
+}

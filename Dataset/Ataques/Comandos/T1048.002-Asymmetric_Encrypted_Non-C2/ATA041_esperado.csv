@@ -1,0 +1,13 @@
+# ATA041_esperado.csv | ATA041 · T1048.002 Asymmetric Encrypted Non-C2 Protocol | TFG HIDS · Fase 3 (ampliacion-2, tanda C)
+# Redactado el 2026-09-29 con los datos del paso 0, ANTES de ver ninguna alerta.
+# Gate humano: APROBADO 2026-09-29 (validación humana)
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+# Convencion H4: cada senal audit_exe se acompana de audit_cwd de la carpeta del ataque.
+# BINARIO REAL verificado en el paso 0: `openssl` -> /usr/bin/openssl (3.0.13); `curl` -> /usr/bin/curl.
+# El EFECTO es un envio por HTTP al receptor del HOST -> NO hay escritura local vigilada
+#   -> NO se declaran senales ambigua. La prueba del efecto la da el `sink.log`
+#   (sha256 del blob CIFRADO == sha256 del .enc enviado).
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1048.002-S1,deteccion,audit_exe,openssl,Process Creation,T1048.002,cifrado ASIMETRICO (par RSA efimero + pkeyutl encrypt/decrypt) del dato (execve 80792)
+T1048.002-S2,deteccion,audit_exe,curl,Process Creation,T1048.002,envio del blob cifrado por HTTP al receptor del HOST (execve 80792)
+T1048.002-S3,deteccion,audit_cwd,/home/angel/lab-attack/ATA041/*,Process Creation,T1048.002,ancla H4 (cwd del ataque)

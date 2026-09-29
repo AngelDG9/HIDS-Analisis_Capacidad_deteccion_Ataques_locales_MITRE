@@ -1,0 +1,12 @@
+# ATA030_esperado.csv | ATA030 · T1560.001 Archive via Utility | TFG HIDS · Fase 3 (ampliacion-2, tanda A)
+# Redactado el 2026-09-29 con los datos del paso 0, ANTES de ver ninguna alerta.
+# Gate humano: APROBADO 2026-09-29 (validación humana)
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+# Convencion H4: cada senal audit_exe se acompana de audit_cwd de la carpeta del ataque.
+# Contraste con ATA013/T1560.002 (python3 -> suprimido por el punto ciego 92600): aqui
+#   el archivo se hace con UTILIDAD -> debe dejar execve de tar (y de gzip via tar -z).
+# Binarios reales verificados en el paso 0: /usr/bin/tar, /usr/bin/gzip.
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1560.001-S1,deteccion,audit_exe,/usr/bin/tar,Process Creation,T1560.001,utilidad de archivado tar (execve 80792)
+T1560.001-S2,deteccion,audit_exe,/usr/bin/gzip,Process Creation,T1560.001,compresor gzip invocado por tar -z (execve 80792)
+T1560.001-S3,deteccion,audit_cwd,/home/angel/lab-attack/ATA030/*,Process Creation,T1560.001,ancla H4 (cwd del ataque)

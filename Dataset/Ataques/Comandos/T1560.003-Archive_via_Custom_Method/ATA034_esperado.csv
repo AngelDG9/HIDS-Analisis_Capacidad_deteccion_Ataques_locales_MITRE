@@ -1,0 +1,17 @@
+# ATA034_esperado.csv | ATA034 · T1560.003 Archive via Custom Method | TFG HIDS · Fase 3 (ampliacion-2, tanda B)
+# Redactado el 2026-09-29 con los datos del paso 0, ANTES de ver ninguna alerta.
+# Gate humano: APROBADO 2026-09-29 (validación humana)
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+# PUNTO CIEGO POR AUSENCIA DE TELEMETRIA (declarado): el archivo por METODO PROPIO
+#   se implementa SOLO con builtins de bash (`read`/`printf`/redireccion) -> NO hay
+#   execve de ninguna herramienta de archivado (ni tar/zip/gzip). Por eso NO se
+#   declara ninguna senal `deteccion`: NO existe un binario del ataque que anclar.
+#   (Diferente del silenciamiento `92600` de ATA013: ahi SI habia execve y una regla
+#    hermana de nivel 0 lo suprimia; aqui simplemente no se ejecuta nada.)
+#   -> O2 = 0/0 (no hay senales de deteccion); no se puede cubrir la tecnica por
+#      `execve` porque el ataque no ejecuta ningun binario externo.
+# Las ESCRITURAS del .arc bajo la carpeta del ataque -> watch generico -> AMBIGUA
+#   acotada por rule_id (80790 creacion / 80781 modificacion) -> dudosa -> artefacto.
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1560.003-A1,ambigua,rule_id,80790,File Creation,T1560.003,creacion del archivo propio (.arc) bajo el watch generico (efecto del ataque)
+T1560.003-A2,ambigua,rule_id,80781,File Modification,T1560.003,escritura en ruta vigilada (efecto del ataque)

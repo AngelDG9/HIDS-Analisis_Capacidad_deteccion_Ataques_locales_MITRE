@@ -24,6 +24,10 @@ fecha: 2026-09-28
 > **salen de `ruido_conocido`** (`220→214` y `146→140`). Aunque **`deteccion=0`** (enmascaramiento
 > `92600`, §11.1), el **ataque deja 6 filas `artefacto_ataque` visibles** en su carpeta: es evidencia
 > de que **corrió**. `Hojas/ATA_index.csv` **intacto** (sigue `review`).
+>
+> **Nota de criterio (2026-09-29):** el `estado` es **procesal** (cierre del ciclo y de la doble
+> iteración), **no** un indicador de detección; **`review`** se usa cuando el criterio v2 **no** da
+> `iguales` o hay **artefactos del mecanismo congelado**.
 
 ## 1. Identificación
 

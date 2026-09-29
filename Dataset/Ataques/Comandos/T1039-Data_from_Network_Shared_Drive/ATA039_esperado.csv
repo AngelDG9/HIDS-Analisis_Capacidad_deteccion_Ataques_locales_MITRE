@@ -1,0 +1,16 @@
+# ATA039_esperado.csv | ATA039 · T1039 Data from Network Shared Drive | TFG HIDS · Fase 3 (ampliacion-2, tanda C)
+# Redactado el 2026-09-29 con los datos del paso 0, ANTES de ver ninguna alerta.
+# Gate humano: APROBADO 2026-09-29 (validación humana)
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+# Convencion H4: cada senal audit_exe se acompana de audit_cwd de la carpeta del ataque.
+# PASO 0: NO hay cliente NFS/SMB offline (ni mount.nfs, ni mount.cifs, ni sshfs) -> el
+#   "recurso compartido" es un directorio servido por el manager con el daemon de `rsync`
+#   (rsync://192.168.65.128:9873/share/, solo VMnet1). El cliente es `rsync` (binomio
+#   execve del cliente, no hay montaje de FS). El EFECTO (datos leidos de la red) NO es
+#   visible para el HIDS de host -> la prueba real la da el sha256 coincidente con el
+#   recurso en el manager.
+#   NO se declaran senales ambigua: las escrituras caen bajo lab-attack/ATA039 (pertenencia
+#   automatica -> artefacto_ataque).
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1039-S1,deteccion,audit_exe,rsync,Process Creation,T1039,cliente rsync en modo daemon que recolecta el recurso compartido del manager (execve 80792)
+T1039-S2,deteccion,audit_cwd,/home/angel/lab-attack/ATA039/*,Process Creation,T1039,ancla H4 (cwd del ataque)

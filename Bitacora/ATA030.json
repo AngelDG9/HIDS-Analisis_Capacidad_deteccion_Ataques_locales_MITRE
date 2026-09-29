@@ -1,0 +1,80 @@
+{
+  "ata_id": "ATA030",
+  "tecnica": "T1560.001",
+  "tactica": "Collection",
+  "sistema": "linux",
+  "bloque": "fase-03-ampliacion-2",
+  "tanda": "A",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1560.001-Archive_via_Utility/",
+  "atomic": { "fuente": "custom", "nota": "archivado con UTILIDAD: tar -czf (invoca gzip) sobre material de juguete en lab-attack/ATA030; sin sudo; guardarrail: material y archivo solo bajo lab-attack/ATA030. Contraste con ATA013/T1560.002 (python3, punto ciego 92600)" },
+  "esperado_sha256": "301791d67241b6fae8a68eb0a72a71300c4a4ceda2e384d605e80ca81b85f0f0",
+  "ataque_sha256": "b47fc87deaa56274c3bbd67edf69d64cde269a361ccac27827a4ff9b21e7bcfe",
+  "validacion_humana_esperado": "APROBADO 2026-09-29",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA030_logtest.txt",
+    "logtest_sha256": "cd5b9264ce7ca127e6fac58227e6c610f61fe8e40561e9fbb2cd2acb33bc08fd",
+    "preflight": "Soporte/Ataques/c0/ATA030_preflight.md",
+    "preflight_sha256": "f7c4c170cf08a5447166f5e5902a5d5a262796fc0f9bdd0a62a57f49a8d41a0b",
+    "resultado": "PASA (2 eventos tar/gzip -> 80792 level 3; sin silenciador)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1, "t0": "2026-09-29T09:07:17Z", "t1": "2026-09-29T09:07:49Z", "duracion_s": 32, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA030_iter1-Detalle.csv",
+      "detalle_sha256": "57da608d441f9efb4b17937780838d4bc4d27d401302655287fb67d46d7bd4d6",
+      "detalle_raw_sha256": "36fce708b8cc1c8e38d69e29e2fb0d6464dae2d07026119a7e5a22d5eab370a7",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA030_iter1-Audited.csv",
+      "audited_sha256": "5148d88723d7ed9615e3e2a963f4075eb08d170e99ae10ef941aeff83d00b470",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA030_iter1-Revision.csv",
+      "revision_sha256": "449d22acafbca88aaf22fc2815357a20ca8ade8fc75857fc4e69b82772ec2fdb",
+      "conteos": { "filas": 1018, "deteccion": 12, "auto_ruido": 641, "ruido_conocido": 345, "dudosa": 0, "artefacto_ataque": 20 },
+      "rs": { "RS1": 11, "RS2": 1007, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 1024, "victima_linux": 1019, "otros_agentes_descartados": 5 },
+      "detecciones": { "alertas": 12, "rule_id_distintos": ["80792"], "esperadas": 12, "sorpresas": 0, "evidencia": "9x tar + 3x gzip (80792) anclados al cwd; primera 09:07:19.006Z Audit: Command: /usr/bin/tar" },
+      "metrico_o1": "si", "metrico_o2": "2/2", "dudosas_resueltas": 9,
+      "efecto": { "miembros_de_datos": 3, "tar_gz_sha256": "a74c798b175a1fc8979842a69ef007e357a8297e0e2531c04d62ad9cdd0052e0", "resultado": "ARCHIVADO=OK" }
+    },
+    {
+      "iter": 2, "t0": "2026-09-29T09:12:29Z", "t1": "2026-09-29T09:13:01Z", "duracion_s": 32, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA030_iter2-Detalle.csv",
+      "detalle_sha256": "06603c6a26416a1c3751df4a057f331a4eb482549e1979431c72f4d2db01ec0c",
+      "detalle_raw_sha256": "ed1827d2e0d3f5e776a05127318b8b33c54c45e4d403d32d0cd9813986f72d28",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA030_iter2-Audited.csv",
+      "audited_sha256": "9b9e69262c0fc25e06d8c7f822fdbf7d4614346042427e80d22aa74224796e23",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA030_iter2-Revision.csv",
+      "revision_sha256": "d1665d1f67ca54a11cd25c0a16101361c6adf345e80fad8d5d76470060ec9128",
+      "conteos": { "filas": 992, "deteccion": 12, "auto_ruido": 619, "ruido_conocido": 341, "dudosa": 0, "artefacto_ataque": 20 },
+      "rs": { "RS1": 10, "RS2": 982, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 998, "victima_linux": 993, "otros_agentes_descartados": 5 },
+      "detecciones": { "alertas": 12, "rule_id_distintos": ["80792"], "esperadas": 12, "sorpresas": 0, "evidencia": "9x tar + 3x gzip (80792) anclados al cwd; primera 09:12:30.865Z Audit: Command: /usr/bin/tar" },
+      "metrico_o1": "si", "metrico_o2": "2/2", "dudosas_resueltas": 8,
+      "efecto": { "miembros_de_datos": 3, "tar_gz_sha256": "179cec183a3cf134acb256fa353b4a2de236dc89a671d7e7e927229c17dffd2e", "resultado": "ARCHIVADO=OK" }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-09-29", "filas": 17,
+    "veredicto": "artefacto (2 = 1/iter 80790 del watch del .tar.gz) + ruido (15 = 8/iter1 + 7/iter2 PAM 5501/5502 del login del operador)",
+    "motivo": "2 filas 80790 = creacion del archivo por tar bajo el watch -> EFECTO -> artefacto. 15 filas PAM 5501/5502 = sesiones del login del operador (ajenas, sin cwd) -> ruido (criterio ratificado 2026-09-28). Cero filas del ataque en ruido.",
+    "revisor": "executor ampliacion-2 tanda A"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": { "criterio": "v2", "mismo_conjunto_rule_id_deteccion": true, "rule_ids_deteccion": ["80792"], "n1": 12, "n2": 12, "margen": 2, "criterio_recuento_ok": true, "sin_dudosas_sin_resolver": true, "auto_ruido_delta": 22, "ruido_conocido_delta": 4 },
+  "extraccion": { "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)", "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json", "aislamiento": "filtro a agent_name == victima-linux" },
+  "prueba_de_efecto": "collected_ATA030.tar.gz creado con tar -czf; tar -tzf muestra los 3 ficheros del material (miembros_de_datos=3). Contraste con ATA013 (python3): la misma accion con UTILIDAD SI deja execve y se detecta.",
+  "receptor": { "aplica": false, "nota": "no hay receptor de red" },
+  "hallazgos": [
+    "La eleccion de herramienta decide la deteccion: archivar con python3 (ATA013) = INVISIBLE (92600); archivar con tar/gzip (ATA030) = VISIBLE (80792).",
+    "Deteccion solo por execve (un unico rule_id 80792): el HIDS de host no ve el 'archivado' como tal (R9)."
+  ],
+  "anomalia_para_ratificar": "15 filas PAM (5501/5502) del login del operador pliegan a ruido (criterio ratificado 2026-09-28, PAM=ruido). Ninguna fila del ataque en ruido.",
+  "eventos": [
+    { "ts": "2026-09-29T09:07:17Z", "tipo": "t0", "detalle": "iter1 t0 (revert lab-listo + 90 s asentamiento)" },
+    { "ts": "2026-09-29T09:07:49Z", "tipo": "t1", "detalle": "iter1 t1 (tras scan FIM forzado)" },
+    { "ts": "2026-09-29T09:12:29Z", "tipo": "t0", "detalle": "iter2 t0" },
+    { "ts": "2026-09-29T09:13:01Z", "tipo": "t1", "detalle": "iter2 t1" },
+    { "ts": "2026-09-29T09:15:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (12/12, {80792}) -> iguales" }
+  ]
+}

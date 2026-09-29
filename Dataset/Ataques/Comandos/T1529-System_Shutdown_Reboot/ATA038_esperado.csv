@@ -1,0 +1,18 @@
+# ATA038_esperado.csv | ATA038 · T1529 System Shutdown/Reboot | TFG HIDS · Fase 3 (ampliacion-2, tanda B)
+# Redactado el 2026-09-29 con los datos del paso 0, ANTES de ver ninguna alerta.
+# Gate humano: APROBADO 2026-09-29 (validación humana)
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+# Convencion H4: cada senal audit_exe se acompana de audit_cwd de la carpeta del ataque.
+# SOLO se reinicia la VM VICTIMA (`victima-linux`), nunca el manager ni el anfitrion.
+# BINARIO REAL verificado en el paso 0: `shutdown`/`reboot` son enlaces a
+#   `/usr/bin/systemctl` -> el `execve` registra `/usr/bin/systemctl` (declarar el REAL).
+# CAPA NUEVA (estado del agente): tras el arranque, el manager emite reglas de estado del
+#   agente (`503` agente iniciado; `504` agente desconectado). Son `novel` (fuera del
+#   catalogo) y por tanto deteccion; se DECLARAN para que queden atribuidas (no sorpresas).
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1529-S1,deteccion,audit_exe,/usr/bin/systemctl,Process Creation,T1529,comando de reinicio (shutdown/reboot; execve 80792)
+T1529-S2,deteccion,audit_cwd,/home/angel/lab-attack/ATA038/*,Process Creation,T1529,ancla H4 (cwd del ataque)
+T1529-S3,deteccion,rule_id,503,Agent Status,T1529,el HIDS ve que el agente Wazuh vuelve a iniciar tras el arranque
+T1529-S4,deteccion,rule_id,504,Agent Status,T1529,el HIDS ve la desconexion del agente (cierre de la VM)
+T1529-A1,ambigua,rule_id,80790,File Creation,T1529,creacion de ficheros bajo el watch generico (efecto del ataque)
+T1529-A2,ambigua,rule_id,80781,File Modification,T1529,escritura en ruta vigilada (efecto del ataque)

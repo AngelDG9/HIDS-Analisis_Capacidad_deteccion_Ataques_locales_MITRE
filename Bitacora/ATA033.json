@@ -1,0 +1,79 @@
+{
+  "ata_id": "ATA033",
+  "tecnica": "T1491.001",
+  "tactica": "Impact",
+  "sistema": "linux",
+  "bloque": "fase-03-ampliacion-2",
+  "tanda": "A",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1491.001-Internal_Defacement/",
+  "atomic": { "fuente": "custom", "nota": "defacement INTERNO: cp de deface_internal.html sobre el index.html del portal simulado lab-legit/intranet_web; sin sudo; guardarrail: solo lab-legit/intranet_web, jamas /var/www. Las atomicas de ART son Windows" },
+  "esperado_sha256": "b14e811fa9d05711cf59d882ca749c73255c4daebeb6778af9d1c249f6b849a0",
+  "ataque_sha256": "b04034b8f20fcf7fc8741df697f3d397f952da2c5b9f7f851a7d3b8b1026bf1b",
+  "validacion_humana_esperado": "APROBADO 2026-09-29",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA033_logtest.txt",
+    "logtest_sha256": "cef14d876a0a7461963ca05545221b2a4de7e985ea987f78d46ca6ba4e6f8d00",
+    "preflight": "Soporte/Ataques/c0/ATA033_preflight.md",
+    "preflight_sha256": "1b411396e3fb606fe6775c605245c688b59d186c6ed2bae33c40561a359affd3",
+    "resultado": "PASA (1 evento cp -> 80792 level 3; sin silenciador)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1, "t0": "2026-09-29T09:34:26Z", "t1": "2026-09-29T09:34:58Z", "duracion_s": 32, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA033_iter1-Detalle.csv",
+      "detalle_sha256": "d7ab4375d489efe96784667c8b118cf73084cc81dc64963c48958195c8054f8a",
+      "detalle_raw_sha256": "b3987cef8823bd2ba8e26e9ab3574d64ebc77efc654e055beb7b18fdefcc8a35",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA033_iter1-Audited.csv",
+      "audited_sha256": "a80ff16e76b47baea0786ea181a19f51914e33195409bd36c756496063315fa3",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA033_iter1-Revision.csv",
+      "revision_sha256": "97d6bfb8ba8e173ae0096ddbfe71d9b703c826073d6716fcdd0595352b4d30d5",
+      "conteos": { "filas": 999, "deteccion": 1, "auto_ruido": 621, "ruido_conocido": 358, "dudosa": 0, "artefacto_ataque": 19 },
+      "rs": { "RS1": 13, "RS2": 986, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 1005, "victima_linux": 1000, "otros_agentes_descartados": 5 },
+      "detecciones": { "alertas": 1, "rule_id_distintos": ["80792"], "esperadas": 1, "sorpresas": 0, "evidencia": "1x execve cp (80792) anclado al cwd; primera 09:34:28.153Z" },
+      "metrico_o1": "si", "metrico_o2": "1/1", "dudosas_resueltas": 3,
+      "efecto": { "sha_antes": "667f1dd99608dcb65c674d3737703a05e70f51e46aa55f3fe10fdc06c3ffb49f", "sha_despues": "3bab3a83873cb4207c66108e55ca9eafa8157297081145478e8ec39c3920def6", "resultado": "DEFACEMENT=OK" }
+    },
+    {
+      "iter": 2, "t0": "2026-09-29T09:38:20Z", "t1": "2026-09-29T09:38:52Z", "duracion_s": 32, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA033_iter2-Detalle.csv",
+      "detalle_sha256": "0452131ff0ff58a2c7a82f5714438a73efe6f8d4dbbf92bb5faeece337b14053",
+      "detalle_raw_sha256": "b7c655b414aeb6d70370c80574eba07c4686ee3825198dd85726360082ccfa85",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA033_iter2-Audited.csv",
+      "audited_sha256": "0f33554b61e974441e8e059286e076acfb311a1396b6295ca89c57ce66680176",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA033_iter2-Revision.csv",
+      "revision_sha256": "6798edc4483a4fd97f574b15cf0b6b48f405eb877b85a7b49f543e1ac596c7bd",
+      "conteos": { "filas": 999, "deteccion": 1, "auto_ruido": 619, "ruido_conocido": 358, "dudosa": 0, "artefacto_ataque": 21 },
+      "rs": { "RS1": 13, "RS2": 986, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 1005, "victima_linux": 1000, "otros_agentes_descartados": 5 },
+      "detecciones": { "alertas": 1, "rule_id_distintos": ["80792"], "esperadas": 1, "sorpresas": 0, "evidencia": "1x execve cp (80792) anclado al cwd; primera 09:38:21.862Z" },
+      "metrico_o1": "si", "metrico_o2": "1/1", "dudosas_resueltas": 3,
+      "efecto": { "sha_antes": "667f1dd99608dcb65c674d3737703a05e70f51e46aa55f3fe10fdc06c3ffb49f", "sha_despues": "3bab3a83873cb4207c66108e55ca9eafa8157297081145478e8ec39c3920def6", "resultado": "DEFACEMENT=OK" }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-09-29", "filas": 6,
+    "veredicto": "artefacto (6 = 3/iter 80790/80781 del watch del webroot interno)",
+    "motivo": "6 = 80790 (creacion de intranet_web + index.html) y 80781 (escritura) = EFECTO del ataque -> artefacto. Cero filas del ataque en ruido.",
+    "revisor": "executor ampliacion-2 tanda A"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": { "criterio": "v2", "mismo_conjunto_rule_id_deteccion": true, "rule_ids_deteccion": ["80792"], "n1": 1, "n2": 1, "margen": 2, "criterio_recuento_ok": true, "sin_dudosas_sin_resolver": true, "auto_ruido_delta": 2, "ruido_conocido_delta": 0 },
+  "extraccion": { "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)", "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json", "aislamiento": "filtro a agent_name == victima-linux" },
+  "prueba_de_efecto": "el index.html del portal interno cambia (sha256 667f1dd9... != 3bab3a83...); contiene el marcador COMPROMETIDA.",
+  "receptor": { "aplica": false, "nota": "no hay receptor de red" },
+  "hallazgos": [
+    "Capa declarada vs real: el plan preveia FIM sobre el webroot, pero el syscheck no vigila lab-legit -> la capa real es el watch de auditd (80790/80781), declarado ambigua -> artefacto. La deteccion es el execve de cp (80792).",
+    "Solapamiento declarado con ATA007/T1491 (defacement): aqui el objeto es el webroot de la intranet (portal interno)."
+  ],
+  "eventos": [
+    { "ts": "2026-09-29T09:34:26Z", "tipo": "t0", "detalle": "iter1 t0 (revert lab-listo + 90 s asentamiento)" },
+    { "ts": "2026-09-29T09:34:58Z", "tipo": "t1", "detalle": "iter1 t1 (tras scan FIM forzado)" },
+    { "ts": "2026-09-29T09:38:20Z", "tipo": "t0", "detalle": "iter2 t0" },
+    { "ts": "2026-09-29T09:38:52Z", "tipo": "t1", "detalle": "iter2 t1" },
+    { "ts": "2026-09-29T09:40:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (1/1, {80792}) -> iguales" }
+  ]
+}

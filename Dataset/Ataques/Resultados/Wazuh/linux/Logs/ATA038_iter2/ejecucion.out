@@ -1,0 +1,14 @@
+ATA038 · T1529 System Shutdown/Reboot (reinicio de la VM victima) — custom
+T0=2026-09-29T11:02:58Z
+hostname=victima-linux
+ips=192.168.65.129 
+ata=ATA038
+host=victima-linux
+uptime_antes=up 2 minutes
+boot_id_antes=34711a82-5da8-4599-b486-2210d71192c0
+t0=2026-09-29T11:02:58Z
+--- programando el reinicio de la VM victima (+1 min) ---
+Reboot scheduled for Tue 2026-09-29 13:03:58 CEST, use 'shutdown -c' to cancel.
+shutdown_rc=0
+REBOOT_PROGRAMADO=si (host=victima-linux, +1 min)
+T1_LOCAL=(lo sella el operador tras la reconexion; la VM se reinicia)

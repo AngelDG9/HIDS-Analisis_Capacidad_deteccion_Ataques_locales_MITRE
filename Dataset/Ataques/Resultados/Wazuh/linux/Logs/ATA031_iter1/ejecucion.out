@@ -1,0 +1,9 @@
+ATA031 · T1667 Email Bombing (Maildir local, N=25) — custom
+T0=2026-09-29T09:17:13Z
+mensajes_antes=0
+mensajes_despues=25
+delta_mensajes=25
+--- tamano del Maildir ---
+104K	/home/angel/lab-legit/Maildir/new
+EMAIL_BOMBING=OK (buzon saturado con 25 mensajes nuevos; crecimiento demostrado)
+T1_LOCAL=2026-09-29T09:17:14Z

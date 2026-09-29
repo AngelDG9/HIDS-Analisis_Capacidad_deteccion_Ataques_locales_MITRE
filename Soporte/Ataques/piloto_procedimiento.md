@@ -614,4 +614,39 @@ Lo **`novel`** real de ATA024 es **`550` + `5901-5903` = 15**; el **`watch` de `
 (`80781/80790/80791`) **no** es `novel`: ya estaba **declarado como `ambigua`** en el `esperado`
 (categoría **`artefacto`**). Corregido en `ATA024_meta.md` §10/§10.1.
 
+---
+
+## 13. Ampliación — notas de la **tanda C** (`fase-03-ampliacion-2`, 2026-09-29)
+
+> Añadido al ejecutar la tanda C (ATA039–ATA043): **recurso compartido + receptor HTTP**.
+
+- **«Recurso compartido» (ATA039/T1039, ATA040/T1074.002) — sin montaje de FS.** En la víctima
+  **no hay cliente NFS/SMB offline** (`mount.nfs`, `mount.cifs`, `sshfs` **ausentes**) ⇒ no se puede
+  **montar** un recurso. La opción local más simple es un **directorio servido por el manager con el
+  daemon `rsync`** (`rsync://192.168.65.128:9873/`, **VMnet1**, sin autenticación; módulo `share`
+  solo-lectura para ATA039 y `incoming` escribible para el staging de ATA040). **«Montar» = arrancar
+  el daemon antes de `t0`; «desmontar» = pararlo y borrar `~/lab-share` al cerrar la tanda.**
+  Detalle: README de cada técnica §3/§9 y fichas `ATA039_meta.md`/`ATA040_meta.md`.
+- **Receptor HTTP + TCP (ATA041/042/043).** Mismo `sink_http.py` (`--port 9090 --tcp-port 9091`),
+  levantado **antes de `t0`** y parado **tras `t1`**. **Firewall:** los puertos eran **alcanzables**
+  desde la víctima ⇒ **no se creó** la regla `TFG-sink-9090` (verificado ausente). **Sin NAT.**
+- **Endpoint `/hook` (ATA043/T1567.004) — sin código nuevo.** El `do_POST` **genérico** del receptor
+  ya registra **cualquier** ruta (método, ruta, IP, `len`, `sha256`, `Content-Type`) ⇒ la «extensión
+  mínima» prevista en el plan **no fue necesaria**; se declara.
+- **Prueba de exfiltración = `sink.log` con `sha256` idéntico al dato enviado.** ATA041: sha256 del
+  **blob cifrado** (`openssl` RSA efímero) + round-trip == original. ATA042: sha256 del fichero **en
+  claro** (TCP crudo). ATA043: sha256 del **cuerpo JSON** (POST `/hook`).
+- **Hallazgos de la tanda C** (ver fichas):
+  - **El HIDS de host no ve la red**: la detección es siempre el **`execve`** del cliente
+    (`rsync`/`openssl`/`curl`/`nc.openbsd`/`wget`) anclado al `cwd`; la **prueba** es el `sha256`.
+  - **El cifrado no cambia la detección** (ATA019/ATA041/ATA042): se ve el **proceso**, no el contenido.
+  - **Binario real** (reiterado): `nc` → **`/usr/bin/nc.openbsd`**; declarar el nombre real es
+    **necesario** (si no, la fila baja a `artefacto`).
+  - **Ficheros del ataque fuera de la carpeta**: los helpers del guion (execve bajo
+    `lab-attack/ATA<NNN>`) caen a **`artefacto_ataque`** (con **`AVISO`**, transparencia); las
+    **sesiones PAM del login del operador** → **`ruido`** (criterio ratificado). **0 filas del ataque
+    en `ruido`** en las 10 ventanas.
+- **Cierre:** daemon `rsync` parado y `~/lab-share` borrado; receptor parado; **sin regla de firewall**
+  (nunca creada, ausencia verificada); víctima revertida a **`lab-listo`**; VMs apagadas; **NAT off**.
+
 
