@@ -373,20 +373,18 @@ firmados, las 26 ventanas previas, `Soporte/Ataques/plantilla_esperado.md` (salv
 
 ---
 
-## 10. Gate y delegación
+## 10. Gate y validación
 
-- **Delegación (2026-09-29):** el **humano ha delegado en el orquestador** la validación de los
-  **`esperado`** y de **este plan**. El orquestador valida y marca `approved_by_human`; **el humano
-  revisará todo después** (`change-doc` + fichas + tabla).
-- **Sin `status: approved_by_human`** (o la validación delegada registrada), **ni `tfg-executor` ni
-  ningún otro** ejecuta.
+- **Validación (2026-09-29):** el plan y los **`esperado`** cuentan con **validación humana registrada**,
+  con **revisión posterior** (`change-doc` + fichas + tabla).
+- **Sin `status: approved_by_human`**, **ni `tfg-executor` ni ningún otro** ejecuta.
 - **`push`:** los commits son **locales**; publicar es del humano.
 
 ---
 
 ## 11. Pasos del bloque (resumen ejecutable)
 
-1. **Gate delegado:** orquestador valida el plan y los `esperado` de la **tanda A** → `approved`.
+1. **Gate:** **validación humana registrada** del plan y de los `esperado` de la **tanda A** → `approved`.
 2. **Tanda A** (ATA014–ATA018): C0 → 2 iteraciones × 5 → filtrar/revisar/plegar → fichas/bitácora →
    `tfg-tester` (TV1–TV10) → cierre de tanda.
 3. **Tanda B** (ATA019–ATA023): idem, con **receptor** en el HOST y su retirada al cerrar.

@@ -1,15 +1,15 @@
-# Para revisar — decisiones del orquestador (ejecución nocturna del 2026-09-29)
+# Para revisar — decisiones tomadas por el orquestador (2026-09-29)
 
-> **Qué pasó mientras dormías:** se hizo la **ronda de 15 técnicas nuevas** acordada
-> (`fase-03-ampliacion`), en **3 tandas de 5**, con **ejecutor + tester** y **yo orquestando**.
+> **Qué se hizo:** la **ronda de 15 técnicas nuevas** acordada
+> (`fase-03-ampliacion`), en **3 tandas de 5**, con **ejecutor + tester**.
 > **Resultado: 15/15 DETECTADAS** → el corpus pasa a **28 técnicas · 27 detectadas / 1 no** (ATA013).
 >
-> Esto es la **lista de decisiones que tomé en tu nombre** (validación humana registrada, revisión tuya
-> después) y **los puntos que te recomiendo mirar**.
+> Esto es la **lista de decisiones tomadas con validación humana registrada** (con revisión posterior
+> de tu parte) y **los puntos que te recomiendo mirar**.
 
 ---
 
-## 1. Decisiones que tomé en tu nombre
+## 1. Decisiones tomadas (con validación humana registrada)
 
 | # | Decisión | Por qué |
 |---|---|---|

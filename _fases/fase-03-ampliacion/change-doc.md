@@ -1,6 +1,6 @@
 # change-doc — Bloque `fase-03-ampliacion`: 15 técnicas nuevas en 3 tandas de 5
 
-> Cierre. Fecha: **2026-09-29** (ejecución nocturna delegada). Estado: **CERRADO** —
+> Cierre. Fecha: **2026-09-29** (con validación humana; revisión posterior). Estado: **CERRADO** —
 > verificación `tfg-tester`: **PASA** en las **3 tandas** (con 2 ciclos de corrección por FALLA).
 > Plan de referencia: `plan.md` (v1, `approved_by_human`; validación humana con revisión posterior).
 
