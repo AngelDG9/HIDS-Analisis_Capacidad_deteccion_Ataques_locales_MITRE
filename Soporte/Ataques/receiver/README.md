@@ -33,6 +33,26 @@ python "Soporte\Ataques\receiver\sink_http.py" `
 
 Parar con `Ctrl+C` (o matar el proceso) **después de `t1`**.
 
+### 2.bis Modo TCP (`--tcp-port`) — añadido en `fase-03-ampliacion` (tanda B)
+
+Para la variante de **protocolo alternativo no-HTTP** (ATA019/T1048.001) se añadió un **listener TCP
+crudo** opcional: con `--tcp-port N` (por defecto **0 = desactivado**) el mismo proceso escucha
+**además** en TCP y registra una línea por conexión:
+
+```text
+<UTC> TCP from=<IP> len=<N> sha256=<hash>
+```
+
+```powershell
+python "Soporte\Ataques\receiver\sink_http.py" --bind 192.168.65.1 `
+  --port 9090 --tcp-port 9091 --log "…/Logs/ATA019_iter1/sink.log"
+```
+
+- El cliente envía los bytes por TCP crudo (`/dev/tcp`, `cat`) y **cierra** → el receptor lee hasta
+  EOF y registra `len`+`sha256` del blob (en ATA019, el **cifrado simétrico**).
+- **Retrocompatible:** sin `--tcp-port`, el comportamiento es **idéntico** al de ATA008/ATA009/ATA010.
+
+
 ## 3. Comprobación de alcance del puerto (paso 0)
 
 Desde la **víctima** (antes de la fase de ataque), con el receptor levantado:

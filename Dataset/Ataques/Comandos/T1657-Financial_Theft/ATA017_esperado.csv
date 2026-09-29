@@ -1,0 +1,16 @@
+# ATA017_esperado.csv | ATA017 · T1657 Financial Theft | TFG HIDS · Fase 3 (ampliacion, tanda A)
+# Redactado el 2026-09-29 con los datos del paso 0, ANTES de ver ninguna alerta.
+# Gate humano: APROBADO 2026-09-29 (validacion humana)
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+# Convencion H4: cada senal audit_exe se acompana de audit_cwd de la carpeta del ataque.
+# La tecnica MANIPULA un libro de cuentas local (datos de juguete) en la ruta VIGILADA
+#   /home/angel/lab-legit: la MODIFICACION/creacion genera evento watch (80790/80781/80782)
+#   = EFECTO del ataque -> se declara AMBIGUA (acotada por rule_id) -> dudosa -> `artefacto`.
+#   La deteccion declarada es el execve de las herramientas (sed/cp) anclado al cwd.
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1657-S1,deteccion,audit_exe,sed,Process Creation,T1657,manipulacion del libro de cuentas (transferencia fraudulenta) (execve 80792)
+T1657-S2,deteccion,audit_exe,cp,Process Creation,T1657,sustraccion/copia del libro y la cartera simulada a la carpeta del ataque
+T1657-S3,deteccion,audit_cwd,/home/angel/lab-attack/ATA017/*,Process Creation,T1657,ancla H4 (cwd del ataque)
+T1657-A1,ambigua,rule_id,80790,File Creation,T1657,creacion de fichero bajo watch en lab-legit (efecto del ataque)
+T1657-A2,ambigua,rule_id,80781,File Modification,T1657,escritura bajo watch en lab-legit
+T1657-A3,ambigua,rule_id,80782,File Modification,T1657,escritura sobre el directorio vigilado lab-legit

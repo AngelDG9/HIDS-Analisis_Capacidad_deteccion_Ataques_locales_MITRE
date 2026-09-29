@@ -1,0 +1,77 @@
+{
+  "ata_id": "ATA023",
+  "tecnica": "T1496.002",
+  "tactica": "Impact",
+  "sistema": "linux",
+  "bloque": "fase-03-ampliacion",
+  "tanda": "B",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1496.002-Bandwidth_Hijacking/",
+  "atomic": { "fuente": "custom", "nota": "transferencia masiva ACOTADA (32 MiB) al receptor del HOST; sin reglas de red/recursos en Wazuh -> se espera deteccion solo por execve" },
+  "esperado_sha256": "41142efb43a2be4ecafba64cc8618a6d316715bf734201c5a09b0ae804583cfb",
+  "ataque_sha256": "db76ac459df61774fd2c4d70451787ee2aa56ce931e75f24f8ac3f54574cb310",
+  "validacion_humana_esperado": "APROBADO 2026-09-29",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA023_logtest.txt",
+    "logtest_sha256": "2f44cc57dce5036c9b69495bcb995c34afa4c1d4367e41117c0b6b0b76518092",
+    "preflight": "Soporte/Ataques/c0/ATA023_preflight.md",
+    "preflight_sha256": "646fe995d568a0743095ee50ed6c6a212245bcfdf16b8223a818f4b4f067899d",
+    "resultado": "PASA (head y curl -> 80792 level 3; sin silenciador)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1, "t0": "2026-09-29T02:02:46Z", "t1": "2026-09-29T02:03:20Z", "duracion_s": 34, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA023_iter1-Detalle.csv",
+      "detalle_sha256": "e3856fcfbba0f684cc52bd81290fce39b7a7495ab7f1cbfbf3afc0d1a6f6b988",
+      "detalle_raw_sha256": "dcae09d5f72d0d9636402b9a03163570cbb64c5d2b01be88967e79702ac71de6",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA023_iter1-Audited.csv",
+      "audited_sha256": "abbe884edb1578b159d01c79c258823fe88e9f61fd8ebaf731920f16194dfbe4",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA023_iter1-Revision.csv",
+      "revision_sha256": "e32c1b34500995e194c952694b58e7273d6ddd6f766a57ae99a316977ef25a51",
+      "conteos": { "filas": 886, "deteccion": 2, "auto_ruido": 622, "ruido_conocido": 257, "dudosa": 0, "artefacto_ataque": 5 },
+      "rs": { "RS1": 10, "RS2": 876, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 893, "victima_linux": 886, "otros_agentes_descartados": 7 },
+      "detecciones": { "alertas": 2, "rule_id_distintos": ["80792"], "esperadas": 2, "sorpresas": 0, "evidencia": "audit_exe=/usr/bin/head (flujo) + /usr/bin/curl (transferencia); cwd=/home/angel/lab-attack/ATA023" },
+      "metrico_o1": "si", "metrico_o2": "2/2", "dudosas_resueltas": 10,
+      "efecto": { "sink_log": "Dataset/Ataques/Resultados/Wazuh/linux/Logs/ATA023_iter1/sink.log", "sink_log_sha256": "9faa8222dc5cbbf3d280577c56d2a85e53f0a0dd1c86bb685a24a7d49706c9db", "post": "/api/bw/hog", "len": 33554432, "sha256_cuerpo": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302", "tiempo_s": 1.23, "coincide": true }
+    },
+    {
+      "iter": 2, "t0": "2026-09-29T02:06:31Z", "t1": "2026-09-29T02:07:04Z", "duracion_s": 33, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA023_iter2-Detalle.csv",
+      "detalle_sha256": "bcbd929aa9a0d0500e65a79df6c1d9cc1857c2c96c1698df9b37c733c39734bf",
+      "detalle_raw_sha256": "b4603b0d3d049d221f4b0bd73026b3a8838c821dc75aabb540af7578cd670916",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA023_iter2-Audited.csv",
+      "audited_sha256": "ffd618bb294ea66363665499b2121265e53af9858a27b17af5abdee0aae8f31c",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA023_iter2-Revision.csv",
+      "revision_sha256": "12ae6cbed04573b955978c7336086422dbe0cc6ddf1fb3f9bbc9e36b86230165",
+      "conteos": { "filas": 884, "deteccion": 2, "auto_ruido": 620, "ruido_conocido": 257, "dudosa": 0, "artefacto_ataque": 5 },
+      "rs": { "RS1": 9, "RS2": 875, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 891, "victima_linux": 884, "otros_agentes_descartados": 7 },
+      "detecciones": { "alertas": 2, "rule_id_distintos": ["80792"], "esperadas": 2, "sorpresas": 0, "evidencia": "audit_exe=/usr/bin/head + /usr/bin/curl; cwd=/home/angel/lab-attack/ATA023" },
+      "metrico_o1": "si", "metrico_o2": "2/2", "dudosas_resueltas": 9,
+      "efecto": { "sink_log": "Dataset/Ataques/Resultados/Wazuh/linux/Logs/ATA023_iter2/sink.log", "sink_log_sha256": "96aff5bbc4d095a851df5fb51b2c3367e187faa0454666ba1818b813e319a362", "post": "/api/bw/hog", "len": 33554432, "sha256_cuerpo": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302", "tiempo_s": 1.19, "coincide": true }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-09-29", "filas": 19,
+    "veredicto": "ruido (19)",
+    "motivo": "head con cwd=/ (churn del login del operador, sin_ancla) + PAM 5501/5502; ajenas al ataque — criterio ratificado 2026-09-28",
+    "revisor": "executor ampliacion tanda B"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": { "criterio": "v2", "mismo_conjunto_rule_id_deteccion": true, "rule_ids_deteccion": ["80792"], "n1": 2, "n2": 2, "margen": 2, "criterio_recuento_ok": true, "sin_dudosas_sin_resolver": true, "auto_ruido_delta": 2, "ruido_conocido_delta": 0 },
+  "extraccion": { "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)", "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json", "aislamiento": "filtro a agent_name == victima-linux" },
+  "prueba_de_efecto": "sink.log del HOST: POST /api/bw/hog con len=33554432 (32 MiB) en ~1,2 s; HTTP=200. Acotado; sin NAT; receptor local",
+  "receptor": { "script": "Soporte/Ataques/receiver/sink_http.py", "bind": "192.168.65.1:9090 (HTTP)", "firewall": "NO se creo regla; TFG-sink-9090 verificado ausente (CA10)", "parado_tras_t1": true },
+  "hallazgo": "R9 confirmado: Wazuh no tiene reglas de red/recursos; el 'ancho de banda' no se ve y la unica deteccion es el execve (head/curl)",
+  "eventos": [
+    { "ts": "2026-09-29T02:02:46Z", "tipo": "t0", "detalle": "iter1 t0 (revert lab-listo + 90 s asentamiento)" },
+    { "ts": "2026-09-29T02:03:20Z", "tipo": "t1", "detalle": "iter1 t1 (tras scan FIM forzado)" },
+    { "ts": "2026-09-29T02:06:31Z", "tipo": "t0", "detalle": "iter2 t0" },
+    { "ts": "2026-09-29T02:07:04Z", "tipo": "t1", "detalle": "iter2 t1" },
+    { "ts": "2026-09-29T02:30:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (2/2, {80792}) -> iguales" },
+    { "ts": "2026-09-29T03:10:00Z", "tipo": "correccion", "detalle": "ciclo 2 (tester): se endurece ATA023_ataque.sh — `HOG=OK` ya NO es incondicional: se comprueba el resultado de curl (rc=0, HTTP 2xx y enviado==MAX_BYTES) y en caso contrario `HOG=FALLO` + exit 1. Al cambiar el guion cambia su huella; se actualiza la cita a la REAL actual db76ac45…b310 (la ejecutada, aun en Logs/ATA023_iter*/sha256_artefacto.txt, fue 035cdc84…2ae2). NO se editó el fichero citado para cuadrar" }
+  ]
+}

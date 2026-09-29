@@ -1,0 +1,14 @@
+# ATA018_esperado.csv | ATA018 · T1056.001 Keylogging | TFG HIDS · Fase 3 (ampliacion, tanda A)
+# Redactado el 2026-09-29 con los datos del paso 0, ANTES de ver ninguna alerta.
+# Gate humano: APROBADO 2026-09-29 (validacion humana)
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+# Convencion H4: cada senal audit_exe se acompana de audit_cwd de la carpeta del ataque.
+# Mecanismo OCULTO (sorpresa): un wrapper registra la ENTRADA de una sesion de terminal
+#   en un fichero dentro de lab-attack (ruta NO vigilada -> la escritura NO genera FIM/watch).
+#   NO se toca pam_tty_audit ni auditd reales (tecnica CONTENIDA, declarada).
+#   La persistencia via syslog (`logger`) cae en la regla de fabrica 40700 (level 0, no alerta).
+#   La deteccion declarada es el execve del wrapper (tee/logger) anclado al cwd del ataque.
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1056.001-S1,deteccion,audit_exe,tee,Process Creation,T1056.001,wrapper que captura la entrada de la sesion (execve 80792)
+T1056.001-S2,deteccion,audit_exe,logger,Process Creation,T1056.001,persistencia del keylog capturado en syslog/journald
+T1056.001-S3,deteccion,audit_cwd,/home/angel/lab-attack/ATA018/*,Process Creation,T1056.001,ancla H4 (cwd del ataque)

@@ -1,0 +1,7 @@
+6030024e1270018be58a207a72eba758584f9aa11b5c220b05e31e51f4fe94e9  ATA014_ataque.sh
+total 28
+-rwxr-xr-x 1 angel angel 4424 Sep 29 02:35 ATA014_ataque.sh
+-rw-r--r-- 1 angel angel 1535 Sep 29 02:35 ATA014_esperado.csv
+drwxrwxr-x 2 angel angel 4096 Sep 29 02:30 collected
+-rw-rw-r-- 1 angel angel  658 Sep 29 02:30 ejecucion.out
+-rw-r--r-- 1 angel angel 4264 Sep 29 02:35 README.md

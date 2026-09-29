@@ -1,0 +1,12 @@
+# ATA025_esperado.csv | ATA025 · T1496.001 Compute Hijacking | TFG HIDS · Fase 3 (ampliacion, tanda C)
+# Redactado el 2026-09-29 con los datos del paso 0, ANTES de ver ninguna alerta.
+# Gate humano: APROBADO 2026-09-29 (validacion humana)
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+# Convencion H4: cada senal audit_exe se acompana de audit_cwd de la carpeta del ataque.
+# T1496.001 es un consumo de RECURSOS: no hay fichero de datos ni escritura vigilada.
+#   El HIDS de host no tiene reglas de CPU/recursos -> la unica capa es el EXECVE.
+#   (Hallazgo honesto: si el consumo se hiciera con builtins del shell, seria invisible.)
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1496.001-S1,deteccion,audit_exe,yes,Process Creation,T1496.001,proceso de carga de CPU (execve 80792)
+T1496.001-S2,deteccion,audit_exe,timeout,Process Creation,T1496.001,lanzador acotado de la carga (execve 80792)
+T1496.001-S3,deteccion,audit_cwd,/home/angel/lab-attack/ATA025/*,Process Creation,T1496.001,ancla H4 (cwd del ataque)

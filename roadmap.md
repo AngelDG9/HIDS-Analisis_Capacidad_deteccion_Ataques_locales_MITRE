@@ -12,7 +12,7 @@
 Fase 0 — Arranque del proyecto                         [~2 días]   ✔ hecho
 Fase 1 — Corpus MITRE (F-01)                           [~1 semana]   ✔ hecho
 Fase 2 — Laboratorio Wazuh (F-02)                      [~1 semana]   ✔ hecho
-Fase 3 — Ataques y detección (F-03)                    [~2 semanas mes 1, escalable mes 2]   🔶 EN CURSO (1ª tanda: 13/89 P1)
+Fase 3 — Ataques y detección (F-03)                    [~2 semanas mes 1, escalable mes 2]   🔶 EN CURSO (28 técnicas · 27 detectadas)
 Fase 4 — Robustez y rendimiento (η)                    [~1 semana]
 Fase 5 — Memoria y anexos (F-04)                       [~2-3 semanas]
 ```
@@ -92,16 +92,17 @@ documentados. Verificación **PASA**; detalle en **`_fases/fase-02/change-doc.md
 | 3.1 ✔ | **T-09** piloto (2-3 técnicas R/E/S): artefacto + README + captura. | [MIXTO] |
 | 3.2 ✔ | **T-10** + **T-11**: ejecución (con doble iteración), captura, filtrado y etiquetado. | [AUTO] |
 | 3.3 ✔ | Revisar el flujo y automatizar lo repetitivo (criterio **v2**, **métrica congelada**, **C0 por técnica**, anti-enmascaramiento). | [MIXTO] |
-| 3.4 🔶 | Escalar al **corpus**: **1ª tanda cerrada (13 técnicas)**; **faltan 76 de las 89 P1** → se amplía. | [AUTO] + [HUMANO] |
-| 3.5 | **Ampliación del corpus** (decidir tamaño y tanda siguiente; factibilidad en Linux sin NAT). | [HUMANO] + [AUTO] |
+| 3.4 ✔ | Escalar al **corpus** (ciclo completo: ataque → detección → ficha). | [AUTO] + [HUMANO] |
+| 3.5 🔶 | **Ampliar el corpus por rondas** (rondas de **15**, en **tandas de 5**; factibilidad Linux sin NAT). | [AUTO] + [HUMANO] |
+| 3.6 | **Bloque de EVASIÓN** (2ª pasada, versiones **disfrazadas**) — **cuando la cobertura P1 esté cerrada**. | [AUTO] + [HUMANO] |
 
-**🔶 EN CURSO — 1ª tanda cerrada (2026-09-29).** **13 de las 89 técnicas P1** ejecutadas
-(**2 iteraciones = 26 ventanas**): **12 DETECTADAS / 1 NO** (`ATA013/T1560.002` — **punto ciego de fábrica**:
-la regla `92600` suprime el `execve` de `python3`; el ataque **sí** dejó 6 rastros). Métrica **congelada**
-(SÍ/NO + `rule_id` + acciones `k/m`); `dudosa=0`; **0 filas del ataque en "ruido"**. Bloques en
-`_fases/fase-03-*` (`filtro`, `preflight`, `atomic`, `piloto`, `afinado`, `piloto-custom`, `cabos`,
-`gitattributes`, `senales`, `metrica`, `escalado`).
-**Pendiente:** ampliar el corpus (**76 P1** restantes; el total host-eligible es **625**: P1 89 · P2 459 · P3 77).
+**🔶 EN CURSO (2026-09-29).** **28 técnicas** ejecutadas (**56 ventanas**) → **27 DETECTADAS / 1 NO**
+(`ATA013/T1560.002` — **punto ciego de fábrica**: la regla `92600` suprime el `execve` de `python3`; el
+ataque **sí** dejó 6 rastros). Métrica **congelada** (SÍ/NO + `rule_id` + acciones `k/m`); `dudosa=0`.
+**Rondas:** 1ª = 13 técnicas (`fase-03-escalado`) · 2ª = **15 técnicas** (`fase-03-ampliacion`, 3 tandas) ·
+siguientes = **rondas de 15** hasta cubrir las **~58 técnicas P1 con Linux**.
+**Pendiente:** seguir ampliando (~**30** P1-Linux restantes) → **después, la EVASIÓN** → Windows →
+**Fase 4** (precio de la detección) → **Fase 5** (memoria). *(El total host-eligible es **625**: P1 89 · P2 459 · P3 77; de las 89 P1, **71 citan Linux**.)*
 
 **DoD:** ✔ corpus cerrado con filas en `ATA_index.csv`, CSV por ataque y primer balance de
 detección de Wazuh.

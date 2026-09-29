@@ -1,0 +1,22 @@
+ATA027 · T1561.002 Disk Structure Wipe (SOLO imagen loop) — custom (manual)
+T0=2026-09-29T04:02:14Z
+imagen_creada=/home/angel/lab-attack/ATA027/disk.img (33554432 bytes)
+--- estructura ANTES del wipe ---
+/home/angel/lab-attack/ATA027/disk.img: Linux rev 1.0 ext4 filesystem data, UUID=c6b99477-2a62-48b4-9323-6ccb7a858d21 (extents) (64bit) (large files) (huge files)
+loop_asignado=/dev/loop0
+montaje_antes=OK
+  total 24
+  drwxr-xr-x 3 root  root   4096 Sep 29 06:02 .
+  drwxrwxr-x 3 angel angel  4096 Sep 29 06:02 ..
+  drwx------ 2 root  root  16384 Sep 29 06:02 lost+found
+/home/angel/lab-attack/ATA027/disk.img: 2 bytes were erased at offset 0x00000438 (ext4): 53 ef
+--- estructura DESPUES del wipe ---
+/home/angel/lab-attack/ATA027/disk.img: data
+blkid_tras_wipe=no_reconoce
+montaje_despues=falla(estructura destruida)
+--- estado final ---
+sha256_antes =538d1ab89c99ce2c3250a8b9ca27c32428558b6229a55b101ec37562a81e6811
+sha256_despues=a1b709c8a24bef2467c49bad140e0164352e913052e251775f3eda3c7782f56c
+loop_residual=0
+DISK_STRUCTURE_WIPE=OK (estructura de la imagen destruida; dejo de ser montable)
+T1_LOCAL=2026-09-29T04:02:16Z

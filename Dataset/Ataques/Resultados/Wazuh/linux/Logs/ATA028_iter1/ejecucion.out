@@ -1,0 +1,9 @@
+ATA028 · T1056.003 Web Portal Capture (portal falso local) — custom (manual)
+T0=2026-09-29T03:43:06Z
+>>> POST de credenciales de juguete al portal falso
+--- peticion capturada por el portal (extracto) ---
+  POST /portal/login HTTP/1.1
+  Host: 127.0.0.1:8081
+  usuario=demo&clave=demo-solo-juguete
+PORTAL_CAPTURE=OK (el portal registro el POST con las credenciales de juguete)
+T1_LOCAL=2026-09-29T03:43:13Z

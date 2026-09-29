@@ -39,7 +39,9 @@ fecha: 2026-09-28
 | Desviación | `openssl enc` **simétrico** (AES-256-CBC+PBKDF2) en vez de `genrsa`+`rsautl` (deprecado/limitado). Documentada en el README §4 |
 
 Artefacto: `Dataset/Ataques/Comandos/T1486-Data_Encrypted_for_Impact/ATA001_ataque.sh`
-(`sha256=a4137192e108c1f74be317991dd64b47e7220736a3db9c8b08b41f6d60417139`, idéntico repo↔víctima).
+(`sha256=0a01be24763f5c9363ae8ac102b8ddaaee956a9a0d701196bb557374c66bacd8`; la **ejecución** usó
+`a4137192…7139` —un **retoque cosmético** del comentario, posterior al ataque, cambió el fichero—; ver
+`correccion` en `Bitacora/ATA001.json`).
 Señales esperadas: `.../ATA001_esperado.csv`
 (`sha256=359cac966880a2bb7701a05f19c9c5e67d92c4b3d043fb9acb7b571efe4008b9`).
 Validación humana del `esperado` (CA1): **APROBADO 2026-09-28** (firma en su cabecera).

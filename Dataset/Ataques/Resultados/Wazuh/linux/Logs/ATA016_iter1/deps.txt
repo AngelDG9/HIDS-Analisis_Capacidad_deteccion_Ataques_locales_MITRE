@@ -1,0 +1,5 @@
+77a9543145f02edc478a036f39222d513c7e51d5041c2756c0f4e279a6a0143f  ATA016_ataque.sh
+total 16
+-rwxr-xr-x 1 angel angel 4800 Sep 29 02:39 ATA016_ataque.sh
+-rw-r--r-- 1 angel angel 1585 Sep 29 02:39 ATA016_esperado.csv
+-rw-r--r-- 1 angel angel 3903 Sep 29 02:39 README.md

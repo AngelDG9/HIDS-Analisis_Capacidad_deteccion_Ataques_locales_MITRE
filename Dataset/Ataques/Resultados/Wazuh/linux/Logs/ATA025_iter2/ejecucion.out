@@ -1,0 +1,13 @@
+ATA025 · T1496.001 Compute Hijacking (carga de CPU acotada) — custom (manual)
+T0=2026-09-29T03:38:59Z
+nproc=2
+loadavg_antes=0.65 0.43 0.17 1/318 3036
+workers_lanzados=2 duracion_s=10
+loadavg_durante=0.65 0.43 0.17 3/322 3044
+--- estado final ---
+cpu_busy_pct_durante=100.0
+cpu_busy_pct_despues_de_parar=88.9
+loadavg_despues=0.86 0.48 0.19 3/318 3052
+procesos_yes_vivos=0
+HIJACK_COMPUTE=OK (carga acotada sostenida: busy=100.0% ; 0 procesos residuales)
+T1_LOCAL=2026-09-29T03:39:11Z

@@ -1,0 +1,79 @@
+{
+  "ata_id": "ATA025",
+  "tecnica": "T1496.001",
+  "tactica": "Impact",
+  "sistema": "linux",
+  "bloque": "fase-03-ampliacion",
+  "tanda": "C",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1496.001-Compute_Hijacking/",
+  "atomic": { "fuente": "custom", "nota": "carga de CPU ACOTADA (2 x timeout 10s yes); guardarrail: WORKERS<=4 y DURATION<=15s; trap que mata remanentes; 0 residuos verificado" },
+  "esperado_sha256": "c69a5dac12aa832b4689665c6f03eba85910189c15732053a3f3d768402945e3",
+  "ataque_sha256": "8dc97e905e50e85135324d695d3b1dfb2f4d37f49f3e9bfc598f8df4df6cdaf4",
+  "validacion_humana_esperado": "APROBADO 2026-09-29",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA025_logtest.txt",
+    "logtest_sha256": "048569d51e66db498201590e86062345afb9fb1eb7ea0904a57422659c6f09f9",
+    "preflight": "Soporte/Ataques/c0/ATA025_preflight.md",
+    "preflight_sha256": "f7da05b7202198957d40750682b8180c7f683eb51154fef76030212a5e6b31c2",
+    "resultado": "PASA (2 eventos yes/timeout -> 80792 level 3; sin silenciador)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1, "t0": "2026-09-29T03:35:12Z", "t1": "2026-09-29T03:35:56Z", "duracion_s": 44, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA025_iter1-Detalle.csv",
+      "detalle_sha256": "947243a66d8069b7d45d4218e3dea4d081e1e4ba890c8305fcae9e65474b7be5",
+      "detalle_raw_sha256": "47941aab2adb6533030b7ad0108934fc5b46cd0a9830465988e0d4179beccfbd",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA025_iter1-Audited.csv",
+      "audited_sha256": "591248fa8ac2ffe670b7f29d849d55c92380ce39e85c8e6dac540fb2182b9a28",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA025_iter1-Revision.csv",
+      "revision_sha256": "b631e8cb4012f8491b63d9c29ffcfe6803f4f9a1ee44da7c5a2174ca9562e4a8",
+      "conteos": { "filas": 1151, "deteccion": 9, "auto_ruido": 610, "ruido_conocido": 509, "dudosa": 0, "artefacto_ataque": 23 },
+      "rs": { "RS1": 2, "RS2": 1149, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 1161, "victima_linux": 1152, "otros_agentes_descartados": 9 },
+      "detecciones": { "alertas": 9, "rule_id_distintos": ["80792"], "esperadas": 9, "sorpresas": 0, "evidencia": "7x timeout + 2x yes (execve 80792, cwd del ataque)" },
+      "metrico_o1": "si", "metrico_o2": "2/2", "dudosas_resueltas": 3,
+      "efecto": { "cpu_busy_pct_durante": 100.0, "cpu_busy_pct_despues": 88.8, "loadavg_antes": "0.71 0.47 0.18", "loadavg_despues": "0.91 0.52 0.20", "yes_vivos": 0, "resultado": "HIJACK_COMPUTE=OK" }
+    },
+    {
+      "iter": 2, "t0": "2026-09-29T03:38:59Z", "t1": "2026-09-29T03:39:42Z", "duracion_s": 43, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA025_iter2-Detalle.csv",
+      "detalle_sha256": "cf9c30629afaf55f5f2a5bd5103b46520937088e94e72ff098d71e38c8882183",
+      "detalle_raw_sha256": "60c4a2857f923646585a23ed68aac3747b4bc2a4298023bfbea4dd9136535a18",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA025_iter2-Audited.csv",
+      "audited_sha256": "7a65172c1a753b5f29ebeaecd46b323ffd79948a5e4ac5f72fc134d86ab87a4b",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA025_iter2-Revision.csv",
+      "revision_sha256": "376136dcec43dec01b02ad92bbccc5aca3c7914b3a11dc2a6ecfa6c6f4857b05",
+      "conteos": { "filas": 1186, "deteccion": 8, "auto_ruido": 624, "ruido_conocido": 532, "dudosa": 0, "artefacto_ataque": 22 },
+      "rs": { "RS1": 7, "RS2": 1179, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 1196, "victima_linux": 1187, "otros_agentes_descartados": 9 },
+      "detecciones": { "alertas": 8, "rule_id_distintos": ["80792"], "esperadas": 8, "sorpresas": 0, "evidencia": "7x timeout + 1x yes (execve 80792, cwd del ataque)" },
+      "metrico_o1": "si", "metrico_o2": "2/2", "dudosas_resueltas": 7,
+      "efecto": { "cpu_busy_pct_durante": 100.0, "cpu_busy_pct_despues": 88.9, "loadavg_antes": "0.65 0.43 0.17", "loadavg_despues": "0.86 0.48 0.19", "yes_vivos": 0, "resultado": "HIJACK_COMPUTE=OK" }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-09-29", "filas": 10,
+    "veredicto": "ruido (7) + artefacto (3)",
+    "motivo": "7 = PAM del operador (5501/5502, dstuser=angel) -> ruido (criterio ratificado 2026-09-28). 3 = 80792 sin_ancla (timeout/yes que case el exe pero no anclo) -> artefacto. Cero filas del ataque en ruido.",
+    "revisor": "executor ampliacion tanda C"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": { "criterio": "v2", "mismo_conjunto_rule_id_deteccion": true, "rule_ids_deteccion": ["80792"], "n1": 9, "n2": 8, "margen": 2, "criterio_recuento_ok": true, "sin_dudosas_sin_resolver": true, "auto_ruido_delta": 14, "ruido_conocido_delta": 23 },
+  "extraccion": { "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)", "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json", "aislamiento": "filtro a agent_name == victima-linux" },
+  "prueba_de_efecto": "CPU de la victima al 100% durante la ventana (busy calculado de /proc/stat), loadavg sube, y al terminar 0 procesos yes vivos (carga ACOTADA, sin residuo).",
+  "receptor": { "aplica": false, "nota": "no hay receptor de red" },
+  "hallazgos": [
+    "R9 confirmado: Wazuh no tiene reglas de CPU/recursos -> el consumo no se ve; unica deteccion por execve.",
+    "Si el consumo se hiciera con builtins del shell (sin execve) seria un PUNTO CIEGO total."
+  ],
+  "eventos": [
+    { "ts": "2026-09-29T03:35:12Z", "tipo": "t0", "detalle": "iter1 t0 (revert lab-listo + 90 s asentamiento)" },
+    { "ts": "2026-09-29T03:35:56Z", "tipo": "t1", "detalle": "iter1 t1 (tras scan FIM forzado)" },
+    { "ts": "2026-09-29T03:38:59Z", "tipo": "t0", "detalle": "iter2 t0" },
+    { "ts": "2026-09-29T03:39:42Z", "tipo": "t1", "detalle": "iter2 t1" },
+    { "ts": "2026-09-29T03:43:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica ({80792}, 9 vs 8) -> iguales" }
+  ]
+}

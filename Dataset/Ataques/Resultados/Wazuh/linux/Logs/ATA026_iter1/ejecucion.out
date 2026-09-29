@@ -1,0 +1,9 @@
+ATA026 · T1565.002 Transmitted Data Manipulation (proxy local reescribe en transito) — custom (manual)
+T0=2026-09-29T03:50:53Z
+sha256_original =c100612f931d55635cbcafa928c2ef1b768047485b32e32fc9e075ad29b0dd89
+sha256_manipulado_esperado=b3fd1e3cb6ac1df835bd87c11723e7d4d01535b786197f8d59a43ebb1d830023
+>>> proxy local reescribe el cuerpo en transito hacia 192.168.65.1:9091
+>>> emision del dato original a traves del proxy
+--- estado final ---
+MANIP_TRANSITO=OK (el cuerpo recibido por el receptor difiere del original; sha manipulado=b3fd1e3cb6ac1df835bd87c11723e7d4d01535b786197f8d59a43ebb1d830023)
+T1_LOCAL=2026-09-29T03:50:59Z

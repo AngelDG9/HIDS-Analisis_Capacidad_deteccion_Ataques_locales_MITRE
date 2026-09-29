@@ -1,0 +1,19 @@
+﻿ATA020 ┬À T1020 Automated Exfiltration (bucle curl POST sobre el staging) ÔÇö custom (manual)
+T0=2026-09-29T01:59:08Z
+--- FICHEROS A EXFILTRAR (sha256) ---
+2ad637b8797a4c6e22a5da27f698f31c9da4088367df78a795414d1a6721d9e6  /home/angel/lab-attack/ATA020/staging/clientes.csv
+279a24d6c79fb9bf66cbfe491227731fe3ab7c96e456818e09a28abf6c291d3f  /home/angel/lab-attack/ATA020/staging/contratos.csv
+1011daaaa9e7a03a133476dad85bec06a61f30d21a13150b598105a8e35de115  /home/angel/lab-attack/ATA020/staging/facturas.csv
+b5c25b1a11f3e25998ed228122476a0352b894f14221cc9a94257705601a810d  /home/angel/lab-attack/ATA020/staging/nominas.csv
+>>> enviando clientes.csv
+HTTP=200 enviado=79B
+>>> enviando contratos.csv
+HTTP=200 enviado=64B
+>>> enviando facturas.csv
+HTTP=200 enviado=79B
+>>> enviando nominas.csv
+HTTP=200 enviado=72B
+--- estado final ---
+acciones_cubiertas=4/4
+AUTOMATIZADO=OK (4/4 ficheros exfiltrados sin intervencion)
+T1_LOCAL=2026-09-29T01:59:09Z

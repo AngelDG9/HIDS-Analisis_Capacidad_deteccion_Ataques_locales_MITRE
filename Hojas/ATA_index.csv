@@ -13,3 +13,18 @@ ATA010,Exfiltration,T1041,Exfiltration Over C2 Channel,Dataset/Ataques/Comandos/
 ATA011,Collection,T1074,Data Staged,Dataset/Ataques/Comandos/T1074-Data_Staged/,cerrado
 ATA012,Collection,T1119,Automated Collection,Dataset/Ataques/Comandos/T1119-Automated_Collection/,cerrado
 ATA013,Collection,T1560,Archive Collected Data,Dataset/Ataques/Comandos/T1560-Archive_Collected_Data/,review
+ATA014,Collection,T1114,Email Collection,Dataset/Ataques/Comandos/T1114-Email_Collection/,cerrado
+ATA015,Collection,T1114,Email Forwarding Rule,Dataset/Ataques/Comandos/T1114.003-Email_Forwarding_Rule/,cerrado
+ATA016,Collection,T1213,Databases,Dataset/Ataques/Comandos/T1213.006-Databases/,cerrado
+ATA017,Impact,T1657,Financial Theft,Dataset/Ataques/Comandos/T1657-Financial_Theft/,cerrado
+ATA018,Collection,T1056,Keylogging,Dataset/Ataques/Comandos/T1056.001-Keylogging/,cerrado
+ATA019,Exfiltration,T1048.001,Exfiltration Over Symmetric Encrypted Non-C2 Protocol,Dataset/Ataques/Comandos/T1048.001-Symmetric_Encrypted_Non-C2/,cerrado
+ATA020,Exfiltration,T1020,Automated Exfiltration,Dataset/Ataques/Comandos/T1020-Automated_Exfiltration/,cerrado
+ATA021,Exfiltration,T1029,Scheduled Transfer,Dataset/Ataques/Comandos/T1029-Scheduled_Transfer/,cerrado
+ATA022,Exfiltration,T1567.001,Exfiltration to Code Repository,Dataset/Ataques/Comandos/T1567.001-Exfiltration_To_Code_Repository/,cerrado
+ATA023,Impact,T1496.002,Bandwidth Hijacking,Dataset/Ataques/Comandos/T1496.002-Bandwidth_Hijacking/,cerrado
+ATA024,Impact,T1531,Account Access Removal,Dataset/Ataques/Comandos/T1531-Account_Access_Removal/,cerrado
+ATA025,Impact,T1496.001,Compute Hijacking,Dataset/Ataques/Comandos/T1496.001-Compute_Hijacking/,cerrado
+ATA026,Impact,T1565.002,Transmitted Data Manipulation,Dataset/Ataques/Comandos/T1565.002-Transmitted_Data_Manipulation/,cerrado
+ATA027,Impact,T1561.002,Disk Structure Wipe,Dataset/Ataques/Comandos/T1561.002-Disk_Structure_Wipe/,cerrado
+ATA028,Collection,T1056.003,Web Portal Capture,Dataset/Ataques/Comandos/T1056.003-Web_Portal_Capture/,cerrado

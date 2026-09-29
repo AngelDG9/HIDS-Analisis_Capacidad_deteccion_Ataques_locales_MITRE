@@ -1,0 +1,1 @@
+cuenta=ACME;importe=100;moneda=EUR;ref=INV-2026-001

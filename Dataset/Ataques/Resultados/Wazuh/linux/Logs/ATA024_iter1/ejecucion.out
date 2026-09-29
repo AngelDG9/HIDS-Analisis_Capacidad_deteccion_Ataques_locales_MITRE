@@ -1,0 +1,19 @@
+ATA024 · T1531 Account Access Removal (usuario desechable tfg-victim01) — custom (manual)
+T0=2026-09-29T03:27:07Z
+passwd_sha_antes=9e24ea0e0aa92775f295d476cf8d4afc88bc9d69015bc7be8bb0d6158a7e2f62
+--- entrada creada en /etc/passwd ---
+tfg-victim01:x:1001:1001::/home/tfg-victim01:/bin/bash
+--- estado de la cuenta ANTES del bloqueo (P=password set / L=locked) ---
+tfg-victim01 L 2026-09-29 0 99999 7 -1
+passwd: password changed.
+--- estado de la cuenta TRAS el bloqueo ---
+tfg-victim01 L 2026-09-29 0 99999 7 -1
+userdel: tfg-victim01 mail spool (/var/mail/tfg-victim01) not found
+--- estado final ---
+passwd_sha_antes =9e24ea0e0aa92775f295d476cf8d4afc88bc9d69015bc7be8bb0d6158a7e2f62
+passwd_sha_despues=9e24ea0e0aa92775f295d476cf8d4afc88bc9d69015bc7be8bb0d6158a7e2f62
+id_tras_borrado=NO_EXISTE
+cuentas_tfg_restantes=0
+home_restante=no_existe
+ACCOUNT_REMOVAL=OK (usuario desechable creado, bloqueado y eliminado; ya no existe)
+T1_LOCAL=2026-09-29T03:27:08Z

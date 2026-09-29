@@ -1,0 +1,71 @@
+{
+  "ata_id": "ATA018",
+  "tecnica": "T1056.001",
+  "tactica": "Collection/Credential-Access",
+  "sistema": "linux",
+  "bloque": "fase-03-ampliacion",
+  "tanda": "A",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1056.001-Keylogging/",
+  "atomic": { "fuente": "custom", "nota": "adaptacion CONTENIDA de ART 'Logging bash history to syslog'; NO toca pam_tty_audit/auditd reales" },
+  "esperado_sha256": "b24c0ee53f0afe094c7aa75d1df520cc1b3cc9eb339bbeb3d241b6254d8d687a",
+  "ataque_sha256": "d2d60990384af29c005994434b66243e61c2942488b36d5e16ffe0764d3ca60b",
+  "validacion_humana_esperado": "APROBADO 2026-09-29",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA018_logtest.txt",
+    "logtest_sha256": "84f2ddd66c6c959f0e37647728d528c5f5b234feec507c1bd22d02d001c2a957",
+    "preflight": "Soporte/Ataques/c0/ATA018_preflight.md",
+    "preflight_sha256": "e4040babf92b1f224251b7443d7d3d5827e649c6921bdf4c53fd13899e21faea",
+    "resultado": "PASA (tee/logger -> 80792 level 3; sin silenciador; journald 40700 level 0 confirmado)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1, "t0": "2026-09-29T01:01:12Z", "t1": "2026-09-29T01:01:44Z", "duracion_s": 32, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA018_iter1-Detalle.csv",
+      "detalle_sha256": "d6ca57144c64ca4a96e5caca67a706c85f4f76fe467f4cbe69b94c89e04851fb",
+      "detalle_raw_sha256": "caa7798cd088e2dc4d7d0c35bd01cef1bfe08d6633fb537b326bbbcb8e69fe1f",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA018_iter1-Audited.csv",
+      "audited_sha256": "8af6d89899825b7e0e9cf3bdf0418cfe4c9783537cf7e2e140f96c9bd64c6caf",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA018_iter1-Revision.csv",
+      "revision_sha256": "f5921bd81b2023cffb89fded71a75c918c339585e2dbc7fc0ed1608e233fb774",
+      "conteos": { "filas": 1180, "deteccion": 3, "auto_ruido": 555, "ruido_conocido": 605, "dudosa": 0, "artefacto_ataque": 17 },
+      "rs": { "RS1": 3, "RS2": 1177, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "detecciones": { "alertas": 3, "rule_id_distintos": ["80792"], "esperadas": 3, "sorpresas": 0, "evidencia": "audit_exe=/usr/bin/tee (2) + /usr/bin/logger (1)" },
+      "metrico_o1": "si", "metrico_o2": "2/2", "dudosas_resueltas": 15
+    },
+    {
+      "iter": 2, "t0": "2026-09-29T01:04:41Z", "t1": "2026-09-29T01:05:13Z", "duracion_s": 32, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA018_iter2-Detalle.csv",
+      "detalle_sha256": "18dc806a2e6db7c7a7a4e402685459f3a389b4483731ffa05f40887ae9dd9b70",
+      "detalle_raw_sha256": "32da4955bf8b66ad7f570746162ba6d381b69e44cceb1311020e83ca7dca4d5d",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA018_iter2-Audited.csv",
+      "audited_sha256": "9a7f53df1396821832bccaba9399027a2f33325c498dd4f187e7b66787e44eea",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA018_iter2-Revision.csv",
+      "revision_sha256": "b0a522931aa477896829ff7412afa6a72d92b07ab5ba8ed718527c548a0887f1",
+      "conteos": { "filas": 1167, "deteccion": 3, "auto_ruido": 553, "ruido_conocido": 594, "dudosa": 0, "artefacto_ataque": 17 },
+      "rs": { "RS1": 3, "RS2": 1164, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "detecciones": { "alertas": 3, "rule_id_distintos": ["80792"], "esperadas": 3, "sorpresas": 0, "evidencia": "audit_exe=/usr/bin/tee (2) + /usr/bin/logger (1)" },
+      "metrico_o1": "si", "metrico_o2": "2/2", "dudosas_resueltas": 17
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-09-29", "filas": 32,
+    "veredicto": "ruido (32)",
+    "motivo": "5501/5502 PAM (sin_campos): apertura/cierre de la sesion SSH del operador; ajenas al ataque",
+    "revisor": "executor ampliacion tanda A"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": { "criterio": "v2", "mismo_conjunto_rule_id_deteccion": true, "rule_ids_deteccion": ["80792"], "n1": 3, "n2": 3, "margen": 2, "criterio_recuento_ok": true, "sin_dudosas_sin_resolver": true, "auto_ruido_delta": 2, "ruido_conocido_delta": 11 },
+  "extraccion": { "extractor": "extraer_alertas.py H3 (sha256 repo==manager)", "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json", "aislamiento": "filtro a agent_name == victima-linux" },
+  "prueba_de_efecto": "KEYLOG=OK: keylog_capture.log con 6 lineas, incluye los comandos y la credencial SIMULADA ClaveDemo-Fake123",
+  "hallazgo": "La escritura de la captura NO genera watch/FIM (ruta no vigilada) y el logger cae en 40700 (level 0): el mecanismo oculto solo se ve por el execve del wrapper.",
+  "eventos": [
+    { "ts": "2026-09-29T01:01:12Z", "tipo": "t0", "detalle": "iter1 t0" },
+    { "ts": "2026-09-29T01:01:44Z", "tipo": "t1", "detalle": "iter1 t1" },
+    { "ts": "2026-09-29T01:04:41Z", "tipo": "t0", "detalle": "iter2 t0" },
+    { "ts": "2026-09-29T01:05:13Z", "tipo": "t1", "detalle": "iter2 t1" },
+    { "ts": "2026-09-29T01:06:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (3/3, {80792}) -> iguales" }
+  ]
+}

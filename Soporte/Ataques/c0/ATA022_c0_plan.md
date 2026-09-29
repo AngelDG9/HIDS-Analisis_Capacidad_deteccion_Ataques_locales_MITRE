@@ -1,0 +1,41 @@
+# C0 · pre-flight base-contra-base — ATA022 · T1567.001 (git)
+
+> **Estado: PREPARADO** (se ejecuta **antes del primer `t0`** de ATA022).
+> **No contiene secretos:** la contraseña de `sudo` se pasa por `stdin` en el momento de ejecutar.
+
+## Objetivo
+
+Descubrir **silenciadores de fábrica** del ruleset base: un comando clave cuyo `execve` **no**
+alerta porque una regla **hermana** de nivel 0 lo suprime. **No** se escriben reglas propias (D5).
+
+## Comandos clave
+
+`git` (cliente de la exfiltración al repositorio de código).
+
+## Pasos (con las VMs encendidas)
+
+**1. Capturar una línea de audit REAL en la víctima** (root solo para leer el log):
+
+```bash
+# en victima-linux (192.168.65.129)
+git --version                                # execve benigno de git
+echo '<contrasena del laboratorio>' | sudo -S bash -c '
+  c=git; eid=$(grep -a "exe=\"/usr/bin/$c\"" /var/log/audit/audit.log | tail -n1 | sed -n "s/.*audit(\([0-9.]*:[0-9]*\)).*/\1/p")
+  grep -a "audit($eid)" /var/log/audit/audit.log | tr -d "\n"; echo'
+```
+
+**2. Ejecutar `wazuh-logtest -v` en el manager** y **3.** guardar en
+`Soporte/Ataques/c0/ATA022_logtest.txt`; **4.** generar el informe con
+`preflight_enmascaramiento.py --logtest-base-c0 Soporte/Ataques/c0/ATA022_logtest.txt`
+→ `ATA022_preflight.md`.
+
+## Resultado (ejecutado)
+
+- Ganadora **`80792`** (*Audit: Command: /usr/bin/git*), **`level 3` → SÍ avisa**.
+- **Sin silenciador** (`git` no figura entre las hermanas conocidas).
+- **RESULTADO: PASA** (`ATA022_preflight.md`).
+
+## Si aparece un silenciador
+
+Se **documenta** y la detección se declara por el `rule_id` del `execve`; **no** se escriben reglas
+RS3 (D5).

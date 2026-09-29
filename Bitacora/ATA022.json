@@ -1,0 +1,75 @@
+{
+  "ata_id": "ATA022",
+  "tecnica": "T1567.001",
+  "tactica": "Exfiltration",
+  "sistema": "linux",
+  "bloque": "fase-03-ampliacion",
+  "tanda": "B",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1567.001-Exfiltration_To_Code_Repository/",
+  "atomic": { "fuente": "custom", "nota": "repositorio de codigo = git bare LOCAL (file:// en lab-attack); guardarrail R6: jamas un remoto real; sin credenciales; sin red" },
+  "esperado_sha256": "79c777dca4b8bb3844373c89c9ecefe844e7c51c40177c35ca54168b1991c748",
+  "ataque_sha256": "ed1978bbc954332fe1e33cc83d6e52d189bc23a9b988af24554ad74001df8a96",
+  "validacion_humana_esperado": "APROBADO 2026-09-29",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA022_logtest.txt",
+    "logtest_sha256": "511c3b30e8beb94de1f1dff0ed7a3753091f986aeb4b277d91e52e373e039f7f",
+    "preflight": "Soporte/Ataques/c0/ATA022_preflight.md",
+    "preflight_sha256": "3f925afd29158d9d3a90da76610ca41f0c51427e162082363bf1fa7c70d80301",
+    "resultado": "PASA (1 evento git -> 80792 level 3; sin silenciador)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1, "t0": "2026-09-29T02:19:38Z", "t1": "2026-09-29T02:20:10Z", "duracion_s": 32, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA022_iter1-Detalle.csv",
+      "detalle_sha256": "ce93a9a0c20ec509fda19ef176869ebe21b75b2efaa35120b1759df2d379858c",
+      "detalle_raw_sha256": "22a6d0f6fc65f509bf2638346840e7ee075b7321ed18b3f9ed9bb2531ef673e5",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA022_iter1-Audited.csv",
+      "audited_sha256": "8f4aa0d580d2b08728719c24726966310b7499f49d63c2e970d72739fcb015bc",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA022_iter1-Revision.csv",
+      "revision_sha256": "1d21315eb60b28d64b9c2572b3681b64f99afedd11decf666c1016e7c1be9620",
+      "conteos": { "filas": 1194, "deteccion": 20, "auto_ruido": 621, "ruido_conocido": 499, "dudosa": 0, "artefacto_ataque": 54 },
+      "rs": { "RS1": 13, "RS2": 1181, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 1202, "victima_linux": 1194, "otros_agentes_descartados": 8 },
+      "detecciones": { "alertas": 20, "rule_id_distintos": ["80792"], "esperadas": 20, "sorpresas": 0, "evidencia": "20x audit_exe=/usr/bin/git o /usr/lib/git-core/git (init/commit/push/cat-file); cwd del ataque" },
+      "metrico_o1": "si", "metrico_o2": "1/1", "dudosas_resueltas": 51,
+      "efecto": { "repo_local": "file:///home/angel/lab-attack/ATA022/repo.git", "commit": "e13e640", "sha256_local": "efb4e38b8ddceddc091e9e228a5d5b71f19401a3f2030d7116e87c6bb096e943", "sha256_blob_repo": "efb4e38b8ddceddc091e9e228a5d5b71f19401a3f2030d7116e87c6bb096e943", "coincide": true, "remoto_real": false }
+    },
+    {
+      "iter": 2, "t0": "2026-09-29T02:23:39Z", "t1": "2026-09-29T02:24:12Z", "duracion_s": 33, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA022_iter2-Detalle.csv",
+      "detalle_sha256": "3cd904af9ec75fd38d3c6585485025f1a1ab6e0550e16be1e38d785d2ff17c68",
+      "detalle_raw_sha256": "c384146e081ffe86838f268c5d6aa9a5e5c19bf38f2547a7517fd282eb302b46",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA022_iter2-Audited.csv",
+      "audited_sha256": "f2f34399fd76a60466278176e536a45c2ae5acf4ed0d1df92834e2d5f02889f9",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA022_iter2-Revision.csv",
+      "revision_sha256": "d53d767cf3bfa7163bc8d6d1d3dafd8365060182e1ff19bd218d89575c1e4e24",
+      "conteos": { "filas": 1158, "deteccion": 20, "auto_ruido": 607, "ruido_conocido": 476, "dudosa": 0, "artefacto_ataque": 55 },
+      "rs": { "RS1": 18, "RS2": 1140, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 1165, "victima_linux": 1158, "otros_agentes_descartados": 7 },
+      "detecciones": { "alertas": 20, "rule_id_distintos": ["80792"], "esperadas": 20, "sorpresas": 0, "evidencia": "20x audit_exe=/usr/bin/git o /usr/lib/git-core/git; cwd del ataque" },
+      "metrico_o1": "si", "metrico_o2": "1/1", "dudosas_resueltas": 55,
+      "efecto": { "repo_local": "file:///home/angel/lab-attack/ATA022/repo.git", "commit": "f12a999", "sha256_local": "efb4e38b8ddceddc091e9e228a5d5b71f19401a3f2030d7116e87c6bb096e943", "sha256_blob_repo": "efb4e38b8ddceddc091e9e228a5d5b71f19401a3f2030d7116e87c6bb096e943", "coincide": true, "remoto_real": false }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-09-29", "filas": 106,
+    "veredicto": "ruido (22) + artefacto (84)",
+    "motivo": "84 = efectos del ataque sobre el repo (.git): 80791 borrado + 80782 watch escritura (git); 22 = PAM de la sesion del operador. Criterio ratificado 2026-09-28",
+    "revisor": "executor ampliacion tanda B"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": { "criterio": "v2", "mismo_conjunto_rule_id_deteccion": true, "rule_ids_deteccion": ["80792"], "n1": 20, "n2": 20, "margen": 2, "criterio_recuento_ok": true, "sin_dudosas_sin_resolver": true, "auto_ruido_delta": 14, "ruido_conocido_delta": 23 },
+  "extraccion": { "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)", "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json", "aislamiento": "filtro a agent_name == victima-linux" },
+  "prueba_de_efecto": "el repo git bare LOCAL recibio el commit y el blob del dato tiene el MISMO sha256 que el fichero local (efb4e38b...); remoto_verificado=file:///home/angel/lab-attack/ATA022/repo.git. Sin NAT, sin credenciales, sin remotos reales",
+  "receptor": { "aplica": false, "nota": "la exfiltracion es a un repositorio LOCAL (file://); no hay receptor de red" },
+  "eventos": [
+    { "ts": "2026-09-29T02:19:38Z", "tipo": "t0", "detalle": "iter1 t0 (revert lab-listo + 90 s asentamiento)" },
+    { "ts": "2026-09-29T02:20:10Z", "tipo": "t1", "detalle": "iter1 t1 (tras scan FIM forzado)" },
+    { "ts": "2026-09-29T02:23:39Z", "tipo": "t0", "detalle": "iter2 t0" },
+    { "ts": "2026-09-29T02:24:12Z", "tipo": "t1", "detalle": "iter2 t1" },
+    { "ts": "2026-09-29T02:30:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (20/20, {80792}) -> iguales" }
+  ]
+}

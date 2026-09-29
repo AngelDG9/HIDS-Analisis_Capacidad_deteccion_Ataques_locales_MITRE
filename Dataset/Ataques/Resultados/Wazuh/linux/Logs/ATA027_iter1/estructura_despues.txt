@@ -1,0 +1,3 @@
+/home/angel/lab-attack/ATA027/disk.img: data
+blkid_tras_wipe=no_reconoce
+montaje_despues=falla(estructura destruida)

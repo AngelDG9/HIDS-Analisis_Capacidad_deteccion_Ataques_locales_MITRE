@@ -1,0 +1,2 @@
+filas=1039 deteccion=1 auto_ruido=606 ruido_conocido=406 dudosa=7 artefacto_ataque=19 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux\Auditado\ATA028_iter1-Audited.csv
+revisión pendiente: 7 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux\Auditado\ATA028_iter1-Revision.csv

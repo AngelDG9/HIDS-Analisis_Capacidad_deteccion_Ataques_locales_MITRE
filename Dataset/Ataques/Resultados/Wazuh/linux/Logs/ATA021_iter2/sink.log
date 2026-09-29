@@ -1,0 +1,3 @@
+# sink_http arrancado 2026-09-29T02:15:25Z bind=192.168.65.1 port=9090
+2026-09-29T02:15:27Z TCP from=192.168.65.129 len=0 sha256=-
+2026-09-29T02:16:01Z POST /api/scheduled/dato_programado.csv from=192.168.65.129 len=113 sha256=0916137c07113bcdb763a23daf2804152ebda29eede57d913fb9ec8a1ba0309b content_type=text/csv

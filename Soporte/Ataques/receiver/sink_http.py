@@ -16,9 +16,18 @@ Por cada petición, escribe **una línea** en `--log` (por defecto `sink.log`):
 - Responde `200 OK` a `POST`/`PUT` para que el `POST` de la víctima tenga éxito.
 - `GET` responde un texto mínimo para usarlo como *health check*.
 
+**Modo TCP (tanda B, `fase-03-ampliacion`).** Con `--tcp-port N` (por defecto **0 =
+desactivado**) levanta **además** un listener TCP crudo que lee la conexión completa
+hasta EOF y registra la misma línea:
+
+    <UTC> TCP from=<IP> len=<N> sha256=<hash>
+
+Se usa para la variante de **protocolo alternativo** (T1048.001, exfiltración cifrada
+simétrica **no-HTTP**): el cliente envía los bytes por TCP crudo (`/dev/tcp`), no por HTTP.
+
 Solo **biblioteca estándar** de Python 3. Sin secretos. Uso (en el sobremesa):
 
-    python sink_http.py --bind 192.168.65.1 --port 9090 --log "…/Logs/ATA008_iterN/sink.log"
+    python sink_http.py --bind 192.168.65.1 --port 9090 --tcp-port 9091 --log "…/Logs/ATA019_iterN/sink.log"
 
 Arrancarlo **antes de `t0`** y pararlo **después de `t1`** (runbook:
 `Soporte/Ataques/piloto_procedimiento.md` §3).
@@ -29,10 +38,13 @@ from __future__ import annotations
 import argparse
 import hashlib
 import http.server
+import socketserver
 import sys
+import threading
 from datetime import datetime, timezone
 
 DEFAULT_PORT = 9090
+DEFAULT_TCP_PORT = 0
 DEFAULT_LOG = "sink.log"
 
 
@@ -103,12 +115,48 @@ class SinkServer(http.server.ThreadingHTTPServer):
         self.log_path = log_path
 
 
+class TcpSinkHandler(socketserver.BaseRequestHandler):
+    """Lee la conexión TCP cruda completa (hasta EOF) y registra len + sha256."""
+
+    def handle(self) -> None:
+        chunks = []
+        while True:
+            b = self.request.recv(65536)
+            if not b:
+                break
+            chunks.append(b)
+        body = b"".join(chunks)
+        sha = hashlib.sha256(body).hexdigest() if body else "-"
+        line = (
+            f"{utc_now()} TCP from={self.client_address[0]} "
+            f"len={len(body)} sha256={sha}"
+        )
+        with open(self.server.log_path, "a", encoding="utf-8") as fh:  # type: ignore[attr-defined]
+            fh.write(line + "\n")
+        print(line, flush=True)
+
+
+class TcpSinkServer(socketserver.ThreadingTCPServer):
+    daemon_threads = True
+    allow_reuse_address = True
+
+    def __init__(self, addr, handler, log_path: str):
+        super().__init__(addr, handler)
+        self.log_path = log_path
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(
-        description="Receptor HTTP efímero de exfiltración (TFG HIDS, ATA008/T1048.002)."
+        description="Receptor HTTP/TCP efímero de exfiltración (TFG HIDS)."
     )
     ap.add_argument("--bind", default="192.168.65.1", help="IP del host en VMnet1")
-    ap.add_argument("--port", type=int, default=DEFAULT_PORT, help="puerto TCP")
+    ap.add_argument("--port", type=int, default=DEFAULT_PORT, help="puerto TCP HTTP")
+    ap.add_argument(
+        "--tcp-port",
+        type=int,
+        default=DEFAULT_TCP_PORT,
+        help="puerto TCP crudo adicional (0 = desactivado)",
+    )
     ap.add_argument("--log", default=DEFAULT_LOG, help="fichero de log (append)")
     args = ap.parse_args(argv)
 
@@ -118,16 +166,34 @@ def main(argv=None) -> int:
         print(f"ERROR: no se pudo escuchar en {args.bind}:{args.port} -> {exc}", file=sys.stderr)
         return 2
 
+    tcp_server = None
+    if args.tcp_port:
+        try:
+            tcp_server = TcpSinkServer((args.bind, args.tcp_port), TcpSinkHandler, args.log)
+        except OSError as exc:
+            print(
+                f"ERROR: no se pudo escuchar TCP en {args.bind}:{args.tcp_port} -> {exc}",
+                file=sys.stderr,
+            )
+            server.server_close()
+            return 2
+
     with open(args.log, "a", encoding="utf-8") as fh:
         fh.write(f"# sink_http arrancado {utc_now()} bind={args.bind} port={args.port}\n")
 
     print(f"# sink_http escuchando en http://{args.bind}:{args.port}/ (log={args.log})",
           flush=True)
+    if tcp_server is not None:
+        threading.Thread(target=tcp_server.serve_forever, daemon=True).start()
+        print(f"# sink_tcp escuchando en tcp://{args.bind}:{args.tcp_port}/", flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:
         print("\n# sink_http detenido por teclado", flush=True)
     finally:
+        if tcp_server is not None:
+            tcp_server.shutdown()
+            tcp_server.server_close()
         server.server_close()
         with open(args.log, "a", encoding="utf-8") as fh:
             fh.write(f"# sink_http detenido {utc_now()}\n")

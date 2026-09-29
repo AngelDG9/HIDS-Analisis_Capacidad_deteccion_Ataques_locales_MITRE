@@ -1,0 +1,75 @@
+{
+  "ata_id": "ATA019",
+  "tecnica": "T1048.001",
+  "tactica": "Exfiltration",
+  "sistema": "linux",
+  "bloque": "fase-03-ampliacion",
+  "tanda": "B",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1048.001-Symmetric_Encrypted_Non-C2/",
+  "atomic": { "fuente": "custom", "nota": "variante SIMETRICA de T1048 (ATA008 fue la asimetrica T1048.002); openssl enc + envio TCP crudo al receptor del HOST (modo --tcp-port)" },
+  "esperado_sha256": "3a3bcd6d3eb97813ad3ea2bd504b6b4f8db5c33eb38734e5e7b354ed7d5f961d",
+  "ataque_sha256": "aff1f0ffa439733d702d76d7e1e0ba21434563cab8012abc023ae5d7a4be6b20",
+  "validacion_humana_esperado": "APROBADO 2026-09-29",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA019_logtest.txt",
+    "logtest_sha256": "010c1286f82da55214e97a10efe9b6507c433aff146dc6ef5dd6b217defc5b44",
+    "preflight": "Soporte/Ataques/c0/ATA019_preflight.md",
+    "preflight_sha256": "93afc518dfb4caee0c3e3cf880f4b20f06ffb33b24dc7ad7ed1636fc7d5b5400",
+    "resultado": "PASA (openssl y cat -> 80792 level 3; sin silenciador de fabrica)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1, "t0": "2026-09-29T01:46:57Z", "t1": "2026-09-29T01:47:29Z", "duracion_s": 32, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA019_iter1-Detalle.csv",
+      "detalle_sha256": "37d05a34e21f312dcfda6b5e452a61418e858f3eec4093095979478d2126d023",
+      "detalle_raw_sha256": "f99a4702caf4ab55811f0d76082a9f88449046f9bed316b5c84122f44645ff78",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA019_iter1-Audited.csv",
+      "audited_sha256": "bc7a1aa2449b9954e918a6a6f7919a455154b3eb36c29b6bffa2b7baf972f9cd",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA019_iter1-Revision.csv",
+      "revision_sha256": "b4f98974870c19993affad75a15f8bb35b1200c216990a5bcf69793bd29d9b4b",
+      "conteos": { "filas": 894, "deteccion": 3, "auto_ruido": 622, "ruido_conocido": 256, "dudosa": 0, "artefacto_ataque": 13 },
+      "rs": { "RS1": 9, "RS2": 885, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 901, "victima_linux": 894, "otros_agentes_descartados": 7 },
+      "detecciones": { "alertas": 3, "rule_id_distintos": ["80792"], "esperadas": 3, "sorpresas": 0, "evidencia": "audit_exe=/usr/bin/openssl (cifrado+descifrado) + /usr/bin/cat (envio); cwd=/home/angel/lab-attack/ATA019" },
+      "metrico_o1": "si", "metrico_o2": "2/2", "dudosas_resueltas": 18,
+      "efecto": { "sink_log": "Dataset/Ataques/Resultados/Wazuh/linux/Logs/ATA019_iter1/sink.log", "sink_log_sha256": "9880adabf94a93fec012e862b636df6513e9e14992dde2412cda2e80b7b07ea9", "transporte": "TCP", "from": "192.168.65.129", "len": 192, "sha256_enviado_cifrado": "9bfb50294499f26ef0bdf99f69c0cd96a1b94d6ac477e46aa7dd2fefd8636137", "sha256_sink": "9bfb50294499f26ef0bdf99f69c0cd96a1b94d6ac477e46aa7dd2fefd8636137", "sha256_original": "69ae035970a4663b3a45bbe0c24adc33affa9b0feac41d7273260cf94520b854", "roundtrip_ok": true, "coincide": true }
+    },
+    {
+      "iter": 2, "t0": "2026-09-29T01:51:42Z", "t1": "2026-09-29T01:52:15Z", "duracion_s": 33, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA019_iter2-Detalle.csv",
+      "detalle_sha256": "4057ac6795e6e688405bb04a7f2d4536f202b6e949e140e3caa90efd89f1aef9",
+      "detalle_raw_sha256": "b4d42f3d824bb95fdf6b66182bb0fb4b02d7e2a41b14152ae4af3e430b4abd53",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA019_iter2-Audited.csv",
+      "audited_sha256": "f606d30477fbef446249c24c98a205e2a14953b54ec11b2a9b509787881fffd1",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA019_iter2-Revision.csv",
+      "revision_sha256": "cb272b33a1eba448a30304dcbfe7696e27b2d05df06af951a82e5c8883d6d28e",
+      "conteos": { "filas": 1024, "deteccion": 3, "auto_ruido": 610, "ruido_conocido": 398, "dudosa": 0, "artefacto_ataque": 13 },
+      "rs": { "RS1": 20, "RS2": 1004, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 1032, "victima_linux": 1024, "otros_agentes_descartados": 8 },
+      "detecciones": { "alertas": 3, "rule_id_distintos": ["80792"], "esperadas": 3, "sorpresas": 0, "evidencia": "audit_exe=/usr/bin/openssl (2) + /usr/bin/cat (1); cwd=/home/angel/lab-attack/ATA019" },
+      "metrico_o1": "si", "metrico_o2": "2/2", "dudosas_resueltas": 34,
+      "efecto": { "sink_log": "Dataset/Ataques/Resultados/Wazuh/linux/Logs/ATA019_iter2/sink.log", "sink_log_sha256": "e49a6ae3db32e8b64079877436bb852ac611aa593a29d137592cd530f13da035", "transporte": "TCP", "from": "192.168.65.129", "len": 192, "sha256_enviado_cifrado": "d45b3635254099f79f1532d0fe0b8d7eac997ce632c3b737ab5ccd93924f2ff2", "sha256_sink": "d45b3635254099f79f1532d0fe0b8d7eac997ce632c3b737ab5ccd93924f2ff2", "sha256_original": "69ae035970a4663b3a45bbe0c24adc33affa9b0feac41d7273260cf94520b854", "roundtrip_ok": true, "coincide": true }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-09-29", "filas": 52,
+    "veredicto": "ruido (52)",
+    "motivo": "cat con cwd=/ (churn del login SSH del operador, sin_ancla) + PAM 5501/5502 (sesion del operador, sin_campos); ajenas al ataque — criterio ratificado 2026-09-28",
+    "revisor": "executor ampliacion tanda B"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": { "criterio": "v2", "mismo_conjunto_rule_id_deteccion": true, "rule_ids_deteccion": ["80792"], "n1": 3, "n2": 3, "margen": 2, "criterio_recuento_ok": true, "sin_dudosas_sin_resolver": true, "auto_ruido_delta": 12, "ruido_conocido_delta": 142 },
+  "extraccion": { "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)", "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json", "aislamiento": "filtro a agent_name == victima-linux" },
+  "prueba_de_efecto": "sink.log (TCP crudo): len=192 con sha256 del blob CIFRADO identico al enviado (9bfb5029... iter1, d45b3635... iter2); roundtrip descifrado == original (69ae0359...). Sin NAT; receptor local con modo TCP",
+  "receptor": { "script": "Soporte/Ataques/receiver/sink_http.py", "bind": "192.168.65.1:9090 + tcp:9091", "modo_tcp": "anadido en fase-03-ampliacion (--tcp-port)", "firewall": "NO se creo regla (los puertos ya eran alcanzables); TFG-sink-9090 verificado ausente (CA10)", "parado_tras_t1": true },
+  "eventos": [
+    { "ts": "2026-09-29T01:46:57Z", "tipo": "t0", "detalle": "iter1 t0 (revert lab-listo + 90 s asentamiento; receptor levantado antes)" },
+    { "ts": "2026-09-29T01:47:29Z", "tipo": "t1", "detalle": "iter1 t1 (tras scan FIM forzado)" },
+    { "ts": "2026-09-29T01:51:42Z", "tipo": "t0", "detalle": "iter2 t0" },
+    { "ts": "2026-09-29T01:52:15Z", "tipo": "t1", "detalle": "iter2 t1" },
+    { "ts": "2026-09-29T02:30:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (3/3, {80792}) -> iguales" }
+  ]
+}

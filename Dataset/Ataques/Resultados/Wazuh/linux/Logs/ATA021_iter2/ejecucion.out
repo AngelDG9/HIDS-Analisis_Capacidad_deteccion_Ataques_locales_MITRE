@@ -1,0 +1,14 @@
+﻿ATA021 ┬À T1029 Scheduled Transfer (crontab de usuario + disparo por cron) ÔÇö custom (manual)
+T0=2026-09-29T02:15:27Z
+--- DATO PROGRAMADO (sha256) ---
+0916137c07113bcdb763a23daf2804152ebda29eede57d913fb9ec8a1ba0309b  /home/angel/lab-attack/ATA021/dato_programado.csv
+>>> instalando entrada de cron (usuario angel)
+* * * * * cd /home/angel/lab-attack/ATA021 && /bin/bash ./cron_job.sh >/dev/null 2>&1
+>>> esperando el disparo de cron (hasta 100 s)
+>>> retirando la entrada de cron
+(crontab de angel vacio)
+--- estado final ---
+-rw-rw-r-- 1 angel angel 113 Sep 29 04:15 /home/angel/lab-attack/ATA021/dato_programado.csv
+disparo_cron=2026-09-29T02:16:01Z
+TRANSFERENCIA_PROGRAMADA=OK (cron ejecuto el job dentro de la ventana)
+T1_LOCAL=2026-09-29T02:16:02Z

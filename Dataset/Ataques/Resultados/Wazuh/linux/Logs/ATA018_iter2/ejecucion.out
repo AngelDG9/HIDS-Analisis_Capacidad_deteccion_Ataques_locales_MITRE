@@ -1,0 +1,20 @@
+ATA018 ?? T1056.001 Keylogging (wrapper tee + persistencia logger) ??? custom (manual)
+T0=2026-09-29T01:04:41Z
+== sesion de terminal capturada (victima: angel) ==
+uid=1000(angel) gid=1000(angel) groups=1000(angel),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),101(lxd)
+angel
+usuario: angel
+clave: ClaveDemo-Fake123
+victima-linux
+--- estado final ---
+-rw-rw-r-- 1 angel angel 132 Sep 29 03:04 /home/angel/lab-attack/ATA018/keylog_capture.log
+lineas_capturadas=6
+--- contenido de la captura ---
+echo "== sesion de terminal capturada (victima: angel) =="
+id
+whoami
+echo "usuario: angel"
+echo "clave: ClaveDemo-Fake123"
+hostname
+KEYLOG=OK (entrada de la sesion capturada en fichero; credencial simulada registrada)
+T1_LOCAL=2026-09-29T01:04:42Z

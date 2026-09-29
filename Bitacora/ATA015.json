@@ -1,0 +1,70 @@
+{
+  "ata_id": "ATA015",
+  "tecnica": "T1114.003",
+  "tactica": "Collection",
+  "sistema": "linux",
+  "bloque": "fase-03-ampliacion",
+  "tanda": "A",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1114.003-Email_Forwarding_Rule/",
+  "atomic": { "fuente": "custom", "nota": "mecanismo de persistencia de reenvio (.forward/.procmailrc); sin red" },
+  "esperado_sha256": "3bee2db42cb9a21d5a1be1663e09172aaf0553e25f2935e8074b98699efea28f",
+  "ataque_sha256": "c4d54c370cf19d7c552fa79ec9b3141bee9517e600ba36ac9bc45d2ff12b0be1",
+  "validacion_humana_esperado": "APROBADO 2026-09-29",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA015_logtest.txt",
+    "logtest_sha256": "7436b6b2487bf7da0f5c005ffbe7aac58e274bec741d204d8f877a6f6e383ae0",
+    "preflight": "Soporte/Ataques/c0/ATA015_preflight.md",
+    "preflight_sha256": "0425973b4a031197190c549d043fcf3ac2eb8d16896bc544e69281660569385f",
+    "resultado": "PASA (cat/cp/grep -> 80792 level 3; sin silenciador)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1, "t0": "2026-09-29T00:46:13Z", "t1": "2026-09-29T00:46:46Z", "duracion_s": 33, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA015_iter1-Detalle.csv",
+      "detalle_sha256": "c288badd4dff38cdd955211728cba5b5ed815d0b7a66d68d1271409ea372c4c1",
+      "detalle_raw_sha256": "ae2ca35e7810b96c1c5b4e0631a94dcfa764bd41cd3bffd347159f1154ce1637",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA015_iter1-Audited.csv",
+      "audited_sha256": "5086816715df80ee0e5be21d3d50d94752663edd488f3798a7183111bfebdb27",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA015_iter1-Revision.csv",
+      "revision_sha256": "b806fab8cfc08faaea055c65084079f3aca7d20a5c281712720d44463a1eb52d",
+      "conteos": { "filas": 1037, "deteccion": 6, "auto_ruido": 541, "ruido_conocido": 475, "dudosa": 0, "artefacto_ataque": 15 },
+      "rs": { "RS1": 1, "RS2": 1036, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "detecciones": { "alertas": 6, "rule_id_distintos": ["80792"], "esperadas": 6, "sorpresas": 0, "evidencia": "audit_exe=/usr/bin/cat (2) + /usr/bin/grep (2) + /usr/bin/cp (2)" },
+      "metrico_o1": "si", "metrico_o2": "3/3", "dudosas_resueltas": 44
+    },
+    {
+      "iter": 2, "t0": "2026-09-29T00:49:46Z", "t1": "2026-09-29T00:50:18Z", "duracion_s": 32, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA015_iter2-Detalle.csv",
+      "detalle_sha256": "587c5c3bf743f222aa0d7cc39d9a80b27f51ed84126cfe92c7c525ffa710cf9a",
+      "detalle_raw_sha256": "8830d5560c303544a5b3be9952f00f190fc5b755f4ba29e38029e763e1278cd9",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA015_iter2-Audited.csv",
+      "audited_sha256": "42b19f82c824ddefa35113b60802539643628c17070a2a89104d581419a03b3f",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA015_iter2-Revision.csv",
+      "revision_sha256": "096f12f300b48424868c6a8f0e357759422482dd9bf1c620cc8737334bbfc234",
+      "conteos": { "filas": 1158, "deteccion": 6, "auto_ruido": 536, "ruido_conocido": 601, "dudosa": 0, "artefacto_ataque": 15 },
+      "rs": { "RS1": 1, "RS2": 1157, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "detecciones": { "alertas": 6, "rule_id_distintos": ["80792"], "esperadas": 6, "sorpresas": 0, "evidencia": "audit_exe=/usr/bin/cat (2) + /usr/bin/grep (2) + /usr/bin/cp (2)" },
+      "metrico_o1": "si", "metrico_o2": "3/3", "dudosas_resueltas": 58
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-09-29", "filas": 102,
+    "veredicto": "ruido (98) + artefacto (4)",
+    "motivo": "98 = cat/grep cwd=/ (update-motd.d, login del operador), ajenas; 4 = creacion de .forward/.procmailrc bajo watch (efecto del ataque)",
+    "revisor": "executor ampliacion tanda A"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": { "criterio": "v2", "mismo_conjunto_rule_id_deteccion": true, "rule_ids_deteccion": ["80792"], "n1": 6, "n2": 6, "margen": 2, "criterio_recuento_ok": true, "sin_dudosas_sin_resolver": true, "auto_ruido_delta": 5, "ruido_conocido_delta": 125 },
+  "extraccion": { "extractor": "extraer_alertas.py H3 (sha256 repo==manager)", "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json", "aislamiento": "filtro a agent_name == victima-linux" },
+  "prueba_de_efecto": "REENVIO=OK: .forward contiene dropbox@exfil-lab.example; sha256 del original == copia == 7afb588c...",
+  "eventos": [
+    { "ts": "2026-09-29T00:46:13Z", "tipo": "t0", "detalle": "iter1 t0" },
+    { "ts": "2026-09-29T00:46:46Z", "tipo": "t1", "detalle": "iter1 t1" },
+    { "ts": "2026-09-29T00:49:46Z", "tipo": "t0", "detalle": "iter2 t0" },
+    { "ts": "2026-09-29T00:50:18Z", "tipo": "t1", "detalle": "iter2 t1" },
+    { "ts": "2026-09-29T01:05:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (6/6, {80792}) -> iguales" }
+  ]
+}

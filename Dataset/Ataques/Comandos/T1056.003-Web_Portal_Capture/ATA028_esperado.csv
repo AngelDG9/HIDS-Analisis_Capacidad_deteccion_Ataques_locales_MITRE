@@ -1,0 +1,14 @@
+# ATA028_esperado.csv | ATA028 · T1056.003 Web Portal Capture | TFG HIDS · Fase 3 (ampliacion, tanda C)
+# Redactado el 2026-09-29 con los datos del paso 0, ANTES de ver ninguna alerta.
+# Gate humano: APROBADO 2026-09-29 (validacion humana)
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+# Convencion H4: cada senal audit_exe se acompana de audit_cwd de la carpeta del ataque.
+# El portal es LOCAL (loopback 127.0.0.1) y simulado; el cliente envia el POST con
+#   credenciales de JUGUETE. El "codigo del atacante" es el listener `nc` y el cliente
+#   es `curl` -> la deteccion declarada es el execve de ambos. La captura queda en un
+#   fichero DENTRO de lab-attack (NO vigilado) -> no hay senal ambigua de watch.
+# Nota: al usarse `nc` (NO `python3`) NO se activa el punto ciego de fabrica 92600.
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1056.003-S1,deteccion,audit_exe,nc,Process Creation,T1056.003,portal falso (listener HTTP local; el codigo del atacante registra el POST) (execve 80792)
+T1056.003-S2,deteccion,audit_exe,curl,Process Creation,T1056.003,cliente que envia las credenciales de juguete al portal (execve 80792)
+T1056.003-S3,deteccion,audit_cwd,/home/angel/lab-attack/ATA028/*,Process Creation,T1056.003,ancla H4 (cwd del ataque)

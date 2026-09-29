@@ -1,0 +1,82 @@
+{
+  "ata_id": "ATA021",
+  "tecnica": "T1029",
+  "tactica": "Exfiltration",
+  "sistema": "linux",
+  "bloque": "fase-03-ampliacion",
+  "tanda": "B",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1029-Scheduled_Transfer/",
+  "atomic": { "fuente": "custom", "nota": "crontab de usuario (angel, sin sudo); el job dispara DENTRO de la ventana; la entrada se retira al terminar" },
+  "esperado_sha256": "75499e0a7f399a44816431cde4911f67ad4915b90d5ffe54786363113efd1e08",
+  "ataque_sha256": "06d21fec27b0ee1d4d48947046e5955fc77618398830c4ec47b71ee01e34cf54",
+  "cron_job_sha256": "d65bd1f2bc814163ac5e43a2e64bc24ded6a0efef49758eb314daf75a00b0635",
+  "validacion_humana_esperado": "APROBADO 2026-09-29",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA021_logtest.txt",
+    "logtest_sha256": "0a5d712ae40d77ccb6a1b206f0abf254744e3706161ae7ae4dc804ec5c1ee572",
+    "preflight": "Soporte/Ataques/c0/ATA021_preflight.md",
+    "preflight_sha256": "88127a5690c79fb4d887064660d23cf5aa94d44c43f02fbda76dd4b4634ac8e6",
+    "resultado": "PASA (crontab/curl/dash -> 80792 level 3; linea CRON -> 1002; sin silenciador)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1, "t0": "2026-09-29T02:10:12Z", "t1": "2026-09-29T02:11:33Z", "duracion_s": 81, "snapshot": "lab-listo",
+      "disparo_cron": "2026-09-29T02:11:01Z",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA021_iter1-Detalle.csv",
+      "detalle_sha256": "59569b113d5343950c44762185c4811cf0706fe477d7ea256516ec4eb99f891e",
+      "detalle_raw_sha256": "a79a76e4060fa716ba530cdbb93175708fd8bd44d0d49c84e0c22ddf8a9070c1",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA021_iter1-Audited.csv",
+      "audited_sha256": "44fa79f1b7af9b35a3b67b04f869578185e8f6c9d049f7da27cd6892b089a234",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA021_iter1-Revision.csv",
+      "revision_sha256": "d97570e19b68dc47f7e1bba7fba05f5d2d571530682988e1d3bea998cf7498d2",
+      "conteos": { "filas": 959, "deteccion": 6, "auto_ruido": 628, "ruido_conocido": 259, "dudosa": 0, "artefacto_ataque": 66 },
+      "rs": { "RS1": 11, "RS2": 948, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 967, "victima_linux": 959, "otros_agentes_descartados": 8 },
+      "detecciones": { "alertas": 6, "rule_id_distintos": ["80792"], "esperadas": 6, "sorpresas": 0, "evidencia": "5x audit_exe=/usr/bin/crontab (instalar/verificar/retirar) + 1x /usr/bin/curl (job de cron); cwd del ataque" },
+      "metrico_o1": "si", "metrico_o2": "2/2", "dudosas_resueltas": 77,
+      "efecto": { "sink_log": "Dataset/Ataques/Resultados/Wazuh/linux/Logs/ATA021_iter1/sink.log", "sink_log_sha256": "195e6ff742e28809af1ce3f27c1ce113d5e2313c7a1394ae875334ce8e9f4021", "post": "/api/scheduled/dato_programado.csv", "from": "192.168.65.129", "len": 113, "sha256_cuerpo": "0916137c07113bcdb763a23daf2804152ebda29eede57d913fb9ec8a1ba0309b", "sha256_dato_local": "0916137c07113bcdb763a23daf2804152ebda29eede57d913fb9ec8a1ba0309b", "coincide": true }
+    },
+    {
+      "iter": 2, "t0": "2026-09-29T02:15:27Z", "t1": "2026-09-29T02:16:34Z", "duracion_s": 67, "snapshot": "lab-listo",
+      "disparo_cron": "2026-09-29T02:16:01Z",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA021_iter2-Detalle.csv",
+      "detalle_sha256": "d9f77963336a8dbc0a8f743fb5829dfe6bf18eee98bb2d410ee657f9bfaa13d5",
+      "detalle_raw_sha256": "bce1c2a3fb61a103d20062306589fa76d2a4c598acdb8a7d1147c511141af568",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA021_iter2-Audited.csv",
+      "audited_sha256": "315fb368d4f65d1dba7bcecedd16ae2ae3f565c9ab9cd69f368c77024a5442b2",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA021_iter2-Revision.csv",
+      "revision_sha256": "1c89170aad6897880c9142088ad3ae7e65c08b0e232b00b639e6d3d1f235950b",
+      "conteos": { "filas": 930, "deteccion": 6, "auto_ruido": 611, "ruido_conocido": 261, "dudosa": 0, "artefacto_ataque": 52 },
+      "rs": { "RS1": 11, "RS2": 919, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 938, "victima_linux": 930, "otros_agentes_descartados": 8 },
+      "detecciones": { "alertas": 6, "rule_id_distintos": ["80792"], "esperadas": 6, "sorpresas": 0, "evidencia": "5x audit_exe=/usr/bin/crontab + 1x /usr/bin/curl; cwd del ataque" },
+      "metrico_o1": "si", "metrico_o2": "2/2", "dudosas_resueltas": 77,
+      "efecto": { "sink_log": "Dataset/Ataques/Resultados/Wazuh/linux/Logs/ATA021_iter2/sink.log", "sink_log_sha256": "46442b952cfc7f0603ec22e7c1dd31973897b4a56d496a77bbe582e9d5a19234", "post": "/api/scheduled/dato_programado.csv", "from": "192.168.65.129", "len": 113, "sha256_cuerpo": "0916137c07113bcdb763a23daf2804152ebda29eede57d913fb9ec8a1ba0309b", "sha256_dato_local": "0916137c07113bcdb763a23daf2804152ebda29eede57d913fb9ec8a1ba0309b", "coincide": true }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-09-29", "filas": 154,
+    "veredicto": "ruido (146) + artefacto (8)",
+    "motivo": "por iteracion: 73 ruido = churn del login del operador (66 dash cwd=/ + 7 PAM) y 4 artefacto = artefactos del ataque (1 dash = lanzador de cron; 2x 80791 borrado en /var/spool/cron; 1x 2832 crontab entry changed). Las PAM 5501/5502 del operador = ruido SIEMPRE (criterio ratificado 2026-09-28: no es demostrable que sean del ataque, aunque caigan pegadas al disparo de cron)",
+    "revisor": "executor ampliacion tanda B"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": { "criterio": "v2", "mismo_conjunto_rule_id_deteccion": true, "rule_ids_deteccion": ["80792"], "n1": 6, "n2": 6, "margen": 2, "criterio_recuento_ok": true, "sin_dudosas_sin_resolver": true, "auto_ruido_delta": 17, "ruido_conocido_delta": 2 },
+  "extraccion": { "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)", "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json", "aislamiento": "filtro a agent_name == victima-linux" },
+  "prueba_de_efecto": "sink.log del HOST: POST /api/scheduled/dato_programado.csv disparado por cron DENTRO de [t0,t1] (disparo 02:11:01Z y 02:16:01Z), sha256 identico al dato local (0916137c...). Sin NAT; receptor local",
+  "receptor": { "script": "Soporte/Ataques/receiver/sink_http.py", "bind": "192.168.65.1:9090 (HTTP)", "firewall": "NO se creo regla; TFG-sink-9090 verificado ausente (CA10)", "parado_tras_t1": true },
+  "hallazgo": "los AFECTOS no declarados del ataque (80791 borrado en /var/spool/cron, 2832 'Crontab entry changed') aparecen como senales reales de la HIDS; van a artefacto_ataque (no eran la deteccion declarada)",
+  "eventos": [
+    { "ts": "2026-09-29T02:10:12Z", "tipo": "t0", "detalle": "iter1 t0 (revert lab-listo + 90 s asentamiento)" },
+    { "ts": "2026-09-29T02:11:01Z", "tipo": "cron", "detalle": "iter1 disparo de cron dentro de la ventana" },
+    { "ts": "2026-09-29T02:11:33Z", "tipo": "t1", "detalle": "iter1 t1 (tras scan FIM forzado)" },
+    { "ts": "2026-09-29T02:15:27Z", "tipo": "t0", "detalle": "iter2 t0" },
+    { "ts": "2026-09-29T02:16:01Z", "tipo": "cron", "detalle": "iter2 disparo de cron" },
+    { "ts": "2026-09-29T02:16:34Z", "tipo": "t1", "detalle": "iter2 t1" },
+    { "ts": "2026-09-29T02:30:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (6/6, {80792}) -> iguales" },
+    { "ts": "2026-09-29T03:10:00Z", "tipo": "correccion", "detalle": "ciclo 2 (tester): la PAM 5502 de 02:11:02.545Z (iter1) pasa de artefacto a ruido (sesion del operador; no es demostrable que sea del ataque aunque caiga pegada al disparo de cron). Re-plegado: i1 72+5 -> 73+4 (global ruido 146 / artefacto 8); -Audited iter1 regenerado (conteos dudosa=0 artefacto_ataque=66 ruido_conocido=259)" }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "ata_id": "ATA027",
+  "tecnica": "T1561.002",
+  "tactica": "Impact",
+  "sistema": "linux",
+  "bloque": "fase-03-ampliacion",
+  "tanda": "C",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1561.002-Disk_Structure_Wipe/",
+  "atomic": { "fuente": "custom", "nota": "SOLO imagen de fichero desechable (disk.img): tabla MBR (sfdisk) + ext4 (mkfs.ext4) + montaje loop, luego wipefs + dd de ceros sobre la cabecera. guardarrail DURO: destino solo bajo lab-attack/ATA027, aborta si la ruta tiene /dev/, jamas discos/particiones reales; trap que detacha loops" },
+  "esperado_sha256": "c72d8a6789a9b42aa74da5b40e97b2e03de71fb622f124f537b0b48ca1e3a6a6",
+  "ataque_sha256": "adf302815c43ce25b61f48ddba4689a50a76a0c718fdab707b841ebf4d19c0a1",
+  "validacion_humana_esperado": "APROBADO 2026-09-29",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA027_logtest.txt",
+    "logtest_sha256": "14917ba30364e539327d84b77d48bc1bad8629efae9f6f9e02099301c243af68",
+    "preflight": "Soporte/Ataques/c0/ATA027_preflight.md",
+    "preflight_sha256": "9f7fb1ce3a336b77d47dd86cd58454819e1e4dfb79049716ee025f64e7dfa946",
+    "resultado": "PASA (7 eventos dd/sfdisk/mkfs.ext4/wipefs/mount/umount/losetup -> 80792 level 3; sin silenciador)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1, "t0": "2026-09-29T03:58:37Z", "t1": "2026-09-29T03:59:10Z", "duracion_s": 33, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA027_iter1-Detalle.csv",
+      "detalle_sha256": "89c60eaad941a75e687cd723fe0fb23bf75329472a2486be7e0c60a02eb993a5",
+      "detalle_raw_sha256": "ff489ccc66ae8e91e6c38cbaef674f953d574a29e05f9d9af4c214c5cabd5bef",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA027_iter1-Audited.csv",
+      "audited_sha256": "51da395fbb64b64adc2cf36310710c42e9ccd7ec370a2ff2428acf76911eb385",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA027_iter1-Revision.csv",
+      "revision_sha256": "d3e097790db788d64d87a2b986f54e08e56d88cd14f6bbc9ad63572489b02f69",
+      "conteos": { "filas": 1277, "deteccion": 13, "auto_ruido": 608, "ruido_conocido": 596, "dudosa": 0, "artefacto_ataque": 60 },
+      "rs": { "RS1": 24, "RS2": 1253, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 1286, "victima_linux": 1278, "otros_agentes_descartados": 8 },
+      "detecciones": { "alertas": 13, "rule_id_distintos": ["80792"], "esperadas": 13, "sorpresas": 0, "evidencia": "dd(2) sfdisk(2) wipefs(1) mount(2) umount(1) losetup(5) (execve 80792, cwd del ataque). mkfs.ext4 NO casa (audit registra mke2fs)" },
+      "metrico_o1": "si", "metrico_o2": "6/7", "dudosas_resueltas": 25,
+      "efecto": { "file_s_antes": "ext4 (UUID=fda48236-9963-40ed-a6e8-ddd50e47baae)", "file_s_despues": "data", "blkid_despues": "no_reconoce", "montaje_despues": "falla", "loop_residual": 0, "resultado": "DISK_STRUCTURE_WIPE=OK" }
+    },
+    {
+      "iter": 2, "t0": "2026-09-29T04:02:14Z", "t1": "2026-09-29T04:02:47Z", "duracion_s": 33, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA027_iter2-Detalle.csv",
+      "detalle_sha256": "860cdf5e3fbd8df383ff452aeeae5b2838dfb199111bfefa555fa419ac4a9e78",
+      "detalle_raw_sha256": "8fb961f4163b1339e9bc4a08236a5f40c7387eea2fe92f4652408e95420c71b0",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA027_iter2-Audited.csv",
+      "audited_sha256": "0f2421edf58f03fe19994d14a148789807cd25e507c1d03dc1abe35427e99520",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA027_iter2-Revision.csv",
+      "revision_sha256": "571b5fc9f9d9d22cce0976e43a9d72f51fece507824bb25a4cbae8e2f654c427",
+      "conteos": { "filas": 1144, "deteccion": 14, "auto_ruido": 612, "ruido_conocido": 461, "dudosa": 0, "artefacto_ataque": 57 },
+      "rs": { "RS1": 31, "RS2": 1113, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 1154, "victima_linux": 1145, "otros_agentes_descartados": 9 },
+      "detecciones": { "alertas": 14, "rule_id_distintos": ["80792"], "esperadas": 14, "sorpresas": 0, "evidencia": "dd(2) sfdisk(2) wipefs(1) mount(2) umount(1) losetup(6) (execve 80792)" },
+      "metrico_o1": "si", "metrico_o2": "6/7", "dudosas_resueltas": 28,
+      "efecto": { "file_s_antes": "ext4 (UUID=c6b99477-2a62-48b4-9323-6ccb7a858d21)", "file_s_despues": "data", "blkid_despues": "no_reconoce", "montaje_despues": "falla", "loop_residual": 0, "resultado": "DISK_STRUCTURE_WIPE=OK" }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-09-29", "filas": 53,
+    "veredicto": "ruido (9) + artefacto (44)",
+    "motivo": "44 = 42 de la sesion/sudo DEL ATAQUE (5402 + 5501/5502 con dstuser=root; es el ataque, no la deteccion) + 2 de 80792 sin_ancla (mount/losetup) -> artefacto. 9 = PAM del operador (5501/5502 con dstuser=angel) -> ruido (criterio ratificado 2026-09-28). Cero filas del ataque en ruido.",
+    "revisor": "executor ampliacion tanda C",
+    "nota_ratificacion": "las filas 5402 (Successful sudo to ROOT) y 5501/5502 con dstuser=root son la sesion sudo del ataque; se resolvieron a artefacto para no meter nada del ataque en ruido. Solo la PAM del operador (dstuser=angel) queda en ruido."
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": { "criterio": "v2", "mismo_conjunto_rule_id_deteccion": true, "rule_ids_deteccion": ["80792"], "n1": 13, "n2": 14, "margen": 2, "criterio_recuento_ok": true, "sin_dudosas_sin_resolver": true, "auto_ruido_delta": 4, "ruido_conocido_delta": 135 },
+  "extraccion": { "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)", "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json", "aislamiento": "filtro a agent_name == victima-linux" },
+  "prueba_de_efecto": "ANTES la imagen era ext4 valida y montaba (se escribio marcador_estructura.txt); DESPUES wipefs+dd: file -s = 'data', blkid no reconoce, el montaje FALLA y no queda loop residual. sha256 antes != despues.",
+  "receptor": { "aplica": false, "nota": "no hay receptor de red" },
+  "hallazgos": [
+    "HALLAZGO (sistema): audit_exe=mkfs.ext4 no casa (audit registra /usr/bin/mke2fs, binario real) -> O2=6/7.",
+    "No hay regla de 'estructura de disco': el HIDS ve el proceso, no que se haya borrado un MBR/GPT.",
+    "Guardarrail DURO respetado: solo imagen de fichero, 0 loops residuales, ningun disco real tocado."
+  ],
+  "limitacion": {
+    "fecha": "2026-09-29",
+    "tipo": "cabos de documentacion (fase-03-ampliacion); NO se toca dato/filtro/esperado/metrica",
+    "invariante_0_filas_ataque_en_ruido": "se cumple BAJO LA PERTENENCIA POR CARPETA (audit_cwd o ruta bajo lab-attack/<ATA> -> artefacto_ataque, nunca ruido). Quedan FUERA las filas de la SESION del ataque (PAM/sudo, sin cwd) -> DECLARADAS, NO deteccion.",
+    "huellas_ataque": "4 filas (80791, 2/iter) con audit_file=/dev/disk/by-loop-ref/\\x2fhome\\x2fangel\\x2flab-attack\\x2fATA027\\x2fdisk.img y audit_dir=/dev/disk/by-loop-ref/ (cwd=/). La ruta del disk.img va URL-encoded (\\x2f) y bajo /dev/ -> la pertenencia por carpeta NO la caza; caen en ruido_conocido/baseline. Son escrituras watch del setup loop del propio ataque, NO la deteccion declarada. La tecnica sigue DETECTADA por los 80792 (dd/sfdisk/wipefs/mount/umount/losetup anclados al cwd).",
+    "asimetria_metodologica": "el mismo evento real (la sesion PAM/sudo del ataque) acaba en BASELINE aqui (ATA024) pero en ARTEFACTO en ATA027: depende de si el esperado declara algun campo siempre evaluable (rule_id/rule_group). ATA024 lo declara (ambigua 80790/80781/80782) -> no dispara sin_campos -> baseline; ATA027 no lo declara -> sin_campos -> dudosa -> veredicto humano artefacto. Limitacion declarada del mecanismo congelado. Ver runbook seccion 12."
+  },
+  "eventos": [
+    { "ts": "2026-09-29T03:58:37Z", "tipo": "t0", "detalle": "iter1 t0 (revert lab-listo + 90 s asentamiento)" },
+    { "ts": "2026-09-29T03:59:10Z", "tipo": "t1", "detalle": "iter1 t1 (tras scan FIM forzado)" },
+    { "ts": "2026-09-29T04:02:14Z", "tipo": "t0", "detalle": "iter2 t0" },
+    { "ts": "2026-09-29T04:02:47Z", "tipo": "t1", "detalle": "iter2 t1" },
+    { "ts": "2026-09-29T04:06:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica ({80792}, 13 vs 14) -> iguales" }
+  ]
+}

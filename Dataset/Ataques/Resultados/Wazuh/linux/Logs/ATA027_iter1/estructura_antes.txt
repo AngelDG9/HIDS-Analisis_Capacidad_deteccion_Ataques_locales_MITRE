@@ -1,0 +1,5 @@
+/home/angel/lab-attack/ATA027/disk.img: Linux rev 1.0 ext4 filesystem data, UUID=fda48236-9963-40ed-a6e8-ddd50e47baae (extents) (64bit) (large files) (huge files)
+Disk /home/angel/lab-attack/ATA027/disk.img: 32 MiB, 33554432 bytes, 65536 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes

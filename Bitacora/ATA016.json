@@ -1,0 +1,71 @@
+{
+  "ata_id": "ATA016",
+  "tecnica": "T1213.006",
+  "tactica": "Collection",
+  "sistema": "linux",
+  "bloque": "fase-03-ampliacion",
+  "tanda": "A",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1213.006-Databases/",
+  "atomic": { "fuente": "custom", "nota": "sqlite3 y strings AUSENTES: BD SQLite real creada con la stdlib de python3 (punto ciego 92600 declarado); la coleccion usa cp/grep" },
+  "esperado_sha256": "304563b42fc772ed3ef2e25b4f16b65e2b9be5925d2613f23c2bff353b577e62",
+  "ataque_sha256": "77a9543145f02edc478a036f39222d513c7e51d5041c2756c0f4e279a6a0143f",
+  "validacion_humana_esperado": "APROBADO 2026-09-29",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA016_logtest.txt",
+    "logtest_sha256": "c20f71549e20be88a7cd1cfd6d17297124b20e8f692927f3f80a393a75323b9d",
+    "preflight": "Soporte/Ataques/c0/ATA016_preflight.md",
+    "preflight_sha256": "38176ab16f45f8a68dd5be470b93005b9358bdda1847d84ba846cf9c4927112a",
+    "resultado": "PASA (cp/grep -> 80792 level 3; sin silenciador)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1, "t0": "2026-09-29T00:39:16Z", "t1": "2026-09-29T00:39:49Z", "duracion_s": 33, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA016_iter1-Detalle.csv",
+      "detalle_sha256": "7738ebc2bfd6488cc3096c1947b46f6549c9477c3b33fb7bca283a3396501d65",
+      "detalle_raw_sha256": "98313965696bab3e0a903beb8168ffd0feaa52d204c167a517126a5f31cc03d1",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA016_iter1-Audited.csv",
+      "audited_sha256": "6b3b7230701dbe0cb48e77dc01571d526e43c4301febe698b519f29103247379",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA016_iter1-Revision.csv",
+      "revision_sha256": "04b9b336345de4cd050a330d768f86d3463c0cd4e03c4d3b20d8eaf81eedfcc9",
+      "conteos": { "filas": 1200, "deteccion": 3, "auto_ruido": 534, "ruido_conocido": 647, "dudosa": 0, "artefacto_ataque": 16 },
+      "rs": { "RS1": 1, "RS2": 1199, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "detecciones": { "alertas": 3, "rule_id_distintos": ["80792"], "esperadas": 3, "sorpresas": 0, "evidencia": "audit_exe=/usr/bin/grep (2) + /usr/bin/cp (1)" },
+      "metrico_o1": "si", "metrico_o2": "2/2", "dudosas_resueltas": 19
+    },
+    {
+      "iter": 2, "t0": "2026-09-29T00:42:45Z", "t1": "2026-09-29T00:43:17Z", "duracion_s": 32, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA016_iter2-Detalle.csv",
+      "detalle_sha256": "c75a8a8c3aba672a447949402bf8de30b9e4ba306f6939192338eaf8926379a1",
+      "detalle_raw_sha256": "040a3ae9fd0e8c9241ffdb42eeda87e5f380732f51c6aeb5de1cec89ec60e628",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA016_iter2-Audited.csv",
+      "audited_sha256": "354609cecc065d8c3986af4966e6121790ba230cbc4824ba8c416a14d5f476cc",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA016_iter2-Revision.csv",
+      "revision_sha256": "7e43cf6133d8b7fcf5c558d65a0b93111f4877c2087c7baad7cab7f41965c078",
+      "conteos": { "filas": 1015, "deteccion": 3, "auto_ruido": 545, "ruido_conocido": 451, "dudosa": 0, "artefacto_ataque": 16 },
+      "rs": { "RS1": 1, "RS2": 1014, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "detecciones": { "alertas": 3, "rule_id_distintos": ["80792"], "esperadas": 3, "sorpresas": 0, "evidencia": "audit_exe=/usr/bin/grep (2) + /usr/bin/cp (1)" },
+      "metrico_o1": "si", "metrico_o2": "2/2", "dudosas_resueltas": 11
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-09-29", "filas": 30,
+    "veredicto": "ruido (30)",
+    "motivo": "28 = execve de grep cwd=/ (update-motd.d, login del operador); 2 = 80782 Watch-write en /run/user/1000/systemd (ajenas)",
+    "revisor": "executor ampliacion tanda A"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": { "criterio": "v2", "mismo_conjunto_rule_id_deteccion": true, "rule_ids_deteccion": ["80792"], "n1": 3, "n2": 3, "margen": 2, "criterio_recuento_ok": true, "sin_dudosas_sin_resolver": true, "auto_ruido_delta": 11, "ruido_conocido_delta": 196 },
+  "extraccion": { "extractor": "extraer_alertas.py H3 (sha256 repo==manager)", "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json", "aislamiento": "filtro a agent_name == victima-linux" },
+  "prueba_de_efecto": "COLECCION=OK: copia es SQLite valida (magic 'SQLite format 3'); sha256 3726d9bc... identico; 4 codigos extraidos",
+  "hallazgo": "92600 (level 0) suprime el execve de python3 Y su evento watch asociado: la siembra de la BD no dejo ninguna alerta; la coleccion (cp/grep) si.",
+  "eventos": [
+    { "ts": "2026-09-29T00:39:16Z", "tipo": "t0", "detalle": "iter1 t0" },
+    { "ts": "2026-09-29T00:39:49Z", "tipo": "t1", "detalle": "iter1 t1" },
+    { "ts": "2026-09-29T00:42:45Z", "tipo": "t0", "detalle": "iter2 t0" },
+    { "ts": "2026-09-29T00:43:17Z", "tipo": "t1", "detalle": "iter2 t1" },
+    { "ts": "2026-09-29T01:05:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (3/3, {80792}) -> iguales" }
+  ]
+}

@@ -1,0 +1,17 @@
+# ATA016_esperado.csv | ATA016 · T1213.006 Databases | TFG HIDS · Fase 3 (ampliacion, tanda A)
+# Redactado el 2026-09-29 con los datos del paso 0, ANTES de ver ninguna alerta.
+# Gate humano: APROBADO 2026-09-29 (validacion humana)
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+# Convencion H4: cada senal audit_exe se acompana de audit_cwd de la carpeta del ataque.
+# Dependencia (paso 0): `sqlite3` NO esta instalado (ni `strings`); la BD es SQLite REAL
+#   creada con la stdlib de python3 (sqlite3). OJO: el execve de python3 cae en el punto
+#   ciego de fabrica 92600 (nivel 0) -> no alerta (se declara). La COLECCION (copiar la BD
+#   y extraer los registros) se hace con `cp`/`grep`, que SI alertan (80792).
+#   La SIEMBRA de la BD (escritura en lab-legit) se declara AMBIGUA -> dudosa -> `artefacto`.
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1213.006-S1,deteccion,audit_exe,cp,Process Creation,T1213.006,copia de la BD local a la carpeta del ataque (execve 80792)
+T1213.006-S2,deteccion,audit_exe,grep,Process Creation,T1213.006,extraccion/consulta de los registros de la BD (execve 80792)
+T1213.006-S3,deteccion,audit_cwd,/home/angel/lab-attack/ATA016/*,Process Creation,T1213.006,ancla H4 (cwd del ataque)
+T1213.006-A1,ambigua,rule_id,80790,File Creation,T1213.006,creacion de fichero bajo watch en lab-legit (efecto del ataque)
+T1213.006-A2,ambigua,rule_id,80781,File Modification,T1213.006,escritura bajo watch en lab-legit
+T1213.006-A3,ambigua,rule_id,80782,File Modification,T1213.006,escritura sobre el directorio vigilado lab-legit

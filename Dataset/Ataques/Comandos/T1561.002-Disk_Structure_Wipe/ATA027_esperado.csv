@@ -1,0 +1,17 @@
+# ATA027_esperado.csv | ATA027 · T1561.002 Disk Structure Wipe | TFG HIDS · Fase 3 (ampliacion, tanda C)
+# Redactado el 2026-09-29 con los datos del paso 0, ANTES de ver ninguna alerta.
+# Gate humano: APROBADO 2026-09-29 (validacion humana)
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+# Convencion H4: cada senal audit_exe se acompana de audit_cwd de la carpeta del ataque.
+# SOLO se opera sobre una IMAGEN DE FICHERO desechable (lab-attack/ATA027/disk.img): NUNCA
+#   discos/particiones reales. La destruccion es local -> la unica capa es el execve de las
+#   herramientas de disco (dd/sfdisk/mkfs.ext4/wipefs/mount/umount/losetup).
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1561.002-S1,deteccion,audit_exe,dd,Process Creation,T1561.002,creacion de la imagen y ceros sobre la cabecera (execve 80792)
+T1561.002-S2,deteccion,audit_exe,sfdisk,Process Creation,T1561.002,creacion/consulta de la tabla de particiones MBR (execve 80792)
+T1561.002-S3,deteccion,audit_exe,mkfs.ext4,Process Creation,T1561.002,formateo de la imagen (execve 80792)
+T1561.002-S4,deteccion,audit_exe,wipefs,Process Creation,T1561.002,borrado de firmas de la estructura (execve 80792)
+T1561.002-S5,deteccion,audit_exe,mount,Process Creation,T1561.002,montaje de la imagen loop (execve 80792)
+T1561.002-S6,deteccion,audit_exe,umount,Process Creation,T1561.002,desmontaje de la imagen loop (execve 80792)
+T1561.002-S7,deteccion,audit_exe,losetup,Process Creation,T1561.002,asignacion/detach del dispositivo loop sobre la imagen (execve 80792)
+T1561.002-S8,deteccion,audit_cwd,/home/angel/lab-attack/ATA027/*,Process Creation,T1561.002,ancla H4 (cwd del ataque)

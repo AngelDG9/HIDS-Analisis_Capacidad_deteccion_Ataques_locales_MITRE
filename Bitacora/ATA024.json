@@ -1,0 +1,88 @@
+{
+  "ata_id": "ATA024",
+  "tecnica": "T1531",
+  "tactica": "Impact",
+  "sistema": "linux",
+  "bloque": "fase-03-ampliacion",
+  "tanda": "C",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1531-Account_Access_Removal/",
+  "atomic": { "fuente": "custom", "nota": "usuario DESECHABLE tfg-victim01 (useradd -m + passwd -l + userdel -r); guardarrail: jamas angel/root/cuentas reales; sin editar /etc/passwd a mano; sudo -S por stdin; trap de limpieza" },
+  "esperado_sha256": "505581e2ae6c8c704381e6b849be0e90e26e86d4a6e67a72c8e096f60512f962",
+  "ataque_sha256": "705e4be1384dc6bbaa6561850fc9e2947e40188011aa76b3dd0f8cf65ac872ea",
+  "validacion_humana_esperado": "APROBADO 2026-09-29",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA024_logtest.txt",
+    "logtest_sha256": "9e1b955ea6a03113607e4eb7f2c21e7c2ff7222dfc21462799c7d1f2a2675779",
+    "preflight": "Soporte/Ataques/c0/ATA024_preflight.md",
+    "preflight_sha256": "4002bad75adbdabef04395d587ca2f121611b8adbe053276b5e7d01fd0cccec4",
+    "resultado": "PASA (3 eventos useradd/userdel/passwd -> 80792 level 3; sin silenciador)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1, "t0": "2026-09-29T03:27:07Z", "t1": "2026-09-29T03:27:39Z", "duracion_s": 32, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA024_iter1-Detalle.csv",
+      "detalle_sha256": "de724dd3c95a0bd7e3961358fd99856994a4541b661126d62e818443bb54495d",
+      "detalle_raw_sha256": "255db43b53ad21fe94935684927f80cd8f210d1431b24ea675dd2f911b28a52d",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA024_iter1-Audited.csv",
+      "audited_sha256": "d48b292e94a29ea9d9d331d0b15347d0d5b0c59b168bfb237c41b5258303cdb8",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA024_iter1-Revision.csv",
+      "revision_sha256": "f5bf92364c7448ea944383e11dc6babc93d11ba7d2dcaba746d8b3c2f88ff28b",
+      "conteos": { "filas": 1195, "deteccion": 40, "auto_ruido": 608, "ruido_conocido": 359, "dudosa": 0, "artefacto_ataque": 188 },
+      "rs": { "RS1": 42, "RS2": 1153, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 1205, "victima_linux": 1196, "otros_agentes_descartados": 9 },
+      "detecciones": { "alertas": 40, "rule_id_distintos": ["550", "5901", "5902", "5903", "80792"], "esperadas": 25, "sorpresas": 15, "evidencia": "25x execve useradd/passwd/userdel (80792, cwd del ataque); 12x FIM 550 (syscheck_entry_modified); 1x5901/1x5902/1x5903 syslog adduser" },
+      "metrico_o1": "si", "metrico_o2": "3/3", "dudosas_resueltas": 163,
+      "efecto": { "usuario": "tfg-victim01", "creado": true, "bloqueado": "tfg-victim01 L 2026-09-29 0 99999 7 -1", "id_tras_borrado": "no_existe", "home_tras_borrado": "no_existe", "cuentas_tfg_restantes": 0 }
+    },
+    {
+      "iter": 2, "t0": "2026-09-29T03:31:26Z", "t1": "2026-09-29T03:31:58Z", "duracion_s": 32, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA024_iter2-Detalle.csv",
+      "detalle_sha256": "989a60a9ad695a96899cfcd2cc0ccd93acbc3580f55e960a77cb4670fd30144f",
+      "detalle_raw_sha256": "51c816989ee065767192efff1c5893f861105049748d3ca2c9c875d64c9a2fef",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA024_iter2-Audited.csv",
+      "audited_sha256": "fbab1803d086764923735187404fba0c83ef5cc94165a1d8679eb76e7d9b987d",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA024_iter2-Revision.csv",
+      "revision_sha256": "5b27070676316ce1db9cbf74736e9beec650843b9ca4e404ed9389cb404a511e",
+      "conteos": { "filas": 1345, "deteccion": 40, "auto_ruido": 622, "ruido_conocido": 496, "dudosa": 0, "artefacto_ataque": 187 },
+      "rs": { "RS1": 47, "RS2": 1298, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 1354, "victima_linux": 1346, "otros_agentes_descartados": 8 },
+      "detecciones": { "alertas": 40, "rule_id_distintos": ["550", "5901", "5902", "5903", "80792"], "esperadas": 25, "sorpresas": 15, "evidencia": "25x execve useradd/passwd/userdel (80792); 12x FIM 550; 1x5901/1x5902/1x5903 syslog adduser" },
+      "metrico_o1": "si", "metrico_o2": "3/3", "dudosas_resueltas": 163,
+      "efecto": { "usuario": "tfg-victim01", "creado": true, "bloqueado": "tfg-victim01 L 2026-09-29 0 99999 7 -1", "id_tras_borrado": "no_existe", "home_tras_borrado": "no_existe", "cuentas_tfg_restantes": 0 }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-09-29", "filas": 326,
+    "veredicto": "artefacto (326)",
+    "motivo": "326 = 80781/80790/80791 del watch de /etc (creacion/modificacion/borrado de los ficheros de cuentas y sus locks/backups) = EFECTO del ataque -> artefacto (es el ataque, no es la deteccion declarada). Cero filas del ataque en ruido.",
+    "revisor": "executor ampliacion tanda C"
+  },
+  "anomalia_para_ratificar": "5402/5501/5502 (sudo/PAM de la sesion, dstuser=root) cayeron automaticamente en ruido_conocido/baseline (el catalogo base contiene los equivalentes del operador); no reclasificable sin editar el esperado firmado. Se incluye para ratificacion.",
+  "limitacion": {
+    "fecha": "2026-09-29",
+    "tipo": "cabos de documentacion (fase-03-ampliacion); NO se toca dato/filtro/esperado/metrica",
+    "invariante_0_filas_ataque_en_ruido": "se cumple BAJO LA PERTENENCIA POR CARPETA (audit_cwd o ruta bajo lab-attack/<ATA> -> artefacto_ataque, nunca ruido). Quedan FUERA las filas de la SESION del ataque (PAM/sudo, sin cwd) -> DECLARADAS, NO deteccion.",
+    "huellas_sesion_ataque": "30 filas (15/iter) 5402/5501/5502 con dstuser=root = la sesion sudo/PAM del propio ataque (las 5 llamadas sudo del guion -> 5x 5402 por iter). Caen en ruido_conocido/baseline de forma automatica (catalogo base del operador). NO son deteccion (genericas: cualquier sudo las produce; no identifican la manipulacion de cuentas). La tecnica sigue DETECTADA por 80792 (useradd/passwd/userdel anclados al cwd) + 550 (FIM) + 5901-5903 (syslog/auth).",
+    "correccion_novel": "lo novel real es 550 + 5901-5903 = 15; el watch de /etc (80781/80790/80791) ya estaba declarado como ambigua (T1531-A1/A2/A3) -> categoria artefacto (NO novel).",
+    "alcance": "las 5501/5502 con dstuser=angel son la sesion del operador (no del ataque) -> ruido. Solo las dstuser=root son la sesion del ataque."
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": { "criterio": "v2", "mismo_conjunto_rule_id_deteccion": true, "rule_ids_deteccion": ["550", "5901", "5902", "5903", "80792"], "n1": 40, "n2": 40, "margen": 4, "criterio_recuento_ok": true, "sin_dudosas_sin_resolver": true, "auto_ruido_delta": 14, "ruido_conocido_delta": 137 },
+  "extraccion": { "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)", "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json", "aislamiento": "filtro a agent_name == victima-linux" },
+  "prueba_de_efecto": "el usuario desechable tfg-victim01 se crea (entrada en /etc/passwd), se bloquea (passwd -S = L) y se elimina (userdel -r): id tfg-victim01 NO existe, su home NO existe, cuentas_tfg_restantes=0. /etc/passwd vuelve a sus bytes originales (crear+borrar) -> la prueba es el estado, no el sha.",
+  "receptor": { "aplica": false, "nota": "no hay receptor de red" },
+  "hallazgos": [
+    "La tecnica ejercita 4 capas: execve (80792) + watch /etc (80790/80781/80791) + FIM/syscheck (550) + syslog/auth (5901/5902/5903).",
+    "550 y 5901-5903 son NOVEL (no declaradas): el esperado declaro de menos; el HIDS ve la manipulacion de cuentas por varias vias."
+  ],
+  "eventos": [
+    { "ts": "2026-09-29T03:27:07Z", "tipo": "t0", "detalle": "iter1 t0 (revert lab-listo + 90 s asentamiento)" },
+    { "ts": "2026-09-29T03:27:39Z", "tipo": "t1", "detalle": "iter1 t1 (tras scan FIM forzado)" },
+    { "ts": "2026-09-29T03:31:26Z", "tipo": "t0", "detalle": "iter2 t0" },
+    { "ts": "2026-09-29T03:31:58Z", "tipo": "t1", "detalle": "iter2 t1" },
+    { "ts": "2026-09-29T03:35:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (40/40, {550,5901,5902,5903,80792}) -> iguales" }
+  ]
+}

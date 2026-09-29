@@ -537,4 +537,81 @@ pilotos) y `Hojas/ATA_index.csv` **intactos**.
   (`sed -i`); se **retiran** `touch`/`chmod` (falsear fecha/modo = **T1070.006 Timestomp**, otra
   técnica) para no ensuciar la atribución.
 
+---
+
+## 11. Ampliación (bloque `fase-03-ampliacion`) — notas de la **tanda B** (2026-09-29)
+
+> Añadido al cerrar la tanda B (ATA019–ATA023). Aplica a las técnicas de **exfiltración/red**.
+
+- **Receptor con modo TCP.** `Soporte/Ataques/receiver/sink_http.py` gana `--tcp-port` (por defecto
+  **0 = off**) para el **protocolo alternativo no-HTTP** (ATA019/T1048.001). Retrocompatible con
+  ATA008/ATA009/ATA010 (README §2.bis). Se levanta **antes de `t0`** y se para **tras `t1`**.
+- **Firewall:** en la tanda B los puertos (9090 HTTP y 9091 TCP) eran **alcanzables** desde la víctima
+  ⇒ **no se creó** la regla `TFG-sink-9090` (verificado ausente).
+- **Hallazgos de la tanda B** (ver fichas `ATA019`–`ATA023`):
+  - **ATA021/T1029:** la capa **syslog de cron** sí aporta una alerta **no declarada** —
+    **`2832`** (*Crontab entry changed*, mensaje `REPLACE` de `crontab -`) — y `/var/spool/cron` genera
+    **`watch` de fábrica** (`80791`/`80782`). No se declararon (el `esperado` se firma **antes**) →
+    se pliegan como **`artefacto_ataque`** (nunca `ruido`).
+  - **ATA023/T1496.002 (R9 confirmado):** Wazuh **no tiene reglas de red ni de recursos** → el «ancho
+    de banda» **no se ve**; la única detección es el **`execve`** (si el consumo se hiciera con
+    *builtins*, sería un **punto ciego**).
+  - **ATA019/T1048.001:** el HIDS ve el **proceso** (`openssl`/`cat`), no la red; la prueba de la
+    exfiltración es el **`sink.log`** (sha256 del blob **cifrado** idéntico).
+- **Guardarraíl de pertenencia:** el **lanzador `/bin/sh` de cron** (cwd `$HOME`) y los efectos sobre
+  el repo de `git` (`80791`/`80782`) se declararon/plegaron a **`artefacto`** (nunca `ruido`); el
+  churn del operador (login/PAM) se resolvió a **`ruido`** (criterio ratificado 2026-09-28).
+
+---
+
+## 12. Ampliación — **cabos de documentación** de la tanda C (2026-09-29)
+
+> **Offline, sin tocar nada medible.** Aquí **no** se recalcula la métrica (congelada), ni el
+> `esperado` (firmado), ni el filtro (`filtrar_ruido.py`) ni la política: se **declaran** las
+> huellas del ataque que el **mecanismo congelado** no caza. Fichas afectadas: `ATA024`, `ATA026`,
+> `ATA027`.
+
+### 12.1 Invariante «0 filas del ataque en `ruido`» — alcance exacto
+
+El invariante de las 30 ventanas (**CA-B3**) se cumple **bajo la pertenencia por carpeta** del
+mecanismo: una fila cuyo **`audit_cwd`** o **ruta** (`audit_file`/`audit_dir`/`syscheck_path`) cae
+bajo **`lab-attack/ATA<NNN>`** → paso 3.5 → **`artefacto_ataque`**, **nunca** `ruido_conocido`.
+
+Quedan **fuera** de ese mecanismo las filas de la **sesión** del ataque (**PAM/`sudo`, sin `cwd`** ni
+ruta de la carpeta): el filtro **no puede demostrar** que son del ataque → se **declaran** en las
+fichas/bitácoras de cada técnica y **no cuentan como detección**. Es una **limitación declarada**,
+no un fallo: el ataque **sigue detectado** por sus filas ancladas.
+
+### 12.2 Huellas del ataque declaradas (no son detección)
+
+| ATA | Filas | Por qué caen ahí | Por qué NO son detección |
+|---|---|---|---|
+| **ATA024** | **30** (15/iter): `5402`/`5501`/`5502`, `dstuser=root` | Sesión `sudo`/PAM del ataque; `baseline` automático (catálogo base del operador) | Son la **sesión de privilegio** que el ataque necesitó (5 llamadas `sudo` → 5×`5402`/iter); genéricas, no identifican la manipulación de cuentas |
+| **ATA027** | **4** (`80791`, 2/iter) | `audit_file=/dev/disk/by-loop-ref/\x2fhome\x2fangel\x2flab-attack\x2fATA027\x2fdisk.img` (**URL-encoded** bajo `/dev/`; `cwd=/`) | Escrituras `watch` del **setup loop**; la ruta no contiene `lab-attack/ATA027` literal → la pertenencia **no la caza** |
+| **ATA026** | **1** (iter2): `80792` `/usr/bin/nc.openbsd`, `cwd` vacío | `baseline` (sin `cwd`, no anclable) | Ejecución de `nc` del ataque que el `esperado` no casa (`nc` vs `nc.openbsd`); la detección la sostiene `sed` |
+
+En los tres casos, **nada del ataque se pierde**: la detección de la técnica está en otras filas
+(`80792` anclados + capas FIM/syslog en ATA024). Y no se reclasifican: exigiría **editar** el
+`esperado` firmado y **romper** la métrica/cadena de huellas.
+
+### 12.3 Asimetría metodológica declarada (mismo evento, distinto cajón)
+
+El **mismo evento real** —la **sesión PAM/`sudo` del ataque**— acaba en cajones distintos según la
+técnica:
+
+- **ATA024 → `ruido_conocido`/`baseline`.** El `esperado` declara **algún campo siempre evaluable**
+  (`rule_id`: las `ambigua` `80790/80781/80782`) → `sin_campos` **no** dispara → paso 6 → `baseline`.
+- **ATA027 → `artefacto`.** El `esperado` **solo** declara `audit_exe`/`audit_cwd` → `sin_campos`
+  dispara → `dudosa` → **veredicto humano `artefacto`**.
+
+La diferencia **no** la produce el evento (idéntico), sino si el `esperado` declara o no un **campo
+siempre evaluable** (mecanismo de `sin_campos`, política §3.bis). Es una **limitación declarada del
+mecanismo congelado**: se documenta, **no** se corrige (no se toca el filtro).
+
+### 12.4 Correlato en ATA024 — corrección de una imprecisión
+
+Lo **`novel`** real de ATA024 es **`550` + `5901-5903` = 15**; el **`watch` de `/etc`**
+(`80781/80790/80791`) **no** es `novel`: ya estaba **declarado como `ambigua`** en el `esperado`
+(categoría **`artefacto`**). Corregido en `ATA024_meta.md` §10/§10.1.
+
 

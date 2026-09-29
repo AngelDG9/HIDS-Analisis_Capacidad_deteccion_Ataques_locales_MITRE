@@ -1,0 +1,6 @@
+# sink_http arrancado 2026-09-29T01:59:05Z bind=192.168.65.1 port=9090
+2026-09-29T01:59:07Z TCP from=192.168.65.129 len=0 sha256=-
+2026-09-29T01:59:08Z POST /api/exfil/clientes.csv from=192.168.65.129 len=79 sha256=2ad637b8797a4c6e22a5da27f698f31c9da4088367df78a795414d1a6721d9e6 content_type=text/csv
+2026-09-29T01:59:08Z POST /api/exfil/contratos.csv from=192.168.65.129 len=64 sha256=279a24d6c79fb9bf66cbfe491227731fe3ab7c96e456818e09a28abf6c291d3f content_type=text/csv
+2026-09-29T01:59:08Z POST /api/exfil/facturas.csv from=192.168.65.129 len=79 sha256=1011daaaa9e7a03a133476dad85bec06a61f30d21a13150b598105a8e35de115 content_type=text/csv
+2026-09-29T01:59:08Z POST /api/exfil/nominas.csv from=192.168.65.129 len=72 sha256=b5c25b1a11f3e25998ed228122476a0352b894f14221cc9a94257705601a810d content_type=text/csv

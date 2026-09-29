@@ -14,7 +14,7 @@
     "nota": "unico de los 7 del escalado que usa ART tal cual; desviacion declarada a openssl enc simetrico"
   },
   "esperado_sha256": "359cac966880a2bb7701a05f19c9c5e67d92c4b3d043fb9acb7b571efe4008b9",
-  "ataque_sha256": "a4137192e108c1f74be317991dd64b47e7220736a3db9c8b08b41f6d60417139",
+  "ataque_sha256": "0a01be24763f5c9363ae8ac102b8ddaaee956a9a0d701196bb557374c66bacd8",
   "validacion_humana_esperado": "APROBADO 2026-09-28",
   "c0": {
     "logtest": "Soporte/Ataques/c0/ATA001_logtest.txt",
@@ -99,6 +99,7 @@
     { "ts": "2026-09-28T21:16:53Z", "tipo": "t1", "detalle": "iter1 t1 (tras scan FIM forzado)" },
     { "ts": "2026-09-28T21:22:17Z", "tipo": "t0", "detalle": "iter2 t0" },
     { "ts": "2026-09-28T21:22:48Z", "tipo": "t1", "detalle": "iter2 t1" },
-    { "ts": "2026-09-28T21:23:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (2/2, {80792}) -> iguales" }
+    { "ts": "2026-09-28T21:23:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (2/2, {80792}) -> iguales" },
+    { "ts": "2026-09-29T03:10:00Z", "tipo": "correccion", "detalle": "cadena de huellas (TV8): un retoque COSMETICO del comentario de ATA001_ataque.sh posterior al ataque cambió el fichero; la huella citada pasa de a4137192…7139 (la ejecutada, aun en Logs/ATA001_iter*/sha256_artefacto.txt) a la REAL actual 0a01be24…acd8. NO se editó el fichero citado" }
   ]
 }

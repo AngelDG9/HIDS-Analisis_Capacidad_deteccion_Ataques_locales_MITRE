@@ -1,0 +1,22 @@
+﻿ATA022 ┬À T1567.001 Exfiltration to Code Repository (git push a bare local) ÔÇö custom (manual)
+T0=2026-09-29T02:23:40Z
+--- FICHERO A EXFILTRAR (sha256 local) ---
+efb4e38b8ddceddc091e9e228a5d5b71f19401a3f2030d7116e87c6bb096e943  /home/angel/lab-attack/ATA022/codigo_fuente_secreto.ini
+hint: Using 'master' as the name for the initial branch. This default branch name
+hint: is subject to change. To configure the initial branch name to use in all
+hint: of your new repositories, which will suppress this warning, call:
+hint: 
+hint: 	git config --global init.defaultBranch <name>
+hint: 
+hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+hint: 'development'. The just-created branch can be renamed via this command:
+hint: 
+hint: 	git branch -m <name>
+remoto_verificado=file:///home/angel/lab-attack/ATA022/repo.git
+>>> git push al repositorio de codigo local
+--- repositorio de codigo (contenido recibido) ---
+f12a999 snapshot configuracion interna
+sha256 local            = efb4e38b8ddceddc091e9e228a5d5b71f19401a3f2030d7116e87c6bb096e943
+sha256 en el repo (blob)= efb4e38b8ddceddc091e9e228a5d5b71f19401a3f2030d7116e87c6bb096e943
+EXFIL_REPO=OK (el repositorio de codigo local recibio el dato; blob identico)
+T1_LOCAL=2026-09-29T02:23:41Z

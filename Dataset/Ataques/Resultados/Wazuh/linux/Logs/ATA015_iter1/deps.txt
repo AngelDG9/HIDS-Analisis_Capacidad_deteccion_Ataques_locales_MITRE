@@ -1,0 +1,5 @@
+c4d54c370cf19d7c552fa79ec9b3141bee9517e600ba36ac9bc45d2ff12b0be1  ATA015_ataque.sh
+total 12
+-rwxr-xr-x 1 angel angel 3982 Sep 29 02:46 ATA015_ataque.sh
+-rw-r--r-- 1 angel angel 1620 Sep 29 02:46 ATA015_esperado.csv
+-rw-r--r-- 1 angel angel 3561 Sep 29 02:46 README.md

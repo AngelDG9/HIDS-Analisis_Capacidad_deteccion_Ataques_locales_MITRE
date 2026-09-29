@@ -1,0 +1,4 @@
+DIARIO=/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json
+detalle: filas=1022 en_ventana=1022 -> /tmp/ATA016_iter2-Detalle_raw.csv
+filas_detalle 972
+[sudo] password for angel: 

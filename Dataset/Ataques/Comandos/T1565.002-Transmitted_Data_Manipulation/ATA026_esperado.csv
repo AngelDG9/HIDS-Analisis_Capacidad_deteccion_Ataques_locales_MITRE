@@ -1,0 +1,13 @@
+# ATA026_esperado.csv | ATA026 · T1565.002 Transmitted Data Manipulation | TFG HIDS · Fase 3 (ampliacion, tanda C)
+# Redactado el 2026-09-29 con los datos del paso 0, ANTES de ver ninguna alerta.
+# Gate humano: APROBADO 2026-09-29 (validacion humana)
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+# Convencion H4: cada senal audit_exe se acompana de audit_cwd de la carpeta del ataque.
+# La manipulacion ocurre EN TRANSITO (proxy local `nc | sed | nc`): el proceso corre con
+#   cwd=/home/angel/lab-attack/ATA026 (NO vigilado) -> la deteccion declarada es el execve.
+#   El EFECTO es de RED (el receptor recibe un sha distinto) -> el HIDS de host no lo ve;
+#   la prueba la da el `sink.log` del receptor. NO se declaran senales ambigua.
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1565.002-S1,deteccion,audit_exe,nc,Process Creation,T1565.002,proxy local y emisor del dato (execve 80792)
+T1565.002-S2,deteccion,audit_exe,sed,Process Creation,T1565.002,reescritura del cuerpo EN TRANSITO (execve 80792)
+T1565.002-S3,deteccion,audit_cwd,/home/angel/lab-attack/ATA026/*,Process Creation,T1565.002,ancla H4 (cwd del ataque)

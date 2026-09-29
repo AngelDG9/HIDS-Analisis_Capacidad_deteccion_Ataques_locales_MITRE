@@ -1,0 +1,15 @@
+ATA017 ?? T1657 Financial Theft (sed -i sobre libro + cp de cartera) ??? custom (manual)
+T0=2026-09-29T00:53:14Z
+--- estado final ---
+-rw-rw-r-- 1 angel angel   86 Sep 29 02:53 /home/angel/lab-legit/cartera_simulada.txt
+-rw-rw-r-- 1 angel angel  366 Sep 29 02:53 /home/angel/lab-legit/libro_cuentas_2026.csv
+
+/home/angel/lab-attack/ATA017/collected/:
+total 8
+-rw-rw-r-- 1 angel angel  86 Sep 29 02:53 cartera_simulada.txt
+-rw-rw-r-- 1 angel angel 366 Sep 29 02:53 libro_cuentas_2026.csv
+fraude_lineas=1
+sha256 libro (tras fraude) = 43aa89f3ce06bf99080f70d2c6e6506caa39a20031875614a79c6751eef7d296
+sha256 copia               = 43aa89f3ce06bf99080f70d2c6e6506caa39a20031875614a79c6751eef7d296
+FRAUDE=OK (transferencia fraudulenta a??adida; libro y cartera sustraidos)
+T1_LOCAL=2026-09-29T00:53:15Z

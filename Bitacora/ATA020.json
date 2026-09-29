@@ -1,0 +1,75 @@
+{
+  "ata_id": "ATA020",
+  "tecnica": "T1020",
+  "tactica": "Exfiltration",
+  "sistema": "linux",
+  "bloque": "fase-03-ampliacion",
+  "tanda": "B",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1020-Automated_Exfiltration/",
+  "atomic": { "fuente": "custom", "nota": "el fenomeno es la AUTOMATIZACION (bucle); distinto de ATA009 (un fichero) y ATA010 (un canal C2)" },
+  "esperado_sha256": "eed2ede1203ed684243337f574254b8d88cc7cf826ea1bf9451151e8345ee218",
+  "ataque_sha256": "fe171ff167630763de4708f01b3b4fe5730394bca5c2b2ed1aa405da635b536e",
+  "validacion_humana_esperado": "APROBADO 2026-09-29",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA020_logtest.txt",
+    "logtest_sha256": "7ed74bfcddc22ece22ab06092b097fd7f423094550f0ed6f1449fd624cbacc43",
+    "preflight": "Soporte/Ataques/c0/ATA020_preflight.md",
+    "preflight_sha256": "aa550c64b613c1d53e8f5268cc00934105858b98248be8573c698ccecfb0ec0f",
+    "resultado": "PASA (1 evento curl -> 80792 level 3; sin silenciador)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1, "t0": "2026-09-29T01:55:28Z", "t1": "2026-09-29T01:56:00Z", "duracion_s": 32, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA020_iter1-Detalle.csv",
+      "detalle_sha256": "28b35e9958ef94ed3575dc673facd24666f90fa45bfa3c8fdd548800105d44da",
+      "detalle_raw_sha256": "6e6d56595dcd10562db73e30e6bc755f88d85b82b3abe8f55081ed08301986a1",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA020_iter1-Audited.csv",
+      "audited_sha256": "ca2d4302b8c84cb1fce1e63577a129e0633da3864f2a77cc032d5e7312d4a820",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA020_iter1-Revision.csv",
+      "revision_sha256": "f732d95a534cd34198aaa5e06969063798bcb30990c54ba69bd2b287b97ddf09",
+      "conteos": { "filas": 875, "deteccion": 4, "auto_ruido": 607, "ruido_conocido": 257, "dudosa": 0, "artefacto_ataque": 7 },
+      "rs": { "RS1": 9, "RS2": 866, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 883, "victima_linux": 875, "otros_agentes_descartados": 8 },
+      "detecciones": { "alertas": 4, "rule_id_distintos": ["80792"], "esperadas": 4, "sorpresas": 0, "evidencia": "4x audit_exe=/usr/bin/curl (una por fichero); cwd=/home/angel/lab-attack/ATA020" },
+      "metrico_o1": "si", "metrico_o2": "1/1", "dudosas_resueltas": 6,
+      "efecto": { "sink_log": "Dataset/Ataques/Resultados/Wazuh/linux/Logs/ATA020_iter1/sink.log", "sink_log_sha256": "91be7972b623c46768e715658be77773f7c5a7edef01c1ed2e4ab27a1b2e2d18", "posts": 4, "sha256_cuerpos": ["2ad637b8797a4c6e22a5da27f698f31c9da4088367df78a795414d1a6721d9e6", "279a24d6c79fb9bf66cbfe491227731fe3ab7c96e456818e09a28abf6c291d3f", "1011daaaa9e7a03a133476dad85bec06a61f30d21a13150b598105a8e35de115", "b5c25b1a11f3e25998ed228122476a0352b894f14221cc9a94257705601a810d"], "coincide": true }
+    },
+    {
+      "iter": 2, "t0": "2026-09-29T01:59:08Z", "t1": "2026-09-29T01:59:40Z", "duracion_s": 32, "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA020_iter2-Detalle.csv",
+      "detalle_sha256": "6a4203d112828debaecfdc492d6913d471c926c048bd01e56f63bc8a39a60f06",
+      "detalle_raw_sha256": "878947c7875715cb1b30586d7374ee14a764c4d41778a0b73a8f8e7f3a547a5f",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA020_iter2-Audited.csv",
+      "audited_sha256": "898e2414f11f583c195a1d0ebd1b164cc743bad82a375257ac8031e748a70e9a",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA020_iter2-Revision.csv",
+      "revision_sha256": "e3233856a356279e3f9075f22ce911f1e5840dbd062f8818cdc2274ac94dc14b",
+      "conteos": { "filas": 894, "deteccion": 4, "auto_ruido": 626, "ruido_conocido": 257, "dudosa": 0, "artefacto_ataque": 7 },
+      "rs": { "RS1": 9, "RS2": 885, "RS3": 0, "RS4": 0, "UNKNOWN": 0 },
+      "ventana_raw": { "filas": 902, "victima_linux": 894, "otros_agentes_descartados": 8 },
+      "detecciones": { "alertas": 4, "rule_id_distintos": ["80792"], "esperadas": 4, "sorpresas": 0, "evidencia": "4x audit_exe=/usr/bin/curl; cwd=/home/angel/lab-attack/ATA020" },
+      "metrico_o1": "si", "metrico_o2": "1/1", "dudosas_resueltas": 6,
+      "efecto": { "sink_log": "Dataset/Ataques/Resultados/Wazuh/linux/Logs/ATA020_iter2/sink.log", "sink_log_sha256": "3e1523c86f4058aa6ef5e5cff9629f0ca584e38d2ef7a0c0a6310e2c6f3f96ce", "posts": 4, "sha256_cuerpos": ["2ad637b8797a4c6e22a5da27f698f31c9da4088367df78a795414d1a6721d9e6", "279a24d6c79fb9bf66cbfe491227731fe3ab7c96e456818e09a28abf6c291d3f", "1011daaaa9e7a03a133476dad85bec06a61f30d21a13150b598105a8e35de115", "b5c25b1a11f3e25998ed228122476a0352b894f14221cc9a94257705601a810d"], "coincide": true }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-09-29", "filas": 12,
+    "veredicto": "ruido (12)",
+    "motivo": "PAM 5501/5502 de la sesion del operador (sin_campos); ajenas al ataque — criterio ratificado 2026-09-28",
+    "revisor": "executor ampliacion tanda B"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": { "criterio": "v2", "mismo_conjunto_rule_id_deteccion": true, "rule_ids_deteccion": ["80792"], "n1": 4, "n2": 4, "margen": 2, "criterio_recuento_ok": true, "sin_dudosas_sin_resolver": true, "auto_ruido_delta": 19, "ruido_conocido_delta": 0 },
+  "extraccion": { "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)", "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json", "aislamiento": "filtro a agent_name == victima-linux" },
+  "prueba_de_efecto": "sink.log del HOST: 4 POST /api/exfil/<fichero>, sha256 de cada cuerpo identico al del fichero local (2ad637b8, 1011daaa, b5c25b1a, 279a24d6). HTTP=200. Sin NAT; receptor local",
+  "receptor": { "script": "Soporte/Ataques/receiver/sink_http.py", "bind": "192.168.65.1:9090 (HTTP)", "firewall": "NO se creo regla; TFG-sink-9090 verificado ausente (CA10)", "parado_tras_t1": true },
+  "eventos": [
+    { "ts": "2026-09-29T01:55:28Z", "tipo": "t0", "detalle": "iter1 t0 (revert lab-listo + 90 s asentamiento)" },
+    { "ts": "2026-09-29T01:56:00Z", "tipo": "t1", "detalle": "iter1 t1 (tras scan FIM forzado)" },
+    { "ts": "2026-09-29T01:59:08Z", "tipo": "t0", "detalle": "iter2 t0" },
+    { "ts": "2026-09-29T01:59:40Z", "tipo": "t1", "detalle": "iter2 t1" },
+    { "ts": "2026-09-29T02:30:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (4/4, {80792}) -> iguales" }
+  ]
+}

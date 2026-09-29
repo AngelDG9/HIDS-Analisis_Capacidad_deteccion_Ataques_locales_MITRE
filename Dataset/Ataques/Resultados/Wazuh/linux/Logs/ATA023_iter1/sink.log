@@ -1,0 +1,3 @@
+# sink_http arrancado 2026-09-29T02:02:44Z bind=192.168.65.1 port=9090
+2026-09-29T02:02:46Z TCP from=192.168.65.129 len=0 sha256=-
+2026-09-29T02:02:48Z POST /api/bw/hog from=192.168.65.129 len=33554432 sha256=83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302 content_type=application/octet-stream

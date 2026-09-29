@@ -1,0 +1,7 @@
+﻿ATA023 ┬À T1496.002 Bandwidth Hijacking (flujo acotado de 32 MiB) ÔÇö custom (manual)
+T0=2026-09-29T02:06:31Z
+HTTP=200 enviado=33554432B tiempo=1.192905s
+--- estado final ---
+bytes_objetivo=33554432
+HOG=OK (transferencia acotada de 33554432 bytes completada)
+T1_LOCAL=2026-09-29T02:06:33Z
