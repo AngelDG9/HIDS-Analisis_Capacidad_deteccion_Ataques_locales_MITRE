@@ -8,7 +8,10 @@
   "artefacto": "Dataset/Ataques/Comandos/T1119-Automated_Collection/",
   "atomic": {
     "fuente": "custom",
-    "nota": "ataque manual escrito por el TFG; Atomic Red Team no tiene pruebas Linux para T1119"
+    "nota": "ataque manual escrito por el TFG; Atomic Red Team no tiene pruebas Linux para T1119",
+    "fuente_norm": "propio",
+    "motivo_codigo": "art_no_prueba_plataforma",
+    "motivo_detalle": "solo la otra"
   },
   "esperado_sha256": "650d518283cbff3463b5024ddea539e05347fa20cc988f9cf6f69d937fa89424",
   "ataque_sha256": "d5ecb91973cbb50f9afef58a2f72726ae58370950418d35e3c86d015a583016e",

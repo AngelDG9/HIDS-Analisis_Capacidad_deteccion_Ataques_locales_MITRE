@@ -7,7 +7,7 @@
   "tanda": "C",
   "estado": "cerrado",
   "artefacto": "Dataset/Ataques/Comandos/T1039-Data_from_Network_Shared_Drive/",
-  "atomic": { "fuente": "custom", "nota": "recoleccion de un recurso compartido de red LOCAL (servidor de ficheros = manager) via daemon rsync (rsync://192.168.65.128:9873/share, solo VMnet1). Sin cliente NFS/SMB offline -> no se monta FS; 'montar'=arrancar daemon, 'desmontar'=pararlo y borrar ~/lab-share. Guardarrail: el recurso debe ser 192.168.65.128:9873 y el destino bajo lab-attack/ATA039" },
+  "atomic": { "fuente": "custom", "nota": "recoleccion de un recurso compartido de red LOCAL (servidor de ficheros = manager) via daemon rsync (rsync://192.168.65.128:9873/share, solo VMnet1). Sin cliente NFS/SMB offline -> no se monta FS; 'montar'=arrancar daemon, 'desmontar'=pararlo y borrar ~/lab-share. Guardarrail: el recurso debe ser 192.168.65.128:9873 y el destino bajo lab-attack/ATA039", "fuente_norm": "propio", "motivo_codigo": "propio_por_diseno", "motivo_detalle": "Recolección de un recurso compartido LOCAL servido por el manager con daemon `rsync` (no hay cliente NFS/SMB offline); dirección remoto->local." },
   "esperado_sha256": "9a0421f602585efab2f56470233de217e3db31f794e3d1c75ba01253ad8a8261",
   "ataque_sha256": "4b8724645a38d5b6e51c58ec7ec824dbf2971115bd5596033b52fd9185e6c8c5",
   "validacion_humana_esperado": "APROBADO 2026-09-29",

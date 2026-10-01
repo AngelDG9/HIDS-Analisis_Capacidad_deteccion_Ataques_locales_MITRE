@@ -7,7 +7,7 @@
   "tanda": "A",
   "estado": "cerrado",
   "artefacto": "Dataset/Ataques/Comandos/T1565.001-Stored_Data_Manipulation/",
-  "atomic": { "fuente": "custom", "nota": "manipulacion EN REPOSO de un ledger simulado (sed -i replace+append) en lab-legit/finanzas; sin sudo; guardarrail: objetivo exactamente el ledger de lab-legit. Distinto de ATA026/T1565.002 (en transito)" },
+  "atomic": { "fuente": "custom", "nota": "manipulacion EN REPOSO de un ledger simulado (sed -i replace+append) en lab-legit/finanzas; sin sudo; guardarrail: objetivo exactamente el ledger de lab-legit. Distinto de ATA026/T1565.002 (en transito)", "fuente_norm": "propio", "motivo_codigo": "propio_por_diseno", "motivo_detalle": "Manipulación EN REPOSO de un ledger simulado (`sed -i`), distinta de ATA026/T1565.002 (en tránsito)." },
   "esperado_sha256": "9565e51046b70ba378b0cf03eacf763cddc18ba9eae76538f960161473afa0e6",
   "ataque_sha256": "bd5640562e60c36540631cb814efd462c83249f534681bc9a0d6f5ac3a621723",
   "validacion_humana_esperado": "APROBADO 2026-09-29",

@@ -7,7 +7,7 @@
   "tanda": "B",
   "estado": "cerrado",
   "artefacto": "Dataset/Ataques/Comandos/T1048.001-Symmetric_Encrypted_Non-C2/",
-  "atomic": { "fuente": "custom", "nota": "variante SIMETRICA de T1048 (ATA008 fue la asimetrica T1048.002); openssl enc + envio TCP crudo al receptor del HOST (modo --tcp-port)" },
+  "atomic": { "fuente": "custom", "nota": "variante SIMETRICA de T1048 (ATA008 fue la asimetrica T1048.002); openssl enc + envio TCP crudo al receptor del HOST (modo --tcp-port)", "fuente_norm": "propio", "motivo_codigo": "art_requiere_red_nube", "motivo_detalle": "La prueba ART de T1048.001 no trae una prueba Linux ejecutable sin NAT (cifrado simétrico + protocolo alternativo)." },
   "esperado_sha256": "3a3bcd6d3eb97813ad3ea2bd504b6b4f8db5c33eb38734e5e7b354ed7d5f961d",
   "ataque_sha256": "aff1f0ffa439733d702d76d7e1e0ba21434563cab8012abc023ae5d7a4be6b20",
   "validacion_humana_esperado": "APROBADO 2026-09-29",

@@ -11,7 +11,10 @@
     "guid": "42e3a5bd-1e45-427f-aa08-2a65fa29a820",
     "path": "atomics/T1489/T1489.yaml",
     "commit": "388942adbd9641f4dfdcf079d7efe9a75ec0ac43",
-    "nota": "control de ART; systemctl stop <servicio> (cron), elevation_required"
+    "nota": "control de ART; systemctl stop <servicio> (cron), elevation_required",
+    "fuente_norm": "art_tal_cual",
+    "motivo_codigo": "na_art_usado",
+    "motivo_detalle": "se usó ART"
   },
   "esperado_sha256": "a4a53a3c3c4032d312e26c794164d02870354c9409dcae63bcb6d62552c98341",
   "ataque_sha256": "b6d8090857d26daed6817ce765dea10a0e845757cdcc47bbee95628823256755",

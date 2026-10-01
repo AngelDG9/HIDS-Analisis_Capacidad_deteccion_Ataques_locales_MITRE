@@ -7,7 +7,7 @@
   "tanda": "A",
   "estado": "cerrado",
   "artefacto": "Dataset/Ataques/Comandos/T1114.003-Email_Forwarding_Rule/",
-  "atomic": { "fuente": "custom", "nota": "mecanismo de persistencia de reenvio (.forward/.procmailrc); sin red" },
+  "atomic": { "fuente": "custom", "nota": "mecanismo de persistencia de reenvio (.forward/.procmailrc); sin red", "fuente_norm": "propio", "motivo_codigo": "propio_por_diseno", "motivo_detalle": "El mecanismo es la persistencia de reenvío (`.forward`/`.procmailrc`), distinto de leer el buzón (ATA014); sin red." },
   "esperado_sha256": "3bee2db42cb9a21d5a1be1663e09172aaf0553e25f2935e8074b98699efea28f",
   "ataque_sha256": "c4d54c370cf19d7c552fa79ec9b3141bee9517e600ba36ac9bc45d2ff12b0be1",
   "validacion_humana_esperado": "APROBADO 2026-09-29",

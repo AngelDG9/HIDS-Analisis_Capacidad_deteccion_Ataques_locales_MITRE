@@ -11,7 +11,10 @@
     "fuente": "ART",
     "guid": "142752dc-ca71-443b-9359-cf6f497315f1",
     "prueba": "Encrypt files using openssl",
-    "nota": "unico de los 7 del escalado que usa ART tal cual; desviacion declarada a openssl enc simetrico"
+    "nota": "unico de los 7 del escalado que usa ART tal cual; desviacion declarada a openssl enc simetrico",
+    "fuente_norm": "art_tal_cual",
+    "motivo_codigo": "na_art_usado",
+    "motivo_detalle": "se usó ART"
   },
   "esperado_sha256": "359cac966880a2bb7701a05f19c9c5e67d92c4b3d043fb9acb7b571efe4008b9",
   "ataque_sha256": "0a01be24763f5c9363ae8ac102b8ddaaee956a9a0d701196bb557374c66bacd8",

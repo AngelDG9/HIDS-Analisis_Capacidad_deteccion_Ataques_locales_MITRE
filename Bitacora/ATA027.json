@@ -7,7 +7,7 @@
   "tanda": "C",
   "estado": "cerrado",
   "artefacto": "Dataset/Ataques/Comandos/T1561.002-Disk_Structure_Wipe/",
-  "atomic": { "fuente": "custom", "nota": "SOLO imagen de fichero desechable (disk.img): tabla MBR (sfdisk) + ext4 (mkfs.ext4) + montaje loop, luego wipefs + dd de ceros sobre la cabecera. guardarrail DURO: destino solo bajo lab-attack/ATA027, aborta si la ruta tiene /dev/, jamas discos/particiones reales; trap que detacha loops" },
+  "atomic": { "fuente": "custom", "nota": "SOLO imagen de fichero desechable (disk.img): tabla MBR (sfdisk) + ext4 (mkfs.ext4) + montaje loop, luego wipefs + dd de ceros sobre la cabecera. guardarrail DURO: destino solo bajo lab-attack/ATA027, aborta si la ruta tiene /dev/, jamas discos/particiones reales; trap que detacha loops", "fuente_norm": "propio", "motivo_codigo": "propio_por_diseno", "motivo_detalle": "Borrado de la ESTRUCTURA de una imagen de fichero desechable (tabla MBR + ext4 + wipefs), mecanismo distinto de ATA005 (contenido); guardarraíl duro: nunca un disco real." },
   "esperado_sha256": "c72d8a6789a9b42aa74da5b40e97b2e03de71fb622f124f537b0b48ca1e3a6a6",
   "ataque_sha256": "adf302815c43ce25b61f48ddba4689a50a76a0c718fdab707b841ebf4d19c0a1",
   "validacion_humana_esperado": "APROBADO 2026-09-29",

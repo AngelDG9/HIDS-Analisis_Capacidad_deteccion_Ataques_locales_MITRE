@@ -7,7 +7,7 @@
   "tanda": "B",
   "estado": "cerrado",
   "artefacto": "Dataset/Ataques/Comandos/T1561.001-Disk_Content_Wipe/",
-  "atomic": { "fuente": "custom", "nota": "contenido de una IMAGEN DE FICHERO desechable (lab-attack/ATA037/disk.img): dd ceros + mkfs.ext4 (mke2fs) + mount loop + escribir dato + dd urandom in place (wipe de CONTENIDO) + umount/remount; SOLO la imagen (guardarrail duro: regular file bajo lab-attack/ATA037, aborta con /dev/ o si no es regular). sudo solo para mount/umount/losetup." },
+  "atomic": { "fuente": "custom", "nota": "contenido de una IMAGEN DE FICHERO desechable (lab-attack/ATA037/disk.img): dd ceros + mkfs.ext4 (mke2fs) + mount loop + escribir dato + dd urandom in place (wipe de CONTENIDO) + umount/remount; SOLO la imagen (guardarrail duro: regular file bajo lab-attack/ATA037, aborta con /dev/ o si no es regular). sudo solo para mount/umount/losetup.", "fuente_norm": "propio", "motivo_codigo": "propio_por_diseno", "motivo_detalle": "Borrado del CONTENIDO de una imagen de fichero desechable sin dañar la estructura; contraste con ATA027 (estructura); guardarraíl duro: nunca un disco real." },
   "esperado_sha256": "1177844722b5482a1a893f04953506b658a59a983d0aaf9f1fe2b0f7fc3a3755",
   "ataque_sha256": "4e11e9a473f4d50ac83dc761e4afe51bc530ca16e995c84a40736d3c0e66d8ae",
   "validacion_humana_esperado": "APROBADO 2026-09-29",

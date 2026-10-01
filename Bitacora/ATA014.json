@@ -7,7 +7,7 @@
   "tanda": "A",
   "estado": "cerrado",
   "artefacto": "Dataset/Ataques/Comandos/T1114-Email_Collection/",
-  "atomic": { "fuente": "custom", "nota": "ART no trae prueba Linux utilizable sin red para T1114" },
+  "atomic": { "fuente": "custom", "nota": "ART no trae prueba Linux utilizable sin red para T1114", "fuente_norm": "propio", "motivo_codigo": "art_requiere_red_nube", "motivo_detalle": "ART no trae prueba Linux utilizable sin red para T1114." },
   "esperado_sha256": "d95d63d0a8ebadabdc3f54ca2dd8d545f53cd81f9463af966acf78d8062df0d1",
   "ataque_sha256": "6030024e1270018be58a207a72eba758584f9aa11b5c220b05e31e51f4fe94e9",
   "validacion_humana_esperado": "APROBADO 2026-09-29",

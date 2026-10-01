@@ -7,7 +7,7 @@
   "tanda": "C",
   "estado": "cerrado",
   "artefacto": "Dataset/Ataques/Comandos/T1056.003-Web_Portal_Capture/",
-  "atomic": { "fuente": "custom", "nota": "portal falso LOCAL (nc -l 127.0.0.1) + cliente curl con credenciales de JUGUETE; portal servido con nc (NO python3) para evitar el punto ciego 92600; guardarrail: solo loopback, puerto alto, timeout" },
+  "atomic": { "fuente": "custom", "nota": "portal falso LOCAL (nc -l 127.0.0.1) + cliente curl con credenciales de JUGUETE; portal servido con nc (NO python3) para evitar el punto ciego 92600; guardarrail: solo loopback, puerto alto, timeout", "fuente_norm": "propio", "motivo_codigo": "propio_por_diseno", "motivo_detalle": "Portal falso LOCAL (loopback) que captura el POST de credenciales de juguete; se sirve con `nc` (no `python3`) para evitar el punto ciego 92600." },
   "esperado_sha256": "978ff1868628f33d933a185e530a5a7264ba0c2a16c36afb81b49e0af296afbb",
   "ataque_sha256": "346a48cf30158128cdf09ce77762ce1a40f704071eef36647e86aafc67a2e476",
   "validacion_humana_esperado": "APROBADO 2026-09-29",

@@ -12,3 +12,33 @@ ATA010,T1041,Exfiltration Over C2 Channel,sí,0,2,atomics/T1041,solo_windows
 ATA011,T1074,Data Staged,sí,1,2,atomics/T1074.001,cubierta
 ATA012,T1119,Automated Collection,sí,0,4,atomics/T1119,solo_windows
 ATA013,T1560,Archive Collected Data,sí,9,8,atomics/T1560;atomics/T1560.001;atomics/T1560.002,cubierta
+ATA014,T1114,Email Collection,sí,0,1,atomics/T1114.001;atomics/T1114.002;atomics/T1114.003,solo_windows
+ATA015,T1114,Email Forwarding Rule,sí,0,1,atomics/T1114.001;atomics/T1114.002;atomics/T1114.003,solo_windows
+ATA016,T1213,Databases,no,0,0,,sin_pruebas
+ATA017,T1657,Financial Theft,no,0,0,,sin_pruebas
+ATA018,T1056,Keylogging,sí,12,6,atomics/T1056.001;atomics/T1056.002;atomics/T1056.004,cubierta
+ATA019,T1048.001,Exfiltration Over Symmetric Encrypted Non-C2 Protocol,no,0,0,,sin_pruebas
+ATA020,T1020,Automated Exfiltration,sí,0,2,atomics/T1020,solo_windows
+ATA021,T1029,Scheduled Transfer,no,0,0,,sin_pruebas
+ATA022,T1567.001,Exfiltration to Code Repository,no,0,0,,sin_pruebas
+ATA023,T1496.002,Bandwidth Hijacking,no,0,0,,sin_pruebas
+ATA024,T1531,Account Access Removal,sí,1,3,atomics/T1531,cubierta
+ATA025,T1496.001,Compute Hijacking,no,0,0,,sin_pruebas
+ATA026,T1565.002,Transmitted Data Manipulation,no,0,0,,sin_pruebas
+ATA027,T1561.002,Disk Structure Wipe,no,0,0,,sin_pruebas
+ATA028,T1056.003,Web Portal Capture,no,0,0,,sin_pruebas
+ATA029,T1005,Data from Local System,sí,1,1,atomics/T1005,cubierta
+ATA030,T1560.001,Archive via Utility,sí,5,7,atomics/T1560.001,cubierta
+ATA031,T1667,Email Bombing,no,0,0,,sin_pruebas
+ATA032,T1565.001,Stored Data Manipulation,no,0,0,,sin_pruebas
+ATA033,T1491.001,Internal Defacement,sí,0,4,atomics/T1491.001,solo_windows
+ATA034,T1560.003,Archive via Custom Method,no,0,0,,sin_pruebas
+ATA035,T1056.004,Credential API Hooking,sí,0,2,atomics/T1056.004,solo_windows
+ATA036,T1565.003,Runtime Data Manipulation,no,0,0,,sin_pruebas
+ATA037,T1561.001,Disk Content Wipe,no,0,0,,sin_pruebas
+ATA038,T1529,System Shutdown/Reboot,sí,10,6,atomics/T1529,cubierta
+ATA039,T1039,Data from Network Shared Drive,sí,0,2,atomics/T1039,solo_windows
+ATA040,T1074.002,Remote Data Staging,no,0,0,,sin_pruebas
+ATA041,T1048.002,Asymmetric Encrypted Non-C2 Protocol,sí,3,1,atomics/T1048.002,cubierta
+ATA042,T1048.003,Unencrypted Non-C2 Protocol,sí,3,5,atomics/T1048.003,cubierta
+ATA043,T1567.004,Exfiltration Over Webhook,sí,2,2,atomics/T1567.004,cubierta

@@ -5,15 +5,16 @@ tanda: B
 ata_id: ATA035
 tecnica: T1056.004
 tactica: Collection / Credential Access
-version: 1
-status: review
+version: 2
+status: cerrado
 fecha: 2026-09-29
 ---
 
 # Ficha — ATA035 · T1056.004 Credential API Hooking (`LD_PRELOAD`) — Linux / `victima-linux`
 
 > Bloque `fase-03-ampliacion-2` (**tanda B**, 2.º de 5). Generada por `tfg-executor`. **Sin secretos.**
-> Estado **`review`**: criterio de doble iteración **v2** → **`review` JUSTIFICADO** (ver §9).
+> Estado **`cerrado`** (antes `review`; el falso positivo `rule_id 11` se arregló en el bloque
+> `fase-03-auditoria-metodologica`, v2 de esta ficha; ver §9 y §10.2).
 > Métrica congelada (O1+O2).
 
 ## 1. Identificación
@@ -92,41 +93,42 @@ bash ATA035_ataque.sh   # base64 -d de hook.so/credfetch + LD_PRELOAD credfetch
 | Iter | filas | deteccion | auto_ruido | ruido_conocido | dudosa | artefacto_ataque | RS1 | RS2 | RS3 | RS4 | UNKNOWN |
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | 1 | 978 | **1** | 600 | 362 | **0** | 15 | 13 | 965 | 0 | 0 | 0 |
-| 2 | 928 | **2** | 619 | 292 | **0** | 15 | 11 | 916 | 0 | 0 | 1 |
+| 2 | 928 | **1** | 620 | 292 | **0** | 15 | 11 | 916 | 0 | 0 | 1 |
 
 ### 8.1 Detecciones — desglose
 
 | Iter | alertas | `rule_id` distintos | esperadas | sorpresas |
 |---|---|---|---|---|
 | 1 | 1 | 1 · `{80792}` | 1 | 0 |
-| 2 | 2 | 2 · `{80792, 11}` | 1 | **1** (`11`) |
+| 2 | 1 | 1 · `{80792}` | 1 | 0 |
 
 - **`80792` × 1/iter:** `execve` de `credfetch` anclado al `cwd` (señal `S1` ∧ ancla `S2`).
-- **Sorpresa de iter2:** **`rule_id 11`** — alerta **interna de Wazuh** (grupo `stats`,
+- **`rule_id 11` (iter2) — arreglado.** Era una alerta **interna del manager** (grupo `stats`,
   `full_log`: *«The average number of logs between 10:00 and 11:00 is 6588. We reached 16472.»*),
-  **ajena al ataque**: **trae** campos `audit.*` (`audit_exe=/usr/lib/systemd/systemd-logind`,
-  `audit_file=/run/systemd/sessions/6`), pero **ninguno casa los criterios de `auto_ruido`** (que
-  apuntan a `wazuh-agentd`/`/var/ossec`, no a `/run/systemd`) → cae en **`novel`** (`rule_id` fuera
-  del catálogo) → **`deteccion`**. Es un **falso positivo del criterio congelado** (no cambia el
-  veredicto de la técnica). **Ninguna** fila del ataque en `ruido` (`ruido_con_lab-attack=0`).
+  **ajena al ataque**: trae campos `audit.*` (`audit_exe=/usr/lib/systemd/systemd-logind`,
+  `audit_file=/run/systemd/sessions/6`) que **no** casaban los criterios previos de `auto_ruido`
+  (que apuntan a `wazuh-agentd`/`/var/ossec`) → caía en **`novel`** → **`deteccion`** (falso
+  positivo del criterio congelado). El bloque `fase-03-auditoria-metodologica` añadió al **final**
+  de `detectar_auto_ruido` el predicado de la firma interna **`rule_id=11 ∧` grupo `stats`** →
+  **`auto_ruido:stats`**. Ahora **`deteccion=1`** en las 2 iteraciones. **Ninguna** fila del ataque
+  en `ruido` (`ruido_con_lab-attack=0`).
 
 ### 8.2 Métrica de detección — **O1 + O2**
 
 | Iter | O1 | `rule_id` | primera evidencia | O2 | desglose det/art/ruido | anexo |
 |---|---|---|---|---|---|---|
 | 1 | **sí** | `{80792}` | `10:19:28.027Z` `Audit: Command: …ATA035/credfetch` | **1/1** (`S1`) | 1 / 15 / 362 | 1 / 1 `rule_id` |
-| 2 | **sí** | `{80792}` (+`11`) | `10:23:41.654Z` `Audit: Command: …ATA035/credfetch` | **1/1** (`S1`) | 2 / 15 / 292 | 2 / 2 `rule_id` |
+| 2 | **sí** | `{80792}` | `10:23:41.654Z` `Audit: Command: …ATA035/credfetch` | **1/1** (`S1`) | 1 / 15 / 292 | 1 / 1 `rule_id` |
 
-## 9. Doble iteración (criterio **v2**) — veredicto **`review` (justificado)**
+## 9. Doble iteración (criterio **v2**) — veredicto **`iguales`** (cerrado)
 
-- **C1′ (mismo conjunto de `rule_id` de detección):** ❌ — iter1 = `{80792}`; iter2 = `{80792, 11}`.
-  La diferencia es **solo** la fila **`11`** (alerta **interna de Wazuh**, grupo `stats`, **no el
-  ataque**); la detección de la técnica es **idéntica** (`{80792}`, 1/1, anclada).
-- **C2′ (recuento estable):** ✅ — `|2−1| = 1 ≤ max(2, 0.1·1) = 2`.
+- **C1′ (mismo conjunto de `rule_id` de detección):** ✅ — iter1 = `{80792}`; iter2 = `{80792}`
+  (el falso positivo `rule_id 11` quedó **fuera** de `deteccion` al arreglarse, §10.2).
+- **C2′ (recuento estable):** ✅ — `|1−1| = 0 ≤ max(2, 0.1·1) = 2`.
 - **C3′ (sin `dudosa`):** ✅ — `dudosa=0`.
-- **Veredicto:** **`review`** por **C1′**, con la causa identificada y **ajena a la técnica**
-  (artefacto del mecanismo congelado: una alerta `stats` del propio HIDS **no está en el catálogo
-  baseline** → `novel` → `deteccion`). Ver `Bitacora/ATA035.json`.
+- **Veredicto:** **`iguales`** → **`cerrado`**. El `review` inicial (§9 de la v1) quedó **resuelto**
+  al corregir el criterio congelado (bloque `fase-03-auditoria-metodologica`). Ver
+  `Bitacora/ATA035.json`.
 
 ## 10. Limitaciones y hallazgos
 
@@ -134,13 +136,15 @@ bash ATA035_ataque.sh   # base64 -d de hook.so/credfetch + LD_PRELOAD credfetch
    **sí** alerta (`80792`), pero el HIDS **no ve** la **carga del módulo** (`LD_PRELOAD`) ni la
    **intercepción de la API** (audit no audita el entorno ni las cargas de `.so`): **ve el proceso,
    no el hook**.
-2. **⭐ Hallazgo (artefacto del mecanismo congelado).** La alerta **interna `stats` de Wazuh
-   (`rule_id 11`)** **no** está en el catálogo baseline → el filtro la marca **`novel` → `deteccion`**
-   (falso positivo del **criterio congelado**). En ATA011 la misma regla 11 cayó como `auto_ruido`
-   **porque traía `audit_cwd=/var/ossec`**; aquí **sí trae** campos `audit.*`
-   (`systemd-logind`/`/run/systemd/sessions`) pero **ninguno casa los criterios de `auto_ruido`**
-   (que apuntan a `wazuh-agentd`/`/var/ossec`) → `novel`. **No cambia** el veredicto de la técnica.
-   Provoca el **`review`**.
+2. **⭐ Hallazgo (artefacto del mecanismo congelado) — RESUELTO.** La alerta **interna del
+   manager `stats` (`rule_id 11`)** no estaba en el catálogo baseline → el filtro la marcaba
+   **`novel` → `deteccion`** (falso positivo del **criterio congelado**). En ATA011 la misma regla 11
+   cayó como `auto_ruido` **porque traía `audit_cwd=/var/ossec`**; aquí traía campos `audit.*`
+   (`systemd-logind`/`/run/systemd/sessions`) que **no** casaban los criterios previos (que apuntan a
+   `wazuh-agentd`/`/var/ossec`) → `novel`. Se arregló añadiendo **al final** de `detectar_auto_ruido`
+   la firma **`rule_id=11 ∧` grupo `stats`** → `auto_ruido:stats` (bloque
+   `fase-03-auditoria-metodologica`; las 86 ventanas solo cambian en esta fila). **No cambia** el
+   veredicto de la técnica (era y sigue siendo `{80792}`, 1/1). Ya **no** provoca `review`.
 3. **Fallback R1 declarado:** payload **precompilado** (la víctima no tiene `gcc`/`cc`/`make`).
 4. **Sin `sudo`**; **0** filas del ataque en `ruido`. Realismo acotado declarado (README §9).
 

@@ -7,7 +7,7 @@
   "tanda": "C",
   "estado": "cerrado",
   "artefacto": "Dataset/Ataques/Comandos/T1565.002-Transmitted_Data_Manipulation/",
-  "atomic": { "fuente": "custom", "nota": "proxy local (nc -l | sed | nc) que reescribe el cuerpo EN TRANSITO hacia el receptor del HOST; guardarrail: proxy solo 127.0.0.1, destino solo 192.168.65.1:9091, sed fijo, timeout" },
+  "atomic": { "fuente": "custom", "nota": "proxy local (nc -l | sed | nc) que reescribe el cuerpo EN TRANSITO hacia el receptor del HOST; guardarrail: proxy solo 127.0.0.1, destino solo 192.168.65.1:9091, sed fijo, timeout", "fuente_norm": "propio", "motivo_codigo": "propio_por_diseno", "motivo_detalle": "Manipulación del dato EN TRÁNSITO (proxy local `nc|sed|nc`): el efecto es la alteración, no el robo." },
   "esperado_sha256": "c1ffde8d138c1c2672f27e974c7a77ff28ccafbcebe87c132bcfb9cbf7bb5072",
   "ataque_sha256": "19a23f6e620aa526725a1459ab356b6bd5b9b555a34ee86924f1c5604c6388fa",
   "validacion_humana_esperado": "APROBADO 2026-09-29",

@@ -7,7 +7,7 @@
   "tanda": "C",
   "estado": "cerrado",
   "artefacto": "Dataset/Ataques/Comandos/T1567.004-Exfiltration_Over_Webhook/",
-  "atomic": { "fuente": "custom", "nota": "exfiltracion a un endpoint WEBHOOK LOCAL: POST del payload JSON al receptor del HOST (/hook) con wget --post-file. Distinto de ATA009 (/api/upload) y ATA010 (/c2/beacon). Guardarrail: webhook LOCAL (nunca servicios reales/cloud)" },
+  "atomic": { "fuente": "custom", "nota": "exfiltracion a un endpoint WEBHOOK LOCAL: POST del payload JSON al receptor del HOST (/hook) con wget --post-file. Distinto de ATA009 (/api/upload) y ATA010 (/c2/beacon). Guardarrail: webhook LOCAL (nunca servicios reales/cloud)", "fuente_norm": "propio", "motivo_codigo": "art_requiere_red_nube", "motivo_detalle": "ART trae pruebas Windows/Linux que apuntan a servicios cloud (no viables sin NAT)." },
   "esperado_sha256": "14a2acecd21b9b9e2a9f4e28926c9489d71166dd3d5d624ae81a0ca8a3252156",
   "ataque_sha256": "b3df4e448b7ab29ed1cb11e33eb547de054caa7a213424bd70abf75f6c514912",
   "validacion_humana_esperado": "APROBADO 2026-09-29",

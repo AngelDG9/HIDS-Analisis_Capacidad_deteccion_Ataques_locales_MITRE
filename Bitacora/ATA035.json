@@ -5,9 +5,9 @@
   "sistema": "linux",
   "bloque": "fase-03-ampliacion-2",
   "tanda": "B",
-  "estado": "review",
+  "estado": "cerrado",
   "artefacto": "Dataset/Ataques/Comandos/T1056.004-Credential_API_Hooking/",
-  "atomic": { "fuente": "custom", "nota": "hook de API por LD_PRELOAD (fgets/getenv) sobre el binario de laboratorio credfetch; payload precompilado (la victima NO tiene compilador) transportado como .b64 y decodificado; sin sudo; solo el proceso de laboratorio (no se toca ningun proceso del sistema)" },
+  "atomic": { "fuente": "custom", "nota": "hook de API por LD_PRELOAD (fgets/getenv) sobre el binario de laboratorio credfetch; payload precompilado (la victima NO tiene compilador) transportado como .b64 y decodificado; sin sudo; solo el proceso de laboratorio (no se toca ningun proceso del sistema)", "fuente_norm": "propio", "motivo_codigo": "propio_por_diseno", "motivo_detalle": "Hook de API por `LD_PRELOAD` sobre un binario de laboratorio; el payload se compila fuera (la víctima no tiene compilador) y viaja como `.b64`." },
   "esperado_sha256": "b7a85c704ab3f31a32bc6079588ef465cf790aaa378d3b0948923a436339bf09",
   "ataque_sha256": "3da29a71ab74b61f65b9abc97ece122fa35cd39c781cf604dbee93eb3045ba09",
   "validacion_humana_esperado": "APROBADO 2026-09-29",
@@ -43,27 +43,27 @@
       "detalle_sha256": "1a21708ebb19632044eedae902909d8b92bc1533f4b65f02872e3891e67659ca",
       "detalle_raw_sha256": "fcbdae4d8ab22db0cbd37ad5b0476108cf0ba44c3cda1effb9fecf095164aca4",
       "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA035_iter2-Audited.csv",
-      "audited_sha256": "dd6f64be4bae1855513d5623305f7ede291bfd05fcb8493e1ee50e35d91a40b1",
+      "audited_sha256": "133b68b9e122334913712e628fd45a35aa10e73965a71cf3e0df18629d7f1efc",
       "revision": null,
       "revision_sha256": null,
-      "conteos": { "filas": 928, "deteccion": 2, "auto_ruido": 619, "ruido_conocido": 292, "dudosa": 0, "artefacto_ataque": 15 },
+      "conteos": { "filas": 928, "deteccion": 1, "auto_ruido": 620, "ruido_conocido": 292, "dudosa": 0, "artefacto_ataque": 15 },
       "rs": { "RS1": 11, "RS2": 916, "RS3": 0, "RS4": 0, "UNKNOWN": 1 },
       "ventana_raw": { "filas": 934, "victima_linux": 928, "otros_agentes_descartados": 6 },
-      "detecciones": { "alertas": 2, "rule_id_distintos": ["80792", "11"], "esperadas": 1, "sorpresas": 1, "evidencia": "execve credfetch (80792) anclado al cwd; primera 10:23:41.654Z. Sorpresa: rule_id 11 (grupo stats, alerta interna de Wazuh, ajena al ataque) -> novel -> deteccion (artefacto del catalogo congelado)" },
+      "detecciones": { "alertas": 1, "rule_id_distintos": ["80792"], "esperadas": 1, "sorpresas": 0, "evidencia": "execve credfetch (80792) anclado al cwd; primera 10:23:41.654Z" },
       "metrico_o1": "si", "metrico_o2": "1/1", "dudosas_resueltas": 0,
       "efecto": { "capturado_token_env": 1, "capturado_password_file": 1, "resultado": "CRED_API_HOOKING=OK" }
     }
   ],
   "revision_global": { "fecha": "2026-09-29", "filas": 0, "veredicto": "sin dudosas", "motivo": "dudosa=0 en las 2 ventanas", "revisor": "executor ampliacion-2 tanda B" },
-  "doble_iteracion": "review",
-  "doble_iteracion_detalle": { "criterio": "v2", "mismo_conjunto_rule_id_deteccion": false, "rule_ids_deteccion": ["80792", "11"], "n1": 1, "n2": 2, "margen": 2, "criterio_recuento_ok": true, "sin_dudosas_sin_resolver": true, "auto_ruido_delta": 19, "ruido_conocido_delta": 70, "review_motivo": "C1' difiere SOLO por rule_id 11 (alerta interna de Wazuh, grupo stats, 'The average number of logs... We reached 16472', ajena al ataque: SI trae campos audit.* (audit_exe=systemd-logind, audit_file=/run/systemd/sessions) pero ninguno casa los criterios de auto_ruido, que apuntan a wazuh-agentd//var/ossec) -> novel -> deteccion. La deteccion de la tecnica es identica ({80792}, 1/1, anclada). Falso positivo del criterio congelado (rule_id 11 no esta en el baseline)." },
-  "doble_iteracion_nota": "iter1 sin sorpresas; iter2 sorpresa rule_id 11 (stats interno). C1' falla por el artefacto, no por la tecnica.",
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": { "criterio": "v2", "mismo_conjunto_rule_id_deteccion": true, "rule_ids_deteccion": ["80792"], "n1": 1, "n2": 1, "margen": 2, "criterio_recuento_ok": true, "sin_dudosas_sin_resolver": true, "auto_ruido_delta": 20, "ruido_conocido_delta": 70, "review_motivo": null },
+  "doble_iteracion_nota": "Arreglo del falso positivo del criterio congelado (bloque fase-03-auditoria-metodologica): rule_id 11 (grupo stats, alerta interna del manager) pasa a auto_ruido:stats. Al ir el predicado AL FINAL de detectar_auto_ruido, ATA011_iter1 conserva su motivo/evidencia; las 86 ventanas solo cambian en esta fila. Veredicto C1': iguales ({80792}, 1/1).",
   "extraccion": { "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)", "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json", "aislamiento": "filtro a agent_name == victima-linux" },
   "prueba_de_efecto": "hook_capture.log contiene el token de entorno (SERVICE_TOKEN toy-token-4242) y la contrasena del fichero (clave-simulada-7777) capturados por el hook LD_PRELOAD; credfetch rc=0.",
   "receptor": { "aplica": false, "nota": "no hay receptor de red" },
   "hallazgos": [
     "Punto ciego: la carga del modulo (LD_PRELOAD) y la intercepcion de la API no generan telemetria; el HIDS ve el proceso (credfetch) pero no el hook.",
-    "Artefacto del mecanismo congelado: la alerta interna de Wazuh rule_id 11 (grupo stats) SI trae campos audit.* (systemd-logind //run/systemd/sessions) pero ninguno casa los criterios de auto_ruido (que apuntan a /var/ossec) -> cae en novel -> deteccion (falso positivo del criterio congelado); provoca el review (en ATA011 la misma regla traia audit_cwd=/var/ossec y cayo como auto_ruido). No cambia el veredicto de la tecnica.",
+    "Artefacto del mecanismo congelado (RESUELTO en fase-03-auditoria-metodologica): la alerta interna del manager rule_id 11 (grupo stats) traia campos audit.* (systemd-logind //run/systemd/sessions) que no casaban los criterios previos de auto_ruido (que apuntan a /var/ossec) -> caia en novel -> deteccion (falso positivo del criterio congelado). Se anadio al FINAL de detectar_auto_ruido la firma interna rule_id=11 + grupo stats -> auto_ruido:stats. En ATA011 la misma regla traia audit_cwd=/var/ossec y conserva su motivo/evidencia previos (el predicado nuevo va despues). No cambia el veredicto de la tecnica.",
     "Fallback R1: payload precompilado porque la victima no tiene gcc/cc/make."
   ],
   "eventos": [
@@ -71,6 +71,7 @@
     { "ts": "2026-09-29T10:19:58Z", "tipo": "t1", "detalle": "iter1 t1 (tras scan FIM forzado)" },
     { "ts": "2026-09-29T10:23:40Z", "tipo": "t0", "detalle": "iter2 t0" },
     { "ts": "2026-09-29T10:24:12Z", "tipo": "t1", "detalle": "iter2 t1" },
-    { "ts": "2026-09-29T10:26:00Z", "tipo": "cierre", "detalle": "criterio v2: C1' difiere solo por rule_id 11 (stats interno) -> review justificado" }
+    { "ts": "2026-09-29T10:26:00Z", "tipo": "cierre", "detalle": "criterio v2: C1' difiere solo por rule_id 11 (stats interno) -> review justificado" },
+    { "ts": "2026-10-01T00:00:00Z", "tipo": "cierre", "detalle": "fase-03-auditoria-metodologica: arreglado el falso positivo rule_id 11 (stats del manager) -> auto_ruido:stats; ATA035 iter2 deteccion 2->1, doble_iteracion=iguales, estado=cerrado" }
   ]
 }

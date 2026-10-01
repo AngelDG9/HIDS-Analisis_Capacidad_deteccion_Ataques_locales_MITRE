@@ -7,7 +7,7 @@
   "tanda": "B",
   "estado": "cerrado",
   "artefacto": "Dataset/Ataques/Comandos/T1020-Automated_Exfiltration/",
-  "atomic": { "fuente": "custom", "nota": "el fenomeno es la AUTOMATIZACION (bucle); distinto de ATA009 (un fichero) y ATA010 (un canal C2)" },
+  "atomic": { "fuente": "custom", "nota": "el fenomeno es la AUTOMATIZACION (bucle); distinto de ATA009 (un fichero) y ATA010 (un canal C2)", "fuente_norm": "propio", "motivo_codigo": "propio_por_diseno", "motivo_detalle": "El fenómeno de la técnica es la automatización (bucle que exfiltra sin intervención), distinto de ATA009 (un fichero) y ATA010 (un canal C2)." },
   "esperado_sha256": "eed2ede1203ed684243337f574254b8d88cc7cf826ea1bf9451151e8345ee218",
   "ataque_sha256": "fe171ff167630763de4708f01b3b4fe5730394bca5c2b2ed1aa405da635b536e",
   "validacion_humana_esperado": "APROBADO 2026-09-29",

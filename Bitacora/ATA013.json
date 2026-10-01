@@ -9,7 +9,10 @@
     "fuente": "atomic-red-team",
     "guid": "391f5298-b12d-4636-8482-35d9c17d53a8",
     "path": "atomics/T1560.002",
-    "commit": "388942adbd9641f4dfdcf079d7efe9a75ec0ac43"
+    "commit": "388942adbd9641f4dfdcf079d7efe9a75ec0ac43",
+    "fuente_norm": "art_tal_cual",
+    "motivo_codigo": "na_art_usado",
+    "motivo_detalle": "se usó ART"
   },
   "esperado_sha256": "a5f23578d936b22ac91e5012b90679939fc2faa1cfb12325a23a0f798776218d",
   "ataque_sha256": "8efb703a62ddd9b3f0ca94f20aa695f20d9eeb43f2ba5c049660b59f788645bd",

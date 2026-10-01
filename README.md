@@ -49,6 +49,11 @@ repositorio sin **recalcular** después las huellas afectadas. Los **binarios** 
   **`core.autocrlf=true`** (hoy **activo** en este repo; reescribe LF→CRLF en Windows) —
   **cualquier** operación de git que toque los finales de línea cambia los **bytes** y por tanto
   el `sha256`.
+- **`.gitattributes` (2026-10-01):** protege los **binarios** `.b64` y `.png` (`binary`, sin
+  conversión de EOL) y fija los `.sh` a **LF** (`text eol=lf`). **Los `*.csv` quedan
+  deliberadamente SIN protección (declarado):** sus huellas citadas conviven con finales **CRLF**
+  (en disco) y **LF** (blob de git) — **ninguna** regla única los reproduce en un clon, así que
+  **no** se añade `*.csv` (añadirlo rompería las 1.411 huellas).
 - **Cadena de huellas:** `ATA<NNN>_esperado.csv` ↔ `ATA<NNN>_ataque.sh` ↔ `-Audited.csv` /
   `-Revision.csv` ↔ `Bitacora/ATA<NNN>.json` ↔ `ATA<NNN>_meta.md`. Los scripts calculan el
   `sha256` **de los bytes en disco** → hay que **re-pasarlos** (regenerar y actualizar las citas)

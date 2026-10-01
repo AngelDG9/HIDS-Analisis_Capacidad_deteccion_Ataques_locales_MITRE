@@ -7,7 +7,7 @@
   "tanda": "B",
   "estado": "cerrado",
   "artefacto": "Dataset/Ataques/Comandos/T1565.003-Runtime_Data_Manipulation/",
-  "atomic": { "fuente": "custom", "nota": "manipulacion de un dato EN MEMORIA de un proceso de laboratorio: memedit se adjunta por ptrace (PTRACE_ATTACH) al proceso target, localiza 'SALDO=1000' en las regiones escribibles (/proc/<pid>/maps + process_vm_readv) y lo sobrescribe con PTRACE_POKEDATA; payload precompilado (.b64) porque la victima no tiene gcc/gdb; sin sudo; solo el proceso de laboratorio (guardarrail: readlink -f /proc/<pid>/exe == $BASE/target)" },
+  "atomic": { "fuente": "custom", "nota": "manipulacion de un dato EN MEMORIA de un proceso de laboratorio: memedit se adjunta por ptrace (PTRACE_ATTACH) al proceso target, localiza 'SALDO=1000' en las regiones escribibles (/proc/<pid>/maps + process_vm_readv) y lo sobrescribe con PTRACE_POKEDATA; payload precompilado (.b64) porque la victima no tiene gcc/gdb; sin sudo; solo el proceso de laboratorio (guardarrail: readlink -f /proc/<pid>/exe == $BASE/target)", "fuente_norm": "propio", "motivo_codigo": "propio_por_diseno", "motivo_detalle": "Manipulación de un dato EN MEMORIA de un proceso de laboratorio por `ptrace`; la víctima no tiene `gcc`/`gdb`, el payload viaja como `.b64`." },
   "esperado_sha256": "f3e5315cf3ad1e1c47d5d04480aef283682ac9915a5874de37e7608775d94510",
   "ataque_sha256": "c7d1933231d62b5fb09d380f192e01bf37e88a4c7fbd345cf8e83b9bea68e5db",
   "validacion_humana_esperado": "APROBADO 2026-09-29",

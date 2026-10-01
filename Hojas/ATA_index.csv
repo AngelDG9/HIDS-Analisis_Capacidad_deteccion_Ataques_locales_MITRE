@@ -34,7 +34,7 @@ ATA031,Impact,T1667,Email Bombing,Dataset/Ataques/Comandos/T1667-Email_Bombing/,
 ATA032,Impact,T1565.001,Stored Data Manipulation,Dataset/Ataques/Comandos/T1565.001-Stored_Data_Manipulation/,cerrado
 ATA033,Impact,T1491.001,Internal Defacement,Dataset/Ataques/Comandos/T1491.001-Internal_Defacement/,cerrado
 ATA034,Collection,T1560.003,Archive via Custom Method,Dataset/Ataques/Comandos/T1560.003-Archive_via_Custom_Method/,cerrado
-ATA035,Collection,T1056.004,Credential API Hooking,Dataset/Ataques/Comandos/T1056.004-Credential_API_Hooking/,review
+ATA035,Collection,T1056.004,Credential API Hooking,Dataset/Ataques/Comandos/T1056.004-Credential_API_Hooking/,cerrado
 ATA036,Impact,T1565.003,Runtime Data Manipulation,Dataset/Ataques/Comandos/T1565.003-Runtime_Data_Manipulation/,cerrado
 ATA037,Impact,T1561.001,Disk Content Wipe,Dataset/Ataques/Comandos/T1561.001-Disk_Content_Wipe/,cerrado
 ATA038,Impact,T1529,System Shutdown/Reboot,Dataset/Ataques/Comandos/T1529-System_Shutdown_Reboot/,cerrado

@@ -7,7 +7,7 @@
   "tanda": "B",
   "estado": "cerrado",
   "artefacto": "Dataset/Ataques/Comandos/T1496.002-Bandwidth_Hijacking/",
-  "atomic": { "fuente": "custom", "nota": "transferencia masiva ACOTADA (32 MiB) al receptor del HOST; sin reglas de red/recursos en Wazuh -> se espera deteccion solo por execve" },
+  "atomic": { "fuente": "custom", "nota": "transferencia masiva ACOTADA (32 MiB) al receptor del HOST; sin reglas de red/recursos en Wazuh -> se espera deteccion solo por execve", "fuente_norm": "propio", "motivo_codigo": "propio_por_diseno", "motivo_detalle": "La técnica sí aplica a Linux, pero ART no trae prueba Linux utilizable sin NAT; el consumo de banda se simula con una transferencia acotada al receptor local." },
   "esperado_sha256": "41142efb43a2be4ecafba64cc8618a6d316715bf734201c5a09b0ae804583cfb",
   "ataque_sha256": "db76ac459df61774fd2c4d70451787ee2aa56ce931e75f24f8ac3f54574cb310",
   "validacion_humana_esperado": "APROBADO 2026-09-29",

@@ -7,7 +7,7 @@
   "tanda": "A",
   "estado": "cerrado",
   "artefacto": "Dataset/Ataques/Comandos/T1491.001-Internal_Defacement/",
-  "atomic": { "fuente": "custom", "nota": "defacement INTERNO: cp de deface_internal.html sobre el index.html del portal simulado lab-legit/intranet_web; sin sudo; guardarrail: solo lab-legit/intranet_web, jamas /var/www. Las atomicas de ART son Windows" },
+  "atomic": { "fuente": "custom", "nota": "defacement INTERNO: cp de deface_internal.html sobre el index.html del portal simulado lab-legit/intranet_web; sin sudo; guardarrail: solo lab-legit/intranet_web, jamas /var/www. Las atomicas de ART son Windows", "fuente_norm": "propio", "motivo_codigo": "propio_por_diseno", "motivo_detalle": "Defacement INTERNO del webroot de una intranet simulada; las atómicas de ART son Windows." },
   "esperado_sha256": "b14e811fa9d05711cf59d882ca749c73255c4daebeb6778af9d1c249f6b849a0",
   "ataque_sha256": "b04034b8f20fcf7fc8741df697f3d397f952da2c5b9f7f851a7d3b8b1026bf1b",
   "validacion_humana_esperado": "APROBADO 2026-09-29",

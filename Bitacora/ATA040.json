@@ -7,7 +7,7 @@
   "tanda": "C",
   "estado": "cerrado",
   "artefacto": "Dataset/Ataques/Comandos/T1074.002-Remote_Data_Staging/",
-  "atomic": { "fuente": "custom", "nota": "staging REMOTO: copia el material recolectado al recurso remoto del manager (daemon rsync, modulo escribible incoming). Mismo recurso que ATA039, direccion local->remoto. Sin cliente NFS/SMB offline -> no se monta FS. Guardarrail: destino 192.168.65.128:9873 y semilla bajo lab-attack/ATA040" },
+  "atomic": { "fuente": "custom", "nota": "staging REMOTO: copia el material recolectado al recurso remoto del manager (daemon rsync, modulo escribible incoming). Mismo recurso que ATA039, direccion local->remoto. Sin cliente NFS/SMB offline -> no se monta FS. Guardarrail: destino 192.168.65.128:9873 y semilla bajo lab-attack/ATA040", "fuente_norm": "propio", "motivo_codigo": "propio_por_diseno", "motivo_detalle": "Staging REMOTO: copia el material ya recolectado al recurso remoto local; dirección local->remoto (hermano de ATA011/T1074.001 local)." },
   "esperado_sha256": "b91a6f32b0b9741134818144a3df7ff10734b29fd366c7884b240d411e329c1e",
   "ataque_sha256": "539c7ef3dc371c2b4c03a222bdddfe86c9d8432f7a8f533ef91316db8c91daed",
   "validacion_humana_esperado": "APROBADO 2026-09-29",

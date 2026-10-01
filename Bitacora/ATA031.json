@@ -7,7 +7,7 @@
   "tanda": "A",
   "estado": "cerrado",
   "artefacto": "Dataset/Ataques/Comandos/T1667-Email_Bombing/",
-  "atomic": { "fuente": "custom", "nota": "saturacion de un Maildir SIMULADO por volumen: 25 entregas cp acotadas en lab-legit/Maildir/new; cota dura N<=50; sin MTA; sin sudo" },
+  "atomic": { "fuente": "custom", "nota": "saturacion de un Maildir SIMULADO por volumen: 25 entregas cp acotadas en lab-legit/Maildir/new; cota dura N<=50; sin MTA; sin sudo", "fuente_norm": "propio", "motivo_codigo": "propio_por_diseno", "motivo_detalle": "Saturación de un Maildir simulado por volumen (25 entregas `cp` acotadas); sin MTA ni `sudo`." },
   "esperado_sha256": "53cce8b94362be74f18c616a5ffcc01f8b11df7c94840e112a119ab95fe35b89",
   "ataque_sha256": "fb9670d743ac64dbdd5d6e6800db0a803b8c2b44c2dd0bfcec59da70fac887db",
   "validacion_humana_esperado": "APROBADO 2026-09-29",

@@ -9,7 +9,10 @@
   "artefacto": "Dataset/Ataques/Comandos/T1074-Data_Staged/",
   "atomic": {
     "fuente": "custom",
-    "nota": "ataque manual (la prueba ART de T1074 en Linux descarga de GitHub -> no ejecutable sin NAT); accion caracteristica = REUNIR (mkdir+cp) en staging/ del ataque, con manifiesto sha256; sin find masivo (T1119) ni compresion (T1560)"
+    "nota": "ataque manual (la prueba ART de T1074 en Linux descarga de GitHub -> no ejecutable sin NAT); accion caracteristica = REUNIR (mkdir+cp) en staging/ del ataque, con manifiesto sha256; sin find masivo (T1119) ni compresion (T1560)",
+    "fuente_norm": "propio",
+    "motivo_codigo": "art_requiere_red_nube",
+    "motivo_detalle": "ART trae 1 prueba Linux de T1074 que descarga datos de GitHub: no ejecutable sin NAT."
   },
   "esperado_sha256": "72c83b9eef0afdfdbf46b70203f8bfd411b37590f12ae46b021f0498ec529f06",
   "ataque_sha256": "57fa2e9aa497b224707e5b1e49130419435ebd3e4e8bc6084c8fa5153a4e0e58",

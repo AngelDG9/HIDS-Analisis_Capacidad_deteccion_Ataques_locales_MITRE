@@ -134,20 +134,31 @@ subtecnicas** (`T<ID>.<n>`).
 | ATA012 | T1119 | Automated Collection | sí | 0 | 4 | `atomics/T1119` | solo_windows |
 | ATA013 | T1560 | Archive Collected Data | sí | 9 | 8 | `atomics/T1560;…001;…002` | cubierta |
 
-**Resumen (insumo directo para T-09):** **cubiertas en Linux 7/13** · **solo Windows 4/13**
-(T1490, T1491, T1041, T1119 → en Linux requieren **script custom**) · **sin pruebas en ART 2/13**
-(T1561, T1565 → **custom obligatorio**). **6/13 requieren custom** en Linux (o replantear víctima
-Windows, decisión **pendiente de tutoría**).
+> **Regenerado el 2026-10-01** (bloque `fase-03-auditoria-metodologica`, T1) para cubrir **los 43**
+> ataques del corpus (antes 13), con la cabecera
+> `ata_id,tecnica,nombre,prueba_art,tests_linux,tests_windows,path,nota` y orden estable por `ata_id`.
 
-> **El mapa real coincide con el borrador del plan §4** (mismos recuentos y veredictos): 7/13 en
-> Linux. Única matiz: el `path` de T1567 incluye además `T1567.003` (subtecnica que solo tiene
-> pruebas de Windows); no altera los recuentos ni el veredicto.
+**Resumen del mapa regenerado (43 filas):**
+
+| Métrica | Valor |
+|---|---|
+| Técnicas con prueba en ART (`prueba_art=sí`) | **25 / 43** |
+| `nota=cubierta` (pruebas en Linux y Windows) | **15 / 43** |
+| `nota=solo_windows` (→ script propio en Linux) | **10 / 43** |
+| `nota=sin_pruebas` (→ custom obligatorio) | **18 / 43** |
+
+> **Los 13 primeros coinciden** con el mapa previo (7 cubiertas, 4 solo Windows, 2 sin pruebas).
+> Detalle fila a fila en `Hojas/cobertura_atomic.csv`.
 
 Regenerar:
 
 ```bash
 python _artefactos/scripts/cobertura_atomic.py
 ```
+
+**Nota de plataforma (solo constancia):** la columna `nota` está pensada con **víctima Linux**.
+Para una auditoría **Windows** habrá que revisarla + levantar su **línea base** + **adaptar el
+filtro** → **otro bloque** (ver `criterio_ataques.md` §D).
 
 ## 7. Preparación EN SECO de una técnica (T1486) — **sin ejecutarla**
 

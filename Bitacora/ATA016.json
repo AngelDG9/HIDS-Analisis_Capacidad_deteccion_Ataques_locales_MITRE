@@ -7,7 +7,7 @@
   "tanda": "A",
   "estado": "cerrado",
   "artefacto": "Dataset/Ataques/Comandos/T1213.006-Databases/",
-  "atomic": { "fuente": "custom", "nota": "sqlite3 y strings AUSENTES: BD SQLite real creada con la stdlib de python3 (punto ciego 92600 declarado); la coleccion usa cp/grep" },
+  "atomic": { "fuente": "custom", "nota": "sqlite3 y strings AUSENTES: BD SQLite real creada con la stdlib de python3 (punto ciego 92600 declarado); la coleccion usa cp/grep", "fuente_norm": "propio", "motivo_codigo": "art_requiere_red_nube", "motivo_detalle": "La prueba ART de T1213 depende de repositorios en red/SaaS (no viable sin NAT)." },
   "esperado_sha256": "304563b42fc772ed3ef2e25b4f16b65e2b9be5925d2613f23c2bff353b577e62",
   "ataque_sha256": "77a9543145f02edc478a036f39222d513c7e51d5041c2756c0f4e279a6a0143f",
   "validacion_humana_esperado": "APROBADO 2026-09-29",

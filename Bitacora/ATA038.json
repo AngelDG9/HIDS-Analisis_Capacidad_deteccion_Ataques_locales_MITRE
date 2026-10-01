@@ -7,7 +7,7 @@
   "tanda": "B",
   "estado": "cerrado",
   "artefacto": "Dataset/Ataques/Comandos/T1529-System_Shutdown_Reboot/",
-  "atomic": { "fuente": "custom", "nota": "reinicio de la VM VICTIMA con sudo shutdown -r +1 (shutdown/reboot son enlaces a /usr/bin/systemctl); guardarrail duro: se exige hostname==victima-linux y IP 192.168.65.129 (aborta si aparece la IP del manager 192.168.65.128); t1 lo sella el operador tras la reconexion; red de seguridad = snapshot lab-listo" },
+  "atomic": { "fuente": "custom", "nota": "reinicio de la VM VICTIMA con sudo shutdown -r +1 (shutdown/reboot son enlaces a /usr/bin/systemctl); guardarrail duro: se exige hostname==victima-linux y IP 192.168.65.129 (aborta si aparece la IP del manager 192.168.65.128); t1 lo sella el operador tras la reconexion; red de seguridad = snapshot lab-listo", "fuente_norm": "propio", "motivo_codigo": "propio_por_diseno", "motivo_detalle": "Reinicio de la VM víctima (`sudo shutdown -r +1`) para ver el ciclo de arranque; guardarraíl duro: hostname/IP de la víctima, jamás el manager." },
   "esperado_sha256": "197e72ad0987d6e6401dcfd02529da02659d83a3559600bf7a26595487c68423",
   "ataque_sha256": "554cd462fb831c1b2153dd0ea0e9ce3fc30a00550e4bdc068b2879df58190ec9",
   "validacion_humana_esperado": "APROBADO 2026-09-29",

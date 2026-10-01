@@ -199,8 +199,8 @@ def write_coverage(rows: list[dict], out_path: str | Path) -> Path:
     """Escribe el CSV determinista (sin fecha: solo cabecera + filas)."""
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(out_path, "w", encoding="utf-8", newline="") as fh:
-        writer = csv.DictWriter(fh, fieldnames=HEADER_COLUMNS)
+    with open(out_path, "w", encoding="utf-8", newline="\n") as fh:
+        writer = csv.DictWriter(fh, fieldnames=HEADER_COLUMNS, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
     return out_path

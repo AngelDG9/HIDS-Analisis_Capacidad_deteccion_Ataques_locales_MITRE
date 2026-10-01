@@ -1,10 +1,10 @@
 ---
 fase: 3
-tarea: A2.1 (T-11 · R-09/R-13) · A3.0 (H3/H4) · A3.0 (ancla implícita + evento de ejecución) · A3.0 (métrica + pertenencia al ataque)
+tarea: A2.1 (T-11 · R-09/R-13) · A3.0 (H3/H4) · A3.0 (ancla implícita + evento de ejecución) · A3.0 (métrica + pertenencia al ataque) · A3.0 (rule_id 11 stats)
 nombre: Política de filtrado de ruido y etiquetado auditado de alertas
-version: 6
+version: 7
 status: implementada
-fecha: 2026-09-28
+fecha: 2026-10-01
 autor: tfg-executor
 ---
 
@@ -24,6 +24,12 @@ autor: tfg-executor
 > es **mecánica** y cubre **solo** `ATTACK_ROOT/<ATA_id>`; una fila del ataque **fuera** de esa
 > carpeta (el `mkdir` de ATA007 en `lab-legit`) se atribuye por el **veredicto humano** (`artefacto`)
 > y **nunca** puede quedarse en `ruido` (§3.ter).
+>
+> **v7 (`fase-03-auditoria-metodologica`, 2026-10-01):** se añade a `auto_ruido` la **firma interna
+> del manager** **`rule_id=11` ∧ grupo `stats`** (§3.d). Se coloca **al final** de
+> `detectar_auto_ruido` para **no** alterar el `motivo`/`evidencia` de ninguna fila que ya casara los
+> pasos anteriores (p. ej. ATA011_iter1 conserva `auto_ruido:ps`, `audit_cwd=/var/ossec`). Arregla el falso
+> positivo de `ATA035_iter2` (detección `449 → 448`).
 
 ## 1. Entradas y salidas
 
@@ -44,7 +50,9 @@ autor: tfg-executor
 
 Una alerta recibe **una** categoría; **gana el primero que casa**:
 
-1. **`auto_ruido`** — el origen es el propio Wazuh, **por campos** (no por `rule.id`) §3.
+1. **`auto_ruido`** — el origen es el propio Wazuh, **por campos** (procesos, `cwd=/var/ossec`,
+   rutas `/var/ossec/var/run/*`) **o** por la **firma interna del manager** `rule_id=11` ∧ grupo
+   `stats` (§3; va al final, §3.d).
 2. **`deteccion`** — casa una señal esperada de tipo `deteccion` **anclada** §2/§4: una señal
    `audit_exe` solo casa si `exe ∧ cwd-ancla/ruta ∧` **evento de ejecución** (`audit_command`).
 3. **`ruido_conocido`** — **paso 1.5 (H3)**: casa el **predicado `OPERADOR`** §3.bis
@@ -85,9 +93,15 @@ Se detecta **por campos**, en este orden, y **nunca** cuenta como detección:
 2. `audit_cwd == /var/ossec`.
 3. Alguna ruta (`audit_file`, `audit_dir` o `syscheck_path`, resuelta contra `audit_cwd` si es
    relativa) casa el glob `/var/ossec/var/run/*`.
+4. **Firma interna del manager (§3.d, v7):** `rule_id == 11` **∧** grupo `stats` → `auto_ruido`
+   (`motivo=auto_ruido:stats`, `evidencia=rule_id=11`). Es el recuento periódico **interno** del
+   propio Wazuh (grupo `stats`), **no** un proceso de la víctima. Se reconoce por la **firma de la
+   regla** (`rule_id` + grupo), **nunca** por `agent_name` (todas las filas traen el mismo agente).
+   Va **al final**: no cambia el `motivo`/`evidencia` de una fila que ya casara los pasos 1–3.
 
 `motivo = auto_ruido:<proceso>` (nombre base de `audit_exe`, o `cwd=/var/ossec` / `ruta` si no
-hay `exe`). La `evidencia` es el campo que decidió (`audit_exe=…`, `audit_cwd=…`, `audit_file=…`).
+hay `exe`; `stats` en el paso 4). La `evidencia` es el campo que decidió (`audit_exe=…`,
+`audit_cwd=…`, `audit_file=…`, `rule_id=11`).
 
 `auto_ruido` **no se mezcla** con `ruido_conocido` (así el ~54 % queda visible) y se reporta
 aparte en los conteos. Si una señal `deteccion` apuntara a un proceso de Wazuh, se emite

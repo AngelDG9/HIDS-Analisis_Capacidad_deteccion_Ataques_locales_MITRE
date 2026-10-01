@@ -855,6 +855,77 @@ def test_artefacto_ataque_en_categorias_y_out_header_intacto():
 
 
 # --------------------------------------------------------------------------
+# v7 (fase-03-auditoria-metodologica §T6) — firma interna del manager: rule_id 11 + stats
+# --------------------------------------------------------------------------
+def test_v7_rule11_con_stats_es_auto_ruido(tmp_path):
+    """(b) `rule_id=11` con grupo `stats` (alerta interna del manager) -> auto_ruido:stats."""
+    f = fila("2026-09-29T10:23:42.993Z", "11",
+             exe="/usr/lib/systemd/systemd-logind", cwd="/", groups="stats",
+             rs="UNKNOWN", level="4")
+    assert fr.detectar_auto_ruido(f) == ("rule_id=11", "stats")
+    r = _corre_fila(tmp_path, f, "v7stats")
+    assert r["categoria"] == "auto_ruido"
+    assert r["motivo"] == "auto_ruido:stats"
+    assert r["evidencia"] == "rule_id=11"
+
+
+def test_v7_rule11_sin_stats_no_entra_en_predicado(tmp_path):
+    """(c) fuera del predicado: `rule_id=11` SIN grupo `stats` no es ruido interno."""
+    assert fr.detectar_auto_ruido(
+        fila("2026-09-29T10:23:42.993Z", "11", groups="audit|audit_command", cwd="/tmp")
+    ) is None
+    assert fr.detectar_auto_ruido(
+        fila("2026-09-29T10:23:42.993Z", "11", groups="", cwd="/tmp")
+    ) is None
+    r = _corre_fila(
+        tmp_path,
+        fila("2026-09-29T10:23:42.993Z", "11", groups="audit|audit_command", cwd="/tmp"),
+        "v7nostats",
+    )
+    assert r["categoria"] != "auto_ruido"
+
+
+def test_v7_firma_de_ataque_nunca_es_ruido_interno(tmp_path):
+    """⭐ (a) una alerta con firma de ATAQUE (agente víctima + campos `audit.*`) NUNCA se
+    clasifica como ruido interno: el predicado `stats` depende de `rule_id`+grupo, no del
+    `agent_name` ni de los campos `audit.*`."""
+    fila_atk = fila("2026-09-29T10:23:41.654Z", "80792",
+                    exe="/home/angel/lab-attack/ATA012/evil", cwd=ATTACK_012,
+                    key="audit-wazuh-c", typ="SYSCALL",
+                    groups="audit|audit_command", rs="RS2")
+    assert fr.detectar_auto_ruido(fila_atk) is None  # no es ruido interno
+    esp = esperado_tmp(tmp_path, [
+        {"senal_id": "D1", "tipo": "deteccion", "campo": "rule_id",
+         "patron": "80792", "dato_componente": "Process Creation",
+         "tecnica": "T1059", "nota": ""},
+    ], nombre="v7a-esperado.csv")
+    alerta = alerta_tmp(tmp_path, [fila_atk], nombre="v7a-alerta.csv")
+    out = tmp_path / "v7a-Audited.csv"
+    rev = tmp_path / "v7a-Revision.csv"
+    assert fr.main(["--alerta", str(alerta), "--ata", "ATA012", "--catalogo",
+                    str(CATALOGO), "--esperado", str(esp), "--out", str(out),
+                    "--rev-out", str(rev)]) == fr.EXIT_OK
+    r = lee_salida(out)[0]
+    assert r["categoria"] == "deteccion"
+    assert r["motivo"] == "senal:D1"
+    assert r["categoria"] not in ("auto_ruido", "ruido_conocido")
+
+
+def test_v7_predicado_al_final_conserva_motivo_previo(tmp_path):
+    """⭐ El predicado `stats` va AL FINAL: un `rule_id=11` que ya casaba por
+    `cwd=/var/ossec` conserva `auto_ruido:cwd=/var/ossec` (caso real ATA011_iter1)."""
+    r = _corre_fila(
+        tmp_path,
+        fila("2026-09-29T10:23:42.993Z", "11", exe="/usr/bin/ps", cwd="/var/ossec",
+             groups="stats"),
+        "v7cwd",
+    )
+    assert r["categoria"] == "auto_ruido"
+    assert r["motivo"] == "auto_ruido:ps"
+    assert r["evidencia"] == "audit_cwd=/var/ossec"
+
+
+# --------------------------------------------------------------------------
 # no regresión de extraer_alertas.py (--test y --detail offline)
 # --------------------------------------------------------------------------
 def test_extraer_test_mode_sigue_ok(capsys):

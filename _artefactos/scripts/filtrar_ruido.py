@@ -10,7 +10,8 @@ copiado sin alterar) y etiquetada con una de cuatro categorías.
 
 Categorías y **orden exacto** de decisión (`plan.md` §2; gana el primero):
 
-    1.   auto_ruido       si el ORIGEN es el propio Wazuh (por campos, no por rule.id)
+    1.   auto_ruido       si el ORIGEN es el propio Wazuh (por campos; incluye la
+                         firma interna del manager `rule_id=11` + grupo `stats`)
     2.   deteccion        si casa una SEÑAL ESPERADA de tipo `deteccion` (ANCLADA,
                           §2.2: una señal `audit_exe` solo casa si `exe ∧ cwd-ancla/ruta
                           ∧` evento de ejecución `audit_command`)
@@ -127,6 +128,16 @@ WAZUH_PROCESOS = {
 }
 WAZUH_CWD = "/var/ossec"
 WAZUH_RUN_GLOB = "/var/ossec/var/run/*"
+
+# §3.d (v7, fase-03-auditoria-metodologica) — alerta INTERNA del **manager**
+# (`rule_id=11`, grupo `stats`): recuento periódico del propio Wazuh, no un
+# proceso de la víctima. Se reconoce por la **firma de la regla** (`rule_id` +
+# grupo), **nunca** por `agent_name` (todas las filas traen el mismo agente).
+# Va **al final** de `detectar_auto_ruido` para no alterar el `motivo`/`evidencia`
+# de ninguna fila que ya casara los pasos anteriores (p. ej. `rule_id=11` con
+# `audit_cwd=/var/ossec`, que conserva su `motivo`/`evidencia` previos).
+WAZUH_STATS_RULE_ID = "11"
+WAZUH_STATS_GROUP = "stats"
 
 # §2.2 — ancla implícita: una señal `deteccion` de proceso (`audit_exe`) solo
 # casa si el `audit_cwd` de la fila casa el ancla `audit_cwd` del `esperado` Y
@@ -325,6 +336,13 @@ def detectar_auto_ruido(row: dict):
         p = _ruta_abs(raw, cwd)
         if p and glob_match(p, WAZUH_RUN_GLOB):
             return f"{field}={raw}", (base or "ruta")
+
+    # §3.d (v7) — firma interna del **manager** (`rule_id=11` ∧ grupo `stats`).
+    # Al ir al FINAL, no cambia ninguna fila que ya casara los pasos anteriores.
+    rid = str(row.get("rule_id") or "").strip()
+    grupos = {g for g in (row.get("rule_groups") or "").split("|") if g}
+    if rid == WAZUH_STATS_RULE_ID and WAZUH_STATS_GROUP in grupos:
+        return f"rule_id={rid}", WAZUH_STATS_GROUP
     return None
 
 

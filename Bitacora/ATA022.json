@@ -7,7 +7,7 @@
   "tanda": "B",
   "estado": "cerrado",
   "artefacto": "Dataset/Ataques/Comandos/T1567.001-Exfiltration_To_Code_Repository/",
-  "atomic": { "fuente": "custom", "nota": "repositorio de codigo = git bare LOCAL (file:// en lab-attack); guardarrail R6: jamas un remoto real; sin credenciales; sin red" },
+  "atomic": { "fuente": "custom", "nota": "repositorio de codigo = git bare LOCAL (file:// en lab-attack); guardarrail R6: jamas un remoto real; sin credenciales; sin red", "fuente_norm": "propio", "motivo_codigo": "propio_por_diseno", "motivo_detalle": "El mecanismo es `git push` a un repositorio de código; sin NAT se usa un `git` bare LOCAL (guardarraíl R6: jamás un remoto real)." },
   "esperado_sha256": "79c777dca4b8bb3844373c89c9ecefe844e7c51c40177c35ca54168b1991c748",
   "ataque_sha256": "ed1978bbc954332fe1e33cc83d6e52d189bc23a9b988af24554ad74001df8a96",
   "validacion_humana_esperado": "APROBADO 2026-09-29",

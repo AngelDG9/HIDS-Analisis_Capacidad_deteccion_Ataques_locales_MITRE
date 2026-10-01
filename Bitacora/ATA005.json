@@ -9,7 +9,10 @@
   "artefacto": "Dataset/Ataques/Comandos/T1561-Disk_Wipe/",
   "atomic": {
     "fuente": "custom",
-    "nota": "ataque manual (ART no tiene pruebas para T1561); SIMULACION segura: nunca se toca un disco real (guardarrailes en el guion)"
+    "nota": "ataque manual (ART no tiene pruebas para T1561); SIMULACION segura: nunca se toca un disco real (guardarrailes en el guion)",
+    "fuente_norm": "propio",
+    "motivo_codigo": "propio_por_diseno",
+    "motivo_detalle": "ART no trae ninguna prueba (ni Linux ni Windows) para T1561 (tests_linux=0, sin_pruebas): la técnica sí aplica a Linux; se escribe a mano una simulación segura sobre un fichero de trabajo."
   },
   "esperado_sha256": "f048ecf572b568316ded3145a6f4afeba3782c13c68b80692c2042a33a063991",
   "ataque_sha256": "58a2bddb48dc8871d122869bf1a370c6aff7100880d75c1d4e9f0937059b5658",

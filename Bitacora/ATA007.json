@@ -8,7 +8,10 @@
   "artefacto": "Dataset/Ataques/Comandos/T1491-Defacement/",
   "atomic": {
     "fuente": "custom",
-    "nota": "ataque manual escrito por el TFG; Atomic Red Team no tiene pruebas Linux para T1491"
+    "nota": "ataque manual escrito por el TFG; Atomic Red Team no tiene pruebas Linux para T1491",
+    "fuente_norm": "propio",
+    "motivo_codigo": "propio_por_diseno",
+    "motivo_detalle": "ART solo trae pruebas Windows para T1491 (tests_linux=0): la técnica sí aplica a Linux; se escribe a mano el defacement (no se copia de ART)."
   },
   "esperado_sha256": "c9ee94d5fc0ea3dc399f32ddb13fe12e3f336757ed9c92a9f3219e7db230f8b9",
   "ataque_sha256": "6918a2a8e0553ad2ef618c99ca4007e96c31ab818828108b880415a9b871ff4b",

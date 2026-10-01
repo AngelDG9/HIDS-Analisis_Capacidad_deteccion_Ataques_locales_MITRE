@@ -7,7 +7,7 @@
   "tanda": "B",
   "estado": "cerrado",
   "artefacto": "Dataset/Ataques/Comandos/T1029-Scheduled_Transfer/",
-  "atomic": { "fuente": "custom", "nota": "crontab de usuario (angel, sin sudo); el job dispara DENTRO de la ventana; la entrada se retira al terminar" },
+  "atomic": { "fuente": "custom", "nota": "crontab de usuario (angel, sin sudo); el job dispara DENTRO de la ventana; la entrada se retira al terminar", "fuente_norm": "propio", "motivo_codigo": "propio_por_diseno", "motivo_detalle": "El mecanismo es programar la transferencia (crontab de usuario) para que la ejecute cron dentro de la ventana; distinto de un envío directo." },
   "esperado_sha256": "75499e0a7f399a44816431cde4911f67ad4915b90d5ffe54786363113efd1e08",
   "ataque_sha256": "06d21fec27b0ee1d4d48947046e5955fc77618398830c4ec47b71ee01e34cf54",
   "cron_job_sha256": "d65bd1f2bc814163ac5e43a2e64bc24ded6a0efef49758eb314daf75a00b0635",

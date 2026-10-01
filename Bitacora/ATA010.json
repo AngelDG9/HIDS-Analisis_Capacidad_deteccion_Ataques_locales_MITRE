@@ -9,7 +9,10 @@
   "artefacto": "Dataset/Ataques/Comandos/T1041-Exfiltration_Over_C2_Channel/",
   "atomic": {
     "fuente": "custom",
-    "nota": "ataque manual (ART T1041 no trae pruebas Linux -> solo_windows); canal C2 = receptor local del HOST (sink_http.py) via curl POST /c2/beacon. Decision D4-A"
+    "nota": "ataque manual (ART T1041 no trae pruebas Linux -> solo_windows); canal C2 = receptor local del HOST (sink_http.py) via curl POST /c2/beacon. Decision D4-A",
+    "fuente_norm": "propio",
+    "motivo_codigo": "art_no_prueba_plataforma",
+    "motivo_detalle": "solo la otra"
   },
   "esperado_sha256": "7dc1fe5666261b621e42dd6b6cfc35df7dda87a4a0f079eee3412b0798c6839a",
   "ataque_sha256": "b0f29a25441e333045a5bb127e0a635a404ca4d4d3e1cb2d4d45ab8e7fd6f3c4",

@@ -7,7 +7,7 @@
   "tanda": "A",
   "estado": "cerrado",
   "artefacto": "Dataset/Ataques/Comandos/T1657-Financial_Theft/",
-  "atomic": { "fuente": "custom", "nota": "fraude sobre libro de cuentas local simulado + sustraccion de cartera; datos de juguete" },
+  "atomic": { "fuente": "custom", "nota": "fraude sobre libro de cuentas local simulado + sustraccion de cartera; datos de juguete", "fuente_norm": "propio", "motivo_codigo": "art_requiere_red_nube", "motivo_detalle": "La prueba ART de T1657 depende de servicios/red; sin NAT se escribe a mano." },
   "esperado_sha256": "d112fdc9c0ffaf4c9378ea90cb3cb90b9255d102bda2a3bb2d00e4a5db35cb02",
   "ataque_sha256": "c938c1ee56223488d8ba44f09678c75c40e4f680f14d46718030f4bc8fbe4736",
   "validacion_humana_esperado": "APROBADO 2026-09-29",

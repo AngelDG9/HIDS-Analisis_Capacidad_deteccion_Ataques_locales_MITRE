@@ -9,7 +9,10 @@
   "artefacto": "Dataset/Ataques/Comandos/T1567-Exfiltration_Over_Web_Service/",
   "atomic": {
     "fuente": "custom",
-    "nota": "ataque manual (ART T1567 Linux usa rclone->nube o terraform+AWS -> no ejecutable sin NAT); subida por curl POST al receptor local del HOST (sink_http.py). Decision D4-A: se reutiliza el receptor del piloto"
+    "nota": "ataque manual (ART T1567 Linux usa rclone->nube o terraform+AWS -> no ejecutable sin NAT); subida por curl POST al receptor local del HOST (sink_http.py). Decision D4-A: se reutiliza el receptor del piloto",
+    "fuente_norm": "propio",
+    "motivo_codigo": "art_requiere_red_nube",
+    "motivo_detalle": "ART trae 3 pruebas Linux de T1567, pero usan `rclone` contra la nube o `terraform`+AWS: no ejecutables sin NAT ni sin credenciales."
   },
   "esperado_sha256": "40900f47b1b62e65f16c85d276cdc80499eba1e038340ceb0cc9ca3147350385",
   "ataque_sha256": "a3788fc77420ae529901063840769250694f3743fb21b392419c08d834fa2070",

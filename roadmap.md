@@ -102,10 +102,14 @@ con *builtins*: sin `execve` de la operación). **⭐ Hallazgo:** la *misma* té
 con utilidad, **suprimida** con librería y **sin telemetría** con método propio → **lo que decide es la
 implementación**. Métrica **congelada**; `dudosa=0`. Por táctica: **Impact 19/19 · Exfiltration 10/10 ·
 Collection 12/14**.
-**Rondas:** 1ª = 13 (`fase-03-escalado`) · 2ª = **15** (`fase-03-ampliacion`) · 3ª = **15** (`fase-03-ampliacion-2`).
-**Pendiente (R13):** la **piscina P1-Linux está casi agotada** (~29 restantes, muchas no factibles sin NAT) →
-**decidir: abrir P2 o cerrar P1** → después, **EVASIÓN** → **Windows** → **Fase 4** (precio de la detección) →
-**Fase 5** (memoria). *(Host-eligible total: **625** = P1 89 · P2 459 · P3 77; de las 89 P1, **~72 citan Linux**.)*
+**Rondas:** 1ª = 13 (`fase-03-escalado`) · 2ª = **15** (`fase-03-ampliacion`) · 3ª = **15** (`fase-03-ampliacion-2`) ·
+**auditoría metodológica** ✔ (`fase-03-auditoria-metodologica`, 2026-10-01: los **3 criterios** —ART · ataque manual ·
+pre-staging—, la trazabilidad de los 43 y el arreglo del falso positivo).
+**Pendiente:** ① **decidir qué ataques se repiten** (candidatos: por ART [ATA024/029/030/038] · por pre-staging
+[ATA014/016/029/035/036/037/038]); ② **las ~29 técnicas restantes de Linux sin evasión**; ③ **bloque futuro:
+normalización de finales de línea + recálculo de huellas** (para que un clon verifique); ④ **EVASIÓN** → ⑤ **Windows**
+(su línea base + adaptar el filtro) → ⑥ **Fase 4** (precio de la detección) → ⑦ **Fase 5** (memoria).
+*(Host-eligible total: **625** = P1 89 · P2 459 · P3 77; de las 89 P1, **~72 citan Linux**.)*
 
 **DoD:** ✔ corpus cerrado con filas en `ATA_index.csv`, CSV por ataque y primer balance de
 detección de Wazuh.

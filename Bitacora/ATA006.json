@@ -9,7 +9,10 @@
   "artefacto": "Dataset/Ataques/Comandos/T1565-Data_Manipulation/",
   "atomic": {
     "fuente": "custom",
-    "nota": "ataque manual (ART no tiene pruebas para T1565); alcance: cambio de contenido; SIN timestomp (touch/chmod retirados = T1070.006)"
+    "nota": "ataque manual (ART no tiene pruebas para T1565); alcance: cambio de contenido; SIN timestomp (touch/chmod retirados = T1070.006)",
+    "fuente_norm": "propio",
+    "motivo_codigo": "propio_por_diseno",
+    "motivo_detalle": "ART no trae ninguna prueba (ni Linux ni Windows) para T1565 (sin_pruebas): la técnica sí aplica a Linux; se escribe a mano la alteración de contenido. Se retiran `touch`/`chmod` (T1070.006 Timestomp, otra técnica)."
   },
   "esperado_sha256": "981fc6dec6309e5a0f9815209b29742f775f1399a8659c55969f760fd3c80020",
   "ataque_sha256": "df1a242b8ca78d893fa27ce11da616df8041586d816d7d53221033da5c23d98c",

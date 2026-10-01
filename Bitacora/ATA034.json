@@ -7,7 +7,7 @@
   "tanda": "B",
   "estado": "cerrado",
   "artefacto": "Dataset/Ataques/Comandos/T1560.003-Archive_via_Custom_Method/",
-  "atomic": { "fuente": "custom", "nota": "archivado por METODO PROPIO con builtins de bash (read/printf/redireccion) y contenedor casero 'ATA034-CUSTOM-ARCHIVE v1'; sin tar/zip/gzip ni binario externo EN EL BUCLE DE ARCHIVADO (ejecutado con PATH=/nonexistent); MATIZ: el arnes SI ejecuta coreutils de setup/evidencia (date/mkdir/cat/sha256sum...) -> esos execve son del ataque y caen en artefacto_ataque; sin sudo" },
+  "atomic": { "fuente": "custom", "nota": "archivado por METODO PROPIO con builtins de bash (read/printf/redireccion) y contenedor casero 'ATA034-CUSTOM-ARCHIVE v1'; sin tar/zip/gzip ni binario externo EN EL BUCLE DE ARCHIVADO (ejecutado con PATH=/nonexistent); MATIZ: el arnes SI ejecuta coreutils de setup/evidencia (date/mkdir/cat/sha256sum...) -> esos execve son del ataque y caen en artefacto_ataque; sin sudo", "fuente_norm": "propio", "motivo_codigo": "propio_por_diseno", "motivo_detalle": "Archivado por MÉTODO PROPIO con builtins de bash (contenedor casero), sin tar/zip/gzip en el bucle; punto ciego por ausencia de telemetría." },
   "esperado_sha256": "a2f615624ba3631102e6454b0caef8559ad79fa7e7751dbbeb4e81d48eb7a763",
   "ataque_sha256": "559f54ae22938e222c692b8718a6e4d8374ab4cb3156615e28d2520ca4d4259e",
   "validacion_humana_esperado": "APROBADO 2026-09-29",

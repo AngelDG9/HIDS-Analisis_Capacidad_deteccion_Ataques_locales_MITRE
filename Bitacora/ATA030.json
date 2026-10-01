@@ -7,7 +7,7 @@
   "tanda": "A",
   "estado": "cerrado",
   "artefacto": "Dataset/Ataques/Comandos/T1560.001-Archive_via_Utility/",
-  "atomic": { "fuente": "custom", "nota": "archivado con UTILIDAD: tar -czf (invoca gzip) sobre material de juguete en lab-attack/ATA030; sin sudo; guardarrail: material y archivo solo bajo lab-attack/ATA030. Contraste con ATA013/T1560.002 (python3, punto ciego 92600)" },
+  "atomic": { "fuente": "custom", "nota": "archivado con UTILIDAD: tar -czf (invoca gzip) sobre material de juguete en lab-attack/ATA030; sin sudo; guardarrail: material y archivo solo bajo lab-attack/ATA030. Contraste con ATA013/T1560.002 (python3, punto ciego 92600)", "fuente_norm": "propio", "motivo_codigo": "no_se_comprobo", "motivo_detalle": "Hueco declarado: el mapa da prueba Linux (tests_linux=5) y el plan la marcaba como ART adaptable, pero no consta en el repo que se comprobara ni ejecutara la atómica; se ejecutó guion propio." },
   "esperado_sha256": "301791d67241b6fae8a68eb0a72a71300c4a4ceda2e384d605e80ca81b85f0f0",
   "ataque_sha256": "b47fc87deaa56274c3bbd67edf69d64cde269a361ccac27827a4ff9b21e7bcfe",
   "validacion_humana_esperado": "APROBADO 2026-09-29",

@@ -7,7 +7,7 @@
   "tanda": "C",
   "estado": "cerrado",
   "artefacto": "Dataset/Ataques/Comandos/T1048.002-Asymmetric_Encrypted_Non-C2/",
-  "atomic": { "fuente": "custom", "nota": "exfiltracion con cifrado ASIMETRICO real: par RSA EFIMERO (openssl genpkey) + pkeyutl -encrypt + envio HTTP del blob cifrado (curl) + pkeyutl -decrypt (round-trip). Distinto de ATA008 (wget POST sin cifrar) y ATA019 (cifrado simetrico por TCP). Claves efimeras de juguete; cero credenciales reales" },
+  "atomic": { "fuente": "custom", "nota": "exfiltracion con cifrado ASIMETRICO real: par RSA EFIMERO (openssl genpkey) + pkeyutl -encrypt + envio HTTP del blob cifrado (curl) + pkeyutl -decrypt (round-trip). Distinto de ATA008 (wget POST sin cifrar) y ATA019 (cifrado simetrico por TCP). Claves efimeras de juguete; cero credenciales reales", "fuente_norm": "propio", "motivo_codigo": "art_requiere_red_nube", "motivo_detalle": "ART trae pruebas de T1048.002 basadas en servicios cloud (file.io), no viables sin NAT." },
   "esperado_sha256": "8fe608a68195898455f5ca11d1d8114a57ddb3bf7b02018a725875d7a4024fbe",
   "ataque_sha256": "bedfd720bcd65168338bd416191a7cc65d3a9b5811f38f7df1616ac91584a990",
   "validacion_humana_esperado": "APROBADO 2026-09-29",

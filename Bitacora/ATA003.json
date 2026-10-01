@@ -9,7 +9,10 @@
   "artefacto": "Dataset/Ataques/Comandos/T1490-Inhibit_System_Recovery/",
   "atomic": {
     "fuente": "custom",
-    "nota": "ataque manual (ART solo trae pruebas Windows); SIMULACION segura: solo copias mock; sin systemctl/journald (decision humana; systemctl ya cubierto en ATA004)"
+    "nota": "ataque manual (ART solo trae pruebas Windows); SIMULACION segura: solo copias mock; sin systemctl/journald (decision humana; systemctl ya cubierto en ATA004)",
+    "fuente_norm": "propio",
+    "motivo_codigo": "propio_por_diseno",
+    "motivo_detalle": "ART solo trae 12 pruebas Windows (tests_linux=0): la técnica sí aplica a Linux; se escribe a mano un borrado de copias mock. Se omite a propósito la variante `systemctl` (ya cubierta por ATA004)."
   },
   "esperado_sha256": "c81d87e34faf54f4550a22543e7f0e23647dc0e847768fe05f78ff25fbc37311",
   "ataque_sha256": "43eade0b3002a95565cc1d69855b236d698d0f04cc9337cf05dab31df9ac6a3b",

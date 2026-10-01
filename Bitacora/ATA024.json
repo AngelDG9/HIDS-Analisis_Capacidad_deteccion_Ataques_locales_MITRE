@@ -7,7 +7,7 @@
   "tanda": "C",
   "estado": "cerrado",
   "artefacto": "Dataset/Ataques/Comandos/T1531-Account_Access_Removal/",
-  "atomic": { "fuente": "custom", "nota": "usuario DESECHABLE tfg-victim01 (useradd -m + passwd -l + userdel -r); guardarrail: jamas angel/root/cuentas reales; sin editar /etc/passwd a mano; sudo -S por stdin; trap de limpieza" },
+  "atomic": { "fuente": "custom", "nota": "usuario DESECHABLE tfg-victim01 (useradd -m + passwd -l + userdel -r); guardarrail: jamas angel/root/cuentas reales; sin editar /etc/passwd a mano; sudo -S por stdin; trap de limpieza", "fuente_norm": "propio", "motivo_codigo": "propio_por_diseno", "motivo_detalle": "Sabotaje de una cuenta desechable (`useradd`/`passwd -l`/`userdel`) para tocar las capas auth/PAM/syslog y los ficheros de cuentas; guardarraíl: jamás cuentas reales." },
   "esperado_sha256": "505581e2ae6c8c704381e6b849be0e90e26e86d4a6e67a72c8e096f60512f962",
   "ataque_sha256": "705e4be1384dc6bbaa6561850fc9e2947e40188011aa76b3dd0f8cf65ac872ea",
   "validacion_humana_esperado": "APROBADO 2026-09-29",

@@ -7,7 +7,7 @@
   "tanda": "A",
   "estado": "cerrado",
   "artefacto": "Dataset/Ataques/Comandos/T1005-Data_from_Local_System/",
-  "atomic": { "fuente": "custom", "nota": "recoleccion dirigida (lista declarada de 3 ficheros) de lab-legit/srv_data a lab-attack/ATA029/loot con cp; sin sudo; guardarrail: origen bajo lab-legit/srv_data y salida bajo lab-attack/ATA029" },
+  "atomic": { "fuente": "custom", "nota": "recoleccion dirigida (lista declarada de 3 ficheros) de lab-legit/srv_data a lab-attack/ATA029/loot con cp; sin sudo; guardarrail: origen bajo lab-legit/srv_data y salida bajo lab-attack/ATA029", "fuente_norm": "propio", "motivo_codigo": "no_se_comprobo", "motivo_detalle": "Hueco declarado: el mapa da prueba Linux (tests_linux=1) y el plan la marcaba como ART adaptable, pero no consta en el repo que se comprobara ni ejecutara la atómica; se ejecutó guion propio." },
   "esperado_sha256": "a4925402ed671577badd6f330db179e770f31849d8b277dc2effe65902cbcec0",
   "ataque_sha256": "05719a168d64ef9470a5f77d21790e13c9cc4d2bc3b657db0994381bf3bfee38",
   "validacion_humana_esperado": "APROBADO 2026-09-29",

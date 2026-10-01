@@ -7,7 +7,7 @@
   "tanda": "C",
   "estado": "cerrado",
   "artefacto": "Dataset/Ataques/Comandos/T1496.001-Compute_Hijacking/",
-  "atomic": { "fuente": "custom", "nota": "carga de CPU ACOTADA (2 x timeout 10s yes); guardarrail: WORKERS<=4 y DURATION<=15s; trap que mata remanentes; 0 residuos verificado" },
+  "atomic": { "fuente": "custom", "nota": "carga de CPU ACOTADA (2 x timeout 10s yes); guardarrail: WORKERS<=4 y DURATION<=15s; trap que mata remanentes; 0 residuos verificado", "fuente_norm": "propio", "motivo_codigo": "propio_por_diseno", "motivo_detalle": "«Minería» simulada con carga de CPU acotada; Wazuh no tiene reglas de recursos -> se espera detección solo por `execve`." },
   "esperado_sha256": "c69a5dac12aa832b4689665c6f03eba85910189c15732053a3f3d768402945e3",
   "ataque_sha256": "8dc97e905e50e85135324d695d3b1dfb2f4d37f49f3e9bfc598f8df4df6cdaf4",
   "validacion_humana_esperado": "APROBADO 2026-09-29",

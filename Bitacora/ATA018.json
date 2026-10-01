@@ -7,7 +7,7 @@
   "tanda": "A",
   "estado": "cerrado",
   "artefacto": "Dataset/Ataques/Comandos/T1056.001-Keylogging/",
-  "atomic": { "fuente": "custom", "nota": "adaptacion CONTENIDA de ART 'Logging bash history to syslog'; NO toca pam_tty_audit/auditd reales" },
+  "atomic": { "fuente": "custom", "nota": "adaptacion CONTENIDA de ART 'Logging bash history to syslog'; NO toca pam_tty_audit/auditd reales", "fuente_norm": "art_adaptado", "motivo_codigo": "na_art_usado", "motivo_detalle": "se usó ART" },
   "esperado_sha256": "b24c0ee53f0afe094c7aa75d1df520cc1b3cc9eb339bbeb3d241b6254d8d687a",
   "ataque_sha256": "d2d60990384af29c005994434b66243e61c2942488b36d5e16ffe0764d3ca60b",
   "validacion_humana_esperado": "APROBADO 2026-09-29",
