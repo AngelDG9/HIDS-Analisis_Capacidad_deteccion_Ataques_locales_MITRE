@@ -1,0 +1,20 @@
+# ATA038_esperado_rev.csv | ATA038 · T1529 System Shutdown/Reboot | TFG HIDS · Fase 3 (repeticiones, tanda R4)
+# Redactado el 2026-10-01, ANTES de ver ninguna alerta. MÉTODO CORREGIDO = ART + pre-staging.
+#   atomic : "Restart System via `shutdown` - FreeBSD/macOS/Linux"
+#   guid   : 6326dbc4-444b-4c04-88f4-27e94d0327cb
+#   path   : atomics/T1529/T1529.yaml
+#   commit : 388942adbd9641f4dfdcf079d7efe9a75ec0ac43
+#   comando: shutdown -r #{timeout}  (timeout=+1)  -> `art_tal_cual` (parametrizada)
+# El ESTADO (`pre_reboot.txt`) se escribe ANTES de t0 (pre-staging); la ventana ejecuta SOLO la
+#   atómica. Se CORRIGE la imprecisión del original: el manager emite `506` (agent stopped) al
+#   cerrarse la VM, no `504` (agent disconnected) -> se declara `506`.
+# Gate humano: APROBADO 2026-10-01 (validación humana)
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+# Convención H4: cada señal audit_exe se acompaña de audit_cwd de la carpeta del ataque.
+# SOLO se reinicia la VM VICTIMA (`victima-linux`), nunca el manager ni el anfitrion.
+# BINARIO REAL verificado en el C0_rev: `shutdown` es enlace a `/usr/bin/systemctl`.
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1529-S1,deteccion,audit_exe,/usr/bin/systemctl,Process Creation,T1529,atómica ART: comando de reinicio (shutdown -r; execve 80792)
+T1529-S2,deteccion,audit_cwd,/home/angel/lab-attack/ATA038/*,Process Creation,T1529,ancla H4 (cwd del ataque)
+T1529-S3,deteccion,rule_id,503,Agent Status,T1529,el HIDS ve que el agente Wazuh vuelve a iniciar tras el arranque
+T1529-S4,deteccion,rule_id,506,Agent Status,T1529,el HIDS ve el cierre del agente al apagarse la VM (agent stopped; corrige el 504 del original)

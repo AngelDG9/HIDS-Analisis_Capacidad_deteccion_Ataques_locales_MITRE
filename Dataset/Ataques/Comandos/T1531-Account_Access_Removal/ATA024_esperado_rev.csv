@@ -1,0 +1,19 @@
+# ATA024_esperado_rev.csv | ATA024 · T1531 Account Access Removal | TFG HIDS · Fase 3 (repeticiones, tanda R1)
+# Redactado el 2026-10-01, ANTES de ver ninguna alerta. MÉTODO CORREGIDO = prueba de ART (ADAPTADA).
+#   atomic : "Change User Password via passwd"
+#   guid   : 3c717bf3-2ecc-4d79-8ac8-0bfbf08fbce6
+#   path   : atomics/T1531/T1531.yaml
+#   commit : 388942adbd9641f4dfdcf079d7efe9a75ec0ac43
+#   comando: passwd #{user_account}  (elevation_required: true)
+# ADAPTACIÓN: el original creaba+bloqueaba+eliminaba; la atómica Linux SOLO cambia la
+#   contraseña. La cuenta desechable se crea en el pre-staging (antes de t0) y se elimina
+#   en el cleanup (tras t1). La atómica es interactiva → nueva contraseña por stdin.
+# Gate humano: APROBADO 2026-10-01 (validación humana)
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+# Convención H4: cada señal audit_exe se acompaña de audit_cwd de la carpeta del ataque.
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1531-S1,deteccion,audit_exe,passwd,Process Creation,T1531,atómica ART: cambio de contraseña del usuario desechable (execve 80792)
+T1531-S2,deteccion,audit_cwd,/home/angel/lab-attack/ATA024/*,Process Creation,T1531,ancla H4 (cwd del ataque)
+T1531-A1,ambigua,rule_id,80790,File Creation,T1531,creacion de fichero bajo el watch de /etc (efecto del ataque)
+T1531-A2,ambigua,rule_id,80781,File Modification,T1531,escritura bajo el watch de /etc (efecto del ataque)
+T1531-A3,ambigua,rule_id,80782,File Modification,T1531,escritura sobre el directorio /etc vigilado (efecto del ataque)

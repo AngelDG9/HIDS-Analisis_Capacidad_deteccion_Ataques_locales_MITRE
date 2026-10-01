@@ -127,3 +127,52 @@ tiene **3 mensajes** y la copia en `lab-attack` conserva el **mismo `sha256`**
    `dudosa` y se resuelven a **`ruido`** (10/iter). Es el efecto H-A/H-B ya conocido.
 3. Datos de juguete con nombres creíbles; **realismo acotado** declarado (README §9, runbook §10).
 4. **C0 sin punto ciego** (`grep`/`cp` → `80792` level 3).
+
+---
+
+## § Repetición auditada (rev)
+
+> Bloque `fase-03-repeticiones` (tandas R1+R2), **2026-10-01**. `esperado_rev` firmado **APROBADO 2026-10-01 (validación humana)** ANTES del primer `t0`. Añadido por `tfg-executor`. **Sin secretos.**
+
+### Motivo
+
+- **`motivo_repeticion` = `prestaging`.** Auditoría: ATA014 sembraba el buzón mbox DENTRO de [t0,t1] (la siembra no es la técnica) — obs. §C (`criterio_ataques.md`).
+
+### Qué cambió respecto al original (el original NO se toca)
+
+- **Método original:** propio: siembra del mbox + recolección (grep/cp) en la MISMA ventana.
+- **Método de la repetición:** propio: siembra del mbox ANTES de t0; la ventana mide SOLO la recolección (grep/cp).
+- **ART:** no aplica (motivo de pre-staging; el método es propio, sin cambio de mecanismo).
+- **Material antes de `t0`:** buzón mbox simulado (`mailbox_angel_2026.mbox`, 3 mensajes) sembrado en `lab-legit` ANTES de t0.
+
+### Iteraciones (rev)
+
+| Iter | t0 (UTC) | t1 (UTC) | filas | deteccion | auto_ruido | ruido_conocido | artefacto_ataque | dudosa |
+|---|---|---|---|---|---|---|---|---|
+| 1 | `2026-10-01T19:38:54Z` | `2026-10-01T19:39:27Z` | 835 | **3** | 603 | 218 | 11 | 0 |
+| 2 | `2026-10-01T19:42:40Z` | `2026-10-01T19:43:13Z` | 845 | **3** | 613 | 218 | 11 | 0 |
+
+### Resultado (métrica congelada O1+O2)
+
+- **O1 (detectado):** sí — `rule_id` = `['80792']`.
+- **O2 (acciones cubiertas):** iter1 = 2/2 · iter2 = 2/2.
+  - iter1 primera evidencia: `2026-10-01T19:38:55.974Z` `audit_exe=/usr/bin/grep`.
+  - iter2 primera evidencia: `2026-10-01T19:42:42.381Z` `audit_exe=/usr/bin/grep`.
+- **Doble iteración (v2):** `iguales` (mismo `rule_id` de detección; recuento estable; sin dudosas).
+- **`dudosa` resueltas:** iter1: ruido=10 · iter2: ruido=10.
+- **0 filas del ataque en `ruido`** (verificado por la pertenencia por carpeta).
+
+### Prueba de efecto (independiente de la alerta)
+
+- iter1: RECOLECCION=OK (3 mensajes; copia sha256 idéntica).
+- iter2: RECOLECCION=OK (3 mensajes; copia sha256 idéntica).
+
+### Trazabilidad
+
+- `esperado_rev`: `Dataset/Ataques/Comandos/T1114-Email_Collection/ATA014_esperado_rev.csv` (`sha256=a4b724b64a85938e8c96fd493d36bd027bc1624f57534dff8acf9046e34ac72c`).
+- `ataque_rev`: `Dataset/Ataques/Comandos/T1114-Email_Collection/ATA014_ataque_rev.sh` (`sha256=52e4512e092d735aa1ff92e48ae68c74389b130c35aecd2d473cfe8905763adb`).
+- C0: `Soporte/Ataques/c0/ATA014_rev_logtest.txt` + `ATA014_rev_preflight.md` (**PASA**, sin silenciadores).
+- Detalle: `Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA014_rev1-Detalle.csv` · `Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA014_rev2-Detalle.csv`.
+- Auditado: `Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA014_rev1-Audited.csv` · `Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA014_rev2-Audited.csv`.
+- **Nuevo esperado SIN las señales `ambigua` de la siembra (ya no cae en la ventana).**
+

@@ -120,3 +120,52 @@ Fichero diario `/var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json` (H3); aisl
 2. **`grep` de login (`cwd=/`) → `dudosa`→`ruido`:** efecto H-A/H-B (churn de `update-motd.d`).
 3. Datos de juguete; **realismo acotado** declarado.
 4. **C0 sin punto ciego** (`cp`/`grep` → `80792` level 3).
+
+---
+
+## § Repetición auditada (rev)
+
+> Bloque `fase-03-repeticiones` (tandas R1+R2), **2026-10-01**. `esperado_rev` firmado **APROBADO 2026-10-01 (validación humana)** ANTES del primer `t0`. Añadido por `tfg-executor`. **Sin secretos.**
+
+### Motivo
+
+- **`motivo_repeticion` = `prestaging`.** Auditoría: ATA016 creaba la BD SQLite DENTRO de [t0,t1] (con python3→92600); la siembra no es la técnica — obs. §C.
+
+### Qué cambió respecto al original (el original NO se toca)
+
+- **Método original:** propio: siembra de la BD (python3) + colección (cp/grep) en la MISMA ventana.
+- **Método de la repetición:** propio: siembra de la BD ANTES de t0; la ventana mide SOLO la colección (cp/grep).
+- **ART:** no aplica (motivo de pre-staging; el método es propio, sin cambio de mecanismo).
+- **Material antes de `t0`:** BD SQLite (`clientes_clientes.db`, 4 clientes de juguete) sembrada en `lab-legit` ANTES de t0.
+
+### Iteraciones (rev)
+
+| Iter | t0 (UTC) | t1 (UTC) | filas | deteccion | auto_ruido | ruido_conocido | artefacto_ataque | dudosa |
+|---|---|---|---|---|---|---|---|---|
+| 1 | `2026-10-01T19:46:21Z` | `2026-10-01T19:46:53Z` | 839 | **3** | 603 | 219 | 14 | 0 |
+| 2 | `2026-10-01T19:50:00Z` | `2026-10-01T19:50:33Z` | 845 | **3** | 605 | 223 | 14 | 0 |
+
+### Resultado (métrica congelada O1+O2)
+
+- **O1 (detectado):** sí — `rule_id` = `['80792']`.
+- **O2 (acciones cubiertas):** iter1 = 2/2 · iter2 = 2/2.
+  - iter1 primera evidencia: `2026-10-01T19:46:22.084Z` `audit_exe=/usr/bin/grep`.
+  - iter2 primera evidencia: `2026-10-01T19:50:01.838Z` `audit_exe=/usr/bin/grep`.
+- **Doble iteración (v2):** `iguales` (mismo `rule_id` de detección; recuento estable; sin dudosas).
+- **`dudosa` resueltas:** iter1: ruido=10 · iter2: ruido=11.
+- **0 filas del ataque en `ruido`** (verificado por la pertenencia por carpeta).
+
+### Prueba de efecto (independiente de la alerta)
+
+- iter1: COLECCION=OK (BD SQLite íntegra, 4 códigos extraídos, sha256 idéntico).
+- iter2: COLECCION=OK (BD SQLite íntegra, 4 códigos extraídos, sha256 idéntico).
+
+### Trazabilidad
+
+- `esperado_rev`: `Dataset/Ataques/Comandos/T1213.006-Databases/ATA016_esperado_rev.csv` (`sha256=2b72ff36f53eece922ddde64d7ae61d95cdaa477752047058148760ee37ed80a`).
+- `ataque_rev`: `Dataset/Ataques/Comandos/T1213.006-Databases/ATA016_ataque_rev.sh` (`sha256=a4b38f00e665261af8da49215d13d794d2c0f26d742fcd6a8047e73c65078981`).
+- C0: `Soporte/Ataques/c0/ATA016_rev_logtest.txt` + `ATA016_rev_preflight.md` (**PASA**, sin silenciadores).
+- Detalle: `Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA016_rev1-Detalle.csv` · `Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA016_rev2-Detalle.csv`.
+- Auditado: `Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA016_rev1-Audited.csv` · `Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA016_rev2-Audited.csv`.
+- **Nuevo esperado SIN las señales `ambigua` de la siembra.**
+

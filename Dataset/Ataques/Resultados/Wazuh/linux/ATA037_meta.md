@@ -131,3 +131,52 @@ printf '%s\n' '<pw>' | bash ATA037_ataque.sh   # dd + mkfs.ext4 + mount + dd ura
 
 - **iter1: 393**; **iter2: 392** — **baseline** (PAM del login del operador, `sshd`, `591`…), ajenas
   al ataque. **0** filas del ataque en `ruido`.
+
+---
+
+## § Repetición auditada (rev)
+
+> Bloque `fase-03-repeticiones` (**tanda R3**), **2026-10-01**. `esperado_rev` firmado **APROBADO 2026-10-01 (validación humana)** ANTES del primer `t0`. Añadido por `tfg-executor`. **Sin secretos.**
+
+### Motivo
+
+- **`motivo_repeticion` = `prestaging`.** Auditoría metodológica (`_fases/fase-03-auditoria-metodologica/auditoria_decisiones.md` §2; `Soporte/Ataques/criterio_ataques.md` §C): el ataque **creaba y formateaba (`mke2fs`) la imagen dentro de `[t0,t1]`**, ensuciando la ventana con la preparación (que **no es la técnica**).
+
+### Qué cambió respecto al original (el original NO se toca)
+
+- **Método original:** propio — `dd` (crear imagen) + `mkfs.ext4` (`mke2fs`) + `mount` + escribir dato + `dd urandom` (wipe) + `umount`, **todo dentro** de la ventana.
+- **Método de la repetición (pre-staging):** la **imagen `disk.img` (ext4) se crea y formatea ANTES de `t0`** (modo `prestage`); la ventana ejecuta **solo** el wipe del contenido (montar + sobrescribir in place + desmontar). Desaparece la señal de `mke2fs` (formateo = preparación, ya fuera de la ventana).
+- **Material antes de `t0`:** `disk.img` (16 777 216 bytes, ext4, `sha_dato_antes=bb9f8df61474d25e71fa00722318cd387396ca1736605e1248821cc0de3d3af8`); ver `Logs/ATA037_rev{1,2}/prestaging.out`.
+
+### Iteraciones (rev)
+
+| Iter | t0 (UTC) | t1 (UTC) | filas | deteccion | auto_ruido | ruido_conocido | artefacto_ataque | dudosa |
+|---|---|---|---|---|---|---|---|---|
+| 1 | `2026-10-01T21:45:49Z` | `2026-10-01T21:46:21Z` | 967 | **10** | 625 | 301 | 31 | 0 |
+| 2 | `2026-10-01T21:49:45Z` | `2026-10-01T21:50:18Z` | 977 | **11** | 636 | 300 | 30 | 0 |
+
+### Resultado (métrica congelada O1+O2)
+
+- **O1 (detectado):** sí — `rule_id` = `['80792']`.
+- **O2 (acciones cubiertas):** iter1 = 4/4 · iter2 = 4/4 (`S1`=`dd`, `S2`=`mount`, `S3`=`umount`, `S4`=`losetup`; el ancla `S5` no es detector).
+  - iter1 primera evidencia: `2026-10-01T21:45:50.948Z` `audit_exe=/usr/sbin/losetup`.
+  - iter2 primera evidencia: `2026-10-01T21:49:47.271Z` `audit_exe=/usr/sbin/losetup`.
+- **Doble iteración (v2):** `iguales` (mismo `rule_id` de detección; `|11−10|=1 ≤ 2`; sin dudosas).
+- **`dudosa` resueltas:** iter1: artefacto=1 (`losetup` sin `cwd` = setup loop del ataque) + ruido=31 · iter2: ruido=31.
+- **0 filas del ataque en `ruido`** (pertenencia por carpeta).
+
+### Prueba de efecto (independiente de la alerta)
+
+- iter1: `sha_dato_antes=bb9f8df6…3af8` ≠ `sha_dato_despues=1caa9ea3…c30c`; `file -s` = **ext4**, `blkid` reconoce, **la imagen sigue montando**; `loop_residual=0`.
+- iter2: `sha_dato_antes=bb9f8df6…3af8` ≠ `sha_dato_despues=0508c143…9b0e`; estructura `ext4` intacta y montable; `loop_residual=0`.
+
+### Cómo se cumple el motivo (pre-staging)
+
+- La imagen se creó y formateó **ANTES de `t0`** (`prestaging.out`: `PRESTAGE=OK`); **ninguna** señal `ambigua` de la siembra (`80790`/`80781`/`80782`) cae en `[t0,t1]`. La ventana mide **solo** las herramientas del wipe, todas ancladas al `cwd`.
+
+### Trazabilidad
+
+- `esperado_rev`: `…/T1561.001-Disk_Content_Wipe/ATA037_esperado_rev.csv` (`sha256=c0c157a378010946beaa36f7ef16f9bfb9ef2ca3fe135503b850ec5955127ac0`).
+- `ataque_rev`: `…/T1561.001-Disk_Content_Wipe/ATA037_ataque_rev.sh` (`sha256=1539bea4c9ed7f9d1629b1e01bf970c60d971ec90ce3b0d97d22a5603801cc50`).
+- C0: `Soporte/Ataques/c0/ATA037_rev_logtest.txt` + `ATA037_rev_preflight.md` (**PASA**, sin silenciadores).
+- Detalle: `…/CSV/ATA037_rev{1,2}-Detalle.csv` · Auditado: `…/Auditado/ATA037_rev{1,2}-Audited.csv`.

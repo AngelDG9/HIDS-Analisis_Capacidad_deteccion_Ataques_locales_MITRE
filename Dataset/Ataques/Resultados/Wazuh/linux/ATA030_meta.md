@@ -135,3 +135,52 @@ bash ATA030_ataque.sh   # tar -czf collected_ATA030.tar.gz ... + tar -tzf (verif
   operador** (las conexiones `ssh` de la ventana), **ajenas al ataque** y sin `cwd`/ruta del ataque.
   Se pliegan a **`ruido`** por el criterio **ya ratificado (2026-09-28): PAM del login = `ruido`**.
 - **Ninguna** fila del ataque cae en `ruido` (verificado: `ruido_con_lab-attack=0`).
+
+---
+
+## § Repetición auditada (rev)
+
+> Bloque `fase-03-repeticiones` (tandas R1+R2), **2026-10-01**. `esperado_rev` firmado **APROBADO 2026-10-01 (validación humana)** ANTES del primer `t0`. Añadido por `tfg-executor`. **Sin secretos.**
+
+### Motivo
+
+- **`motivo_repeticion` = `art`.** Auditoría metodológica: ATA030 quedó como `no_se_comprobo` pese a haber prueba ART Linux (mismo mecanismo, offline) — hueco H2 (`_fases/fase-03-auditoria-metodologica/auditoria_decisiones.md` §3).
+
+### Qué cambió respecto al original (el original NO se toca)
+
+- **Método original:** propio: `tar -czf` escrito por el TFG.
+- **Método de la repetición:** prueba de ART «Data Compressed - nix - tar Folder or File» (`tar -cvzf #{output_file} #{input_file_folder}`).
+- **Prueba ART citada:** `guid=7af2b51e-ad1c-498c-aca8-d3290c19535a` · `file=atomics/T1560.001/T1560.001.yaml` · `commit=388942adbd9641f4dfdcf079d7efe9a75ec0ac43`. ART_tal_cual con parametrización de entrada/salida al `lab-attack` (input_file_folder/output_file).
+- **Material antes de `t0`:** material de archivado (staging/ con 3 ficheros de juguete) preparado ANTES de t0 (modo prestage).
+
+### Iteraciones (rev)
+
+| Iter | t0 (UTC) | t1 (UTC) | filas | deteccion | auto_ruido | ruido_conocido | artefacto_ataque | dudosa |
+|---|---|---|---|---|---|---|---|---|
+| 1 | `2026-10-01T18:57:21Z` | `2026-10-01T18:57:53Z` | 851 | **12** | 645 | 183 | 11 | 0 |
+| 2 | `2026-10-01T19:02:03Z` | `2026-10-01T19:02:35Z` | 844 | **12** | 601 | 220 | 11 | 0 |
+
+### Resultado (métrica congelada O1+O2)
+
+- **O1 (detectado):** sí — `rule_id` = `['80792']`.
+- **O2 (acciones cubiertas):** iter1 = 2/2 · iter2 = 2/2.
+  - iter1 primera evidencia: `2026-10-01T18:57:22.928Z` `audit_exe=/usr/bin/tar`.
+  - iter2 primera evidencia: `2026-10-01T19:02:03.795Z` `audit_exe=/usr/bin/tar`.
+- **Doble iteración (v2):** `iguales` (mismo `rule_id` de detección; recuento estable; sin dudosas).
+- **`dudosa` resueltas:** iter1: artefacto=1, ruido=4 · iter2: artefacto=1, ruido=6.
+- **0 filas del ataque en `ruido`** (verificado por la pertenencia por carpeta).
+
+### Prueba de efecto (independiente de la alerta)
+
+- iter1: ARCHIVADO=OK (tar.gz con los 3 ficheros del material); sha256 del .tar.gz.
+- iter2: ARCHIVADO=OK (tar.gz con los 3 ficheros del material); sha256 del .tar.gz.
+
+### Trazabilidad
+
+- `esperado_rev`: `Dataset/Ataques/Comandos/T1560.001-Archive_via_Utility/ATA030_esperado_rev.csv` (`sha256=e3f8707457e5ae95e5ec6a188c3250318c5718a97909eb0838b62cd12089c6ed`).
+- `ataque_rev`: `Dataset/Ataques/Comandos/T1560.001-Archive_via_Utility/ATA030_ataque_rev.sh` (`sha256=fd3345f9249ba18fbff54457ad687a321d680971356ea8a9c89c3c62b24983c4`).
+- C0: `Soporte/Ataques/c0/ATA030_rev_logtest.txt` + `ATA030_rev_preflight.md` (**PASA**, sin silenciadores).
+- Detalle: `Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA030_rev1-Detalle.csv` · `Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA030_rev2-Detalle.csv`.
+- Auditado: `Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA030_rev1-Audited.csv` · `Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA030_rev2-Audited.csv`.
+- **Cierra el `no_se_comprobo`: la atómica de ART se ejecutó y se citó (guid+file+commit).**
+

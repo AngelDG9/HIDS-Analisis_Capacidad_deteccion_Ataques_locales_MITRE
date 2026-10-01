@@ -134,3 +134,51 @@ bash ATA036_ataque.sh   # base64 -d + target (en background) + memedit <pid> SAL
 
 - **iter1: 294**; **iter2: 292** — **baseline** (PAM del login del operador, `sshd`, `591`…), ajenas
   al ataque. **0** filas del ataque en `ruido`.
+
+---
+
+## § Repetición auditada (rev)
+
+> Bloque `fase-03-repeticiones` (**tanda R3**), **2026-10-01**. `esperado_rev` firmado **APROBADO 2026-10-01 (validación humana)** ANTES del primer `t0`. Añadido por `tfg-executor`. **Sin secretos.**
+
+### Motivo
+
+- **`motivo_repeticion` = `prestaging`.** Auditoría metodológica (`_fases/fase-03-auditoria-metodologica/auditoria_decisiones.md` §2; `Soporte/Ataques/criterio_ataques.md` §C): el ataque **materializaba su payload (`memedit`/`target`) y lanzaba el proceso `target` dentro de `[t0,t1]`**, ensuciando la ventana con una preparación que **no es la técnica**.
+
+### Qué cambió respecto al original (el original NO se toca)
+
+- **Método original:** propio — `base64 -d` del payload + lanzamiento de `target` **dentro** de la ventana, y luego `memedit <pid>`.
+- **Método de la repetición (pre-staging):** `memedit` y `target` se materializan y el `target` se **lanza ANTES de `t0`** (modo `prestage`); la ventana ejecuta **solo** la acción de la técnica (el `ptrace` de `memedit`). Desaparecen las señales `ambigua` de creación del payload/estado.
+- **Material antes de `t0`:** `memedit` (`sha256=8205ab6af66e92fb70576f80fb1f85abe52c157a4e549887c45c13105952de0c`), `target` (`sha256=53ee76e60a16ba921e3774b6a62455f18b696cd7c4ae8d5c383605cb91e1587e`); `target` lanzado antes de `t0` (pid 3500 en rev1 / 3585 en rev2; ver `Logs/ATA036_rev{1,2}/prestaging.out`).
+
+### Iteraciones (rev)
+
+| Iter | t0 (UTC) | t1 (UTC) | filas | deteccion | auto_ruido | ruido_conocido | artefacto_ataque | dudosa |
+|---|---|---|---|---|---|---|---|---|
+| 1 | `2026-10-01T21:38:02Z` | `2026-10-01T21:38:37Z` | 912 | **1** | 700 | 198 | 13 | 0 |
+| 2 | `2026-10-01T21:42:03Z` | `2026-10-01T21:42:38Z` | 965 | **1** | 755 | 196 | 13 | 0 |
+
+### Resultado (métrica congelada O1+O2)
+
+- **O1 (detectado):** sí — `rule_id` = `['80792']`.
+- **O2 (acciones cubiertas):** iter1 = 1/1 · iter2 = 1/1 (`S1`; el ancla `S2` no es detector).
+  - iter1 primera evidencia: `2026-10-01T21:38:03.965Z` `audit_exe=/home/angel/lab-attack/ATA036/memedit`.
+  - iter2 primera evidencia: `2026-10-01T21:42:05.472Z` `audit_exe=/home/angel/lab-attack/ATA036/memedit`.
+- **Doble iteración (v2):** `iguales` (mismo `rule_id` de detección; recuento estable; sin dudosas).
+- **`dudosa` resueltas:** iter1: ruido=5 · iter2: ruido=5 (PAM del login del operador).
+- **0 filas del ataque en `ruido`** (pertenencia por carpeta).
+
+### Prueba de efecto (independiente de la alerta)
+
+- iter1 y iter2: `RUNTIME_DATA_MANIPULATION=OK` — el dato en memoria del proceso **en ejecución** cambió (`SALDO=1000` → `SALDO=9999`); `memedit_rc=0`.
+
+### Cómo se cumple el motivo (pre-staging)
+
+- El payload y el proceso `target` se prepararon/lanzaron **ANTES de `t0`** (`prestaging.out`: `PRESTAGE=OK`, `target_pid=…`); **ninguna** señal `ambigua` de creación del payload/estado cae en `[t0,t1]`. La ventana mide **solo** el `execve` de `memedit`.
+
+### Trazabilidad
+
+- `esperado_rev`: `…/T1565.003-Runtime_Data_Manipulation/ATA036_esperado_rev.csv` (`sha256=e0e47bbe02d5440f64ddaf47ce292bd4f31cf6122b4b009b4165fd5f1c83cbed`).
+- `ataque_rev`: `…/T1565.003-Runtime_Data_Manipulation/ATA036_ataque_rev.sh` (`sha256=197bee5b9ad117d292670f111ac9015bc03c1d24f6f6ed79cc4921387de41fb0`).
+- C0: `Soporte/Ataques/c0/ATA036_rev_logtest.txt` + `ATA036_rev_preflight.md` (**PASA**, sin silenciadores).
+- Detalle: `…/CSV/ATA036_rev{1,2}-Detalle.csv` · Auditado: `…/Auditado/ATA036_rev{1,2}-Audited.csv`.

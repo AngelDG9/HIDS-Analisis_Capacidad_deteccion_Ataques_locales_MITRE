@@ -172,3 +172,52 @@ SUDO_PW='<contrasena>' bash ATA024_ataque.sh   # useradd -m + passwd -l + userde
   ni ruta de la carpeta): el filtro no puede **demostrar** que son del ataque → se **declaran** aquí
   (§10.1) y **no** cuentan como detección. Es una **limitación declarada** del mecanismo, no un
   hallazgo nuevo.
+
+---
+
+## § Repetición auditada (rev)
+
+> Bloque `fase-03-repeticiones` (tandas R1+R2), **2026-10-01**. `esperado_rev` firmado **APROBADO 2026-10-01 (validación humana)** ANTES del primer `t0`. Añadido por `tfg-executor`. **Sin secretos.**
+
+### Motivo
+
+- **`motivo_repeticion` = `art`.** Auditoría: ATA024 quedó sin probar la única atómica Linux de T1531 que era usable (mecanismo parcial) — hueco por ART.
+
+### Qué cambió respecto al original (el original NO se toca)
+
+- **Método original:** propio: crear (useradd) + bloquear (passwd -l) + eliminar (userdel -r) el usuario desechable.
+- **Método de la repetición:** prueba de ART «Change User Password via passwd» (`passwd #{user_account}`).
+- **Prueba ART citada:** `guid=3c717bf3-2ecc-4d79-8ac8-0bfbf08fbce6` · `file=atomics/T1531/T1531.yaml` · `commit=388942adbd9641f4dfdcf079d7efe9a75ec0ac43`. ART_adaptado: el original creaba+bloqueaba+eliminaba; la atómica Linux SOLO cambia la contraseña (mecanismo parcial). La cuenta desechable se crea en el pre-staging (antes de t0) y se elimina en el cleanup (tras t1).
+- **Material antes de `t0`:** usuario desechable `tfg-victim01` creado ANTES de t0 (pre-staging); cleanup tras t1.
+
+### Iteraciones (rev)
+
+| Iter | t0 (UTC) | t1 (UTC) | filas | deteccion | auto_ruido | ruido_conocido | artefacto_ataque | dudosa |
+|---|---|---|---|---|---|---|---|---|
+| 1 | `2026-10-01T19:31:06Z` | `2026-10-01T19:31:39Z` | 860 | **4** | 605 | 229 | 22 | 0 |
+| 2 | `2026-10-01T19:35:08Z` | `2026-10-01T19:35:41Z` | 860 | **4** | 607 | 227 | 22 | 0 |
+
+### Resultado (métrica congelada O1+O2)
+
+- **O1 (detectado):** sí — `rule_id` = `['550', '5555', '80792']`.
+- **O2 (acciones cubiertas):** iter1 = 1/1 · iter2 = 1/1.
+  - iter1 primera evidencia: `2026-10-01T19:31:08.851Z` `audit_exe=/usr/bin/passwd`.
+  - iter2 primera evidencia: `2026-10-01T19:35:10.231Z` `audit_exe=/usr/bin/passwd`.
+- **Doble iteración (v2):** `iguales` (mismo `rule_id` de detección; recuento estable; sin dudosas).
+- **`dudosa` resueltas:** iter1: artefacto=5, ruido=2 · iter2: artefacto=5, ruido=2.
+- **0 filas del ataque en `ruido`** (verificado por la pertenencia por carpeta).
+
+### Prueba de efecto (independiente de la alerta)
+
+- iter1: PASSWORD_CHANGE=OK (la entrada de /etc/shadow cambió: hash antes ≠ después).
+- iter2: PASSWORD_CHANGE=OK (la entrada de /etc/shadow cambió: hash antes ≠ después).
+
+### Trazabilidad
+
+- `esperado_rev`: `Dataset/Ataques/Comandos/T1531-Account_Access_Removal/ATA024_esperado_rev.csv` (`sha256=4d94ac2d1defe2c4938b0ffb8c5589e8b517994bdcb20c462efa950646741dc4`).
+- `ataque_rev`: `Dataset/Ataques/Comandos/T1531-Account_Access_Removal/ATA024_ataque_rev.sh` (`sha256=0b7fcce1924a5cea199ad92f6df488a4fdba4741b9ccd961ea88e8d91a3b8592`).
+- C0: `Soporte/Ataques/c0/ATA024_rev_logtest.txt` + `ATA024_rev_preflight.md` (**PASA**, sin silenciadores).
+- Detalle: `Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA024_rev1-Detalle.csv` · `Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA024_rev2-Detalle.csv`.
+- Auditado: `Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA024_rev1-Audited.csv` · `Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA024_rev2-Audited.csv`.
+- **Anota qué se recorta (bloqueo+eliminación) y cita guid+file+commit.**
+

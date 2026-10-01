@@ -1,0 +1,11 @@
+﻿t0=2026-10-01T22:12:23Z
+ATA038_rev ┬À T1529 System Shutdown/Reboot (at├│mica ART, reinicio VM victima) ÔÇö repeticion
+MODE=attack
+hostname=victima-linux
+ips=192.168.65.129 
+T0=2026-10-01T22:12:23Z
+--- at├│mica ART: shutdown -r +1 (guid 6326dbc4-444b-4c04-88f4-27e94d0327cb) ---
+Reboot scheduled for Fri 2026-10-02 00:13:23 CEST, use 'shutdown -c' to cancel.
+shutdown_rc=0
+REBOOT_PROGRAMADO=si (host=victima-linux, +1 min)
+T1_LOCAL=(lo sella el operador tras la reconexion; la VM se reinicia)

@@ -1,0 +1,12 @@
+# ATA014_esperado_rev.csv | ATA014 · T1114 Email Collection | TFG HIDS · Fase 3 (repeticiones, tanda R2)
+# Redactado el 2026-10-01, ANTES de ver ninguna alerta. MÉTODO CORREGIDO = pre-staging.
+# La SIEMBRA del buzón mbox (antes dentro de [t0,t1]) pasa a ANTES de t0 → desaparecen las
+#   señales `ambigua` del watch de la semilla. La ventana mide SOLO la recolección (grep + cp).
+# Gate humano: APROBADO 2026-10-01 (validación humana)
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+# Convención H4: cada señal audit_exe se acompaña de audit_cwd de la carpeta del ataque.
+# Lección "leer no deja rastro": `-p wa` NO audita la lectura → la detección es el execve del lector.
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1114-S1,deteccion,audit_exe,grep,Process Creation,T1114,busqueda/extraccion de mensajes del buzon local (execve 80792)
+T1114-S2,deteccion,audit_exe,cp,Process Creation,T1114,copia del buzon recolectado a la carpeta del ataque
+T1114-S3,deteccion,audit_cwd,/home/angel/lab-attack/ATA014/*,Process Creation,T1114,ancla H4 (cwd del ataque)

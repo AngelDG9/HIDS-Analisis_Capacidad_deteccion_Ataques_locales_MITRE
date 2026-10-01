@@ -1,0 +1,17 @@
+ATA037_rev -ภ T1561.001 Disk Content Wipe (SOLO imagen loop) ิว๖ repeticion (pre-staging)
+MODE=attack
+T0=2026-10-01T21:45:49Z
+loop_asignado=/dev/loop0
+montaje_antes=OK
+sha_dato_despues=1caa9ea3e5e3128e9b7c9f24c7f6d1f5dc42c75543c8d4daab50713e2bbc30c8
+--- estructura (DESPUES del wipe) ---
+/home/angel/lab-attack/ATA037/disk.img: Linux rev 1.0 ext4 filesystem data, UUID=9af17f5f-b7f0-4bbb-9ee3-322f9e1805d1 (extents) (64bit) (large files) (huge files)
+blkid_tras_wipe=reconoce_ext4
+montaje_despues=SI
+--- estado final ---
+sha_dato_antes  =bb9f8df61474d25e71fa00722318cd387396ca1736605e1248821cc0de3d3af8
+sha_dato_despues=1caa9ea3e5e3128e9b7c9f24c7f6d1f5dc42c75543c8d4daab50713e2bbc30c8
+loop_residual=0
+DISK_CONTENT_WIPE=OK (contenido del disco sobrescrito; estructura intacta y montable)
+T1_LOCAL=2026-10-01T21:45:51Z
+

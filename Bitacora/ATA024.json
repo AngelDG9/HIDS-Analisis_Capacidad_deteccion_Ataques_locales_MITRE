@@ -84,5 +84,132 @@
     { "ts": "2026-09-29T03:31:26Z", "tipo": "t0", "detalle": "iter2 t0" },
     { "ts": "2026-09-29T03:31:58Z", "tipo": "t1", "detalle": "iter2 t1" },
     { "ts": "2026-09-29T03:35:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (40/40, {550,5901,5902,5903,80792}) -> iguales" }
-  ]
+  ],
+  "repeticion": {
+    "fecha": "2026-10-01",
+    "motivo_repeticion": "art",
+    "motivo_detalle": "Auditoría: ATA024 quedó sin probar la única atómica Linux de T1531 que era usable (mecanismo parcial) — hueco por ART.",
+    "metodo_original": "propio: crear (useradd) + bloquear (passwd -l) + eliminar (userdel -r) el usuario desechable",
+    "metodo_repeticion": "prueba de ART «Change User Password via passwd» (`passwd #{user_account}`)",
+    "prueba_art": {
+      "guid": "3c717bf3-2ecc-4d79-8ac8-0bfbf08fbce6",
+      "file": "atomics/T1531/T1531.yaml",
+      "commit": "388942adbd9641f4dfdcf079d7efe9a75ec0ac43",
+      "fuente_norm": "art_adaptado",
+      "motivo_codigo": "na_art_usado",
+      "motivo_detalle": "se usó ART",
+      "adaptacion": "ART_adaptado: el original creaba+bloqueaba+eliminaba; la atómica Linux SOLO cambia la contraseña (mecanismo parcial). La cuenta desechable se crea en el pre-staging (antes de t0) y se elimina en el cleanup (tras t1)."
+    },
+    "material_prestaged": "usuario desechable `tfg-victim01` creado ANTES de t0 (pre-staging); cleanup tras t1.",
+    "fim_flush_pre_t0": "scan FIM forzado tras el pre-staging y ANTES de t0 (evita que los cambios del prestage contaminen la ventana)",
+    "esperado_rev": {
+      "path": "Dataset/Ataques/Comandos/T1531-Account_Access_Removal/ATA024_esperado_rev.csv",
+      "sha256": "4d94ac2d1defe2c4938b0ffb8c5589e8b517994bdcb20c462efa950646741dc4",
+      "gate_humano": "APROBADO 2026-10-01 (validación humana)"
+    },
+    "ataque_rev": {
+      "path": "Dataset/Ataques/Comandos/T1531-Account_Access_Removal/ATA024_ataque_rev.sh",
+      "sha256": "0b7fcce1924a5cea199ad92f6df488a4fdba4741b9ccd961ea88e8d91a3b8592"
+    },
+    "c0": {
+      "logtest": "Soporte/Ataques/c0/ATA024_rev_logtest.txt",
+      "logtest_sha256": "c74b22209d77d4a8bbeadbdf9eecceb3af041c6a6d1003c30357f09edc759521",
+      "preflight": "Soporte/Ataques/c0/ATA024_rev_preflight.md",
+      "preflight_sha256": "04d522403d54c0812681e3a17ca92ee59afc217f3f8d9e5da0b3eb42ad2a7ba0",
+      "c0_plan": "Soporte/Ataques/c0/ATA024_rev_c0_plan.md",
+      "resultado": "PASA (80792 level 3 en todos los binarios clave; sin silenciador)"
+    },
+    "iteraciones_rev": [
+      {
+        "iter": 1,
+        "t0": "2026-10-01T19:31:06Z",
+        "t1": "2026-10-01T19:31:39Z",
+        "filas": 860,
+        "deteccion": 4,
+        "auto_ruido": 605,
+        "ruido_conocido": 229,
+        "dudosa": 0,
+        "artefacto_ataque": 22,
+        "ids": [
+          "550",
+          "5555",
+          "80792"
+        ],
+        "matched": [
+          "T1531-S1"
+        ],
+        "primera": {
+          "timestamp_utc": "2026-10-01T19:31:08.851Z",
+          "evidencia": "audit_exe=/usr/bin/passwd",
+          "rule_id": "80792"
+        },
+        "resueltas": {
+          "ruido": 2,
+          "artefacto": 5
+        },
+        "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA024_rev1-Detalle.csv",
+        "detalle_sha256": "896524fc1bbe82de755dea948681a1a6a8271dadfe3f8a8ac5b7680bfc06e9c5",
+        "detalle_raw": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA024_rev1-Detalle_raw.csv",
+        "detalle_raw_sha256": "e1ccb8e7b77b8274527b97dfacf3a22771513c33da42ee8e15e7ef49735de7b7",
+        "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA024_rev1-Audited.csv",
+        "audited_sha256": "cc81f75d36185de9e43955802af4b55f1e1de58525aece6fa08009ce06b8791d",
+        "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA024_rev1-Revision.csv",
+        "revision_sha256": "aaa31ed94cb302c6ae8e6f1b93028776c110cdd2a6c9e713cc0974e3299c210d"
+      },
+      {
+        "iter": 2,
+        "t0": "2026-10-01T19:35:08Z",
+        "t1": "2026-10-01T19:35:41Z",
+        "filas": 860,
+        "deteccion": 4,
+        "auto_ruido": 607,
+        "ruido_conocido": 227,
+        "dudosa": 0,
+        "artefacto_ataque": 22,
+        "ids": [
+          "550",
+          "5555",
+          "80792"
+        ],
+        "matched": [
+          "T1531-S1"
+        ],
+        "primera": {
+          "timestamp_utc": "2026-10-01T19:35:10.231Z",
+          "evidencia": "audit_exe=/usr/bin/passwd",
+          "rule_id": "80792"
+        },
+        "resueltas": {
+          "ruido": 2,
+          "artefacto": 5
+        },
+        "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA024_rev2-Detalle.csv",
+        "detalle_sha256": "65758eaf9eab97634f02a56f7eec01439f3d7b9186af536828b5a786fc32cef2",
+        "detalle_raw": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA024_rev2-Detalle_raw.csv",
+        "detalle_raw_sha256": "75441bd81c3debfb18deeb312f77b02c35cbf648a53a16d4d2d99495ed7b5212",
+        "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA024_rev2-Audited.csv",
+        "audited_sha256": "76f78432c4efdbc0e71e7968e3d35a2b3955cd137e5b150faaac68409e57eb35",
+        "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA024_rev2-Revision.csv",
+        "revision_sha256": "3904ce69f2811716ba36026bfc6a47db3b0acb663eff31ebd2fe2d165722cf45"
+      }
+    ],
+    "veredicto_rev": "iguales",
+    "resultado_rev": "detectado (O1=si) rule_ids=['550', '5555', '80792']; O2=1/1/1",
+    "prueba_de_efecto": "iter1: PASSWORD_CHANGE=OK (la entrada de /etc/shadow cambió: hash antes ≠ después) | iter2: PASSWORD_CHANGE=OK (la entrada de /etc/shadow cambió: hash antes ≠ después)",
+    "filas_resueltas": {
+      "iter1": {
+        "ruido": 2,
+        "artefacto": 5
+      },
+      "iter2": {
+        "ruido": 2,
+        "artefacto": 5
+      }
+    },
+    "nota": "Anota qué se recorta (bloqueo+eliminación) y cita guid+file+commit.",
+    "ref_original": {
+      "ficha": "Dataset/Ataques/Resultados/Wazuh/linux/ATA024_meta.md",
+      "bitacora": "Bitacora/ATA024.json"
+    }
+  }
 }

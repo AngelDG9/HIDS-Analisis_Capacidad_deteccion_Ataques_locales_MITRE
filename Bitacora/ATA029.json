@@ -75,5 +75,128 @@
     { "ts": "2026-09-29T09:02:07Z", "tipo": "t0", "detalle": "iter2 t0" },
     { "ts": "2026-09-29T09:02:40Z", "tipo": "t1", "detalle": "iter2 t1" },
     { "ts": "2026-09-29T09:05:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (3/3, {80792}) -> iguales" }
-  ]
+  ],
+  "repeticion": {
+    "fecha": "2026-10-01",
+    "motivo_repeticion": "art+prestaging",
+    "motivo_detalle": "Auditoría: ATA029 quedó `no_se_comprobo` (había prueba ART) Y además sembraba su material dentro de [t0,t1] (obs. H1/H2).",
+    "metodo_original": "propio: siembra del material dentro de la ventana + `cp` de la lista declarada",
+    "metodo_repeticion": "prueba de ART «Find and dump sqlite databases (Linux)» con los 3 src/ pre-steados ANTES de t0 (en lugar del `curl` remoto)",
+    "prueba_art": {
+      "guid": "00cbb875-7ae4-4cf1-b638-e543fd825300",
+      "file": "atomics/T1005/T1005.yaml",
+      "commit": "388942adbd9641f4dfdcf079d7efe9a75ec0ac43",
+      "fuente_norm": "art_tal_cual",
+      "motivo_codigo": "na_art_usado",
+      "motivo_detalle": "se usó ART",
+      "adaptacion": "ART_tal_cual offline: pre-staging §C de los 3 src/ y de las dependencias `sqlite3`/`strings` (instaladas OFFLINE desde .deb fijados URL+sha256); el `cd $HOME` del atómico se parametriza a la carpeta del ataque (cwd del lab). El resto del comando es el de la atómica."
+    },
+    "material_prestaged": "3 src/ de la atómica (art, gta.db, sqlite_dump.sh) + paquetes .deb fijados (sqlite3 3.45.1-1ubuntu2.8 + binutils 2.42-4ubuntu2.10 y deps) instalados offline ANTES de t0; URL+sha256 en Soporte/Ataques/c0/ATA029_rev_prestaging_paquetes.md.",
+    "fim_flush_pre_t0": "scan FIM forzado tras el pre-staging y ANTES de t0 (evita que los cambios del prestage contaminen la ventana)",
+    "esperado_rev": {
+      "path": "Dataset/Ataques/Comandos/T1005-Data_from_Local_System/ATA029_esperado_rev.csv",
+      "sha256": "5cf2de40bd228ddb6dcd18930cef93db8f00ebc6c0f2cfd9721fc0b9ddff4581",
+      "gate_humano": "APROBADO 2026-10-01 (validación humana)"
+    },
+    "ataque_rev": {
+      "path": "Dataset/Ataques/Comandos/T1005-Data_from_Local_System/ATA029_ataque_rev.sh",
+      "sha256": "bf0c3684647e5f083eab5369fe5f686cef425c1075d1b317d668ce90fd92fdfc"
+    },
+    "c0": {
+      "logtest": "Soporte/Ataques/c0/ATA029_rev_logtest.txt",
+      "logtest_sha256": "7a3cad217bc8b6c88850c4f8b4b21b7df39a268b0a537fc525421dfe6ed8423b",
+      "preflight": "Soporte/Ataques/c0/ATA029_rev_preflight.md",
+      "preflight_sha256": "50e3d4fd0a7d435dff5b349a23679a241a7ca43a1d6314dfb6ec8c61f519a066",
+      "c0_plan": "Soporte/Ataques/c0/ATA029_rev_c0_plan.md",
+      "resultado": "PASA (80792 level 3 en todos los binarios clave; sin silenciador)"
+    },
+    "iteraciones_rev": [
+      {
+        "iter": 1,
+        "t0": "2026-10-01T19:19:37Z",
+        "t1": "2026-10-01T19:20:09Z",
+        "filas": 863,
+        "deteccion": 21,
+        "auto_ruido": 603,
+        "ruido_conocido": 226,
+        "dudosa": 0,
+        "artefacto_ataque": 13,
+        "ids": [
+          "80792"
+        ],
+        "matched": [
+          "T1005-S1",
+          "T1005-S2",
+          "T1005-S3"
+        ],
+        "primera": {
+          "timestamp_utc": "2026-10-01T19:19:38.073Z",
+          "evidencia": "audit_exe=/usr/bin/find",
+          "rule_id": "80792"
+        },
+        "resueltas": {
+          "ruido": 13
+        },
+        "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA029_rev1-Detalle.csv",
+        "detalle_sha256": "5e3d5e1f2bbae939972921f420041ede809ab9c5cba4565738c527a5575510be",
+        "detalle_raw": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA029_rev1-Detalle_raw.csv",
+        "detalle_raw_sha256": "39a02d2b89e1ef481a7e16549130ef2f8ef56e7c42025d7ce49ac24d0f3e2d2a",
+        "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA029_rev1-Audited.csv",
+        "audited_sha256": "ad63fb7d8afa0a49474c788cbab76850efaaef3f83182dc9c5b0410c8b8bde7a",
+        "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA029_rev1-Revision.csv",
+        "revision_sha256": "048571f1556bbd469253925af79a0c2d889a9ca0767723f8b6a91e631e0f4291"
+      },
+      {
+        "iter": 2,
+        "t0": "2026-10-01T19:23:31Z",
+        "t1": "2026-10-01T19:24:04Z",
+        "filas": 863,
+        "deteccion": 22,
+        "auto_ruido": 606,
+        "ruido_conocido": 220,
+        "dudosa": 0,
+        "artefacto_ataque": 15,
+        "ids": [
+          "80792"
+        ],
+        "matched": [
+          "T1005-S1",
+          "T1005-S2",
+          "T1005-S3"
+        ],
+        "primera": {
+          "timestamp_utc": "2026-10-01T19:23:32.388Z",
+          "evidencia": "audit_exe=/usr/bin/find",
+          "rule_id": "80792"
+        },
+        "resueltas": {
+          "ruido": 12
+        },
+        "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA029_rev2-Detalle.csv",
+        "detalle_sha256": "be6374e9d85e757e18811ac2fb053e0ab310a4025f9f5d866262bc5195bb27c0",
+        "detalle_raw": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA029_rev2-Detalle_raw.csv",
+        "detalle_raw_sha256": "f32ef00e6f359a21581858eb5e3ace52c37831637d07987b0f678208abd04216",
+        "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA029_rev2-Audited.csv",
+        "audited_sha256": "1417d04f1b36ff6f372998d2feb578d5307a6eb61077472fe566df338b6ff5a9",
+        "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA029_rev2-Revision.csv",
+        "revision_sha256": "3be3b9dd4ebede2ea4bd8de5663d883b894ca5145e201460061ec154ee32a349"
+      }
+    ],
+    "veredicto_rev": "iguales",
+    "resultado_rev": "detectado (O1=si) rule_ids=['80792']; O2=3/3/3",
+    "prueba_de_efecto": "iter1: la atómica encontró y volcó 2 BDs SQLite (art: tabla users; gta.db: tablas releases, cities) | iter2: la atómica encontró y volcó 2 BDs SQLite (art: tabla users; gta.db: tablas releases, cities)",
+    "filas_resueltas": {
+      "iter1": {
+        "ruido": 13
+      },
+      "iter2": {
+        "ruido": 12
+      }
+    },
+    "nota": "Cierra el `no_se_comprobo` (atómica ART factible offline con pre-staging fijado) y limpia la siembra (material antes de t0).",
+    "ref_original": {
+      "ficha": "Dataset/Ataques/Resultados/Wazuh/linux/ATA029_meta.md",
+      "bitacora": "Bitacora/ATA029.json"
+    }
+  }
 }

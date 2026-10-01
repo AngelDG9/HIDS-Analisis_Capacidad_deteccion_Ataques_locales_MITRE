@@ -66,5 +66,118 @@
     { "ts": "2026-09-29T00:35:39Z", "tipo": "t0", "detalle": "iter2 t0" },
     { "ts": "2026-09-29T00:36:11Z", "tipo": "t1", "detalle": "iter2 t1" },
     { "ts": "2026-09-29T01:05:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (3/3, {80792}) -> iguales" }
-  ]
+  ],
+  "repeticion": {
+    "fecha": "2026-10-01",
+    "motivo_repeticion": "prestaging",
+    "motivo_detalle": "Auditoría: ATA014 sembraba el buzón mbox DENTRO de [t0,t1] (la siembra no es la técnica) — obs. §C (`criterio_ataques.md`).",
+    "metodo_original": "propio: siembra del mbox + recolección (grep/cp) en la MISMA ventana",
+    "metodo_repeticion": "propio: siembra del mbox ANTES de t0; la ventana mide SOLO la recolección (grep/cp)",
+    "prueba_art": null,
+    "material_prestaged": "buzón mbox simulado (`mailbox_angel_2026.mbox`, 3 mensajes) sembrado en `lab-legit` ANTES de t0.",
+    "fim_flush_pre_t0": "scan FIM forzado tras el pre-staging y ANTES de t0 (evita que los cambios del prestage contaminen la ventana)",
+    "esperado_rev": {
+      "path": "Dataset/Ataques/Comandos/T1114-Email_Collection/ATA014_esperado_rev.csv",
+      "sha256": "a4b724b64a85938e8c96fd493d36bd027bc1624f57534dff8acf9046e34ac72c",
+      "gate_humano": "APROBADO 2026-10-01 (validación humana)"
+    },
+    "ataque_rev": {
+      "path": "Dataset/Ataques/Comandos/T1114-Email_Collection/ATA014_ataque_rev.sh",
+      "sha256": "52e4512e092d735aa1ff92e48ae68c74389b130c35aecd2d473cfe8905763adb"
+    },
+    "c0": {
+      "logtest": "Soporte/Ataques/c0/ATA014_rev_logtest.txt",
+      "logtest_sha256": "ecc54573a8012ef8fa0c553bd58c73a93a7c61c96bc31c32875186b9f0b3ea59",
+      "preflight": "Soporte/Ataques/c0/ATA014_rev_preflight.md",
+      "preflight_sha256": "e0293331939408cb5746e18d5a5e58a4db6d9be0066b3175b4c8200ebacea3a6",
+      "c0_plan": "Soporte/Ataques/c0/ATA014_rev_c0_plan.md",
+      "resultado": "PASA (80792 level 3 en todos los binarios clave; sin silenciador)"
+    },
+    "iteraciones_rev": [
+      {
+        "iter": 1,
+        "t0": "2026-10-01T19:38:54Z",
+        "t1": "2026-10-01T19:39:27Z",
+        "filas": 835,
+        "deteccion": 3,
+        "auto_ruido": 603,
+        "ruido_conocido": 218,
+        "dudosa": 0,
+        "artefacto_ataque": 11,
+        "ids": [
+          "80792"
+        ],
+        "matched": [
+          "T1114-S1",
+          "T1114-S2"
+        ],
+        "primera": {
+          "timestamp_utc": "2026-10-01T19:38:55.974Z",
+          "evidencia": "audit_exe=/usr/bin/grep",
+          "rule_id": "80792"
+        },
+        "resueltas": {
+          "ruido": 10
+        },
+        "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA014_rev1-Detalle.csv",
+        "detalle_sha256": "badd50b4020b6ca6b68677f259274ebcaacf05805339ad5e0b83e989f0841dd1",
+        "detalle_raw": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA014_rev1-Detalle_raw.csv",
+        "detalle_raw_sha256": "73bbe2d017cee40b25b7acdea95d35412842e21f02ba70d0a3d073691db3d959",
+        "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA014_rev1-Audited.csv",
+        "audited_sha256": "69f38a5583d3fa6bccf25877c40cced46d16f0e75efc7aa7dbf9b231f59b7af3",
+        "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA014_rev1-Revision.csv",
+        "revision_sha256": "13f0c048933b58ab006d418d49336e01751ab8faaf27fdafbb097aa3fed96fb7"
+      },
+      {
+        "iter": 2,
+        "t0": "2026-10-01T19:42:40Z",
+        "t1": "2026-10-01T19:43:13Z",
+        "filas": 845,
+        "deteccion": 3,
+        "auto_ruido": 613,
+        "ruido_conocido": 218,
+        "dudosa": 0,
+        "artefacto_ataque": 11,
+        "ids": [
+          "80792"
+        ],
+        "matched": [
+          "T1114-S1",
+          "T1114-S2"
+        ],
+        "primera": {
+          "timestamp_utc": "2026-10-01T19:42:42.381Z",
+          "evidencia": "audit_exe=/usr/bin/grep",
+          "rule_id": "80792"
+        },
+        "resueltas": {
+          "ruido": 10
+        },
+        "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA014_rev2-Detalle.csv",
+        "detalle_sha256": "574feb9dde0603ac6f122060eeb6aca9596b7209cb31aa3f10b453dd32736d93",
+        "detalle_raw": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA014_rev2-Detalle_raw.csv",
+        "detalle_raw_sha256": "dfd3f02a0283dcf3dcd96373581f63ea2231b51919c984b98bdae7f3e7e64cca",
+        "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA014_rev2-Audited.csv",
+        "audited_sha256": "599a47af96ef6c9758858350171a8790986585bde6c80759b5904848c3676cb7",
+        "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA014_rev2-Revision.csv",
+        "revision_sha256": "9b9305a4103af4164ea68144e1e7e8d82cdd1ee6fcadef1f325d94bd317e11a1"
+      }
+    ],
+    "veredicto_rev": "iguales",
+    "resultado_rev": "detectado (O1=si) rule_ids=['80792']; O2=2/2/2",
+    "prueba_de_efecto": "iter1: RECOLECCION=OK (3 mensajes; copia sha256 idéntica) | iter2: RECOLECCION=OK (3 mensajes; copia sha256 idéntica)",
+    "filas_resueltas": {
+      "iter1": {
+        "ruido": 10
+      },
+      "iter2": {
+        "ruido": 10
+      }
+    },
+    "nota": "Nuevo esperado SIN las señales `ambigua` de la siembra (ya no cae en la ventana).",
+    "ref_original": {
+      "ficha": "Dataset/Ataques/Resultados/Wazuh/linux/ATA014_meta.md",
+      "bitacora": "Bitacora/ATA014.json"
+    }
+  }
 }

@@ -152,3 +152,51 @@ bash ATA035_ataque.sh   # base64 -d de hook.so/credfetch + LD_PRELOAD credfetch
 
 - **iter1: 362**; **iter2: 292** — **baseline** (PAM del login del operador, `sshd`, `591`…), ajenas
   al ataque. **0** filas del ataque en `ruido`.
+
+---
+
+## § Repetición auditada (rev)
+
+> Bloque `fase-03-repeticiones` (**tanda R3**), **2026-10-01**. `esperado_rev` firmado **APROBADO 2026-10-01 (validación humana)** ANTES del primer `t0`. Añadido por `tfg-executor`. **Sin secretos.**
+
+### Motivo
+
+- **`motivo_repeticion` = `prestaging`.** Auditoría metodológica (`_fases/fase-03-auditoria-metodologica/auditoria_decisiones.md` §2; `Soporte/Ataques/criterio_ataques.md` §C): el ataque **preparaba su payload (`hook.so`/`credfetch`) dentro de `[t0,t1]`**, ensuciando la ventana con una preparación que **no es la técnica**.
+
+### Qué cambió respecto al original (el original NO se toca)
+
+- **Método original:** propio — decodificación del payload (`.b64`) + `LD_PRELOAD=hook.so credfetch` **dentro** de la ventana.
+- **Método de la repetición (pre-staging):** el payload (`hook.so`, `credfetch`), la credencial simulada y el log se **materializan ANTES de `t0`** (modo `prestage`); la ventana ejecuta **solo** la acción de la técnica (`LD_PRELOAD`). Desaparecen las señales `ambigua` de creación del payload.
+- **Material antes de `t0`:** `hook.so` (`sha256=dcee6f8cadc7179331dd7b00487f1eda50eebdfbc71f825eebf7db347e27f808`), `credfetch` (`sha256=ae68ff852fe2a2668762365340d2c871e383cbb1356b83d5c64efee911200479`), `credencial_simulada.txt`, `hook_capture.log` (ver `Logs/ATA035_rev{1,2}/prestaging.out`).
+
+### Iteraciones (rev)
+
+| Iter | t0 (UTC) | t1 (UTC) | filas | deteccion | auto_ruido | ruido_conocido | artefacto_ataque | dudosa |
+|---|---|---|---|---|---|---|---|---|
+| 1 | `2026-10-01T21:30:20Z` | `2026-10-01T21:30:52Z` | 844 | **1** | 641 | 194 | 8 | 0 |
+| 2 | `2026-10-01T21:34:21Z` | `2026-10-01T21:34:53Z` | 834 | **1** | 632 | 193 | 8 | 0 |
+
+### Resultado (métrica congelada O1+O2)
+
+- **O1 (detectado):** sí — `rule_id` = `['80792']`.
+- **O2 (acciones cubiertas):** iter1 = 1/1 · iter2 = 1/1 (`S1`; el ancla `S2` no es detector).
+  - iter1 primera evidencia: `2026-10-01T21:30:20.780Z` `audit_exe=/home/angel/lab-attack/ATA035/credfetch`.
+  - iter2 primera evidencia: `2026-10-01T21:34:23.155Z` `audit_exe=/home/angel/lab-attack/ATA035/credfetch`.
+- **Doble iteración (v2):** `iguales` (mismo `rule_id` de detección; recuento estable; sin dudosas).
+- **`dudosa` resueltas:** iter1: ruido=5 · iter2: ruido=4 (PAM del login del operador).
+- **0 filas del ataque en `ruido`** (pertenencia por carpeta).
+
+### Prueba de efecto (independiente de la alerta)
+
+- iter1 y iter2: `CRED_API_HOOKING=OK` — el hook capturó el token de entorno (`SERVICE_TOKEN toy-token-4242`) y la contraseña simulada (`clave-simulada-7777`); `credfetch_rc=0`.
+
+### Cómo se cumple el motivo (pre-staging)
+
+- El payload y la credencial se escribieron **ANTES de `t0`** (`prestaging.out`: `PRESTAGE=OK`); **ninguna** señal `ambigua` de la siembra (`80790`/`80781`/`80782`) cae en `[t0,t1]`. La ventana mide **solo** el `execve` del proceso con el hook.
+
+### Trazabilidad
+
+- `esperado_rev`: `…/T1056.004-Credential_API_Hooking/ATA035_esperado_rev.csv` (`sha256=22d26d8911147a2657f75c4e53c794f85c7fb82f1aba189e77332c4280f6a793`).
+- `ataque_rev`: `…/T1056.004-Credential_API_Hooking/ATA035_ataque_rev.sh` (`sha256=e2ec504946b990612dc0687b817330ddac0548bf4f43290a9889a764a4fafe13`).
+- C0: `Soporte/Ataques/c0/ATA035_rev_logtest.txt` + `ATA035_rev_preflight.md` (**PASA**, sin silenciadores).
+- Detalle: `…/CSV/ATA035_rev{1,2}-Detalle.csv` · Auditado: `…/Auditado/ATA035_rev{1,2}-Audited.csv`.

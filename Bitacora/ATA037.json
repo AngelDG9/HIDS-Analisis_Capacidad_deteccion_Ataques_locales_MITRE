@@ -77,5 +77,69 @@
     { "ts": "2026-09-29T10:48:38Z", "tipo": "t0", "detalle": "iter2 t0" },
     { "ts": "2026-09-29T10:49:11Z", "tipo": "t1", "detalle": "iter2 t1" },
     { "ts": "2026-09-29T10:51:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (13/14, {80792}) -> iguales" }
-  ]
+  ],
+  "repeticion": {
+    "fecha": "2026-10-01",
+    "motivo_repeticion": "prestaging",
+    "motivo_detalle": "Auditoría metodológica: ATA037 creaba y formateaba (`mke2fs`) la imagen DENTRO de `[t0,t1]`, ensuciando la ventana con la preparación (que no es la técnica) (`_fases/fase-03-auditoria-metodologica/auditoria_decisiones.md` §2; `Soporte/Ataques/criterio_ataques.md` §C).",
+    "metodo_original": "propio: dd (crear imagen) + mkfs.ext4 (mke2fs) + mount + escribir dato + dd urandom (wipe) + umount, TODO dentro de la ventana",
+    "metodo_repeticion": "pre-staging: la imagen disk.img (ext4) se crea y formatea ANTES de t0; la ventana ejecuta SOLO el wipe del contenido (montar + sobrescribir in place + desmontar)",
+    "material_prestaged": "disk.img (16 777 216 bytes, ext4, sha_dato_antes=bb9f8df61474d25e71fa00722318cd387396ca1736605e1248821cc0de3d3af8); PRESTAGE=OK antes de t0.",
+    "fim_flush_pre_t0": "scan FIM forzado tras el pre-staging y ANTES de t0",
+    "esperado_rev": {
+      "path": "Dataset/Ataques/Comandos/T1561.001-Disk_Content_Wipe/ATA037_esperado_rev.csv",
+      "sha256": "c0c157a378010946beaa36f7ef16f9bfb9ef2ca3fe135503b850ec5955127ac0",
+      "gate_humano": "APROBADO 2026-10-01 (validación humana)"
+    },
+    "ataque_rev": {
+      "path": "Dataset/Ataques/Comandos/T1561.001-Disk_Content_Wipe/ATA037_ataque_rev.sh",
+      "sha256": "1539bea4c9ed7f9d1629b1e01bf970c60d971ec90ce3b0d97d22a5603801cc50"
+    },
+    "c0": {
+      "logtest": "Soporte/Ataques/c0/ATA037_rev_logtest.txt",
+      "logtest_sha256": "03c80c20703573ab4936d782290ca3ac1f47caaab953ee3801f0244e53b9e582",
+      "preflight": "Soporte/Ataques/c0/ATA037_rev_preflight.md",
+      "preflight_sha256": "ce134013de7c7d945ca50c892adba6b161c1d85f4c20737e9b01f6ace0eb97f9",
+      "c0_plan": "Soporte/Ataques/c0/ATA037_rev_c0_plan.md",
+      "resultado": "PASA (80792 level 3; sin silenciador)"
+    },
+    "iteraciones_rev": [
+      {
+        "iter": 1, "t0": "2026-10-01T21:45:49Z", "t1": "2026-10-01T21:46:21Z",
+        "filas": 967, "deteccion": 10, "auto_ruido": 625, "ruido_conocido": 301, "dudosa": 0, "artefacto_ataque": 31,
+        "ids": ["80792"], "matched": ["T1561.001-S1", "T1561.001-S2", "T1561.001-S3", "T1561.001-S4"],
+        "primera": { "timestamp_utc": "2026-10-01T21:45:50.948Z", "evidencia": "audit_exe=/usr/sbin/losetup", "rule_id": "80792" },
+        "resueltas": { "artefacto": 1, "ruido": 31 },
+        "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA037_rev1-Detalle.csv",
+        "detalle_sha256": "b5ac03e78d54ae4f209fefc662d30acc7ff9515690c8b2019d42226c9fd00131",
+        "detalle_raw": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA037_rev1-Detalle_raw.csv",
+        "detalle_raw_sha256": "d05aab33c617579fcbba85633de971b8ac388699f46bb00c844af699dbfd8ba1",
+        "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA037_rev1-Audited.csv",
+        "audited_sha256": "65ac5ce8ca05c77c6778c4f9fb125c4ca03459ff20af483edde657ba370c010b",
+        "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA037_rev1-Revision.csv",
+        "revision_sha256": "b2862ff890c60743ad3935449e8655a4115b820c82cb4be1d9833a7a8a77b082"
+      },
+      {
+        "iter": 2, "t0": "2026-10-01T21:49:45Z", "t1": "2026-10-01T21:50:18Z",
+        "filas": 977, "deteccion": 11, "auto_ruido": 636, "ruido_conocido": 300, "dudosa": 0, "artefacto_ataque": 30,
+        "ids": ["80792"], "matched": ["T1561.001-S1", "T1561.001-S2", "T1561.001-S3", "T1561.001-S4"],
+        "primera": { "timestamp_utc": "2026-10-01T21:49:47.271Z", "evidencia": "audit_exe=/usr/sbin/losetup", "rule_id": "80792" },
+        "resueltas": { "ruido": 31 },
+        "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA037_rev2-Detalle.csv",
+        "detalle_sha256": "3d2eb12994c075c51aabe59031d7204f3221d28263940cf76d8521cad87fb47c",
+        "detalle_raw": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA037_rev2-Detalle_raw.csv",
+        "detalle_raw_sha256": "90a11882433242544e5837ef375587efdc2a948869d9c32a9d67272ebe4a7075",
+        "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA037_rev2-Audited.csv",
+        "audited_sha256": "cc8361bef4d26e1dadf43ab2c8ea3f392c21d2d1f7a9f53f1f457955a3980158",
+        "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA037_rev2-Revision.csv",
+        "revision_sha256": "2b8069eb4a5d2dab8b71522209ee2a8402f0fd3acd041458d8f6a3100044639f"
+      }
+    ],
+    "veredicto_rev": "iguales",
+    "resultado_rev": "detectado (O1=si) rule_ids=['80792']; O2=4/4/4",
+    "prueba_de_efecto": "iter1: sha_dato antes(bb9f8df6..) != despues(1caa9ea3..); iter2: antes(bb9f8df6..) != despues(0508c143..); estructura ext4 intacta y montable; loop_residual=0.",
+    "filas_resueltas": { "iter1": { "artefacto": 1, "ruido": 31 }, "iter2": { "ruido": 31 } },
+    "nota": "Pre-staging: la imagen se crea/formatea ANTES de t0 (mke2fs fuera de la ventana); ninguna senal ambigua de siembra cae en [t0,t1]. Solo imagen loop; 0 loops residuales. El original NO se toca.",
+    "ref_original": { "ficha": "Dataset/Ataques/Resultados/Wazuh/linux/ATA037_meta.md", "bitacora": "Bitacora/ATA037.json" }
+  }
 }

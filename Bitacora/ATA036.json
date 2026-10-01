@@ -77,5 +77,69 @@
     { "ts": "2026-09-29T10:39:20Z", "tipo": "t0", "detalle": "iter2 t0" },
     { "ts": "2026-09-29T10:39:59Z", "tipo": "t1", "detalle": "iter2 t1" },
     { "ts": "2026-09-29T10:42:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (1/1, {80792}) -> iguales" }
-  ]
+  ],
+  "repeticion": {
+    "fecha": "2026-10-01",
+    "motivo_repeticion": "prestaging",
+    "motivo_detalle": "Auditoría metodológica: ATA036 materializaba su payload (`memedit`/`target`) y lanzaba `target` DENTRO de `[t0,t1]`, ensuciando la ventana con una preparación que no es la técnica (`_fases/fase-03-auditoria-metodologica/auditoria_decisiones.md` §2; `Soporte/Ataques/criterio_ataques.md` §C).",
+    "metodo_original": "propio: base64 -d del payload + lanzamiento de target DENTRO de la ventana, y luego memedit <pid>",
+    "metodo_repeticion": "pre-staging: memedit/target materializados y target lanzado ANTES de t0; la ventana ejecuta SOLO el ptrace de memedit",
+    "material_prestaged": "memedit (sha256 8205ab6af66e92fb70576f80fb1f85abe52c157a4e549887c45c13105952de0c), target (sha256 53ee76e60a16ba921e3774b6a62455f18b696cd7c4ae8d5c383605cb91e1587e); target lanzado antes de t0 (pid 3500 en rev1 / 3585 en rev2).",
+    "fim_flush_pre_t0": "scan FIM forzado tras el pre-staging y ANTES de t0",
+    "esperado_rev": {
+      "path": "Dataset/Ataques/Comandos/T1565.003-Runtime_Data_Manipulation/ATA036_esperado_rev.csv",
+      "sha256": "e0e47bbe02d5440f64ddaf47ce292bd4f31cf6122b4b009b4165fd5f1c83cbed",
+      "gate_humano": "APROBADO 2026-10-01 (validación humana)"
+    },
+    "ataque_rev": {
+      "path": "Dataset/Ataques/Comandos/T1565.003-Runtime_Data_Manipulation/ATA036_ataque_rev.sh",
+      "sha256": "197bee5b9ad117d292670f111ac9015bc03c1d24f6f6ed79cc4921387de41fb0"
+    },
+    "c0": {
+      "logtest": "Soporte/Ataques/c0/ATA036_rev_logtest.txt",
+      "logtest_sha256": "1c8878749ede0c846133c49d855d5246f1377b8766dac28bcc2ce8404564612d",
+      "preflight": "Soporte/Ataques/c0/ATA036_rev_preflight.md",
+      "preflight_sha256": "664a2e39c09d21dc86822b35ee7d0652459d7f33be3fe38a7ac6726ce2577919",
+      "c0_plan": "Soporte/Ataques/c0/ATA036_rev_c0_plan.md",
+      "resultado": "PASA (80792 level 3; sin silenciador)"
+    },
+    "iteraciones_rev": [
+      {
+        "iter": 1, "t0": "2026-10-01T21:38:02Z", "t1": "2026-10-01T21:38:37Z",
+        "filas": 912, "deteccion": 1, "auto_ruido": 700, "ruido_conocido": 198, "dudosa": 0, "artefacto_ataque": 13,
+        "ids": ["80792"], "matched": ["T1565.003-S1"],
+        "primera": { "timestamp_utc": "2026-10-01T21:38:03.965Z", "evidencia": "audit_exe=/home/angel/lab-attack/ATA036/memedit", "rule_id": "80792" },
+        "resueltas": { "ruido": 5 },
+        "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA036_rev1-Detalle.csv",
+        "detalle_sha256": "014449d60a8d51feea9191dc69aaca0820e1a25f162d3dde9afb71dad8e5bda8",
+        "detalle_raw": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA036_rev1-Detalle_raw.csv",
+        "detalle_raw_sha256": "6f00f90c0bae5906875edbdc883a61b719a20f79e4f074d6e4b16142c2493a5b",
+        "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA036_rev1-Audited.csv",
+        "audited_sha256": "8bb2f9bb8616404a10293af08dc35b89c2ea2b35f3226a5e4a20f7d6aa07be5f",
+        "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA036_rev1-Revision.csv",
+        "revision_sha256": "bb7b877440dfd97e031e1fd476e8ba5ba84196f6a0e67ea88635f3cbaab621c5"
+      },
+      {
+        "iter": 2, "t0": "2026-10-01T21:42:03Z", "t1": "2026-10-01T21:42:38Z",
+        "filas": 965, "deteccion": 1, "auto_ruido": 755, "ruido_conocido": 196, "dudosa": 0, "artefacto_ataque": 13,
+        "ids": ["80792"], "matched": ["T1565.003-S1"],
+        "primera": { "timestamp_utc": "2026-10-01T21:42:05.472Z", "evidencia": "audit_exe=/home/angel/lab-attack/ATA036/memedit", "rule_id": "80792" },
+        "resueltas": { "ruido": 5 },
+        "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA036_rev2-Detalle.csv",
+        "detalle_sha256": "b8d5ebbf97df4ec395e4e9aad4ec44e93438395d5f09d7f5970376fa185c9d6e",
+        "detalle_raw": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA036_rev2-Detalle_raw.csv",
+        "detalle_raw_sha256": "cfcda57c20f29d183cbcbabf6b4e260e1f968585a56ec996638b38b96d9cadb2",
+        "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA036_rev2-Audited.csv",
+        "audited_sha256": "c1c2e27a3b7f9c782004bc95a418a921f7e0e44c0f02cef1e59bea21577ca624",
+        "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA036_rev2-Revision.csv",
+        "revision_sha256": "bd59f275667f8d6329f04c3512d11ac598bf3acf1e737e9ccfba758785aedf77"
+      }
+    ],
+    "veredicto_rev": "iguales",
+    "resultado_rev": "detectado (O1=si) rule_ids=['80792']; O2=1/1/1",
+    "prueba_de_efecto": "iter1/iter2: RUNTIME_DATA_MANIPULATION=OK (SALDO=1000 -> SALDO=9999 en el proceso EN EJECUCION); memedit_rc=0.",
+    "filas_resueltas": { "iter1": { "ruido": 5 }, "iter2": { "ruido": 5 } },
+    "nota": "Pre-staging: el payload y el proceso target se preparan/lanzan ANTES de t0; ninguna senal ambigua de siembra cae en [t0,t1]. El original NO se toca.",
+    "ref_original": { "ficha": "Dataset/Ataques/Resultados/Wazuh/linux/ATA036_meta.md", "bitacora": "Bitacora/ATA036.json" }
+  }
 }

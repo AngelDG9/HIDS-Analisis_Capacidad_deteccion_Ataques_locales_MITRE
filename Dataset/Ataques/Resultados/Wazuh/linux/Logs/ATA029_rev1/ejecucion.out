@@ -1,0 +1,31 @@
+ATA029_rev · T1005 Data from Local System (atómica ART sqlite) — repeticion
+T0=2026-10-01T19:19:37Z
+--- comando atómico: find . ! -executable -exec bash -c '… head|strings → sqlite_dump.sh' ---
+./art
+List of tables:
+users
+Retrieving data from tables:
+Table: users
+1|bart@thesimpsons.com|32f8e0bb6944a6efe8b1351b72b8facc
+2|lisa@thesimpsons.com|bad6f1ca002d538211f2765e159c9c5f
+3|maggie@thesimpsons.com|88d4e59c78f144b9c793f60c97e8b02d
+4|marge@thesimpsons.com|c777e5de61c5b415b13b2bfc73395f9e
+
+./gta.db
+List of tables:
+releases
+cities
+Retrieving data from tables:
+Table: releases
+1997|Grand Theft Auto|state of New Guernsey
+1999|Grand Theft Auto 2|Anywhere, USA
+2001|Grand Theft Auto III|Liberty City
+2002|Grand Theft Auto: Vice City|Vice City
+2004|Grand Theft Auto: San Andreas|state of San Andreas
+2008|Grand Theft Auto IV|Liberty City
+2013|Grand Theft Auto V|Los Santos
+Table: cities
+Liberty City|New York
+
+--- prueba de efecto: el volcado anterior (tablas y filas) es la recoleccion ---
+T1_LOCAL=2026-10-01T19:19:38Z

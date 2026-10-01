@@ -73,5 +73,69 @@
     { "ts": "2026-09-29T10:24:12Z", "tipo": "t1", "detalle": "iter2 t1" },
     { "ts": "2026-09-29T10:26:00Z", "tipo": "cierre", "detalle": "criterio v2: C1' difiere solo por rule_id 11 (stats interno) -> review justificado" },
     { "ts": "2026-10-01T00:00:00Z", "tipo": "cierre", "detalle": "fase-03-auditoria-metodologica: arreglado el falso positivo rule_id 11 (stats del manager) -> auto_ruido:stats; ATA035 iter2 deteccion 2->1, doble_iteracion=iguales, estado=cerrado" }
-  ]
+  ],
+  "repeticion": {
+    "fecha": "2026-10-01",
+    "motivo_repeticion": "prestaging",
+    "motivo_detalle": "Auditoría metodológica: ATA035 preparaba su payload (`hook.so`/`credfetch`) DENTRO de `[t0,t1]`, ensuciando la ventana con una preparación que no es la técnica (`_fases/fase-03-auditoria-metodologica/auditoria_decisiones.md` §2; `Soporte/Ataques/criterio_ataques.md` §C).",
+    "metodo_original": "propio: base64 -d del payload (.b64) + LD_PRELOAD=hook.so credfetch DENTRO de la ventana",
+    "metodo_repeticion": "pre-staging: payload (hook.so/credfetch), credencial simulada y log materializados ANTES de t0; la ventana ejecuta SOLO LD_PRELOAD credfetch",
+    "material_prestaged": "hook.so (sha256 dcee6f8cadc7179331dd7b00487f1eda50eebdfbc71f825eebf7db347e27f808), credfetch (sha256 ae68ff852fe2a2668762365340d2c871e383cbb1356b83d5c64efee911200479), credencial_simulada.txt, hook_capture.log; PRESTAGE=OK antes de t0.",
+    "fim_flush_pre_t0": "scan FIM forzado tras el pre-staging y ANTES de t0",
+    "esperado_rev": {
+      "path": "Dataset/Ataques/Comandos/T1056.004-Credential_API_Hooking/ATA035_esperado_rev.csv",
+      "sha256": "22d26d8911147a2657f75c4e53c794f85c7fb82f1aba189e77332c4280f6a793",
+      "gate_humano": "APROBADO 2026-10-01 (validación humana)"
+    },
+    "ataque_rev": {
+      "path": "Dataset/Ataques/Comandos/T1056.004-Credential_API_Hooking/ATA035_ataque_rev.sh",
+      "sha256": "e2ec504946b990612dc0687b817330ddac0548bf4f43290a9889a764a4fafe13"
+    },
+    "c0": {
+      "logtest": "Soporte/Ataques/c0/ATA035_rev_logtest.txt",
+      "logtest_sha256": "40ee6d9e94c39fcbbe0c4bb22140c49b1c3e10252e65856d75baae172db4a16f",
+      "preflight": "Soporte/Ataques/c0/ATA035_rev_preflight.md",
+      "preflight_sha256": "5d73022acc9d8ffd47ef22473974bc081395a0530d3fe3aec6f19160aa8a2e1b",
+      "c0_plan": "Soporte/Ataques/c0/ATA035_rev_c0_plan.md",
+      "resultado": "PASA (80792 level 3; sin silenciador)"
+    },
+    "iteraciones_rev": [
+      {
+        "iter": 1, "t0": "2026-10-01T21:30:20Z", "t1": "2026-10-01T21:30:52Z",
+        "filas": 844, "deteccion": 1, "auto_ruido": 641, "ruido_conocido": 194, "dudosa": 0, "artefacto_ataque": 8,
+        "ids": ["80792"], "matched": ["T1056.004-S1"],
+        "primera": { "timestamp_utc": "2026-10-01T21:30:20.780Z", "evidencia": "audit_exe=/home/angel/lab-attack/ATA035/credfetch", "rule_id": "80792" },
+        "resueltas": { "ruido": 5 },
+        "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA035_rev1-Detalle.csv",
+        "detalle_sha256": "526012478e2e0e756ef20fd6bcfc60054a2a00273477bc44a7e63b122de980e6",
+        "detalle_raw": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA035_rev1-Detalle_raw.csv",
+        "detalle_raw_sha256": "2421fd8ea375c5ff917c3b36ca3d10892b0b9a2aaec607dc09c94bcecd5dc83a",
+        "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA035_rev1-Audited.csv",
+        "audited_sha256": "97bce03a162866e8ea6f90597759a66a4bda4ec6e1f1af2eb03856dad85b78ce",
+        "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA035_rev1-Revision.csv",
+        "revision_sha256": "44a7ca55e99afeff808cf560f0962a0ab0ec534359a59cbf17911fe472ebde7e"
+      },
+      {
+        "iter": 2, "t0": "2026-10-01T21:34:21Z", "t1": "2026-10-01T21:34:53Z",
+        "filas": 834, "deteccion": 1, "auto_ruido": 632, "ruido_conocido": 193, "dudosa": 0, "artefacto_ataque": 8,
+        "ids": ["80792"], "matched": ["T1056.004-S1"],
+        "primera": { "timestamp_utc": "2026-10-01T21:34:23.155Z", "evidencia": "audit_exe=/home/angel/lab-attack/ATA035/credfetch", "rule_id": "80792" },
+        "resueltas": { "ruido": 4 },
+        "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA035_rev2-Detalle.csv",
+        "detalle_sha256": "357af8172f2112127e577088527a58646bc1087efb5223bbac93665b4bc8ae42",
+        "detalle_raw": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA035_rev2-Detalle_raw.csv",
+        "detalle_raw_sha256": "656ac30a83efddcd94642a8ba69054b802a5cf40ef46067068f660dea8f45d70",
+        "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA035_rev2-Audited.csv",
+        "audited_sha256": "daacd414e0d2f58c0f97c8d4f7f53db6be0a77b6d8d24b5b39795bab9647c5df",
+        "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA035_rev2-Revision.csv",
+        "revision_sha256": "71142e2697bde6fd8f29fdf7659ca2e710dc21dd93816267511b7dd0fee83b6d"
+      }
+    ],
+    "veredicto_rev": "iguales",
+    "resultado_rev": "detectado (O1=si) rule_ids=['80792']; O2=1/1/1",
+    "prueba_de_efecto": "iter1/iter2: CRED_API_HOOKING=OK (hook LD_PRELOAD capturo token de entorno y contrasena simulada); credfetch_rc=0.",
+    "filas_resueltas": { "iter1": { "ruido": 5 }, "iter2": { "ruido": 4 } },
+    "nota": "Pre-staging: el payload se materializa ANTES de t0; ninguna senal ambigua de siembra cae en [t0,t1]. El original NO se toca.",
+    "ref_original": { "ficha": "Dataset/Ataques/Resultados/Wazuh/linux/ATA035_meta.md", "bitacora": "Bitacora/ATA035.json" }
+  }
 }

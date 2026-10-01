@@ -1,0 +1,19 @@
+ATA016_rev · T1213.006 Databases (cp + grep sobre SQLite local) — repeticion (pre-staging)
+T0=2026-10-01T19:50:01Z
+es_sqlite(0/1)=1
+--- estado final ---
+-rw-r--r-- 1 angel angel 8192 Oct  1 21:48 /home/angel/lab-legit/clientes_clientes.db
+
+/home/angel/lab-attack/ATA016/collected/:
+total 12
+-rw-rw-r-- 1 angel angel   32 Oct  1 21:50 clientes_codigos.txt
+-rw-r--r-- 1 angel angel 8192 Oct  1 21:50 clientes.db
+codigos_extraidos=4
+cli1001
+cli1002
+cli1003
+cli1004
+sha256 origen  = 3726d9bcc55b4d68e416b3a78a29bdf1aefcb4943c4fa6c2b52a7fd4b71e2370
+sha256 copiado = 3726d9bcc55b4d68e416b3a78a29bdf1aefcb4943c4fa6c2b52a7fd4b71e2370
+COLECCION=OK (BD SQLite valida copiada integra; 4 registros extraidos)
+T1_LOCAL=2026-10-01T19:50:02Z

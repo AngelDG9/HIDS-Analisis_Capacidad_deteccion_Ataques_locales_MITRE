@@ -1,0 +1,14 @@
+# ATA036_esperado_rev.csv | ATA036 · T1565.003 Runtime Data Manipulation | TFG HIDS · Fase 3 (repeticiones, tanda R3)
+# Redactado el 2026-10-01, ANTES de ver ninguna alerta. MÉTODO CORREGIDO = pre-staging.
+# Los payloads (`memedit`/`target`) y el proceso de laboratorio `target` se materializan/lanzan
+#   ANTES de t0 → la ventana mide SOLO la acción de la técnica: el `ptrace` (`memedit`).
+#   Desaparecen las señales `ambigua` de creación del payload/estado.
+# Gate humano: APROBADO 2026-10-01 (validación humana)
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+# Convención H4: cada señal audit_exe se acompaña de audit_cwd de la carpeta del ataque.
+# El "binario real" es la herramienta de manipulación `memedit` (ruta absoluta bajo lab-attack/ATA036).
+# PUNTO CIEGO DECLARADO: el PTRACE y la escritura en /proc/<pid>/mem NO generan telemetría con este
+#   ruleset (audit solo audita execve y escrituras de fichero): el HIDS ve la HERRAMIENTA, no la manipulación.
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1565.003-S1,deteccion,audit_exe,/home/angel/lab-attack/ATA036/memedit,Process Creation,T1565.003,herramienta de manipulacion en memoria del proceso de laboratorio (execve 80792)
+T1565.003-S2,deteccion,audit_cwd,/home/angel/lab-attack/ATA036/*,Process Creation,T1565.003,ancla H4 (cwd del ataque)

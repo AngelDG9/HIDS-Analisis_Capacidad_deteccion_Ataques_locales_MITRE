@@ -1,0 +1,20 @@
+ATA036_rev -ภ T1565.003 Runtime Data Manipulation (ptrace/memoria) ิว๖ repeticion (pre-staging)
+MODE=attack
+target_pid=3500
+target_exe=/home/angel/lab-attack/ATA036/target
+T0=2026-10-01T21:38:02Z
+--- ANTES (dato en memoria) ---
+SALDO=1000
+SALDO=1000
+FOUND addr=0x628775c07020 old=SALDO=1000 new=SALDO=9999
+FOUND addr=0x62877f1b0480 old=SALDO=1000 new=SALDO=9999
+FOUND addr=0x7ffea59eea20 old=SALDO=1000 new=SALDO=9999
+memedit_rc=0
+--- DESPUES (dato en memoria) ---
+SALDO=9999
+SALDO=9999
+ocurrencias_antes=8
+ocurrencias_despues=3
+RUNTIME_DATA_MANIPULATION=OK (dato del proceso EN EJECUCION cambiado en memoria)
+T1_LOCAL=2026-10-01T21:38:06Z
+

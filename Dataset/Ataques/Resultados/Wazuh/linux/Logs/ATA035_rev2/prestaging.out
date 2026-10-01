@@ -1,0 +1,11 @@
+ATA035_rev -ภ T1056.004 Credential API Hooking (LD_PRELOAD) ิว๖ repeticion (pre-staging)
+MODE=prestage
+--- payload (pre-staging, antes de t0) ---
+-rw-rw-r-- 1 angel angel    20 Oct  1 23:34 /home/angel/lab-attack/ATA035/credencial_simulada.txt
+-rwx------ 1 angel angel 16320 Oct  1 23:34 /home/angel/lab-attack/ATA035/credfetch
+-rw-rw-r-- 1 angel angel     0 Oct  1 23:34 /home/angel/lab-attack/ATA035/hook_capture.log
+-rw------- 1 angel angel 16248 Oct  1 23:34 /home/angel/lab-attack/ATA035/hook.so
+dcee6f8cadc7179331dd7b00487f1eda50eebdfbc71f825eebf7db347e27f808  /home/angel/lab-attack/ATA035/hook.so
+ae68ff852fe2a2668762365340d2c871e383cbb1356b83d5c64efee911200479  /home/angel/lab-attack/ATA035/credfetch
+PRESTAGE=OK (hook.so + credfetch + credencial + log preparados ANTES de t0)
+

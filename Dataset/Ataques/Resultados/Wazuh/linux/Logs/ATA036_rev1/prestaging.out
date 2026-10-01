@@ -1,0 +1,11 @@
+ATA036_rev -ภ T1565.003 Runtime Data Manipulation (ptrace/memoria) ิว๖ repeticion (pre-staging)
+MODE=prestage
+--- payload (pre-staging, antes de t0) ---
+-rwx------ 1 angel angel 16800 Oct  1 23:37 /home/angel/lab-attack/ATA036/memedit
+-rwx------ 1 angel angel 16264 Oct  1 23:37 /home/angel/lab-attack/ATA036/target
+53ee76e60a16ba921e3774b6a62455f18b696cd7c4ae8d5c383605cb91e1587e  /home/angel/lab-attack/ATA036/target
+8205ab6af66e92fb70576f80fb1f85abe52c157a4e549887c45c13105952de0c  /home/angel/lab-attack/ATA036/memedit
+target_pid=3500
+target_exe=/home/angel/lab-attack/ATA036/target
+PRESTAGE=OK (memedit + target materializados; target lanzado ANTES de t0, pid=3500)
+

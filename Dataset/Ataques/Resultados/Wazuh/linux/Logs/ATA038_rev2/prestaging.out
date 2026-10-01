@@ -1,0 +1,10 @@
+﻿ATA038_rev ┬À T1529 System Shutdown/Reboot (at├│mica ART, reinicio VM victima) ÔÇö repeticion
+MODE=prestage
+hostname=victima-linux
+ips=192.168.65.129 
+ata=ATA038_rev
+host=victima-linux
+uptime_antes=up 1 minute
+boot_id_antes=f08d3336-c302-44aa-a393-ee7fe37bc180
+prestaging_utc=2026-10-01T22:11:57Z
+PRESTAGE=OK (estado pre_reboot.txt escrito ANTES de t0)

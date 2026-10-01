@@ -720,7 +720,7 @@ def test_p2_p7_ninguna_fila_del_ataque_cae_en_ruido_ni_auto():
     vacias_no_declaradas = []
     for det in ventanas:
         base = det.name.replace("-Detalle.csv", "")
-        ata = base.split("_iter")[0]
+        ata = base.split("_iter")[0].split("_rev")[0]
         signals = fr.load_signals(str(_esperado_real(ata)))
         with open(det, "r", encoding="utf-8", newline="") as fh:
             rows = list(csv.DictReader(ln for ln in fh if not ln.lstrip().startswith("#")))

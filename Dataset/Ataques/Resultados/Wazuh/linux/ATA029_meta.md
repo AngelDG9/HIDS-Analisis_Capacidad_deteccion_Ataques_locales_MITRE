@@ -126,3 +126,52 @@ bash ATA029_ataque.sh   # cp de la lista declarada (3 ficheros) a loot/
 4. **Solapamiento declarado:** la detección de `cp` es la misma familia que en ATA014 (copia de
    material); aquí el valor es la **recolección dirigida por lista** y el refuerzo de la lección
    «leer no deja rastro».
+
+---
+
+## § Repetición auditada (rev)
+
+> Bloque `fase-03-repeticiones` (tandas R1+R2), **2026-10-01**. `esperado_rev` firmado **APROBADO 2026-10-01 (validación humana)** ANTES del primer `t0`. Añadido por `tfg-executor`. **Sin secretos.**
+
+### Motivo
+
+- **`motivo_repeticion` = `art+prestaging`.** Auditoría: ATA029 quedó `no_se_comprobo` (había prueba ART) Y además sembraba su material dentro de [t0,t1] (obs. H1/H2).
+
+### Qué cambió respecto al original (el original NO se toca)
+
+- **Método original:** propio: siembra del material dentro de la ventana + `cp` de la lista declarada.
+- **Método de la repetición:** prueba de ART «Find and dump sqlite databases (Linux)» con los 3 src/ pre-steados ANTES de t0 (en lugar del `curl` remoto).
+- **Prueba ART citada:** `guid=00cbb875-7ae4-4cf1-b638-e543fd825300` · `file=atomics/T1005/T1005.yaml` · `commit=388942adbd9641f4dfdcf079d7efe9a75ec0ac43`. ART_tal_cual offline: pre-staging §C de los 3 src/ y de las dependencias `sqlite3`/`strings` (instaladas OFFLINE desde .deb fijados URL+sha256); el `cd $HOME` del atómico se parametriza a la carpeta del ataque (cwd del lab). El resto del comando es el de la atómica.
+- **Material antes de `t0`:** 3 src/ de la atómica (art, gta.db, sqlite_dump.sh) + paquetes .deb fijados (sqlite3 3.45.1-1ubuntu2.8 + binutils 2.42-4ubuntu2.10 y deps) instalados offline ANTES de t0; URL+sha256 en `Soporte/Ataques/c0/ATA029_rev_prestaging_paquetes.md`.
+
+### Iteraciones (rev)
+
+| Iter | t0 (UTC) | t1 (UTC) | filas | deteccion | auto_ruido | ruido_conocido | artefacto_ataque | dudosa |
+|---|---|---|---|---|---|---|---|---|
+| 1 | `2026-10-01T19:19:37Z` | `2026-10-01T19:20:09Z` | 863 | **21** | 603 | 226 | 13 | 0 |
+| 2 | `2026-10-01T19:23:31Z` | `2026-10-01T19:24:04Z` | 863 | **22** | 606 | 220 | 15 | 0 |
+
+### Resultado (métrica congelada O1+O2)
+
+- **O1 (detectado):** sí — `rule_id` = `['80792']`.
+- **O2 (acciones cubiertas):** iter1 = 3/3 · iter2 = 3/3.
+  - iter1 primera evidencia: `2026-10-01T19:19:38.073Z` `audit_exe=/usr/bin/find`.
+  - iter2 primera evidencia: `2026-10-01T19:23:32.388Z` `audit_exe=/usr/bin/find`.
+- **Doble iteración (v2):** `iguales` (mismo `rule_id` de detección; recuento estable; sin dudosas).
+- **`dudosa` resueltas:** iter1: ruido=13 · iter2: ruido=12.
+- **0 filas del ataque en `ruido`** (verificado por la pertenencia por carpeta).
+
+### Prueba de efecto (independiente de la alerta)
+
+- iter1: la atómica encontró y volcó 2 BDs SQLite (art: tabla users; gta.db: tablas releases, cities).
+- iter2: la atómica encontró y volcó 2 BDs SQLite (art: tabla users; gta.db: tablas releases, cities).
+
+### Trazabilidad
+
+- `esperado_rev`: `Dataset/Ataques/Comandos/T1005-Data_from_Local_System/ATA029_esperado_rev.csv` (`sha256=5cf2de40bd228ddb6dcd18930cef93db8f00ebc6c0f2cfd9721fc0b9ddff4581`).
+- `ataque_rev`: `Dataset/Ataques/Comandos/T1005-Data_from_Local_System/ATA029_ataque_rev.sh` (`sha256=bf0c3684647e5f083eab5369fe5f686cef425c1075d1b317d668ce90fd92fdfc`).
+- C0: `Soporte/Ataques/c0/ATA029_rev_logtest.txt` + `ATA029_rev_preflight.md` (**PASA**, sin silenciadores).
+- Detalle: `Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA029_rev1-Detalle.csv` · `Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA029_rev2-Detalle.csv`.
+- Auditado: `Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA029_rev1-Audited.csv` · `Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA029_rev2-Audited.csv`.
+- **Cierra el `no_se_comprobo` (atómica ART factible offline con pre-staging fijado) y limpia la siembra (material antes de t0).**
+

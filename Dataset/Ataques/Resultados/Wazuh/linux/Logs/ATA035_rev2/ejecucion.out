@@ -1,0 +1,16 @@
+ATA035_rev -ภ T1056.004 Credential API Hooking (LD_PRELOAD) ิว๖ repeticion (pre-staging)
+MODE=attack
+T0=2026-10-01T21:34:21Z
+--- ejecucion con LD_PRELOAD (hook de API) ---
+token_env=toy-token-4242
+password_file=clave-simulada-7777
+credfetch_rc=0
+--- hook_capture.log ---
+SERVICE_TOKEN toy-token-4242
+fgets clave-simulada-7777
+
+capturado_token_env=1
+capturado_password_file=1
+CRED_API_HOOKING=OK (hook LD_PRELOAD capturo token de entorno y contrasena de fichero)
+T1_LOCAL=2026-10-01T21:34:22Z
+

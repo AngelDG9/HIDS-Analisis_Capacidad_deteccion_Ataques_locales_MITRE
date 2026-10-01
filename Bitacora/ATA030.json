@@ -76,5 +76,130 @@
     { "ts": "2026-09-29T09:12:29Z", "tipo": "t0", "detalle": "iter2 t0" },
     { "ts": "2026-09-29T09:13:01Z", "tipo": "t1", "detalle": "iter2 t1" },
     { "ts": "2026-09-29T09:15:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (12/12, {80792}) -> iguales" }
-  ]
+  ],
+  "repeticion": {
+    "fecha": "2026-10-01",
+    "motivo_repeticion": "art",
+    "motivo_detalle": "Auditoría metodológica: ATA030 quedó como `no_se_comprobo` pese a haber prueba ART Linux (mismo mecanismo, offline) — hueco H2 (`_fases/fase-03-auditoria-metodologica/auditoria_decisiones.md` §3).",
+    "metodo_original": "propio: `tar -czf` escrito por el TFG",
+    "metodo_repeticion": "prueba de ART «Data Compressed - nix - tar Folder or File» (`tar -cvzf #{output_file} #{input_file_folder}`)",
+    "prueba_art": {
+      "guid": "7af2b51e-ad1c-498c-aca8-d3290c19535a",
+      "file": "atomics/T1560.001/T1560.001.yaml",
+      "commit": "388942adbd9641f4dfdcf079d7efe9a75ec0ac43",
+      "fuente_norm": "art_tal_cual",
+      "motivo_codigo": "na_art_usado",
+      "motivo_detalle": "se usó ART",
+      "adaptacion": "ART_tal_cual con parametrización de entrada/salida al `lab-attack` (input_file_folder/output_file)."
+    },
+    "material_prestaged": "material de archivado (staging/ con 3 ficheros de juguete) preparado ANTES de t0 (modo prestage).",
+    "fim_flush_pre_t0": "scan FIM forzado tras el pre-staging y ANTES de t0 (evita que los cambios del prestage contaminen la ventana)",
+    "esperado_rev": {
+      "path": "Dataset/Ataques/Comandos/T1560.001-Archive_via_Utility/ATA030_esperado_rev.csv",
+      "sha256": "e3f8707457e5ae95e5ec6a188c3250318c5718a97909eb0838b62cd12089c6ed",
+      "gate_humano": "APROBADO 2026-10-01 (validación humana)"
+    },
+    "ataque_rev": {
+      "path": "Dataset/Ataques/Comandos/T1560.001-Archive_via_Utility/ATA030_ataque_rev.sh",
+      "sha256": "fd3345f9249ba18fbff54457ad687a321d680971356ea8a9c89c3c62b24983c4"
+    },
+    "c0": {
+      "logtest": "Soporte/Ataques/c0/ATA030_rev_logtest.txt",
+      "logtest_sha256": "c3bc78e664d1b44e90b0ee1aeb8178afbba40f0e03f6ceb60d04b8b4143826f6",
+      "preflight": "Soporte/Ataques/c0/ATA030_rev_preflight.md",
+      "preflight_sha256": "ccc42bb2498d4dab956d4648ce38cbb4f3fd4cf49420b387140a1c9d7a1b7e3b",
+      "c0_plan": "Soporte/Ataques/c0/ATA030_rev_c0_plan.md",
+      "resultado": "PASA (80792 level 3 en todos los binarios clave; sin silenciador)"
+    },
+    "iteraciones_rev": [
+      {
+        "iter": 1,
+        "t0": "2026-10-01T18:57:21Z",
+        "t1": "2026-10-01T18:57:53Z",
+        "filas": 851,
+        "deteccion": 12,
+        "auto_ruido": 645,
+        "ruido_conocido": 183,
+        "dudosa": 0,
+        "artefacto_ataque": 11,
+        "ids": [
+          "80792"
+        ],
+        "matched": [
+          "T1560.001-S1",
+          "T1560.001-S2"
+        ],
+        "primera": {
+          "timestamp_utc": "2026-10-01T18:57:22.928Z",
+          "evidencia": "audit_exe=/usr/bin/tar",
+          "rule_id": "80792"
+        },
+        "resueltas": {
+          "artefacto": 1,
+          "ruido": 4
+        },
+        "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA030_rev1-Detalle.csv",
+        "detalle_sha256": "f97038bc49cffcd3240ad32c2a361b2cbd6c2cf446093a48e446b1efc7d44237",
+        "detalle_raw": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA030_rev1-Detalle_raw.csv",
+        "detalle_raw_sha256": "fa43f950b89c9370678cfbde07b39f7716240c423efd4a83ee3659650ab67f9f",
+        "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA030_rev1-Audited.csv",
+        "audited_sha256": "dcd2299cbe9935a333ce5c60eb457f4da239756e5632634ad52539c2161c96f2",
+        "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA030_rev1-Revision.csv",
+        "revision_sha256": "ef1a9955d0350fea31ca30fc33379076ab263a784dc33a4f730af99001344243"
+      },
+      {
+        "iter": 2,
+        "t0": "2026-10-01T19:02:03Z",
+        "t1": "2026-10-01T19:02:35Z",
+        "filas": 844,
+        "deteccion": 12,
+        "auto_ruido": 601,
+        "ruido_conocido": 220,
+        "dudosa": 0,
+        "artefacto_ataque": 11,
+        "ids": [
+          "80792"
+        ],
+        "matched": [
+          "T1560.001-S1",
+          "T1560.001-S2"
+        ],
+        "primera": {
+          "timestamp_utc": "2026-10-01T19:02:03.795Z",
+          "evidencia": "audit_exe=/usr/bin/tar",
+          "rule_id": "80792"
+        },
+        "resueltas": {
+          "artefacto": 1,
+          "ruido": 6
+        },
+        "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA030_rev2-Detalle.csv",
+        "detalle_sha256": "4443b4a6a3d6dcd04bb1a96d20aefc0a080b74ea62acb2ace7642747a4fce4bb",
+        "detalle_raw": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA030_rev2-Detalle_raw.csv",
+        "detalle_raw_sha256": "a0588b8148c393f7b4be78802095d58c7360d8bb1eca357cbb1e33520241f2a9",
+        "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA030_rev2-Audited.csv",
+        "audited_sha256": "2191f8f726a0b954c90741779a20f3cdc23da92e393220ba322938fc47ea26a5",
+        "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA030_rev2-Revision.csv",
+        "revision_sha256": "337923a0371ba47e25e8ad77d35b7fd362a5257a0cf752effe2c75f16dc967a1"
+      }
+    ],
+    "veredicto_rev": "iguales",
+    "resultado_rev": "detectado (O1=si) rule_ids=['80792']; O2=2/2/2",
+    "prueba_de_efecto": "iter1: ARCHIVADO=OK (tar.gz con los 3 ficheros del material); sha256 del .tar.gz | iter2: ARCHIVADO=OK (tar.gz con los 3 ficheros del material); sha256 del .tar.gz",
+    "filas_resueltas": {
+      "iter1": {
+        "artefacto": 1,
+        "ruido": 4
+      },
+      "iter2": {
+        "artefacto": 1,
+        "ruido": 6
+      }
+    },
+    "nota": "Cierra el `no_se_comprobo`: la atómica de ART se ejecutó y se citó (guid+file+commit).",
+    "ref_original": {
+      "ficha": "Dataset/Ataques/Resultados/Wazuh/linux/ATA030_meta.md",
+      "bitacora": "Bitacora/ATA030.json"
+    }
+  }
 }

@@ -1,0 +1,10 @@
+ATA037_rev -ภ T1561.001 Disk Content Wipe (SOLO imagen loop) ิว๖ repeticion (pre-staging)
+MODE=prestage
+imagen_creada=/home/angel/lab-attack/ATA037/disk.img (16777216 bytes)
+tipo_imagen=regular file
+--- estructura (preparada en el pre-staging) ---
+/home/angel/lab-attack/ATA037/disk.img: Linux rev 1.0 ext4 filesystem data, UUID=39c31ae5-6623-4e68-ae96-35b59b536ceb (extents) (64bit) (large files) (huge files)
+loop_asignado=/dev/loop0
+sha_dato_antes=bb9f8df61474d25e71fa00722318cd387396ca1736605e1248821cc0de3d3af8
+PRESTAGE=OK (imagen ext4 creada con dato; sha_dato_antes=bb9f8df61474d25e71fa00722318cd387396ca1736605e1248821cc0de3d3af8)
+

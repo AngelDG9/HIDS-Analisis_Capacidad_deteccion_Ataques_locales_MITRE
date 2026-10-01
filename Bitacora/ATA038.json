@@ -81,5 +81,83 @@
     { "ts": "2026-09-29T11:03:58Z", "tipo": "reboot", "detalle": "iter2 reinicio de la VM victima" },
     { "ts": "2026-09-29T11:06:16Z", "tipo": "t1", "detalle": "iter2 t1" },
     { "ts": "2026-09-29T11:08:00Z", "tipo": "cierre", "detalle": "criterio v2: deteccion identica (3/3, {80792,506,503}) -> iguales" }
-  ]
+  ],
+  "repeticion": {
+    "fecha": "2026-10-01",
+    "motivo_repeticion": "art+prestaging",
+    "motivo_detalle": "Doble motivo. (a) ART: había prueba de ART Linux offline del mismo mecanismo y el original era `custom` sin declarar por qué (`no_se_comprobo`, hueco H1/H2); (b) pre-staging: el original escribía el ESTADO dentro de `[t0,t1]` (`_fases/fase-03-auditoria-metodologica/auditoria_decisiones.md` §2/§3; `Soporte/Ataques/criterio_ataques.md` §A/§C).",
+    "metodo_original": "propio: sudo shutdown -r +1 escrito por el TFG, con el estado escrito DENTRO de la ventana",
+    "metodo_repeticion": "atómica de ART «Restart System via shutdown» (shutdown -r #{timeout}, timeout=+1), declarada art_tal_cual (parametrizada) + estado (pre_reboot.txt) escrito ANTES de t0; la ventana ejecuta SOLO la atómica",
+    "material_prestaged": "pre_reboot.txt (boot_id/uptime/estado) escrito en el pre-staging (ANTES de t0); PRESTAGE=OK.",
+    "fim_flush_pre_t0": "scan FIM forzado tras el pre-staging y ANTES de t0",
+    "prueba_art": {
+      "guid": "6326dbc4-444b-4c04-88f4-27e94d0327cb",
+      "file": "atomics/T1529/T1529.yaml",
+      "commit": "388942adbd9641f4dfdcf079d7efe9a75ec0ac43",
+      "fuente_norm": "art_tal_cual",
+      "motivo_codigo": "na_art_usado",
+      "motivo_detalle": "se usó ART (atómica Linux, elevation_required: true; parametrizada timeout=+1)",
+      "adaptacion": "art_tal_cual con parametrización timeout=+1 (reinicio programado a +1 min)."
+    },
+    "esperado_rev": {
+      "path": "Dataset/Ataques/Comandos/T1529-System_Shutdown_Reboot/ATA038_esperado_rev.csv",
+      "sha256": "e3761ae2496f2f85ddf5c0039748627019c2b929dce793137d8b3019897ceb65",
+      "gate_humano": "APROBADO 2026-10-01 (validación humana)"
+    },
+    "ataque_rev": {
+      "path": "Dataset/Ataques/Comandos/T1529-System_Shutdown_Reboot/ATA038_ataque_rev.sh",
+      "sha256": "f40823aa555c2b4fd76f5378a3cb8fb35bb865327598c015a7940426e6b0e09e"
+    },
+    "c0": {
+      "logtest": "Soporte/Ataques/c0/ATA038_rev_logtest.txt",
+      "logtest_sha256": "16df9b6d1cd0f40ed8d7848ea42b9ed239185a5d96014d0e95c63d7f22d94186",
+      "preflight": "Soporte/Ataques/c0/ATA038_rev_preflight.md",
+      "preflight_sha256": "8a658b77baf5857fd9b5cf92e8127f70e25bc7f0ab978edf874c15f0c10f8d23",
+      "c0_plan": "Soporte/Ataques/c0/ATA038_rev_c0_plan.md",
+      "resultado": "PASA (80792 level 3 en /usr/bin/systemctl; sin silenciador)"
+    },
+    "iteraciones_rev": [
+      {
+        "iter": 1, "t0": "2026-10-01T22:04:42Z", "t1": "2026-10-01T22:08:27Z",
+        "filas": 2793, "deteccion": 12, "auto_ruido": 2281, "ruido_conocido": 494, "dudosa": 0, "artefacto_ataque": 6,
+        "ids": ["19010", "19011", "503", "506", "80792"], "matched": ["T1529-S1", "T1529-S3", "T1529-S4"],
+        "novel": { "19010": 1, "19011": 8 },
+        "primera": { "timestamp_utc": "2026-10-01T22:04:44.496Z", "evidencia": "audit_exe=/usr/bin/systemctl", "rule_id": "80792" },
+        "resueltas": { "ruido": 11 },
+        "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA038_rev1-Detalle.csv",
+        "detalle_sha256": "355a4412dab3fad8cf72dcff8429ced81cadc158ed8ef2e348171131eba56150",
+        "detalle_raw": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA038_rev1-Detalle_raw.csv",
+        "detalle_raw_sha256": "de4b88f06ba909c3b21f21cadf82abe4b1461d94b228a81d03f0bf47f10168d3",
+        "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA038_rev1-Audited.csv",
+        "audited_sha256": "518e76708bc629bb344cd17980ca61300e7f3d2ac51fafcbbdbac964d6102501",
+        "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA038_rev1-Revision.csv",
+        "revision_sha256": "c65b313364c140ee993a475e6f348ccbf723b1bcac908714d6d424632fb8ea8d",
+        "efecto": { "boot_id_antes": "bf2aae3a-0950-49c6-a83e-b53ffbb92fd3", "boot_id_despues": "a911370e-a37d-4591-a71b-85a1f4ce5dc8", "wazuh_agent_tras_arranque": "active", "resultado": "REBOOT=OK" }
+      },
+      {
+        "iter": 2, "t0": "2026-10-01T22:12:23Z", "t1": "2026-10-01T22:16:04Z",
+        "filas": 2883, "deteccion": 12, "auto_ruido": 2371, "ruido_conocido": 494, "dudosa": 0, "artefacto_ataque": 6,
+        "ids": ["19010", "19011", "503", "506", "80792"], "matched": ["T1529-S1", "T1529-S3", "T1529-S4"],
+        "novel": { "19010": 1, "19011": 8 },
+        "primera": { "timestamp_utc": "2026-10-01T22:12:25.273Z", "evidencia": "audit_exe=/usr/bin/systemctl", "rule_id": "80792" },
+        "resueltas": { "ruido": 11 },
+        "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA038_rev2-Detalle.csv",
+        "detalle_sha256": "a2284b24d2392130426abea662926f634b5a763d1863aa70ce04dde4d2589685",
+        "detalle_raw": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA038_rev2-Detalle_raw.csv",
+        "detalle_raw_sha256": "08407965bf0207d9753f6391a4f27beed251d5f0de235b1bd844dde7ab0ad231",
+        "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA038_rev2-Audited.csv",
+        "audited_sha256": "605ae48804f4bcc04364c5bbbc7afb849e7768a6cfc2ea1fe5ac648733749cfb",
+        "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA038_rev2-Revision.csv",
+        "revision_sha256": "e500883b2f76eef7a6476f1f86df19770b59a1a34791557fce198cf1e3aaa342",
+        "efecto": { "boot_id_antes": "f08d3336-c302-44aa-a393-ee7fe37bc180", "boot_id_despues": "17259ce2-e66f-4ec8-9022-e3281fc9c49f", "wazuh_agent_tras_arranque": "active", "resultado": "REBOOT=OK" }
+      }
+    ],
+    "veredicto_rev": "iguales",
+    "resultado_rev": "detectado (O1=si) rule_ids=['19010','19011','503','506','80792']; O2=3/3/3",
+    "sorpresas_declaradas": "19010/19011 (grupo sca) x9 en cada iteracion: re-escaneo SCA del agente disparado por el arranque tras el reinicio (diferencial contra el estado SCA acumulado en el manager, que NO se revierte). El predicado OPERADOR del filtro solo auto-excluye 19004 (grupo sca) -> caen a novel -> deteccion. Mismo patron que rule_id 11 (artefacto del criterio congelado). Se documenta, NO se corrige (filtro congelado).",
+    "prueba_de_efecto": "iter1: boot_id bf2aae3a.. -> a911370e..; iter2: boot_id f08d3336.. -> 17259ce2..; wazuh-agent active y agente 001 Active tras el arranque.",
+    "filas_resueltas": { "iter1": { "ruido": 11 }, "iter2": { "ruido": 11 } },
+    "nota": "ART (guid+file+commit) + pre-staging del estado ANTES de t0. Se corrige la imprecision del original (504 -> 506, ahora declarado). Guardarrail duro: solo la VM victima. El original NO se toca.",
+    "ref_original": { "ficha": "Dataset/Ataques/Resultados/Wazuh/linux/ATA038_meta.md", "bitacora": "Bitacora/ATA038.json" }
+  }
 }
