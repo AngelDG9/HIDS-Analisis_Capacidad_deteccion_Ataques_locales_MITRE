@@ -1,0 +1,98 @@
+# inventario_p1_windows.csv | bloque fase-02b-diseno (T-W2)
+# Fuente: Hojas/corpus_host.csv (MITRE ATT&CK v19.1) + Soporte/Ataques/atomic-red-team/atomics/Indexes/Indexes-CSV/windows-index.csv
+# P1 host-eligible: 89 | P1-Linux: 72 | P1 sin Linux: 17 (host Windows: 5)
+# Factibilidad: no factible = 13 (12 nube/SaaS/red + T1213.002 SaaS) | baja factibilidad = 1 (T1114.002 Exchange/nube)
+# Hibridas (Linux+Windows): 72 -> con prueba ART Windows: 36 | sin prueba ART Windows: 36
+# Windows-only con prueba ART Windows: 2
+# ART Windows (GUID distinto): 38 contando subtecnicas | 32 con test propio de la tecnica exacta (6 via subtecnica)
+# Generado por _artefactos/scripts/inventario_p1_windows.py (determinista, sin fecha)
+tecnica_id,nombre,tactica,plataformas,es_p1_linux,p1_sin_linux,host_windows,tiene_prueba_art_windows,factibilidad,motivo,via
+T1005,Data from Local System,Collection,ESXi;Linux;macOS;Network Devices;Windows,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1011,Exfiltration Over Other Network Medium,Exfiltration,Linux;macOS;Windows,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1011.001,Exfiltration Over Bluetooth,Exfiltration,Linux;macOS;Windows,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1020,Automated Exfiltration,Exfiltration,Linux;macOS;Network Devices;Windows,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1025,Data from Removable Media,Collection,Linux;macOS;Windows,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1029,Scheduled Transfer,Exfiltration,Linux;macOS;Windows,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1039,Data from Network Shared Drive,Collection,Linux;macOS;Windows,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1041,Exfiltration Over C2 Channel,Exfiltration,ESXi;Linux;macOS;Windows,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1048,Exfiltration Over Alternative Protocol,Exfiltration,ESXi;IaaS;Linux;macOS;Network Devices;Office Suite;SaaS;Windows,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1048.001,Exfiltration Over Symmetric Encrypted Non-C2 Protocol,Exfiltration,Linux;macOS;Windows;ESXi,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1048.002,Exfiltration Over Asymmetric Encrypted Non-C2 Protocol,Exfiltration,ESXi;Linux;macOS;Windows,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1048.003,Exfiltration Over Unencrypted Non-C2 Protocol,Exfiltration,ESXi;Linux;macOS;Network Devices;Windows,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1052,Exfiltration Over Physical Medium,Exfiltration,Linux;macOS;Windows,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1052.001,Exfiltration over USB,Exfiltration,Linux;Windows;macOS,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1056,Input Capture,Collection;Credential Access,Linux;macOS;Network Devices;Windows,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1056.001,Keylogging,Collection;Credential Access,Linux;macOS;Network Devices;Windows,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1056.002,GUI Input Capture,Collection;Credential Access,Linux;macOS;Windows,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1056.003,Web Portal Capture,Collection;Credential Access,Linux;macOS;Windows,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1056.004,Credential API Hooking,Collection;Credential Access,Windows;Linux;macOS,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1074,Data Staged,Collection,ESXi;IaaS;Linux;macOS;Windows,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1074.001,Local Data Staging,Collection,ESXi;Linux;macOS;Windows,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1074.002,Remote Data Staging,Collection,ESXi;IaaS;Linux;macOS;Windows,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1113,Screen Capture,Collection,Linux;macOS;Windows,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1114,Email Collection,Collection,Windows;macOS;Linux;Office Suite,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1114.001,Local Email Collection,Collection,Windows,no,sí,sí,sí,factible,Windows-only; no citada en Linux; factible en VM Windows,ART
+T1114.002,Remote Email Collection,Collection,Office Suite;Windows,no,sí,sí,no,baja factibilidad,"baja factibilidad: Windows-only, pero requiere servidor Exchange/nube (no hay servicio real)",propia
+T1114.003,Email Forwarding Rule,Collection,Linux;macOS;Office Suite;Windows,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1115,Clipboard Data,Collection,Linux;macOS;Windows,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1119,Automated Collection,Collection,IaaS;Linux;macOS;Office Suite;SaaS;Windows,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1123,Audio Capture,Collection,Linux;macOS;Windows,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1125,Video Capture,Collection,Linux;macOS;Windows,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1185,Browser Session Hijacking,Collection,Windows,no,sí,sí,no,factible,Windows-only; no citada en Linux; factible en VM Windows,propia
+T1213,Data from Information Repositories,Collection,Linux;Windows;macOS;SaaS;IaaS;Office Suite,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1213.001,Confluence,Collection,SaaS,no,sí,no,no,no factible,no factible: SaaS (no hay servicio real en el laboratorio),-
+T1213.002,Sharepoint,Collection,Office Suite;Windows,no,sí,sí,no,no factible,no factible: SaaS/SharePoint (no hay servicio real en el laboratorio),-
+T1213.003,Code Repositories,Collection,SaaS,no,sí,no,no,no factible,no factible: SaaS (no hay servicio real en el laboratorio),-
+T1213.004,Customer Relationship Management Software,Collection,SaaS,no,sí,no,no,no factible,no factible: SaaS (no hay servicio real en el laboratorio),-
+T1213.005,Messaging Applications,Collection,Office Suite;SaaS,no,sí,no,no,no factible,no factible: servicio Office/SaaS (no hay servicio real),-
+T1213.006,Databases,Collection,IaaS;Linux;macOS;SaaS;Windows,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1485,Data Destruction,Impact,Containers;ESXi;IaaS;Linux;macOS;Windows,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1485.001,Lifecycle-Triggered Deletion,Impact,IaaS,no,sí,no,no,no factible,no factible: nube/IaaS (no hay servicio real en el laboratorio),-
+T1486,Data Encrypted for Impact,Impact,ESXi;IaaS;Linux;macOS;Windows,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1489,Service Stop,Impact,ESXi;IaaS;Linux;macOS;Windows,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1490,Inhibit System Recovery,Impact,Containers;ESXi;IaaS;Linux;macOS;Network Devices;Windows,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1491,Defacement,Impact,Windows;IaaS;Linux;macOS;ESXi,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1491.001,Internal Defacement,Impact,ESXi;Linux;macOS;Windows,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1491.002,External Defacement,Impact,Windows;IaaS;Linux;macOS,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1495,Firmware Corruption,Impact,Linux;macOS;Network Devices;Windows,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1496,Resource Hijacking,Impact,Windows;IaaS;Linux;macOS;Containers;SaaS,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1496.001,Compute Hijacking,Impact,Windows;IaaS;Linux;macOS;Containers,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1496.002,Bandwidth Hijacking,Impact,Linux;Windows;macOS;IaaS;Containers,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1496.003,SMS Pumping,Impact,SaaS,no,sí,no,no,no factible,no factible: SaaS (no hay servicio real en el laboratorio),-
+T1496.004,Cloud Service Hijacking,Impact,SaaS,no,sí,no,no,no factible,no factible: SaaS (no hay servicio real en el laboratorio),-
+T1498,Network Denial of Service,Impact,Windows;IaaS;Linux;macOS;Containers,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1498.001,Direct Network Flood,Impact,Windows;IaaS;Linux;macOS,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1498.002,Reflection Amplification,Impact,Windows;IaaS;Linux;macOS,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1499,Endpoint Denial of Service,Impact,Windows;Linux;macOS;Containers;IaaS,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1499.001,OS Exhaustion Flood,Impact,Linux;macOS;Windows,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1499.002,Service Exhaustion Flood,Impact,Windows;IaaS;Linux;macOS,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1499.003,Application Exhaustion Flood,Impact,Windows;IaaS;Linux;macOS,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1499.004,Application or System Exploitation,Impact,Windows;IaaS;Linux;macOS,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1529,System Shutdown/Reboot,Impact,ESXi;Linux;macOS;Network Devices;Windows,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1530,Data from Cloud Storage,Collection,IaaS;Office Suite;SaaS,no,sí,no,no,no factible,no factible: nube/IaaS (no hay servicio real en el laboratorio),-
+T1531,Account Access Removal,Impact,Linux;macOS;Windows;SaaS;IaaS;Office Suite;ESXi,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1537,Transfer Data to Cloud Account,Exfiltration,IaaS;Office Suite;SaaS,no,sí,no,no,no factible,no factible: nube/IaaS (no hay servicio real en el laboratorio),-
+T1557,Adversary-in-the-Middle,Credential Access;Collection,Linux;macOS;Network Devices;Windows,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1557.001,Name Resolution Poisoning and SMB Relay,Credential Access;Collection,Windows,no,sí,sí,sí,factible,Windows-only; no citada en Linux; factible en VM Windows,ART
+T1557.003,DHCP Spoofing,Credential Access;Collection,Linux;Windows;macOS,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1557.004,Evil Twin,Credential Access;Collection,Network Devices,no,sí,no,no,no factible,no factible: dispositivo de red (no está en el laboratorio),-
+T1560,Archive Collected Data,Collection,Linux;macOS;Windows,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1560.001,Archive via Utility,Collection,Linux;macOS;Windows,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1560.002,Archive via Library,Collection,Linux;macOS;Windows,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1560.003,Archive via Custom Method,Collection,Linux;macOS;Windows,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1561,Disk Wipe,Impact,Linux;macOS;Windows;Network Devices,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1561.001,Disk Content Wipe,Impact,Linux;macOS;Network Devices;Windows,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1561.002,Disk Structure Wipe,Impact,Linux;macOS;Network Devices;Windows,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1565,Data Manipulation,Impact,Linux;macOS;Windows,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1565.001,Stored Data Manipulation,Impact,Linux;macOS;Windows,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1565.002,Transmitted Data Manipulation,Impact,Linux;macOS;Windows,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1565.003,Runtime Data Manipulation,Impact,Linux;macOS;Windows,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1567,Exfiltration Over Web Service,Exfiltration,ESXi;Linux;macOS;Office Suite;SaaS;Windows,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1567.001,Exfiltration to Code Repository,Exfiltration,ESXi;Linux;macOS;Windows,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1567.002,Exfiltration to Cloud Storage,Exfiltration,ESXi;Linux;macOS;Windows,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1567.003,Exfiltration to Text Storage Sites,Exfiltration,Linux;macOS;Windows;ESXi,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1567.004,Exfiltration Over Webhook,Exfiltration,ESXi;Linux;macOS;Office Suite;SaaS;Windows,sí,no,sí,sí,factible,hibrida (Linux+Windows); prueba ART Windows >=1 -> ART tal cual/adaptado,ART
+T1602.001,SNMP (MIB Dump),Collection,Network Devices,no,sí,no,no,no factible,no factible: dispositivo de red (no está en el laboratorio),-
+T1602.002,Network Device Configuration Dump,Collection,Network Devices,no,sí,no,no,no factible,no factible: dispositivo de red (no está en el laboratorio),-
+T1657,Financial Theft,Impact,Linux;macOS;Office Suite;SaaS;Windows,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia
+T1667,Email Bombing,Impact,Linux;Office Suite;Windows;macOS,sí,no,sí,no,factible,hibrida (Linux+Windows); sin prueba ART Windows -> ataque propio,propia

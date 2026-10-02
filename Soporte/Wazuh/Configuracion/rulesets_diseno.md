@@ -314,3 +314,23 @@ la detección base — **es falso** que "sin `if_sid` = sin enmascaramiento". La
    (y **falle**, salvo que el solapamiento esté **declarado**).
 
 **Regla de oro:** *conservar la detección base* tiene prioridad sobre *etiquetar* el evento como RS3.
+
+---
+
+## 10. RuleSets en Windows (`fase-02b` / `fase-03b`)
+
+> **Ampliación (no cambia §1–§9).** El **criterio de clasificación por fichero de origen** de §1/§4
+> **se mantiene**; lo que cambia en Windows es **qué ficheros hay en cada capa**. Diseño de
+> referencia: `Soporte/Laboratorio/windows/README.md` (**D7**).
+
+| RS | En Windows | Detalle |
+|---|---|---|
+| **RS1** | **Default Windows (ya activo)** | Todo el ruleset Windows que el manager **4.14.7 ya trae activo**: `0330-sysmon`, `0430-ms_wdefender`, `0575`–`0620-win-*`, `0800`–`0830-sysmon_id_*`, `0840-win_event_channel`, `0915-win-powershell` (verificado en `active_ruleset.txt`). |
+| **RS2** | **Vacía** | El "slot" RS2 nació como capa `auditd` (`0365-auditd_rules.xml`, §1). **En Windows no hay `auditd`** → **RS2 queda declarada vacía**. **Sysmon es telemetría** (config en la víctima), **no** un fichero de reglas del manager: **no ocupa RS2**. |
+| **RS3** | **Propias** | `local_rules.xml` (reserva **100 000–100 499**): reglas Windows propias que pasan el **preflight anti-enmascaramiento** (§9) antes de activarse. |
+| **RS4** | **Externas** | `external_*.xml` (decisión de §2), si se usan reglas externas en Windows; con las mismas salvaguardas (`active-response` §5, colisiones §4). |
+
+- **La clasificación por origen se mantiene:** cada alerta se asigna a **un solo RS** por el
+  **fichero que define su `rule.id`** (§4); los rangos de §1 siguen siendo **informativos**.
+- **Detección-only** (§5 / R-06) sigue vigente en Windows: **0 `<active-response>`** en sus capas.
+- **Colisiones:** el mecanismo y la reserva de usuario (100 000–101 000) son los de §4; RS3 ∩ RS4 = ∅.

@@ -13,6 +13,8 @@ Fase 0 — Arranque del proyecto                         [~2 días]   ✔ hecho
 Fase 1 — Corpus MITRE (F-01)                           [~1 semana]   ✔ hecho
 Fase 2 — Laboratorio Wazuh (F-02)                      [~1 semana]   ✔ hecho
 Fase 3 — Ataques y detección (F-03)                    [~2 semanas mes 1, escalable mes 2]   🔶 EN CURSO (55 técnicas · 53 detectadas · P1-Linux cerrada)
+Fase 2b — Laboratorio Windows (fase-02b)               [~1 semana]   🔶 diseño hecho
+Fase 3b — Ataques Windows (fase-03b)                   [escalable]   ⏳ pendiente
 Fase 4 — Robustez y rendimiento (η)                    [~1 semana]
 Fase 5 — Memoria y anexos (F-04)                       [~2-3 semanas]
 ```
@@ -109,6 +111,28 @@ normalización de finales de línea + recálculo de huellas · ⑤ **arreglo fut
 
 **DoD:** ✔ corpus cerrado con filas en `ATA_index.csv`, CSV por ataque y primer balance de
 detección de Wazuh.
+
+---
+
+## Fases B — Windows (`fase-02b` / `fase-03b`)
+
+**Objetivo:** segunda plataforma víctima (**Windows**) para ampliar el corpus y permitir la
+**comparación Linux↔Windows** del mismo HIDS. El **diseño** está en
+`Soporte/Laboratorio/windows/README.md` (bloque `fase-02b-diseno`, `status: approved_by_human`).
+
+| Fase | Nombre | Qué hace | Relación con Linux |
+|---|---|---|---|
+| **`fase-02b`** | Laboratorio Windows | VM **ISO virgen** + red host-only (`192.168.65.130`) + agente **Wazuh 4.14.7** + telemetría (**Sysmon curado** + Seguridad `4688` + PowerShell `4104` + Syscheck) + **Defender OFF** + snapshots + baseline | **Espejo** de la Fase 2: **mismo manager** (4.14.7) y **misma métrica**; **baseline propio** (`Dataset/Legitimo/windows/`) |
+| **`fase-03b`** | Ataques Windows | Tandas de ataques `ATA<NNN>` (**se continúan desde `ATA055`**); la **misma técnica en otro SO = otra fila / otro `ATA`** | Reutiliza **sin cambios** el criterio de ataque (§D), la **doble iteración**, la **métrica congelada** y el filtro por **perfil de plataforma**; estrena subárboles `windows/` |
+
+- **Compartido (un solo dueño por documento):** criterio ART / manual / pre-staging
+  (`Soporte/Ataques/criterio_ataques.md` §D), doble iteración, métrica congelada, RuleSets
+  (`rulesets_diseno.md` §Windows), anti-enmascaramiento y mapa ART.
+- **Específico de Windows:** telemetría (no existe `auditd`), Defender OFF, y baseline,
+  resultados y artefactos en subárboles `windows/` **nuevos**.
+- **No se mueve nada de Linux** (cadena de huellas intacta). Orden: **`fase-02b` antes de
+  `fase-03b`** (no se ataca sin laboratorio y baseline Windows).
+- **Riesgo RAM:** host 16 GB; **no encender `victima-linux` y `victima-windows` a la vez**.
 
 ---
 

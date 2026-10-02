@@ -81,7 +81,7 @@ El profesor pide centrarse en (`guia_profesor.txt:37-46`):
 | RuleSets | **4** (RS1 default → RS4 + externas), clasificando las alertas por origen sin repetir el ataque. |
 | Baseline | 2 ventanas × 4 h de actividad legítima (VM en segundo plano). |
 | Validación | Cada ataque se ejecuta **dos veces** (snapshot fresco); si difieren las alertas, `review=true`. |
-| SO víctima | **Linux primero**; Windows cuando una técnica lo exija. |
+| SO víctima | **Linux primero**; **Windows** entra como segunda plataforma en las fases **`fase-02b`/`fase-03b`** (ver `Soporte/Laboratorio/windows/README.md`). |
 | Orquestador de ataques | **Atomic Red Team** (tests atómicos por técnica); script custom si no cubre. |
 | Laboratorio | VMware en el **sobremesa** (16 GB), red **host-only**. Los **agentes (opencode) corren en el sobremesa**, junto a las VMs. |
 | Acceso | El **portátil** (8 GB) controla el sobremesa por **SSH sobre Tailscale**; los agentes, ya en el sobremesa, acceden a las VMs por la red host-only. |
@@ -94,6 +94,10 @@ El profesor pide centrarse en (`guia_profesor.txt:37-46`):
 > **Nota (corpus actual):** la selección vigente son **13 técnicas** (7 Impact / 3 Exfiltration /
 > 3 Collection), que **no** sigue el "1-2 por táctica"; la variedad por táctica queda **pendiente
 > de comentar con el tutor** (hito H1).
+
+> **Nota (Windows):** Windows entra en el TFG como **segunda plataforma víctima**, sobre **ISO
+> virgen**, en las fases **`fase-02b`** (laboratorio) y **`fase-03b`** (ataques). El diseño está en
+> `Soporte/Laboratorio/windows/README.md`.
 
 ---
 

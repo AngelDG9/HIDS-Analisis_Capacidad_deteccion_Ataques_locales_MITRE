@@ -1,0 +1,9 @@
+# corpus de fixture para test_inventario_p1_windows.py (NO es el corpus real)
+tecnica_id,nombre,es_subtecnica,padre_id,tacticas,plataformas,endpoint_lw,data_components,num_dc,dc_host,dc_red,host_eligible,priority,heredado_padre,motivo,stix_version,fecha_generacion
+T1486,Data Encrypted for Impact,no,,Impact,ESXi;IaaS;Linux;macOS;Windows,si,Command Execution;File Creation,2,2,0,YES,P1,no,ok,19.1,2026-09-19
+T1490,Inhibit System Recovery,no,,Impact,Linux;macOS;Windows,si,Command Execution;File Deletion,2,2,0,YES,P1,no,ok,19.1,2026-09-19
+T1557.001,Name Resolution Poisoning and SMB Relay,si,T1557,Credential Access;Collection,Windows,si,Windows Registry Key Modification,1,1,0,YES,P1,si,ok,19.1,2026-09-19
+T1213.001,Confluence,si,T1213,Collection,SaaS,si,Application Log Content,1,1,0,YES,P1,si,ok,19.1,2026-09-19
+T1530,Data from Cloud Storage,no,,Collection,IaaS;Office Suite;SaaS,si,Cloud Storage Access,1,1,0,YES,P1,no,ok,19.1,2026-09-19
+T1003,OS Credential Dumping,no,,Credential Access,Linux;macOS;Windows,si,Process Access,1,1,0,YES,P2,no,ok,19.1,2026-09-19
+T1046,Network Service Discovery,no,,Discovery,Linux;macOS;Windows,si,Process Creation,1,1,0,NO,P1,no,solo_red,19.1,2026-09-19

@@ -144,5 +144,29 @@ Todo lo anterior es **neutro de plataforma**, pero el **reparto cambia** al pasa
 - La columna `nota` de `Hojas/cobertura_atomic.csv` y la clasificación de motivos son **neutras**:
   se rellenan igual para Windows.
 
-> **Es otro bloque.** Aquí solo queda **escrito** que el cambio es de reparto y de línea base,
-> no de criterio.
+### D.1 Normas comunes a las dos plataformas
+
+Los criterios de **§A (ART / propio)**, **§B (ataque manual)** y **§C (pre-staging)** **no cambian**
+con el SO: son **comunes a Linux y Windows**. La decisión se toma y se cita **antes de atacar**, el
+reparto ART↔manual se justifica con `motivo_codigo` y el pre-staging (URL + `sha256`) aplica igual.
+Lo que cambia es **el reparto y los datos**, nunca el criterio.
+
+### D.2 Qué cambia en Windows (concreción)
+
+- **Reparto ART:** ART trae **muchas más** pruebas Windows → **sube el uso de ART tal cual/adaptado**
+  y baja el trabajo manual; las técnicas **sin** prueba Windows siguen siendo **propias** (§A).
+- **Telemetría:** **no existe `auditd`**; el sustituto es **registro de eventos** (Seguridad `4688`,
+  Sysmon `1`/`11`/`12-14`, PowerShell `4104`) + **FIM/Syscheck** (ficheros y claves). El **evento de
+  ejecución** ya no es el grupo `audit_command`, sino Sysmon `1` / Seguridad `4688`, y los campos
+  pasan a `data.win.*` (no `data.audit.*`).
+- **Defender:** hay una **defensa nativa** (Windows Defender) que en Linux no existe; se
+  **desactiva** (control ambiental declarado) para **no medir al antivirus** ni bloquear el ataque
+  dentro de `[t0,t1]`.
+- **Línea base y filtro:** exige **baseline Windows** propio y adaptar el filtro al **perfil de
+  plataforma** (`ATTACK_ROOT = C:\lab-attack\<ATA>`; procesos `wazuh-agent.exe`). La **métrica
+  permanece congelada**.
+
+> **Concreción y citas:** el diseño completo (**D1–D7**, telemetría, Defender, pre-staging con
+> URL + `sha256`, fases `fase-02b`/`fase-03b`) está en
+> **`Soporte/Laboratorio/windows/README.md`**. **Es otro bloque** (`fase-03b`): aquí solo queda
+> escrito que el cambio es de **reparto y de línea base**, **no de criterio**.
