@@ -1,0 +1,181 @@
+{
+  "ata_id": "ATA049",
+  "tecnica": "T1567.002",
+  "tactica": "Exfiltration",
+  "sistema": "linux",
+  "bloque": "fase-03-p1-cierre",
+  "tanda": "B",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1567.002-Exfiltration_To_Cloud_Storage/",
+  "atomic": {
+    "fuente": "ART_adaptado",
+    "nota": "ART adaptado: se conserva rclone (cliente de nube real) y se sustituye AWS S3 por un WebDAV LOCAL del HOST (192.168.65.1:9090, sink_webdav.py); se retira terraform y toda clave real.",
+    "fuente_norm": "ART_adaptado",
+    "motivo_codigo": "na_art_usado",
+    "motivo_detalle": "se usó ART adaptado (atómica Linux a4b74723: rclone+terraform->AWS S3 real con claves)."
+  },
+  "material_externo": {
+    "aplica": true,
+    "nota": "material externo pre-steado: rclone v1.75.1 linux-amd64 (URL+sha256 en Soporte/Ataques/c0/ATA049-053_prestaging_paquetes.md), no versionado en el repo; receptor sink_webdav.py del repo"
+  },
+  "esperado_sha256": "b27406fd5278343eed708e60e94b9cd05dc99a46db2d1894d2e19a3173680d86",
+  "ataque_sha256": "0b0096d884f2ecc93aa2601a0789f5fb5ddc2b35c1baf073f9cedf697e1ae038",
+  "validacion_humana_esperado": "APROBADO 2026-10-02",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA049_logtest.txt",
+    "logtest_sha256": "694b6aff1b600fa446cd9432046f59187d5c20b32389ea33094fefa3174f2491",
+    "preflight": "Soporte/Ataques/c0/ATA049_preflight.md",
+    "preflight_sha256": "d40df3eda6f93009e9898c17eb4e66f31f998c87addc9e5d99e2f5b33fa77c7a",
+    "resultado": "PASA (sin silenciador)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1,
+      "t0": "2026-10-02T01:37:35Z",
+      "t1": "2026-10-02T01:38:07Z",
+      "duracion_s": 32,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA049_iter1-Detalle.csv",
+      "detalle_sha256": "f8185499806e066710f2f75b91756e49ef4461c2b371522f6b5576092be34b14",
+      "detalle_raw_sha256": "aba968961ff81dde180a5c27cc53625051237fd5904006f24e7cc6514e4b7af5",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA049_iter1-Audited.csv",
+      "audited_sha256": "a649492d8bc19e50fb4627358c3e9f13da5dccff0f1ca7efe355a058b4d4c486",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA049_iter1-Revision.csv",
+      "revision_sha256": "761770a3c6208fd263f8bec9dd13a0fcf40027fbbeb0f1fda950fee323a7b275",
+      "conteos": {
+        "filas": 763,
+        "deteccion": 1,
+        "auto_ruido": 634,
+        "ruido_conocido": 117,
+        "dudosa": 0,
+        "artefacto_ataque": 11
+      },
+      "detecciones": {
+        "alertas": 1,
+        "rule_id_distintos": [
+          "80792"
+        ],
+        "esperadas": 1,
+        "sorpresas": 0,
+        "evidencia": "1x audit_exe=/home/angel/lab-attack/ATA049/rclone (execve 80792, cwd del ataque)"
+      },
+      "metrico_o1": "si",
+      "metrico_o2": "1/1",
+      "dudosas_resueltas": 3,
+      "folds": {
+        "artefacto": 1,
+        "ruido": 2
+      },
+      "efecto": {
+        "resultado": "OK",
+        "detalle": "sha256 del sink.log == sha256 local de exfil/* (3 ficheros) por iteracion; 0 rclone residuales"
+      }
+    },
+    {
+      "iter": 2,
+      "t0": "2026-10-02T01:46:43Z",
+      "t1": "2026-10-02T01:47:15Z",
+      "duracion_s": 32,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA049_iter2-Detalle.csv",
+      "detalle_sha256": "223b377e100929c2f901ecbb8332d9a00aac60ffbfe4f37b701b1511d3e17c14",
+      "detalle_raw_sha256": "48e0945b700b097ef42f072c240ae373dcc6f4728b0022fab68d463ecafbd162",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA049_iter2-Audited.csv",
+      "audited_sha256": "0438856dccd803859b8fa482088b3eb4cf60a1b6a815766f03b61c8ef1dc977a",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA049_iter2-Revision.csv",
+      "revision_sha256": "62b01d2b9fb3f5b6907042b40160831a15c1e1120d9a1fdbc20867ad2380ecfc",
+      "conteos": {
+        "filas": 768,
+        "deteccion": 1,
+        "auto_ruido": 639,
+        "ruido_conocido": 116,
+        "dudosa": 0,
+        "artefacto_ataque": 12
+      },
+      "detecciones": {
+        "alertas": 1,
+        "rule_id_distintos": [
+          "80792"
+        ],
+        "esperadas": 1,
+        "sorpresas": 0,
+        "evidencia": "1x audit_exe=/home/angel/lab-attack/ATA049/rclone (execve 80792, cwd del ataque)"
+      },
+      "metrico_o1": "si",
+      "metrico_o2": "1/1",
+      "dudosas_resueltas": 3,
+      "folds": {
+        "artefacto": 1,
+        "ruido": 2
+      },
+      "efecto": {
+        "resultado": "OK",
+        "detalle": "sha256 del sink.log == sha256 local de exfil/* (3 ficheros) por iteracion; 0 rclone residuales"
+      }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-10-02",
+    "filas": 6,
+    "veredicto": "PAM/sudo -> ruido; execve sin ancla / del ataque -> artefacto",
+    "motivo": "Criterio ratificado 2026-09-28; 0 filas del ataque en ruido.",
+    "revisor": "executor fase-03-p1-cierre tanda B"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": {
+    "criterio": "v2",
+    "mismo_conjunto_rule_id_deteccion": true,
+    "rule_ids_deteccion": [
+      "80792"
+    ],
+    "n1": 1,
+    "n2": 1,
+    "margen": 2,
+    "criterio_recuento_ok": true,
+    "sin_dudosas_sin_resolver": true
+  },
+  "extraccion": {
+    "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)",
+    "fuente": "fichero diario /var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+    "aislamiento": "filtro a agent_name == victima-linux"
+  },
+  "prueba_de_efecto": "sha256 del sink.log == sha256 local de exfil/* (3 ficheros) por iteracion; 0 rclone residuales",
+  "receptor": {
+    "aplica": true,
+    "nota": "sink_webdav.py en el HOST (192.168.65.1) --port 9090; levantado antes de t0 y parado tras t1"
+  },
+  "hallazgos": [
+    "El HIDS de host NO ve la red; la deteccion es el execve de rclone anclado al cwd; la prueba es el sha256 del sink WebDAV.",
+    "Bucket WebDAV del HOST limpiado por iteracion para forzar la subida real (iter2 inicial salio 'nothing to transfer' y se repitio).",
+    "C0 sin silenciador; sin claves reales."
+  ],
+  "eventos": [
+    {
+      "ts": "2026-10-02T01:37:35Z",
+      "tipo": "t0",
+      "detalle": "iter1 t0"
+    },
+    {
+      "ts": "2026-10-02T01:46:43Z",
+      "tipo": "t0",
+      "detalle": "iter2 t0"
+    },
+    {
+      "ts": "2026-10-02T01:38:07Z",
+      "tipo": "t1",
+      "detalle": "iter1 t1"
+    },
+    {
+      "ts": "2026-10-02T01:47:15Z",
+      "tipo": "t1",
+      "detalle": "iter2 t1"
+    },
+    {
+      "ts": "2026-10-02T01:47:15Z",
+      "tipo": "cierre",
+      "detalle": "criterio v2: deteccion identica ({80792}) -> iguales"
+    }
+  ]
+}

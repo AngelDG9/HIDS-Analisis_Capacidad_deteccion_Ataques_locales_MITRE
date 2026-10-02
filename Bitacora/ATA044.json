@@ -1,0 +1,197 @@
+{
+  "ata_id": "ATA044",
+  "tecnica": "T1025",
+  "tactica": "Collection",
+  "sistema": "linux",
+  "bloque": "fase-03-p1-cierre",
+  "tanda": "A",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1025-Data_from_Removable_Media/",
+  "atomic": {
+    "fuente": "custom",
+    "nota": "medio extraible SIMULADO con imagen vfat (removable.img) creada en pre-staging; en la ventana se adjunta en SOLO-LECTURA (losetup --read-only + mount -o ro) y se recopilan los documentos; guardarrail: solo imagen de fichero bajo lab-attack/ATA044, jamas /dev/ real",
+    "fuente_norm": "propio",
+    "motivo_codigo": "art_no_prueba_plataforma",
+    "motivo_detalle": "ART solo trae prueba Windows de T1025 (PowerShell/Get-Volume); no hay prueba Linux -> propio."
+  },
+  "material_externo": {
+    "aplica": false,
+    "nota": "sin material externo: todos los binarios son de serie; la imagen vfat se crea localmente en el pre-staging (sin URL)"
+  },
+  "esperado_sha256": "bcbc8ee26fd79b8b120c53984e62d1e48f5a56b8c6372b814e665c68598ac36e",
+  "ataque_sha256": "c18a644a131f9e17c37e07db3ecb9a9bdef5d66b064df203bb2e4339e14ba26d",
+  "validacion_humana_esperado": "APROBADO 2026-10-02",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA044_logtest.txt",
+    "logtest_sha256": "e1e7655a3edc71214b93b6aa53b9a73e3eb31a94cac635552e00c53411f480d7",
+    "preflight": "Soporte/Ataques/c0/ATA044_preflight.md",
+    "preflight_sha256": "590078a616d38d367d3b5dc0cd7b9c34a19bea6b9ef0fbbdc66dab87a568d57a",
+    "resultado": "PASA (6 eventos mount/losetup/cp/find/sha256sum/umount -> 80792 level 3; sin silenciador)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1,
+      "t0": "2026-10-02T00:10:28Z",
+      "t1": "2026-10-02T00:11:05Z",
+      "duracion_s": 37,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA044_iter1-Detalle.csv",
+      "detalle_sha256": "876ff72808f47f1ff046c622341561e695fa5a4001f41d8bc1c212a03202ddc3",
+      "detalle_raw_sha256": "0bffc6036e9228db65d1547a21c2325d87d5e4dfb38144c8ebb2634167b44de8",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA044_iter1-Audited.csv",
+      "audited_sha256": "11da3c5808ec73c1758fa79fd5d74cd2fd1fbd4eba81c44701e975c37d1e8388",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA044_iter1-Revision.csv",
+      "revision_sha256": "cc7691b6e73eae5b243226e7a3d7e6c98dfc819a07ae743051016ae8424989b2",
+      "conteos": {
+        "filas": 845,
+        "deteccion": 17,
+        "auto_ruido": 606,
+        "ruido_conocido": 190,
+        "dudosa": 0,
+        "artefacto_ataque": 32
+      },
+      "rs": {
+        "RS1": 16,
+        "RS2": 829,
+        "RS3": 0,
+        "RS4": 0,
+        "UNKNOWN": 0
+      },
+      "ventana_raw": {
+        "filas": 853,
+        "victima_linux": 845,
+        "otros_agentes_descartados": 8
+      },
+      "detecciones": {
+        "alertas": 17,
+        "rule_id_distintos": [
+          "80792"
+        ],
+        "esperadas": 17,
+        "sorpresas": 0,
+        "evidencia": "7x sha256sum + 4x losetup + 3x cp + 1x mount + 1x find + 1x umount (execve 80792, cwd del ataque)"
+      },
+      "metrico_o1": "si",
+      "metrico_o2": "6/6",
+      "dudosas_resueltas": 18,
+      "efecto": {
+        "resultado": "OK",
+        "detalle": "documentos_recopilados=3; sha256 origen==copia; loop_residual=0; imagen hash_imagen 8142ddd5a7207b5e4950144e8888a9506c674289efc1d8f4c125588d6d1d8a84"
+      }
+    },
+    {
+      "iter": 2,
+      "t0": "2026-10-02T00:17:11Z",
+      "t1": "2026-10-02T00:17:44Z",
+      "duracion_s": 33,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA044_iter2-Detalle.csv",
+      "detalle_sha256": "5198c540316adc453185b3f3dcee057d8a4e92ceaf16821279ca10abfadd3c48",
+      "detalle_raw_sha256": "8a95ad8101d5e3ed5b5550e7be92650502dc6ed559752c081c198a034f25544d",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA044_iter2-Audited.csv",
+      "audited_sha256": "5745385889255cb48e5ef4e15a3b4a3ddb8489ea521eb6762e4ad314040b9dbe",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA044_iter2-Revision.csv",
+      "revision_sha256": "0b59a83e7094f876fe43a2f05d5e3e7f5d5f7790af91473eba3388c4b57f1b2d",
+      "conteos": {
+        "filas": 935,
+        "deteccion": 16,
+        "auto_ruido": 658,
+        "ruido_conocido": 230,
+        "dudosa": 0,
+        "artefacto_ataque": 31
+      },
+      "rs": {
+        "RS1": 18,
+        "RS2": 917,
+        "RS3": 0,
+        "RS4": 0,
+        "UNKNOWN": 0
+      },
+      "ventana_raw": {
+        "filas": 942,
+        "victima_linux": 935,
+        "otros_agentes_descartados": 7
+      },
+      "detecciones": {
+        "alertas": 16,
+        "rule_id_distintos": [
+          "80792"
+        ],
+        "esperadas": 16,
+        "sorpresas": 0,
+        "evidencia": "7x sha256sum + 3x losetup + 3x cp + 1x mount + 1x find + 1x umount (execve 80792, cwd del ataque)"
+      },
+      "metrico_o1": "si",
+      "metrico_o2": "6/6",
+      "dudosas_resueltas": 21,
+      "efecto": {
+        "resultado": "OK",
+        "detalle": "documentos_recopilados=3; sha256 origen==copia; loop_residual=0; imagen hash_imagen 4d8c70632f59019760670c960398303cb3ddfc615a31cd7132326039d4255041"
+      }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-10-02",
+    "filas": 39,
+    "veredicto": "PAM/sudo -> ruido; execve sin ancla / del ataque -> artefacto",
+    "motivo": "Criterio ratificado 2026-09-28; 0 filas del ataque en ruido.",
+    "revisor": "executor fase-03-p1-cierre tanda A"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": {
+    "criterio": "v2",
+    "mismo_conjunto_rule_id_deteccion": true,
+    "rule_ids_deteccion": [
+      "80792"
+    ],
+    "n1": 17,
+    "n2": 16,
+    "margen": 2,
+    "criterio_recuento_ok": true,
+    "sin_dudosas_sin_resolver": true
+  },
+  "extraccion": {
+    "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)",
+    "fuente": "fichero diario /var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+    "aislamiento": "filtro a agent_name == victima-linux"
+  },
+  "prueba_de_efecto": "3 documentos recopilados con sha256 identico al original (bc8bf1dc/3a2ec5e2/04c33e33) y 0 loops residuales",
+  "receptor": {
+    "aplica": false,
+    "nota": "no hay receptor de red"
+  },
+  "hallazgos": [
+    "El HIDS ve el execve de las herramientas de montaje/copia, no que el medio sea extraible ni el contenido.",
+    "El 'medio extraible' es una imagen de fichero en SOLO-LECTURA (equivalente local acotado de un USB).",
+    "C0 sin silenciador."
+  ],
+  "eventos": [
+    {
+      "ts": "2026-10-02T00:10:28Z",
+      "tipo": "t0",
+      "detalle": "iter1 t0 (revert lab-listo + asentamiento)"
+    },
+    {
+      "ts": "2026-10-02T00:11:05Z",
+      "tipo": "t1",
+      "detalle": "iter1 t1 (tras scan FIM forzado)"
+    },
+    {
+      "ts": "2026-10-02T00:17:11Z",
+      "tipo": "t0",
+      "detalle": "iter2 t0"
+    },
+    {
+      "ts": "2026-10-02T00:17:44Z",
+      "tipo": "t1",
+      "detalle": "iter2 t1"
+    },
+    {
+      "ts": "2026-10-02T00:17:44Z",
+      "tipo": "cierre",
+      "detalle": "criterio v2: deteccion identica ({80792}) -> iguales"
+    }
+  ]
+}

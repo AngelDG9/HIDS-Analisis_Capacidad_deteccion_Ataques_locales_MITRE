@@ -1,0 +1,19 @@
+[sudo] password for angel: ATA055 · T1557.003 DHCP Spoofing (señuelo local + cliente efimero) — custom
+T0=2026-10-02T03:27:44Z
+segmento_local: vdhcp0=10.99.0.1/24  vdhcp1=(cliente efimero, sin IP)
+--- cliente efimero pidiendo lease al señuelo ---
+cliente_rc=0
+udhcpc: started, v1.36.1
+udhcpc: broadcasting discover
+udhcpc: broadcasting discover
+udhcpc: broadcasting select for 10.99.0.101, server 10.99.0.1
+udhcpc: lease of 10.99.0.101 obtained from 10.99.0.1, lease time 120
+--- lease entregado por el señuelo ---
+action=deconfig interface=vdhcp1 ip= mask= router= dns= serverid= lease=
+action=bound interface=vdhcp1 ip=10.99.0.101 mask=24 router=10.99.0.1 dns=10.99.0.1 serverid=10.99.0.1 lease=120
+--- estado final ---
+udhcpd_residual=0
+0
+veth_residual=0
+DHCP_SPOOFING=OK (lease señuelo obtenido; 0 residuos de red/DHCP)
+T1_LOCAL=2026-10-02T03:27:48Z

@@ -37,6 +37,8 @@ El proyecto se ejecuta con los agentes de opencode definidos en `.opencode/`:
 
 El ciclo de trabajo está descrito en la skill `tfg-flow` (`.opencode/skills/tfg-flow/`).
 
+La suite de tests se ejecuta como `pytest _artefactos/scripts/tests` (el `pytest` en la raíz falla al recolectar el clon vendorizado de ART por `pydantic`; es ambiental y preexistente).
+
 ## ⚠️ Huellas y finales de línea
 
 Las huellas (`sha256`) que enlazan `esperado` ↔ `audited` ↔ bitácora ↔ ficha se calculan

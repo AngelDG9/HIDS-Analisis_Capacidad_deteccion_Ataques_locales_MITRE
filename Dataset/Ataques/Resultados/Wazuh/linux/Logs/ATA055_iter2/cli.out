@@ -1,0 +1,5 @@
+udhcpc: started, v1.36.1
+udhcpc: broadcasting discover
+udhcpc: broadcasting discover
+udhcpc: broadcasting select for 10.99.0.101, server 10.99.0.1
+udhcpc: lease of 10.99.0.101 obtained from 10.99.0.1, lease time 120

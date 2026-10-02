@@ -1,0 +1,2 @@
+dpkg_rc=0
+PRE_STAGING=OK (Xvfb :99 pid=3594)

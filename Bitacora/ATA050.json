@@ -1,0 +1,184 @@
+{
+  "ata_id": "ATA050",
+  "tecnica": "T1567.003",
+  "tactica": "Exfiltration",
+  "sistema": "linux",
+  "bloque": "fase-03-p1-cierre",
+  "tanda": "B",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1567.003-Exfiltration_To_Text_Storage_Sites/",
+  "atomic": {
+    "fuente": "custom",
+    "nota": "Ataque propio: POST HTTP del fichero de texto a un endpoint /paste LOCAL del receptor (HOST); cero API keys.",
+    "fuente_norm": "propio",
+    "motivo_codigo": "art_no_prueba_plataforma",
+    "motivo_detalle": "ART solo trae la prueba Windows de T1567.003 (pastebin.com con API key real); no hay prueba Linux."
+  },
+  "material_externo": {
+    "aplica": false,
+    "nota": "sin material externo: curl de serie; endpoint /paste del receptor sink_http.py del repo"
+  },
+  "esperado_sha256": "33336a11f8bd33137525aa5f02ffac11276081316a9b91c642c3a7a6069c0969",
+  "ataque_sha256": "a15b85e1c5b6ccb83dfc52656b189ac60168764293548e8f915bb4dfd1ba7928",
+  "validacion_humana_esperado": "APROBADO 2026-10-02",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA050_logtest.txt",
+    "logtest_sha256": "d4bc0d433cf7e146890f07b574a0b82b5d077bb4b0fcbec65fc2f3b41a4edbbd",
+    "preflight": "Soporte/Ataques/c0/ATA050_preflight.md",
+    "preflight_sha256": "427ffef66765cc4045be32ca7337f11bc9add288158d961df49e62b3ba1371b9",
+    "resultado": "PASA (sin silenciador)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1,
+      "t0": "2026-10-02T01:51:06Z",
+      "t1": "2026-10-02T01:51:38Z",
+      "duracion_s": 32,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA050_iter1-Detalle.csv",
+      "detalle_sha256": "eef07503ed8f6621b3d1c3a73935f7f21b41f461d2214e4933d6b901123122c8",
+      "detalle_raw_sha256": "1240c5351e7afeb15532b40d58247674d4a732ea715d209824ccb6ea1193a9f7",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA050_iter1-Audited.csv",
+      "audited_sha256": "61c81b73d98b4a50fa83619715e52010475465896cee9acd8474b6ba2d5b3545",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA050_iter1-Revision.csv",
+      "revision_sha256": "f727c54bb8f571dafd447e3b8397354f8383209c57bfffd4ba00945d4ec9ac04",
+      "conteos": {
+        "filas": 753,
+        "deteccion": 1,
+        "auto_ruido": 627,
+        "ruido_conocido": 117,
+        "dudosa": 0,
+        "artefacto_ataque": 8
+      },
+      "detecciones": {
+        "alertas": 1,
+        "rule_id_distintos": [
+          "80792"
+        ],
+        "esperadas": 1,
+        "sorpresas": 0,
+        "evidencia": "1x audit_exe=/usr/bin/curl (execve 80792, cwd del ataque)"
+      },
+      "metrico_o1": "si",
+      "metrico_o2": "1/1",
+      "dudosas_resueltas": 3,
+      "folds": {
+        "ruido": 3
+      },
+      "efecto": {
+        "resultado": "OK",
+        "detalle": "sha256 del sink.log == sha256 de filtracion/notas_internas.txt (4c9dbfb3…) por iteracion"
+      }
+    },
+    {
+      "iter": 2,
+      "t0": "2026-10-02T01:55:30Z",
+      "t1": "2026-10-02T01:56:02Z",
+      "duracion_s": 32,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA050_iter2-Detalle.csv",
+      "detalle_sha256": "a9b3d85b0e3a5d52297e2ea2155724d11a272bee49cadd9147807c7c0fd06506",
+      "detalle_raw_sha256": "0c89e554e6ad04ff9791f77b8016a289350866759f68c716a93282aa8574af68",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA050_iter2-Audited.csv",
+      "audited_sha256": "087d734d8ae5955757d5886c158e21eba092e34591e57488bb0bbb86855ebca0",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA050_iter2-Revision.csv",
+      "revision_sha256": "850a2678ff719dab40e18899746dd04099aad59b4e9ced12decd86620e415450",
+      "conteos": {
+        "filas": 755,
+        "deteccion": 1,
+        "auto_ruido": 630,
+        "ruido_conocido": 116,
+        "dudosa": 0,
+        "artefacto_ataque": 8
+      },
+      "detecciones": {
+        "alertas": 1,
+        "rule_id_distintos": [
+          "80792"
+        ],
+        "esperadas": 1,
+        "sorpresas": 0,
+        "evidencia": "1x audit_exe=/usr/bin/curl (execve 80792, cwd del ataque)"
+      },
+      "metrico_o1": "si",
+      "metrico_o2": "1/1",
+      "dudosas_resueltas": 2,
+      "folds": {
+        "ruido": 2
+      },
+      "efecto": {
+        "resultado": "OK",
+        "detalle": "sha256 del sink.log == sha256 de filtracion/notas_internas.txt (4c9dbfb3…) por iteracion"
+      }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-10-02",
+    "filas": 5,
+    "veredicto": "PAM/sudo -> ruido; execve sin ancla / del ataque -> artefacto",
+    "motivo": "Criterio ratificado 2026-09-28; 0 filas del ataque en ruido.",
+    "revisor": "executor fase-03-p1-cierre tanda B"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": {
+    "criterio": "v2",
+    "mismo_conjunto_rule_id_deteccion": true,
+    "rule_ids_deteccion": [
+      "80792"
+    ],
+    "n1": 1,
+    "n2": 1,
+    "margen": 2,
+    "criterio_recuento_ok": true,
+    "sin_dudosas_sin_resolver": true
+  },
+  "extraccion": {
+    "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)",
+    "fuente": "fichero diario /var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+    "aislamiento": "filtro a agent_name == victima-linux"
+  },
+  "prueba_de_efecto": "sha256 del sink.log == sha256 de filtracion/notas_internas.txt (4c9dbfb3…) por iteracion",
+  "receptor": {
+    "aplica": true,
+    "nota": "sink_http.py en el HOST (192.168.65.1) --port 9090; levantado antes de t0 y parado tras t1"
+  },
+  "hallazgos": [
+    "El HIDS no ve la red; la deteccion es el execve de curl anclado al cwd; la prueba es el sha256 del sink.",
+    "Endpoint /paste = do_POST generico del receptor (sin codigo nuevo).",
+    "C0 sin silenciador; sin API keys de terceros."
+  ],
+  "eventos": [
+    {
+      "ts": "2026-10-02T01:51:06Z",
+      "tipo": "t0",
+      "detalle": "iter1 t0"
+    },
+    {
+      "ts": "2026-10-02T01:55:30Z",
+      "tipo": "t0",
+      "detalle": "iter2 t0"
+    },
+    {
+      "ts": "2026-10-02T01:51:38Z",
+      "tipo": "t1",
+      "detalle": "iter1 t1"
+    },
+    {
+      "ts": "2026-10-02T01:56:02Z",
+      "tipo": "t1",
+      "detalle": "iter2 t1"
+    },
+    {
+      "ts": "2026-10-02T01:56:02Z",
+      "tipo": "cierre",
+      "detalle": "criterio v2: deteccion identica ({80792}) -> iguales"
+    },
+    {
+      "ts": "2026-10-02T03:43:47Z",
+      "tipo": "correccion",
+      "detalle": "seguridad: se elimino de la captura C0 la linea 'full event' con la credencial del laboratorio (canalizada por error al stdin de wazuh-logtest); sha256 de logtest y preflight recalculados; nada mas de la captura cambio"
+    }
+  ]
+}

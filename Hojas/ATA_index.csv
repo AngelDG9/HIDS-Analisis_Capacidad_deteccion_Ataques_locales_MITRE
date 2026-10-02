@@ -43,3 +43,15 @@ ATA040,Collection,T1074.002,Remote Data Staging,Dataset/Ataques/Comandos/T1074.0
 ATA041,Exfiltration,T1048.002,Asymmetric Encrypted Non-C2 Protocol,Dataset/Ataques/Comandos/T1048.002-Asymmetric_Encrypted_Non-C2/,cerrado
 ATA042,Exfiltration,T1048.003,Unencrypted Non-C2 Protocol,Dataset/Ataques/Comandos/T1048.003-Unencrypted_Non-C2/,cerrado
 ATA043,Exfiltration,T1567.004,Exfiltration Over Webhook,Dataset/Ataques/Comandos/T1567.004-Exfiltration_Over_Webhook/,cerrado
+ATA044,Collection,T1025,Data from Removable Media,Dataset/Ataques/Comandos/T1025-Data_from_Removable_Media/,cerrado
+ATA045,Impact,T1499.001,OS Exhaustion Flood,Dataset/Ataques/Comandos/T1499.001-OS_Exhaustion_Flood/,cerrado
+ATA046,Impact,T1499.003,Application Exhaustion Flood,Dataset/Ataques/Comandos/T1499.003-Application_Exhaustion_Flood/,cerrado
+ATA047,Impact,T1499.002,Service Exhaustion Flood,Dataset/Ataques/Comandos/T1499.002-Service_Exhaustion_Flood/,cerrado
+ATA048,Impact,T1498.001,Direct Network Flood,Dataset/Ataques/Comandos/T1498.001-Direct_Network_Flood/,cerrado
+ATA049,Exfiltration,T1567.002,Exfiltration to Cloud Storage,Dataset/Ataques/Comandos/T1567.002-Exfiltration_To_Cloud_Storage/,cerrado
+ATA050,Exfiltration,T1567.003,Exfiltration to Text Storage Sites,Dataset/Ataques/Comandos/T1567.003-Exfiltration_To_Text_Storage_Sites/,cerrado
+ATA051,Collection,T1113,Screen Capture,Dataset/Ataques/Comandos/T1113-Screen_Capture/,cerrado
+ATA052,Collection,T1115,Clipboard Data,Dataset/Ataques/Comandos/T1115-Clipboard_Data/,cerrado
+ATA053,Collection,T1056.002,GUI Input Capture,Dataset/Ataques/Comandos/T1056.002-GUI_Input_Capture/,cerrado
+ATA054,Impact,T1498.002,Reflection Amplification,Dataset/Ataques/Comandos/T1498.002-Reflection_Amplification/,cerrado
+ATA055,Credential Access; Collection,T1557.003,DHCP Spoofing,Dataset/Ataques/Comandos/T1557.003-DHCP_Spoofing/,cerrado

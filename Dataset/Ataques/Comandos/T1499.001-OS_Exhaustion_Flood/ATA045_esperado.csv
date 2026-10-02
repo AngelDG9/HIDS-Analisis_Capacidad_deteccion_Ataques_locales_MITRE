@@ -1,0 +1,14 @@
+# ATA045_esperado.csv | ATA045 · T1499.001 OS Exhaustion Flood | TFG HIDS · Fase 3 (p1-cierre, tanda A)
+# Redactado el 2026-10-02 con los datos del paso 0, ANTES de ver ninguna alerta.
+# Gate humano: APROBADO 2026-10-02 (validación humana)
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+# Convencion H4: cada senal audit_exe se acompana de audit_cwd de la carpeta del ataque.
+# T1499.001 es un agotamiento de RECURSOS del SO (memoria): no hay fichero de datos ni
+#   escritura vigilada. El HIDS de host NO tiene reglas de CPU/RAM -> la unica capa es el
+#   EXECVE. (Hallazgo honesto: hecho con builtins del shell no habria execve -> ciego.)
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1499.001-S1,deteccion,audit_exe,dd,Process Creation,T1499.001,relleno acotado de memoria en /dev/shm (execve 80792)
+T1499.001-S2,deteccion,audit_exe,timeout,Process Creation,T1499.001,lanzador acotado del relleno (execve 80792)
+T1499.001-S3,deteccion,audit_exe,free,Process Creation,T1499.001,medida de memoria antes/durante/despues (execve 80792)
+T1499.001-S4,deteccion,audit_exe,rm,Process Creation,T1499.001,liberacion del relleno (execve 80792)
+T1499.001-S5,deteccion,audit_cwd,/home/angel/lab-attack/ATA045/*,Process Creation,T1499.001,ancla H4 (cwd del ataque)

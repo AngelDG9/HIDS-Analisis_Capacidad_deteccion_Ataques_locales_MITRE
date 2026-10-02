@@ -1,0 +1,7 @@
+udhcpd: started, v1.36.1
+udhcpd: max_leases=235 is too big, setting to 11
+udhcpd: can't open '/home/angel/lab-attack/ATA055/udhcpd.leases': No such file or directory
+udhcpd: sending OFFER to 10.99.0.101
+udhcpd: sending OFFER to 10.99.0.101
+udhcpd: sending ACK to 10.99.0.101
+udhcpd: received SIGTERM

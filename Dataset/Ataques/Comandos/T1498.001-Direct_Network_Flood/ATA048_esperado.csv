@@ -1,0 +1,14 @@
+# ATA048_esperado.csv | ATA048 · T1498.001 Direct Network Flood | TFG HIDS · Fase 3 (p1-cierre, tanda A)
+# Redactado el 2026-10-02 con los datos del paso 0, ANTES de ver ninguna alerta.
+# Gate humano: APROBADO 2026-10-02 (validación humana)
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+# Convencion H4: cada senal audit_exe se acompana de audit_cwd de la carpeta del ataque.
+# El flood va SIEMPRE contra el receptor del HOST (192.168.65.1:9091, VMnet1), NUNCA el
+#   manager. El HIDS de host no ve la red: la deteccion es el PROCESS CREATION del cliente
+#   (`nc.openbsd`/`head`/`timeout`); la prueba es el `sink.log` del HOST (bytes recibidos).
+#   BINARIO REAL verificado en el paso 0: `nc` -> /usr/bin/nc.openbsd.
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1498.001-S1,deteccion,audit_exe,nc.openbsd,Process Creation,T1498.001,flood TCP volumetrico al receptor local (execve 80792)
+T1498.001-S2,deteccion,audit_exe,head,Process Creation,T1498.001,generacion acotada de los bytes a enviar (execve 80792)
+T1498.001-S3,deteccion,audit_exe,timeout,Process Creation,T1498.001,cota temporal del flood (execve 80792)
+T1498.001-S4,deteccion,audit_cwd,/home/angel/lab-attack/ATA048/*,Process Creation,T1498.001,ancla H4 (cwd del ataque)

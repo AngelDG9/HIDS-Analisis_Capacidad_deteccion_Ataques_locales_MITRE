@@ -1,0 +1,11 @@
+# ATA050_esperado.csv | ATA050 · T1567.003 Exfiltration to Text Storage Sites | TFG HIDS · Fase 3 (p1-cierre, tanda B)
+# Redactado el 2026-10-02 con los datos del paso 0, ANTES de ver ninguna alerta.
+# Gate humano: APROBADO 2026-10-02 (validación humana)
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+# Convencion H4: cada senal audit_exe se acompana de audit_cwd de la carpeta del ataque.
+# El "paste" es un endpoint LOCAL del receptor (POST /paste en 192.168.65.1:9090); ART
+#   solo trae la prueba Windows con pastebin.com + API key real -> ataque propio.
+#   El HIDS no ve la red: la deteccion es el execve de curl (80792); la prueba es el sha256.
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1567.003-S1,deteccion,audit_exe,curl,Process Creation,T1567.003,POST del texto al paste local (execve 80792)
+T1567.003-S2,deteccion,audit_cwd,/home/angel/lab-attack/ATA050/*,Process Creation,T1567.003,ancla H4 (cwd del ataque)

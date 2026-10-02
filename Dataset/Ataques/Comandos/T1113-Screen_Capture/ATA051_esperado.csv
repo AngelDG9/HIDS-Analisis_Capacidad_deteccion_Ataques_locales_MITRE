@@ -1,0 +1,11 @@
+# ATA051_esperado.csv | ATA051 · T1113 Screen Capture | TFG HIDS · Fase 3 (p1-cierre, tanda B)
+# Redactado el 2026-10-02 con los datos del paso 0, ANTES de ver ninguna alerta.
+# Gate humano: APROBADO 2026-10-02 (validación humana)
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+# Convencion H4: cada senal audit_exe se acompana de audit_cwd de la carpeta del ataque.
+# ART Linux "X Windows Capture" (guid 8206dd0c...): xwd -root -out; xwud -in.
+#   El display es Xvfb :99 (sintetico, declarado); el HIDS ve el execve (80792).
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1113-S1,deteccion,audit_exe,xwd,Process Creation,T1113,captura de pantalla con xwd -root (execve 80792)
+T1113-S2,deteccion,audit_exe,xwud,Process Creation,T1113,revision de la captura con xwud (ART; execve 80792)
+T1113-S3,deteccion,audit_cwd,/home/angel/lab-attack/ATA051/*,Process Creation,T1113,ancla H4 (cwd del ataque)

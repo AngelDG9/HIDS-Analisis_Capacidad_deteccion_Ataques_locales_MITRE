@@ -1,0 +1,198 @@
+{
+  "ata_id": "ATA046",
+  "tecnica": "T1499.003",
+  "tactica": "Impact",
+  "sistema": "linux",
+  "bloque": "fase-03-p1-cierre",
+  "tanda": "A",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1499.003-Application_Exhaustion_Flood/",
+  "atomic": {
+    "fuente": "custom",
+    "nota": "rafaga ACOTADA de peticiones CARAS (PBKDF2) a una app local desechable mono-hilo en 127.0.0.1:9093, levantada en el pre-staging; guardarrail TOTAL<=64, CONC<=8, MAX_TIME<=15s, solo loopback",
+    "fuente_norm": "propio",
+    "motivo_codigo": "art_no_prueba_plataforma",
+    "motivo_detalle": "ART no trae prueba de T1499 (tecnica ausente del clon) -> propio."
+  },
+  "material_externo": {
+    "aplica": false,
+    "nota": "sin material externo: curl/xargs/seq/timeout de serie; la app es Python stdlib del propio repo"
+  },
+  "esperado_sha256": "b386cff01a23b319c0fdc76f07e0c1fa5fecca6e74e9427db51fb37a34280dd1",
+  "ataque_sha256": "a748dffb250f721abed80b9598b9d04f3e3f1563a7715602f13829d826bf1a49",
+  "validacion_humana_esperado": "APROBADO 2026-10-02",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA046_logtest.txt",
+    "logtest_sha256": "8d47134b134dd8b6ae42a352dc663647cc5a61d5c84b01831d5a5c1ab0b3c0ca",
+    "preflight": "Soporte/Ataques/c0/ATA046_preflight.md",
+    "preflight_sha256": "50b95a8419e6182f8bd1812a222da331eb760cc0af77dc7c538ef4b7d577548d",
+    "resultado": "PASA (4 eventos curl/xargs/seq/timeout -> 80792 level 3; sin silenciador)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1,
+      "t0": "2026-10-02T00:37:00Z",
+      "t1": "2026-10-02T00:37:35Z",
+      "duracion_s": 35,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA046_iter1-Detalle.csv",
+      "detalle_sha256": "e7f68c357040e222c81190cb3c9fd3aaaf7009c75fe47e147dc82fa802573abd",
+      "detalle_raw_sha256": "a1e2a1e0cd12dd7fc835f2dd848a67c00ad9416e83ae69949bd1eda80a95e6e4",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA046_iter1-Audited.csv",
+      "audited_sha256": "9798dae512c6e503e917cde898ba3d507e01ba3ddd9570277b84e58b6329bc55",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA046_iter1-Revision.csv",
+      "revision_sha256": "f107aa8286a173f3787bf625fb446b5ac4e1a1c32ca69d8141cfdff34c0cc067",
+      "conteos": {
+        "filas": 791,
+        "deteccion": 70,
+        "auto_ruido": 626,
+        "ruido_conocido": 75,
+        "dudosa": 0,
+        "artefacto_ataque": 20
+      },
+      "rs": {
+        "RS1": 3,
+        "RS2": 788,
+        "RS3": 0,
+        "RS4": 0,
+        "UNKNOWN": 0
+      },
+      "ventana_raw": {
+        "filas": 799,
+        "victima_linux": 791,
+        "otros_agentes_descartados": 8
+      },
+      "detecciones": {
+        "alertas": 70,
+        "rule_id_distintos": [
+          "80792"
+        ],
+        "esperadas": 70,
+        "sorpresas": 0,
+        "evidencia": "49x xargs + 16x curl + 4x timeout + 1x seq (execve 80792, cwd del ataque)"
+      },
+      "metrico_o1": "si",
+      "metrico_o2": "4/4",
+      "dudosas_resueltas": 2,
+      "efecto": {
+        "resultado": "OK",
+        "detalle": "peticiones_servidas=16; app_cpu_usada_s=2.29; latencia_min_s=0.158020; latencia_max_s=0.590515; app_viva_final=1"
+      }
+    },
+    {
+      "iter": 2,
+      "t0": "2026-10-02T00:41:41Z",
+      "t1": "2026-10-02T00:42:16Z",
+      "duracion_s": 35,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA046_iter2-Detalle.csv",
+      "detalle_sha256": "d26befec31517b33f09f145627a6d5a95100eb02a23138668c3fadc092ca3e12",
+      "detalle_raw_sha256": "7dfaae949fbdad7d17d2d00dec1add90d3c97841c189f847f7dc9f01f80a6b67",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA046_iter2-Audited.csv",
+      "audited_sha256": "2ceedfddb2c627f493d357e2390d4facf80f9f2e1c38c993cd26759d5c8daf29",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA046_iter2-Revision.csv",
+      "revision_sha256": "7e3c63aae386fe24d3b6029af288c8fa610090e53772f00f16fe3bab4c5b0bbd",
+      "conteos": {
+        "filas": 780,
+        "deteccion": 70,
+        "auto_ruido": 615,
+        "ruido_conocido": 75,
+        "dudosa": 0,
+        "artefacto_ataque": 20
+      },
+      "rs": {
+        "RS1": 3,
+        "RS2": 777,
+        "RS3": 0,
+        "RS4": 0,
+        "UNKNOWN": 0
+      },
+      "ventana_raw": {
+        "filas": 787,
+        "victima_linux": 780,
+        "otros_agentes_descartados": 7
+      },
+      "detecciones": {
+        "alertas": 70,
+        "rule_id_distintos": [
+          "80792"
+        ],
+        "esperadas": 70,
+        "sorpresas": 0,
+        "evidencia": "49x xargs + 16x curl + 4x timeout + 1x seq (execve 80792, cwd del ataque)"
+      },
+      "metrico_o1": "si",
+      "metrico_o2": "4/4",
+      "dudosas_resueltas": 2,
+      "efecto": {
+        "resultado": "OK",
+        "detalle": "peticiones_servidas=16; app_cpu_usada_s=2.29; latencia_min_s=0.142941; latencia_max_s=0.576843; app_viva_final=1"
+      }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-10-02",
+    "filas": 4,
+    "veredicto": "PAM/sudo -> ruido; execve sin ancla / del ataque -> artefacto",
+    "motivo": "Criterio ratificado 2026-09-28; 0 filas del ataque en ruido.",
+    "revisor": "executor fase-03-p1-cierre tanda A"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": {
+    "criterio": "v2",
+    "mismo_conjunto_rule_id_deteccion": true,
+    "rule_ids_deteccion": [
+      "80792"
+    ],
+    "n1": 70,
+    "n2": 70,
+    "margen": 7,
+    "criterio_recuento_ok": true,
+    "sin_dudosas_sin_resolver": true
+  },
+  "extraccion": {
+    "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)",
+    "fuente": "fichero diario /var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+    "aislamiento": "filtro a agent_name == victima-linux"
+  },
+  "prueba_de_efecto": "16 peticiones servidas; CPU de la app +2.29 s; latencia creciente por cola (min~0.15 s, max~0.59 s); app viva",
+  "receptor": {
+    "aplica": false,
+    "nota": "no hay receptor de red"
+  },
+  "hallazgos": [
+    "Wazuh no tiene reglas de recursos/aplicacion -> el grado de saturacion no se ve; solo el execve del cliente.",
+    "La app (python3) arranca en el pre-staging (fuera de la ventana): el posible punto ciego 92600 no afecta a la deteccion de la accion.",
+    "ANOMALIA declarada: la rafaga genero 49 execve de xargs (para 16 peticiones); el conteo bruto se infla, O1/O2 no se ven afectados.",
+    "C0 sin silenciador."
+  ],
+  "eventos": [
+    {
+      "ts": "2026-10-02T00:37:00Z",
+      "tipo": "t0",
+      "detalle": "iter1 t0 (revert lab-listo + asentamiento)"
+    },
+    {
+      "ts": "2026-10-02T00:37:35Z",
+      "tipo": "t1",
+      "detalle": "iter1 t1 (tras scan FIM forzado)"
+    },
+    {
+      "ts": "2026-10-02T00:41:41Z",
+      "tipo": "t0",
+      "detalle": "iter2 t0"
+    },
+    {
+      "ts": "2026-10-02T00:42:16Z",
+      "tipo": "t1",
+      "detalle": "iter2 t1"
+    },
+    {
+      "ts": "2026-10-02T00:42:16Z",
+      "tipo": "cierre",
+      "detalle": "criterio v2: deteccion identica ({80792}) -> iguales"
+    }
+  ]
+}

@@ -1,0 +1,184 @@
+{
+  "ata_id": "ATA052",
+  "tecnica": "T1115",
+  "tactica": "Collection",
+  "sistema": "linux",
+  "bloque": "fase-03-p1-cierre",
+  "tanda": "B",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1115-Clipboard_Data/",
+  "atomic": {
+    "fuente": "ART_adaptado",
+    "nota": "ART adaptado: xclip -sel clip (poner) + xclip -o (leer). Display Xvfb :99; la fuente `history` (sin sesion interactiva) se sustituye por un historial simulado.",
+    "fuente_norm": "ART_adaptado",
+    "motivo_codigo": "na_art_usado",
+    "motivo_detalle": "se usó ART adaptado (atómica Linux ee363e53, xclip)."
+  },
+  "material_externo": {
+    "aplica": true,
+    "nota": "paquetes GUI offline Xvfb+xclip (URL+sha256 en Soporte/Ataques/c0/ATA049-053_prestaging_paquetes.md); display :99"
+  },
+  "esperado_sha256": "00f0b695deba40dbe5c69473477f93fab9d1248b94edaec6e80963c77962dcb1",
+  "ataque_sha256": "d784f51e4bcfe7290709da15d47b9073c15db7b775857f6a1c60e2619c69dae6",
+  "validacion_humana_esperado": "APROBADO 2026-10-02",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA052_logtest.txt",
+    "logtest_sha256": "31d9e52ab40aea60f244c5664a8bb6b7e345f6249bdd1d7708af10a3fbb26daa",
+    "preflight": "Soporte/Ataques/c0/ATA052_preflight.md",
+    "preflight_sha256": "598d2aea4b048b6805bc7d162eb02a9b96653362d8282e46157da5b9b687269a",
+    "resultado": "PASA (sin silenciador)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1,
+      "t0": "2026-10-02T02:35:10Z",
+      "t1": "2026-10-02T02:35:43Z",
+      "duracion_s": 33,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA052_iter1-Detalle.csv",
+      "detalle_sha256": "614303727b61c2f764dfaba8aed10e65b0546dd1d13dea973eca9cfb5de601db",
+      "detalle_raw_sha256": "cea7c73e90d4b181ea69440a38a24952d53206b46a149dbd3a8c1d574f6500e9",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA052_iter1-Audited.csv",
+      "audited_sha256": "a67dd5ba1c54236dfa663fda0a2575a014dee69ca92abe543ee672d6f58f7657",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA052_iter1-Revision.csv",
+      "revision_sha256": "9f23134b7ef09e2d1db46cedbe1428154d5e58f689eb48e0ecea24ea13dc6677",
+      "conteos": {
+        "filas": 714,
+        "deteccion": 2,
+        "auto_ruido": 625,
+        "ruido_conocido": 77,
+        "dudosa": 0,
+        "artefacto_ataque": 10
+      },
+      "detecciones": {
+        "alertas": 2,
+        "rule_id_distintos": [
+          "80792"
+        ],
+        "esperadas": 2,
+        "sorpresas": 0,
+        "evidencia": "2x audit_exe=/usr/bin/xclip (execve 80792, cwd del ataque)"
+      },
+      "metrico_o1": "si",
+      "metrico_o2": "1/1",
+      "dudosas_resueltas": 2,
+      "folds": {
+        "ruido": 2
+      },
+      "efecto": {
+        "resultado": "OK",
+        "detalle": "round-trip del portapapeles: sha256 capturado == sha256 sembrado (7b9b90b1…) por iteracion"
+      }
+    },
+    {
+      "iter": 2,
+      "t0": "2026-10-02T02:41:25Z",
+      "t1": "2026-10-02T02:41:58Z",
+      "duracion_s": 33,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA052_iter2-Detalle.csv",
+      "detalle_sha256": "3e28318359bade82daa1a260868016cfde78ae2c9c54663c29dac25f1c9b0a6f",
+      "detalle_raw_sha256": "1b3b1d6b067dc7ad828dc797de74da907398804f45eab786af4a55bd5b88e52b",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA052_iter2-Audited.csv",
+      "audited_sha256": "776392d7661b60bb6ea532661d7e1182e4703101e40286c84a02dbfec2c8eea5",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA052_iter2-Revision.csv",
+      "revision_sha256": "668bc0754c71ee40b70f8d3a64adf987c66a41bca24699b617c2917ba4dff2c2",
+      "conteos": {
+        "filas": 766,
+        "deteccion": 2,
+        "auto_ruido": 677,
+        "ruido_conocido": 77,
+        "dudosa": 0,
+        "artefacto_ataque": 10
+      },
+      "detecciones": {
+        "alertas": 2,
+        "rule_id_distintos": [
+          "80792"
+        ],
+        "esperadas": 2,
+        "sorpresas": 0,
+        "evidencia": "2x audit_exe=/usr/bin/xclip (execve 80792, cwd del ataque)"
+      },
+      "metrico_o1": "si",
+      "metrico_o2": "1/1",
+      "dudosas_resueltas": 2,
+      "folds": {
+        "ruido": 2
+      },
+      "efecto": {
+        "resultado": "OK",
+        "detalle": "round-trip del portapapeles: sha256 capturado == sha256 sembrado (7b9b90b1…) por iteracion"
+      }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-10-02",
+    "filas": 4,
+    "veredicto": "PAM/sudo -> ruido; execve sin ancla / del ataque -> artefacto",
+    "motivo": "Criterio ratificado 2026-09-28; 0 filas del ataque en ruido.",
+    "revisor": "executor fase-03-p1-cierre tanda B"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": {
+    "criterio": "v2",
+    "mismo_conjunto_rule_id_deteccion": true,
+    "rule_ids_deteccion": [
+      "80792"
+    ],
+    "n1": 2,
+    "n2": 2,
+    "margen": 2,
+    "criterio_recuento_ok": true,
+    "sin_dudosas_sin_resolver": true
+  },
+  "extraccion": {
+    "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)",
+    "fuente": "fichero diario /var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+    "aislamiento": "filtro a agent_name == victima-linux"
+  },
+  "prueba_de_efecto": "round-trip del portapapeles: sha256 capturado == sha256 sembrado (7b9b90b1…) por iteracion",
+  "receptor": {
+    "aplica": false,
+    "nota": "no aplica (display local Xvfb o round-trip local)"
+  },
+  "hallazgos": [
+    "El HIDS ve los 2 execve de xclip anclados al cwd; round-trip del portapapeles OK.",
+    "xclip deja un proceso dueno de la seleccion X; el revert de la victima lo elimina entre ventanas.",
+    "C0 sin silenciador; display sintetico."
+  ],
+  "eventos": [
+    {
+      "ts": "2026-10-02T02:35:10Z",
+      "tipo": "t0",
+      "detalle": "iter1 t0"
+    },
+    {
+      "ts": "2026-10-02T02:41:25Z",
+      "tipo": "t0",
+      "detalle": "iter2 t0"
+    },
+    {
+      "ts": "2026-10-02T02:35:43Z",
+      "tipo": "t1",
+      "detalle": "iter1 t1"
+    },
+    {
+      "ts": "2026-10-02T02:41:58Z",
+      "tipo": "t1",
+      "detalle": "iter2 t1"
+    },
+    {
+      "ts": "2026-10-02T02:41:58Z",
+      "tipo": "cierre",
+      "detalle": "criterio v2: deteccion identica ({80792}) -> iguales"
+    },
+    {
+      "ts": "2026-10-02T03:43:47Z",
+      "tipo": "correccion",
+      "detalle": "seguridad: se elimino de la captura C0 la linea 'full event' con la credencial del laboratorio (canalizada por error al stdin de wazuh-logtest); sha256 de logtest y preflight recalculados; nada mas de la captura cambio"
+    }
+  ]
+}

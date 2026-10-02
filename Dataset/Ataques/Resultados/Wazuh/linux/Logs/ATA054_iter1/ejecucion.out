@@ -1,0 +1,13 @@
+[sudo] password for angel: ATA054 · T1498.002 Reflection Amplification (reflector local acotado) — custom
+T0=2026-10-02T03:14:11Z
+segmento_local: vrefa0=10.200.0.1/24  tfgref:vrefb0=10.200.0.2/24
+--- reflector=10.200.0.2:10053 target=192.168.65.129:5399 requests=25 ---
+spoofer: requests_enviados=25 payload_bytes=400 src=192.168.65.129:5399 dst=10.200.0.2:10053
+--- resultados ---
+reflector: respuestas=25 bytes_amplificados=102400 resp_bytes=4096
+target: paquetes=25 bytes=102400
+--- estado final ---
+netns_residuales=0
+veth_residuales=0
+REFLECTION_AMPLIFICATION=OK (segmento retirado; 0 residuos de red)
+T1_LOCAL=2026-10-02T03:14:17Z

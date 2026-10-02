@@ -1,0 +1,15 @@
+# ATA047_esperado.csv | ATA047 · T1499.002 Service Exhaustion Flood | TFG HIDS · Fase 3 (p1-cierre, tanda A)
+# Redactado el 2026-10-02 con los datos del paso 0, ANTES de ver ninguna alerta.
+# Gate humano: APROBADO 2026-10-02 (validación humana)
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+# Convencion H4: cada senal audit_exe se acompana de audit_cwd de la carpeta del ataque.
+# El "medio" es un SERVICIO local desechable (sink_http.py, loopback 127.0.0.1:9094)
+#   levantado en el pre-staging (fuera de [t0,t1]). La ventana mide SOLO el flood por
+#   VOLUMEN de peticiones lanzado por `curl`. El servicio (python3) arranca ANTES de t0.
+#   NUNCA el manager.
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1499.002-S1,deteccion,audit_exe,curl,Process Creation,T1499.002,volumen de peticiones al servicio local /ping (execve 80792)
+T1499.002-S2,deteccion,audit_exe,xargs,Process Creation,T1499.002,lanzador de la concurrencia acotada (execve 80792)
+T1499.002-S3,deteccion,audit_exe,seq,Process Creation,T1499.002,generador del numero de peticiones (execve 80792)
+T1499.002-S4,deteccion,audit_exe,timeout,Process Creation,T1499.002,cota temporal de la rafaga (execve 80792)
+T1499.002-S5,deteccion,audit_cwd,/home/angel/lab-attack/ATA047/*,Process Creation,T1499.002,ancla H4 (cwd del ataque)

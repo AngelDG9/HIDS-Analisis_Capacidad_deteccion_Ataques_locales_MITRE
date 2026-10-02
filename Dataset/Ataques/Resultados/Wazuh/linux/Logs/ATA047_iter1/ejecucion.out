@@ -1,0 +1,10 @@
+ATA047 · T1499.002 Service Exhaustion Flood (rafaga acotada a servicio local) — custom (manual)
+T0=2026-10-02T00:46:19Z
+--- rafaga: TOTAL=400 CONC=20 ---
+xargs_rc=0
+peticiones_recibidas=400
+svc_cpu_usada_s=0.19
+svc_vivo_final=1
+--- estado final ---
+SERVICE_EXHAUST=OK (servicio absorbio la rafaga; CPU subio 0.19s)
+T1_LOCAL=2026-10-02T00:46:21Z

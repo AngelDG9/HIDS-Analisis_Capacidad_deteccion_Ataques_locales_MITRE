@@ -1,0 +1,11 @@
+ATA052 · T1115 Clipboard Data (xclip sobre Xvfb) — ART adaptado
+T0=2026-10-02T02:41:25Z
+--- poner contenido en el portapapeles (xclip -sel clip) ---
+--- leer el portapapeles (xclip -o) ---
+xclip_rc=0
+CLIPBOARD_ROUNDTRIP=OK (capturado == sembrado)
+--- sha256 (fuente y capturado) ---
+7b9b90b15a2f50fde3d2e839f49c53b3baeaaee91369cd28a48746e93c3b10f4  /home/angel/lab-attack/ATA052/historial_simulado.txt
+7b9b90b15a2f50fde3d2e839f49c53b3baeaaee91369cd28a48746e93c3b10f4  /home/angel/lab-attack/ATA052/portapapeles_capturado.txt
+T1_LOCAL=2026-10-02T02:41:27Z
+attack_rc=0

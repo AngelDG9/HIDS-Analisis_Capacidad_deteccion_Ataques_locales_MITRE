@@ -1,0 +1,2 @@
+action=deconfig interface=vdhcp1 ip= mask= router= dns= serverid= lease=
+action=bound interface=vdhcp1 ip=10.99.0.101 mask=24 router=10.99.0.1 dns=10.99.0.1 serverid=10.99.0.1 lease=120

@@ -1,0 +1,13 @@
+ATA045 · T1499.001 OS Exhaustion Flood (memoria /dev/shm acotada) — custom (manual)
+T0=2026-10-02T00:21:14Z
+mem_available_antes_mb=2483
+relleno_mb=512
+-rw-rw-r-- 1 angel angel 536870912 Oct  2 02:21 /dev/shm/ATA045_fill
+mem_available_durante_mb=1976
+mem_available_despues_mb=2494
+--- estado final ---
+caida_available_mb=507 (objetivo ~512)
+recuperado_mb=518
+fichero_residual=no
+OS_EXHAUST=OK (memoria agotada de forma acotada y liberada; 0 residuo)
+T1_LOCAL=2026-10-02T00:21:22Z

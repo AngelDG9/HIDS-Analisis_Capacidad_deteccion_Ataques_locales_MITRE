@@ -1,0 +1,16 @@
+# ATA044_esperado.csv | ATA044 · T1025 Data from Removable Media | TFG HIDS · Fase 3 (p1-cierre, tanda A)
+# Redactado el 2026-10-02 con los datos del paso 0, ANTES de ver ninguna alerta.
+# Gate humano: APROBADO 2026-10-02 (validación humana)
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+# Convencion H4: cada senal audit_exe se acompana de audit_cwd de la carpeta del ataque.
+# El "medio extraible" es una IMAGEN DE FICHERO vfat (lab-attack/ATA044/removable.img): NUNCA
+#   un USB/dispositivo real. La accion de la ventana es ADJUNTAR en ro + LISTAR + COPIAR.
+#   El medio se crea en el pre-staging (fuera de [t0,t1]); su creacion NO es la accion medida.
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1025-S1,deteccion,audit_exe,losetup,Process Creation,T1025,adjuntar el medio simulado en SOLO-LECTURA (execve 80792)
+T1025-S2,deteccion,audit_exe,mount,Process Creation,T1025,montaje ro del medio (execve 80792)
+T1025-S3,deteccion,audit_exe,find,Process Creation,T1025,listado de documentos del medio (execve 80792)
+T1025-S4,deteccion,audit_exe,cp,Process Creation,T1025,copia de los documentos a la recoleccion (execve 80792)
+T1025-S5,deteccion,audit_exe,sha256sum,Process Creation,T1025,prueba del efecto origen==copia (execve 80792)
+T1025-S6,deteccion,audit_exe,umount,Process Creation,T1025,desmontaje del medio (execve 80792)
+T1025-S7,deteccion,audit_cwd,/home/angel/lab-attack/ATA044/*,Process Creation,T1025,ancla H4 (cwd del ataque)

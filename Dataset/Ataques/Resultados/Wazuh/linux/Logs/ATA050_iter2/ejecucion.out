@@ -1,0 +1,10 @@
+ATA050 · T1567.003 Exfiltration to Text Storage Sites (paste local) — custom
+T0=2026-10-02T01:55:30Z
+--- sha256 local del texto a exfiltrar ---
+4c9dbfb3ac4a1f3f59d81659ae2fc05edaabb5ea1ffc8cb74b5f9d6129c28b8c  /home/angel/lab-attack/ATA050/filtracion/notas_internas.txt
+--- curl POST /paste ---
+http_code=200
+curl_rc=0
+EXFIL_PASTE=OK (POST /paste enviado al receptor local)
+T1_LOCAL=2026-10-02T01:55:31Z
+attack_rc=0

@@ -12,7 +12,7 @@
 Fase 0 — Arranque del proyecto                         [~2 días]   ✔ hecho
 Fase 1 — Corpus MITRE (F-01)                           [~1 semana]   ✔ hecho
 Fase 2 — Laboratorio Wazuh (F-02)                      [~1 semana]   ✔ hecho
-Fase 3 — Ataques y detección (F-03)                    [~2 semanas mes 1, escalable mes 2]   🔶 EN CURSO (43 técnicas · 41 detectadas)
+Fase 3 — Ataques y detección (F-03)                    [~2 semanas mes 1, escalable mes 2]   🔶 EN CURSO (55 técnicas · 53 detectadas · P1-Linux cerrada)
 Fase 4 — Robustez y rendimiento (η)                    [~1 semana]
 Fase 5 — Memoria y anexos (F-04)                       [~2-3 semanas]
 ```
@@ -96,20 +96,16 @@ documentados. Verificación **PASA**; detalle en **`_fases/fase-02/change-doc.md
 | 3.5 🔶 | **Ampliar el corpus por rondas** (rondas de **15**, en **tandas de 5**; factibilidad Linux sin NAT). | [AUTO] + [HUMANO] |
 | 3.6 | **Bloque de EVASIÓN** (2ª pasada, versiones **disfrazadas**) — **cuando la cobertura P1 esté cerrada**. | [AUTO] + [HUMANO] |
 
-**🔶 EN CURSO (2026-09-29).** **43 técnicas** ejecutadas (**86 ventanas**) → **41 DETECTADAS / 2 NO**
-(`ATA013/T1560.002` — regla `92600` suprime el `execve` de `python3`— y **`ATA034/T1560.003`** — método propio
-con *builtins*: sin `execve` de la operación). **⭐ Hallazgo:** la *misma* técnica de archivar es **detectada**
-con utilidad, **suprimida** con librería y **sin telemetría** con método propio → **lo que decide es la
-implementación**. Métrica **congelada**; `dudosa=0`. Por táctica: **Impact 19/19 · Exfiltration 10/10 ·
-Collection 12/14**.
-**Rondas:** 1ª = 13 (`fase-03-escalado`) · 2ª = **15** (`fase-03-ampliacion`) · 3ª = **15** (`fase-03-ampliacion-2`) ·
-**auditoría metodológica** ✔ (`fase-03-auditoria-metodologica`, 2026-10-01: los **3 criterios** —ART · ataque manual ·
-pre-staging—, la trazabilidad de los 43 y el arreglo del falso positivo).
-**Pendiente:** ① **decidir qué ataques se repiten** (candidatos: por ART [ATA024/029/030/038] · por pre-staging
-[ATA014/016/029/035/036/037/038]); ② **las ~29 técnicas restantes de Linux sin evasión**; ③ **bloque futuro:
-normalización de finales de línea + recálculo de huellas** (para que un clon verifique); ④ **EVASIÓN** → ⑤ **Windows**
-(su línea base + adaptar el filtro) → ⑥ **Fase 4** (precio de la detección) → ⑦ **Fase 5** (memoria).
-*(Host-eligible total: **625** = P1 89 · P2 459 · P3 77; de las 89 P1, **~72 citan Linux**.)*
+**🔶 EN CURSO (2026-10-02).** **55 técnicas** medidas (**128 ventanas**) → **53 detectadas / 2 no**
+(`ATA013` — `92600` suprime el `execve` de `python3`— y **`ATA034`** — archivado con *builtins*: sin `execve` de la
+operación). **⭐ Hallazgo:** la *misma* técnica de archivar es **detectada** con utilidad, **suprimida** con librería
+y **sin telemetría** con método propio → **lo que decide es la implementación**.
+**✅ P1-LINUX CERRADA:** `Hojas/cobertura_p1_linux.csv` (**72 filas** = 48 medida · 6 cubierta_por_ata · 8 cubierta_madre
+· 2 **cubierta_parcial** · 8 no_factible), con **2 comprobaciones automáticas** (C1 cuadre + **C2 padre/hijo**).
+**Rondas:** 13 (`escalado`) · 15 (`ampliacion`) · 15 (`ampliacion-2`) · 9 repeticiones · **12 (`p1-cierre`)**.
+**Pendiente:** ① **P2** o ② **bloque de EVASIÓN** (versiones disfrazadas) · ③ **Windows** · ④ **bloque futuro**:
+normalización de finales de línea + recálculo de huellas · ⑤ **arreglo futuro del filtro**: `19010/19011` (SCA) ·
+⑥ **Fase 4** (precio de la detección) y **memoria**. *(Host-eligible total: **625** = P1 89 · P2 459 · P3 77.)*
 
 **DoD:** ✔ corpus cerrado con filas en `ATA_index.csv`, CSV por ataque y primer balance de
 detección de Wazuh.

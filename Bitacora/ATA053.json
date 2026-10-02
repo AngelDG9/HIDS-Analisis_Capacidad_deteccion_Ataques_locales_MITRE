@@ -1,0 +1,184 @@
+{
+  "ata_id": "ATA053",
+  "tecnica": "T1056.002",
+  "tactica": "Collection;Credential Access",
+  "sistema": "linux",
+  "bloque": "fase-03-p1-cierre",
+  "tanda": "B",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1056.002-GUI_Input_Capture/",
+  "atomic": {
+    "fuente": "custom",
+    "nota": "Ataque propio: captura de eventos X11 con `xinput test-xi2 --root` mientras `xdotool` inyecta entrada sintetica (tecleo de credenciales de juguete) sobre Xvfb :99; keylog en keylog.txt.",
+    "fuente_norm": "propio",
+    "motivo_codigo": "art_no_prueba_plataforma",
+    "motivo_detalle": "ART no trae prueba Linux de T1056.002 (solo AppleScript bash para macOS y PowerShell); sin prueba Linux."
+  },
+  "material_externo": {
+    "aplica": true,
+    "nota": "paquetes GUI offline Xvfb+xinput+xdotool (URL+sha256 en Soporte/Ataques/c0/ATA049-053_prestaging_paquetes.md); display :99"
+  },
+  "esperado_sha256": "c858ca0b3b8c7b48f7789f87f52dabb491280c1c8aa8ec128caa342deba1dfb7",
+  "ataque_sha256": "687c367a8d7555753de36b6b42adfabd286797e9bf3be422631b73f578fb1bdf",
+  "validacion_humana_esperado": "APROBADO 2026-10-02",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA053_logtest.txt",
+    "logtest_sha256": "f2950ee4cc25b0d67b13d8df0665b6bb0c47c9acd7ac6c8614816dd49257e2eb",
+    "preflight": "Soporte/Ataques/c0/ATA053_preflight.md",
+    "preflight_sha256": "bb167c8bfe681fda40be5d7f5b3610df6299eee2d5284a763e017970862c085b",
+    "resultado": "PASA (sin silenciador)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1,
+      "t0": "2026-10-02T02:47:43Z",
+      "t1": "2026-10-02T02:48:22Z",
+      "duracion_s": 39,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA053_iter1-Detalle.csv",
+      "detalle_sha256": "4c9179b1788ca4187f4bcb555275606d1dabb860cb46941906b84c17e25604e2",
+      "detalle_raw_sha256": "23a08af39864acc4dd399aa8fb7bf84810908efcd43257317af5294c40391bed",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA053_iter1-Audited.csv",
+      "audited_sha256": "b44797c5285787b2b0c89d8bb3ffb41c89fa4c60428a264a1a65742f1257c788",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA053_iter1-Revision.csv",
+      "revision_sha256": "a38876b6ca8f184426c1533d4cfa00dbed862e1334989cc9a87ed811ccd4b931",
+      "conteos": {
+        "filas": 761,
+        "deteccion": 3,
+        "auto_ruido": 661,
+        "ruido_conocido": 80,
+        "dudosa": 0,
+        "artefacto_ataque": 17
+      },
+      "detecciones": {
+        "alertas": 3,
+        "rule_id_distintos": [
+          "80792"
+        ],
+        "esperadas": 3,
+        "sorpresas": 0,
+        "evidencia": "1x audit_exe=/usr/bin/xinput + 2x audit_exe=/usr/bin/xdotool (execve 80792, cwd del ataque)"
+      },
+      "metrico_o1": "si",
+      "metrico_o2": "2/2",
+      "dudosas_resueltas": 2,
+      "folds": {
+        "ruido": 2
+      },
+      "efecto": {
+        "resultado": "OK",
+        "detalle": "keylog.txt con eventos KeyPress capturados (111) — entrada sintetica"
+      }
+    },
+    {
+      "iter": 2,
+      "t0": "2026-10-02T02:54:07Z",
+      "t1": "2026-10-02T02:54:45Z",
+      "duracion_s": 38,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA053_iter2-Detalle.csv",
+      "detalle_sha256": "51344f537f69bce50fbbeca7ee81d5928dcf38ef662510d7690d96692b55fedb",
+      "detalle_raw_sha256": "a8ef5bfd43da7b4210b6701fe1d83212905b27a9e76b958d0c135934c6e2fcb9",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA053_iter2-Audited.csv",
+      "audited_sha256": "0a40376e00f6f0529efaaff3007b0036e4753913780bdf2cbc6113dada60cdcd",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA053_iter2-Revision.csv",
+      "revision_sha256": "f7718f85b1ed61143805d106406fa1bccfc88c3dd7bcaaa62fe86f2783729882",
+      "conteos": {
+        "filas": 728,
+        "deteccion": 3,
+        "auto_ruido": 628,
+        "ruido_conocido": 80,
+        "dudosa": 0,
+        "artefacto_ataque": 17
+      },
+      "detecciones": {
+        "alertas": 3,
+        "rule_id_distintos": [
+          "80792"
+        ],
+        "esperadas": 3,
+        "sorpresas": 0,
+        "evidencia": "1x audit_exe=/usr/bin/xinput + 2x audit_exe=/usr/bin/xdotool (execve 80792, cwd del ataque)"
+      },
+      "metrico_o1": "si",
+      "metrico_o2": "2/2",
+      "dudosas_resueltas": 2,
+      "folds": {
+        "ruido": 2
+      },
+      "efecto": {
+        "resultado": "OK",
+        "detalle": "keylog.txt con eventos KeyPress capturados (111) — entrada sintetica"
+      }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-10-02",
+    "filas": 4,
+    "veredicto": "PAM/sudo -> ruido; execve sin ancla / del ataque -> artefacto",
+    "motivo": "Criterio ratificado 2026-09-28; 0 filas del ataque en ruido.",
+    "revisor": "executor fase-03-p1-cierre tanda B"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": {
+    "criterio": "v2",
+    "mismo_conjunto_rule_id_deteccion": true,
+    "rule_ids_deteccion": [
+      "80792"
+    ],
+    "n1": 3,
+    "n2": 3,
+    "margen": 2,
+    "criterio_recuento_ok": true,
+    "sin_dudosas_sin_resolver": true
+  },
+  "extraccion": {
+    "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)",
+    "fuente": "fichero diario /var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+    "aislamiento": "filtro a agent_name == victima-linux"
+  },
+  "prueba_de_efecto": "keylog.txt con eventos KeyPress capturados (111) — entrada sintetica",
+  "receptor": {
+    "aplica": false,
+    "nota": "no aplica (display local Xvfb o round-trip local)"
+  },
+  "hallazgos": [
+    "FACTIBLE: el mecanismo fiel de captura de eventos X11 se logra sin usuario real (entrada sintetica xdotool + Xvfb).",
+    "El HIDS ve xinput y los 2 xdotool anclados al cwd (3 ejecuciones).",
+    "C0 sin silenciador; display sintetico."
+  ],
+  "eventos": [
+    {
+      "ts": "2026-10-02T02:47:43Z",
+      "tipo": "t0",
+      "detalle": "iter1 t0"
+    },
+    {
+      "ts": "2026-10-02T02:54:07Z",
+      "tipo": "t0",
+      "detalle": "iter2 t0"
+    },
+    {
+      "ts": "2026-10-02T02:48:22Z",
+      "tipo": "t1",
+      "detalle": "iter1 t1"
+    },
+    {
+      "ts": "2026-10-02T02:54:45Z",
+      "tipo": "t1",
+      "detalle": "iter2 t1"
+    },
+    {
+      "ts": "2026-10-02T02:54:45Z",
+      "tipo": "cierre",
+      "detalle": "criterio v2: deteccion identica ({80792}) -> iguales"
+    },
+    {
+      "ts": "2026-10-02T03:43:47Z",
+      "tipo": "correccion",
+      "detalle": "seguridad: se elimino de la captura C0 la linea 'full event' con la credencial del laboratorio (canalizada por error al stdin de wazuh-logtest); sha256 de logtest y preflight recalculados; nada mas de la captura cambio"
+    }
+  ]
+}

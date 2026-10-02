@@ -1,0 +1,10 @@
+ATA053 · T1056.002 GUI Input Capture (xinput test-xi2 + xdotool sobre Xvfb) — custom
+T0=2026-10-02T02:54:07Z
+--- iniciar captura de eventos X11 (xinput test-xi2 --root) ---
+--- inyectar entrada sintetica (xdotool) ---
+keylog_lineas=2234
+keypress_eventos=111
+d61d66ece251ff620f8bee344bbf0c58457448b07dedb10c0dd454a872bb0ec1  /home/angel/lab-attack/ATA053/keylog.txt
+GUI_INPUT_CAPTURE=OK (keylog con eventos KeyPress capturados)
+T1_LOCAL=2026-10-02T02:54:14Z
+attack_rc=0

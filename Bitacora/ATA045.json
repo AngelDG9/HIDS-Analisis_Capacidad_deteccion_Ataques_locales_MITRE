@@ -1,0 +1,197 @@
+{
+  "ata_id": "ATA045",
+  "tecnica": "T1499.001",
+  "tactica": "Impact",
+  "sistema": "linux",
+  "bloque": "fase-03-p1-cierre",
+  "tanda": "A",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1499.001-OS_Exhaustion_Flood/",
+  "atomic": {
+    "fuente": "custom",
+    "nota": "agotamiento ACOTADO de memoria del SO: relleno de /dev/shm (tmpfs RAM) con dd hasta 512 MiB bajo timeout, mantenido y liberado; guardarrail MAX_MB<=768, HOLD<=15s, trap de limpieza",
+    "fuente_norm": "propio",
+    "motivo_codigo": "art_no_prueba_plataforma",
+    "motivo_detalle": "ART no trae prueba de T1499 (tecnica ausente del clon) -> propio."
+  },
+  "material_externo": {
+    "aplica": false,
+    "nota": "sin material externo: dd/timeout/free/rm de serie"
+  },
+  "esperado_sha256": "6c33c96c1d6cc11f3c1aae9c3aaf7cb29a283857760ae4442804341723f41c5e",
+  "ataque_sha256": "7e82f500f41cad49531db9c79908fc9f9d0d857991f872eb873a69294d0f5148",
+  "validacion_humana_esperado": "APROBADO 2026-10-02",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA045_logtest.txt",
+    "logtest_sha256": "77fbe83bdf40fd560929c42560a77712e244c6de2a5b752b763fdf83451cc6cf",
+    "preflight": "Soporte/Ataques/c0/ATA045_preflight.md",
+    "preflight_sha256": "f99e53f20ff3d16b96e276a4dae60be213e74d3986275eb4ce471178f0c0c379",
+    "resultado": "PASA (4 eventos dd/timeout/free/rm -> 80792 level 3; sin silenciador)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1,
+      "t0": "2026-10-02T00:21:14Z",
+      "t1": "2026-10-02T00:21:53Z",
+      "duracion_s": 39,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA045_iter1-Detalle.csv",
+      "detalle_sha256": "2996fccad9ba73204ea5a14f8695adec35491bebd960f396a99ea1fb3db9f81b",
+      "detalle_raw_sha256": "f962f8e967e2889ded410f4aceddf2358224840a6f75fb07bc91815a767e2cd9",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA045_iter1-Audited.csv",
+      "audited_sha256": "9e7f5862ce1aaa3709419e94a56f801385bbc1c7c8daad60934fa3bf4dff5b2f",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA045_iter1-Revision.csv",
+      "revision_sha256": "7111cc51c0deb2ef810607a7365a2f1a38b479bdb734040db9c91631bba8460e",
+      "conteos": {
+        "filas": 956,
+        "deteccion": 8,
+        "auto_ruido": 605,
+        "ruido_conocido": 328,
+        "dudosa": 0,
+        "artefacto_ataque": 15
+      },
+      "rs": {
+        "RS1": 1,
+        "RS2": 955,
+        "RS3": 0,
+        "RS4": 0,
+        "UNKNOWN": 0
+      },
+      "ventana_raw": {
+        "filas": 964,
+        "victima_linux": 956,
+        "otros_agentes_descartados": 8
+      },
+      "detecciones": {
+        "alertas": 8,
+        "rule_id_distintos": [
+          "80792"
+        ],
+        "esperadas": 8,
+        "sorpresas": 0,
+        "evidencia": "4x timeout + 2x free + 1x dd + 1x rm (execve 80792, cwd del ataque)"
+      },
+      "metrico_o1": "si",
+      "metrico_o2": "4/4",
+      "dudosas_resueltas": 3,
+      "efecto": {
+        "resultado": "OK",
+        "detalle": "mem_available antes=2483 MB, durante=1976 MB, despues=2494 MB; caida=507 MB; recuperado=518 MB; fichero_residual=no"
+      }
+    },
+    {
+      "iter": 2,
+      "t0": "2026-10-02T00:26:56Z",
+      "t1": "2026-10-02T00:27:35Z",
+      "duracion_s": 39,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA045_iter2-Detalle.csv",
+      "detalle_sha256": "78bfe3f503293077161558ea6a59683d2cc0efb1d9694e91bd8c2c390e25b8da",
+      "detalle_raw_sha256": "5d94c5e4317e4cd2bef1a1d10289d85d28cd16722ac283e28b0831ca019108bc",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA045_iter2-Audited.csv",
+      "audited_sha256": "2c49de644158db32392707d4eae93c424569d34585e6f2582f566731a4b4ebed",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA045_iter2-Revision.csv",
+      "revision_sha256": "f683013bc3ad65316adc2e9fa68373a10775b9e472ff8959c9d335888ffb01a1",
+      "conteos": {
+        "filas": 880,
+        "deteccion": 9,
+        "auto_ruido": 607,
+        "ruido_conocido": 250,
+        "dudosa": 0,
+        "artefacto_ataque": 14
+      },
+      "rs": {
+        "RS1": 6,
+        "RS2": 874,
+        "RS3": 0,
+        "RS4": 0,
+        "UNKNOWN": 0
+      },
+      "ventana_raw": {
+        "filas": 888,
+        "victima_linux": 880,
+        "otros_agentes_descartados": 8
+      },
+      "detecciones": {
+        "alertas": 9,
+        "rule_id_distintos": [
+          "80792"
+        ],
+        "esperadas": 9,
+        "sorpresas": 0,
+        "evidencia": "4x timeout + 3x free + 1x dd + 1x rm (execve 80792, cwd del ataque)"
+      },
+      "metrico_o1": "si",
+      "metrico_o2": "4/4",
+      "dudosas_resueltas": 5,
+      "efecto": {
+        "resultado": "OK",
+        "detalle": "mem_available antes=2485 MB, durante=1980 MB, despues=2494 MB; caida=505 MB; recuperado=514 MB; fichero_residual=no"
+      }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-10-02",
+    "filas": 8,
+    "veredicto": "PAM/sudo -> ruido; execve sin ancla / del ataque -> artefacto",
+    "motivo": "Criterio ratificado 2026-09-28; 0 filas del ataque en ruido.",
+    "revisor": "executor fase-03-p1-cierre tanda A"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": {
+    "criterio": "v2",
+    "mismo_conjunto_rule_id_deteccion": true,
+    "rule_ids_deteccion": [
+      "80792"
+    ],
+    "n1": 8,
+    "n2": 9,
+    "margen": 2,
+    "criterio_recuento_ok": true,
+    "sin_dudosas_sin_resolver": true
+  },
+  "extraccion": {
+    "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)",
+    "fuente": "fichero diario /var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+    "aislamiento": "filtro a agent_name == victima-linux"
+  },
+  "prueba_de_efecto": "MemAvailable cae ~507 MB durante el relleno y se recupera tras liberarlo; 0 residuo",
+  "receptor": {
+    "aplica": false,
+    "nota": "no hay receptor de red"
+  },
+  "hallazgos": [
+    "Wazuh NO tiene reglas de CPU/RAM -> el agotamiento no se ve; la unica capa es el execve.",
+    "Con builtins del shell no habria execve -> punto ciego total (R9).",
+    "C0 sin silenciador."
+  ],
+  "eventos": [
+    {
+      "ts": "2026-10-02T00:21:14Z",
+      "tipo": "t0",
+      "detalle": "iter1 t0 (revert lab-listo + asentamiento)"
+    },
+    {
+      "ts": "2026-10-02T00:21:53Z",
+      "tipo": "t1",
+      "detalle": "iter1 t1 (tras scan FIM forzado)"
+    },
+    {
+      "ts": "2026-10-02T00:26:56Z",
+      "tipo": "t0",
+      "detalle": "iter2 t0"
+    },
+    {
+      "ts": "2026-10-02T00:27:35Z",
+      "tipo": "t1",
+      "detalle": "iter2 t1"
+    },
+    {
+      "ts": "2026-10-02T00:27:35Z",
+      "tipo": "cierre",
+      "detalle": "criterio v2: deteccion identica ({80792}) -> iguales"
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+SVC_PID=2996
+svc_url=http://127.0.0.1:9094/ping
+PRE_STAGING=OK

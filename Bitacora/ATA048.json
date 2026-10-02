@@ -1,0 +1,198 @@
+{
+  "ata_id": "ATA048",
+  "tecnica": "T1498.001",
+  "tactica": "Impact",
+  "sistema": "linux",
+  "bloque": "fase-03-p1-cierre",
+  "tanda": "A",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1498.001-Direct_Network_Flood/",
+  "atomic": {
+    "fuente": "custom",
+    "nota": "flood TCP VOLUMETRICO acotado (8 conexiones x 8 MiB = 64 MiB) contra el receptor del HOST en 192.168.65.1:9091 (sink_http.py modo TCP), NUNCA el manager; guardarrail destino fijo, CONN<=8, TOTAL<=128 MiB, MAX_TIME<=15s",
+    "fuente_norm": "propio",
+    "motivo_codigo": "art_no_prueba_plataforma",
+    "motivo_detalle": "ART no trae prueba de T1498 (tecnica ausente del clon) -> propio."
+  },
+  "material_externo": {
+    "aplica": false,
+    "nota": "sin material externo: nc.openbsd/head/timeout de serie; receptor sink_http.py del repo"
+  },
+  "esperado_sha256": "7c98658e66c6839765e6eb4bfd2c9fdaa5607f601df497fb256227a019040972",
+  "ataque_sha256": "fec875a482976c2bb9c60339e22e0f7aa3dd6faaa26b7adca90b971e4f0adb27",
+  "validacion_humana_esperado": "APROBADO 2026-10-02",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA048_logtest.txt",
+    "logtest_sha256": "dc2c1756dff9d6943b7673e64f8cba862fe791ad76ab999a960992d7f311e0a5",
+    "preflight": "Soporte/Ataques/c0/ATA048_preflight.md",
+    "preflight_sha256": "bdb9dd39d3aa584b8d2ab457e32878594fc632cc0363e122f41d920b4aa6540d",
+    "resultado": "PASA (3 eventos nc.openbsd/head/timeout -> 80792 level 3; sin silenciador)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1,
+      "t0": "2026-10-02T00:55:23Z",
+      "t1": "2026-10-02T00:55:56Z",
+      "duracion_s": 33,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA048_iter1-Detalle.csv",
+      "detalle_sha256": "07fb71aea2a4ffa1a5b2fa7e811df130b13923a4b16540033369be67e749b36a",
+      "detalle_raw_sha256": "301e296b1653be18858128732febea205a8ba121a353a51b74028ce8f7dbd0ab",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA048_iter1-Audited.csv",
+      "audited_sha256": "5608f82c197d1576e5b30b5fc060a5bf636d4fb12eeb2e470656299fb0569356",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA048_iter1-Revision.csv",
+      "revision_sha256": "c58155ae38aea1f9fbdd17402179437f7cbfc790c97d6082790d83352141d6d8",
+      "conteos": {
+        "filas": 1008,
+        "deteccion": 43,
+        "auto_ruido": 610,
+        "ruido_conocido": 329,
+        "dudosa": 0,
+        "artefacto_ataque": 26
+      },
+      "rs": {
+        "RS1": 3,
+        "RS2": 1005,
+        "RS3": 0,
+        "RS4": 0,
+        "UNKNOWN": 0
+      },
+      "ventana_raw": {
+        "filas": 1016,
+        "victima_linux": 1008,
+        "otros_agentes_descartados": 8
+      },
+      "detecciones": {
+        "alertas": 43,
+        "rule_id_distintos": [
+          "80792"
+        ],
+        "esperadas": 43,
+        "sorpresas": 0,
+        "evidencia": "28x timeout + 8x head + 7x nc.openbsd (execve 80792, cwd del ataque)"
+      },
+      "metrico_o1": "si",
+      "metrico_o2": "3/3",
+      "dudosas_resueltas": 10,
+      "efecto": {
+        "resultado": "OK",
+        "detalle": "sink TCP: 8 conexiones, cada una len=8388608, hash_cuerpo 2daeb1f36095b44b318410b3f4e8b5d989dcc7bb023d1426c492dab0a3053e74; suma=67108864 B; nc residuales=0"
+      }
+    },
+    {
+      "iter": 2,
+      "t0": "2026-10-02T00:59:51Z",
+      "t1": "2026-10-02T01:00:24Z",
+      "duracion_s": 33,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA048_iter2-Detalle.csv",
+      "detalle_sha256": "af2c3776d860d3c9dde3b6381f8723ceee72f30cf189d6964220105109961494",
+      "detalle_raw_sha256": "c66477d862148c86bf9a3a3ac45530c293a8aa638b4e07dbb9509f3a99aa4006",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA048_iter2-Audited.csv",
+      "audited_sha256": "15ea7555e80f799dead4cf6662d783dffb827b12c456ed83e9c0803b0fc18c3c",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA048_iter2-Revision.csv",
+      "revision_sha256": "b8090f8a8b260b88552685192bc126a5203545bddd4328e53a9c02a5b588140a",
+      "conteos": {
+        "filas": 1014,
+        "deteccion": 45,
+        "auto_ruido": 612,
+        "ruido_conocido": 333,
+        "dudosa": 0,
+        "artefacto_ataque": 24
+      },
+      "rs": {
+        "RS1": 4,
+        "RS2": 1010,
+        "RS3": 0,
+        "RS4": 0,
+        "UNKNOWN": 0
+      },
+      "ventana_raw": {
+        "filas": 1022,
+        "victima_linux": 1014,
+        "otros_agentes_descartados": 8
+      },
+      "detecciones": {
+        "alertas": 45,
+        "rule_id_distintos": [
+          "80792"
+        ],
+        "esperadas": 45,
+        "sorpresas": 0,
+        "evidencia": "30x timeout + 8x nc.openbsd + 7x head (execve 80792, cwd del ataque)"
+      },
+      "metrico_o1": "si",
+      "metrico_o2": "3/3",
+      "dudosas_resueltas": 9,
+      "efecto": {
+        "resultado": "OK",
+        "detalle": "sink TCP: 8 conexiones, cada una len=8388608, hash_cuerpo 2daeb1f36095b44b318410b3f4e8b5d989dcc7bb023d1426c492dab0a3053e74; suma=67108864 B; nc residuales=0"
+      }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-10-02",
+    "filas": 19,
+    "veredicto": "PAM/sudo -> ruido; execve sin ancla / del ataque -> artefacto",
+    "motivo": "Criterio ratificado 2026-09-28; 0 filas del ataque en ruido.",
+    "revisor": "executor fase-03-p1-cierre tanda A"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": {
+    "criterio": "v2",
+    "mismo_conjunto_rule_id_deteccion": true,
+    "rule_ids_deteccion": [
+      "80792"
+    ],
+    "n1": 43,
+    "n2": 45,
+    "margen": 4,
+    "criterio_recuento_ok": true,
+    "sin_dudosas_sin_resolver": true
+  },
+  "extraccion": {
+    "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)",
+    "fuente": "fichero diario /var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+    "aislamiento": "filtro a agent_name == victima-linux"
+  },
+  "prueba_de_efecto": "el sink.log del HOST registro 8 conexiones TCP x 8 MiB = 67.108.864 B (sha256 identico) por iteracion; 0 procesos nc residuales",
+  "receptor": {
+    "aplica": true,
+    "nota": "sink_http.py en el HOST (192.168.65.1) con --port 9090 --tcp-port 9091; levantado antes de t0 y parado tras t1"
+  },
+  "hallazgos": [
+    "El HIDS de host NO ve la red; la deteccion es el execve del cliente y la prueba es el sink.log (bytes recibidos).",
+    "Binario real de nc declarado (/usr/bin/nc.openbsd); si no, la fila baja a artefacto.",
+    "El flood va SIEMPRE al receptor del HOST (VMnet1); nunca el manager.",
+    "C0 sin silenciador."
+  ],
+  "eventos": [
+    {
+      "ts": "2026-10-02T00:55:23Z",
+      "tipo": "t0",
+      "detalle": "iter1 t0 (revert lab-listo + asentamiento)"
+    },
+    {
+      "ts": "2026-10-02T00:55:56Z",
+      "tipo": "t1",
+      "detalle": "iter1 t1 (tras scan FIM forzado)"
+    },
+    {
+      "ts": "2026-10-02T00:59:51Z",
+      "tipo": "t0",
+      "detalle": "iter2 t0"
+    },
+    {
+      "ts": "2026-10-02T01:00:24Z",
+      "tipo": "t1",
+      "detalle": "iter2 t1"
+    },
+    {
+      "ts": "2026-10-02T01:00:24Z",
+      "tipo": "cierre",
+      "detalle": "criterio v2: deteccion identica ({80792}) -> iguales"
+    }
+  ]
+}

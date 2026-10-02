@@ -1,0 +1,9 @@
+ATA048 · T1498.001 Direct Network Flood (TCP volumetrico acotado) — custom (manual)
+T0=2026-10-02T00:59:51Z
+--- flood: CONN=8 bytes_por_conexion=8388608 total=67108864 ---
+wait_rc=0
+--- estado final ---
+total_bytes_objetivo=67108864
+procesos_nc_residuales=0
+NET_FLOOD=OK (flood TCP acotado enviado; 0 procesos nc residuales)
+T1_LOCAL=2026-10-02T00:59:53Z

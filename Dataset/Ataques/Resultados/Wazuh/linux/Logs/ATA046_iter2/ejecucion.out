@@ -1,0 +1,13 @@
+ATA046 · T1499.003 Application Exhaustion Flood (rafaga acotada a app local) — custom (manual)
+T0=2026-10-02T00:41:41Z
+--- rafaga: TOTAL=16 CONC=4 ---
+xargs_rc=0
+peticiones_servidas=16
+app_log_delta=16
+app_cpu_usada_s=2.29
+latencia_min_s=0.142941
+latencia_max_s=0.576843
+app_viva_final=1
+--- estado final ---
+APP_EXHAUST=OK (rafaga absorbida por la app mono-hilo; CPU subio 2.29s)
+T1_LOCAL=2026-10-02T00:41:45Z

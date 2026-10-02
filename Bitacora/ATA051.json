@@ -1,0 +1,184 @@
+{
+  "ata_id": "ATA051",
+  "tecnica": "T1113",
+  "tactica": "Collection",
+  "sistema": "linux",
+  "bloque": "fase-03-p1-cierre",
+  "tanda": "B",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1113-Screen_Capture/",
+  "atomic": {
+    "fuente": "ART_adaptado",
+    "nota": "ART adaptado: xwd -root -out (captura) + xwud -in (revision, envuelto en timeout). Display sintetico Xvfb :99 (pre-steado); xeyes para dar contenido.",
+    "fuente_norm": "ART_adaptado",
+    "motivo_codigo": "na_art_usado",
+    "motivo_detalle": "se usó ART adaptado (atómica Linux 'X Windows Capture')."
+  },
+  "material_externo": {
+    "aplica": true,
+    "nota": "paquetes GUI offline Xvfb+x11-apps (URL+sha256 en Soporte/Ataques/c0/ATA049-053_prestaging_paquetes.md); display :99"
+  },
+  "esperado_sha256": "541ede2e063fdd0c3a7876d29055a5b4e98e492e997952878778fcd2758441f7",
+  "ataque_sha256": "c4df2149098f828a8df0c9e1f42ad86fcc17c0053f3c4b4d192e6cd175ac5e2f",
+  "validacion_humana_esperado": "APROBADO 2026-10-02",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA051_logtest.txt",
+    "logtest_sha256": "3cab19237eae4701637b8276cba237b11f1c7e6ae8820570b65802d48c3bb2c6",
+    "preflight": "Soporte/Ataques/c0/ATA051_preflight.md",
+    "preflight_sha256": "dc513d01819d3ef83402fcd527c64e1fe0e32395139e1ec1feb9c53555bf8d82",
+    "resultado": "PASA (sin silenciador)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1,
+      "t0": "2026-10-02T02:22:26Z",
+      "t1": "2026-10-02T02:23:01Z",
+      "duracion_s": 35,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA051_iter2-Detalle.csv",
+      "detalle_sha256": "0376dabbac3fdf70d1d7d5e3f9645299a4bcbf585a0ee024b5894521d9594acb",
+      "detalle_raw_sha256": "4f61961cb7ccc6d1d1a99b145c3105269350eea405938533f5d67a792bce7e73",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA051_iter2-Audited.csv",
+      "audited_sha256": "55b58d56f427454857bafd2190b88bb2814df5c8868b782fa651120a186354fb",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA051_iter2-Revision.csv",
+      "revision_sha256": "2b7dd3851f9c1d03c37d5691cef74a06eae8559a7aea39aeb4652ac68cf1a77f",
+      "conteos": {
+        "filas": 725,
+        "deteccion": 2,
+        "auto_ruido": 628,
+        "ruido_conocido": 79,
+        "dudosa": 0,
+        "artefacto_ataque": 16
+      },
+      "detecciones": {
+        "alertas": 2,
+        "rule_id_distintos": [
+          "80792"
+        ],
+        "esperadas": 2,
+        "sorpresas": 0,
+        "evidencia": "1x audit_exe=/usr/bin/xwd + 1x audit_exe=/usr/bin/xwud (execve 80792, cwd del ataque)"
+      },
+      "metrico_o1": "si",
+      "metrico_o2": "2/2",
+      "dudosas_resueltas": 2,
+      "folds": {
+        "ruido": 2
+      },
+      "efecto": {
+        "resultado": "OK",
+        "detalle": "fichero .xwd con cabecera XWD valida (4.099.179 B) por iteracion"
+      }
+    },
+    {
+      "iter": 2,
+      "t0": "2026-10-02T02:28:51Z",
+      "t1": "2026-10-02T02:29:26Z",
+      "duracion_s": 35,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA051_iter1-Detalle.csv",
+      "detalle_sha256": "5a23681b38fc31b436ecc769e5bd5ce115b3d099f81fcfc7631e9965d56899aa",
+      "detalle_raw_sha256": "a2d19250fcba0c6c441d6e2c0f03a85fd991a34fc908c24d4c88b757a9f7ec8d",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA051_iter1-Audited.csv",
+      "audited_sha256": "abc9bf00da22b102d6f7111e934ae1d2b26d5a49ce9637981cc168d907ea8306",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA051_iter1-Revision.csv",
+      "revision_sha256": "53b472e487bd06465154bf8a9d27b9e6a8a13c83e812c15b6002c9bd94a06120",
+      "conteos": {
+        "filas": 724,
+        "deteccion": 2,
+        "auto_ruido": 627,
+        "ruido_conocido": 79,
+        "dudosa": 0,
+        "artefacto_ataque": 16
+      },
+      "detecciones": {
+        "alertas": 2,
+        "rule_id_distintos": [
+          "80792"
+        ],
+        "esperadas": 2,
+        "sorpresas": 0,
+        "evidencia": "1x audit_exe=/usr/bin/xwd + 1x audit_exe=/usr/bin/xwud (execve 80792, cwd del ataque)"
+      },
+      "metrico_o1": "si",
+      "metrico_o2": "2/2",
+      "dudosas_resueltas": 2,
+      "folds": {
+        "ruido": 2
+      },
+      "efecto": {
+        "resultado": "OK",
+        "detalle": "fichero .xwd con cabecera XWD valida (4.099.179 B) por iteracion"
+      }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-10-02",
+    "filas": 4,
+    "veredicto": "PAM/sudo -> ruido; execve sin ancla / del ataque -> artefacto",
+    "motivo": "Criterio ratificado 2026-09-28; 0 filas del ataque en ruido.",
+    "revisor": "executor fase-03-p1-cierre tanda B"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": {
+    "criterio": "v2",
+    "mismo_conjunto_rule_id_deteccion": true,
+    "rule_ids_deteccion": [
+      "80792"
+    ],
+    "n1": 2,
+    "n2": 2,
+    "margen": 2,
+    "criterio_recuento_ok": true,
+    "sin_dudosas_sin_resolver": true
+  },
+  "extraccion": {
+    "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)",
+    "fuente": "fichero diario /var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+    "aislamiento": "filtro a agent_name == victima-linux"
+  },
+  "prueba_de_efecto": "fichero .xwd con cabecera XWD valida (4.099.179 B) por iteracion",
+  "receptor": {
+    "aplica": false,
+    "nota": "no aplica (display local Xvfb o round-trip local)"
+  },
+  "hallazgos": [
+    "Incidente resuelto: el dpkg -i del pre-staging necesito completar la configuracion de dependencias (dpkg --configure -a) porque falta un .deb en el set; se corrigio el prestaging y se repitio la ventana (prestaging genuino, fuera de [t0,t1]).",
+    "Backlog de analysisd tras el FIM scan del pre-staging: los execve podian llegar >t1; se espera a que drene (120 s) antes de t0.",
+    "Pantalla SIN usuario real (Xvfb :99); C0 sin silenciador."
+  ],
+  "eventos": [
+    {
+      "ts": "2026-10-02T02:22:26Z",
+      "tipo": "t0",
+      "detalle": "iter1 t0"
+    },
+    {
+      "ts": "2026-10-02T02:28:51Z",
+      "tipo": "t0",
+      "detalle": "iter2 t0"
+    },
+    {
+      "ts": "2026-10-02T02:23:01Z",
+      "tipo": "t1",
+      "detalle": "iter1 t1"
+    },
+    {
+      "ts": "2026-10-02T02:29:26Z",
+      "tipo": "t1",
+      "detalle": "iter2 t1"
+    },
+    {
+      "ts": "2026-10-02T02:29:26Z",
+      "tipo": "cierre",
+      "detalle": "criterio v2: deteccion identica ({80792}) -> iguales"
+    },
+    {
+      "ts": "2026-10-02T03:43:47Z",
+      "tipo": "correccion",
+      "detalle": "seguridad: se elimino de la captura C0 la linea 'full event' con la credencial del laboratorio (canalizada por error al stdin de wazuh-logtest); sha256 de logtest y preflight recalculados; nada mas de la captura cambio"
+    }
+  ]
+}

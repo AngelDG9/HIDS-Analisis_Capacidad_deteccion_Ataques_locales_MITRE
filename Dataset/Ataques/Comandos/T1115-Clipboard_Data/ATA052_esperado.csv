@@ -1,0 +1,10 @@
+# ATA052_esperado.csv | ATA052 · T1115 Clipboard Data | TFG HIDS · Fase 3 (p1-cierre, tanda B)
+# Redactado el 2026-10-02 con los datos del paso 0, ANTES de ver ninguna alerta.
+# Gate humano: APROBADO 2026-10-02 (validación humana)
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+# Convencion H4: cada senal audit_exe se acompana de audit_cwd de la carpeta del ataque.
+# ART Linux (guid ee363e53...): xclip -sel clip (poner) y xclip -o (leer). Display :99 (Xvfb).
+#   El HIDS ve el execve de xclip (80792); la prueba es el fichero capturado (sha256).
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1115-S1,deteccion,audit_exe,xclip,Process Creation,T1115,poner/leer el portapapeles con xclip (execve 80792)
+T1115-S2,deteccion,audit_cwd,/home/angel/lab-attack/ATA052/*,Process Creation,T1115,ancla H4 (cwd del ataque)

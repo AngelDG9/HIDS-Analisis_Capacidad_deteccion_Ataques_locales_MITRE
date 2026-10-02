@@ -1,0 +1,199 @@
+{
+  "ata_id": "ATA054",
+  "tecnica": "T1498.002",
+  "tactica": "Impact",
+  "sistema": "linux",
+  "bloque": "fase-03-p1-cierre",
+  "tanda": "C",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1498.002-Reflection_Amplification/",
+  "atomic": {
+    "fuente": "custom",
+    "nota": "Reflection amplification reproducida con reflector LOCAL en un segmento aislado (veth + netns tfgref, 10.200.0.0/24): el spoofer (perl, raw socket IP_HDRINCL) envia 25 requests UDP con fuente falsificada (=IP de la victima, 192.168.65.129:5399) al reflector 10.200.0.2:10053, que responde 4096 B a la fuente falsificada -> la victima recibe 102400 B (factor ~256). Amplificacion ACOTADA; NUNCA el manager (192.168.65.128), el PC (192.168.65.1) ni amplificadores de internet.",
+    "fuente_norm": "propio",
+    "motivo_codigo": "art_no_prueba_plataforma",
+    "motivo_detalle": "ART no trae prueba de T1498 (tecnica ausente del clon) -> propio."
+  },
+  "material_externo": {
+    "aplica": false,
+    "nota": "sin material externo: perl/ip/bash de serie; reflector/spoofer/target propios versionados en el repo"
+  },
+  "esperado_sha256": "4dd9b164ab980027197c0775c98f32aab9f396a1f419a7bc9d24e9b21d90dabd",
+  "ataque_sha256": "3e6e24ee7784d4a47feda62f05add011f0f139021ad17ffb9bc0bdba07890710",
+  "validacion_humana_esperado": "APROBADO 2026-10-02",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA054_logtest.txt",
+    "logtest_sha256": "4b070e0a32b5cc8143614fdd91254c516a36bd78670b3376d7b0402d138e92de",
+    "preflight": "Soporte/Ataques/c0/ATA054_preflight.md",
+    "preflight_sha256": "dc188b3b405a9cf7eb0b3548f1eefffdd65b209640816586ec23fcd42e24197d",
+    "resultado": "PASA (2 eventos perl/ip -> 80792 level 3; sin silenciador)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1,
+      "t0": "2026-10-02T03:14:11Z",
+      "t1": "2026-10-02T03:14:55Z",
+      "duracion_s": 44,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA054_iter1-Detalle.csv",
+      "detalle_sha256": "19c1be094831635274f4e722b87e37d66c40858661b2491fc0823e362396c4ff",
+      "detalle_raw_sha256": "380ccae69ee51f63abe5f01588efc3970df7697fb22466f373635ba65677b9d7",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA054_iter1-Audited.csv",
+      "audited_sha256": "6056b587425952b8d821c70cbfd42eedc03d746519aa246621582082b01d6290",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA054_iter1-Revision.csv",
+      "revision_sha256": "bae9f2dda63844143ccc1d761af4417e079268a78da7c0cce27dc1c4311acebd",
+      "conteos": {
+        "filas": 1849,
+        "deteccion": 32,
+        "auto_ruido": 610,
+        "ruido_conocido": 1183,
+        "dudosa": 0,
+        "artefacto_ataque": 24
+      },
+      "rs": {
+        "RS1": 8,
+        "RS2": 1841,
+        "RS3": 0,
+        "RS4": 0,
+        "UNKNOWN": 0
+      },
+      "ventana_raw": {
+        "filas": 1856,
+        "victima_linux": 1849,
+        "otros_agentes_descartados": 7
+      },
+      "detecciones": {
+        "alertas": 32,
+        "rule_id_distintos": [
+          "80792"
+        ],
+        "esperadas": 32,
+        "sorpresas": 0,
+        "evidencia": "30x ip + 2x perl (execve 80792, cwd del ataque)"
+      },
+      "metrico_o1": "si",
+      "metrico_o2": "2/2",
+      "dudosas_resueltas": 13,
+      "efecto": {
+        "resultado": "OK",
+        "detalle": "spoofer 25 requests / 400 B payload; reflector 25 respuestas x 4096 B = 102400 B; target 25 paquetes / 102400 B (factor ~256); netns/veth residuales=0"
+      }
+    },
+    {
+      "iter": 2,
+      "t0": "2026-10-02T03:19:29Z",
+      "t1": "2026-10-02T03:20:14Z",
+      "duracion_s": 45,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA054_iter2-Detalle.csv",
+      "detalle_sha256": "25a4a6d7dcc075aa3164731486dae7a5caa4c41574e2a518fc67a61b5621e5c6",
+      "detalle_raw_sha256": "0f643676982fd0a78f002fc47fd5d01158e661d7eeb950ad2df3b68097772449",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA054_iter2-Audited.csv",
+      "audited_sha256": "ec46cb8925bab2bc8b6938d181a85a3a2d1913955e41b83562bce258eb8c260b",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA054_iter2-Revision.csv",
+      "revision_sha256": "472f710349cdfb2c4cd9d1f51100ab9242a506b81249a59c3001e3643719a8bb",
+      "conteos": {
+        "filas": 1848,
+        "deteccion": 32,
+        "auto_ruido": 612,
+        "ruido_conocido": 1179,
+        "dudosa": 0,
+        "artefacto_ataque": 25
+      },
+      "rs": {
+        "RS1": 7,
+        "RS2": 1841,
+        "RS3": 0,
+        "RS4": 0,
+        "UNKNOWN": 0
+      },
+      "ventana_raw": {
+        "filas": 1855,
+        "victima_linux": 1848,
+        "otros_agentes_descartados": 7
+      },
+      "detecciones": {
+        "alertas": 32,
+        "rule_id_distintos": [
+          "80792"
+        ],
+        "esperadas": 32,
+        "sorpresas": 0,
+        "evidencia": "29x ip + 3x perl (execve 80792, cwd del ataque)"
+      },
+      "metrico_o1": "si",
+      "metrico_o2": "2/2",
+      "dudosas_resueltas": 12,
+      "efecto": {
+        "resultado": "OK",
+        "detalle": "spoofer 25 requests / 400 B payload; reflector 25 respuestas x 4096 B = 102400 B; target 25 paquetes / 102400 B (factor ~256); netns/veth residuales=0"
+      }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-10-02",
+    "filas": 25,
+    "veredicto": "PAM/sudo -> ruido; execve/watch del ataque sin ancla -> artefacto",
+    "motivo": "Criterio ratificado 2026-09-28; 0 filas del ataque en ruido.",
+    "revisor": "executor fase-03-p1-cierre tanda C"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": {
+    "criterio": "v2",
+    "mismo_conjunto_rule_id_deteccion": true,
+    "rule_ids_deteccion": [
+      "80792"
+    ],
+    "n1": 32,
+    "n2": 32,
+    "margen": 2,
+    "criterio_recuento_ok": true,
+    "sin_dudosas_sin_resolver": true
+  },
+  "extraccion": {
+    "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)",
+    "fuente": "fichero diario /var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+    "aislamiento": "filtro a agent_name == victima-linux"
+  },
+  "prueba_de_efecto": "el target registra 25 paquetes amplificados de 4096 B = 102400 B recibidos por la victima frente a 400 B de payload enviados (factor ~256) por iteracion; 0 residuos de red (netns/veth retirados)",
+  "daemon_local": {
+    "aplica": true,
+    "nota": "reflector propio (perl) en un segmento local aislado (veth + netns tfgref, 10.200.0.0/24) levantado y retirado dentro de la ventana; nunca el manager ni el PC"
+  },
+  "hallazgos": [
+    "El HIDS de host NO ve la red; la deteccion es el execve del cliente/reflector y la prueba es el target (bytes amplificados recibidos).",
+    "El reflector se monta en un segmento local aislado (veth+netns) dentro de la victima (sustituto declarado de un tercer reflector de red).",
+    "La senal audit_exe=ip es ancha; el cwd la ancla. Los ip/perl con cwd vacio quedaron artefacto.",
+    "Binario real declarado: perl -> /usr/bin/perl; ip -> /usr/bin/ip (symlink).",
+    "C0 sin silenciador."
+  ],
+  "eventos": [
+    {
+      "ts": "2026-10-02T03:14:11Z",
+      "tipo": "t0",
+      "detalle": "iter1 t0 (revert lab-listo + asentamiento)"
+    },
+    {
+      "ts": "2026-10-02T03:14:55Z",
+      "tipo": "t1",
+      "detalle": "iter1 t1 (tras scan FIM forzado)"
+    },
+    {
+      "ts": "2026-10-02T03:19:29Z",
+      "tipo": "t0",
+      "detalle": "iter2 t0"
+    },
+    {
+      "ts": "2026-10-02T03:20:14Z",
+      "tipo": "t1",
+      "detalle": "iter2 t1"
+    },
+    {
+      "ts": "2026-10-02T03:20:14Z",
+      "tipo": "cierre",
+      "detalle": "criterio v2: deteccion identica ({80792}) -> iguales"
+    }
+  ]
+}

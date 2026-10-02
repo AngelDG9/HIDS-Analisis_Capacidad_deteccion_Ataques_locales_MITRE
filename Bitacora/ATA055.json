@@ -1,0 +1,199 @@
+{
+  "ata_id": "ATA055",
+  "tecnica": "T1557.003",
+  "tactica": "Credential Access; Collection",
+  "sistema": "linux",
+  "bloque": "fase-03-p1-cierre",
+  "tanda": "C",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1557.003-DHCP_Spoofing/",
+  "atomic": {
+    "fuente": "custom",
+    "nota": "DHCP spoofing reproducido con un servidor DHCP SEÑUELO (busybox udhcpd) y un cliente efimero (busybox udhcpc) en un segmento local aislado (par veth vdhcp0/vdhcp1, 10.99.0.0/24) DENTRO de la victima: el señuelo entrega al cliente un lease con gateway/DNS del atacante (10.99.0.1). No se emite ninguna trama en VMnet1/ens33 (el DHCP de VMware sirve el mismo rango .128-.254 y competiria). Al terminar: señuelo parado, veth borrado, 0 residuos.",
+    "fuente_norm": "propio",
+    "motivo_codigo": "art_no_prueba_plataforma",
+    "motivo_detalle": "ART no trae prueba de T1557 (tecnica ausente del clon) -> propio."
+  },
+  "material_externo": {
+    "aplica": false,
+    "nota": "sin material externo: busybox (udhcpd/udhcpc) e ip de serie; udhcpd.conf y lease_script.sh propios versionados en el repo"
+  },
+  "esperado_sha256": "014a0758c7af3b09ee52fb4c00551face05be8ea8b0caf675a4701ff5ce8f492",
+  "ataque_sha256": "7ae610bc5dd5430995e1c55b953b4344e3e502f0b33a676d893356fd6e2a35c6",
+  "validacion_humana_esperado": "APROBADO 2026-10-02",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA055_logtest.txt",
+    "logtest_sha256": "20c69abf79712cb8174a605c3f783c783c1a7f04347cd38fdd684f6830b28556",
+    "preflight": "Soporte/Ataques/c0/ATA055_preflight.md",
+    "preflight_sha256": "44c7baa1d265ab90a9f2428bd5becc5509c4dee9825e5721185699ab7472adeb",
+    "resultado": "PASA (2 eventos busybox/ip -> 80792 level 3; sin silenciador)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1,
+      "t0": "2026-10-02T03:23:38Z",
+      "t1": "2026-10-02T03:24:20Z",
+      "duracion_s": 42,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA055_iter1-Detalle.csv",
+      "detalle_sha256": "e9d3b5577beb5c77a51ef7cc95ca6320688ae0c3a0ccafebbbe1548b329b4ac5",
+      "detalle_raw_sha256": "860eac1f1c1cee4f0c702d76f0806588da2894261a816fd62c923816ac1f3f16",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA055_iter1-Audited.csv",
+      "audited_sha256": "782b73cb5dc65ca6ddc84ace228e03f0e8b0a9bfe20071f760b59a2fa9ef3e19",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA055_iter1-Revision.csv",
+      "revision_sha256": "4aa041d163ce9a4e889606bc9f91ca0b13ba50affa710e7c227e604cae6254a0",
+      "conteos": {
+        "filas": 1849,
+        "deteccion": 10,
+        "auto_ruido": 624,
+        "ruido_conocido": 1186,
+        "dudosa": 0,
+        "artefacto_ataque": 29
+      },
+      "rs": {
+        "RS1": 7,
+        "RS2": 1842,
+        "RS3": 0,
+        "RS4": 0,
+        "UNKNOWN": 0
+      },
+      "ventana_raw": {
+        "filas": 1857,
+        "victima_linux": 1849,
+        "otros_agentes_descartados": 8
+      },
+      "detecciones": {
+        "alertas": 10,
+        "rule_id_distintos": [
+          "80792"
+        ],
+        "esperadas": 10,
+        "sorpresas": 0,
+        "evidencia": "6x ip + 4x busybox (execve 80792, cwd del ataque)"
+      },
+      "metrico_o1": "si",
+      "metrico_o2": "2/2",
+      "dudosas_resueltas": 9,
+      "efecto": {
+        "resultado": "OK",
+        "detalle": "lease.obtained: ip=10.99.0.101 mask=24 router=10.99.0.1 dns=10.99.0.1 serverid=10.99.0.1 lease=120 (udhcpc: lease ... obtained from 10.99.0.1); udhcpd/veth residuales=0"
+      }
+    },
+    {
+      "iter": 2,
+      "t0": "2026-10-02T03:27:44Z",
+      "t1": "2026-10-02T03:28:26Z",
+      "duracion_s": 42,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA055_iter2-Detalle.csv",
+      "detalle_sha256": "6a1f3fcc0855ad47329595d5bb8b7173cb77c7141a420db4ffc9f19d289411d7",
+      "detalle_raw_sha256": "3bd22a7c31323e2dfa249e6379734e3603d6a7266ac9ac8a9f91d3f36c8e6d87",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA055_iter2-Audited.csv",
+      "audited_sha256": "834da0a4e7d4a3fb83e063cb481c6f3bd8523e0a877abe233fc5a5c68df6efee",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA055_iter2-Revision.csv",
+      "revision_sha256": "e39052ee00952a692e5e943db8f6cc59281714bb51e4ec3d540b1db6f6e323ec",
+      "conteos": {
+        "filas": 1844,
+        "deteccion": 12,
+        "auto_ruido": 621,
+        "ruido_conocido": 1184,
+        "dudosa": 0,
+        "artefacto_ataque": 27
+      },
+      "rs": {
+        "RS1": 7,
+        "RS2": 1837,
+        "RS3": 0,
+        "RS4": 0,
+        "UNKNOWN": 0
+      },
+      "ventana_raw": {
+        "filas": 1852,
+        "victima_linux": 1844,
+        "otros_agentes_descartados": 8
+      },
+      "detecciones": {
+        "alertas": 12,
+        "rule_id_distintos": [
+          "80792"
+        ],
+        "esperadas": 12,
+        "sorpresas": 0,
+        "evidencia": "8x ip + 4x busybox (execve 80792, cwd del ataque)"
+      },
+      "metrico_o1": "si",
+      "metrico_o2": "2/2",
+      "dudosas_resueltas": 7,
+      "efecto": {
+        "resultado": "OK",
+        "detalle": "lease.obtained: ip=10.99.0.101 mask=24 router=10.99.0.1 dns=10.99.0.1 serverid=10.99.0.1 lease=120 (udhcpc: lease ... obtained from 10.99.0.1); udhcpd/veth residuales=0"
+      }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-10-02",
+    "filas": 16,
+    "veredicto": "PAM/sudo -> ruido; execve del ataque sin ancla -> artefacto",
+    "motivo": "Criterio ratificado 2026-09-28; 0 filas del ataque en ruido.",
+    "revisor": "executor fase-03-p1-cierre tanda C"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": {
+    "criterio": "v2",
+    "mismo_conjunto_rule_id_deteccion": true,
+    "rule_ids_deteccion": [
+      "80792"
+    ],
+    "n1": 10,
+    "n2": 12,
+    "margen": 2,
+    "criterio_recuento_ok": true,
+    "sin_dudosas_sin_resolver": true
+  },
+  "extraccion": {
+    "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)",
+    "fuente": "fichero diario /var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+    "aislamiento": "filtro a agent_name == victima-linux"
+  },
+  "prueba_de_efecto": "el cliente efimero obtiene del señuelo el lease 10.99.0.101 con gateway/DNS 10.99.0.1 (MITM) por iteracion; 0 residuos (señuelo parado, veth borrado)",
+  "daemon_local": {
+    "aplica": true,
+    "nota": "servidor DHCP señuelo (busybox udhcpd) + cliente efimero (busybox udhcpc) en un par veth aislado (10.99.0.0/24) dentro de la victima; levantado y retirado dentro de la ventana; nunca VMnet1/ens33/manager"
+  },
+  "hallazgos": [
+    "El HIDS de host NO ve la red; la deteccion es el execve (busybox/ip) y la prueba es el lease entregado por el señuelo.",
+    "El segmento se simula con un par veth aislado (sustituto declarado de VMnet1): el DHCP de VMware sirve el mismo rango .128-.254 y competir podria romper la red.",
+    "La senal audit_exe=busybox es amplia; el cwd la ancla.",
+    "Binario real declarado: busybox -> /usr/bin/busybox; ip -> /usr/bin/ip (symlink).",
+    "C0 sin silenciador."
+  ],
+  "eventos": [
+    {
+      "ts": "2026-10-02T03:23:38Z",
+      "tipo": "t0",
+      "detalle": "iter1 t0 (revert lab-listo + asentamiento)"
+    },
+    {
+      "ts": "2026-10-02T03:24:20Z",
+      "tipo": "t1",
+      "detalle": "iter1 t1 (tras scan FIM forzado)"
+    },
+    {
+      "ts": "2026-10-02T03:27:44Z",
+      "tipo": "t0",
+      "detalle": "iter2 t0"
+    },
+    {
+      "ts": "2026-10-02T03:28:26Z",
+      "tipo": "t1",
+      "detalle": "iter2 t1"
+    },
+    {
+      "ts": "2026-10-02T03:28:26Z",
+      "tipo": "cierre",
+      "detalle": "criterio v2: deteccion identica ({80792}) -> iguales"
+    }
+  ]
+}

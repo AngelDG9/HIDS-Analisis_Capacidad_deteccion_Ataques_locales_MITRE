@@ -134,21 +134,23 @@ subtecnicas** (`T<ID>.<n>`).
 | ATA012 | T1119 | Automated Collection | sí | 0 | 4 | `atomics/T1119` | solo_windows |
 | ATA013 | T1560 | Archive Collected Data | sí | 9 | 8 | `atomics/T1560;…001;…002` | cubierta |
 
-> **Regenerado el 2026-10-01** (bloque `fase-03-auditoria-metodologica`, T1) para cubrir **los 43**
-> ataques del corpus (antes 13), con la cabecera
+> **Regenerado el 2026-10-02** (bloque `fase-03-p1-cierre`) para cubrir **los 55** ataques del
+> corpus (antes 43), con la cabecera
 > `ata_id,tecnica,nombre,prueba_art,tests_linux,tests_windows,path,nota` y orden estable por `ata_id`.
+> Las 12 filas nuevas (`ATA044`–`ATA055`) son **aditivas**: las 43 anteriores quedan **byte a byte
+> idénticas**.
 
-**Resumen del mapa regenerado (43 filas):**
+**Resumen del mapa regenerado (55 filas):**
 
 | Métrica | Valor |
 |---|---|
-| Técnicas con prueba en ART (`prueba_art=sí`) | **25 / 43** |
-| `nota=cubierta` (pruebas en Linux y Windows) | **15 / 43** |
-| `nota=solo_windows` (→ script propio en Linux) | **10 / 43** |
-| `nota=sin_pruebas` (→ custom obligatorio) | **18 / 43** |
+| Técnicas con prueba en ART (`prueba_art=sí`) | **31 / 55** |
+| `nota=cubierta` (pruebas en Linux y Windows) | **18 / 55** |
+| `nota=solo_windows` (→ script propio en Linux) | **13 / 55** |
+| `nota=sin_pruebas` (→ custom obligatorio) | **24 / 55** |
 
-> **Los 13 primeros coinciden** con el mapa previo (7 cubiertas, 4 solo Windows, 2 sin pruebas).
-> Detalle fila a fila en `Hojas/cobertura_atomic.csv`.
+> **Las 43 primeras filas coinciden** con el mapa previo. Detalle fila a fila en
+> `Hojas/cobertura_atomic.csv`.
 
 Regenerar:
 

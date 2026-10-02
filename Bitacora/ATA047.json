@@ -1,0 +1,198 @@
+{
+  "ata_id": "ATA047",
+  "tecnica": "T1499.002",
+  "tactica": "Impact",
+  "sistema": "linux",
+  "bloque": "fase-03-p1-cierre",
+  "tanda": "A",
+  "estado": "cerrado",
+  "artefacto": "Dataset/Ataques/Comandos/T1499.002-Service_Exhaustion_Flood/",
+  "atomic": {
+    "fuente": "custom",
+    "nota": "rafaga ACOTADA por VOLUMEN de peticiones a un servicio local desechable (sink_http.py) en 127.0.0.1:9094, levantado en el pre-staging; guardarrail TOTAL<=800, CONC<=32, MAX_TIME<=15s, solo loopback",
+    "fuente_norm": "propio",
+    "motivo_codigo": "art_no_prueba_plataforma",
+    "motivo_detalle": "ART no trae prueba de T1499 (tecnica ausente del clon) -> propio."
+  },
+  "material_externo": {
+    "aplica": false,
+    "nota": "sin material externo: curl/xargs/seq/timeout de serie; el servicio es sink_http.py (Python stdlib) del repo"
+  },
+  "esperado_sha256": "d76d8a186fce6c31b1ccd07a5db3bc51f417bcbd556d3bd429503e215ba467e9",
+  "ataque_sha256": "340b22d6690c1f2d5095dd5a78e07de4791ccb8a8ae03deafbb78ebe1a677d60",
+  "validacion_humana_esperado": "APROBADO 2026-10-02",
+  "c0": {
+    "logtest": "Soporte/Ataques/c0/ATA047_logtest.txt",
+    "logtest_sha256": "5199fc5b6b9fa90f1cd4454e713d31ed1c3ec99ae89a2e0de2f5f2735d1ef591",
+    "preflight": "Soporte/Ataques/c0/ATA047_preflight.md",
+    "preflight_sha256": "b8eb078b0e3b79b692005766f794fa71525a49a30c4db62f30842210d9ccfcb7",
+    "resultado": "PASA (4 eventos curl/xargs/seq/timeout -> 80792 level 3; sin silenciador)"
+  },
+  "iteraciones": [
+    {
+      "iter": 1,
+      "t0": "2026-10-02T00:46:19Z",
+      "t1": "2026-10-02T00:46:53Z",
+      "duracion_s": 34,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA047_iter1-Detalle.csv",
+      "detalle_sha256": "4d8a759efa9e70e0bd59c3dab698a7a6300878b9c6f5d4b6365bc8243576401d",
+      "detalle_raw_sha256": "ddfad3d456594edbdcaaa7b63694de6c395709dfab7951100d12f9e5b31f6c98",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA047_iter1-Audited.csv",
+      "audited_sha256": "629356eaf9bbd4dc00e9b6ca8d8a2de9bd2fe9854d88d7897baa90ad5b59d2a6",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA047_iter1-Revision.csv",
+      "revision_sha256": "f592866b0f4f41eda9093e79cc8f2a1623a019e568c88966f5c1b5e466c49de6",
+      "conteos": {
+        "filas": 2340,
+        "deteccion": 1604,
+        "auto_ruido": 645,
+        "ruido_conocido": 76,
+        "dudosa": 0,
+        "artefacto_ataque": 15
+      },
+      "rs": {
+        "RS1": 3,
+        "RS2": 2337,
+        "RS3": 0,
+        "RS4": 0,
+        "UNKNOWN": 0
+      },
+      "ventana_raw": {
+        "filas": 2348,
+        "victima_linux": 2340,
+        "otros_agentes_descartados": 8
+      },
+      "detecciones": {
+        "alertas": 1604,
+        "rule_id_distintos": [
+          "80792"
+        ],
+        "esperadas": 1604,
+        "sorpresas": 0,
+        "evidencia": "1201x xargs + 398x curl + 4x timeout + 1x seq (execve 80792, cwd del ataque)"
+      },
+      "metrico_o1": "si",
+      "metrico_o2": "4/4",
+      "dudosas_resueltas": 2,
+      "efecto": {
+        "resultado": "OK",
+        "detalle": "peticiones_recibidas=400; svc_cpu_usada_s=0.19; svc_vivo_final=1"
+      }
+    },
+    {
+      "iter": 2,
+      "t0": "2026-10-02T00:51:07Z",
+      "t1": "2026-10-02T00:51:41Z",
+      "duracion_s": 34,
+      "snapshot": "lab-listo",
+      "diario": "/var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA047_iter2-Detalle.csv",
+      "detalle_sha256": "83696061fb89258871e7b2557a7524933219083f1fc8b68a58c416ac5ec755e2",
+      "detalle_raw_sha256": "127574c4a1cbfdea6660c774488f8f6a6abc09c332bcc37a0f27c50fed1be216",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA047_iter2-Audited.csv",
+      "audited_sha256": "3312b9a83150af845e19d1ee4e1df5758651e6820bd658f3e6596727b38c37d7",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA047_iter2-Revision.csv",
+      "revision_sha256": "5cb694445bdf3895178b1c2f90c3cf379dcedc3a805438e770a3b8b3d215e1c1",
+      "conteos": {
+        "filas": 2316,
+        "deteccion": 1603,
+        "auto_ruido": 623,
+        "ruido_conocido": 75,
+        "dudosa": 0,
+        "artefacto_ataque": 15
+      },
+      "rs": {
+        "RS1": 3,
+        "RS2": 2313,
+        "RS3": 0,
+        "RS4": 0,
+        "UNKNOWN": 0
+      },
+      "ventana_raw": {
+        "filas": 2323,
+        "victima_linux": 2316,
+        "otros_agentes_descartados": 7
+      },
+      "detecciones": {
+        "alertas": 1603,
+        "rule_id_distintos": [
+          "80792"
+        ],
+        "esperadas": 1603,
+        "sorpresas": 0,
+        "evidencia": "1198x xargs + 400x curl + 4x timeout + 1x seq (execve 80792, cwd del ataque)"
+      },
+      "metrico_o1": "si",
+      "metrico_o2": "4/4",
+      "dudosas_resueltas": 2,
+      "efecto": {
+        "resultado": "OK",
+        "detalle": "peticiones_recibidas=400; svc_cpu_usada_s=0.19; svc_vivo_final=1"
+      }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-10-02",
+    "filas": 4,
+    "veredicto": "PAM/sudo -> ruido; execve sin ancla / del ataque -> artefacto",
+    "motivo": "Criterio ratificado 2026-09-28; 0 filas del ataque en ruido.",
+    "revisor": "executor fase-03-p1-cierre tanda A"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": {
+    "criterio": "v2",
+    "mismo_conjunto_rule_id_deteccion": true,
+    "rule_ids_deteccion": [
+      "80792"
+    ],
+    "n1": 1604,
+    "n2": 1603,
+    "margen": 160,
+    "criterio_recuento_ok": true,
+    "sin_dudosas_sin_resolver": true
+  },
+  "extraccion": {
+    "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)",
+    "fuente": "fichero diario /var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+    "aislamiento": "filtro a agent_name == victima-linux"
+  },
+  "prueba_de_efecto": "400 peticiones recibidas por el servicio; CPU del servicio +0.19 s; servicio vivo",
+  "receptor": {
+    "aplica": false,
+    "nota": "no hay receptor de red"
+  },
+  "hallazgos": [
+    "Wazuh no tiene reglas de servicio/recursos -> el volumen no se ve; solo el execve del cliente.",
+    "El servicio (python3, sink_http.py) arranca en el pre-staging (fuera de la ventana); nunca el manager.",
+    "ANOMALIA declarada: la rafaga genero ~1200 execve de xargs para 400 peticiones (~3x); el conteo bruto se infla, O1/O2 no se ven afectados.",
+    "C0 sin silenciador."
+  ],
+  "eventos": [
+    {
+      "ts": "2026-10-02T00:46:19Z",
+      "tipo": "t0",
+      "detalle": "iter1 t0 (revert lab-listo + asentamiento)"
+    },
+    {
+      "ts": "2026-10-02T00:46:53Z",
+      "tipo": "t1",
+      "detalle": "iter1 t1 (tras scan FIM forzado)"
+    },
+    {
+      "ts": "2026-10-02T00:51:07Z",
+      "tipo": "t0",
+      "detalle": "iter2 t0"
+    },
+    {
+      "ts": "2026-10-02T00:51:41Z",
+      "tipo": "t1",
+      "detalle": "iter2 t1"
+    },
+    {
+      "ts": "2026-10-02T00:51:41Z",
+      "tipo": "cierre",
+      "detalle": "criterio v2: deteccion identica ({80792}) -> iguales"
+    }
+  ]
+}

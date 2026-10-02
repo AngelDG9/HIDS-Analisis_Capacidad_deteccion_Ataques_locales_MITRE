@@ -1,0 +1,15 @@
+# ATA055_esperado.csv | ATA055 · T1557.003 DHCP Spoofing | TFG HIDS · Fase 3 (p1-cierre, tanda C)
+# Redactado el 2026-10-02 con los datos del paso 0, ANTES de ver ninguna alerta.
+# Gate humano: APROBADO 2026-10-02 (validación humana)
+# Esquema: senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+# Convencion H4: cada senal audit_exe se acompana de audit_cwd de la carpeta del ataque.
+# El señuelo DHCP (busybox udhcpd) y el cliente efimero (busybox udhcpc) viven en un
+#   segmento LOCAL AISLADO (10.99.0.0/24, par veth) dentro de la victima; NUNCA se emite
+#   en VMnet1/ens33 (el DHCP de VMware sirve el mismo rango .128-.254 y competiria).
+#   El HIDS de host NO ve la red: la deteccion es el PROCESS CREATION (execve de busybox/ip);
+#   la prueba es el lease entregado por el señuelo (gateway/DNS del atacante).
+#   BINARIO REAL verificado en el paso 0: busybox -> /usr/bin/busybox; ip -> /usr/bin/ip (symlink).
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1557.003-S1,deteccion,audit_exe,busybox,Process Creation,T1557.003,señuelo udhcpd + cliente udhcpc (execve 80792)
+T1557.003-S2,deteccion,audit_exe,ip,Process Creation,T1557.003,setup/limpieza del segmento local aislado (execve 80792)
+T1557.003-S3,deteccion,audit_cwd,/home/angel/lab-attack/ATA055/*,Process Creation,T1557.003,ancla H4 (cwd del ataque)
