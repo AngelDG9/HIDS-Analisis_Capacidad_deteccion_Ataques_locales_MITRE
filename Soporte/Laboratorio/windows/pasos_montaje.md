@@ -70,7 +70,7 @@
 | **ISO de Windows** (W10 22H2 x64 o W11 25H2 x64) | Web oficial de Microsoft (Media Creation Tool / descarga directa) | **Versión + tamaño + `sha256`** (⚠️ el `sha256` **depende de la ISO exacta**; se calcula al descargar: `certutil -hashfile iso SHA256`) |
 | **Agente Wazuh 4.14.7 MSI** | `https://packages.wazuh.com/4.x/windows/wazuh-agent-4.14.7-1.msi` | URL fijada; `sha256` **a calcular al descargar** (no se pudo verificar por hash desde aquí) |
 | **Sysmon** (Sysinternals) | `https://download.sysinternals.com/files/Sysmon.zip` | URL fijada; `sha256` **a calcular al descargar** (varía con cada release de Sysinternals) |
-| **Config Sysmon curada** | `olafhartong/sysmon-modular` — **releases**: `https://github.com/olafhartong/sysmon-modular/releases/latest` (commit observado 2026-09-18: `082cba5`) | **commit + `sha256` del XML** congelados al descargar |
+| **Config Sysmon curada** (`sysmonconfig-export.xml`) — **SwiftOnSecurity/sysmon-config**, *source version 74* (2021-07-08) | `https://raw.githubusercontent.com/SwiftOnSecurity/sysmon-config/master/sysmonconfig-export.xml` | **source version + `sha256` del XML** congelados al descargar |
 | **VMware Tools** | Ya incluido en VMware Workstation Pro 26H1 | (versión del hipervisor) |
 | **(Para `fase-03b`) módulo `Invoke-AtomicRedTeam` + `powershell-yaml` + clon ART** | Clon local `Soporte/Ataques/atomic-red-team/` (pin `388942a…`) | **commit + `sha256`** (los binarios/PowerShell se preparan en `fase-03b`) |
 
