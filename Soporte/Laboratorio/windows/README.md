@@ -253,3 +253,22 @@ Soporte/Wazuh/Configuracion/runbook_agente_windows.md   # NUEVO (fase-02b-constr
   (`_artefactos/scripts/inventario_p1_windows.py`).
 - Linux (no se toca): `Soporte/Laboratorio/README.md`, `vmrun_config.md`;
   `Soporte/Wazuh/Configuracion/version_wazuh.txt`, `active_ruleset.txt`, `rulesets_diseno.md`.
+
+---
+
+## 12. Procedimiento del baseline (`fase-02b-baseline`) — aditivo
+
+> implementado por `tfg-executor` (2026-10-07). Detalle y evidencia en `baseline_resultado.md`.
+
+- **Actividad legítima:** `Soporte/Wazuh/Scripts/baseline_actividad_windows.ps1` (ciclo ~5 min en
+  `C:\lab-legit\`: crear/leer/escribir, `Compress-Archive`, copiar/mover/borrar, buscar/hash,
+  `Get-WinEvent`, inventario de programas; log UTC `START/CYCLE/END`). **Sin utilidades de ataque.**
+- **Lanzamiento sin tocar la VM:** tarea programada del invitado **`TFG-Baseline-Legit`**
+  (principal **`SYSTEM`**, `StartWhenAvailable`, 2 disparos a `t0 − 5 min`, `-DurationMin 248`).
+- **Gobierno del host:** 4 tareas del Programador de Windows
+  (`TFG-Baseline-{Night,Afternoon}-{Start,Stop}`) que ejecutan `baseline_host_control.ps1`
+  (`vmrun`): `revertToSnapshot` víctima → `lab-listo-windows-baseline` + `start`; `stop soft` al final.
+- **Snapshot ↔ material:** el material (script + tarea + `C:\lab-legit\`) se instala **antes** de la
+  ventana y se **captura** en el snapshot nuevo **`lab-listo-windows-baseline`** (los originales
+  `base-limpia` y `lab-listo-windows` quedan intactos). Las tareas revierten a ese snapshot.
+- **FIM forzado** dentro de la ventana **desde el manager** (`agent_control -r -u 002`; no toca la VM).
