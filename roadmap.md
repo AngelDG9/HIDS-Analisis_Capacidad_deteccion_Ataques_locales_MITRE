@@ -13,7 +13,7 @@ Fase 0 — Arranque del proyecto                         [~2 días]   ✔ hecho
 Fase 1 — Corpus MITRE (F-01)                           [~1 semana]   ✔ hecho
 Fase 2 — Laboratorio Wazuh (F-02)                      [~1 semana]   ✔ hecho
 Fase 3 — Ataques y detección (F-03)                    [~2 semanas mes 1, escalable mes 2]   🔶 EN CURSO (55 técnicas · 53 detectadas · P1-Linux cerrada)
-Fase 2b — Laboratorio Windows (fase-02b)               [~1 semana]   🔶 montaje hecho (línea base pendiente)
+Fase 2b — Laboratorio Windows (fase-02b)               [~1 semana]   ✔ hecho (laboratorio + línea base)
 Fase 3b — Ataques Windows (fase-03b)                   [escalable]   ⏳ pendiente
 Fase 4 — Robustez y rendimiento (η)                    [~1 semana]
 Fase 5 — Memoria y anexos (F-04)                       [~2-3 semanas]
@@ -134,13 +134,17 @@ detección de Wazuh.
   `fase-03b`** (no se ataca sin laboratorio y baseline Windows).
 - **Riesgo RAM:** host 16 GB; **no encender `victima-linux` y `victima-windows` a la vez**.
 
-> **Estado (2026-10-07):** `fase-02b-diseno` ✔ · **`fase-02b-construccion` ✔** — **laboratorio Windows
-> operativo**: VM `victima-windows` (Win10 Pro, `.130`, VMnet1, NAT off) + **agente Wazuh 4.14.7 ID `002` `active`**
-> + **Sysmon v15.22** + canales Security/Sysmon/PowerShell-4104 + FIM + 4688 con cmdline; **Defender OFF**,
-> telemetría mínima, Update por política; **reloj corregido** (+9 h → Δ≈2 s); **snapshots `base-limpia` y
-> `lab-listo-windows`**; verificación `tfg-tester` **PASA**.
-> **⏳ Pendiente de la fase 2b:** **línea base de Windows** (su "ruido normal", `Dataset/Legitimo/windows/`).
-> **Después:** `fase-03b` (ataques).
+> **Estado (2026-10-08):** `fase-02b-diseno` ✔ · `fase-02b-construccion` ✔ · **`fase-02b-baseline` ✔** —
+> **laboratorio Windows operativo** (VM `victima-windows` Win10 Pro, `.130`, VMnet1, NAT off + **agente Wazuh
+> 4.14.7 ID `002` `active`** + **Sysmon v15.22** + Security/Sysmon/PowerShell-4104 + FIM + 4688 con cmdline;
+> **Defender OFF**; reloj Δ≈2 s; snapshots `base-limpia`/`lab-listo-windows`/`lab-listo-windows-baseline`)
+> **y su LÍNEA BASE medida**: **2 ventanas × 4 h** (mismas franjas que Linux, `00:45–04:45Z`/`12:00–16:00Z`,
+> 2026-10-08) → **159 alertas**, **7 `rule.id`** en el catálogo unido (`Dataset/Legitimo/windows/`),
+> **0 UNKNOWN**, **4 estables / 3 variables** (las 3 de FIM), veredicto **parcialmente estable**;
+> verificación `tfg-tester` **PASA** (10/10 CA). **⭐ Hallazgo:** el ruido de régimen de Windows es **mucho
+> menor** que el de Linux (7 vs 12 reglas) porque lo "ruidoso" de Sysmon salta en el **arranque** (queda fuera
+> de ventana).
+> **Después:** `fase-03b` (ataques Windows; continúa la numeración desde `ATA055`).
 
 ---
 

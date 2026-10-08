@@ -1,0 +1,6 @@
+origen,rule_ids_distintos,alertas,%_del_total,top_rule_ids
+Seguridad (Windows),3,71,98.61,67027(68);60642(2);60702(1)
+Sysmon,1,1,1.39,92201(1)
+PowerShell,0,0,0.00,
+FIM/syscheck,0,0,0.00,
+Otros,0,0,0.00,

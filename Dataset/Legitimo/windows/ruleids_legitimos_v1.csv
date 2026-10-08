@@ -1,0 +1,5 @@
+rule_id,rule_level,rule_description,groups,count,first_seen,last_seen,rs_origen
+60642,3,Software protection service scheduled successfully.,windows|windows_application,2,2026-10-08T02:24:45Z,2026-10-08T02:50:46Z,RS1
+60702,5,The VSS service is shutting down due to idle timeout.,windows|windows_application,1,2026-10-08T00:58:25Z,2026-10-08T00:58:25Z,RS1
+67027,3,A process was created.,windows| WEF,68,2026-10-08T00:45:15Z,2026-10-08T04:39:46Z,RS1
+92201,9,C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe created a new scripting file under Windows Temp or User data folder,sysmon|sysmon_eid11_detections|windows,1,2026-10-08T02:25:19Z,2026-10-08T02:25:19Z,RS1

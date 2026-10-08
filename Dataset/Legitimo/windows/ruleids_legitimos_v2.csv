@@ -1,0 +1,8 @@
+rule_id,rule_level,rule_description,groups,count,first_seen,last_seen,rs_origen
+594,5,Registry Key Integrity Checksum Changed,ossec|syscheck|syscheck_entry_modified|syscheck_registry,6,2026-10-08T12:11:09Z,2026-10-08T12:11:11Z,RS1
+598,5,Registry Key Entry Added to the System,ossec|syscheck|syscheck_entry_added|syscheck_registry,4,2026-10-08T12:11:11Z,2026-10-08T12:11:11Z,RS1
+750,5,Registry Value Integrity Checksum Changed,ossec|syscheck|syscheck_entry_modified|syscheck_registry,10,2026-10-08T12:11:09Z,2026-10-08T12:11:11Z,RS1
+60642,3,Software protection service scheduled successfully.,windows|windows_application,1,2026-10-08T12:15:21Z,2026-10-08T12:15:21Z,RS1
+60702,5,The VSS service is shutting down due to idle timeout.,windows|windows_application,1,2026-10-08T12:13:40Z,2026-10-08T12:13:40Z,RS1
+67027,3,A process was created.,windows| WEF,64,2026-10-08T12:00:32Z,2026-10-08T15:59:46Z,RS1
+92201,9,C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe created a new scripting file under Windows Temp or User data folder,sysmon|sysmon_eid11_detections|windows,1,2026-10-08T12:15:43Z,2026-10-08T12:15:43Z,RS1

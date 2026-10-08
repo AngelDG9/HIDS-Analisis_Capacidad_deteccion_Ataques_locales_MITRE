@@ -1,0 +1,9 @@
+# ruleids_legitimos.csv | CATALOGO AGREGADO de ruido legitimo (union ventana1+ventana2) | TFG HIDS - Fase 2b Windows (R-08) | generado=2026-10-08 | v1: 2026-10-08T00:45:15Z-2026-10-08T04:39:46Z (72 alertas) | v2: 2026-10-08T12:00:32Z-2026-10-08T15:59:46Z (87 alertas) | columnas: count_v1,count_v2,count_total y ventanas (v1 | v2 | v1+v2) | rule_description = primer evento de la v1 (las reglas genericas varian por evento)
+rule_id,rule_level,rule_description,groups,rs_origen,count_v1,count_v2,count_total,ventanas
+594,5,Registry Key Integrity Checksum Changed,ossec|syscheck|syscheck_entry_modified|syscheck_registry,RS1,0,6,6,v2
+598,5,Registry Key Entry Added to the System,ossec|syscheck|syscheck_entry_added|syscheck_registry,RS1,0,4,4,v2
+750,5,Registry Value Integrity Checksum Changed,ossec|syscheck|syscheck_entry_modified|syscheck_registry,RS1,0,10,10,v2
+60642,3,Software protection service scheduled successfully.,windows|windows_application,RS1,2,1,3,v1+v2
+60702,5,The VSS service is shutting down due to idle timeout.,windows|windows_application,RS1,1,1,2,v1+v2
+67027,3,A process was created.,windows| WEF,RS1,68,64,132,v1+v2
+92201,9,C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe created a new scripting file under Windows Temp or User data folder,sysmon|sysmon_eid11_detections|windows,RS1,1,1,2,v1+v2
