@@ -1,206 +1,159 @@
-# roadmap.md — Roadmap del TFG
+# roadmap.md — Secuencia, hitos y riesgos del TFG
 
-> Derivado de `context.md` y `requirements.md`. Secuencia el trabajo en **6 fases** con su
-> *Definition of Done* (DoD) y los hitos para el tutor. **Wazuh-first**: Velociraptor y el
-> tercer HIDS solo aparecen si sobra tiempo.
+> **Versión:** v2 (reencuadre R1) · **Estado:** vigente · **Fecha:** 2026-10-16.
+> Programa el trabajo en **bloques** (macro-fases **Clasificación → Ataques → Análisis**) con
+> sus dependencias, hitos y riesgos. Sustituye a la secuenciación anterior por **"Fases 0–5"**,
+> que se conserva marcada como **(histórico)**.
+>
+> **Anclas:** `(R0 §X.Y)` = `_fases/reencuadre/plan.md` (v2, 2026-10-16).
 
 ---
 
-> ⚠️ **REENCUADRE EN CURSO (2026-10-16).** Tras la 2ª reunión con el profesor, los **objetivos** y la
-> **secuencia de bloques** están **redefinidos y APROBADOS** en **`_fases/reencuadre/plan.md`** (v2).
-> Resumen: **solo P1** · **Wazuh + Velociraptor** (virgen primero) · estructura **Clasificación →
-> Ataques → Análisis** con las **5 tablas del profesor** · **legítimo = FP/TP** con **GHOSTS + 72 h**.
-> Este `roadmap.md` **se reescribirá** en el bloque **`reencuadre-docs` (R1)**; hasta entonces, lo
-> vigente para el plan es `_fases/reencuadre/plan.md`.
+## 1. Cómo leer este roadmap (`R0 §10.1`, `§10.4`)
 
-## 0. Resumen ejecutivo
+- **La unidad es el plan/bloque**: un `plan.md` por bloque; las **tandas** son tareas.
+- Se separa **`histórico`** (lo ya hecho, que se reaprovecha) de **`nuevo`** (marco vigente).
+- **Regla dura:** **nadie mide nada** hasta que la **métrica y las tablas estén congeladas**
+  (bloque **R2**). Medir antes de congelar invalida el resultado.
+
+---
+
+## 2. Resumen ejecutivo (`R0 §3.2`, `§10`)
+
+Programa en **3 macro-fases**:
 
 ```
-Fase 0 — Arranque del proyecto                         [~2 días]   ✔ hecho
-Fase 1 — Corpus MITRE (F-01)                           [~1 semana]   ✔ hecho
-Fase 2 — Laboratorio Wazuh (F-02)                      [~1 semana]   ✔ hecho
-Fase 3 — Ataques y detección (F-03)                    [~2 semanas mes 1, escalable mes 2]   🔶 EN CURSO (55 técnicas · 53 detectadas · P1-Linux cerrada)
-Fase 2b — Laboratorio Windows (fase-02b)               [~1 semana]   ✔ hecho (laboratorio + línea base)
-Fase 3b — Ataques Windows (fase-03b)                   [escalable]   ⏳ pendiente
-Fase 4 — Robustez y rendimiento (η)                    [~1 semana]
-Fase 5 — Memoria y anexos (F-04)                       [~2-3 semanas]
+Clasificación ──▶ Ataques ──▶ Análisis
+  (R1 · R2)      (M1·L·V·B1)    (A1 · A2)
 ```
 
-**Objetivo del primer mes:** tubería funcionando + 3-4 ataques cerrados (hasta 6-8 si el
-laboratorio sale liso) + proto tabla de detecciones. Suficiente para demostrar avance sólido.
-
----
-
-## Fase 0 — Arranque del proyecto ✔
-
-**Objetivo:** dejar el repo y la arquitectura de agentes listos para arrancar el trabajo.
-
-| # | Tarea | Modo |
-|---|-------|------|
-| 0.1 | Repo, `.gitignore` y `README.md`. | [AUTO] |
-| 0.2 | Los docs v1 se sustituyeron por la versión slim en su sitio (no se archivó nada en `_archivo/`). | [AUTO] |
-| 0.3 | `opencode.json` + 4 agentes (`tfg-orchestrator`, `tfg-planner`, `tfg-executor`, `tfg-tester`) + skill `tfg-flow`. | [AUTO] |
-| 0.4 | Reescribir `context.md`, `requirements.md` y `roadmap.md` en versión slim. | [AUTO] |
-| 0.5 | Skeleton de carpetas. | [AUTO] |
-
-**DoD:** repo con docs slim y arquitectura de agentes operativa.
-
----
-
-## Fase 1 — Corpus MITRE (F-01) ✔
-
-**Objetivo:** obtener la lista reproducible de técnicas host-eligible y seleccionar el
-corpus de 12-15 priorizado R/E/S.
-
-| # | Tarea | Modo |
-|---|-------|------|
-| 1.1 | **T-01**: descargar el STIX v19.1. | [AUTO] |
-| 1.2 | **T-02**: script `extraer_tecnicas_host.py` con filtro inverso. | [AUTO] |
-| 1.3 | Tests sobre técnicas conocidas (T1486 = YES; T1595 = NO red pura; T1046 = YES híbrida). | [AUTO] |
-| 1.4 | **T-03**: `corpus_host.csv` + `lista_tecnicas_validas.md` priorizada. | [AUTO] |
-| 1.5 | Validar la lista y elegir las 12-15 técnicas del corpus. | [HUMANO] |
-
-**DoD:** script reproducible + lista priorizada + corpus elegido en `Hojas/ATA_index.csv`.
-**✔ Cumplido (2026-09-19):** 625 técnicas host-eligible; corpus de **13 técnicas** en
-`Hojas/ATA_index.csv` (`ATA001`..`ATA013`). Verificación PASA; detalle en `_fases/fase-01/change-doc.md`.
-
----
-
-## Fase 2 — Laboratorio Wazuh (F-02) ✔
-
-**Objetivo:** laboratorio reproducible con Wazuh detectando y controlable en remoto.
-
-> **Acceso:** los agentes (`opencode`) corren en el **sobremesa** (junto a las VMs); el portátil entra por **SSH sobre Tailscale**.
-
-| # | Tarea | Modo |
-|---|-------|------|
-| 2.1 | **T-04**: topología + importar VMs (VMware en el sobremesa, host-only). | [HUMANO] |
-| 2.2 | **T-08 (acceso)**: SSH portátil→sobremesa sobre **Tailscale** + OpenSSH en Windows. | [HUMANO] ✔ |
-| 2.3 | **T-05**: Wazuh server + agentes (Linux primero). | [MIXTO] |
-| 2.4 | **T-07**: detección-only + 4 RuleSets. | [AUTO] |
-| 2.5 | **T-06**: baseline legítimo **2 ventanas × 4 h**. | [AUTO] |
-| 2.6 | **T-08 (cierre)**: documentar SSH + `vmrun` (local). | [MIXTO] |
-
-**DoD:** Wazuh con agentes activos, detección-only, baseline grabado y acceso remoto
-verificado desde el portátil.
-**✔ Cumplido (2026-09-23):** Wazuh **4.14.7** all-in-one + agente `victima-linux` **`active`**;
-**detección-only** y **4 capas** con `active_ruleset.txt` **sin colisiones** (RS3 y RS4 vacías en
-Fase 2, declarado); **baseline de 2 ventanas × 4 h** (12 `rule.id`, 13.574 alertas, 0 UNKNOWN,
-ruido **estable**); **NAT desconectado** y snapshot **`lab-listo`** en ambas VMs; acceso y `vmrun`
-documentados. Verificación **PASA**; detalle en **`_fases/fase-02/change-doc.md`**.
-**Pendiente:** presentar el **hito H2** al tutor (`push` a cargo del humano).
-
----
-
-## Fase 3 — Ataques y detección (F-03)
-
-**Objetivo:** cerrar ataques `ATA<NNN>` de extremo a extremo y alimentar la tabla.
-
-| # | Tarea | Modo |
-|---|-------|------|
-| 3.1 ✔ | **T-09** piloto (2-3 técnicas R/E/S): artefacto + README + captura. | [MIXTO] |
-| 3.2 ✔ | **T-10** + **T-11**: ejecución (con doble iteración), captura, filtrado y etiquetado. | [AUTO] |
-| 3.3 ✔ | Revisar el flujo y automatizar lo repetitivo (criterio **v2**, **métrica congelada**, **C0 por técnica**, anti-enmascaramiento). | [MIXTO] |
-| 3.4 ✔ | Escalar al **corpus** (ciclo completo: ataque → detección → ficha). | [AUTO] + [HUMANO] |
-| 3.5 🔶 | **Ampliar el corpus por rondas** (rondas de **15**, en **tandas de 5**; factibilidad Linux sin NAT). | [AUTO] + [HUMANO] |
-| 3.6 | **Bloque de EVASIÓN** (2ª pasada, versiones **disfrazadas**) — **cuando la cobertura P1 esté cerrada**. | [AUTO] + [HUMANO] |
-
-**🔶 EN CURSO (2026-10-02).** **55 técnicas** medidas (**128 ventanas**) → **53 detectadas / 2 no**
-(`ATA013` — `92600` suprime el `execve` de `python3`— y **`ATA034`** — archivado con *builtins*: sin `execve` de la
-operación). **⭐ Hallazgo:** la *misma* técnica de archivar es **detectada** con utilidad, **suprimida** con librería
-y **sin telemetría** con método propio → **lo que decide es la implementación**.
-**✅ P1-LINUX CERRADA:** `Hojas/cobertura_p1_linux.csv` (**72 filas** = 48 medida · 6 cubierta_por_ata · 8 cubierta_madre
-· 2 **cubierta_parcial** · 8 no_factible), con **2 comprobaciones automáticas** (C1 cuadre + **C2 padre/hijo**).
-**Rondas:** 13 (`escalado`) · 15 (`ampliacion`) · 15 (`ampliacion-2`) · 9 repeticiones · **12 (`p1-cierre`)**.
-**Pendiente:** ① **P2** o ② **bloque de EVASIÓN** (versiones disfrazadas) · ③ **Windows** · ④ **bloque futuro**:
-normalización de finales de línea + recálculo de huellas · ⑤ **arreglo futuro del filtro**: `19010/19011` (SCA) ·
-⑥ **Fase 4** (precio de la detección) y **memoria**. *(Host-eligible total: **625** = P1 89 · P2 459 · P3 77.)*
-
-**DoD:** ✔ corpus cerrado con filas en `ATA_index.csv`, CSV por ataque y primer balance de
-detección de Wazuh.
-
----
-
-## Fases B — Windows (`fase-02b` / `fase-03b`)
-
-**Objetivo:** segunda plataforma víctima (**Windows**) para ampliar el corpus y permitir la
-**comparación Linux↔Windows** del mismo HIDS. El **diseño** está en
-`Soporte/Laboratorio/windows/README.md` (bloque `fase-02b-diseno`, `status: approved_by_human`).
-
-| Fase | Nombre | Qué hace | Relación con Linux |
-|---|---|---|---|
-| **`fase-02b`** | Laboratorio Windows | VM **ISO virgen** + red host-only (`192.168.65.130`) + agente **Wazuh 4.14.7** + telemetría (**Sysmon curado** + Seguridad `4688` + PowerShell `4104` + Syscheck) + **Defender OFF** + snapshots + baseline | **Espejo** de la Fase 2: **mismo manager** (4.14.7) y **misma métrica**; **baseline propio** (`Dataset/Legitimo/windows/`) |
-| **`fase-03b`** | Ataques Windows | Tandas de ataques `ATA<NNN>` (**se continúan desde `ATA055`**); la **misma técnica en otro SO = otra fila / otro `ATA`** | Reutiliza **sin cambios** el criterio de ataque (§D), la **doble iteración**, la **métrica congelada** y el filtro por **perfil de plataforma**; estrena subárboles `windows/` |
-
-- **Compartido (un solo dueño por documento):** criterio ART / manual / pre-staging
-  (`Soporte/Ataques/criterio_ataques.md` §D), doble iteración, métrica congelada, RuleSets
-  (`rulesets_diseno.md` §Windows), anti-enmascaramiento y mapa ART.
-- **Específico de Windows:** telemetría (no existe `auditd`), Defender OFF, y baseline,
-  resultados y artefactos en subárboles `windows/` **nuevos**.
-- **No se mueve nada de Linux** (cadena de huellas intacta). Orden: **`fase-02b` antes de
-  `fase-03b`** (no se ataca sin laboratorio y baseline Windows).
-- **Riesgo RAM:** host 16 GB; **no encender `victima-linux` y `victima-windows` a la vez**.
-
-> **Estado (2026-10-08):** `fase-02b-diseno` ✔ · `fase-02b-construccion` ✔ · **`fase-02b-baseline` ✔** —
-> **laboratorio Windows operativo** (VM `victima-windows` Win10 Pro, `.130`, VMnet1, NAT off + **agente Wazuh
-> 4.14.7 ID `002` `active`** + **Sysmon v15.22** + Security/Sysmon/PowerShell-4104 + FIM + 4688 con cmdline;
-> **Defender OFF**; reloj Δ≈2 s; snapshots `base-limpia`/`lab-listo-windows`/`lab-listo-windows-baseline`)
-> **y su LÍNEA BASE medida**: **2 ventanas × 4 h** (mismas franjas que Linux, `00:45–04:45Z`/`12:00–16:00Z`,
-> 2026-10-08) → **159 alertas**, **7 `rule.id`** en el catálogo unido (`Dataset/Legitimo/windows/`),
-> **0 UNKNOWN**, **4 estables / 3 variables** (las 3 de FIM), veredicto **parcialmente estable**;
-> verificación `tfg-tester` **PASA** (10/10 CA). **⭐ Hallazgo:** el ruido de régimen de Windows es **mucho
-> menor** que el de Linux (7 vs 12 reglas) porque lo "ruidoso" de Sysmon salta en el **arranque** (queda fuera
-> de ventana).
-> **Después:** `fase-03b` (ataques Windows; continúa la numeración desde `ATA055`).
-
----
-
-## Fase 4 — Robustez y rendimiento (η)
-
-**Objetivo:** cumplir el "precio de la detección" y la validación de robustez.
-
-| # | Tarea | Modo |
-|---|-------|------|
-| 4.1 | Monitorizar CPU/memoria/I/O durante ataque y detección. | [AUTO] |
-| 4.2 | Experimento de robustez: ataques representativos a distintas cargas del host. | [AUTO] |
-| 4.3 | Calcular η por ataque y por táctica; gráficas. | [AUTO] |
-
-**DoD:** tabla de η + gráficas + interpretación escrita.
-
----
-
-## Fase 5 — Memoria y anexos (F-04)
-
-**Objetivo:** producir la memoria siguiendo el esqueleto de los TFGs hermanos.
-
-Se redacta con un flujo de conocimiento (investigación → redacción → revisión),
-**con fuentes verificadas N1/N2**. Incluye: Introducción y Estado del Arte, Base teórica
-(MITRE + HIDS), Realización de ataques, Análisis de detecciones, Resultados, Conclusiones y
-Anexos (Instalación, Validación, Tabla Resumen de Ataques, Dificultades).
-
-**DoD:** memoria entregada en formato y plazos de la ETSI.
-
----
-
-## Hitos para el tutor
-
-| Hito | Tras | Qué se le enseña |
+| Macro-fase | Bloques | Estado |
 |---|---|---|
-| H0 | Fase 0 | Planificación slim + arquitectura de agentes. |
-| H1 | Fase 1 | Lista de técnicas válidas + criterio de filtro inverso. |
-| H2 | Fase 2 | Laboratorio Wazuh funcionando + baseline. |
-| H3 | Fase 3 | Ataques piloto cerrados + proto tabla de detecciones. |
-| H4 | Fase 4 | Robustez + rendimiento (η). |
-| H5 | Fase 5 | Memoria lista. |
+| **Clasificación** | R0 ✔ · **R1 (este)** · R2 | R0 cerrado; **R1 en curso** |
+| **Ataques** | M1a/M1b · L0/L1/L2 · V0/V1 · B1 | histórico parcial (M1a) |
+| **Análisis** | A1 · A2 | pendiente |
+
+**Resultado del trabajo:** **5 tablas (T1–T5) + Requisitos + Leyenda** + **memoria**.
 
 ---
 
-## Riesgos y mitigaciones
+## 3. Trabajo hecho (`histórico`) (`state.md`, `R0 §1.2`)
+
+| Fase (histórica) | Entregable | Estado | Se reaprovecha |
+|---|---|---|---|
+| **Fase 0** — Arranque | repo + agentes + docs slim | ✔ | Arquitectura de agentes |
+| **Fase 1** — Corpus MITRE | `Hojas/corpus_host.csv` (697 → **625 host-eligible**) · `ATA_index.csv` | ✔ | RF-01, Tabla 1 |
+| **Fase 2** — Laboratorio Wazuh | Wazuh **4.14.7** + agente · detección-only · **4 RS** (RS3/RS4 vacías) · baseline | ✔ | Lab, `active_ruleset.txt` |
+| **Fase 2b** — Laboratorio Windows | VM `victima-windows` + Wazuh + Sysmon + baseline | ✔ | Segunda plataforma (B1) |
+| **Fase 3** — Ataques y detección | **55 técnicas · 128 ventanas · 53 detectadas**; **P1-Linux cerrada** (`cobertura_p1_linux.csv`, 72 filas) | 🔶 P1-Linux cerrada | **El corpus YA es la medida "virgen"** |
+
+> **Hallazgos que se conservan** (`R0 §1.2`): (1) el corpus actual **ya es virgen** (RS3 = RS4 =
+> 0; `rule_level` + `rs_origen` en 160/160 `-Audited.csv`) ⇒ la rejilla *virgen × umbral × RS* es
+> un **recorte determinista** (días, no semanas); (2) `rule_id 11` y `19010/19011` (SCA) son
+> **FP del criterio congelado**, declarados; (3) el **baseline sintético** de pocas horas queda
+> **(histórico)** — el **catálogo de ruido autoritativo** será el de las **72 h**.
+
+---
+
+## 4. Secuencia de bloques (marco nuevo) (`R0 §10.2`)
+
+**Programa `reencuadre` (documentación, no toca el laboratorio):**
+
+| # | Bloque | Qué hace | Depende de | Estado |
+|---|---|---|---|---|
+| R0 | `reencuadre` | Congela objetivo, alcance, métrica, tablas y secuencia. | — | ✔ |
+| **R1** | **`reencuadre-docs`** | **Este bloque**: reescribe `context.md`/`requirements.md`/`roadmap.md`. | R0 | 🔶 |
+| R2 | `reencuadre-metrica` | Congela métrica + plantillas T1–T5/Requisitos/Leyenda + scripts. | R0 | ⏳ |
+
+**Medida VIRGEN de Wazuh (aprovecha lo hecho):**
+
+| # | Bloque | Qué hace | Depende de |
+|---|---|---|---|
+| M1a | `virgen-wazuh-ataques` *(histórico)* | Recorte determinista de los 55 ATA por `rule_level`×`rs_origen` → T2/T4 (baseline **viejo**). | R2 |
+| L0 | `legitimo-infra` | GHOSTS + "internet local"; **go/no-go**. | R2 |
+| L1 | `legitimo-72h` | Captura legítima **72 h** + denominador. **Cuello de botella.** | L0 |
+| M1b | `virgen-wazuh-ataques` *(re-ejecución)* | Re-corre el recorte con el **legítimo nuevo**. | L1, M1a |
+| L2 | `legitimo-analisis` | T3/T4 (legítimo) → cierra T4 virgen. | L1, M1b |
+
+**Velociraptor VIRGEN:** `V0 velociraptor-lab` · `V1 velociraptor-virgen`.
+
+**Gate ¿reglas/artifacts propios? (contingente):** `W2 wazuh-propias` · `W3 wazuh-externas` ·
+`V2 velociraptor-propias`.
+
+**Windows (segunda plataforma):** `B1 fase-03b` (ataques Windows; continúa desde `ATA055`).
+
+**Cierre:** `A1 analisis-final` (T5 + métricas + gráficas + comparativa VR↔Wazuh) · `A2 memoria`.
+
+---
+
+## 5. Camino crítico, paralelismo y cuello de botella (`R0 §10.3`, `§10.4`)
+
+- **Camino crítico:** `R0 → R2 → L0 → L1 (72 h) → M1b → L2 → A1 → A2`.
+- **Cuello de botella:** la **captura legítima de 72 h** (reloj de pared, **no acelerable**) ⇒
+  **arrancarla cuanto antes** tras congelar (R2).
+- **Paralelizable** (si el *tester* confirma que no se ensucia): M1a (recorte), V0/V1 y B1
+  respecto a la captura.
+- **Ventaja clave:** M1a/M1b son **recorte** (días → horas) porque el corpus ya está medido y
+  etiquetado con `rule_level` + `rs_origen`.
+- **Nota de orden (v2):** el recorte de ataques (M1a) **no depende** del legítimo, pero **el
+  juicio del ruido y las métricas finales SÍ** ⇒ el recorte **se re-ejecuta** (M1b) con las 72 h,
+  para que **todo se juzgue con el mismo legítimo**.
+
+---
+
+## 6. Orden de HIDS y plataformas (`R0 §10.3`, Q10/Q11)
+
+**Orden fijado por el humano:** **Linux Wazuh → Windows Wazuh → Velociraptor (Linux y Windows)**.
+
+- **No se mezclan HIDS**: un HIDS a la vez. Las **corridas de legítimo son POR SEPARADO** (un
+  HIDS a la vez, **sin el otro instalado**), como en los TFGs hermanos.
+- **Nunca** dos VMs pesadas encendidas a la vez (host de **16 GB**).
+
+---
+
+## 7. Hitos para el tutor (H0–H5) (`R0 §6`)
+
+| Hito | Cuándo | Qué se le enseña |
+|---|---|---|
+| **H0** | Fase 0 ✔ | Planificación + arquitectura de agentes. |
+| **H1** | Fase 1 ✔ | **Clasificación**: corpus P1 host-eligible + **Tabla 1** (equivalencia v17↔v19.1). |
+| **H2** | Fase 2/2b ✔ | **Laboratorio** (Wazuh Linux **y** Windows) + **virgen** definido. |
+| **H3** | nuevo | **Medida VIRGEN de Wazuh (Linux)**: ataques (**TPR**) + legítimo 72 h (**FPR**) → T2/T3/T4. |
+| **H4** | nuevo | **Windows Wazuh** + **Velociraptor virgen** + **comparativa por técnica**. |
+| **H5** | nuevo | **Memoria** y anexos. |
+
+> El remapeo agrupa **H4** = Windows + Velociraptor (porque el orden es Linux Wazuh → Windows
+> Wazuh → VR). Si el tutor prefiere separarlos → pasan a **H4/H5** y la memoria a **H6**
+> *(se confirma con el profesor)*.
+
+---
+
+## 8. Riesgos y mitigaciones (`R0 §11.1`)
 
 | Riesgo | Mitigación |
 |---|---|
-| Wazuh indexer no indexa a tiempo | Espera de 60 s + segunda consulta a los 300 s antes de dar por "no detectado". |
-| Ruido de Sysmon/auditd inunda las alertas | Baseline extenso + filtrado automático de FP. |
-| Una técnica no la cubre Atomic Red Team | Script custom equivalente, mapeado a la técnica. |
-| El laboratorio consume más RAM de la prevista | Linux primero; no arrancar Windows y Linux a la vez al principio. |
-| Se acaba el tiempo por las fases finales | Wazuh-first garantizado: los extras caen antes que la memoria. |
+| **Unidad legítima mal definida** | Decidida (evento + complementos); validar con el tutor antes de congelar. |
+| **Comparación entre HIDS** (unidades no homogéneas) | Unidad **común** (acción GHOSTS / hora) + **comparación por técnica**. |
+| **GHOSTS no viable en el tiempo** | **Go/no-go** en L0; **plan B** (acciones reales por guion, declarado). |
+| **72 h de reloj** | Arrancar pronto; paralelizar; **ampliable, no reducible**. |
+| **`+propias`/`+custom` desboca el alcance** | **Contingente al gate**; acotado a P1. |
+| **VR no es *rule-based*** | Unidad de VR definida; mapeo P1–P4↔nivel; comparación por técnica. |
+| **Desfase v17↔v19.1** | Equivalencia + **3 discrepancias** declaradas. |
+| **Congelar mal la config** | Bóveda de congelación + huella + repetición. |
+| **Windows (2ª plataforma)** | Fase propia; nunca Linux y Windows a la vez (RAM). |
+| **CRLF / cadena de huellas** | Deuda declarada; **no** `checkout`/`stash` sobre `esperado`/`Audited`. |
+| **Fuga de secreto** | Regla dura: la contraseña del laboratorio **nunca** en ficheros del repo. |
+
+---
+
+## 9. Deuda y cabos pendientes (`state.md`, `R0 §11.1`)
+
+- **Normalización de finales de línea + recálculo de huellas** (bloque futuro; un clon no
+  reproduce las huellas por EOL mezclados).
+- **Arreglo futuro del filtro**: `19010/19011` (SCA) y `rule_id 11` (mismo patrón; ya matizado).
+- **Bloque de EVASIÓN** (versiones disfrazadas) — **trabajo futuro**, fuera de los bloques de
+  cobertura.
+- **Rotar la contraseña del laboratorio** (recomendado tras el incidente contenido de
+  P1-cierre).
+- **A confirmar con el tutor:** unidad legítima, hitos H3–H5, umbral de *pruning* (500/1000 vs
+  escala propia) y el "tamaño/tiempos" (fleco 3).

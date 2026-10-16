@@ -7,22 +7,25 @@ al dominio **host/local** con **HIDS**.
 
 ## Propósito
 
-Medir de forma reproducible la **capacidad de detección** de HIDS OpenSource frente a un
-corpus de ataques locales mapeados a MITRE ATT&CK Enterprise, empezando por **Wazuh**.
+Analizar la **capacidad de detección** de ataques locales del subconjunto **P1** (Impact /
+Exfiltration / Collection) de MITRE ATT&CK Enterprise mediante **Wazuh** y **Velociraptor** en
+configuración **"de fábrica" (virgen)**, cuantificando tanto la detección (**TPR**) como el
+error sobre actividad legítima (**FP**), en **Linux** y **Windows**, con **tablas homogéneas**
+(T1–T5 + Requisitos + Leyenda) a los trabajos hermanos del grupo.
 
 ## Documentación de referencia
 
 | Fichero | Contenido |
 |---|---|
-| [`context.md`](context.md) | Qué es el TFG, método del profesor, recursos, glosario y decisiones fijadas. |
-| [`requirements.md`](requirements.md) | Requisitos, tareas clave y flujos de trabajo. |
-| [`roadmap.md`](roadmap.md) | Secuenciación en fases con plazos e hitos. |
+| [`context.md`](context.md) | Qué es el TFG, objetivos, alcance y marco, método, métrica (resumen), glosario y decisiones fijadas. |
+| [`requirements.md`](requirements.md) | Requisitos funcionales (**RF**) y no funcionales (**RNF**), recursos estudiados y fuera de alcance. |
+| [`roadmap.md`](roadmap.md) | Bloques, camino crítico, orden HIDS/plataformas, hitos (H0–H5) y riesgos. |
 | [`state.md`](state.md) | Estado vivo del proyecto (lo mantiene el agente `tfg-orchestrator`). |
 | [`_fases/`](_fases/) | Plan (`plan.md`) y cierre (`change-doc.md`) de cada **bloque** cerrado; en la raíz vive siempre el `plan.md` del bloque en curso. |
 
 La documentación **operativa** vive en el repo: `Soporte/Laboratorio/` (topología, SSH y `vmrun`),
-`Soporte/Wazuh/Configuracion/` (runbooks y RuleSets) y `Dataset/` (baseline y, en Fase 3, ataques y
-resultados).
+`Soporte/Wazuh/Configuracion/` (runbooks y RuleSets) y `Dataset/` (los ataques y sus resultados, y
+las corridas de actividad legítima).
 
 Los recursos del profesor viven en `_recursos/` (no versionados).
 

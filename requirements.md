@@ -1,111 +1,98 @@
-# requirements.md — Requisitos, tareas y flujos del TFG
+# requirements.md — Requisitos y recursos del TFG
 
-> Derivado de `context.md`. Define **qué** hay que cumplir (requisitos), **qué** hay que
-> hacer (tareas) y **cómo** se encadenan (flujos). La secuencia temporal vive en
-> `roadmap.md`.
+> **Versión:** v2 (reencuadre R1) · **Estado:** vigente · **Fecha:** 2026-10-16.
+> Define **qué** hay que cumplir (**RF** funcional / **RNF** no funcional) y **con qué recursos**
+> se cuenta. La **secuencia** (qué se hace y cuándo) vive en `roadmap.md` — **la unidad es el
+> plan/bloque**, así que aquí **no** se duplican tareas ni flujos.
+>
+> **Anclas:** `(R0 §X.Y)` = `_fases/reencuadre/plan.md` (v2, 2026-10-16).
 
 ---
 
 ## 0. Convenciones
 
-- **R-NN** — requisito. **T-NN** — tarea. **F-NN** — flujo.
-- **[AUTO]** lo hace el agente · **[HUMANO]** lo hace el alumno · **[MIXTO]** agente propone, alumno valida.
-- Gate: ninguna tarea que edite/ejecute se hace sin el `plan.md` de la fase aprobado por el humano.
+- **RF-NN** — requisito **funcional**. **RNF-NN** — requisito **no funcional**.
+- **[AUTO]** lo hace el agente · **[HUMANO]** lo hace el alumno · **[MIXTO]** agente propone,
+  alumno valida.
+- **Gate:** ninguna tarea que edite/ejecute se hace sin el `plan.md` del bloque **aprobado por
+  el humano**.
+- *(histórico)* Los requisitos **R-01…R-14** del borrador quedan **subsumidos** aquí:
+  R-02→RNF-01 · R-03/R-04→RF-01 · R-05→RF-03/RF-07 · R-06→(modo detección-only, ver §5) ·
+  R-07→RF-02 · R-08/R-10→**(obsoleto**; sustituidos por RF-04/RF-05**) · R-11→RF-10 ·
+  R-12/R-13→RF-02 · R-14→RNF-07. Las notaciones **R-/T-/F-** se conservan como referencia; las
+  antiguas **tareas** (Bloque A–D) se han **plegado** a `roadmap.md`.
 
 ---
 
-## 1. Requisitos
+## 1. Recursos disponibles (estudio) (`R0 §1.1`, `§1.4`, `§1.5`)
+
+| Fuente | Qué aporta | Qué se reaprovecha |
+|---|---|---|
+| **Guía y material del profesor** (`guia_profesor.txt`, `Detecciones Red (Ref).xlsx`, scripts de extracción MITRE) | Método de 4 pasos; filtro inverso; prioridad R/E/S; estructura de hojas | El **método** (vigente en lo esencial) y las **plantillas** de resultados |
+| **Repo hermano NIDS** (Ignacio Merchán, **mismo tutor**, 2026) | Metodología de métricas y *pruning* | `GM = √(TPR·TNR)`; doble conteo *Raw* vs *Diff-Alerts/Flow*; **pipeline de *pruning*** = **nuestra T5**; `TOTAL_LEG_FLOWS = 78.694.206` |
+| **Repo Snort-FG-PA** (estándar de facto) | Estructura de carpetas | `Hojas/` · `Dataset/{Ataques,Legitimo}` · `Soporte/` · `Estudio-<HIDS>/` · `BBDD/` |
+| **TFMs hermanos** (Linares · Peña · Velociraptor) | Lecciones de FP/TP; perfiles de VR | Umbral↔FP (Linares); control benigno + doble conteo (Peña); **P1–P4, artifacts públicos vs custom, mapeo VR↔Wazuh** (VR) |
+| **Lo nuestro** (repo) | Corpus, laboratorio y scripts ya construidos | Corpus P1-Linux (**55·128·53**), `Hojas/*.csv`, `Soporte/*`, `_artefactos/scripts/` |
+
+---
+
+## 2. Requisitos funcionales (RF) (`R0 §3.2`, `§4`, `§5`, `§7`, `§8`)
 
 | ID | Requisito | Criterio de aceptación |
-|----|-----------|------------------------|
-| R-01 | Trabajar sobre **MITRE ATT&CK Enterprise v19.1**. | La cabecera de las hojas indica versión y fecha. |
-| R-02 | El corpus se obtiene con un **script reproducible** (no a mano). | Ejecutarlo regenera el corpus; está versionado en git. |
-| R-03 | **Filtro inverso host** (interpretación amplia): una técnica con ≥1 Data Component endpoint es válida; solo se excluyen las exclusivas de red pura. | `corpus_host.csv` con columna `host_eligible`; tests sobre técnicas conocidas (**T1486 = YES, T1595 = NO** red pura; **T1046 = YES híbrida**). |
-| R-04 | **Priorización R/E/S** (Ransomware, Exfiltración, Sabotaje). | Columna `priority` con ranking. |
-| R-05 | **Wazuh** como único HIDS del núcleo. | Resultados bajo `Estudio-Wazuh/` y `Dataset/Ataques/Resultados/Wazuh/`. |
-| R-06 | **Modo detección-only**: el HIDS nunca bloquea. | `active-response` desactivado; documentado. |
-| R-07 | **Identificador único** `ATA<NNN>` por ataque. | `Hojas/ATA_index.csv` con `ata_id, tactica, tecnica, descripcion, artefacto, estado`. |
-| R-08 | **Baseline legítimo** del endpoint (**2 ventanas × 4 h**). | `Dataset/Legitimo/` con los `rule.id` de actividad normal. |
-| R-09 | **4 RuleSets** con clasificación de alertas por origen (sin repetir el ataque). | Tabla comparativa RS1..RS4 por ataque. |
-| R-10 | **Métrica η = √(CD·(1−FP))** por ataque y por HIDS. | Columna de η en `Hojas/Detecciones.xlsx`. |
-| R-11 | **Doble iteración** de cada ataque representativo; si difiere, `review=true`. | `ATA<NNN>_iter{1,2}.csv` y aviso de revisión. |
-| R-12 | **Atomic Red Team** como orquestador de ataques (custom si no cubre una técnica). | `Soporte/Ataques/atomic-red-team/` clonado y usable. |
-| R-13 | **Reproducibilidad por ataque**: cada ataque tiene artefacto ejecutable + README. | `Dataset/Ataques/Comandos/T<id>-<desc>/` con script + `README.md` (víctima, comando, validación). |
-| R-14 | **Arquitectura de agentes propia del TFG** (liviana). | `.opencode/` con `tfg-orchestrator`, `tfg-planner`, `tfg-executor`, `tfg-tester` + skill `tfg-flow`. |
-
-> **Nota R-03 (2026-09-19):** el criterio "T1046 = NO" del borrador se corrige a partir de los
-> datos reales de v19.1: T1046 es **híbrida** (DET0376 → AN1057/1058/1059/1060 incluye
-> `DC0032 Process Creation`) → `host_eligible=YES`. El caso negativo de red pura se verifica
-> con **T1595 = NO**. Aplicación de la interpretación amplia (técnica con ≥1 Data Component
-> endpoint = válida).
+|---|---|---|
+| **RF-01** | **Clasificar**: subconjunto **P1** host-eligible (filtro inverso v19.1) **espejado** con **Tabla 1 (v17)**, con equivalencia y **3 discrepancias** declaradas (`T1029`, `T1602.001/.002`, `T1567.003`). | Tabla 1 (diseño en `context.md`; **fichero en R2**) + `Hojas/corpus_host.csv`. |
+| **RF-02** | **Ataques**: cada caso es un **"paquete equivalente a pcap"** (contexto + acciones + telemetría; **criterio ART**). | Carpeta por `ATA<NNN>` con guion + telemetría + `README`. |
+| **RF-03** | **Detección Wazuh (virgen)**: medir por **caso** (TPR) y por **unidad legítima** (FPR). | T2/T4 virgen × umbral × RS. |
+| **RF-04** | **Legítimo real**: **GHOSTS**, **72 h** (ampliable), **denominador instrumentado**. | T3 + `M` (nº de eventos legítimos). |
+| **RF-05** | **Métricas**: TPR, FPR, TNR, Precisión, F1, GM, Usabilidad **por (HIDS × config × umbral)**. | T4 + bloque de fórmulas. |
+| **RF-06** | ***Pruning* (T5)**: variantes 500/1000, Conservative, Generalized, Aggressive (G-Mean). | T5. |
+| **RF-07** | **Velociraptor (virgen)** sobre el **mismo corpus** + **comparación con Wazuh por técnica**. | T2/T4 VR. |
+| **RF-08** | **Windows** como **segunda plataforma** (misma técnica en otro SO = **otra fila / otro ATA**). | T2/T4 Windows. |
+| **RF-09** | **Resultados** = **T1–T5 + Requisitos + Leyenda** (estructura del profesor). | Excels equivalentes. |
+| **RF-10** | **Doble iteración** por ataque representativo; si difiere → `review`. | `ATA<NNN>_iter{1,2}` + aviso. |
+| **RF-11** | **Memoria** siguiendo el esqueleto de los hermanos. | Memoria + anexos. |
 
 ---
 
-## 2. Tareas
+## 3. Requisitos no funcionales (RNF) (`R0 §4.5`, `§6`, `§9`, `§10.1`)
 
-### Bloque A — Corpus MITRE
-
-| ID | Tarea | Salida |
-|----|-------|--------|
-| T-01 | Descargar la matriz MITRE Enterprise v19.1 en STIX/JSON. | `_artefactos/mitre/enterprise-attack-v19.1.json`. |
-| T-02 | Script `extraer_tecnicas_host.py`: parsea el STIX, extrae Data Components y aplica el filtro inverso (R-03). | `Hojas/corpus_host.csv`. |
-| T-03 | Generar la lista human-legible priorizada R/E/S y elegir el corpus (**12-15 técnicas**). | `Hojas/lista_tecnicas_validas.md` + `Hojas/ATA_index.csv`. |
-
-### Bloque B — Laboratorio
-
-| ID | Tarea | Salida |
-|----|-------|--------|
-| T-04 | Definir topología (VMware en el sobremesa, red host-only) e importar las VMs del profesor. | `Soporte/Laboratorio/topologia.png` + `README.md`. |
-| T-05 | Levantar Wazuh (manager + indexer + dashboard) y conectar agentes (Linux primero; Windows después). | Runbooks en `Soporte/Wazuh/Configuracion/`. |
-| T-06 | Grabar baseline legítimo (**2 ventanas × 4 h**) en VM limpia. | `Dataset/Legitimo/ruleids_legitimos.csv`. |
-| T-07 | Configurar detección-only y los 4 RuleSets (RS1..RS4). | `Soporte/Wazuh/Configuracion/` + `active_ruleset.txt`. |
-| T-08 | Control remoto del laboratorio por SSH (y `vmrun` en el sobremesa). | `Soporte/Laboratorio/vmrun_config.md` + `ssh_setup.md`. |
-
-### Bloque C — Ataques y detección
-
-| ID | Tarea | Salida |
-|----|-------|--------|
-| T-09 | Implementar cada ataque como artefacto reproducible `ATA<NNN>` (Atomic Red Team o custom). | `Dataset/Ataques/Comandos/T<id>-<desc>/`. |
-| T-10 | Ejecutar el ataque en snapshot limpio, con doble iteración, y capturar alertas de Wazuh [t0,t1]. | `Dataset/Ataques/Resultados/Wazuh/CSV/ATA<NNN>_iter{1,2}.csv`. |
-| T-11 | Filtrar FP contra el baseline y etiquetar TP/FP; clasificar por RuleSet. | `ATA<NNN>-Audited.csv` + fila en `Hojas/ATA_index.csv`. |
-
-### Bloque D — Agregación y memoria
-
-| ID | Tarea | Salida |
-|----|-------|--------|
-| T-12 | Construir las tablas de resultados, la BBDD SQLite, las gráficas y la memoria. | `Hojas/Detecciones.xlsx`, `Hojas/Mapeos.xlsx`, `BBDD/wazuh.db`, `Estudio-Wazuh/`, memoria. |
+| ID | Requisito |
+|---|---|
+| **RNF-01** | **Reproducibilidad determinista** + **huella `sha256`** por cifra. |
+| **RNF-02** | **Métrica congelada antes de medir** (bóveda de congelación). |
+| **RNF-03** | **"Virgen" definido y congelado** (versión de ruleset, telemetría, versión del HIDS, umbrales). |
+| **RNF-04** | **Lab aislado + "internet local" declarada**; **sin secretos** en el repo. |
+| **RNF-05** | **No mezclar HIDS ni plataformas**; corridas **por separado** (RAM 16 GB). |
+| **RNF-06** | **Nada se descarta en silencio** (`dudosa`); cada desviación se **declara**. |
+| **RNF-07** | **KISS + homogeneidad + reutilización** con los trabajos hermanos. |
+| **RNF-08** | **Git local**; `push` = humano; `_recursos/` solo lectura. |
 
 ---
 
-## 3. Flujos
+## 4. Matriz requisito ↔ bloque (`R0 §10.2`)
 
-### F-01 — Corpus
-```
-T-01 → T-02 → T-03 → (selección de las 12-15 técnicas)
-```
-
-### F-02 — Laboratorio
-```
-T-04 → T-08 (acceso) → T-05 → T-07 → T-06 → T-08 (cierre)
-```
-
-### F-03 — Ataque y detección (por cada ataque)
-```
-T-09 → [snapshot limpio] → T-10 (doble iteración) → T-11 (filtrado + etiquetado)  → repetir
-```
-**Ciclo por ataque:** snapshot → t0 → ataque → t1 → extraer alertas → filtrar FP →
-etiquetar TP/FP → clasificar por RuleSet → fila en `ATA_index.csv` → bitácora.
-
-### F-04 — Agregación y cierre
-```
-T-12 (tablas + BBDD + gráficas) → memoria + anexos
-```
+| Requisito | Bloque del `roadmap.md` |
+|---|---|
+| RF-01 / RNF-03 | R1 (diseño Tabla 1) → R2 (fichero) |
+| RF-02 / RF-10 | M1a/M1b (ataques) · B1 (Windows) |
+| RF-03 / RF-05 | M1a/M1b · L2 · A1 |
+| RF-04 | L0 · L1 |
+| RF-06 | A1 (T5) |
+| RF-07 | V0 · V1 |
+| RF-08 | B1 |
+| RF-09 / RF-11 | R2 (plantillas) · A1 · A2 |
+| RNF-01 / RNF-02 / RNF-06 | Transversal (todos los bloques) |
+| RNF-04 / RNF-05 / RNF-08 | Transversal (laboratorio y repo) |
 
 ---
 
-## 4. Fuera de alcance (explícito)
+## 5. Fuera de alcance (`R0 §14`)
 
-- **Velociraptor, tercer HIDS y Snort**: extras, solo si sobra tiempo (R-05).
-- **Mobile, ICS, Cloud**: fuera (solo Enterprise).
-- **Modo bloqueo** del HIDS: fuera (R-06).
-- **Comparativa cuantitativa** con los TFGs hermanos: solo cualitativa en la memoria.
+- **Tercer HIDS** (OSSEC/Sagan/Splunk/Samhain): fuera.
+- **Snort / pcaps / análisis de red pura**: fuera (solo cita en el estado del arte).
+- **Coste computacional**: fuera, salvo **experimento opcional declarado** (`R0 §14.1`).
+- **InfoStealer** como exfiltración: fuera por ahora ("a decidir" a futuro).
+- **Técnicas P2/P3**: fuera.
+- **Modo bloqueo** del HIDS: fuera (**detección-only**).
+- **Comparativa cuantitativa** con los TFGs hermanos: solo **cualitativa**.
+- **`ait-aecid` / `kyoushi-environment` / FortiEDR**: fuera (solo cita / comercial).
