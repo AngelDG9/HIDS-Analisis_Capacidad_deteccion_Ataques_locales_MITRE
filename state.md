@@ -7,6 +7,16 @@
 
 ## Estado actual
 
+- **🔄 REENCUADRE DEL TFG (2026-10-16) — tras la 2ª reunión con el profesor. Marco NUEVO APROBADO** (bloque `reencuadre` **CERRADO**; plan v2 + reviews + change-doc en **`_fases/reencuadre/`**):
+  - **Solo P1** (Impact/Exfiltration/Collection) · **Wazuh + Velociraptor**, **"virgen" primero** (sin reglas/artifacts propios; se decide después) · fuera el tercer HIDS, Snort/pcaps y el coste computacional (opcional declarado).
+  - **Estructura del profesor**: Clasificación → Ataques → Análisis, con **T1–T5 + Requisitos + Leyenda** (adaptadas).
+  - **Métrica a dos planos**: ataque = caso → **TPR**; legítimo = unidad → **FPR**; + plano alerta (**Precisión, F1, GM, Usabilidad**). **Titular** = por **evento**; comparación **entre HIDS** = por **acción GHOSTS / hora**.
+  - **La parte legítima cambia de objetivo**: de "línea base" a **cuantificar el error (FP/TN)** con **acciones reales (GHOSTS)** y **72 h** (ampliable). **Corridas POR SEPARADO** (un HIDS a la vez, sin el otro instalado).
+  - **Internet**: laboratorio **aislado + "internet local" simulada + declarado** (alternativa híbrida documentada).
+  - **InfoStealer**: fuera por ahora ("a decidir"). **Orden: Linux Wazuh → Windows Wazuh → Velociraptor (Linux y Windows)**.
+  - **⭐ Hallazgo clave**: el corpus actual **YA es la medida "virgen"** (RS3 = RS4 = 0; **160/160** `-Audited.csv` con `rule_level` + `rs_origen`) ⇒ la rejilla *virgen × umbral × RS* es un **recorte determinista** (días, no semanas). Además: **Tabla 1 (v17) ↔ corpus (v19.1)** equivalen (38 vs 39 = `T1029`), y **`T1029`/`T1567.003` se midieron y detectaron** (hallazgo a favor).
+  - **Verificación `tfg-tester`: PASA** (4 salvedades de redacción; 2 corregidas, 2 declaradas).
+- **▶️ SIGUIENTE BLOQUE: `reencuadre-docs` (R1)** — reescribir `context.md` / `requirements.md` / `roadmap.md` con los objetivos nuevos y la secuencia de bloques aprobada. Después: **`reencuadre-metrica` (R2)** → mediciones (recorte de los 55 ataques + 72 h de legítimo) y Velociraptor.
 - **Fase:** 3 — **EN CURSO**: **55 técnicas** medidas (**128 ventanas**) → **53 detectadas / 2 no** (ATA013 y ATA034). **P1-LINUX CERRADA ✔**. **Bloques:** `filtro` · `preflight` · `atomic` · `piloto` · `afinado` · `piloto-custom` · `cabos(-cierre)` · `gitattributes` · `senales(-ratificacion)` · `metrica` · `escalado` · `ampliacion` · `ampliacion-2` · `auditoria-metodologica` · `repeticiones` · **`p1-cierre` ✔ (2026-10-02)**. Detalle en `_fases/fase-03-*/change-doc.md`.
 - **🖥️ FASE 2b (Windows) — EN CURSO:** **`fase-02b-diseno` ✔ (2026-10-02)** (estudio W10/W11 → **W10 elegido** · inventario P1-Windows · documentación · estructura de fases B) · **`fase-02b-construccion` ✔ (2026-10-07)** — **laboratorio Windows OPERATIVO**:
   - **VM** `victima-windows` (Windows 10 Pro, `192.168.65.130`, VMnet1, **NAT off**, IP fija) · **agente Wazuh 4.14.7 ID `002` `active`** · **Sysmon v15.22** (config SwiftOnSecurity) · canales **Security + Sysmon + PowerShell 4104** + **FIM** + **4688 con cmdline**.

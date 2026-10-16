@@ -6,6 +6,13 @@
 
 ---
 
+> ⚠️ **REENCUADRE EN CURSO (2026-10-16).** Tras la 2ª reunión con el profesor, los **objetivos** y la
+> **secuencia de bloques** están **redefinidos y APROBADOS** en **`_fases/reencuadre/plan.md`** (v2).
+> Resumen: **solo P1** · **Wazuh + Velociraptor** (virgen primero) · estructura **Clasificación →
+> Ataques → Análisis** con las **5 tablas del profesor** · **legítimo = FP/TP** con **GHOSTS + 72 h**.
+> Este `roadmap.md` **se reescribirá** en el bloque **`reencuadre-docs` (R1)**; hasta entonces, lo
+> vigente para el plan es `_fases/reencuadre/plan.md`.
+
 ## 0. Resumen ejecutivo
 
 ```
