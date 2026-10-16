@@ -1,0 +1,8 @@
+# requisitos_estudio.csv | TFG HIDS - R2 Requisitos de estudios | metrica_version=1 | n_casos_corpus=55 | columnas=requisito,columna_para_filtrar,wazuh,velociraptor,n_casos_que_no_lo_cumplen,nota
+requisito,columna_para_filtrar,wazuh,velociraptor,n_casos_que_no_lo_cumplen,nota
+Técnica detectable por host,host_eligible_v191,SI,?,0,los 55 casos del corpus son host-eligible (equivalente a 'detectable por red' en el NIDS)
+Marcado manual de ataques (acciones/instancias),analisis_manual,SI,?,0,ficha ATA<NNN>_meta.md presente en 55/55 casos
+Asociación manual TP/FP por rule.id (en cada RS),categoria/rule.id,SI,?,0,-Audited.csv presente en 55/55 casos (pertenencia de Fase 3)
+Ataque detectable por patrones/reglas,Detection,SI,?,2,"53/55 detectados; no detectados: ATA013, ATA034 (punto ciego de fábrica)"
+Cubren todas las técnicas P1,estado_cobertura,NO,?,8,8 técnicas P1-Linux no factibles de 72 (R0 §3.5); cobertura parcial en T1498/T1499
+Paquete pcap completo (contexto + acciones + telemetría),paquete_pcap,SI,?,0,carpeta-paquete declarada en 55/55 casos (criterio ART)

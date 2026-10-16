@@ -1,0 +1,2 @@
+# T5_steps.csv | TFG HIDS - R2 T5 steps (variante agresiva por paso; parcial hasta L1) | metrica_version=1 | estado=parcial | columnas=config,umbral,paso,rule.id_quitado,TP_casos,FN_casos,TN_unidades,FP_unidades,TPR,TNR,GM,Alertas_TP,Alertas_FP
+config,umbral,paso,rule.id_quitado,TP_casos,FN_casos,TN_unidades,FP_unidades,TPR,TNR,GM,Alertas_TP,Alertas_FP

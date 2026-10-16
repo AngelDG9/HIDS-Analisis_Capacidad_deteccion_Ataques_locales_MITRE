@@ -1,0 +1,91 @@
+# T1_clasificacion.csv | TFG HIDS - R2 T1 (clasificacion; matriz MITRE red<->host) | metrica_version=1 | boveda_version=1 | fuente_tabla1=_recursos/reuniones/03/Tabla 1 - Matriz MITRE Enterprise v17.xlsx | n_tecnicas=89 | n_discrepancias_declaradas=4 | columnas=tactica,otras_tacticas,id_tactica,tecnica,id_tecnica,subtecnica,id_subtecnica,plataformas,p1_res,only_network_detection_v17,network_detection_v17,host_eligible_v191,dc_host,dc_red,cubierta_en_corpus,estado_cobertura,nota_desfase
+tactica,otras_tacticas,id_tactica,tecnica,id_tecnica,subtecnica,id_subtecnica,plataformas,p1_res,only_network_detection_v17,network_detection_v17,host_eligible_v191,dc_host,dc_red,cubierta_en_corpus,estado_cobertura,nota_desfase
+Collection,,TA0009,Data from Local System,T1005,,,ESXi;Linux;macOS;Network Devices;Windows,P1,NO,NO,YES,4,0,ATA029,medida,—
+Exfiltration,,TA0010,Exfiltration Over Other Network Medium,T1011,,,Linux;macOS;Windows,P1,NO,YES,YES,4,3,,no_factible,—
+Exfiltration,,TA0010,Exfiltration Over Other Network Medium,T1011,Exfiltration Over Bluetooth,T1011.001,Linux;macOS;Windows,P1,NO,YES,YES,4,1,,no_factible,—
+Exfiltration,,TA0010,Automated Exfiltration,T1020,,,Linux;macOS;Network Devices;Windows,P1,NO,YES,YES,2,1,ATA020,medida,—
+Collection,,TA0009,Data from Removable Media,T1025,,,Linux;macOS;Windows,P1,NO,NO,YES,3,0,ATA044,medida,—
+Exfiltration,,TA0010,Scheduled Transfer,T1029,,,Linux;macOS;Windows,P1,YES,YES,YES,2,2,ATA021,medida,v17 solo-red; v19.1 host_eligible y medida (ATA021)
+Collection,,TA0009,Data from Network Shared Drive,T1039,,,Linux;macOS;Windows,P1,NO,YES,YES,3,1,ATA039,medida,—
+Exfiltration,,TA0010,Exfiltration Over C2 Channel,T1041,,,ESXi;Linux;macOS;Windows,P1,NO,YES,YES,2,3,ATA010,medida,—
+Exfiltration,,TA0010,Exfiltration Over Alternative Protocol,T1048,,,ESXi;IaaS;Linux;macOS;Network Devices;Office Suite;SaaS;Windows,P1,NO,YES,YES,6,3,ATA008,medida,—
+Exfiltration,,TA0010,Exfiltration Over Alternative Protocol,T1048,Exfiltration Over Symmetric Encrypted Non-C2 Protocol,T1048.001,Linux;macOS;Windows;ESXi,P1,NO,YES,YES,2,3,ATA019,medida,—
+Exfiltration,,TA0010,Exfiltration Over Alternative Protocol,T1048,Exfiltration Over Asymmetric Encrypted Non-C2 Protocol,T1048.002,ESXi;Linux;macOS;Windows,P1,NO,YES,YES,3,3,ATA041,medida,—
+Exfiltration,,TA0010,Exfiltration Over Alternative Protocol,T1048,Exfiltration Over Unencrypted Non-C2 Protocol,T1048.003,ESXi;Linux;macOS;Network Devices;Windows,P1,NO,YES,YES,3,3,ATA042,medida,—
+Exfiltration,,TA0010,Exfiltration Over Physical Medium,T1052,,,Linux;macOS;Windows,P1,NO,NO,YES,5,0,,no_factible,—
+Exfiltration,,TA0010,Exfiltration Over Physical Medium,T1052,Exfiltration over USB,T1052.001,Linux;Windows;macOS,P1,NO,NO,YES,4,0,,no_factible,—
+Collection,Credential Access,TA0009 - TA0006,Input Capture,T1056,,,Linux;macOS;Network Devices;Windows,P1,NO,NO,YES,6,2,,cubierta,—
+Collection,Credential Access,TA0009 - TA0006,Input Capture,T1056,Keylogging,T1056.001,Linux;macOS;Network Devices;Windows,P1,NO,NO,YES,8,1,ATA018,cubierta,—
+Collection,Credential Access,TA0009 - TA0006,Input Capture,T1056,GUI Input Capture,T1056.002,Linux;macOS;Windows,P1,NO,NO,YES,3,0,ATA053,medida,—
+Collection,Credential Access,TA0009 - TA0006,Input Capture,T1056,Web Portal Capture,T1056.003,Linux;macOS;Windows,P1,NO,NO,YES,2,1,ATA028,medida,—
+Collection,Credential Access,TA0009 - TA0006,Input Capture,T1056,Credential API Hooking,T1056.004,Windows;Linux;macOS,P1,NO,NO,YES,5,0,ATA035,medida,—
+Collection,,TA0009,Data Staged,T1074,,,ESXi;IaaS;Linux;macOS;Windows,P1,NO,NO,YES,5,0,,cubierta,—
+Collection,,TA0009,Data Staged,T1074,Local Data Staging,T1074.001,ESXi;Linux;macOS;Windows,P1,NO,NO,YES,5,0,ATA011,cubierta,—
+Collection,,TA0009,Data Staged,T1074,Remote Data Staging,T1074.002,ESXi;IaaS;Linux;macOS;Windows,P1,NO,NO,YES,5,2,ATA040,medida,—
+Collection,,TA0009,Screen Capture,T1113,,,Linux;macOS;Windows,P1,NO,NO,YES,2,0,ATA051,medida,—
+Collection,,TA0009,Email Collection,T1114,,,Windows;macOS;Linux;Office Suite,P1,NO,YES,YES,5,2,ATA014,medida,—
+Collection,,TA0009,Email Collection,T1114,Local Email Collection,T1114.001,Windows,P1,NO,NO,YES,3,1,,factible,—
+Collection,,TA0009,Email Collection,T1114,Remote Email Collection,T1114.002,Office Suite;Windows,P1,NO,YES,YES,3,1,,baja factibilidad,—
+Collection,,TA0009,Email Collection,T1114,Email Forwarding Rule,T1114.003,Linux;macOS;Office Suite;Windows,P1,NO,NO,YES,5,0,ATA015,cubierta,—
+Collection,,TA0009,Clipboard Data,T1115,,,Linux;macOS;Windows,P1,NO,NO,YES,2,0,ATA052,medida,—
+Collection,,TA0009,Automated Collection,T1119,,,IaaS;Linux;macOS;Office Suite;SaaS;Windows,P1,NO,NO,YES,5,0,ATA012,medida,—
+Collection,,TA0009,Audio Capture,T1123,,,Linux;macOS;Windows,P1,NO,NO,YES,5,0,,no_factible,—
+Collection,,TA0009,Video Capture,T1125,,,Linux;macOS;Windows,P1,NO,NO,YES,7,2,,no_factible,—
+Collection,,TA0009,Browser Session Hijacking,T1185,,,Windows,P1,NO,NO,YES,6,1,,factible,—
+Collection,,TA0009,Data from Information Repositories,T1213,,,Linux;Windows;macOS;SaaS;IaaS;Office Suite,P1,NO,NO,YES,6,2,,cubierta,—
+Collection,,TA0009,Data from Information Repositories,T1213,Confluence,T1213.001,SaaS,P1,NO,NO,YES,2,1,,no factible,—
+Collection,,TA0009,Data from Information Repositories,T1213,Sharepoint,T1213.002,Office Suite;Windows,P1,NO,NO,YES,3,0,,no factible,—
+Collection,,TA0009,Data from Information Repositories,T1213,Code Repositories,T1213.003,SaaS,P1,NO,NO,YES,3,0,,no factible,—
+Collection,,TA0009,Data from Information Repositories,T1213,Customer Relationship Management Software,T1213.004,SaaS,P1,NO,NO,YES,2,0,,no factible,—
+Collection,,TA0009,Data from Information Repositories,T1213,Messaging Applications,T1213.005,Office Suite;SaaS,P1,NO,NO,YES,2,0,,no factible,—
+Collection,,TA0009,Data from Information Repositories,T1213,Databases,T1213.006,IaaS;Linux;macOS;SaaS;Windows,P1,NO,NO,YES,6,2,ATA016,cubierta,—
+Impact,,TA0040,Data Destruction,T1485,,,Containers;ESXi;IaaS;Linux;macOS;Windows,P1,NO,NO,YES,7,0,ATA002,medida,—
+Impact,,TA0040,Data Destruction,T1485,Lifecycle-Triggered Deletion,T1485.001,IaaS,P1,NO,NO,YES,1,0,,no factible,—
+Impact,,TA0040,Data Encrypted for Impact,T1486,,,ESXi;IaaS;Linux;macOS;Windows,P1,NO,NO,YES,5,0,ATA001,medida,—
+Impact,,TA0040,Service Stop,T1489,,,ESXi;IaaS;Linux;macOS;Windows,P1,NO,NO,YES,6,0,ATA004,medida,—
+Impact,,TA0040,Inhibit System Recovery,T1490,,,Containers;ESXi;IaaS;Linux;macOS;Network Devices;Windows,P1,NO,NO,YES,7,0,ATA003,medida,—
+Impact,,TA0040,Defacement,T1491,,,Windows;IaaS;Linux;macOS;ESXi,P1,NO,YES,YES,5,1,,cubierta,—
+Impact,,TA0040,Defacement,T1491,Internal Defacement,T1491.001,ESXi;Linux;macOS;Windows,P1,NO,YES,YES,7,0,ATA033,medida,—
+Impact,,TA0040,Defacement,T1491,External Defacement,T1491.002,Windows;IaaS;Linux;macOS,P1,NO,YES,YES,6,1,ATA007,cubierta,—
+Impact,,TA0040,Firmware Corruption,T1495,,,Linux;macOS;Network Devices;Windows,P1,NO,NO,YES,3,1,,no_factible,—
+Impact,,TA0040,Resource Hijacking,T1496,,,Windows;IaaS;Linux;macOS;Containers;SaaS,P1,NO,YES,YES,5,3,,cubierta,—
+Impact,,TA0040,Resource Hijacking,T1496,Compute Hijacking,T1496.001,Windows;IaaS;Linux;macOS;Containers,P1,NO,YES,YES,5,3,ATA025,medida,—
+Impact,,TA0040,Resource Hijacking,T1496,Bandwidth Hijacking,T1496.002,Linux;Windows;macOS;IaaS;Containers,P1,NO,YES,YES,2,3,ATA023,medida,—
+Impact,,TA0040,Resource Hijacking,T1496,SMS Pumping,T1496.003,SaaS,P1,NO,NO,YES,2,0,,no factible,—
+Impact,,TA0040,Resource Hijacking,T1496,Cloud Service Hijacking,T1496.004,SaaS,P1,NO,NO,YES,3,0,,no factible,—
+Impact,,TA0040,Network Denial of Service,T1498,,,Windows;IaaS;Linux;macOS;Containers,P1,NO,YES,YES,1,2,,cubierta_parcial,—
+Impact,,TA0040,Network Denial of Service,T1498,Direct Network Flood,T1498.001,Windows;IaaS;Linux;macOS,P1,NO,YES,YES,2,2,ATA048,medida,—
+Impact,,TA0040,Network Denial of Service,T1498,Reflection Amplification,T1498.002,Windows;IaaS;Linux;macOS,P1,NO,YES,YES,4,2,ATA054,medida,—
+Impact,,TA0040,Endpoint Denial of Service,T1499,,,Windows;Linux;macOS;Containers;IaaS,P1,NO,YES,YES,4,1,,cubierta_parcial,—
+Impact,,TA0040,Endpoint Denial of Service,T1499,OS Exhaustion Flood,T1499.001,Linux;macOS;Windows,P1,NO,YES,YES,2,2,ATA045,medida,—
+Impact,,TA0040,Endpoint Denial of Service,T1499,Service Exhaustion Flood,T1499.002,Windows;IaaS;Linux;macOS,P1,NO,YES,YES,4,3,ATA047,medida,—
+Impact,,TA0040,Endpoint Denial of Service,T1499,Application Exhaustion Flood,T1499.003,Windows;IaaS;Linux;macOS,P1,NO,YES,YES,4,1,ATA046,medida,—
+Impact,,TA0040,Endpoint Denial of Service,T1499,Application or System Exploitation,T1499.004,Windows;IaaS;Linux;macOS,P1,NO,YES,YES,5,1,,no_factible,—
+Impact,,TA0040,System Shutdown/Reboot,T1529,,,ESXi;Linux;macOS;Network Devices;Windows,P1,NO,NO,YES,3,0,ATA038,medida,—
+Collection,,TA0009,Data from Cloud Storage,T1530,,,IaaS;Office Suite;SaaS,P1,NO,NO,YES,3,1,,no factible,—
+Impact,,TA0040,Account Access Removal,T1531,,,Linux;macOS;Windows;SaaS;IaaS;Office Suite;ESXi,P1,NO,NO,YES,5,0,ATA024,medida,—
+Exfiltration,,TA0010,Transfer Data to Cloud Account,T1537,,,IaaS;Office Suite;SaaS,P1,NO,YES,YES,6,1,,no factible,—
+Credential Access,Collection,TA0006 - TA0009,Adversary-in-the-Middle,T1557,,,Linux;macOS;Network Devices;Windows,P1,NO,YES,YES,3,3,,cubierta,—
+Credential Access,Collection,TA0006 - TA0009,Adversary-in-the-Middle,T1557,Name Resolution Poisoning and SMB Relay,T1557.001,Windows,P1,NO,YES,YES,2,2,,factible,—
+Credential Access,Collection,TA0006 - TA0009,Adversary-in-the-Middle,T1557,DHCP Spoofing,T1557.003,Linux;Windows;macOS,P1,NO,YES,YES,1,2,ATA055,medida,—
+Credential Access,Collection,TA0006 - TA0009,Adversary-in-the-Middle,T1557,Evil Twin,T1557.004,Network Devices,P1,YES,YES,YES,1,2,,no factible,—
+Collection,,TA0009,Archive Collected Data,T1560,,,Linux;macOS;Windows,P1,NO,NO,YES,4,0,,cubierta,—
+Collection,,TA0009,Archive Collected Data,T1560,Archive via Utility,T1560.001,Linux;macOS;Windows,P1,NO,NO,YES,4,0,ATA030,medida,—
+Collection,,TA0009,Archive Collected Data,T1560,Archive via Library,T1560.002,Linux;macOS;Windows,P1,NO,NO,YES,4,0,ATA013,cubierta,—
+Collection,,TA0009,Archive Collected Data,T1560,Archive via Custom Method,T1560.003,Linux;macOS;Windows,P1,NO,NO,YES,5,0,ATA034,medida,—
+Impact,,TA0040,Disk Wipe,T1561,,,Linux;macOS;Windows;Network Devices,P1,NO,NO,YES,7,0,ATA005,medida,—
+Impact,,TA0040,Disk Wipe,T1561,Disk Content Wipe,T1561.001,Linux;macOS;Network Devices;Windows,P1,NO,NO,YES,7,0,ATA037,medida,—
+Impact,,TA0040,Disk Wipe,T1561,Disk Structure Wipe,T1561.002,Linux;macOS;Network Devices;Windows,P1,NO,NO,YES,7,0,ATA027,medida,—
+Impact,,TA0040,Data Manipulation,T1565,,,Linux;macOS;Windows,P1,NO,YES,YES,5,1,ATA006,medida,—
+Impact,,TA0040,Data Manipulation,T1565,Stored Data Manipulation,T1565.001,Linux;macOS;Windows,P1,NO,NO,YES,4,0,ATA032,medida,—
+Impact,,TA0040,Data Manipulation,T1565,Transmitted Data Manipulation,T1565.002,Linux;macOS;Windows,P1,NO,YES,YES,2,3,ATA026,medida,—
+Impact,,TA0040,Data Manipulation,T1565,Runtime Data Manipulation,T1565.003,Linux;macOS;Windows,P1,NO,NO,YES,5,0,ATA036,medida,—
+Exfiltration,,TA0010,Exfiltration Over Web Service,T1567,,,ESXi;Linux;macOS;Office Suite;SaaS;Windows,P1,NO,YES,YES,5,3,,cubierta,—
+Exfiltration,,TA0010,Exfiltration Over Web Service,T1567,Exfiltration to Code Repository,T1567.001,ESXi;Linux;macOS;Windows,P1,NO,YES,YES,3,3,ATA022,medida,—
+Exfiltration,,TA0010,Exfiltration Over Web Service,T1567,Exfiltration to Cloud Storage,T1567.002,ESXi;Linux;macOS;Windows,P1,NO,YES,YES,3,3,ATA049,medida,—
+Exfiltration,,TA0010,Exfiltration Over Web Service,T1567,Exfiltration to Text Storage Sites,T1567.003,Linux;macOS;Windows;ESXi,P1,YES,YES,YES,3,3,ATA050,medida,v17 subt. solo-red; v19.1 host_eligible y medida (ATA050)
+Exfiltration,,TA0010,Exfiltration Over Web Service,T1567,Exfiltration Over Webhook,T1567.004,ESXi;Linux;macOS;Office Suite;SaaS;Windows,P1,NO,YES,YES,4,3,ATA043,medida,—
+Collection,,TA0009,Data from Configuration Repository,T1602,SNMP (MIB Dump),T1602.001,Network Devices,P1,YES,YES,YES,1,2,,no factible,v17 solo-red; v19.1 host_eligible; no factible (Network Devices)
+Collection,,TA0009,Data from Configuration Repository,T1602,Network Device Configuration Dump,T1602.002,Network Devices,P1,YES,YES,YES,2,2,,no factible,v17 solo-red; v19.1 host_eligible; no factible (Network Devices)
+Impact,,TA0040,Financial Theft,T1657,,,Linux;macOS;Office Suite;SaaS;Windows,P1,NO,NO,YES,5,0,ATA017,medida,—
+Impact,,TA0040,Email Bombing,T1667,,,Linux;Office Suite;Windows;macOS,P1,NO,YES,YES,2,0,ATA031,medida,—

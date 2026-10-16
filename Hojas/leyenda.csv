@@ -1,0 +1,144 @@
+# leyenda.csv | TFG HIDS - R2 Leyenda (columna a columna + glosario + formulas + virgen) | metrica_version=1 | n_filas=142 | columnas=tabla,columna,significado,equivalencia_nids,unidad,nota
+tabla,columna,significado,equivalencia_nids,unidad,nota
+T1,tactica,táctica principal (v19.1),—,—,P-Excel TÁCTICA
+T1,otras_tacticas,resto de tácticas,—,—,P-Excel OTRAS TÁCTICAS
+T1,id_tactica,id TAxxxx (v17),—,—,P-Excel ID TÁCTICA
+T1,tecnica,nombre de la técnica,—,—,P-Excel TÉCNICA
+T1,id_tecnica,id Txxxx(.yyy),—,—,P-Excel ID TÉCNICA
+T1,subtecnica,nombre de la subtécnica,—,—,P-Excel SUBTÉCNICA
+T1,id_subtecnica,id Txxxx.yyy,—,—,P-Excel ID SUBTÉCNICA
+T1,plataformas,plataformas MITRE,—,—,de corpus_host.csv
+T1,p1_res,P1 si Impact/Exfil/Collection,—,—,priority de corpus_host.csv
+T1,only_network_detection_v17,solo detectable por red (v17),Only Network Detection,—,P-Excel
+T1,network_detection_v17,detectable por red (v17),Network Detection,—,P-Excel
+T1,host_eligible_v191,elegible por host (v19.1),NOT(Only Network Detection),—,de corpus_host.csv
+T1,dc_host,nº Data Components host,—,—,de corpus_host.csv
+T1,dc_red,nº Data Components red,—,—,de corpus_host.csv
+T1,cubierta_en_corpus,ATA<NNN> que la mide,pcap,caso,de cobertura/inventario
+T1,estado_cobertura,medida|cubierta_madre|cubierta_por_ata|cubierta_parcial|no_factible|no_linux,—,—,de cobertura_p1_linux.csv
+T1,nota_desfase,discrepancia v17↔v19.1 declarada,—,—,T1029/T1602.*/T1567.003
+T2,n,Nº de caso (1..55),—,—,P-Excel Nº
+T2,ata_id,identificador del caso,pcap,caso,nuevo
+T2,id_tecnica,id de la técnica,Nº Technique/Technique,—,P-Excel
+T2,subtecnica,nombre de la subtécnica,—,—,nuevo
+T2,tactica,táctica,—,—,de ATA_index.csv
+T2,plataforma,linux|windows,—,—,—
+T2,paquete_pcap,carpeta-paquete (contexto+acciones+telemetría),pcapng (SubTechnique-Attack),—,P-Excel; R0 §5.2
+T2,herramienta,herramienta/s usadas,HERRAMIENTA,—,de la bitácora
+T2,n_acciones_k,acciones cubiertas k,#Attack_Flows,acción,de metrico_o2
+T2,n_acciones_m,acciones totales m,#Attack_Flows,acción,de metrico_o2
+T2,t0_utc,inicio de la ventana canónica,—,UTC,de la bitácora
+T2,t1_utc,fin de la ventana canónica,—,UTC,de la bitácora
+T2,duracion_s,t1 - t0,—,s,nuevo (fleco 3)
+T2,ventana_canonica,iter1|rev1,—,—,R2 §2.7
+T2,doble_iteracion,iguales|review,—,—,C1'/C2'/C3'
+T2,analisis_manual,cita de verificación del efecto,ANÁLISIS…,—,ficha ATA<NNN>_meta.md
+T2,config,C0|C1|C2|C3,RS,—,R2 §2.6
+T2,umbral,"N∈{0,3,7,10,12}",Priority,nivel,R2 §2.6
+T2,#Alertas,alertas brutas del caso (detección),#Alerts,alerta,doble conteo D2
+T2,#rule.id_distintos,rule.id distintos,#SID,rule.id,doble conteo D2
+T2,#Alertas_correlacionadas,rule.id distintos del caso,#Flow-correlated Alerts,rule.id,D2
+T2,#Alertas_correlacionadas_total,corr (raw),#Flow-correlated Alerts (total),alerta,D2
+T2,#acciones_cubiertas,acciones del ataque cubiertas k,#Attack_Flows,acción,O2
+T2,t_hasta_1a_deteccion_s,t(1ª alerta detección) - t0,—,s,nuevo
+T2,primera_evidencia_rule_id,rule.id de la 1ª detección,—,rule.id,nuevo
+T2,%Deteccion,"100% si TP, si no 0%",%Detection_pcaps,%,—
+T2,Detection,SÍ|NO,Detection,—,—
+T3,seccion,agregado|detalle_ruleid,—,—,estructura del CSV
+T3,corrida,id de la corrida,pcap (Nombre),—,—
+T3,hids,wazuh|velociraptor,—,—,—
+T3,so,linux|windows,—,—,—
+T3,tipo_trafico,descripción (GHOSTS),Tipo de tráfico,—,—
+T3,fuente_generadora,GHOSTS|plan_B,—,—,—
+T3,inicio_utc,inicio de la ventana,—,UTC,—
+T3,fin_utc,fin de la ventana,—,UTC,—
+T3,duracion_h,duración,—,h,—
+T3,tamano,tamaño real (eventos/GB),Tamaño real del tráfico,—,—
+T3,n_acciones_ghosts,nº de acciones GHOSTS,#Intentos Flujo (SYN),acción,complemento D1
+T3,n_ips_o_entidades,nº de entidades distintas,#IPs (sin repetición),—,—
+T3,config,—,—,—,—
+T3,umbral,—,—,—,—
+T3,#Unidades,M = eventos decodificados,#Flows,unidad,§2.2
+T3,#Alertas,alertas brutas en legítimo,#Alerts,alerta,—
+T3,#Alertas_correlacionadas,Σ_unidades(rule.id distintos),#Flow-correlated Alerts,rule.id,D2
+T3,#rule.id_distintos,rule.id distintos,#SIDs/#AttackID/#ThreatID,rule.id,—
+T3,#Unidades_FP,unidades con ≥1 alerta,#Flows_FP,unidad,—
+T3,#Unidades_TN,M - #Unidades_FP,#Flows_TN,unidad,—
+T3,%Unidades_FP,#Unidades_FP / #Unidades,%Flows_FP,%,—
+T3,%Unidades_TN,1 - %Unidades_FP,%Flows_TN,%,—
+T3,#Alertas_FP,alertas brutas (FP),—,alerta,—
+T3,#Alertas_FP_sin_auto_ruido,FP sin la auto-alerta del HIDS,—,alerta,complemento L2
+T3,FP_por_accion,FP / n_acciones_ghosts,—,FP/acción,complemento D1
+T3,FP_por_hora,FP / duracion_h,—,FP/h,complemento D1
+T3,rule.id,rule.id de la regla,#SID,rule.id,bloque detalle
+T3,rule_level,nivel de la regla,Priority,nivel,bloque detalle
+T3,groups,grupos de la regla,—,—,bloque detalle
+T3,rs_origen,RuleSet de origen,RS,—,bloque detalle
+T3,#alertas_legitimas,alertas de la regla en legítimo,#Alertas/SID,alerta,bloque detalle
+T3,#unidades_con_la_regla,unidades con la regla,—,unidad,bloque detalle
+T3,#alertas_correlacionadas,unidades con la regla (corr),—,rule.id,bloque detalle
+T3,es_TP_en_algun_ataque,¿la regla es TP en algún ataque?,—,—,bloque detalle
+T3,veredicto,solo_FP|mixta|auto_ruido|operador,—,—,bloque detalle
+T4,metrica,nombre de la métrica/fila,—,—,T4
+T4,excel_profesor,nombre en el Excel del profesor,—,—,T4
+T4,formula_literal,fórmula literal,—,—,T4 §2.5
+T4,wazuh_C0_N0,columna de métrica (por HIDS×config×umbral),RS,—,ancho
+T4,wazuh_C0_N3,columna de métrica (por HIDS×config×umbral),RS,—,ancho
+T4,wazuh_C0_N7,columna de métrica (por HIDS×config×umbral),RS,—,ancho
+T4,wazuh_C0_N10,columna de métrica (por HIDS×config×umbral),RS,—,ancho
+T4,wazuh_C0_N12,columna de métrica (por HIDS×config×umbral),RS,—,ancho
+T4,wazuh_C1_N0,columna de métrica (por HIDS×config×umbral),RS,—,ancho
+T4,wazuh_C1_N3,columna de métrica (por HIDS×config×umbral),RS,—,ancho
+T4,wazuh_C1_N7,columna de métrica (por HIDS×config×umbral),RS,—,ancho
+T4,wazuh_C1_N10,columna de métrica (por HIDS×config×umbral),RS,—,ancho
+T4,wazuh_C1_N12,columna de métrica (por HIDS×config×umbral),RS,—,ancho
+T5,variante,No Pruning|Pruning 500|…,—,—,T5
+T5,config,C0|C1|C2|C3,RS,—,R2 §2.6
+T5,umbral,"N∈{0,3,7,10,12}",Priority,nivel,R2 §2.6
+T5,GM,√(TPR·(1−FPR)),GM,—,§2.5
+T5,%Deteccion_casos,100·TP/N,%Detection_pcaps,%,—
+T5,#reglas_quitadas,nº de rule.id quitados,#SIDs removed,regla,—
+T5,lista_rule.id_quitados,lista de rule.id quitados,—,rule.id,—
+T5,#Alertas_total,alertas brutas totales,#Alertas,alerta,—
+T5,#Alertas_TP,alertas TP,#Alerts TP,alerta,—
+T5,#Alertas_FP,alertas FP,#Alerts FP,alerta,—
+T5,Usabilidad,A_FP/A_TP,Operational Usability,—,—
+T5_steps,config,—,—,—,—
+T5_steps,umbral,—,—,—,—
+T5_steps,paso,—,—,—,—
+T5_steps,rule.id_quitado,—,—,—,—
+T5_steps,TP_casos,—,—,—,—
+T5_steps,FN_casos,—,—,—,—
+T5_steps,TN_unidades,—,—,—,—
+T5_steps,FP_unidades,—,—,—,—
+T5_steps,TPR,—,—,—,—
+T5_steps,TNR,—,—,—,—
+T5_steps,GM,—,—,—,—
+T5_steps,Alertas_TP,—,—,—,—
+T5_steps,Alertas_FP,—,—,—,—
+REQUISITOS,requisito,columna de requisitos_estudio.csv,—,—,R2 §4.6
+REQUISITOS,columna_para_filtrar,columna de requisitos_estudio.csv,—,—,R2 §4.6
+REQUISITOS,wazuh,columna de requisitos_estudio.csv,—,—,R2 §4.6
+REQUISITOS,velociraptor,columna de requisitos_estudio.csv,—,—,R2 §4.6
+REQUISITOS,n_casos_que_no_lo_cumplen,columna de requisitos_estudio.csv,—,—,R2 §4.6
+REQUISITOS,nota,columna de requisitos_estudio.csv,—,—,R2 §4.6
+GLOSARIO,caso,ventana canónica ATA<NNN>,pcap,caso,R2 §2.1/§2.8
+GLOSARIO,unidad,evento/registro decodificado por el HIDS,flujo,unidad,R2 §2.1/§2.8
+GLOSARIO,rule.id,regla emitida por el HIDS / fila de artifact VR,SID,rule.id,R2 §2.1/§2.8
+GLOSARIO,paquete,contexto + acciones + telemetría,pcap,paquete,R2 §2.1/§2.8
+GLOSARIO,red↔host,equivalencia del espejo,Only Network Detection,—,R2 §2.1/§2.8
+GLOSARIO,ATA<NNN>,identificador de caso,pcap (Nombre),caso,R2 §2.1/§2.8
+GLOSARIO,M,denominador del legítimo (eventos decodificados),#Clear flows,unidad,R2 §2.1/§2.8
+GLOSARIO,N,nº de casos = 55,#Attack flows,caso,R2 §2.1/§2.8
+GLOSARIO,A_TP/A_FP,alertas TP/FP,#Alerts TP/FP,alerta,R2 §2.1/§2.8
+FORMULA,TPR,TP_ata / N,B14 = B6/'T2…'!$D$79,—,óptimo →1; P-Excel T4 (Rend)
+FORMULA,FPR,FP_uni / M,B15 = B10/$B$4,—,óptimo →0; P-Excel T4 (Rend)
+FORMULA,TNR,1 - FPR,%Flows_TN = 1 - %Flows_FP,—,óptimo →1; P-Excel T4 (Rend)
+FORMULA,Precisión,A_TP / (A_TP + A_FP),P = TP/(TP+FP),—,óptimo →1; P-Excel bloque fórmulas
+FORMULA,F1,"2·P·R / (P + R), R=TPR",F1 = 2PR/(P+R),—,óptimo →1; P-Excel bloque fórmulas
+FORMULA,GM,√(TPR · (1 - FPR)),B16 = SQRT(B14*(1-B15)),—,óptimo →1; P-Excel + hermano gm=sqrt(tpr*tnr)
+FORMULA,Usabilidad,A_FP / A_TP,B17 = B12/B8,—,óptimo →0; P-Excel + hermano usab=a_fp/a_tp
+FORMULA,Usabilidad^c,A_FP^c / A_TP^c,B18 = B13/B9,—,óptimo →0; P-Excel (correlated)
+VIRGEN,wazuh,"RS1+RS2 de fábrica, RS3=RS4=0",—,—,"C1 = {RS1,RS2}"
+VIRGEN,velociraptor,"artifacts públicos/nativos, sin propios",—,—,placeholder V0
+VIRGEN,telemetria,"auditd/Sysmon/FIM son FUENTE, no reglas",—,—,sí se activan en virgen
