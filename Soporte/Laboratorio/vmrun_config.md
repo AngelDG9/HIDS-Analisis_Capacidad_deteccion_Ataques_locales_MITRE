@@ -56,12 +56,23 @@ $wazuh   = "D:\TFG-VMs\wazuh-server\wazuh-server.vmx"
 |---|---|---|
 | `base-limpia` | ambas | S.O. recién instalado (fallback / reconstrucción) |
 | **`lab-listo`** | ambas | Estado del laboratorio **listo**: Wazuh 4.14.7 all-in-one + agente `victima-linux` (ID 001) + **detección-only** + **RS1..RS4 activas** + **NAT desconectado**. **Punto de partida de cada ataque (Fase 3)** |
+| **`lab-listo-legit`** | **solo `victima-linux`** | Estado listo para la corrida **legítima** (`L1`): `lab-listo` **+ cliente GHOSTS** (`/home/angel/ghosts-client`, config `ApiRootUrl=…:5000/api`) **+ alias `/etc/hosts`** (`intranet.local`/`portal.local`/`nube.local`) **sin datos de medida** (logs/instance/`~/Documentos`/`~/Descargas` limpios; `config/timeline.json` en `Stop`). Creado 2026-10-18 (bloque L0) |
 
 - **Antes de cada ataque** (Fase 3) se revierte **solo la víctima** al estado limpio:
 
 ```powershell
 & $vmrun -T ws revertToSnapshot "D:\TFG-VMs\victima-linux\victima-linux.vmx" "lab-listo"
 ```
+
+- **Antes de la corrida legítima** (`L1`) se revierte la víctima a **`lab-listo-legit`**
+  (el manager **no** se revierte):
+
+```powershell
+& $vmrun -T ws revertToSnapshot "D:\TFG-VMs\victima-linux\victima-linux.vmx" "lab-listo-legit"
+```
+
+> **Inventario verificado (2026-10-18):** `victima-linux` = `base-limpia`, `lab-listo`,
+> `lab-listo-legit`; `wazuh-server` = `base-limpia`, `lab-listo` (**originales intactos**).
 
 - **`wazuh-server` NO se revierte** durante los ataques: conserva las **alertas** en el indexer
   (si se revirtiera, se perderían las alertas capturadas). Solo se usaría `base-limpia`/`lab-listo`

@@ -1,0 +1,35 @@
+#!/bin/bash
+# client_ctl.sh — control del cliente GHOSTS en victima-linux (bloque L0).
+#
+# Uso:  bash client_ctl.sh start|stop|status|id|log [DIR]
+#   DIR por defecto: /home/angel/ghosts-client
+#
+# No contiene secretos.
+
+DIR="${2:-/home/angel/ghosts-client}"
+
+case "$1" in
+  start)
+    cd "$DIR" || exit 1
+    if pgrep -f ghosts.client.linux >/dev/null; then echo "ya estaba en marcha"; fi
+    (nohup ./ghosts.client.linux > ghasts.out 2>&1 &)
+    sleep 2
+    pgrep -af ghosts.client.linux | grep -v pgrep || echo "no arranco"
+    ;;
+  stop)
+    pkill -f ghosts.client.linux && sleep 2
+    pgrep -f ghosts.client.linux >/dev/null && echo "sigue vivo" || echo "parado"
+    ;;
+  status)
+    pgrep -af ghosts.client.linux | grep -v pgrep || echo "no corre"
+    ;;
+  id)
+    cat "$DIR/instance/id.json" 2>/dev/null; echo
+    ;;
+  log)
+    tail -n "${3:-25}" "$DIR/ghasts.out"
+    ;;
+  *)
+    echo "uso: bash client_ctl.sh start|stop|status|id|log [DIR]"
+    ;;
+esac

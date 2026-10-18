@@ -1,0 +1,78 @@
+{
+    "ApiRootUrl": "http://192.168.65.1:5000/api",
+    "Sockets": {
+        "IsEnabled": true,
+        "Heartbeat": 15000
+    },
+    "Id": {
+        "IsEnabled": true,
+        "Format": "guestlocal",
+        "FormatKey": "guestinfo.id",
+        "FormatValue": "$formatkeyvalue$-$machinename$",
+        "VMWareToolsLocation": "C:\\progra~1\\VMware\\VMware Tools\\vmtoolsd.exe"
+    },
+    "AllowMultipleInstances": false,
+    "EncodeHeaders": true,
+    "ClientResults": {
+        "IsEnabled": true,
+        "IsSecure": false,
+        "CycleSleep": 20000
+    },
+    "ClientUpdates": {
+        "IsEnabled": true,
+        "CycleSleep": 20000
+    },
+    "Survey": {
+        "IsEnabled": false,
+        "IsSecure": false,
+        "Frequency": "once",
+        "CycleSleepMinutes": 5,
+        "OutputFormat": "indent"
+    },
+    "Timeline": {
+        "Location": "config/timeline.json"
+    },
+    "Content": {
+        "EmailContent": "",
+        "EmailReply": "",
+        "EmailDomain": "",
+        "EmailOutside": "",
+        "BlogContent": "",
+        "BlogReply": "",
+        "FileNames": "",
+        "Dictionary": ""
+    },
+    "ResourceControl": {
+        "ManageProcesses": true
+    },
+    "HealthIsEnabled": false,
+    "HandlersIsEnabled": true,
+    "DisableStartup": false,
+    "ChromeExtensions": "",
+    "FirefoxInstallLocation": "",
+    "FirefoxMajorVersionMinimum": 48,
+    "OfficeDocsMaxAgeInHours": 72,
+    "Email": {
+        "EmailsMax": 20,
+        "RecipientsToMin": 1,
+        "RecipientsToMax": 3,
+        "RecipientsCcMin": 0,
+        "RecipientsCcMax": 2,
+        "RecipientsBccMin": 2,
+        "RecipientsBccMax": 2,
+        "RecipientsOutsideMin": 0,
+        "RecipientsOutsideMax": 1,
+        "EmailNoReply": "outlook",
+        "SetAccountFromConfig": false,
+        "SetAccountFromLocal": false,
+        "SetForcedSendReceive": true,
+        "SaveToOutbox": false,
+        "EmailDomainSearchString": ""
+    },
+    "Listener": {
+        "Port": -1
+    },
+    "AwsCli": {
+        "InstallFolder": "%USERPROFILE%\\Amazon\\AWSCLIV2"
+    }
+}

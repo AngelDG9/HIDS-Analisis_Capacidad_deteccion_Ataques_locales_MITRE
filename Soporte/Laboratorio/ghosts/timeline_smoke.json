@@ -1,0 +1,38 @@
+{
+  "Status": "Run",
+  "TimeLineHandlers": [
+    {
+      "HandlerType": "Command",
+      "Initial": "",
+      "UtcTimeOn": "00:00:00",
+      "UtcTimeOff": "00:00:00",
+      "Loop": false,
+      "HandlerArgs": {},
+      "TimeLineEvents": [
+        { "Command": "mkdir -p /home/angel/Documentos/informes /home/angel/Descargas", "DelayAfter": 1500 },
+        { "Command": "echo plantilla de informe mensual > /home/angel/Documentos/informes/informe.txt", "DelayAfter": 1500 },
+        { "Command": "cp /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes/informe.bak", "DelayAfter": 1500 },
+        { "Command": "gzip -kf /home/angel/Documentos/informes/informe.txt", "DelayAfter": 1500 },
+        { "Command": "tar -czf /home/angel/Descargas/informes.tar.gz -C /home/angel/Documentos informes", "DelayAfter": 1500 },
+        { "Command": "mv /home/angel/Documentos/informes/informe.bak /home/angel/Descargas/", "DelayAfter": 1500 },
+        { "Command": "md5sum /home/angel/Descargas/informes.tar.gz", "DelayAfter": 1500 },
+        { "Command": "ls -la /home/angel/Documentos /home/angel/Descargas", "DelayAfter": 1500 }
+      ]
+    },
+    {
+      "HandlerType": "Curl",
+      "UtcTimeOn": "00:00:00",
+      "UtcTimeOff": "00:00:00",
+      "Loop": false,
+      "HandlerArgs": {},
+      "TimeLineEvents": [
+        { "Command": "http://intranet.local:8080/", "DelayBefore": 9000, "DelayAfter": 2000 },
+        { "Command": "http://intranet.local:8080/noticias.html", "DelayAfter": 2000 },
+        { "Command": "http://intranet.local:8080/descargas/manual_empleado.pdf -o /home/angel/Descargas/manual_empleado.pdf", "DelayAfter": 2000 },
+        { "Command": "http://intranet.local:8080/descargas/paquete_datos.zip -o /home/angel/Descargas/paquete_datos.zip", "DelayAfter": 2000 },
+        { "Command": "-X POST -d hola_desde_ghosts http://intranet.local:9090/paste", "DelayAfter": 2000 },
+        { "Command": "-T /home/angel/Descargas/informes.tar.gz http://nube.local:9092/nube/informes.tar.gz", "DelayAfter": 2000 }
+      ]
+    }
+  ]
+}

@@ -70,7 +70,7 @@ Clasificación ──▶ Ataques ──▶ Análisis
 | # | Bloque | Qué hace | Depende de |
 |---|---|---|---|
 | M1a | `virgen-wazuh-ataques` *(histórico)* | Recorte determinista de los 55 ATA por `rule_level`×`rs_origen` → T2/T4 (baseline **viejo**). | R2 |
-| L0 | `legitimo-infra` | GHOSTS + "internet local"; **go/no-go**. | R2 |
+| L0 | `legitimo-infra` | ✅ **HECHO (2026-10-18): GO** — GHOSTS v8.3.1 + "internet local" + prueba de `logall_json` (**≈300 MB/72 h ⇒ denominador por evento VIABLE**); snapshot `lab-listo-legit`. | R2 |
 | L1 | `legitimo-72h` | Captura legítima **72 h** + denominador. **Cuello de botella.** | L0 |
 | M1b | `virgen-wazuh-ataques` *(re-ejecución)* | Re-corre el recorte con el **legítimo nuevo**. | L1, M1a |
 | L2 | `legitimo-analisis` | T3/T4 (legítimo) → cierra T4 virgen. | L1, M1b |
