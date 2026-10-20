@@ -1,0 +1,14 @@
+[Unit]
+Description=TFG L1 — cliente GHOSTS (keepalive) [invitado]
+After=network-online.target
+
+[Service]
+Type=simple
+User=angel
+WorkingDirectory=/home/angel/ghosts-client
+ExecStart=/home/angel/ghosts-client/tfg_keepalive.sh 74
+Restart=on-failure
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target

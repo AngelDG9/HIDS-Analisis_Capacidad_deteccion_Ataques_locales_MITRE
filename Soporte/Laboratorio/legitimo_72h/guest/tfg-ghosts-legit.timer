@@ -1,0 +1,11 @@
+[Unit]
+Description=TFG L1 — arranca TFG-Ghosts-Legit a t0-5min (2026-10-18T23:55:00Z)
+
+[Timer]
+# t0 = 2026-10-19T00:00:00Z  ->  t0-5min = 2026-10-18T23:55:00Z
+OnCalendar=2026-10-18 23:55:00 UTC
+Persistent=true
+Unit=tfg-ghosts-legit.service
+
+[Install]
+WantedBy=timers.target

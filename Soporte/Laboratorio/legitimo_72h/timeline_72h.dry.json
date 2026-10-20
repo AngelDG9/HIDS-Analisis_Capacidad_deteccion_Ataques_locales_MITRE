@@ -1,0 +1,189 @@
+{
+    "Status":  "Run",
+    "TimeLineHandlers":  [
+                             {
+                                 "HandlerType":  "Command",
+                                 "Initial":  "",
+                                 "UtcTimeOn":  "00:00:00",
+                                 "UtcTimeOff":  "00:00:00",
+                                 "Loop":  true,
+                                 "HandlerArgs":  {
+
+                                                 },
+                                 "TimeLineEvents":  [
+                                                        {
+                                                            "Command":  "mkdir -p /home/angel/Documentos/informes /home/angel/Documentos/actas /home/angel/Descargas",
+                                                            "DelayAfter":  3000
+                                                        },
+                                                        {
+                                                            "Command":  "date -u \u0027+%Y-%m-%dT%H:%M:%SZ acta de reunion del area\u0027 \u003e /home/angel/Documentos/actas/acta_reunion.txt",
+                                                            "DelayAfter":  3000
+                                                        },
+                                                        {
+                                                            "Command":  "cat /home/angel/Documentos/actas/acta_reunion.txt",
+                                                            "DelayAfter":  2000
+                                                        },
+                                                        {
+                                                            "Command":  "echo borrador del informe mensual del area \u003e /home/angel/Documentos/informes/informe.txt",
+                                                            "DelayAfter":  3000
+                                                        },
+                                                        {
+                                                            "Command":  "cp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes/informe.bak",
+                                                            "DelayAfter":  2000
+                                                        },
+                                                        {
+                                                            "Command":  "gzip -kf /home/angel/Documentos/informes/informe.txt",
+                                                            "DelayAfter":  3000
+                                                        },
+                                                        {
+                                                            "Command":  "tar -czf /home/angel/Descargas/informes.tar.gz -C /home/angel/Documentos informes",
+                                                            "DelayAfter":  4000
+                                                        },
+                                                        {
+                                                            "Command":  "md5sum /home/angel/Descargas/informes.tar.gz",
+                                                            "DelayAfter":  2000
+                                                        },
+                                                        {
+                                                            "Command":  "sha256sum /home/angel/Documentos/informes/informe.bak",
+                                                            "DelayAfter":  2000
+                                                        },
+                                                        {
+                                                            "Command":  "ls -la /home/angel/Documentos /home/angel/Descargas",
+                                                            "DelayAfter":  2000
+                                                        },
+                                                        {
+                                                            "Command":  "find /home/angel/Documentos -type f | wc -l",
+                                                            "DelayAfter":  2000
+                                                        },
+                                                        {
+                                                            "Command":  "du -sh /home/angel/Documentos",
+                                                            "DelayAfter":  2000
+                                                        },
+                                                        {
+                                                            "Command":  "wc -l /home/angel/Documentos/informes/informe.txt",
+                                                            "DelayAfter":  2000
+                                                        },
+                                                        {
+                                                            "Command":  "df -h /",
+                                                            "DelayAfter":  3000
+                                                        }
+                                                    ]
+                             },
+                             {
+                                 "HandlerType":  "Curl",
+                                 "Initial":  "",
+                                 "UtcTimeOn":  "00:00:00",
+                                 "UtcTimeOff":  "00:00:00",
+                                 "Loop":  true,
+                                 "HandlerArgs":  {
+
+                                                 },
+                                 "TimeLineEvents":  [
+                                                        {
+                                                            "Command":  "http://intranet.local:8080/",
+                                                            "DelayAfter":  3000
+                                                        },
+                                                        {
+                                                            "Command":  "http://intranet.local:8080/noticias.html",
+                                                            "DelayAfter":  3000
+                                                        },
+                                                        {
+                                                            "Command":  "http://intranet.local:8080/ayuda.html",
+                                                            "DelayAfter":  3000
+                                                        },
+                                                        {
+                                                            "Command":  "http://intranet.local:8080/descargas/manual_empleado.pdf -o /home/angel/Descargas/manual_empleado.pdf",
+                                                            "DelayAfter":  4000
+                                                        },
+                                                        {
+                                                            "Command":  "http://intranet.local:8080/descargas/plantilla_informe.csv -o /home/angel/Descargas/plantilla_informe.csv",
+                                                            "DelayAfter":  4000
+                                                        },
+                                                        {
+                                                            "Command":  "-X POST -d acta_de_reunion http://intranet.local:9090/paste",
+                                                            "DelayAfter":  3000
+                                                        },
+                                                        {
+                                                            "Command":  "-T /home/angel/Descargas/informes.tar.gz http://nube.local:9092/nube/informes.tar.gz",
+                                                            "DelayAfter":  5000
+                                                        },
+                                                        {
+                                                            "Command":  "-X PROPFIND -H Depth:1 http://nube.local:9092/nube/",
+                                                            "DelayAfter":  3000
+                                                        }
+                                                    ]
+                             },
+                             {
+                                 "HandlerType":  "Command",
+                                 "Initial":  "",
+                                 "UtcTimeOn":  "00:00:00",
+                                 "UtcTimeOff":  "00:00:00",
+                                 "Loop":  true,
+                                 "HandlerArgs":  {
+
+                                                 },
+                                 "TimeLineEvents":  [
+                                                        {
+                                                            "Command":  "mkdir -p /home/angel/Documentos/copias /home/angel/Descargas",
+                                                            "DelayAfter":  5000
+                                                        },
+                                                        {
+                                                            "Command":  "date -u \u003e /home/angel/Documentos/copias/sello.txt",
+                                                            "DelayAfter":  4000
+                                                        },
+                                                        {
+                                                            "Command":  "echo copia nocturna del area de trabajo \u003e /home/angel/Documentos/copias/contenido.txt",
+                                                            "DelayAfter":  4000
+                                                        },
+                                                        {
+                                                            "Command":  "tar -czf /home/angel/Documentos/copias/copia_noche.tar.gz -C /home/angel/Documentos/copias contenido.txt sello.txt",
+                                                            "DelayAfter":  5000
+                                                        },
+                                                        {
+                                                            "Command":  "cp -f /home/angel/Documentos/copias/copia_noche.tar.gz /home/angel/Descargas/copia_noche.tar.gz",
+                                                            "DelayAfter":  4000
+                                                        },
+                                                        {
+                                                            "Command":  "md5sum /home/angel/Descargas/copia_noche.tar.gz",
+                                                            "DelayAfter":  3000
+                                                        },
+                                                        {
+                                                            "Command":  "ls -la /home/angel/Documentos/copias",
+                                                            "DelayAfter":  3000
+                                                        },
+                                                        {
+                                                            "Command":  "date -u",
+                                                            "DelayAfter":  5000
+                                                        }
+                                                    ]
+                             },
+                             {
+                                 "HandlerType":  "Curl",
+                                 "Initial":  "",
+                                 "UtcTimeOn":  "00:00:00",
+                                 "UtcTimeOff":  "00:00:00",
+                                 "Loop":  true,
+                                 "HandlerArgs":  {
+
+                                                 },
+                                 "TimeLineEvents":  [
+                                                        {
+                                                            "Command":  "http://intranet.local:8080/noticias.html",
+                                                            "DelayAfter":  5000
+                                                        },
+                                                        {
+                                                            "Command":  "-T /home/angel/Descargas/copia_noche.tar.gz http://nube.local:9092/nube/copia_noche.tar.gz",
+                                                            "DelayAfter":  6000
+                                                        },
+                                                        {
+                                                            "Command":  "-X POST -d copia_nocturna http://intranet.local:9090/paste",
+                                                            "DelayAfter":  5000
+                                                        },
+                                                        {
+                                                            "Command":  "http://intranet.local:8080/ayuda.html",
+                                                            "DelayAfter":  5000
+                                                        }
+                                                    ]
+                             }
+                         ]
+}

@@ -1,0 +1,6 @@
+# ghosts_acciones.csv | metrica_version=1 boveda_version=1 | t0=2026-10-18T20:41:00Z t1=2026-10-18T20:45:30Z | generado=2026-10-18T20:50:31Z | fuente=ghosts.history_timeline (createdutc UTC)
+tipo,clave,acciones
+total,,214
+handler,Command,120
+handler,Curl,94
+hora,2026-10-18T20:00Z,214

@@ -1,0 +1,4 @@
+# contar_denominador.py | metrica_version=1 boveda_version=1 | desde=2026-10-18T20:41:00Z hasta=2026-10-18T20:45:30Z | agente=001/victima-linux | ficheros=1 | sha256_entradas=533f83ef935384c188db3cb1831a29ab528099785e7c2689bd4239b3311be3d8:archives.json
+metrica_version,boveda_version,ambito,eventos,primer_ts,ultimo_ts
+1,1,total,2474,2026-10-18T20:41:05Z,2026-10-18T20:45:29Z
+1,1,endpoint,2271,2026-10-18T20:41:05Z,2026-10-18T20:45:29Z
