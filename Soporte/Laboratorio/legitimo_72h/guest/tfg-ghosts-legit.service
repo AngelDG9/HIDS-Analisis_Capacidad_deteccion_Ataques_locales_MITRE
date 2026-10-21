@@ -1,12 +1,13 @@
 [Unit]
-Description=TFG L1 — cliente GHOSTS (keepalive) [invitado]
+Description=TFG legitimo — cliente GHOSTS (keepalive v3) [invitado]
 After=network-online.target
 
 [Service]
 Type=simple
 User=angel
 WorkingDirectory=/home/angel/ghosts-client
-ExecStart=/home/angel/ghosts-client/tfg_keepalive.sh 74
+# @T0@ lo sustituye instalar_tarea_invitado.sh (t0 de la ventana, ISO UTC).
+ExecStart=/home/angel/ghosts-client/tfg_keepalive.sh 74 @T0@
 Restart=on-failure
 RestartSec=30
 

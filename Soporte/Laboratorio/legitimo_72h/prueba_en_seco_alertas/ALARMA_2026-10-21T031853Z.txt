@@ -1,0 +1,5 @@
+﻿ALARMA (NUEVA) 2026-10-21T03:18:53Z
+senales: doing>30m,agente>10m
+[2026-10-21T03:18:53Z] [watch] estado=ALARMA doing_age=49m bloque=si hb=721s ag=Active mgr=active/2 arch=78622018B dia=72029344B df=4.4G tasa=-19.4MB/h db=67MB host=177.7G ram=post-hoc rec=0 rot=3 notas=doing>30m,agente>10m
+recuperaciones=0 rotaciones=3
+La vigilancia NO actua: solo avisa. Revisa disco/agente/GHOSTS.

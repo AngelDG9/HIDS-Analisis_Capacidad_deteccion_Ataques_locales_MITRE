@@ -1,4 +1,4 @@
-# ============================================================================
+﻿# ============================================================================
 # pausar_windows_update.ps1 — pausa REVERSIBLE de Windows Update en el HOST
 # para la ventana de 72 h del bloque `legitimo-72h` (L1).
 #

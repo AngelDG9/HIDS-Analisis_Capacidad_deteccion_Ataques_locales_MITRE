@@ -1,0 +1,13 @@
+92
+---primeras---
+2026-10-19 16:02:45.0051 Error FileTarget(Name=clientupdates): Failed write to file '/home/angel/ghosts-client/logs/clientupdates.log'. Exception: System.IO.IOException: No space left on device : '/home/angel/ghosts-client/logs/clientupdates.log'
+2026-10-19 16:02:50.0433 Error FileTarget(Name=clientupdates): Failed write to file '/home/angel/ghosts-client/logs/clientupdates.log'. Exception: System.IO.IOException: No space left on device : '/home/angel/ghosts-client/logs/clientupdates.log'
+2026-10-19 16:02:53.6845 Error FileTarget(Name=clientupdates): Failed write to file '/home/angel/ghosts-client/logs/clientupdates.log'. Exception: System.IO.IOException: No space left on device : '/home/angel/ghosts-client/logs/clientupdates.log'
+2026-10-19 16:03:15.1638 Error FileTarget(Name=clientupdates): Failed write to file '/home/angel/ghosts-client/logs/clientupdates.log'. Exception: System.IO.IOException: No space left on device : '/home/angel/ghosts-client/logs/clientupdates.log'
+2026-10-19 16:03:19.2522 Error FileTarget(Name=clientupdates): Failed write to file '/home/angel/ghosts-client/logs/clientupdates.log'. Exception: System.IO.IOException: No space left on device : '/home/angel/g2026-10-19 16:03:20.0871|TRACE|ghosts.client.linux
+---ultimas---
+2026-10-19 16:39:36.7216 Error FileTarget(Name=clientupdates): Failed write to file '/home/angel/ghosts-client/logs/clientupdates.log'. Exception: System.IO.IOException: No space left on device : '/home/angel/ghosts-client/logs/clientupdates.log'
+2026-10-19 16:39:39.7537 Error FileTarget(Name=clientupdates): Failed write to file '/home/angel/ghosts-client/logs/clientupdates.log'. Exception: System.IO.IOException: No space left on device : '/home/angel/ghosts-client/logs/clientupdates.log'
+2026-10-19 16:39:41.4638 Error FileTarget(Name=clientupdates): Failed write to file '/home/angel/ghosts-client/logs/clientupdates.log'. Exception: System.IO.IOException: No space left on device : '/home/angel/ghosts-client/logs/clientupdates.log'
+2026-10-19 16:39:46.5157 Error FileTarget(Name=clientupdates): Failed write to file '/home/angel/ghosts-client/logs/clientupdates.log'. Exception: System.IO.IOException: No space left on device : '/home/angel/ghosts-client/logs/clientupdates.log'
+2026-10-19 16:39:51.8384 Error FileTarget(Name=clientupdates): Failed write to file '/home/angel/ghosts-client/logs/clientupdates.log'. Exception: System.IO.IOException: No space left on device : '/home/angel/ghosts-client/logs/clientupdates.log'

@@ -1,0 +1,40 @@
+             ('-. .-.               .-')    .-') _     .-')
+            ( OO )  /              ( OO ). (  OO) )   ( OO ).
+  ,----.    ,--. ,--. .-'),-----. (_)---\_)/     '._ (_)---\_)
+ '  .-./-') |  | |  |( OO'  .-.  '/    _ | |'--...__)/    _ |
+ |  |_( O- )|   .|  |/   |  | |  |\  :` `. '--.  .--'\  :` `.
+ |  | .--, \|       |\_) |  |\|  | '..`''.)   |  |    '..`''.)
+(|  | '. (_/|  .-.  |  \ |  | |  |.-._)   \   |  |   .-._)   \
+ |  '--'  | |  | |  |   `'  '-'  '\       /   |  |   \       /
+  `------'  `--' `--'     `-----'  `-----'    `--'    `-----'
+
+
+GHOSTS (ghosts.client.linux:8.0.0.0 [8.2.3.0]) running in production mode. Installed path: /home/angel/ghosts-client
+2026-10-19 01:40:04.5894|TRACE|ghosts.client.linux.Program|Initiating ghosts.client.linux startup - Local: 01:40:04.5687772 UTC: 23:40:04.5887105
+2026-10-19 01:40:04.7052|DEBUG|Ghosts.Domain.Code.ClientConfigurationLoader|App config loaded successfully: /home/angel/ghosts-client/config/application.json
+2026-10-19 01:40:04.7052|TRACE|ghosts.client.linux.Program|Sockets enabled. Connecting...
+2026-10-19 01:40:04.7072|INFO|ghosts.client.linux.Comms.CheckId|CheckId instance created.
+2026-10-19 01:40:04.7072|DEBUG|ghosts.client.linux.Comms.CheckId|CheckId instantiated with ID File Path: /home/angel/ghosts-client/instance/id.json
+2026-10-19 01:40:04.7118|TRACE|ghosts.client.linux.Comms.CheckId|Id property getter invoked.
+2026-10-19 01:40:04.7121|INFO|ghosts.client.linux.Comms.CheckId|ID retrieved from local file: 7c33a13a-fe89-4a56-bf3c-fcd499e1e557
+2026-10-19 01:40:04.7121|TRACE|ghosts.client.linux.Program|CheckID: 7c33a13a-fe89-4a56-bf3c-fcd499e1e557
+Connecting to http://192.168.65.1:5000/clientHub...
+2026-10-19 01:40:04.7151|TRACE|ghosts.client.linux.Program|Survey disabled, continuing.
+2026-10-19 01:40:04.7151|TRACE|ghosts.client.linux.Program|Health checks disabled, continuing.
+2026-10-19 01:40:04.7151|TRACE|ghosts.client.linux.Program|Handlers enabled, initalizing...
+2026-10-19 01:40:04.7494|TRACE|ghosts.client.linux.Comms.CheckId|Id property getter invoked.
+2026-10-19 01:40:04.7494|DEBUG|ghosts.client.linux.Comms.CheckId|Returning cached ID: 7c33a13a-fe89-4a56-bf3c-fcd499e1e557
+2026-10-19 01:40:04.7494|TRACE|ghosts.client.linux.Comms.CheckId|Id property getter invoked.
+2026-10-19 01:40:04.7494|DEBUG|ghosts.client.linux.Comms.CheckId|Returning cached ID: 7c33a13a-fe89-4a56-bf3c-fcd499e1e557
+2026-10-19 01:40:04.7762|TRACE|ghosts.client.linux.Infrastructure.WebClientBuilder|Webrequest headers generated: {"UserAgent":"Ghosts Client","ghosts-id":"7c33a13a-fe89-4a56-bf3c-fcd499e1e557","ghosts-name":"victima-linux","ghosts-fqdn":"localhost","ghosts-host":"victima-linux","ghosts-domain":"(none)","ghosts-resolvedhost":"localhost","ghosts-ip":"127.0.1.1","ghosts-user":"YW5nZWw=","ghosts-version":"8.0.0.0"}
+2026-10-19 01:40:04.8102|DEBUG|Ghosts.Domain.Code.TimelineBuilder|Timeline 6431cf1c-9071-4b3f-bae3-82c1b7e89c83 loaded successfully
+2026-10-19 01:40:04.8102|TRACE|ghosts.client.linux.timelineManager.Orchestrator|Timeline watcher starting and is null...
+2026-10-19 01:40:04.8102|TRACE|ghosts.client.linux.timelineManager.Orchestrator|watching timeline.json
+2026-10-19 01:40:04.8131|TRACE|ghosts.client.linux.timelineManager.Orchestrator|Stopfile watcher is starting
+2026-10-19 01:40:04.8289|TRACE|ghosts.client.linux.Comms.CheckId|Id property getter invoked.
+2026-10-19 01:40:04.8294|DEBUG|ghosts.client.linux.Comms.CheckId|Returning cached ID: 7c33a13a-fe89-4a56-bf3c-fcd499e1e557
+2026-10-19 01:40:04.8294|TRACE|ghosts.client.linux.Comms.CheckId|Id property getter invoked.
+2026-10-19 01:40:04.8294|DEBUG|ghosts.client.linux.Comms.CheckId|Returning cached ID: 7c33a13a-fe89-4a56-bf3c-fcd499e1e557
+2026-10-19 01:40:04.8301|TRACE|ghosts.client.linux.timelineManager.Orchestrator|Attempting new thread for: Command
+2026-10-19 01:40:04.8301|TRACE|ghosts.client.linux.Infrastructure.WebClientBuilder|Webrequest headers generated: {"UserAgent":"Ghosts Client","ghosts-id":"7c33a13a-fe89-4a56-bf3c-fcd499e1e557","ghosts-name":"victima-linux","ghosts-fqdn":"localhost","ghosts-host":"victima-linux","ghosts-domain":"(none)","ghosts-resolvedhost":"localhost","ghosts-ip":"127.0.1.1","ghosts-user":"YW5nZWw=","ghosts-version":"8.0.0.0"}
+2026-10-19 01:40:04.8335|TRACE|ghosts.client.linux.handlers.BaseHandler|Spawning Bash...

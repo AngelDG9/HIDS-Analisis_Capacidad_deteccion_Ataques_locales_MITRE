@@ -1,4 +1,4 @@
-# ============================================================================
+﻿# ============================================================================
 # armar_legitimo.ps1 — arma el bloque L1 (tarea del invitado + cliente + checklist).
 # Delega en legitimo_host_control.ps1 -Phase arm.
 # Uso: powershell -NoProfile -ExecutionPolicy Bypass -File armar_legitimo.ps1

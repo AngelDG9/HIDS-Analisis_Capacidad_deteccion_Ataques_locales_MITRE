@@ -1,0 +1,99 @@
+{
+ "receta_version": 1,
+ "zona": "Europe/Madrid (CET=UTC+1 desde 2026-10-25)",
+ "dia_local": "09:00-18:00",
+ "jornada_utc": {
+  "on": "08:00:00",
+  "off": "17:00:00"
+ },
+ "bloques": [
+  {
+   "id": "B1",
+   "on": "08:00:00",
+   "off": "08:12:00",
+   "tipo": "trabajo",
+   "nombre": "Llegada",
+   "local": "09:00-09:12"
+  },
+  {
+   "id": "B2",
+   "on": "08:12:00",
+   "off": "10:00:00",
+   "tipo": "trabajo",
+   "nombre": "Correo y mañana",
+   "local": "09:12-11:00"
+  },
+  {
+   "id": "P1",
+   "on": "10:00:00",
+   "off": "10:20:00",
+   "tipo": "pausa",
+   "nombre": "Café",
+   "local": "11:00-11:20"
+  },
+  {
+   "id": "B3",
+   "on": "10:20:00",
+   "off": "13:00:00",
+   "tipo": "trabajo",
+   "nombre": "Documentos",
+   "local": "11:20-14:00"
+  },
+  {
+   "id": "P2",
+   "on": "13:00:00",
+   "off": "14:00:00",
+   "tipo": "pausa",
+   "nombre": "Comida",
+   "local": "14:00-15:00"
+  },
+  {
+   "id": "B4",
+   "on": "14:00:00",
+   "off": "16:15:00",
+   "tipo": "trabajo",
+   "nombre": "Reuniones y tarde",
+   "local": "15:00-17:15"
+  },
+  {
+   "id": "B5",
+   "on": "16:15:00",
+   "off": "17:00:00",
+   "tipo": "trabajo",
+   "nombre": "Cierre",
+   "local": "17:15-18:00"
+  }
+ ],
+ "cuentas": {
+  "1": {
+   "B1": 9,
+   "B2": 26,
+   "B3": 42,
+   "B4": 22,
+   "B5": 12
+  },
+  "2": {
+   "B1": 9,
+   "B2": 32,
+   "B3": 34,
+   "B4": 30,
+   "B5": 12
+  },
+  "3": {
+   "B1": 9,
+   "B2": 22,
+   "B3": 46,
+   "B4": 16,
+   "B5": 12
+  }
+ },
+ "total_ventana": 333,
+ "mapa_dias": {
+  "2026-10-26": 1,
+  "2026-10-27": 2,
+  "2026-10-28": 3
+ },
+ "regla_dia": "k = 1 + ((fecha_utc - fecha_t0) mod 3)",
+ "hueco_max_intra_bloque_s": 720,
+ "fuente": "_artefactos/scripts/construir_receta_legitima.py"
+}

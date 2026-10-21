@@ -1,0 +1,5 @@
+86174 /home/angel/ghosts-client/ghasts.out
+0c0a5a2d098cf5abf8c28e29aab338b7eca2829d9a0f45773b4b2ff6022e968f  /home/angel/ghosts-client/ghasts.out
+Tue Oct 20 10:38:17 PM UTC 2026
+ 00:38:17 up 2 min,  1 user,  load average: 1.17, 0.76, 0.32
+failed

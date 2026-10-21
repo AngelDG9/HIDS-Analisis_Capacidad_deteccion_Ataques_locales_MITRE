@@ -17,6 +17,12 @@ Acepta uno o varios ficheros (por si `archives.json` rota a ficheros diarios) y
 ficheros `.gz`. La cabecera del CSV lleva `metrica_version` / `boveda_version` y el
 `sha256` de cada entrada (regla R2 §6.7).
 
+Bloque `legitimo-fix` (aditivo, §8.3):
+  · imprime el **rango** `primer_ts .. ultimo_ts` de cada fichero;
+  · **DEDUPE por `sha256`** (H-D: `archives.json` es hardlink del día) — `--no-dedupe` lo desactiva;
+  · `--estricto` → **exit 3** si dos ficheros ÚNICOS solapan en tiempo;
+  · `--manifest FILE` → `fichero<TAB>bytes<TAB>sha256<TAB>primer<TAB>ultimo`.
+
 Uso:
     python3 contar_denominador.py --desde 2026-10-19T00:00:00Z --hasta 2026-10-22T00:00:00Z \
         --out Dataset/Legitimo/legitimo_72h/denominador_M.csv \
@@ -120,6 +126,7 @@ def contar(paths, desde, hasta, agent_id: str, agent_name: str):
 
     for path in paths:
         ft = fe = 0
+        ffirst = flast = None
         for line in _open_lines(path):
             line = line.strip() if isinstance(line, str) else line.decode("utf-8", "replace").strip()
             if not line:
@@ -145,13 +152,17 @@ def contar(paths, desde, hasta, agent_id: str, agent_name: str):
                 continue
             _acc(tot, ts)
             ft += 1
+            if ffirst is None or ts < ffirst:
+                ffirst = ts
+            if flast is None or ts > flast:
+                flast = ts
             agent = rec.get("agent", {}) or {}
             aid = str(agent.get("id", "") or "")
             anm = str(agent.get("name", "") or "")
             if aid == agent_id or (agent_name and anm == agent_name):
                 _acc(end, ts)
                 fe += 1
-        per_file.append((path, ft, fe))
+        per_file.append({"path": path, "total": ft, "endpoint": fe, "first": ffirst, "last": flast})
 
     return {
         "total": tot,
@@ -160,6 +171,48 @@ def contar(paths, desde, hasta, agent_id: str, agent_name: str):
         "bad_json": bad_json,
         "vacias": vacias,
     }, per_file
+
+
+# --------------------------------------------------------------------------
+# Dedupe, solapes y manifiesto (bloque `legitimo-fix`, §8.2/§8.3)
+# --------------------------------------------------------------------------
+def deduplicar(paths):
+    """Quita duplicados por `sha256` (H-D: `archives.json` es hardlink del día)."""
+    vistos, unicos, dups = {}, [], []
+    for p in paths:
+        h = sha256_file(p)
+        if h in vistos:
+            dups.append((p, vistos[h], h))
+        else:
+            vistos[h] = p
+            unicos.append(p)
+    return unicos, dups
+
+
+def solapes(per_file):
+    """Pares de ficheros cuyos rangos [primer, ultimo] se solapan (extremos inclusive)."""
+    con = [pf for pf in per_file if pf["first"] and pf["last"]]
+    out = []
+    for i in range(len(con)):
+        for j in range(i + 1, len(con)):
+            a, b = con[i], con[j]
+            if not (a["last"] < b["first"] or b["last"] < a["first"]):
+                out.append((a, b))
+    return out
+
+
+def escribir_manifest(per_file, out_path):
+    """`manifest.tsv`: fichero, bytes, sha256, primer_ts, ultimo_ts (uno por fichero único)."""
+    with open(out_path, "w", encoding="utf-8", newline="") as fh:
+        fh.write("fichero\tbytes\tsha256\tprimer\tultimo\n")
+        for pf in per_file:
+            fh.write("{}\t{}\t{}\t{}\t{}\n".format(
+                os.path.basename(pf["path"]),
+                os.path.getsize(pf["path"]),
+                sha256_file(pf["path"]),
+                fmt_ts(pf["first"]) if pf["first"] else "",
+                fmt_ts(pf["last"]) if pf["last"] else "",
+            ))
 
 
 # --------------------------------------------------------------------------
@@ -237,6 +290,10 @@ def main(argv=None) -> int:
     ap.add_argument("--metrica-version", type=int, default=VERSION_METRICA)
     ap.add_argument("--boveda-version", type=int, default=VERSION_BOVEDA)
     ap.add_argument("--out", default=None, help="CSV de salida")
+    ap.add_argument("--manifest", default=None, help="TSV con fichero/bytes/sha256/primer/ultimo")
+    ap.add_argument("--estricto", action="store_true",
+                    help="falla (exit 3) si dos ficheros ÚNICOS solapan en tiempo")
+    ap.add_argument("--no-dedupe", action="store_true", help="no descartar duplicados por sha256")
     ap.add_argument("--test", action="store_true", help="modo de prueba trivial")
     args = ap.parse_args(argv)
 
@@ -254,17 +311,43 @@ def main(argv=None) -> int:
     if desde and hasta and hasta < desde:
         ap.error("--hasta es anterior a --desde")
 
-    res, per_file = contar(args.files, desde, hasta, args.agent_id, args.agent_name)
+    # 1) DEDUPE por sha256 (H-D): el mismo contenido (hardlink) se cuenta UNA vez
+    if args.no_dedupe:
+        unicos, dups = list(args.files), []
+    else:
+        unicos, dups = deduplicar(args.files)
+    for p, orig, h in dups:
+        print(f"  DUPLICADO descartado: {os.path.basename(p)} (sha256={h[:12]} == {os.path.basename(orig)})")
 
-    for path, ft, fe in per_file:
-        print(f"  {os.path.basename(path)}: total={ft} endpoint={fe}")
+    res, per_file = contar(unicos, desde, hasta, args.agent_id, args.agent_name)
+
+    # 2) rango por fichero (para ver de un vistazo la cobertura y los bordes)
+    for pf in per_file:
+        r = (f"{fmt_ts(pf['first'])} .. {fmt_ts(pf['last'])}") if pf["first"] else "sin eventos en ventana"
+        print(f"  {os.path.basename(pf['path'])}: total={pf['total']} endpoint={pf['endpoint']} rango={r}")
     print(f"M total={res['total']['eventos']} endpoint={res['endpoint']['eventos']} "
-          f"no_ts={res['no_ts']} bad_json={res['bad_json']}")
+          f"no_ts={res['no_ts']} bad_json={res['bad_json']} ficheros={len(unicos)} duplicados={len(dups)}")
     if res["endpoint"]["first"]:
         print(f"cobertura endpoint: {fmt_ts(res['endpoint']['first'])} .. {fmt_ts(res['endpoint']['last'])}")
 
+    # 3) --estricto: cero solapes entre ficheros únicos (regla de borde §8.2)
+    if args.estricto:
+        malos = solapes(per_file)
+        if malos:
+            print("ERROR --estricto: hay ficheros que SOLAPAN en tiempo:", file=sys.stderr)
+            for a, b in malos:
+                print(f"  {os.path.basename(a['path'])} [{fmt_ts(a['first'])}..{fmt_ts(a['last'])}] "
+                      f"x {os.path.basename(b['path'])} [{fmt_ts(b['first'])}..{fmt_ts(b['last'])}]",
+                      file=sys.stderr)
+            return 3
+        print("--estricto: sin solapes entre ficheros únicos")
+
+    if args.manifest:
+        escribir_manifest(per_file, args.manifest)
+        print(f"-> {args.manifest}")
+
     if args.out:
-        escribir_csv(res, per_file, args.files, args.out, desde, hasta, args.agent_id, args.agent_name,
+        escribir_csv(res, per_file, unicos, args.out, desde, hasta, args.agent_id, args.agent_name,
                      args.metrica_version, args.boveda_version)
         print(f"-> {args.out}")
     return 0

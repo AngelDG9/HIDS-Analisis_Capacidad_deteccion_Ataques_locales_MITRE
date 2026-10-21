@@ -1,4 +1,4 @@
-# ============================================================================
+﻿# ============================================================================
 # vigilancia_legitimo.ps1 — vigilancia pasiva durante [t0,t1] (patrón L1).
 # NO toca la víctima: solo consulta la API de GHOSTS (host) y el manager (SSH lectura).
 # Delega en legitimo_host_control.ps1 -Phase watch (una sola implementación).

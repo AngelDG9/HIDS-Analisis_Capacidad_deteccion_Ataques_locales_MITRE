@@ -1,0 +1,15 @@
+Filesystem                         Size  Used Avail Use% Mounted on
+tmpfs                              293M   27M  266M  10% /run
+/dev/mapper/ubuntu--vg-ubuntu--lv  9.8G  9.8G     0 100% /
+tmpfs                              1.5G     0  1.5G   0% /dev/shm
+tmpfs                              5.0M     0  5.0M   0% /run/lock
+/dev/sda2                          1.8G  104M  1.6G   7% /boot
+tmpfs                              293M   12K  293M   1% /run/user/1000
+
+Filesystem                        Inodes IUsed  IFree IUse% Mounted on
+tmpfs                             374377   795 373582    1% /run
+/dev/mapper/ubuntu--vg-ubuntu--lv 655360 99590 555770   16% /
+tmpfs                             374377     1 374376    1% /dev/shm
+tmpfs                             374377     3 374374    1% /run/lock
+/dev/sda2                         116160   317 115843    1% /boot
+tmpfs                              74875    32  74843    1% /run/user/1000

@@ -1,0 +1,44 @@
+19/10/2026 14:39:43 PM|ghosts.client.linux.handlers.Bash.Ex|Command line: md5sum /home/angel/Descargas/informes.tar.gz with delay after of 2000
+19/10/2026 14:39:43 PM|ghosts.client.linux.handlers.Bash.Command|Spawning bash with command md5sum /home/angel/Descargas/informes.tar.gz
+19/10/2026 14:39:45 PM|ghosts.client.linux.Comms.CheckId.get_Id|Id property getter invoked.
+19/10/2026 14:39:45 PM|ghosts.client.linux.Comms.CheckId.get_Id|Returning cached ID: 7c33a13a-fe89-4a56-bf3c-fcd499e1e557
+19/10/2026 14:39:45 PM|ghosts.client.linux.Comms.CheckId.get_Id|Id property getter invoked.
+19/10/2026 14:39:45 PM|ghosts.client.linux.Comms.CheckId.get_Id|Returning cached ID: 7c33a13a-fe89-4a56-bf3c-fcd499e1e557
+19/10/2026 14:39:45 PM|ghosts.client.linux.Infrastructure.WebClientBuilder.GetHeaders|Webrequest headers generated: {"UserAgent":"Ghosts Client","ghosts-id":"7c33a13a-fe89-4a56-bf3c-fcd499e1e557","ghosts-name":"victima-linux","ghosts-fqdn":"localhost","ghosts-host":"victima-linux","ghosts-domain":"(none)","ghosts-resolvedhost":"localhost","ghosts-ip":"127.0.1.1","ghosts-user":"YW5nZWw=","ghosts-version":"8.0.0.0"}
+19/10/2026 14:39:45 PM|Ghosts.Domain.Code.WorkingHours.Is|For Command: Current UTC: 10/19/2026 2:39:45ÔÇ»PM On: 10/19/2026 12:00:00ÔÇ»PM Off: 10/19/2026 4:00:00ÔÇ»PM Overnight? False
+19/10/2026 14:39:45 PM|ghosts.client.linux.handlers.Bash.Ex|Command line: sha256sum /home/angel/Documentos/informes/informe.bak with delay after of 2000
+19/10/2026 14:39:45 PM|ghosts.client.linux.handlers.Bash.Command|Spawning bash with command sha256sum /home/angel/Documentos/informes/informe.bak
+19/10/2026 14:39:46 PM|ghosts.client.linux.Comms.Updates.PostResults|10/19/2026 4:39:46ÔÇ»PM - /home/angel/ghosts-client/logs/clientupdates.42.log posted to server successfully
+19/10/2026 14:39:46 PM|ghosts.client.linux.Comms.Updates.PostClientResults|/home/angel/ghosts-client/logs/clientupdates.log posted successfully...
+19/10/2026 14:39:46 PM|Ghosts.Domain.Code.WorkingHours.Is|For Curl: Current UTC: 10/19/2026 2:39:46ÔÇ»PM On: 10/19/2026 12:00:00ÔÇ»PM Off: 10/19/2026 4:00:00ÔÇ»PM Overnight? False
+19/10/2026 14:39:46 PM|ghosts.client.linux.handlers.Curl.Command|System.UriFormatException: Invalid URI: The URI scheme is not valid.
+19/10/2026 14:39:47 PM|Ghosts.Domain.Code.WorkingHours.Is|For Command: Current UTC: 10/19/2026 2:39:47ÔÇ»PM On: 10/19/2026 12:00:00ÔÇ»PM Off: 10/19/2026 4:00:00ÔÇ»PM Overnight? False
+19/10/2026 14:39:47 PM|ghosts.client.linux.handlers.Bash.Ex|Command line: ls -la /home/angel/Documentos /home/angel/Descargas with delay after of 2000
+19/10/2026 14:39:47 PM|ghosts.client.linux.handlers.Bash.Command|Spawning bash with command ls -la /home/angel/Documentos /home/angel/Descargas
+19/10/2026 14:39:48 PM|ghosts.client.linux.Comms.CheckId.get_Id|Id property getter invoked.
+19/10/2026 14:39:48 PM|ghosts.client.linux.Comms.CheckId.get_Id|Returning cached ID: 7c33a13a-fe89-4a56-bf3c-fcd499e1e557
+19/10/2026 14:39:48 PM|ghosts.client.linux.Comms.CheckId.get_Id|Id property getter invoked.
+19/10/2026 14:39:48 PM|ghosts.client.linux.Comms.CheckId.get_Id|Returning cached ID: 7c33a13a-fe89-4a56-bf3c-fcd499e1e557
+19/10/2026 14:39:48 PM|ghosts.client.linux.Infrastructure.WebClientBuilder.GetHeaders|Webrequest headers generated: {"UserAgent":"Ghosts Client","ghosts-id":"7c33a13a-fe89-4a56-bf3c-fcd499e1e557","ghosts-name":"victima-linux","ghosts-fqdn":"localhost","ghosts-host":"victima-linux","ghosts-domain":"(none)","ghosts-resolvedhost":"localhost","ghosts-ip":"127.0.1.1","ghosts-user":"YW5nZWw=","ghosts-version":"8.0.0.0"}
+19/10/2026 14:39:49 PM|Ghosts.Domain.Code.WorkingHours.Is|For Curl: Current UTC: 10/19/2026 2:39:49ÔÇ»PM On: 10/19/2026 12:00:00ÔÇ»PM Off: 10/19/2026 4:00:00ÔÇ»PM Overnight? False
+19/10/2026 14:39:49 PM|ghosts.client.linux.handlers.Curl.Command|System.IO.IOException: No space left on device
+19/10/2026 14:39:49 PM|Ghosts.Domain.Code.WorkingHours.Is|For Command: Current UTC: 10/19/2026 2:39:49ÔÇ»PM On: 10/19/2026 12:00:00ÔÇ»PM Off: 10/19/2026 4:00:00ÔÇ»PM Overnight? False
+19/10/2026 14:39:49 PM|ghosts.client.linux.handlers.Bash.Ex|Command line: find /home/angel/Documentos -type f | wc -l with delay after of 2000
+19/10/2026 14:39:49 PM|ghosts.client.linux.handlers.Bash.Command|Spawning bash with command find /home/angel/Documentos -type f | wc -l
+19/10/2026 14:39:50 PM|ghosts.client.linux.Comms.Updates.PostResults|10/19/2026 4:39:50ÔÇ»PM - /home/angel/ghosts-client/logs/clientupdates.43.log posted to server successfully
+19/10/2026 14:39:50 PM|ghosts.client.linux.Comms.Updates.PostClientResults|/home/angel/ghosts-client/logs/clientupdates.log posted successfully...
+19/10/2026 14:39:50 PM|ghosts.client.linux.Comms.CheckId.get_Id|Id property getter invoked.
+19/10/2026 14:39:50 PM|ghosts.client.linux.Comms.CheckId.get_Id|Returning cached ID: 7c33a13a-fe89-4a56-bf3c-fcd499e1e557
+19/10/2026 14:39:50 PM|ghosts.client.linux.Comms.CheckId.get_Id|Id property getter invoked.
+19/10/2026 14:39:50 PM|ghosts.client.linux.Comms.CheckId.get_Id|Returning cached ID: 7c33a13a-fe89-4a56-bf3c-fcd499e1e557
+19/10/2026 14:39:50 PM|ghosts.client.linux.Infrastructure.WebClientBuilder.GetHeaders|Webrequest headers generated: {"UserAgent":"Ghosts Client","ghosts-id":"7c33a13a-fe89-4a56-bf3c-fcd499e1e557","ghosts-name":"victima-linux","ghosts-fqdn":"localhost","ghosts-host":"victima-linux","ghosts-domain":"(none)","ghosts-resolvedhost":"localhost","ghosts-ip":"127.0.1.1","ghosts-user":"YW5nZWw=","ghosts-version":"8.0.0.0"}
+19/10/2026 14:39:51 PM|ghosts.client.linux.Comms.Updates.GetServerUpdates|10/19/2026 4:39:51ÔÇ»PM - No new configuration found
+19/10/2026 14:39:51 PM|Ghosts.Domain.Code.WorkingHours.Is|For Command: Current UTC: 10/19/2026 2:39:51ÔÇ»PM On: 10/19/2026 12:00:00ÔÇ»PM Off: 10/19/2026 4:00:00ÔÇ»PM Overnight? False
+19/10/2026 14:39:51 PM|ghosts.client.linux.handlers.Bash.Ex|Command line: du -sh /home/angel/Documentos with delay after of 2000
+19/10/2026 14:39:51 PM|ghosts.client.linux.handlers.Bash.Command|Spawning bash with command du -sh /home/angel/Documentos
+19/10/2026 14:39:52 PM|ghosts.client.linux.Comms.CheckId.get_Id|Id property getter invoked.
+19/10/2026 14:39:52 PM|ghosts.client.linux.Comms.Chec---
+total 580
+drwxrwxr-x 2 angel angel   4096 Oct 20 06:45 .
+drwxrwxr-x 8 angel angel  16384 Oct 19 01:55 ..
+-rw-rw-r-- 1 angel angel 569344 Oct 20 15:09 app.log

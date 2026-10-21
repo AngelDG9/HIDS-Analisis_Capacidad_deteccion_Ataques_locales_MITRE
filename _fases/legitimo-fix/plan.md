@@ -490,8 +490,13 @@ Detalle por bloque (los comandos exactos los fija `receta_legitima.py`; aquí va
 | 88-99 | B4 | **nube**: subir acta e informe (`curl -T`), listar (`PROPFIND`), consultar portal y noticias | `curl -s -T …/actas/acta_$(date -u +%F).txt http://nube.local:9092/nube/actas/` · `curl -s -X PROPFIND -H 'Depth: 1' http://nube.local:9092/nube/` |
 | 100-111 | B5 | **cierre** (12): `tar` de copia, `sha256sum`, leer huella, subir copia, `PROPFIND`, `du`, `df`, `cp` a Descargas, `wc -c`, `rm -f` temporales, `date`, `ls` final | `tar -czf …/copias/copia_$(date -u +%F).tar.gz -C …/Documentos informes actas` · `curl -s -T …/copias/… http://nube.local:9092/nube/copias/` · `rm -f /home/angel/Descargas/tmp_*.csv` (sin `tmp_*` previos ⇒ **no-op** benigno) |
 
-> **Nota sobre `df -h /`**: aparece **una vez**, en B3, como lo haría un usuario. **No** es telemetría: la
-> telemetría de disco es del agente (§7.2).
+> **Nota sobre `df -h /` (acción de usuario, NO telemetría)**: la receta congelada (`recetas/d1..d3.json`,
+> `sha256` en `sha256sums.txt`) contiene **4** `df -h /`: **D1** y **D2**, uno en **B5** (cierre) cada uno;
+> **D3**, dos (**B3** repaso y **B5** cierre). Es lo que haría una persona al mirar el disco: está
+> **presente y declarada**. La **telemetría** de disco es del **agente** (`df -P` cada 360 s, §7.2): la
+> sonda `df` que añadía la v1 **se eliminó** y **no** hay ningún `df` de telemetría en la timeline.
+> *(Corrección de redacción, ronda 3: la tabla de arriba describe la v1; manda el JSON congelado, que es
+> el que verifica `G-4`.)*
 >
 > **Nota sobre la web (v3)**: las acciones web de B1 y B3 se reformulan como **una sesión *browser-like***
 > (§5.7) **sin cambiar el recuento** de la tabla. No se añade ningún handler de navegador (§4.8).
@@ -1074,7 +1079,7 @@ t1+60         logall_json off  (restaura ossec.conf + diff + reinicio robusto)
 - **Añadidos al banco de trabajo** (declarados, no ocultos): **receta nueva** (333 acciones), **sesión web
   *browser-like*** (caché `< 2 MB` en `~/.cache/tfg-web` + cookie jar), **rotaciones** (§6.3.3), **más
   ficheros de log** en `logs/` (21 MB) y **los `df -P` del agente** (240/día, ya existían). Todo se declara
-  en `ventana_meta` y en B10 (CA-11).
+  en `b10_sellado.md` (sidecar de B10; la ficha `ventana_meta.md` la escribirá `legitimo-72h-v2`) — CA-11.
 
 ### 12.3 No ocultar nada
 
@@ -1134,7 +1139,7 @@ t1+60         logall_json off  (restaura ossec.conf + diff + reinicio robusto)
 | **CA-08** | **La vigilancia no toca la víctima**: en `watch` no aparecen `192.168.65.129`, `$Vic`, `vmrun` ni `scp` | `grep` del script + log |
 | **CA-09** | **Disco leído del agente**: valor correcto (±5 %) y **tasa** calculada; sin muestras ⇒ AVISO | DT7 |
 | **CA-10** | **Extracción con datos reales**: dedupe, rangos, `--estricto`, exit 0; `pytest` en verde | DT8 + `pytest -q` |
-| **CA-11** | **Declaración de instrumentación**: `ventana_meta` + `b10_sellado.md` listan receta, **2 rotaciones**, **≤2 recuperaciones**, 21 MB de `app.log`, los `df -P` del agente, **la decisión del navegador** y **la sesión web *browser-like***; **no** hay acción `df` añadida a la timeline | Docs + `grep` de la receta |
+| **CA-11** | **Declaración de instrumentación**: `b10_sellado.md` (y la ficha `ventana_meta.md` que escribirá `legitimo-72h-v2`) listan receta, **2 rotaciones**, **≤2 recuperaciones**, 21 MB de `app.log`, **los `df -P` del agente** (telemetría, ya existentes), **la decisión del navegador** y **la sesión web *browser-like***; **no** hay `df` **de telemetría** añadido a la timeline; los **4 `df -h /` son del usuario** (1 en B5 de D1, 1 en B5 de D2 y 2 en D3 — B3 y B5), **presentes y declarados** (se distinguen de la sonda eliminada) | Docs + `grep` de la receta |
 | **CA-12** | **Snapshot `lab-listo-legit-v2`** creado (VM apagada), `lab-listo-legit` intacto, `v2` verificado al arrancar | `listSnapshots` + DT12 |
 | **CA-13** | **`v2` limpio**: sin `client.out`, sin `logs/*`, `~/Documentos` y `~/Descargas` vacíos, `timeline.json`=`d1`, `recetas` presentes | Listado tras el revert |
 | **CA-14** | **Cero daño colateral**: `git status` solo muestra las rutas permitidas; `git diff --stat` **vacío** para `Soporte/Metrica/`, `Hojas/`, `_recursos/`, `Dataset/`, corpus y `extraer_alertas.py`; `ossec.conf` `CONFIG_IDENTICA`; ruleset con la misma huella | `git status`/`git diff` + `diff` |

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-"""Tests de `contar_denominador.py` — denominador `M` desde `archives.json` (L1).
+"""Tests de `contar_denominador.py` â€” denominador `M` desde `archives.json` (L1).
 
 Cubren: el modo `--test`, el conteo total/endpoint con ventana UTC inclusiva,
-el aislamiento por agente, la lectura de `.gz`, la determinación (mismos bytes) y la
+el aislamiento por agente, la lectura de `.gz`, la determinaciÃ³n (mismos bytes) y la
 cabecera obligatoria (`metrica_version`/`boveda_version`/`sha256`).
 """
 from pathlib import Path
@@ -83,5 +83,65 @@ def test_multifile_y_determinismo(tmp_path):
     out2 = tmp_path / "m2.csv"
     CD.main(["--desde", "2026-10-19T00:00:00Z", "--hasta", "2026-10-22T00:00:00Z", "--out", str(out1), str(a), str(b)])
     CD.main(["--desde", "2026-10-19T00:00:00Z", "--hasta", "2026-10-22T00:00:00Z", "--out", str(out2), str(a), str(b)])
-    # mismos bytes (determinista salvo la línea de comentario con sha256, que también lo es)
+    # mismos bytes (determinista salvo la lÃ­nea de comentario con sha256, que tambiÃ©n lo es)
     assert out1.read_bytes() == out2.read_bytes()
+
+
+# --------------------------------------------------------------------------
+# Bloque `legitimo-fix` (Â§8.3): rangos, --estricto, --manifest y dedupe
+# --------------------------------------------------------------------------
+def test_rango_por_fichero(tmp_path, capsys):
+    a = _escribir(tmp_path / "a.json", LINEAS[:2])
+    b = _escribir(tmp_path / "b.json", LINEAS[2:4])
+    out = tmp_path / "m.csv"
+    assert CD.main(["--desde", "2026-10-19T00:00:00Z", "--hasta", "2026-10-22T00:00:00Z",
+                    "--out", str(out), str(a), str(b)]) == 0
+    txt = capsys.readouterr().out
+    assert "rango=2026-10-19T00:00:01Z .. 2026-10-19T01:30:00Z" in txt
+    assert "rango=2026-10-22T00:00:00Z .. 2026-10-22T00:00:00Z" in txt
+
+
+def test_estricto_contiguos_ok(tmp_path):
+    a = _escribir(tmp_path / "d19.json", [
+        '{"timestamp":"2026-10-19T23:00:00.000+0000","agent":{"id":"001","name":"victima-linux"}}'])
+    b = _escribir(tmp_path / "d20.json", [
+        '{"timestamp":"2026-10-20T00:00:00.000+0000","agent":{"id":"001","name":"victima-linux"}}'])
+    assert CD.main(["--estricto", str(a), str(b)]) == 0
+
+
+def test_estricto_solape_falla(tmp_path, capsys):
+    a = _escribir(tmp_path / "d19.json", [
+        '{"timestamp":"2026-10-19T23:00:00.000+0000","agent":{"id":"001","name":"victima-linux"}}',
+        '{"timestamp":"2026-10-19T23:45:00.000+0000","agent":{"id":"001","name":"victima-linux"}}'])
+    b = _escribir(tmp_path / "d20.json", [
+        '{"timestamp":"2026-10-19T23:30:00.000+0000","agent":{"id":"001","name":"victima-linux"}}'])
+    assert CD.main(["--estricto", str(a), str(b)]) == 3
+    assert "SOLAPAN" in capsys.readouterr().err
+
+
+def test_dedupe_sha256(tmp_path, capsys):
+    a = _escribir(tmp_path / "archives.json", LINEAS[:2])
+    b = tmp_path / "ossec-archive-20.json"
+    b.write_bytes(a.read_bytes())          # mismo contenido (hardlink)
+    out = tmp_path / "m.csv"
+    assert CD.main(["--desde", "2026-10-19T00:00:00Z", "--hasta", "2026-10-22T00:00:00Z",
+                    "--out", str(out), str(a), str(b)]) == 0
+    txt = capsys.readouterr().out
+    assert "DUPLICADO descartado" in txt
+    assert "duplicados=1" in txt
+    filas = {f["ambito"]: f for f in _leer(out)}
+    assert filas["total"]["eventos"] == "2"
+
+
+def test_manifest(tmp_path):
+    a = tmp_path / "archives.json"
+    with gzip.open(str(a) + ".gz", "wt", encoding="utf-8") as fh:
+        fh.write("\n".join(LINEAS) + "\n")
+    man = tmp_path / "manifest.tsv"
+    assert CD.main(["--manifest", str(man), str(a) + ".gz"]) == 0
+    lineas = man.read_text(encoding="utf-8").splitlines()
+    assert lineas[0].split("\t") == ["fichero", "bytes", "sha256", "primer", "ultimo"]
+    campos = lineas[1].split("\t")
+    assert campos[0].endswith(".gz")
+    assert len(campos[2]) == 64
+    assert campos[3].startswith("2026-10-18T23:59:59")

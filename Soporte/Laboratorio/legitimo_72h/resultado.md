@@ -1,3 +1,29 @@
+# `resultado.md` - evidencia operativa host-side
+
+> **ESTADO (2026-10-21, bloque `legitimo-fix`).** La ventana de L1 (19-22/10) es **INVALIDA**
+> (`diagnostico_fallo.md`) y **no se rescata**. El bloque `legitimo-fix` ha **arreglado la
+> causa**, **redisenado la actividad**, **probado en seco (DT0-DT13 + DT-B)** y dejado el
+> laboratorio **listo, vigilado y snapshoteado** (`lab-listo-legit-v2`). **No se ha medido
+> nada**: la repeticion la hara `legitimo-72h-v2` con su gate.
+>
+> - **Fallo**: stdout sin tope (`ghasts.out` 4,78 GB) -> disco 100 % -> orquestacion muerta ->
+>   agente muerto. Evidencia en `fallo_2026-10-19/` (`MANIFEST.md` + `evidencia/`) y
+>   snapshot `fallo-2026-10-19-disco-lleno-NO-USAR`.
+> - **Arreglo**: `nlog.config` consola a `Warn` + **tope 20 MB x 2** en `client_ctl.sh` v2.
+> - **Actividad**: receta determinista de **3 dias** (111/117/105), jornada 09:00-18:00 local,
+>   cafe/comida, **sesion web *browser-like* con `curl`** (`recetas/`).
+> - **Vigilancia**: 9 senales cada 30 min (**7 en vivo + 2 post-hoc**: RAM y `recovery.log`), con **disco leido del agente**.
+> - **Keepalive v3**: heartbeat, 2 confirmaciones, <=2 recuperaciones, rotacion diaria.
+> - **Pruebas**: `prueba_en_seco.md` (DT0-DT13) y `browser_eval.md` (DT-B0..B5: **DT-B0 FAIL**
+>   => navegador descartado).
+> - **Tareas del host**: **0** `TFG-Legit-*` (DT13). Las **4** `TFG-Baseline-*` son **preexistentes**
+>   y no cuentan. El registro historico de L1 (§3) menciona tareas `TFG-Legit-*` que ya se
+>   retiraron (`registrar_tareas.ps1 -Eliminar`).
+>
+> Todo lo que sigue a continuacion es el **registro historico de L1** (se conserva, no se
+> reescribe: `S12.3` del plan).
+
+---
 # `resultado.md` — evidencia operativa host-side (L1, `legitimo_72h`)
 
 > Registro **host-side** de la preparación, el **ensayo general** y (tras `t1`) la ejecución de la

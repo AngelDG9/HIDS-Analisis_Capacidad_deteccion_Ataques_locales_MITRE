@@ -57,6 +57,8 @@ $wazuh   = "D:\TFG-VMs\wazuh-server\wazuh-server.vmx"
 | `base-limpia` | ambas | S.O. recién instalado (fallback / reconstrucción) |
 | **`lab-listo`** | ambas | Estado del laboratorio **listo**: Wazuh 4.14.7 all-in-one + agente `victima-linux` (ID 001) + **detección-only** + **RS1..RS4 activas** + **NAT desconectado**. **Punto de partida de cada ataque (Fase 3)** |
 | **`lab-listo-legit`** | **solo `victima-linux`** | Estado listo para la corrida **legítima** (`L1`): `lab-listo` **+ cliente GHOSTS** (`/home/angel/ghosts-client`, config `ApiRootUrl=…:5000/api`) **+ alias `/etc/hosts`** (`intranet.local`/`portal.local`/`nube.local`) **sin datos de medida** (logs/instance/`~/Documentos`/`~/Descargas` limpios; `config/timeline.json` en `Stop`). Creado 2026-10-18 (bloque L0) |
+| **`fallo-2026-10-19-disco-lleno-NO-USAR`** | **solo `victima-linux`** | **EVIDENCIA** del fallo de L1: estado roto con `ghasts.out` de **4 783 345 664 B** y `/` al 100 %. **NO USAR**. Creado 2026-10-21 (bloque `legitimo-fix`) |
+| **`lab-listo-legit-v2`** | **solo `victima-linux`** | **Estado LISTO para la repeticion** (`legitimo-72h-v2`): `lab-listo-legit` + **arreglos** (`nlog.config` a `Warn`, `client_ctl.sh` v2 con tope 40 MB) + **receta v1** (`d1/d2/d3` + calendario) + `tfg_keepalive.sh` v3, **sin logs ni datos**, **sin timer** y **sin navegador**. **`prep` EXIGE este snapshot (G-1)**. Creado 2026-10-21 |
 
 - **Antes de cada ataque** (Fase 3) se revierte **solo la víctima** al estado limpio:
 
@@ -71,7 +73,7 @@ $wazuh   = "D:\TFG-VMs\wazuh-server\wazuh-server.vmx"
 & $vmrun -T ws revertToSnapshot "D:\TFG-VMs\victima-linux\victima-linux.vmx" "lab-listo-legit"
 ```
 
-> **Inventario verificado (2026-10-18):** `victima-linux` = `base-limpia`, `lab-listo`,
+> **Inventario verificado (2026-10-21, bloque `legitimo-fix`):** `victima-linux` = `base-limpia`, `lab-listo`, `lab-listo-legit`, `fallo-2026-10-19-disco-lleno-NO-USAR`, **`lab-listo-legit-v2`**; `wazuh-server` = `base-limpia`, `lab-listo` (**originales intactos**). `victima-linux` = `base-limpia`, `lab-listo`,
 > `lab-listo-legit`; `wazuh-server` = `base-limpia`, `lab-listo` (**originales intactos**).
 
 - **`wazuh-server` NO se revierte** durante los ataques: conserva las **alertas** en el indexer
