@@ -2,13 +2,15 @@
 bloque: legitimo-72h-v2
 nombre: L1-v2 — ventana de 72 h de actividad legítima (Wazuh Linux virgen) desde lab-listo-legit-v2, extracción y sellado B10
 version: 1
-status: draft
+status: approved_by_human
 fecha: 2026-10-25
+fecha_aprobacion: 2026-10-25
+aprobado_por: humano
 autor: tfg-planner
 depende_de: legitimo-fix (cerrado 2026-10-21, PASA) · legitimo-infra (L0, cerrado) · reencuadre-metrica (métrica congelada v1) · legitimo-72h (L1, EJECUTADO y FALLIDO · ventana INVÁLIDA)
 ventana_objetivo: t0 = 2026-10-26T00:00:00Z → t1 = 2026-10-29T00:00:00Z (72 h exactas; **propuesta** — la ratifica el humano en el gate Q1)
 gate: |
-  **PENDIENTE DE APROBACIÓN (gate humano).** Este bloque **sí ejecuta** las 72 h. Nada se arma
+  **APROBADO (2026-10-25).** Q1–Q8 firmados por el humano. **Fecha: 26/10 → 29/10** (esta noche). **E0 obligatorio antes de armar.** Este bloque **sí ejecuta** las 72 h. Nada se arma
   hasta que el humano firme Q1–Q8 de §11 y el plan quede **en git**.
   Decisiones que debe ratificar: (1) la **fecha** (§2.2, con condición de viabilidad y alternativa);
   (2) el **compromiso de 3 días** con el PC encendido y sin tocar la víctima; (3) el **ensayo E0**
