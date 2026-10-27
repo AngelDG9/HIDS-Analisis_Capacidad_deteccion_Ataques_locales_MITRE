@@ -2,8 +2,9 @@
 
 > Generado a partir de `_artefactos/scripts/construir_receta_legitima.py` (receta **v2**, bloque
 > `legitimo-v3`). Detalle hora→acción en **`receta_resumen.md`**; datos para las máquinas en
-> **`calendario.json`** y **`bloques.env`**. La **campaña** de falsos positivos (`B6`) es de **T2**
-> y **no** está aquí.
+> **`calendario.json`** y **`bloques.env`**. La **campaña** de falsos positivos (`B6`, T2) se
+> **genera desde `../campana/campana_casos.csv`** y va **incluida** en `d1/d2/d3.json` como un
+> sexto handler declarado (`17:05-17:50Z`); su definición y su tabla están en `../campana/`.
 
 ## La idea en una frase
 
@@ -51,6 +52,7 @@ se va. **Nueve horas de reloj** con **café** y **comida** de verdad, **tres dí
 | **P2 Comida** (60 min) | **nada** (pausa) | 0 |
 | **B4 Reuniones/tarde** (135 min) | acta, **sincronizar copias** (`rsync`), compartir en la nube, **descargar con `wget`**, acotar la espera (`timeout`), **destruir un borrador** (`shred`) | 35 / 43 / 29 |
 | **B5 Cierre** (45 min) | copia de seguridad, huellas, subir a la nube, `du`/`df`, limpiar temporales | 12 / 12 / 12 |
+| **B6 Campaña** (17:05–17:50Z) | **repaso del sistema**: 11 casos legítimos no mutantes (T2), con marcas y evidencia; **no es jornada de trabajo** | 16 / 25 / 22 |
 | **Noche** | **nada** de GHOSTS (solo ruido del endpoint) | 0 |
 
 - **Hueco máximo dentro de un bloque: 22 min** (validado: ≤ 1320 s, mín ≥ 40 s). Los huecos

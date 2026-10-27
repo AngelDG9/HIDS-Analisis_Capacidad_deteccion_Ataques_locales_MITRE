@@ -65,34 +65,51 @@ def basenames_corpus(raiz: str):
 
 
 def binarios_receta(recetas: str):
-    """Binarios de las tres recetas, con el mismo `binarios_de` del generador."""
+    """Binarios de las tres recetas de JORNADA (sin B6), con el `binarios_de` del generador.
+
+    B6 (campaña) se cuenta aparte (`--campana`): sumarlo aquí inflaría la receta y
+    diría que la campaña no aporta nada (plan §5.2.5).
+    """
+    import campana
     out = set()
     for day in (1, 2, 3):
         path = os.path.join(recetas, f"d{day}.json")
         if not os.path.isfile(path):
             raise SystemExit(f"ERROR: falta {path}")
         tl = json.load(open(path, encoding="utf-8"))
+        accs = campana.acciones_b6(day)
+        ini_b6 = campana.s_to_hms(accs[0]["t"]) if accs else None
         for h in tl.get("TimeLineHandlers", []):
+            if ini_b6 and h.get("UtcTimeOn") == ini_b6 and h.get("UtcTimeOff") == campana.B6["off"]:
+                continue                      # handler B6: es la campaña, no la receta
             for ev in h.get("TimeLineEvents", []):
                 out.update(rec.binarios_de(ev["Command"]))
     return out
 
 
 def binarios_campana(path: str):
-    """Binarios de la campaña. Acepta cualquier CSV y se queda con los tokens conocidos.
+    """Binarios de la campaña: solo la columna `comandos` del CSV (una fila por caso).
 
-    Es deliberadamente tolerante: la campaña (T2) aún no tiene esquema cerrado y lo que
-    interesa es **no** contar dos veces ni inventar binarios. Solo se aceptan tokens de la
-    lista blanca del generador (`systemctl`/`crontab` incluidos aquí: son de la campaña).
+    El campo `comandos` lleva la lista literal separada por saltos de línea (CSV
+    entrecomillado). Si el CSV no trae esa columna, se mira cada celda. Solo se aceptan
+    tokens de la lista blanca (la de la receta + `systemctl`/`crontab`).
     """
     validos = set(rec.BINARIOS_OK) | {"systemctl", "crontab"}
     out = set()
     with open(path, encoding="utf-8", newline="") as fh:
-        for row in csv.reader(fh):
-            for celda in row:
-                for tok in rec.binarios_de(celda) if celda.strip() else []:
-                    if tok in validos:
-                        out.add(tok)
+        lineas = [linea for linea in fh if not linea.startswith("#")]
+    rd = csv.DictReader(lineas)
+    if rd.fieldnames and "comandos" in rd.fieldnames:
+        celdas = [cmd for row in rd for cmd in (row["comandos"] or "").split("\n")]
+    elif rd.fieldnames and "comando" in rd.fieldnames:
+        celdas = [row["comando"] for row in rd]
+    else:
+        celdas = [celda for row in csv.reader(lineas) for celda in row]
+    for celda in celdas:
+        if celda and celda.strip():
+            for tok in rec.binarios_de(celda):
+                if tok in validos:
+                    out.add(tok)
     return out
 
 

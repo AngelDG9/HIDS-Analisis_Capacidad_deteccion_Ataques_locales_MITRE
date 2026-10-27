@@ -62,6 +62,14 @@
    "tipo": "trabajo",
    "nombre": "Cierre",
    "local": "17:15-18:00"
+  },
+  {
+   "id": "B6",
+   "on": "17:05:00",
+   "off": "17:50:00",
+   "tipo": "campana",
+   "nombre": "Repaso del sistema",
+   "local": "18:05-18:50"
   }
  ],
  "cuentas": {
@@ -88,6 +96,62 @@
   }
  },
  "total_ventana": 441,
+ "campana": {
+  "version": 1,
+  "bloque": {
+   "id": "B6",
+   "on": "17:05:00",
+   "off": "17:50:00",
+   "tipo": "campana",
+   "nombre": "Repaso del sistema",
+   "local": "18:05-18:50"
+  },
+  "casos": 11,
+  "reparto": {
+   "d1": 3,
+   "d2": 4,
+   "d3": 4
+  },
+  "inicios": {
+   "d1": "17:06:00",
+   "d2": "17:17:00",
+   "d3": "17:11:00"
+  },
+  "separacion_min_s": 180,
+  "atribucion_s": {
+   "pre": 10,
+   "post": 60
+  },
+  "acciones": {
+   "d1": 16,
+   "d2": 25,
+   "d3": 22
+  },
+  "total_acciones": 63,
+  "execve": {
+   "total": 103,
+   "por_dia": {
+    "d1": 25,
+    "d2": 34,
+    "d3": 44
+   },
+   "hijos": {
+    "cp": 12,
+    "curl": 1
+   },
+   "metodo": "primer token por segmento, sin builtins (cd/echo/printf/true), +12 cp de xargs y +1 curl de timeout",
+   "nota": "proyección determinista desde campana_casos.csv; B10 lo sella"
+  },
+  "marcas": 22,
+  "fuente": "campana/campana_casos.csv",
+  "sha256_casos_md": "0485d75e3472fe1e73c758df1ae2d17839d2ffa67d664b03fdd17de7dd8a9c46",
+  "no_mutante": true,
+  "efectos_declarados": [
+   "logger",
+   "descargas_http"
+  ]
+ },
+ "total_con_campana": 504,
  "mapa_dias": {},
  "regla_dia": "k = 1 + ((fecha_utc - fecha_t0) mod 3)",
  "mapa_dias_como_se_pasa": "construir_receta_legitima.py --t0 AAAA-MM-DD  (o --mapa-dias a:1,b:2,c:3)",

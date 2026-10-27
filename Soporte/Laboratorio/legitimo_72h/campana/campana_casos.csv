@@ -1,0 +1,117 @@
+# campana_casos.csv | campana B6 (bloque legitimo-v3, T2) | 11 casos | 22 marcas | 63 acciones | sha256_casos_md=0485d75e3472fe1e73c758df1ae2d17839d2ffa67d664b03fdd17de7dd8a9c46 | fuente=casos.md | plan=5.2.6
+caso,nombre,dia,hora_inicio,muta,binarios,ata,tecnica,rule_ids,esperado_n7,esperado_n3,evidencia,coste,por_que,tipos,comandos
+C-01,El equipo va lento: miro memoria y servicios,1,17:06:00,No,free;systemctl,ATA004;ATA045;ATA038,T1489;T1499.001;T1529,80792,0,80792 L3 x3,hecho.txt con wc -l: servicios.txt > 10 lineas y free.txt > 3 lineas,3 min · <1 MB,"Cualquier empleado mira la memoria y los servicios cuando el portatil va lento, antes de abrir una incidencia. Solo lectura; no se nombra al agente.","inicio
+comando
+comando
+comando
+evidencia
+fin","cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-01 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-01/inicio.txt
+cd /home/angel/Documentos/campana_fp/C-01 && free -m > /home/angel/Documentos/campana_fp/C-01/free.txt
+cd /home/angel/Documentos/campana_fp/C-01 && systemctl --failed --no-pager > /home/angel/Documentos/campana_fp/C-01/fallidos.txt
+cd /home/angel/Documentos/campana_fp/C-01 && systemctl list-units --type=service --state=running --no-pager > /home/angel/Documentos/campana_fp/C-01/servicios.txt
+cd /home/angel/Documentos/campana_fp/C-01 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-01/hecho.txt && wc -l /home/angel/Documentos/campana_fp/C-01/servicios.txt /home/angel/Documentos/campana_fp/C-01/free.txt /home/angel/Documentos/campana_fp/C-01/fallidos.txt >> /home/angel/Documentos/campana_fp/C-01/hecho.txt && cat /home/angel/Documentos/campana_fp/C-01/hecho.txt
+cd /home/angel/Documentos/campana_fp/C-01 && rm -f /home/angel/Documentos/campana_fp/C-01/servicios.txt /home/angel/Documentos/campana_fp/C-01/free.txt /home/angel/Documentos/campana_fp/C-01/fallidos.txt && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-01/fin.txt"
+C-02,No me va la intranet: miro la red,1,17:15:20,No,ip,ATA054;ATA055,T1498.002;T1557.003,80792,0,80792 L3 x2,hecho.txt con la IPv4 192.168.65.x (grep) y la tabla de rutas,2 min · <1 MB,Comprobar la IP y la puerta de enlace es el primer paso de cualquier usuario ofimatico cuando una web interna no carga. `ip` se usa sin `set`/`add`: no se cambia nada.,"inicio
+comando
+comando
+evidencia
+fin","cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-02 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-02/inicio.txt
+cd /home/angel/Documentos/campana_fp/C-02 && ip -brief addr > /home/angel/Documentos/campana_fp/C-02/ip_addr.txt
+cd /home/angel/Documentos/campana_fp/C-02 && ip route > /home/angel/Documentos/campana_fp/C-02/ip_route.txt
+cd /home/angel/Documentos/campana_fp/C-02 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-02/hecho.txt && grep '192.168.65.' /home/angel/Documentos/campana_fp/C-02/ip_addr.txt >> /home/angel/Documentos/campana_fp/C-02/hecho.txt && cat /home/angel/Documentos/campana_fp/C-02/ip_route.txt >> /home/angel/Documentos/campana_fp/C-02/hecho.txt
+cd /home/angel/Documentos/campana_fp/C-02 && rm -f /home/angel/Documentos/campana_fp/C-02/ip_addr.txt /home/angel/Documentos/campana_fp/C-02/ip_route.txt && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-02/fin.txt"
+C-03,Compruebo si la copia esta programada,1,17:24:40,No,systemctl;crontab,ATA021;ATA004,T1029;T1489,80792,0,80792 L3 x2 (y 0 2832),hecho.txt con el nº de timers (wc -l) y crontab_rc=1,2 min · <1 MB,"Comprobar si la copia automatica esta programada es una duda corriente. `crontab -l` solo lee; con el crontab vacio devuelve rc=1 (no crontab for angel), que es un exit distinto de cero realista.","inicio
+comando
+comando
+evidencia
+fin","cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-03 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-03/inicio.txt
+cd /home/angel/Documentos/campana_fp/C-03 && systemctl list-timers --all --no-pager > /home/angel/Documentos/campana_fp/C-03/timers.txt
+cd /home/angel/Documentos/campana_fp/C-03 && crontab -l > /home/angel/Documentos/campana_fp/C-03/crontab.txt 2>/dev/null || printf 'crontab_rc=%s\n' $? > /home/angel/Documentos/campana_fp/C-03/crontab_rc.txt
+cd /home/angel/Documentos/campana_fp/C-03 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-03/hecho.txt && wc -l /home/angel/Documentos/campana_fp/C-03/timers.txt >> /home/angel/Documentos/campana_fp/C-03/hecho.txt && cat /home/angel/Documentos/campana_fp/C-03/crontab_rc.txt >> /home/angel/Documentos/campana_fp/C-03/hecho.txt
+cd /home/angel/Documentos/campana_fp/C-03 && rm -f /home/angel/Documentos/campana_fp/C-03/timers.txt /home/angel/Documentos/campana_fp/C-03/crontab.txt /home/angel/Documentos/campana_fp/C-03/crontab_rc.txt && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-03/fin.txt"
+C-05,Protejo el informe con contrasena antes de enviarlo,2,17:17:00,No,openssl,ATA001;ATA019;ATA041,T1486;T1048.001;T1048.002,80792,0,80792 L3 x2 (+2 sha256sum),hecho.txt con las dos huellas sha256 (original == descifrado),4 min · <1 MB,"Proteger con contrasena un informe con datos de clientes antes de enviarlo por correo es una practica real de oficina. El fichero es de juguete y la contrasena es simbolica (`demo-c05`), como en ATA001.","inicio
+comando
+comando
+comando
+comando
+evidencia
+fin","cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-05 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-05/inicio.txt
+cd /home/angel/Documentos/campana_fp/C-05 && echo 'informe del area: datos de cliente, importe 1200' > /home/angel/Documentos/campana_fp/C-05/informe.txt
+cd /home/angel/Documentos/campana_fp/C-05 && openssl enc -aes-256-cbc -pbkdf2 -salt -in /home/angel/Documentos/campana_fp/C-05/informe.txt -out /home/angel/Documentos/campana_fp/C-05/informe.txt.enc -pass pass:demo-c05
+cd /home/angel/Documentos/campana_fp/C-05 && openssl enc -d -aes-256-cbc -pbkdf2 -in /home/angel/Documentos/campana_fp/C-05/informe.txt.enc -out /home/angel/Documentos/campana_fp/C-05/informe.txt.rec -pass pass:demo-c05
+cd /home/angel/Documentos/campana_fp/C-05 && sha256sum /home/angel/Documentos/campana_fp/C-05/informe.txt /home/angel/Documentos/campana_fp/C-05/informe.txt.rec > /home/angel/Documentos/campana_fp/C-05/huellas.txt
+cd /home/angel/Documentos/campana_fp/C-05 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-05/hecho.txt && cat /home/angel/Documentos/campana_fp/C-05/huellas.txt >> /home/angel/Documentos/campana_fp/C-05/hecho.txt
+cd /home/angel/Documentos/campana_fp/C-05 && rm -f /home/angel/Documentos/campana_fp/C-05/informe.txt /home/angel/Documentos/campana_fp/C-05/informe.txt.enc /home/angel/Documentos/campana_fp/C-05/informe.txt.rec /home/angel/Documentos/campana_fp/C-05/huellas.txt && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-05/fin.txt"
+C-06,Limpio temporales y destruyo un borrador,2,17:25:30,No,rm;shred,ATA003;ATA005,T1490;T1561,80792;80791,0,80792 L3 x2 + 80791 L3 x2-6,hecho.txt con el tamano previo y borrador_ausente=1 tras shred,2 min · <1 MB,Borrar temporales y destruir un borrador con datos personales es lo que recomienda cualquier manual de proteccion de datos. Los dos objetos los crea el propio caso.,"inicio
+comando
+comando
+comando
+comando
+evidencia
+fin","cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-06 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-06/inicio.txt
+cd /home/angel/Documentos/campana_fp/C-06 && mkdir -p /home/angel/Documentos/campana_fp/C-06/tmp && echo 'temporal del dia' > /home/angel/Documentos/campana_fp/C-06/tmp/borrador_tmp.txt && echo 'borrador con datos personales' > /home/angel/Documentos/campana_fp/C-06/borrador.txt
+cd /home/angel/Documentos/campana_fp/C-06 && stat -c %s /home/angel/Documentos/campana_fp/C-06/borrador.txt > /home/angel/Documentos/campana_fp/C-06/antes.txt
+cd /home/angel/Documentos/campana_fp/C-06 && rm -rf /home/angel/Documentos/campana_fp/C-06/tmp
+cd /home/angel/Documentos/campana_fp/C-06 && shred -n 1 -z -u /home/angel/Documentos/campana_fp/C-06/borrador.txt
+cd /home/angel/Documentos/campana_fp/C-06 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-06/hecho.txt && cat /home/angel/Documentos/campana_fp/C-06/antes.txt >> /home/angel/Documentos/campana_fp/C-06/hecho.txt && stat -c %s /home/angel/Documentos/campana_fp/C-06/borrador.txt 2>/dev/null || echo 'borrador_ausente=1' >> /home/angel/Documentos/campana_fp/C-06/hecho.txt
+cd /home/angel/Documentos/campana_fp/C-06 && rm -f /home/angel/Documentos/campana_fp/C-06/antes.txt && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-06/fin.txt"
+C-07,Sincronizo los informes con la carpeta de copias,2,17:33:10,No,rsync,ATA039;ATA040,T1039;T1074.002,80792;80790;80791,0,80792 L3 x1 (+ 80790/80791 L3 por fichero),hecho.txt con du -sb de origen y destino (iguales) y ls de destino,3 min · <1 MB,Sincronizar la carpeta de informes con la de copias es lo que hace cualquiera que haya perdido un fichero una vez. Origen y destino son del caso; `--delete` solo afecta a `C-07/destino/`.,"inicio
+comando
+comando
+evidencia
+fin","cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-07 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-07/inicio.txt
+cd /home/angel/Documentos/campana_fp/C-07 && mkdir -p /home/angel/Documentos/campana_fp/C-07/origen /home/angel/Documentos/campana_fp/C-07/destino && echo 'informe uno' > /home/angel/Documentos/campana_fp/C-07/origen/informe_1.txt && echo 'informe dos' > /home/angel/Documentos/campana_fp/C-07/origen/informe_2.txt && echo 'copia obsoleta' > /home/angel/Documentos/campana_fp/C-07/destino/obsoleto.txt
+cd /home/angel/Documentos/campana_fp/C-07 && rsync -a --delete /home/angel/Documentos/campana_fp/C-07/origen/ /home/angel/Documentos/campana_fp/C-07/destino/
+cd /home/angel/Documentos/campana_fp/C-07 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-07/hecho.txt && du -sb /home/angel/Documentos/campana_fp/C-07/origen /home/angel/Documentos/campana_fp/C-07/destino >> /home/angel/Documentos/campana_fp/C-07/hecho.txt && ls -la /home/angel/Documentos/campana_fp/C-07/destino >> /home/angel/Documentos/campana_fp/C-07/hecho.txt
+cd /home/angel/Documentos/campana_fp/C-07 && rm -rf /home/angel/Documentos/campana_fp/C-07/origen /home/angel/Documentos/campana_fp/C-07/destino && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-07/fin.txt"
+C-08,Normalizo el CSV del informe,2,17:41:20,No,sed,ATA006;ATA032;ATA026;ATA017,T1565;T1565.001;T1565.002;T1657,80792;80790;80791,0,80792 L3 x2 (+ 80790/80791 L3 temporal),hecho.txt con la cabecera con comas y grep -c ';' = 0,2 min · <1 MB,Cambiar el separador de un CSV exportado para poder abrirlo es la operacion ofimatica mas comun que existe. La copia es propia; el original del informe no se toca.,"inicio
+comando
+comando
+comando
+evidencia
+fin","cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-08 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-08/inicio.txt
+cd /home/angel/Documentos/campana_fp/C-08 && echo 'referencia;area;importe' > /home/angel/Documentos/campana_fp/C-08/export.csv && echo 'A-01;compras;1200' >> /home/angel/Documentos/campana_fp/C-08/export.csv && echo 'A-02;ventas;980' >> /home/angel/Documentos/campana_fp/C-08/export.csv
+cd /home/angel/Documentos/campana_fp/C-08 && sed -i 's/;/,/g' /home/angel/Documentos/campana_fp/C-08/export.csv
+cd /home/angel/Documentos/campana_fp/C-08 && sed -n '1,5p' /home/angel/Documentos/campana_fp/C-08/export.csv > /home/angel/Documentos/campana_fp/C-08/export_normalizado.txt
+cd /home/angel/Documentos/campana_fp/C-08 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-08/hecho.txt && head -1 /home/angel/Documentos/campana_fp/C-08/export.csv >> /home/angel/Documentos/campana_fp/C-08/hecho.txt && grep -c ';' /home/angel/Documentos/campana_fp/C-08/export.csv >> /home/angel/Documentos/campana_fp/C-08/hecho.txt || true
+cd /home/angel/Documentos/campana_fp/C-08 && rm -f /home/angel/Documentos/campana_fp/C-08/export.csv /home/angel/Documentos/campana_fp/C-08/export_normalizado.txt && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-08/fin.txt"
+C-09,La intranet no responde: acoto el tiempo y reintento,3,17:11:00,No,curl;timeout,ATA025;ATA009;ATA010;ATA020;ATA023;ATA028;ATA041;ATA050,T1496.001;T1567;T1041;T1020;T1496.002;T1056.003;T1048.002;T1567.003,80792,0,80792 L3 x4,"hecho.txt con HTTP=200, RC_FALLO=7 y RC_REINTENTO=0",3 min · <1 MB,"Cuando una web interna no carga, el usuario acota el tiempo de espera, comprueba si el puerto responde y reintenta. Solo GET a la intranet local y a un puerto cerrado (8081); no se toca ningun servicio.","inicio
+comando
+comando
+comando
+evidencia
+fin","cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-09 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-09/inicio.txt
+cd /home/angel/Documentos/campana_fp/C-09 && curl -sS --max-time 3 -o /home/angel/Documentos/campana_fp/C-09/intranet.html -w '%{http_code}\n' http://intranet.local:8080/ > /home/angel/Documentos/campana_fp/C-09/http_code.txt
+cd /home/angel/Documentos/campana_fp/C-09 && curl -sS --max-time 2 http://intranet.local:8081/ 2>/dev/null || printf 'RC_FALLO=%s\n' $? > /home/angel/Documentos/campana_fp/C-09/fallo_rc.txt
+cd /home/angel/Documentos/campana_fp/C-09 && timeout 5 curl -sS -o /home/angel/Documentos/campana_fp/C-09/reintento.html http://intranet.local:8080/ && echo 'RC_REINTENTO=0' > /home/angel/Documentos/campana_fp/C-09/reintento_rc.txt
+cd /home/angel/Documentos/campana_fp/C-09 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-09/hecho.txt && cat /home/angel/Documentos/campana_fp/C-09/http_code.txt /home/angel/Documentos/campana_fp/C-09/fallo_rc.txt /home/angel/Documentos/campana_fp/C-09/reintento_rc.txt >> /home/angel/Documentos/campana_fp/C-09/hecho.txt && wc -c /home/angel/Documentos/campana_fp/C-09/intranet.html >> /home/angel/Documentos/campana_fp/C-09/hecho.txt
+cd /home/angel/Documentos/campana_fp/C-09 && rm -f /home/angel/Documentos/campana_fp/C-09/intranet.html /home/angel/Documentos/campana_fp/C-09/reintento.html /home/angel/Documentos/campana_fp/C-09/http_code.txt /home/angel/Documentos/campana_fp/C-09/fallo_rc.txt /home/angel/Documentos/campana_fp/C-09/reintento_rc.txt && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-09/fin.txt"
+C-10,Preparo el lote de plantillas del mes,3,17:19:30,No,seq;xargs;cp,ATA046;ATA047,T1499.003;T1499.002,80792,0,"80792 L3 x14 (1 seq, 1 xargs, 12 cp)",hecho.txt con el tamano de lote_12.txt y las 12 rutas,4 min · <1 MB,Generar N copias numeradas de una plantilla es una operacion de lote corriente. `xargs` va con `-a fichero` (no con pipe: el validador lo prohibe y DT9 demostro que GHOSTS pierde el reporte); la plantilla la crea el propio caso.,"inicio
+comando
+comando
+comando
+evidencia
+fin","cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-10 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-10/inicio.txt
+cd /home/angel/Documentos/campana_fp/C-10 && echo 'plantilla del informe del mes' > /home/angel/Documentos/campana_fp/C-10/plantilla.txt && seq 1 12 > /home/angel/Documentos/campana_fp/C-10/lotes.txt
+cd /home/angel/Documentos/campana_fp/C-10 && xargs -a /home/angel/Documentos/campana_fp/C-10/lotes.txt -I{} cp /home/angel/Documentos/campana_fp/C-10/plantilla.txt /home/angel/Documentos/campana_fp/C-10/lote_{}.txt
+cd /home/angel/Documentos/campana_fp/C-10 && wc -l /home/angel/Documentos/campana_fp/C-10/lote_1.txt > /home/angel/Documentos/campana_fp/C-10/lote1_wc.txt
+cd /home/angel/Documentos/campana_fp/C-10 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-10/hecho.txt && stat -c %s /home/angel/Documentos/campana_fp/C-10/lote_12.txt >> /home/angel/Documentos/campana_fp/C-10/hecho.txt && ls -l /home/angel/Documentos/campana_fp/C-10/lote_*.txt >> /home/angel/Documentos/campana_fp/C-10/hecho.txt
+cd /home/angel/Documentos/campana_fp/C-10 && rm -f /home/angel/Documentos/campana_fp/C-10/lote_*.txt /home/angel/Documentos/campana_fp/C-10/lotes.txt /home/angel/Documentos/campana_fp/C-10/plantilla.txt /home/angel/Documentos/campana_fp/C-10/lote1_wc.txt && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-10/fin.txt"
+C-11,Dejo constancia de la incidencia en el registro,3,17:27:10,No,logger;tee,ATA018,T1056.001,80792,0,80792 L3 x2 (y 0 por syslog 40700),hecho.txt con tail -3 de registro.log (la nota),2 min · <1 MB,"Anotar en el registro del sistema que se ha cerrado una incidencia es una costumbre extendida. `tee` va con redireccion de entrada (sin pipe). Mide el punto ciego conocido (`40700`, L0) en el plano legitimo.","inicio
+comando
+comando
+comando
+evidencia
+fin","cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-11 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-11/inicio.txt
+cd /home/angel/Documentos/campana_fp/C-11 && echo 'C-11: incidencia cerrada; copia del dia revisada' > /home/angel/Documentos/campana_fp/C-11/nota.txt
+cd /home/angel/Documentos/campana_fp/C-11 && logger -t ofimatica 'C-11: incidencia cerrada; copia del dia revisada'
+cd /home/angel/Documentos/campana_fp/C-11 && tee -a /home/angel/Documentos/campana_fp/C-11/registro.log < /home/angel/Documentos/campana_fp/C-11/nota.txt
+cd /home/angel/Documentos/campana_fp/C-11 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-11/hecho.txt && tail -3 /home/angel/Documentos/campana_fp/C-11/registro.log >> /home/angel/Documentos/campana_fp/C-11/hecho.txt
+cd /home/angel/Documentos/campana_fp/C-11 && rm -f /home/angel/Documentos/campana_fp/C-11/nota.txt /home/angel/Documentos/campana_fp/C-11/registro.log && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-11/fin.txt"
+C-12,Descargo el manual con wget,3,17:35:40,No,wget,ATA008;ATA043,T1048;T1567.004,80792;80791,0,80792 L3 x1 (+ 80791 si borra temporales),hecho.txt con el tamano de manual.pdf (> 1000 bytes),2 min · <1 MB,El manual de empleado se descarga con la herramienta que haya; `wget` es la alternativa de consola a `curl`. La URL y el fichero son los que la receta ya usa a diario.,"inicio
+comando
+evidencia
+fin","cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-12 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-12/inicio.txt
+cd /home/angel/Documentos/campana_fp/C-12 && wget -q -O /home/angel/Documentos/campana_fp/C-12/manual.pdf http://intranet.local:8080/descargas/manual_empleado.pdf
+cd /home/angel/Documentos/campana_fp/C-12 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-12/hecho.txt && stat -c %s /home/angel/Documentos/campana_fp/C-12/manual.pdf >> /home/angel/Documentos/campana_fp/C-12/hecho.txt
+cd /home/angel/Documentos/campana_fp/C-12 && rm -f /home/angel/Documentos/campana_fp/C-12/manual.pdf && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-12/fin.txt"

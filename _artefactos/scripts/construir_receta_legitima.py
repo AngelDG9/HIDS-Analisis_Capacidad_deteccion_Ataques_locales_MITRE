@@ -54,6 +54,8 @@ import os
 import re
 from datetime import datetime, timedelta, timezone
 
+import campana
+
 # --------------------------------------------------------------------------
 # Constantes de la receta (una sola fuente de verdad)
 # --------------------------------------------------------------------------
@@ -93,6 +95,9 @@ BLOQUES = [
      "nombre": "Reuniones y tarde", "local": "15:00-17:15"},
     {"id": "B5", "on": "16:15:00", "off": "17:00:00", "tipo": "trabajo",
      "nombre": "Cierre", "local": "17:15-18:00"},
+    # B6 = campaña de falsos positivos (T2). NO es jornada de trabajo: es un bloque
+    # **declarado** de 45 min al final del día (plan §3.1 y §3.1.1).
+    dict(campana.B6),
 ]
 BLOQUES_TRABAJO = [b for b in BLOQUES if b["tipo"] == "trabajo"]
 IDS_TRABAJO = [b["id"] for b in BLOQUES_TRABAJO]
@@ -162,6 +167,9 @@ BINARIOS_OK = {
     "xargs", "timeout", "sed", "ip", "openssl", "tee", "free", "logger",
     "seq", "rsync", "shred", "wget",
 }
+# Lista blanca de la CAMPAÑA: la de la receta + los 2 binarios que solo ejecuta B6
+# (lectura). No se añaden a `BINARIOS_OK`: la receta no los usa (plan §5.2.1.5).
+BINARIOS_CAMPANA = BINARIOS_OK | campana.BINARIOS_SOLO_CAMPANA
 # Familias de error admitidas (M3, §5.1 y §1.4). Nada fuera de esta lista.
 FAMILIAS_ERROR = ("ruta_mal", "cp_dir", "gzip", "rm_inexistente", "cat_dir", "opcion")
 # Builtins de bash que NO generan `execve` y por tanto no se validan como binarios.
@@ -885,6 +893,10 @@ def construir_timeline(day: int, dry: bool = False, base_s: int = 10 * 3600,
             "HandlerArgs": {},
             "TimeLineEvents": eventos,
         })
+    # B6 — campaña de falsos positivos (T2): bloque declarado 17:05-17:50Z, una
+    # ejecución diaria. En `--dry` (jornada comprimida) no se añade.
+    if not dry:
+        handlers.append(campana.handler_b6(day))
     return {"Status": "Run", "TimeLineHandlers": handlers}, acciones
 
 
@@ -903,6 +915,10 @@ def mapa_a_texto(mapa):
 
 
 def escribir_calendario(outdir, mapa):
+    camp_acc = campana.cuentas_campana()
+    camp_exec = campana.contar_execve()
+    sha_md = (campana.sha256_file(campana.ruta_md())
+              if os.path.isfile(campana.ruta_md()) else "")
     cal = {
         "receta_version": VERSION_RECETA,
         "zona": "Europe/Madrid (CET=UTC+1 desde 2026-10-25)",
@@ -911,6 +927,30 @@ def escribir_calendario(outdir, mapa):
         "bloques": BLOQUES,
         "cuentas": {str(k): v for k, v in CUENTAS.items()},
         "total_ventana": sum(sum(v.values()) for v in CUENTAS.values()),
+        "campana": {
+            "version": 1,
+            "bloque": dict(campana.B6),
+            "casos": len(campana.IDS),
+            "reparto": {f"d{k}": v for k, v in campana.REPARTO.items()},
+            "inicios": {f"d{k}": v for k, v in campana.INICIOS_PLAN.items()},
+            "separacion_min_s": campana.SEPARACION_MIN_S,
+            "atribucion_s": {"pre": campana.ATRIB_PRE_S, "post": campana.ATRIB_POST_S},
+            "acciones": {f"d{k}": v for k, v in camp_acc.items()},
+            "total_acciones": sum(camp_acc.values()),
+            "execve": {
+                "total": camp_exec["total"],
+                "por_dia": {f"d{k}": v for k, v in camp_exec["por_dia"].items()},
+                "hijos": camp_exec["hijos"],
+                "metodo": camp_exec["metodo"],
+                "nota": "proyección determinista desde campana_casos.csv; B10 lo sella",
+            },
+            "marcas": 2 * len(campana.IDS),
+            "fuente": "campana/campana_casos.csv",
+            "sha256_casos_md": sha_md,
+            "no_mutante": True,
+            "efectos_declarados": list(campana.EFECTOS_DECLARADOS),
+        },
+        "total_con_campana": sum(sum(v.values()) for v in CUENTAS.values()) + sum(camp_acc.values()),
         "mapa_dias": mapa,
         "regla_dia": "k = 1 + ((fecha_utc - fecha_t0) mod 3)",
         "mapa_dias_como_se_pasa": "construir_receta_legitima.py --t0 AAAA-MM-DD  (o --mapa-dias a:1,b:2,c:3)",
@@ -928,6 +968,7 @@ def escribir_calendario(outdir, mapa):
     lineas = [
         "# bloques y pausas de la receta legitima (UTC). Generado; NO editar a mano.",
         f"# jornada {JORNADA[0]} - {JORNADA[1]} UTC (09:00-18:00 local)",
+        "# B6 (17:05-17:50Z) es la campana declarada: NO es jornada de trabajo.",
         f"TFG_RECETA_VERSION={VERSION_RECETA}",
         f"TFG_JORNADA={JORNADA[0]}-{JORNADA[1]}",
         f"TFG_CWD_BASE={HOME}",
@@ -936,6 +977,14 @@ def escribir_calendario(outdir, mapa):
     for b in BLOQUES:
         lineas.append(f"{b['id']}={b['on'][:5]}-{b['off'][:5]} {b['tipo']}")
     lineas += [
+        "# campana de falsos positivos B6 (T2): 11 casos no mutantes dentro de la ventana.",
+        "TFG_CAMPANA_VERSION=1",
+        f"TFG_CAMPANA_CASOS={len(campana.IDS)}",
+        f"TFG_CAMPANA_ACCIONES={sum(camp_acc.values())}",
+        f"TFG_CAMPANA_MARCAS={2 * len(campana.IDS)}",
+        "TFG_CAMPANA_INICIOS=" + ",".join(f"d{k}:{v}" for k, v in campana.INICIOS_PLAN.items()),
+        "TFG_CAMPANA_REPARTO=" + ",".join(f"d{k}:{v}" for k, v in campana.REPARTO.items()),
+        f"TFG_CAMPANA_SEPARACION_MIN_S={campana.SEPARACION_MIN_S}",
         "# mapeo de dias de la ventana (fecha_utc del dia -> fichero de receta).",
         ("# fijado con --t0/--mapa-dias (la ventana se cierra en T4)." if mapa else
          "# VACIO a proposito: se fija al cerrar T4 con `construir_receta_legitima.py --t0 AAAA-MM-DD`."),
@@ -967,6 +1016,9 @@ def escribir_resumen(outdir, timelines):
         "> `Curl`, **cero** navegador, **cero** pipes (DT9).",
         "> **`cwd` por acción**: `cd <carpeta coherente> && <comando>` (ninguna en el directorio del cliente).",
         "> **Sin fecha**: `TFG_MAPA_DIAS` se pasa con `--t0` y se fija al cerrar **T4**.",
+        "> **Campaña `B6`** (T2): 11 casos no mutantes en `17:05-17:50Z`, reparto **3/4/4** e",
+        "> inicio con **jitter fijo** (`d1` 17:06 · `d2` 17:17 · `d3` 17:11). Se genera desde",
+        "> `campana/campana_casos.csv`; se publica aparte y **no** recalcula `M`.",
         "",
         "## Qué cambia respecto de la v1 (M1–M4)",
         "",
@@ -984,20 +1036,60 @@ def escribir_resumen(outdir, timelines):
         "| **M4 corpus** | 12 binarios nuevos con uso de oficina: `xargs`, `timeout`, `sed`, `ip`,",
         "  `openssl`, `tee`, `free`, `logger`, `seq`, `rsync`, `shred`, `wget` |",
         "  `cobertura_exes.py` (receta v2 = 23/50 del corpus) |",
+        "| **M5 campaña `B6`** | 11 casos legítimos **no mutantes** dentro de la ventana, con",
+        "  `inicio`/`fin`/`hecho` por caso y esperado **por umbral** (`N ≥ 7` = 0; `N ≥ 3` = `80792`) |",
+        "  `campana.py --check` + `construir_receta_legitima.py --check` (CA-27) |",
         "",
         "## Bloques y recuentos",
         "",
         "| Bloque | UTC | Local | Tipo | D1 | D2 | D3 |",
         "|---|---|---|---|---|---|---|",
     ]
+    camp_acc = campana.cuentas_campana()
     for b in BLOQUES:
-        vals = [str(CUENTAS[d][b["id"]]) if b["tipo"] == "trabajo" else "0" for d in (1, 2, 3)]
+        if b["tipo"] == "campana":
+            vals = [str(camp_acc[d]) for d in (1, 2, 3)]
+        elif b["tipo"] == "trabajo":
+            vals = [str(CUENTAS[d][b["id"]]) for d in (1, 2, 3)]
+        else:
+            vals = ["0", "0", "0"]
         lineas.append(f"| {b['id']} {b['nombre']} | {b['on'][:5]}–{b['off'][:5]} | {b['local']} | "
                       f"{b['tipo']} | {vals[0]} | {vals[1]} | {vals[2]} |")
-    lineas.append(f"| **Total** | 08:00–17:00 | 09:00–18:00 | — | **{tot[1]}** | **{tot[2]}** | **{tot[3]}** |")
-    lineas += ["", f"**Total ventana (3 días): {sum(tot.values())} acciones** "
+    lineas.append(f"| **Total jornada** | 08:00–17:00 | 09:00–18:00 | trabajo | "
+                  f"**{tot[1]}** | **{tot[2]}** | **{tot[3]}** |")
+    lineas.append(f"| **Total con B6** | 08:00–17:50 | 09:00–18:50 | — | "
+                  f"**{tot[1] + camp_acc[1]}** | **{tot[2] + camp_acc[2]}** | "
+                  f"**{tot[3] + camp_acc[3]}** |")
+    lineas += ["", f"**Total ventana (3 días): {sum(tot.values())} acciones de jornada + "
+                   f"{sum(camp_acc.values())} de la campaña = "
+                   f"{sum(tot.values()) + sum(camp_acc.values())} acciones GHOSTS** "
                    f"(v1: 333; +{sum(tot.values()) - 333} por M3/M4, ≈ "
                    f"{(sum(tot.values()) - 333) * 100 // 333} %).", ""]
+
+    # --- campaña (B6) ---
+    camp_exec = campana.contar_execve()
+    lineas += ["## Campaña de falsos positivos (`B6`, T2)", "",
+               f"**{len(campana.IDS)} casos** no mutantes, **reparto 3/4/4** y **jitter fijo de "
+               f"inicio** (`d1` 17:06 · `d2` 17:17 · `d3` 17:11). Separación mínima "
+               f"**{campana.SEPARACION_MIN_S} s**; atribución `[ini − 10 s, fin + 60 s]`. "
+               f"**{sum(camp_acc.values())} acciones** y **{camp_exec['total']} `execve`** "
+               f"({camp_exec['por_dia']}). Definición y comandos literales: "
+               f"`campana/casos.md` + `campana/campana_casos.csv`.", "",
+               "| Día | Inicio | Casos | Acciones B6 | Último `fin` | Huecos entre casos |",
+               "|---|---|---|---|---|---|"]
+    for day in (1, 2, 3):
+        accs = campana.acciones_b6(day)
+        ini = {a["caso"]: a["t"] for a in accs if a["tipo"] == "inicio"}
+        fin = {a["caso"]: a["t"] for a in accs if a["tipo"] == "fin"}
+        orden = sorted(ini, key=lambda c: ini[c])
+        huecos = ", ".join(f"{ini[b] - fin[a]} s" for a, b in zip(orden, orden[1:]))
+        lineas.append(f"| d{day} | {_fmt_hms(ini[orden[0]])[:5]} | {len(orden)} | "
+                      f"{len(accs)} | {_fmt_hms(fin[orden[-1]])[:5]} | {huecos or '—'} |")
+    lineas += ["",
+               "> `B6` **no es jornada de trabajo**: está declarado en `bloques.env` y la "
+               "vigilancia no lo juzga como un bloque de oficina. Los casos se publican "
+               "**aparte** (`campana_fp.csv`); **no** se recalcula `M` ni se da un FPR "
+               "alternativo.", ""]
 
     # --- ritmo medido (por día y bloque) ---
     lineas += ["## Ritmo medido (tabla de jitter fija)", "",
@@ -1051,7 +1143,8 @@ def escribir_resumen(outdir, timelines):
                ""]
 
     for day in (1, 2, 3):
-        lineas.append(f"## Día {day} — «{TEMAS[day]}» ({tot[day]} acciones)")
+        lineas.append(f"## Día {day} — «{TEMAS[day]}» ({tot[day]} + {camp_acc[day]} = "
+                      f"{tot[day] + camp_acc[day]} acciones)")
         lineas.append("")
         lineas.append("| # | UTC | Bloque | Familia | cwd | Comando |")
         lineas.append("|---|---|---|---|---|---|")
@@ -1065,6 +1158,12 @@ def escribir_resumen(outdir, timelines):
                 lineas.append(f"| {idx} | {_fmt_hms(t)[:5]} | {b['id']} | {fam} | "
                               f"`{cwd.replace(HOME, '~')}` | `{cmd}` |")
                 t += ev["DelayAfter"] // 1000
+        for a in campana.acciones_b6(day):
+            idx += 1
+            m = re.match(r"^cd (\S+) && ", a["comando"])
+            cwd = m.group(1) if m else campana.BASE
+            lineas.append(f"| {idx} | {a['hora']} | B6/{a['caso']} | {a['tipo']} | "
+                          f"`{cwd.replace(HOME, '~')}` | `{a['comando']}` |")
         lineas.append("")
     with open(os.path.join(outdir, "receta_resumen.md"), "w", encoding="utf-8", newline="\n") as fh:
         fh.write("\n".join(lineas) + "\n")
@@ -1104,8 +1203,10 @@ def validar(outdir, verbose=True, mapa_esperado=None):
         if tl.get("Status") != "Run":
             fallos.append(f"d{day}: Status != Run")
         hs = tl.get("TimeLineHandlers", [])
-        if len(hs) != len(BLOQUES_TRABAJO):
-            fallos.append(f"d{day}: {len(hs)} handlers (se esperan {len(BLOQUES_TRABAJO)})")
+        n_esp = len(BLOQUES_TRABAJO) + 1          # 5 bloques de jornada + B6
+        if len(hs) != n_esp:
+            fallos.append(f"d{day}: {len(hs)} handlers (se esperan {n_esp}: "
+                          f"{len(BLOQUES_TRABAJO)} de jornada + B6)")
             continue
         total = 0
         for h, b in zip(hs, BLOQUES_TRABAJO):
@@ -1198,10 +1299,12 @@ def validar(outdir, verbose=True, mapa_esperado=None):
             fallos.append(f"d{day}: total {total} != {sum(CUENTAS[day].values())}")
         if internet[day] < 2:
             fallos.append(f"d{day}: solo {internet[day]} huecos ≥ 20 min (se exigen ≥ 2)")
+        # (c-bis) B6: el handler de campaña debe ser exactamente el que dicta el CSV
+        fallos += campana.validar_timeline(tl, day)
 
     # (d) errores: 10/día, cada fallo seguido de su reintento de la misma familia
     for day, tl in datos.items():
-        if len(tl.get("TimeLineHandlers", [])) != len(BLOQUES_TRABAJO):
+        if len(tl.get("TimeLineHandlers", [])) != len(BLOQUES_TRABAJO) + 1:
             continue
         n_err = n_reint = 0
         for h, b in zip(tl["TimeLineHandlers"], BLOQUES_TRABAJO):
@@ -1244,11 +1347,13 @@ def validar(outdir, verbose=True, mapa_esperado=None):
         if n_reint != n_err:
             fallos.append(f"d{day}: {n_reint} reintentos emparejados != {n_err} errores")
 
-    # (e) sesión web (por contenido, no por posición: la v2 inserta acciones)
+    # (e) sesión web (por contenido, no por posición: la v2 inserta acciones).
+    #     Solo los bloques de jornada: B6 tiene sus propios `curl` (C-09) sin UA.
     for day, tl in datos.items():
-        if len(tl.get("TimeLineHandlers", [])) != len(BLOQUES_TRABAJO):
+        if len(tl.get("TimeLineHandlers", [])) != len(BLOQUES_TRABAJO) + 1:
             continue
-        cmds = [ev["Command"] for h in tl["TimeLineHandlers"] for ev in h["TimeLineEvents"]]
+        cmds = [ev["Command"] for h in tl["TimeLineHandlers"][:len(BLOQUES_TRABAJO)]
+                for ev in h["TimeLineEvents"]]
         curl_cmds = [c for c in cmds if "curl " in c]
         for c in curl_cmds:
             if UA not in c:
@@ -1280,6 +1385,33 @@ def validar(outdir, verbose=True, mapa_esperado=None):
             fallos.append("calendario.json: total de la ventana incorrecto")
         if cal.get("hueco_max_intra_bloque_s") != CAP_HUECO_S:
             fallos.append(f"calendario.json: hueco_max_intra_bloque_s != {CAP_HUECO_S}")
+        camp_cal = cal.get("campana") or {}
+        camp_acc = campana.cuentas_campana()
+        if camp_cal.get("casos") != len(campana.IDS):
+            fallos.append("calendario.json: campana.casos incorrecto")
+        if camp_cal.get("acciones") != {f"d{k}": v for k, v in camp_acc.items()}:
+            fallos.append("calendario.json: campana.acciones no coincide con el CSV")
+        if camp_cal.get("inicios") != {f"d{k}": v for k, v in campana.INICIOS_PLAN.items()}:
+            fallos.append("calendario.json: campana.inicios incorrecto")
+        if camp_cal.get("reparto") != {f"d{k}": v for k, v in campana.REPARTO.items()}:
+            fallos.append("calendario.json: campana.reparto incorrecto")
+        if camp_cal.get("separacion_min_s") != campana.SEPARACION_MIN_S:
+            fallos.append("calendario.json: campana.separacion_min_s incorrecto")
+        if camp_cal.get("efectos_declarados") != list(campana.EFECTOS_DECLARADOS):
+            fallos.append("calendario.json: campana.efectos_declarados no coincide con la "
+                          "estructura del módulo")
+        camp_exec = campana.contar_execve()
+        if (camp_cal.get("execve") or {}).get("total") != camp_exec["total"]:
+            fallos.append("calendario.json: campana.execve.total no coincide con el CSV")
+        if (camp_cal.get("execve") or {}).get("por_dia") != {
+                f"d{k}": v for k, v in camp_exec["por_dia"].items()}:
+            fallos.append("calendario.json: campana.execve.por_dia no coincide con el CSV")
+        if os.path.isfile(campana.ruta_md()) and \
+                camp_cal.get("sha256_casos_md") != campana.sha256_file(campana.ruta_md()):
+            fallos.append("calendario.json: sha256_casos_md no coincide con casos.md")
+        if cal.get("total_con_campana") != (sum(sum(v.values()) for v in CUENTAS.values())
+                                           + sum(camp_acc.values())):
+            fallos.append("calendario.json: total_con_campana incorrecto")
         err = _mapa_valido(cal.get("mapa_dias") or {})
         if err:
             fallos.append("calendario.json: " + err)
@@ -1318,11 +1450,27 @@ def validar(outdir, verbose=True, mapa_esperado=None):
             fallos.append("bloques.env: TFG_MAPA_DIAS no coincide con calendario.json")
         if mapa_esperado is not None and mapa_env != mapa_esperado:
             fallos.append("bloques.env: TFG_MAPA_DIAS no coincide con el parámetro")
-        if env.get("B6"):
-            avisos.append("bloques.env ya trae B6 (campaña, T2)")
+        if env.get("B6") != f"{campana.B6['on'][:5]}-{campana.B6['off'][:5]} campana":
+            fallos.append("bloques.env: línea B6 incorrecta")
+        camp_env = {
+            "TFG_CAMPANA_CASOS": str(len(campana.IDS)),
+            "TFG_CAMPANA_ACCIONES": str(sum(camp_acc.values())),
+            "TFG_CAMPANA_MARCAS": str(2 * len(campana.IDS)),
+            "TFG_CAMPANA_INICIOS": ",".join(f"d{k}:{v}" for k, v in campana.INICIOS_PLAN.items()),
+            "TFG_CAMPANA_REPARTO": ",".join(f"d{k}:{v}" for k, v in campana.REPARTO.items()),
+            "TFG_CAMPANA_SEPARACION_MIN_S": str(campana.SEPARACION_MIN_S),
+        }
+        for k, v in camp_env.items():
+            if env.get(k) != v:
+                fallos.append(f"bloques.env: {k} incorrecto ({env.get(k)!r} != {v!r})")
 
     if not os.path.isfile(os.path.join(outdir, "receta_resumen.md")):
         fallos.append("falta receta_resumen.md")
+
+    # (g) campaña B6 (CA-27): 11 casos no mutantes, 22 marcas, evidencia y pre-registro
+    camp_res = campana.validar()
+    fallos += [f"campaña: {f}" for f in camp_res["fallos"]]
+    avisos += [f"campaña: {a}" for a in camp_res["avisos"]]
 
     resumen = {
         "version": VERSION_RECETA,
@@ -1330,6 +1478,9 @@ def validar(outdir, verbose=True, mapa_esperado=None):
         "total": sum(sum(v.values()) for v in CUENTAS.values()),
         "binarios_blanco": len(BINARIOS_OK),
         "errores": {d: sum(1 for a in componer_dia(d) if a[1] == "error") for d in (1, 2, 3)},
+        "campana": {"casos": camp_res["casos"], "marcas": camp_res["marcas"],
+                    "acciones": camp_res["acciones_total"],
+                    "binarios": camp_res["binarios"], "ata": camp_res["ata"]},
         "fallos": fallos,
         "avisos": avisos,
     }
@@ -1337,6 +1488,11 @@ def validar(outdir, verbose=True, mapa_esperado=None):
         print(f"receta v{VERSION_RECETA}: dias={resumen['dias']} total={resumen['total']} "
               f"errores={resumen['errores']} binarios_ok={resumen['binarios_blanco']} "
               f"hueco_max={CAP_HUECO_S}s cwd=cd-por-accion handlers_browser=0")
+        print(f"campana B6: {resumen['campana']['casos']} casos, "
+              f"{resumen['campana']['acciones']} acciones, "
+              f"{resumen['campana']['marcas']} marcas, "
+              f"{len(resumen['campana']['binarios'])} binarios, "
+              f"{len(resumen['campana']['ata'])} ATA")
         for a in avisos:
             print(f"AVISO: {a}")
         for f in fallos:
@@ -1415,7 +1571,8 @@ def main(argv=None):
         tl, _a = timelines[day]
         gaps = [ev["DelayAfter"] / 1000.0 for hh in tl["TimeLineHandlers"]
                 for ev in hh["TimeLineEvents"][:-1]]
-        print(f"d{day}.json  {sum(CUENTAS[day].values())} acciones  "
+        print(f"d{day}.json  {sum(CUENTAS[day].values())} acciones de jornada + "
+              f"{len(campana.acciones_b6(day))} de B6  "
               f"hueco={min(gaps):.0f}-{max(gaps):.0f}s ({max(gaps)/60:.1f} min)  sha256={h}")
     print(f"mapa_dias={mapa_a_texto(mapa) if mapa else '(vacio: se fija en T4 con --t0)'}")
     res = validar(outdir, mapa_esperado=mapa if mapa else None)

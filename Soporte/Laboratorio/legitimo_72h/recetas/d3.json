@@ -614,6 +614,104 @@
      "DelayAfter": 120000
     }
    ]
+  },
+  {
+   "HandlerType": "Command",
+   "Initial": "",
+   "UtcTimeOn": "17:11:00",
+   "UtcTimeOff": "17:50:00",
+   "Loop": true,
+   "HandlerArgs": {},
+   "TimeLineEvents": [
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-09 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-09/inicio.txt",
+     "DelayAfter": 8000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-09 && curl -sS --max-time 3 -o /home/angel/Documentos/campana_fp/C-09/intranet.html -w '%{http_code}\\n' http://intranet.local:8080/ > /home/angel/Documentos/campana_fp/C-09/http_code.txt",
+     "DelayAfter": 6000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-09 && curl -sS --max-time 2 http://intranet.local:8081/ 2>/dev/null || printf 'RC_FALLO=%s\\n' $? > /home/angel/Documentos/campana_fp/C-09/fallo_rc.txt",
+     "DelayAfter": 10000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-09 && timeout 5 curl -sS -o /home/angel/Documentos/campana_fp/C-09/reintento.html http://intranet.local:8080/ && echo 'RC_REINTENTO=0' > /home/angel/Documentos/campana_fp/C-09/reintento_rc.txt",
+     "DelayAfter": 7000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-09 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-09/hecho.txt && cat /home/angel/Documentos/campana_fp/C-09/http_code.txt /home/angel/Documentos/campana_fp/C-09/fallo_rc.txt /home/angel/Documentos/campana_fp/C-09/reintento_rc.txt >> /home/angel/Documentos/campana_fp/C-09/hecho.txt && wc -c /home/angel/Documentos/campana_fp/C-09/intranet.html >> /home/angel/Documentos/campana_fp/C-09/hecho.txt",
+     "DelayAfter": 9000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-09 && rm -f /home/angel/Documentos/campana_fp/C-09/intranet.html /home/angel/Documentos/campana_fp/C-09/reintento.html /home/angel/Documentos/campana_fp/C-09/http_code.txt /home/angel/Documentos/campana_fp/C-09/fallo_rc.txt /home/angel/Documentos/campana_fp/C-09/reintento_rc.txt && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-09/fin.txt",
+     "DelayAfter": 470000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-10 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-10/inicio.txt",
+     "DelayAfter": 7000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-10 && echo 'plantilla del informe del mes' > /home/angel/Documentos/campana_fp/C-10/plantilla.txt && seq 1 12 > /home/angel/Documentos/campana_fp/C-10/lotes.txt",
+     "DelayAfter": 9000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-10 && xargs -a /home/angel/Documentos/campana_fp/C-10/lotes.txt -I{} cp /home/angel/Documentos/campana_fp/C-10/plantilla.txt /home/angel/Documentos/campana_fp/C-10/lote_{}.txt",
+     "DelayAfter": 5000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-10 && wc -l /home/angel/Documentos/campana_fp/C-10/lote_1.txt > /home/angel/Documentos/campana_fp/C-10/lote1_wc.txt",
+     "DelayAfter": 8000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-10 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-10/hecho.txt && stat -c %s /home/angel/Documentos/campana_fp/C-10/lote_12.txt >> /home/angel/Documentos/campana_fp/C-10/hecho.txt && ls -l /home/angel/Documentos/campana_fp/C-10/lote_*.txt >> /home/angel/Documentos/campana_fp/C-10/hecho.txt",
+     "DelayAfter": 7000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-10 && rm -f /home/angel/Documentos/campana_fp/C-10/lote_*.txt /home/angel/Documentos/campana_fp/C-10/lotes.txt /home/angel/Documentos/campana_fp/C-10/plantilla.txt /home/angel/Documentos/campana_fp/C-10/lote1_wc.txt && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-10/fin.txt",
+     "DelayAfter": 424000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-11 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-11/inicio.txt",
+     "DelayAfter": 8000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-11 && echo 'C-11: incidencia cerrada; copia del dia revisada' > /home/angel/Documentos/campana_fp/C-11/nota.txt",
+     "DelayAfter": 7000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-11 && logger -t ofimatica 'C-11: incidencia cerrada; copia del dia revisada'",
+     "DelayAfter": 9000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-11 && tee -a /home/angel/Documentos/campana_fp/C-11/registro.log < /home/angel/Documentos/campana_fp/C-11/nota.txt",
+     "DelayAfter": 5000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-11 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-11/hecho.txt && tail -3 /home/angel/Documentos/campana_fp/C-11/registro.log >> /home/angel/Documentos/campana_fp/C-11/hecho.txt",
+     "DelayAfter": 8000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-11 && rm -f /home/angel/Documentos/campana_fp/C-11/nota.txt /home/angel/Documentos/campana_fp/C-11/registro.log && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-11/fin.txt",
+     "DelayAfter": 473000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-12 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-12/inicio.txt",
+     "DelayAfter": 5000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-12 && wget -q -O /home/angel/Documentos/campana_fp/C-12/manual.pdf http://intranet.local:8080/descargas/manual_empleado.pdf",
+     "DelayAfter": 8000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-12 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-12/hecho.txt && stat -c %s /home/angel/Documentos/campana_fp/C-12/manual.pdf >> /home/angel/Documentos/campana_fp/C-12/hecho.txt",
+     "DelayAfter": 6000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-12 && rm -f /home/angel/Documentos/campana_fp/C-12/manual.pdf && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-12/fin.txt",
+     "DelayAfter": 901000
+    }
+   ]
   }
  ]
 }

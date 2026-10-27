@@ -662,6 +662,116 @@
      "DelayAfter": 120000
     }
    ]
+  },
+  {
+   "HandlerType": "Command",
+   "Initial": "",
+   "UtcTimeOn": "17:17:00",
+   "UtcTimeOff": "17:50:00",
+   "Loop": true,
+   "HandlerArgs": {},
+   "TimeLineEvents": [
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-05 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-05/inicio.txt",
+     "DelayAfter": 8000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-05 && echo 'informe del area: datos de cliente, importe 1200' > /home/angel/Documentos/campana_fp/C-05/informe.txt",
+     "DelayAfter": 6000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-05 && openssl enc -aes-256-cbc -pbkdf2 -salt -in /home/angel/Documentos/campana_fp/C-05/informe.txt -out /home/angel/Documentos/campana_fp/C-05/informe.txt.enc -pass pass:demo-c05",
+     "DelayAfter": 10000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-05 && openssl enc -d -aes-256-cbc -pbkdf2 -in /home/angel/Documentos/campana_fp/C-05/informe.txt.enc -out /home/angel/Documentos/campana_fp/C-05/informe.txt.rec -pass pass:demo-c05",
+     "DelayAfter": 7000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-05 && sha256sum /home/angel/Documentos/campana_fp/C-05/informe.txt /home/angel/Documentos/campana_fp/C-05/informe.txt.rec > /home/angel/Documentos/campana_fp/C-05/huellas.txt",
+     "DelayAfter": 9000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-05 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-05/hecho.txt && cat /home/angel/Documentos/campana_fp/C-05/huellas.txt >> /home/angel/Documentos/campana_fp/C-05/hecho.txt",
+     "DelayAfter": 5000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-05 && rm -f /home/angel/Documentos/campana_fp/C-05/informe.txt /home/angel/Documentos/campana_fp/C-05/informe.txt.enc /home/angel/Documentos/campana_fp/C-05/informe.txt.rec /home/angel/Documentos/campana_fp/C-05/huellas.txt && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-05/fin.txt",
+     "DelayAfter": 465000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-06 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-06/inicio.txt",
+     "DelayAfter": 7000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-06 && mkdir -p /home/angel/Documentos/campana_fp/C-06/tmp && echo 'temporal del dia' > /home/angel/Documentos/campana_fp/C-06/tmp/borrador_tmp.txt && echo 'borrador con datos personales' > /home/angel/Documentos/campana_fp/C-06/borrador.txt",
+     "DelayAfter": 9000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-06 && stat -c %s /home/angel/Documentos/campana_fp/C-06/borrador.txt > /home/angel/Documentos/campana_fp/C-06/antes.txt",
+     "DelayAfter": 5000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-06 && rm -rf /home/angel/Documentos/campana_fp/C-06/tmp",
+     "DelayAfter": 8000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-06 && shred -n 1 -z -u /home/angel/Documentos/campana_fp/C-06/borrador.txt",
+     "DelayAfter": 7000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-06 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-06/hecho.txt && cat /home/angel/Documentos/campana_fp/C-06/antes.txt >> /home/angel/Documentos/campana_fp/C-06/hecho.txt && stat -c %s /home/angel/Documentos/campana_fp/C-06/borrador.txt 2>/dev/null || echo 'borrador_ausente=1' >> /home/angel/Documentos/campana_fp/C-06/hecho.txt",
+     "DelayAfter": 9000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-06 && rm -f /home/angel/Documentos/campana_fp/C-06/antes.txt && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-06/fin.txt",
+     "DelayAfter": 415000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-07 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-07/inicio.txt",
+     "DelayAfter": 8000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-07 && mkdir -p /home/angel/Documentos/campana_fp/C-07/origen /home/angel/Documentos/campana_fp/C-07/destino && echo 'informe uno' > /home/angel/Documentos/campana_fp/C-07/origen/informe_1.txt && echo 'informe dos' > /home/angel/Documentos/campana_fp/C-07/origen/informe_2.txt && echo 'copia obsoleta' > /home/angel/Documentos/campana_fp/C-07/destino/obsoleto.txt",
+     "DelayAfter": 7000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-07 && rsync -a --delete /home/angel/Documentos/campana_fp/C-07/origen/ /home/angel/Documentos/campana_fp/C-07/destino/",
+     "DelayAfter": 9000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-07 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-07/hecho.txt && du -sb /home/angel/Documentos/campana_fp/C-07/origen /home/angel/Documentos/campana_fp/C-07/destino >> /home/angel/Documentos/campana_fp/C-07/hecho.txt && ls -la /home/angel/Documentos/campana_fp/C-07/destino >> /home/angel/Documentos/campana_fp/C-07/hecho.txt",
+     "DelayAfter": 5000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-07 && rm -rf /home/angel/Documentos/campana_fp/C-07/origen /home/angel/Documentos/campana_fp/C-07/destino && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-07/fin.txt",
+     "DelayAfter": 461000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-08 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-08/inicio.txt",
+     "DelayAfter": 5000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-08 && echo 'referencia;area;importe' > /home/angel/Documentos/campana_fp/C-08/export.csv && echo 'A-01;compras;1200' >> /home/angel/Documentos/campana_fp/C-08/export.csv && echo 'A-02;ventas;980' >> /home/angel/Documentos/campana_fp/C-08/export.csv",
+     "DelayAfter": 8000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-08 && sed -i 's/;/,/g' /home/angel/Documentos/campana_fp/C-08/export.csv",
+     "DelayAfter": 6000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-08 && sed -n '1,5p' /home/angel/Documentos/campana_fp/C-08/export.csv > /home/angel/Documentos/campana_fp/C-08/export_normalizado.txt",
+     "DelayAfter": 10000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-08 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-08/hecho.txt && head -1 /home/angel/Documentos/campana_fp/C-08/export.csv >> /home/angel/Documentos/campana_fp/C-08/hecho.txt && grep -c ';' /home/angel/Documentos/campana_fp/C-08/export.csv >> /home/angel/Documentos/campana_fp/C-08/hecho.txt || true",
+     "DelayAfter": 7000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-08 && rm -f /home/angel/Documentos/campana_fp/C-08/export.csv /home/angel/Documentos/campana_fp/C-08/export_normalizado.txt && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-08/fin.txt",
+     "DelayAfter": 544000
+    }
+   ]
   }
  ]
 }

@@ -638,6 +638,80 @@
      "DelayAfter": 120000
     }
    ]
+  },
+  {
+   "HandlerType": "Command",
+   "Initial": "",
+   "UtcTimeOn": "17:06:00",
+   "UtcTimeOff": "17:50:00",
+   "Loop": true,
+   "HandlerArgs": {},
+   "TimeLineEvents": [
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-01 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-01/inicio.txt",
+     "DelayAfter": 8000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-01 && free -m > /home/angel/Documentos/campana_fp/C-01/free.txt",
+     "DelayAfter": 6000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-01 && systemctl --failed --no-pager > /home/angel/Documentos/campana_fp/C-01/fallidos.txt",
+     "DelayAfter": 10000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-01 && systemctl list-units --type=service --state=running --no-pager > /home/angel/Documentos/campana_fp/C-01/servicios.txt",
+     "DelayAfter": 7000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-01 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-01/hecho.txt && wc -l /home/angel/Documentos/campana_fp/C-01/servicios.txt /home/angel/Documentos/campana_fp/C-01/free.txt /home/angel/Documentos/campana_fp/C-01/fallidos.txt >> /home/angel/Documentos/campana_fp/C-01/hecho.txt && cat /home/angel/Documentos/campana_fp/C-01/hecho.txt",
+     "DelayAfter": 9000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-01 && rm -f /home/angel/Documentos/campana_fp/C-01/servicios.txt /home/angel/Documentos/campana_fp/C-01/free.txt /home/angel/Documentos/campana_fp/C-01/fallidos.txt && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-01/fin.txt",
+     "DelayAfter": 520000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-02 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-02/inicio.txt",
+     "DelayAfter": 7000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-02 && ip -brief addr > /home/angel/Documentos/campana_fp/C-02/ip_addr.txt",
+     "DelayAfter": 9000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-02 && ip route > /home/angel/Documentos/campana_fp/C-02/ip_route.txt",
+     "DelayAfter": 5000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-02 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-02/hecho.txt && grep '192.168.65.' /home/angel/Documentos/campana_fp/C-02/ip_addr.txt >> /home/angel/Documentos/campana_fp/C-02/hecho.txt && cat /home/angel/Documentos/campana_fp/C-02/ip_route.txt >> /home/angel/Documentos/campana_fp/C-02/hecho.txt",
+     "DelayAfter": 8000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-02 && rm -f /home/angel/Documentos/campana_fp/C-02/ip_addr.txt /home/angel/Documentos/campana_fp/C-02/ip_route.txt && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-02/fin.txt",
+     "DelayAfter": 531000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-03 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-03/inicio.txt",
+     "DelayAfter": 8000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-03 && systemctl list-timers --all --no-pager > /home/angel/Documentos/campana_fp/C-03/timers.txt",
+     "DelayAfter": 7000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-03 && crontab -l > /home/angel/Documentos/campana_fp/C-03/crontab.txt 2>/dev/null || printf 'crontab_rc=%s\\n' $? > /home/angel/Documentos/campana_fp/C-03/crontab_rc.txt",
+     "DelayAfter": 9000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-03 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-03/hecho.txt && wc -l /home/angel/Documentos/campana_fp/C-03/timers.txt >> /home/angel/Documentos/campana_fp/C-03/hecho.txt && cat /home/angel/Documentos/campana_fp/C-03/crontab_rc.txt >> /home/angel/Documentos/campana_fp/C-03/hecho.txt",
+     "DelayAfter": 5000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/campana_fp/C-03 && rm -f /home/angel/Documentos/campana_fp/C-03/timers.txt /home/angel/Documentos/campana_fp/C-03/crontab.txt /home/angel/Documentos/campana_fp/C-03/crontab_rc.txt && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-03/fin.txt",
+     "DelayAfter": 1551000
+    }
+   ]
   }
  ]
 }

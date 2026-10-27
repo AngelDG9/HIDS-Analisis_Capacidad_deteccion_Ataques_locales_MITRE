@@ -6,6 +6,9 @@
 > `Curl`, **cero** navegador, **cero** pipes (DT9).
 > **`cwd` por acción**: `cd <carpeta coherente> && <comando>` (ninguna en el directorio del cliente).
 > **Sin fecha**: `TFG_MAPA_DIAS` se pasa con `--t0` y se fija al cerrar **T4**.
+> **Campaña `B6`** (T2): 11 casos no mutantes en `17:05-17:50Z`, reparto **3/4/4** e
+> inicio con **jitter fijo** (`d1` 17:06 · `d2` 17:17 · `d3` 17:11). Se genera desde
+> `campana/campana_casos.csv`; se publica aparte y **no** recalcula `M`.
 
 ## Qué cambia respecto de la v1 (M1–M4)
 
@@ -23,6 +26,9 @@
 | **M4 corpus** | 12 binarios nuevos con uso de oficina: `xargs`, `timeout`, `sed`, `ip`,
   `openssl`, `tee`, `free`, `logger`, `seq`, `rsync`, `shred`, `wget` |
   `cobertura_exes.py` (receta v2 = 23/50 del corpus) |
+| **M5 campaña `B6`** | 11 casos legítimos **no mutantes** dentro de la ventana, con
+  `inicio`/`fin`/`hecho` por caso y esperado **por umbral** (`N ≥ 7` = 0; `N ≥ 3` = `80792`) |
+  `campana.py --check` + `construir_receta_legitima.py --check` (CA-27) |
 
 ## Bloques y recuentos
 
@@ -35,9 +41,23 @@
 | P2 Comida | 13:00–14:00 | 14:00-15:00 | pausa | 0 | 0 | 0 |
 | B4 Reuniones y tarde | 14:00–16:15 | 15:00-17:15 | trabajo | 35 | 43 | 29 |
 | B5 Cierre | 16:15–17:00 | 17:15-18:00 | trabajo | 12 | 12 | 12 |
-| **Total** | 08:00–17:00 | 09:00–18:00 | — | **147** | **153** | **141** |
+| B6 Repaso del sistema | 17:05–17:50 | 18:05-18:50 | campana | 16 | 25 | 22 |
+| **Total jornada** | 08:00–17:00 | 09:00–18:00 | trabajo | **147** | **153** | **141** |
+| **Total con B6** | 08:00–17:50 | 09:00–18:50 | — | **163** | **178** | **163** |
 
-**Total ventana (3 días): 441 acciones** (v1: 333; +108 por M3/M4, ≈ 32 %).
+**Total ventana (3 días): 441 acciones de jornada + 63 de la campaña = 504 acciones GHOSTS** (v1: 333; +108 por M3/M4, ≈ 32 %).
+
+## Campaña de falsos positivos (`B6`, T2)
+
+**11 casos** no mutantes, **reparto 3/4/4** y **jitter fijo de inicio** (`d1` 17:06 · `d2` 17:17 · `d3` 17:11). Separación mínima **180 s**; atribución `[ini − 10 s, fin + 60 s]`. **63 acciones** y **103 `execve`** ({1: 25, 2: 34, 3: 44}). Definición y comandos literales: `campana/casos.md` + `campana/campana_casos.csv`.
+
+| Día | Inicio | Casos | Acciones B6 | Último `fin` | Huecos entre casos |
+|---|---|---|---|---|---|
+| d1 | 17:06 | 3 | 16 | 17:25 | 520 s, 531 s |
+| d2 | 17:17 | 4 | 25 | 17:41 | 465 s, 415 s, 461 s |
+| d3 | 17:11 | 4 | 22 | 17:35 | 470 s, 424 s, 473 s |
+
+> `B6` **no es jornada de trabajo**: está declarado en `bloques.env` y la vigilancia no lo juzga como un bloque de oficina. Los casos se publican **aparte** (`campana_fp.csv`); **no** se recalcula `M` ni se da un FPR alternativo.
 
 ## Ritmo medido (tabla de jitter fija)
 
@@ -88,7 +108,7 @@ cubre **23/50 = 46 %** (T2 añadirá `systemctl`/`crontab` en la campaña ⇒ 25
 Quedan fuera, **a propósito**: `systemctl`/`crontab` (solo campaña), `git`, `dd`,
 `passwd`, `nc.openbsd`, `perl`, `busybox`, `sqlite3` y todo lo que exige root o GUI.
 
-## Día 1 — «cierre de informes» (147 acciones)
+## Día 1 — «cierre de informes» (147 + 16 = 163 acciones)
 
 | # | UTC | Bloque | Familia | cwd | Comando |
 |---|---|---|---|---|---|
@@ -239,8 +259,24 @@ Quedan fuera, **a propósito**: `systemctl`/`crontab` (solo campaña), `git`, `d
 | 145 | 16:46 | B5 | limpiar | `~/Descargas` | `cd /home/angel/Descargas && rm -f /home/angel/Descargas/tmp_*.csv` |
 | 146 | 16:57 | B5 | cierre | `~` | `cd /home/angel && date -u +%FT%TZ` |
 | 147 | 16:59 | B5 | cierre | `~/Documentos` | `cd /home/angel/Documentos && ls -la /home/angel/Documentos /home/angel/Descargas` |
+| 148 | 17:06:00 | B6/C-01 | inicio | `~/Documentos/campana_fp` | `cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-01 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-01/inicio.txt` |
+| 149 | 17:06:08 | B6/C-01 | comando | `~/Documentos/campana_fp/C-01` | `cd /home/angel/Documentos/campana_fp/C-01 && free -m > /home/angel/Documentos/campana_fp/C-01/free.txt` |
+| 150 | 17:06:14 | B6/C-01 | comando | `~/Documentos/campana_fp/C-01` | `cd /home/angel/Documentos/campana_fp/C-01 && systemctl --failed --no-pager > /home/angel/Documentos/campana_fp/C-01/fallidos.txt` |
+| 151 | 17:06:24 | B6/C-01 | comando | `~/Documentos/campana_fp/C-01` | `cd /home/angel/Documentos/campana_fp/C-01 && systemctl list-units --type=service --state=running --no-pager > /home/angel/Documentos/campana_fp/C-01/servicios.txt` |
+| 152 | 17:06:31 | B6/C-01 | evidencia | `~/Documentos/campana_fp/C-01` | `cd /home/angel/Documentos/campana_fp/C-01 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-01/hecho.txt && wc -l /home/angel/Documentos/campana_fp/C-01/servicios.txt /home/angel/Documentos/campana_fp/C-01/free.txt /home/angel/Documentos/campana_fp/C-01/fallidos.txt >> /home/angel/Documentos/campana_fp/C-01/hecho.txt && cat /home/angel/Documentos/campana_fp/C-01/hecho.txt` |
+| 153 | 17:06:40 | B6/C-01 | fin | `~/Documentos/campana_fp/C-01` | `cd /home/angel/Documentos/campana_fp/C-01 && rm -f /home/angel/Documentos/campana_fp/C-01/servicios.txt /home/angel/Documentos/campana_fp/C-01/free.txt /home/angel/Documentos/campana_fp/C-01/fallidos.txt && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-01/fin.txt` |
+| 154 | 17:15:20 | B6/C-02 | inicio | `~/Documentos/campana_fp` | `cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-02 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-02/inicio.txt` |
+| 155 | 17:15:27 | B6/C-02 | comando | `~/Documentos/campana_fp/C-02` | `cd /home/angel/Documentos/campana_fp/C-02 && ip -brief addr > /home/angel/Documentos/campana_fp/C-02/ip_addr.txt` |
+| 156 | 17:15:36 | B6/C-02 | comando | `~/Documentos/campana_fp/C-02` | `cd /home/angel/Documentos/campana_fp/C-02 && ip route > /home/angel/Documentos/campana_fp/C-02/ip_route.txt` |
+| 157 | 17:15:41 | B6/C-02 | evidencia | `~/Documentos/campana_fp/C-02` | `cd /home/angel/Documentos/campana_fp/C-02 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-02/hecho.txt && grep '192.168.65.' /home/angel/Documentos/campana_fp/C-02/ip_addr.txt >> /home/angel/Documentos/campana_fp/C-02/hecho.txt && cat /home/angel/Documentos/campana_fp/C-02/ip_route.txt >> /home/angel/Documentos/campana_fp/C-02/hecho.txt` |
+| 158 | 17:15:49 | B6/C-02 | fin | `~/Documentos/campana_fp/C-02` | `cd /home/angel/Documentos/campana_fp/C-02 && rm -f /home/angel/Documentos/campana_fp/C-02/ip_addr.txt /home/angel/Documentos/campana_fp/C-02/ip_route.txt && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-02/fin.txt` |
+| 159 | 17:24:40 | B6/C-03 | inicio | `~/Documentos/campana_fp` | `cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-03 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-03/inicio.txt` |
+| 160 | 17:24:48 | B6/C-03 | comando | `~/Documentos/campana_fp/C-03` | `cd /home/angel/Documentos/campana_fp/C-03 && systemctl list-timers --all --no-pager > /home/angel/Documentos/campana_fp/C-03/timers.txt` |
+| 161 | 17:24:55 | B6/C-03 | comando | `~/Documentos/campana_fp/C-03` | `cd /home/angel/Documentos/campana_fp/C-03 && crontab -l > /home/angel/Documentos/campana_fp/C-03/crontab.txt 2>/dev/null || printf 'crontab_rc=%s\n' $? > /home/angel/Documentos/campana_fp/C-03/crontab_rc.txt` |
+| 162 | 17:25:04 | B6/C-03 | evidencia | `~/Documentos/campana_fp/C-03` | `cd /home/angel/Documentos/campana_fp/C-03 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-03/hecho.txt && wc -l /home/angel/Documentos/campana_fp/C-03/timers.txt >> /home/angel/Documentos/campana_fp/C-03/hecho.txt && cat /home/angel/Documentos/campana_fp/C-03/crontab_rc.txt >> /home/angel/Documentos/campana_fp/C-03/hecho.txt` |
+| 163 | 17:25:09 | B6/C-03 | fin | `~/Documentos/campana_fp/C-03` | `cd /home/angel/Documentos/campana_fp/C-03 && rm -f /home/angel/Documentos/campana_fp/C-03/timers.txt /home/angel/Documentos/campana_fp/C-03/crontab.txt /home/angel/Documentos/campana_fp/C-03/crontab_rc.txt && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-03/fin.txt` |
 
-## Día 2 — «reuniones y portal» (153 acciones)
+## Día 2 — «reuniones y portal» (153 + 25 = 178 acciones)
 
 | # | UTC | Bloque | Familia | cwd | Comando |
 |---|---|---|---|---|---|
@@ -397,8 +433,33 @@ Quedan fuera, **a propósito**: `systemctl`/`crontab` (solo campaña), `git`, `d
 | 151 | 16:42 | B5 | limpiar | `~/Descargas` | `cd /home/angel/Descargas && rm -f /home/angel/Descargas/tmp_*.csv` |
 | 152 | 16:52 | B5 | cierre | `~` | `cd /home/angel && date -u +%FT%TZ` |
 | 153 | 16:59 | B5 | cierre | `~/Documentos` | `cd /home/angel/Documentos && ls -la /home/angel/Documentos /home/angel/Descargas` |
+| 154 | 17:17:00 | B6/C-05 | inicio | `~/Documentos/campana_fp` | `cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-05 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-05/inicio.txt` |
+| 155 | 17:17:08 | B6/C-05 | comando | `~/Documentos/campana_fp/C-05` | `cd /home/angel/Documentos/campana_fp/C-05 && echo 'informe del area: datos de cliente, importe 1200' > /home/angel/Documentos/campana_fp/C-05/informe.txt` |
+| 156 | 17:17:14 | B6/C-05 | comando | `~/Documentos/campana_fp/C-05` | `cd /home/angel/Documentos/campana_fp/C-05 && openssl enc -aes-256-cbc -pbkdf2 -salt -in /home/angel/Documentos/campana_fp/C-05/informe.txt -out /home/angel/Documentos/campana_fp/C-05/informe.txt.enc -pass pass:demo-c05` |
+| 157 | 17:17:24 | B6/C-05 | comando | `~/Documentos/campana_fp/C-05` | `cd /home/angel/Documentos/campana_fp/C-05 && openssl enc -d -aes-256-cbc -pbkdf2 -in /home/angel/Documentos/campana_fp/C-05/informe.txt.enc -out /home/angel/Documentos/campana_fp/C-05/informe.txt.rec -pass pass:demo-c05` |
+| 158 | 17:17:31 | B6/C-05 | comando | `~/Documentos/campana_fp/C-05` | `cd /home/angel/Documentos/campana_fp/C-05 && sha256sum /home/angel/Documentos/campana_fp/C-05/informe.txt /home/angel/Documentos/campana_fp/C-05/informe.txt.rec > /home/angel/Documentos/campana_fp/C-05/huellas.txt` |
+| 159 | 17:17:40 | B6/C-05 | evidencia | `~/Documentos/campana_fp/C-05` | `cd /home/angel/Documentos/campana_fp/C-05 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-05/hecho.txt && cat /home/angel/Documentos/campana_fp/C-05/huellas.txt >> /home/angel/Documentos/campana_fp/C-05/hecho.txt` |
+| 160 | 17:17:45 | B6/C-05 | fin | `~/Documentos/campana_fp/C-05` | `cd /home/angel/Documentos/campana_fp/C-05 && rm -f /home/angel/Documentos/campana_fp/C-05/informe.txt /home/angel/Documentos/campana_fp/C-05/informe.txt.enc /home/angel/Documentos/campana_fp/C-05/informe.txt.rec /home/angel/Documentos/campana_fp/C-05/huellas.txt && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-05/fin.txt` |
+| 161 | 17:25:30 | B6/C-06 | inicio | `~/Documentos/campana_fp` | `cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-06 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-06/inicio.txt` |
+| 162 | 17:25:37 | B6/C-06 | comando | `~/Documentos/campana_fp/C-06` | `cd /home/angel/Documentos/campana_fp/C-06 && mkdir -p /home/angel/Documentos/campana_fp/C-06/tmp && echo 'temporal del dia' > /home/angel/Documentos/campana_fp/C-06/tmp/borrador_tmp.txt && echo 'borrador con datos personales' > /home/angel/Documentos/campana_fp/C-06/borrador.txt` |
+| 163 | 17:25:46 | B6/C-06 | comando | `~/Documentos/campana_fp/C-06` | `cd /home/angel/Documentos/campana_fp/C-06 && stat -c %s /home/angel/Documentos/campana_fp/C-06/borrador.txt > /home/angel/Documentos/campana_fp/C-06/antes.txt` |
+| 164 | 17:25:51 | B6/C-06 | comando | `~/Documentos/campana_fp/C-06` | `cd /home/angel/Documentos/campana_fp/C-06 && rm -rf /home/angel/Documentos/campana_fp/C-06/tmp` |
+| 165 | 17:25:59 | B6/C-06 | comando | `~/Documentos/campana_fp/C-06` | `cd /home/angel/Documentos/campana_fp/C-06 && shred -n 1 -z -u /home/angel/Documentos/campana_fp/C-06/borrador.txt` |
+| 166 | 17:26:06 | B6/C-06 | evidencia | `~/Documentos/campana_fp/C-06` | `cd /home/angel/Documentos/campana_fp/C-06 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-06/hecho.txt && cat /home/angel/Documentos/campana_fp/C-06/antes.txt >> /home/angel/Documentos/campana_fp/C-06/hecho.txt && stat -c %s /home/angel/Documentos/campana_fp/C-06/borrador.txt 2>/dev/null || echo 'borrador_ausente=1' >> /home/angel/Documentos/campana_fp/C-06/hecho.txt` |
+| 167 | 17:26:15 | B6/C-06 | fin | `~/Documentos/campana_fp/C-06` | `cd /home/angel/Documentos/campana_fp/C-06 && rm -f /home/angel/Documentos/campana_fp/C-06/antes.txt && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-06/fin.txt` |
+| 168 | 17:33:10 | B6/C-07 | inicio | `~/Documentos/campana_fp` | `cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-07 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-07/inicio.txt` |
+| 169 | 17:33:18 | B6/C-07 | comando | `~/Documentos/campana_fp/C-07` | `cd /home/angel/Documentos/campana_fp/C-07 && mkdir -p /home/angel/Documentos/campana_fp/C-07/origen /home/angel/Documentos/campana_fp/C-07/destino && echo 'informe uno' > /home/angel/Documentos/campana_fp/C-07/origen/informe_1.txt && echo 'informe dos' > /home/angel/Documentos/campana_fp/C-07/origen/informe_2.txt && echo 'copia obsoleta' > /home/angel/Documentos/campana_fp/C-07/destino/obsoleto.txt` |
+| 170 | 17:33:25 | B6/C-07 | comando | `~/Documentos/campana_fp/C-07` | `cd /home/angel/Documentos/campana_fp/C-07 && rsync -a --delete /home/angel/Documentos/campana_fp/C-07/origen/ /home/angel/Documentos/campana_fp/C-07/destino/` |
+| 171 | 17:33:34 | B6/C-07 | evidencia | `~/Documentos/campana_fp/C-07` | `cd /home/angel/Documentos/campana_fp/C-07 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-07/hecho.txt && du -sb /home/angel/Documentos/campana_fp/C-07/origen /home/angel/Documentos/campana_fp/C-07/destino >> /home/angel/Documentos/campana_fp/C-07/hecho.txt && ls -la /home/angel/Documentos/campana_fp/C-07/destino >> /home/angel/Documentos/campana_fp/C-07/hecho.txt` |
+| 172 | 17:33:39 | B6/C-07 | fin | `~/Documentos/campana_fp/C-07` | `cd /home/angel/Documentos/campana_fp/C-07 && rm -rf /home/angel/Documentos/campana_fp/C-07/origen /home/angel/Documentos/campana_fp/C-07/destino && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-07/fin.txt` |
+| 173 | 17:41:20 | B6/C-08 | inicio | `~/Documentos/campana_fp` | `cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-08 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-08/inicio.txt` |
+| 174 | 17:41:25 | B6/C-08 | comando | `~/Documentos/campana_fp/C-08` | `cd /home/angel/Documentos/campana_fp/C-08 && echo 'referencia;area;importe' > /home/angel/Documentos/campana_fp/C-08/export.csv && echo 'A-01;compras;1200' >> /home/angel/Documentos/campana_fp/C-08/export.csv && echo 'A-02;ventas;980' >> /home/angel/Documentos/campana_fp/C-08/export.csv` |
+| 175 | 17:41:33 | B6/C-08 | comando | `~/Documentos/campana_fp/C-08` | `cd /home/angel/Documentos/campana_fp/C-08 && sed -i 's/;/,/g' /home/angel/Documentos/campana_fp/C-08/export.csv` |
+| 176 | 17:41:39 | B6/C-08 | comando | `~/Documentos/campana_fp/C-08` | `cd /home/angel/Documentos/campana_fp/C-08 && sed -n '1,5p' /home/angel/Documentos/campana_fp/C-08/export.csv > /home/angel/Documentos/campana_fp/C-08/export_normalizado.txt` |
+| 177 | 17:41:49 | B6/C-08 | evidencia | `~/Documentos/campana_fp/C-08` | `cd /home/angel/Documentos/campana_fp/C-08 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-08/hecho.txt && head -1 /home/angel/Documentos/campana_fp/C-08/export.csv >> /home/angel/Documentos/campana_fp/C-08/hecho.txt && grep -c ';' /home/angel/Documentos/campana_fp/C-08/export.csv >> /home/angel/Documentos/campana_fp/C-08/hecho.txt || true` |
+| 178 | 17:41:56 | B6/C-08 | fin | `~/Documentos/campana_fp/C-08` | `cd /home/angel/Documentos/campana_fp/C-08 && rm -f /home/angel/Documentos/campana_fp/C-08/export.csv /home/angel/Documentos/campana_fp/C-08/export_normalizado.txt && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-08/fin.txt` |
 
-## Día 3 — «revisión y copias» (141 acciones)
+## Día 3 — «revisión y copias» (141 + 22 = 163 acciones)
 
 | # | UTC | Bloque | Familia | cwd | Comando |
 |---|---|---|---|---|---|
@@ -543,4 +604,26 @@ Quedan fuera, **a propósito**: `systemctl`/`crontab` (solo campaña), `git`, `d
 | 139 | 16:46 | B5 | limpiar | `~/Descargas` | `cd /home/angel/Descargas && rm -f /home/angel/Descargas/tmp_*.csv` |
 | 140 | 16:58 | B5 | cierre | `~` | `cd /home/angel && date -u +%FT%TZ` |
 | 141 | 16:59 | B5 | cierre | `~/Documentos` | `cd /home/angel/Documentos && ls -la /home/angel/Documentos /home/angel/Descargas` |
+| 142 | 17:11:00 | B6/C-09 | inicio | `~/Documentos/campana_fp` | `cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-09 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-09/inicio.txt` |
+| 143 | 17:11:08 | B6/C-09 | comando | `~/Documentos/campana_fp/C-09` | `cd /home/angel/Documentos/campana_fp/C-09 && curl -sS --max-time 3 -o /home/angel/Documentos/campana_fp/C-09/intranet.html -w '%{http_code}\n' http://intranet.local:8080/ > /home/angel/Documentos/campana_fp/C-09/http_code.txt` |
+| 144 | 17:11:14 | B6/C-09 | comando | `~/Documentos/campana_fp/C-09` | `cd /home/angel/Documentos/campana_fp/C-09 && curl -sS --max-time 2 http://intranet.local:8081/ 2>/dev/null || printf 'RC_FALLO=%s\n' $? > /home/angel/Documentos/campana_fp/C-09/fallo_rc.txt` |
+| 145 | 17:11:24 | B6/C-09 | comando | `~/Documentos/campana_fp/C-09` | `cd /home/angel/Documentos/campana_fp/C-09 && timeout 5 curl -sS -o /home/angel/Documentos/campana_fp/C-09/reintento.html http://intranet.local:8080/ && echo 'RC_REINTENTO=0' > /home/angel/Documentos/campana_fp/C-09/reintento_rc.txt` |
+| 146 | 17:11:31 | B6/C-09 | evidencia | `~/Documentos/campana_fp/C-09` | `cd /home/angel/Documentos/campana_fp/C-09 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-09/hecho.txt && cat /home/angel/Documentos/campana_fp/C-09/http_code.txt /home/angel/Documentos/campana_fp/C-09/fallo_rc.txt /home/angel/Documentos/campana_fp/C-09/reintento_rc.txt >> /home/angel/Documentos/campana_fp/C-09/hecho.txt && wc -c /home/angel/Documentos/campana_fp/C-09/intranet.html >> /home/angel/Documentos/campana_fp/C-09/hecho.txt` |
+| 147 | 17:11:40 | B6/C-09 | fin | `~/Documentos/campana_fp/C-09` | `cd /home/angel/Documentos/campana_fp/C-09 && rm -f /home/angel/Documentos/campana_fp/C-09/intranet.html /home/angel/Documentos/campana_fp/C-09/reintento.html /home/angel/Documentos/campana_fp/C-09/http_code.txt /home/angel/Documentos/campana_fp/C-09/fallo_rc.txt /home/angel/Documentos/campana_fp/C-09/reintento_rc.txt && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-09/fin.txt` |
+| 148 | 17:19:30 | B6/C-10 | inicio | `~/Documentos/campana_fp` | `cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-10 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-10/inicio.txt` |
+| 149 | 17:19:37 | B6/C-10 | comando | `~/Documentos/campana_fp/C-10` | `cd /home/angel/Documentos/campana_fp/C-10 && echo 'plantilla del informe del mes' > /home/angel/Documentos/campana_fp/C-10/plantilla.txt && seq 1 12 > /home/angel/Documentos/campana_fp/C-10/lotes.txt` |
+| 150 | 17:19:46 | B6/C-10 | comando | `~/Documentos/campana_fp/C-10` | `cd /home/angel/Documentos/campana_fp/C-10 && xargs -a /home/angel/Documentos/campana_fp/C-10/lotes.txt -I{} cp /home/angel/Documentos/campana_fp/C-10/plantilla.txt /home/angel/Documentos/campana_fp/C-10/lote_{}.txt` |
+| 151 | 17:19:51 | B6/C-10 | comando | `~/Documentos/campana_fp/C-10` | `cd /home/angel/Documentos/campana_fp/C-10 && wc -l /home/angel/Documentos/campana_fp/C-10/lote_1.txt > /home/angel/Documentos/campana_fp/C-10/lote1_wc.txt` |
+| 152 | 17:19:59 | B6/C-10 | evidencia | `~/Documentos/campana_fp/C-10` | `cd /home/angel/Documentos/campana_fp/C-10 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-10/hecho.txt && stat -c %s /home/angel/Documentos/campana_fp/C-10/lote_12.txt >> /home/angel/Documentos/campana_fp/C-10/hecho.txt && ls -l /home/angel/Documentos/campana_fp/C-10/lote_*.txt >> /home/angel/Documentos/campana_fp/C-10/hecho.txt` |
+| 153 | 17:20:06 | B6/C-10 | fin | `~/Documentos/campana_fp/C-10` | `cd /home/angel/Documentos/campana_fp/C-10 && rm -f /home/angel/Documentos/campana_fp/C-10/lote_*.txt /home/angel/Documentos/campana_fp/C-10/lotes.txt /home/angel/Documentos/campana_fp/C-10/plantilla.txt /home/angel/Documentos/campana_fp/C-10/lote1_wc.txt && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-10/fin.txt` |
+| 154 | 17:27:10 | B6/C-11 | inicio | `~/Documentos/campana_fp` | `cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-11 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-11/inicio.txt` |
+| 155 | 17:27:18 | B6/C-11 | comando | `~/Documentos/campana_fp/C-11` | `cd /home/angel/Documentos/campana_fp/C-11 && echo 'C-11: incidencia cerrada; copia del dia revisada' > /home/angel/Documentos/campana_fp/C-11/nota.txt` |
+| 156 | 17:27:25 | B6/C-11 | comando | `~/Documentos/campana_fp/C-11` | `cd /home/angel/Documentos/campana_fp/C-11 && logger -t ofimatica 'C-11: incidencia cerrada; copia del dia revisada'` |
+| 157 | 17:27:34 | B6/C-11 | comando | `~/Documentos/campana_fp/C-11` | `cd /home/angel/Documentos/campana_fp/C-11 && tee -a /home/angel/Documentos/campana_fp/C-11/registro.log < /home/angel/Documentos/campana_fp/C-11/nota.txt` |
+| 158 | 17:27:39 | B6/C-11 | evidencia | `~/Documentos/campana_fp/C-11` | `cd /home/angel/Documentos/campana_fp/C-11 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-11/hecho.txt && tail -3 /home/angel/Documentos/campana_fp/C-11/registro.log >> /home/angel/Documentos/campana_fp/C-11/hecho.txt` |
+| 159 | 17:27:47 | B6/C-11 | fin | `~/Documentos/campana_fp/C-11` | `cd /home/angel/Documentos/campana_fp/C-11 && rm -f /home/angel/Documentos/campana_fp/C-11/nota.txt /home/angel/Documentos/campana_fp/C-11/registro.log && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-11/fin.txt` |
+| 160 | 17:35:40 | B6/C-12 | inicio | `~/Documentos/campana_fp` | `cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-12 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-12/inicio.txt` |
+| 161 | 17:35:45 | B6/C-12 | comando | `~/Documentos/campana_fp/C-12` | `cd /home/angel/Documentos/campana_fp/C-12 && wget -q -O /home/angel/Documentos/campana_fp/C-12/manual.pdf http://intranet.local:8080/descargas/manual_empleado.pdf` |
+| 162 | 17:35:53 | B6/C-12 | evidencia | `~/Documentos/campana_fp/C-12` | `cd /home/angel/Documentos/campana_fp/C-12 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-12/hecho.txt && stat -c %s /home/angel/Documentos/campana_fp/C-12/manual.pdf >> /home/angel/Documentos/campana_fp/C-12/hecho.txt` |
+| 163 | 17:35:59 | B6/C-12 | fin | `~/Documentos/campana_fp/C-12` | `cd /home/angel/Documentos/campana_fp/C-12 && rm -f /home/angel/Documentos/campana_fp/C-12/manual.pdf && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-12/fin.txt` |
 
