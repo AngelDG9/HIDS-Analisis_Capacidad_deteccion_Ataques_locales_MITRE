@@ -10,40 +10,48 @@
    "HandlerArgs": {},
    "TimeLineEvents": [
     {
-     "Command": "date -u +%FT%TZ > /home/angel/Documentos/llegada_$(date -u +%F).txt",
-     "DelayAfter": 45000
+     "Command": "cd /home/angel && mkdir -p /home/angel/Documentos/informes /home/angel/Documentos/actas /home/angel/Documentos/copias /home/angel/Documentos/correo /home/angel/Descargas /home/angel/.cache/tfg-web",
+     "DelayAfter": 43000
     },
     {
-     "Command": "ls -la /home/angel/Documentos",
-     "DelayAfter": 45000
+     "Command": "cd /home/angel/Documentos && date -u +%FT%TZ > /home/angel/Documentos/llegada_$(date -u +%F).txt",
+     "DelayAfter": 62000
     },
     {
-     "Command": "mkdir -p /home/angel/Documentos/informes /home/angel/Documentos/actas /home/angel/Documentos/copias /home/angel/Documentos/correo /home/angel/Descargas /home/angel/.cache/tfg-web",
-     "DelayAfter": 165000
+     "Command": "cd /home/angel/Documentos && ls -la /home/angel/Documentos",
+     "DelayAfter": 48000
     },
     {
-     "Command": "echo '09:30 reunion de area; 12:00 informe; 17:00 cierre' > /home/angel/Documentos/agenda_$(date -u +%F).txt",
-     "DelayAfter": 45000
+     "Command": "cd /home/angel/Documentos && echo '09:30 reunion de area; 12:00 informe; 17:00 cierre' > /home/angel/Documentos/agenda_$(date -u +%F).txt",
+     "DelayAfter": 96000
     },
     {
-     "Command": "cat /home/angel/Documentos/agenda_$(date -u +%F).txt",
-     "DelayAfter": 45000
+     "Command": "cd /home/angel/Documentos && ls -la /home/angel/Documentos/informe 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\\terror\\truta_mal\\tls -la /home/angel/Documentos/informe\\trc=$r >> /home/angel/Documentos/errores.log; }",
+     "DelayAfter": 55000
     },
     {
-     "Command": "curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -c /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/index.html -w '%{http_code}' http://intranet.local:8080/",
-     "DelayAfter": 165000
+     "Command": "cd /home/angel/Documentos && ls -la /home/angel/Documentos/informes && echo -e $(date -u +%FT%TZ)\\treintento\\truta_mal\\tls -la /home/angel/Documentos/informes\\trc=0 >> /home/angel/Documentos/errores.log",
+     "DelayAfter": 111000
     },
     {
-     "Command": "curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/styles.css -w '%{http_code}' http://intranet.local:8080/styles.css && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/portal.js -w '%{http_code}' http://intranet.local:8080/portal.js && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/logo.svg -w '%{http_code}' http://intranet.local:8080/assets/logo.svg",
-     "DelayAfter": 45000
+     "Command": "cd /home/angel/Documentos && cat /home/angel/Documentos/agenda_$(date -u +%F).txt",
+     "DelayAfter": 44000
     },
     {
-     "Command": "wc -c /home/angel/.cache/tfg-web/index.html && sha256sum /home/angel/.cache/tfg-web/styles.css",
-     "DelayAfter": 45000
+     "Command": "cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -c /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/index.html -w '%{http_code}' http://intranet.local:8080/",
+     "DelayAfter": 59000
     },
     {
-     "Command": "echo 're: confirmacion de la reunion de area' > /home/angel/Documentos/correo/borrador_1.txt",
-     "DelayAfter": 180000
+     "Command": "cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/styles.css -w '%{http_code}' http://intranet.local:8080/styles.css && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/portal.js -w '%{http_code}' http://intranet.local:8080/portal.js && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/logo.svg -w '%{http_code}' http://intranet.local:8080/assets/logo.svg",
+     "DelayAfter": 101000
+    },
+    {
+     "Command": "cd /home/angel/.cache/tfg-web && wc -c /home/angel/.cache/tfg-web/index.html && sha256sum /home/angel/.cache/tfg-web/styles.css",
+     "DelayAfter": 41000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/correo && echo 're: confirmacion de la reunion de area' > /home/angel/Documentos/correo/borrador_1.txt",
+     "DelayAfter": 120000
     }
    ]
   },
@@ -56,132 +64,160 @@
    "HandlerArgs": {},
    "TimeLineEvents": [
     {
-     "Command": "curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/plain;q=0.9,*/*;q=0.8' -X POST --data 'consulta_buzon_d2_r1' -o /home/angel/.cache/tfg-web/buzon_1.txt -w '%{http_code}' http://intranet.local:9090/paste",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/plain;q=0.9,*/*;q=0.8' -X POST --data 'consulta_buzon_d2_r1' -o /home/angel/.cache/tfg-web/buzon_1.txt -w '%{http_code}' http://intranet.local:9090/paste",
+     "DelayAfter": 48000
     },
     {
-     "Command": "echo 'ronda 1: pendiente de revisar el informe del area' >> /home/angel/Documentos/correo/borrador_1.txt",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/correo && echo 'ronda 1: pendiente de revisar el informe del area' >> /home/angel/Documentos/correo/borrador_1.txt",
+     "DelayAfter": 202000
     },
     {
-     "Command": "cat /home/angel/Documentos/correo/borrador_1.txt",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/correo && cat /home/angel/Documentos/correo/borrador_1.txt",
+     "DelayAfter": 55000
     },
     {
-     "Command": "curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/plain;q=0.9,*/*;q=0.8' -X POST --data 'consulta_buzon_d2_r2' -o /home/angel/.cache/tfg-web/buzon_2.txt -w '%{http_code}' http://intranet.local:9090/paste",
-     "DelayAfter": 584000
+     "Command": "cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/plain;q=0.9,*/*;q=0.8' -X POST --data 'consulta_buzon_d2_r2' -o /home/angel/.cache/tfg-web/buzon_2.txt -w '%{http_code}' http://intranet.local:9090/paste",
+     "DelayAfter": 44000
     },
     {
-     "Command": "echo 'ronda 2: pendiente de revisar el informe del area' >> /home/angel/Documentos/correo/borrador_2.txt",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/correo && echo 'ronda 2: pendiente de revisar el informe del area' >> /home/angel/Documentos/correo/borrador_2.txt",
+     "DelayAfter": 59000
     },
     {
-     "Command": "cat /home/angel/Documentos/correo/borrador_2.txt",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/correo && cat /home/angel/Documentos/correo/borrador_2.txt",
+     "DelayAfter": 276000
     },
     {
-     "Command": "curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/plain;q=0.9,*/*;q=0.8' -X POST --data 'consulta_buzon_d2_r3' -o /home/angel/.cache/tfg-web/buzon_3.txt -w '%{http_code}' http://intranet.local:9090/paste",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel && ip -brief addr",
+     "DelayAfter": 829000
     },
     {
-     "Command": "echo 'ronda 3: pendiente de revisar el informe del area' >> /home/angel/Documentos/correo/borrador_3.txt",
-     "DelayAfter": 584000
+     "Command": "cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/plain;q=0.9,*/*;q=0.8' -X POST --data 'consulta_buzon_d2_r3' -o /home/angel/.cache/tfg-web/buzon_3.txt -w '%{http_code}' http://intranet.local:9090/paste",
+     "DelayAfter": 41000
     },
     {
-     "Command": "cat /home/angel/Documentos/correo/borrador_3.txt",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/correo && echo 'ronda 3: pendiente de revisar el informe del area' >> /home/angel/Documentos/correo/borrador_3.txt",
+     "DelayAfter": 57000
     },
     {
-     "Command": "curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/plain;q=0.9,*/*;q=0.8' -X POST --data 'consulta_buzon_d2_r4' -o /home/angel/.cache/tfg-web/buzon_4.txt -w '%{http_code}' http://intranet.local:9090/paste",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/correo && cat /home/angel/Documentos/correo/borrador_3.txt",
+     "DelayAfter": 350000
     },
     {
-     "Command": "echo 'ronda 4: pendiente de revisar el informe del area' >> /home/angel/Documentos/correo/borrador_4.txt",
-     "DelayAfter": 584000
+     "Command": "cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/plain;q=0.9,*/*;q=0.8' -X POST --data 'consulta_buzon_d2_r4' -o /home/angel/.cache/tfg-web/buzon_4.txt -w '%{http_code}' http://intranet.local:9090/paste",
+     "DelayAfter": 43000
     },
     {
-     "Command": "cat /home/angel/Documentos/correo/borrador_4.txt",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/correo && echo 'ronda 4: pendiente de revisar el informe del area' >> /home/angel/Documentos/correo/borrador_4.txt",
+     "DelayAfter": 460000
     },
     {
-     "Command": "cp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes/informe.bak",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/correo && cat /home/angel/Documentos/correo/borrador_4.txt",
+     "DelayAfter": 62000
     },
     {
-     "Command": "mv -f /home/angel/Documentos/correo/borrador_1.txt /home/angel/Documentos/correo/enviado_1.txt",
-     "DelayAfter": 584000
+     "Command": "cd /home/angel/Documentos/informes && cp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes/informe.bak",
+     "DelayAfter": 48000
     },
     {
-     "Command": "find /home/angel/Documentos -type f > /home/angel/.cache/tfg-web/lista_ficheros.txt",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/correo && mv -f /home/angel/Documentos/correo/borrador_1.txt /home/angel/Documentos/correo/enviado_1.txt",
+     "DelayAfter": 55000
     },
     {
-     "Command": "ls -la /home/angel/Documentos/correo",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos && find /home/angel/Documentos -type f > /home/angel/.cache/tfg-web/lista_ficheros.txt",
+     "DelayAfter": 44000
     },
     {
-     "Command": "wc -l /home/angel/Documentos/informes/informe.txt",
-     "DelayAfter": 584000
-    },
-    {
-     "Command": "cat /home/angel/Documentos/correo/enviado_1.txt",
-     "DelayAfter": 50000
-    },
-    {
-     "Command": "du -sh /home/angel/Documentos/correo",
-     "DelayAfter": 50000
-    },
-    {
-     "Command": "cp -f /home/angel/Documentos/informes/informe.txt /home/angel/Descargas/informe_copia_2.txt",
-     "DelayAfter": 584000
-    },
-    {
-     "Command": "rm -f /home/angel/Descargas/tmp_borradores.csv",
-     "DelayAfter": 50000
-    },
-    {
-     "Command": "echo 'revisado el buzon de la manana' >> /home/angel/Documentos/agenda_$(date -u +%F).txt",
-     "DelayAfter": 50000
-    },
-    {
-     "Command": "md5sum /home/angel/Documentos/informes/informe.bak",
-     "DelayAfter": 584000
-    },
-    {
-     "Command": "ls -la /home/angel/Documentos",
-     "DelayAfter": 50000
-    },
-    {
-     "Command": "echo 'informe del area - jornada 2' > /home/angel/Documentos/informes/informe.txt",
-     "DelayAfter": 50000
-    },
-    {
-     "Command": "tar -czf /home/angel/Documentos/informes/adjunto_1_$(date -u +%F).tar.gz -C /home/angel/Documentos/informes informe.txt",
-     "DelayAfter": 584000
-    },
-    {
-     "Command": "sha256sum /home/angel/Documentos/informes/adjunto_1_$(date -u +%F).tar.gz",
-     "DelayAfter": 50000
-    },
-    {
-     "Command": "du -sh /home/angel/Documentos/informes/adjunto_1_$(date -u +%F).tar.gz",
-     "DelayAfter": 50000
-    },
-    {
-     "Command": "ls -la /home/angel/Documentos/informes",
-     "DelayAfter": 584000
-    },
-    {
-     "Command": "tar -czf /home/angel/Documentos/informes/adjunto_2_$(date -u +%F).tar.gz -C /home/angel/Documentos/informes informe.txt",
-     "DelayAfter": 50000
-    },
-    {
-     "Command": "sha256sum /home/angel/Documentos/informes/adjunto_2_$(date -u +%F).tar.gz",
-     "DelayAfter": 50000
-    },
-    {
-     "Command": "du -sh /home/angel/Documentos/informes/adjunto_2_$(date -u +%F).tar.gz",
+     "Command": "cd /home/angel/Documentos/correo && ls -la /home/angel/Documentos/correo",
      "DelayAfter": 184000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt",
+     "DelayAfter": 700000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/correo && cat /home/angel/Documentos/correo/enviado_1.txt",
+     "DelayAfter": 59000
+    },
+    {
+     "Command": "cd /home/angel && df -h --max-depth=1 / 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\\terror\\topcion\\tdf -h --max-depth=1 /\\trc=$r >> /home/angel/Documentos/errores.log; }",
+     "DelayAfter": 258000
+    },
+    {
+     "Command": "cd /home/angel && df -h / && echo -e $(date -u +%FT%TZ)\\treintento\\topcion\\tdf -h /\\trc=0 >> /home/angel/Documentos/errores.log",
+     "DelayAfter": 41000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/correo && du -sh /home/angel/Documentos/correo",
+     "DelayAfter": 57000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/informes && cp -f /home/angel/Documentos/informes/informe.txt /home/angel/Descargas/informe_copia_2.txt",
+     "DelayAfter": 43000
+    },
+    {
+     "Command": "cd /home/angel/Descargas && rm -f /home/angel/Descargas/tmp_borradores.csv",
+     "DelayAfter": 212000
+    },
+    {
+     "Command": "cd /home/angel/Documentos && echo 'revisado el buzon de la manana' >> /home/angel/Documentos/agenda_$(date -u +%F).txt",
+     "DelayAfter": 571000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/informes && md5sum /home/angel/Documentos/informes/informe.bak",
+     "DelayAfter": 62000
+    },
+    {
+     "Command": "cd /home/angel/Documentos && ls -la /home/angel/Documentos",
+     "DelayAfter": 48000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/informes && echo 'informe del area - jornada 2' > /home/angel/Documentos/informes/informe.txt",
+     "DelayAfter": 295000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/informes && tar -czf /home/angel/Documentos/informes/adjunto_1_$(date -u +%F).tar.gz -C /home/angel/Documentos/informes informe.txt",
+     "DelayAfter": 55000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/informes && cp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes_2026/informe.bak 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\\terror\\tcp_dir\\tcp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes_2026/informe.bak\\trc=$r >> /home/angel/Documentos/errores.log; }",
+     "DelayAfter": 175000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/informes && cp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes/informe.bak && echo -e $(date -u +%FT%TZ)\\treintento\\tcp_dir\\tcp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes/informe.bak\\trc=0 >> /home/angel/Documentos/errores.log",
+     "DelayAfter": 44000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/informes && sha256sum /home/angel/Documentos/informes/adjunto_1_$(date -u +%F).tar.gz",
+     "DelayAfter": 59000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/informes && stat /home/angel/Documentos/informes/informe_2026.txt 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\\terror\\truta_mal\\tstat /home/angel/Documentos/informes/informe_2026.txt\\trc=$r >> /home/angel/Documentos/errores.log; }",
+     "DelayAfter": 41000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/informes && stat /home/angel/Documentos/informes/informe.txt && echo -e $(date -u +%FT%TZ)\\treintento\\truta_mal\\tstat /home/angel/Documentos/informes/informe.txt\\trc=0 >> /home/angel/Documentos/errores.log",
+     "DelayAfter": 57000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/informes && du -sh /home/angel/Documentos/informes/adjunto_1_$(date -u +%F).tar.gz",
+     "DelayAfter": 43000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/informes && ls -la /home/angel/Documentos/informes",
+     "DelayAfter": 460000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/informes && tar -czf /home/angel/Documentos/informes/adjunto_2_$(date -u +%F).tar.gz -C /home/angel/Documentos/informes informe.txt",
+     "DelayAfter": 221000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/informes && sha256sum /home/angel/Documentos/informes/adjunto_2_$(date -u +%F).tar.gz",
+     "DelayAfter": 62000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/informes && du -sh /home/angel/Documentos/informes/adjunto_2_$(date -u +%F).tar.gz",
+     "DelayAfter": 120000
     }
    ]
   },
@@ -194,140 +230,196 @@
    "HandlerArgs": {},
    "TimeLineEvents": [
     {
-     "Command": "curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/.cache/tfg-web/index.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/Descargas/noticias.html -w '%{http_code}' http://intranet.local:8080/noticias.html",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/.cache/tfg-web/index.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/Descargas/noticias.html -w '%{http_code}' http://intranet.local:8080/noticias.html",
+     "DelayAfter": 44000
     },
     {
-     "Command": "curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/Descargas/noticias.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /dev/null -w '%{http_code}' http://intranet.local:8080/ayuda.html",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/Descargas/noticias.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /dev/null -w '%{http_code}' http://intranet.local:8080/ayuda.html",
+     "DelayAfter": 59000
     },
     {
-     "Command": "curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ayuda.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/plantilla_informe.csv -w '%{http_code}' http://intranet.local:8080/descargas/plantilla_informe.csv",
-     "DelayAfter": 702000
+     "Command": "cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ayuda.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/plantilla_informe.csv -w '%{http_code}' http://intranet.local:8080/descargas/plantilla_informe.csv",
+     "DelayAfter": 219000
     },
     {
-     "Command": "curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/Descargas/noticias.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/Descargas/manual_empleado.pdf -w '%{http_code}' http://intranet.local:8080/descargas/manual_empleado.pdf",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/Descargas/noticias.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/Descargas/manual_empleado.pdf -w '%{http_code}' http://intranet.local:8080/descargas/manual_empleado.pdf",
+     "DelayAfter": 41000
     },
     {
-     "Command": "wc -c /home/angel/Descargas/manual_empleado.pdf && sha256sum /home/angel/Descargas/manual_empleado.pdf",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Descargas && wc -c /home/angel/Descargas/manual_empleado.pdf && sha256sum /home/angel/Descargas/manual_empleado.pdf",
+     "DelayAfter": 488000
     },
     {
-     "Command": "gzip -kf /home/angel/Documentos/informes/informe.txt",
-     "DelayAfter": 702000
+     "Command": "cd /home/angel/Documentos/informes && echo 'referencia;area;importe' > /home/angel/Documentos/informes/export.csv",
+     "DelayAfter": 57000
     },
     {
-     "Command": "md5sum /home/angel/Documentos/informes/informe.txt.gz",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/informes && sed -i 's/;/,/g' /home/angel/Documentos/informes/export.csv",
+     "DelayAfter": 43000
     },
     {
-     "Command": "sha256sum /home/angel/Documentos/informes/informe.txt.gz",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/informes && sed -n '1,5p' /home/angel/Documentos/informes/export.csv",
+     "DelayAfter": 62000
     },
     {
-     "Command": "ls -la /home/angel/Documentos/informes",
-     "DelayAfter": 702000
+     "Command": "cd /home/angel/Documentos/informes && gzip -kf /home/angel/Documentos/informes/informe.txt",
+     "DelayAfter": 48000
     },
     {
-     "Command": "du -sh /home/angel/Documentos/informes",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Descargas && openssl dgst -sha256 /home/angel/Descargas/manual_empleado.pdf",
+     "DelayAfter": 55000
     },
     {
-     "Command": "wc -l /home/angel/Documentos/informes/informe.txt.gz",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/informes && md5sum /home/angel/Documentos/informes/informe.txt.gz",
+     "DelayAfter": 317000
     },
     {
-     "Command": "echo '1. alcance del informe (dia 2)' >> /home/angel/Documentos/informes/informe.txt",
-     "DelayAfter": 702000
+     "Command": "cd /home/angel/Documentos/informes && sha256sum /home/angel/Documentos/informes/informe.txt.gz",
+     "DelayAfter": 390000
     },
     {
-     "Command": "cat /home/angel/Documentos/informes/informe.txt",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/informes && seq 1 12 > /home/angel/.cache/tfg-web/lotes.txt",
+     "DelayAfter": 44000
     },
     {
-     "Command": "wc -l /home/angel/Documentos/informes/informe.txt",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/informes && xargs -a /home/angel/.cache/tfg-web/lotes.txt -I{} cp /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes/lote_{}.txt",
+     "DelayAfter": 59000
     },
     {
-     "Command": "echo '2. actividades del area (dia 2)' >> /home/angel/Documentos/informes/informe.txt",
-     "DelayAfter": 702000
+     "Command": "cd /home/angel/Documentos/informes && gzip -d /home/angel/Documentos/informes/informe.txt 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\\terror\\tgzip\\tgzip -d /home/angel/Documentos/informes/informe.txt\\trc=$r >> /home/angel/Documentos/errores.log; }",
+     "DelayAfter": 268000
     },
     {
-     "Command": "cat /home/angel/Documentos/informes/informe.txt",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/informes && gzip -kf /home/angel/Documentos/informes/informe.txt && echo -e $(date -u +%FT%TZ)\\treintento\\tgzip\\tgzip -kf /home/angel/Documentos/informes/informe.txt\\trc=0 >> /home/angel/Documentos/errores.log",
+     "DelayAfter": 41000
     },
     {
-     "Command": "wc -l /home/angel/Documentos/informes/informe.txt",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/informes && ls -la /home/angel/Documentos/informes",
+     "DelayAfter": 610000
     },
     {
-     "Command": "echo '3. incidencias de la semana (dia 2)' >> /home/angel/Documentos/informes/informe.txt",
-     "DelayAfter": 702000
+     "Command": "cd /home/angel/Documentos/informes && du -sh /home/angel/Documentos/informes",
+     "DelayAfter": 57000
     },
     {
-     "Command": "cat /home/angel/Documentos/informes/informe.txt",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt.gz",
+     "DelayAfter": 43000
     },
     {
-     "Command": "wc -l /home/angel/Documentos/informes/informe.txt",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/informes && echo '1. alcance del informe (dia 2)' >> /home/angel/Documentos/informes/informe.txt",
+     "DelayAfter": 62000
     },
     {
-     "Command": "echo '4. indicadores del mes (dia 2)' >> /home/angel/Documentos/informes/informe.txt",
-     "DelayAfter": 702000
+     "Command": "cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.txt",
+     "DelayAfter": 232000
     },
     {
-     "Command": "cat /home/angel/Documentos/informes/informe.txt",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt",
+     "DelayAfter": 293000
     },
     {
-     "Command": "wc -l /home/angel/Documentos/informes/informe.txt",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel && free -m",
+     "DelayAfter": 48000
     },
     {
-     "Command": "echo '5. riesgos identificados (dia 2)' >> /home/angel/Documentos/informes/informe.txt",
-     "DelayAfter": 702000
+     "Command": "cd /home/angel && logger -t ofimatica 'repaso del informe del area'",
+     "DelayAfter": 55000
     },
     {
-     "Command": "cat /home/angel/Documentos/informes/informe.txt",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/informes && echo '2. actividades del area (dia 2)' >> /home/angel/Documentos/informes/informe.txt",
+     "DelayAfter": 44000
     },
     {
-     "Command": "wc -l /home/angel/Documentos/informes/informe.txt",
-     "DelayAfter": 702000
+     "Command": "cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.txt",
+     "DelayAfter": 59000
     },
     {
-     "Command": "echo '6. plan de accion (dia 2)' >> /home/angel/Documentos/informes/informe.txt",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt",
+     "DelayAfter": 1250000
     },
     {
-     "Command": "cat /home/angel/Documentos/informes/informe.txt",
-     "DelayAfter": 702000
+     "Command": "cd /home/angel/Documentos/informes && echo '3. incidencias de la semana (dia 2)' >> /home/angel/Documentos/informes/informe.txt",
+     "DelayAfter": 41000
     },
     {
-     "Command": "wc -l /home/angel/Documentos/informes/informe.txt",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.txt",
+     "DelayAfter": 927000
     },
     {
-     "Command": "echo '7. conclusiones (dia 2)' >> /home/angel/Documentos/informes/informe.txt",
-     "DelayAfter": 702000
+     "Command": "cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt",
+     "DelayAfter": 57000
     },
     {
-     "Command": "cat /home/angel/Documentos/informes/informe.txt",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/informes && echo '4. indicadores del mes (dia 2)' >> /home/angel/Documentos/informes/informe.txt",
+     "DelayAfter": 43000
     },
     {
-     "Command": "wc -l /home/angel/Documentos/informes/informe.txt",
-     "DelayAfter": 702000
+     "Command": "cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.txt",
+     "DelayAfter": 232000
     },
     {
-     "Command": "echo '8. anexo de datos (dia 2)' >> /home/angel/Documentos/informes/informe.txt",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt",
+     "DelayAfter": 1098000
     },
     {
-     "Command": "cat /home/angel/Documentos/informes/informe.txt",
-     "DelayAfter": 186000
+     "Command": "cd /home/angel/Documentos/informes && echo '5. riesgos identificados (dia 2)' >> /home/angel/Documentos/informes/informe.txt",
+     "DelayAfter": 62000
+    },
+    {
+     "Command": "cd /home/angel/Descargas && rm /home/angel/Descargas/tmp_borradores.csv 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\\terror\\trm_inexistente\\trm /home/angel/Descargas/tmp_borradores.csv\\trc=$r >> /home/angel/Documentos/errores.log; }",
+     "DelayAfter": 48000
+    },
+    {
+     "Command": "cd /home/angel/Descargas && rm -f /home/angel/Descargas/tmp_borradores.csv && echo -e $(date -u +%FT%TZ)\\treintento\\trm_inexistente\\trm -f /home/angel/Descargas/tmp_borradores.csv\\trc=0 >> /home/angel/Documentos/errores.log",
+     "DelayAfter": 55000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.txt",
+     "DelayAfter": 439000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt",
+     "DelayAfter": 44000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/informes && echo '6. plan de accion (dia 2)' >> /home/angel/Documentos/informes/informe.txt",
+     "DelayAfter": 634000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.txt",
+     "DelayAfter": 59000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt",
+     "DelayAfter": 41000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/informes && echo '7. conclusiones (dia 2)' >> /home/angel/Documentos/informes/informe.txt",
+     "DelayAfter": 57000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/informes && echo 'pendiente: firmar el acta de la reunion' > /home/angel/Documentos/informes/nota.txt",
+     "DelayAfter": 43000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/informes && tee -a /home/angel/Documentos/informes/bitacora.txt < /home/angel/Documentos/informes/nota.txt",
+     "DelayAfter": 62000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.txt",
+     "DelayAfter": 342000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt",
+     "DelayAfter": 220000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/informes && echo '8. anexo de datos (dia 2)' >> /home/angel/Documentos/informes/informe.txt",
+     "DelayAfter": 48000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.txt",
+     "DelayAfter": 120000
     }
    ]
   },
@@ -340,124 +432,176 @@
    "HandlerArgs": {},
    "TimeLineEvents": [
     {
-     "Command": "echo 'acta de reunion 1 del area (dia 2)' > /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/actas && echo 'acta de reunion 1 del area (dia 2)' > /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt",
+     "DelayAfter": 41000
     },
     {
-     "Command": "cat /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/actas && cat /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt",
+     "DelayAfter": 608000
     },
     {
-     "Command": "wc -c /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt",
-     "DelayAfter": 644000
+     "Command": "cd /home/angel/Documentos/actas && wc -c /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt",
+     "DelayAfter": 57000
     },
     {
-     "Command": "cp -f /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt /home/angel/Documentos/actas/compartida_1.txt",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos && cat /home/angel/Documentos/actas 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\\terror\\tcat_dir\\tcat /home/angel/Documentos/actas\\trc=$r >> /home/angel/Documentos/errores.log; }",
+     "DelayAfter": 43000
     },
     {
-     "Command": "sha256sum /home/angel/Documentos/actas/compartida_1.txt",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.bak && echo -e $(date -u +%FT%TZ)\\treintento\\tcat_dir\\tcat /home/angel/Documentos/informes/informe.bak\\trc=0 >> /home/angel/Documentos/errores.log",
+     "DelayAfter": 62000
     },
     {
-     "Command": "ls -la /home/angel/Documentos/actas",
-     "DelayAfter": 644000
+     "Command": "cd /home/angel/Documentos/actas && cp -f /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt /home/angel/Documentos/actas/compartida_1.txt",
+     "DelayAfter": 324000
     },
     {
-     "Command": "echo 'acta de reunion 1 del area (dia 2)' > /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/informes && rsync -a --delete /home/angel/Documentos/informes/ /home/angel/Documentos/copias/informes/",
+     "DelayAfter": 48000
     },
     {
-     "Command": "cat /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/actas && sha256sum /home/angel/Documentos/actas/compartida_1.txt",
+     "DelayAfter": 55000
     },
     {
-     "Command": "wc -c /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt",
-     "DelayAfter": 644000
+     "Command": "cd /home/angel/Documentos/actas && ls -la /home/angel/Documentos/actas",
+     "DelayAfter": 473000
     },
     {
-     "Command": "cp -f /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt /home/angel/Documentos/actas/compartida_1.txt",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/informes && echo 'borrador previo del informe del area' > /home/angel/Documentos/informes/borrador_previo.txt",
+     "DelayAfter": 175000
     },
     {
-     "Command": "sha256sum /home/angel/Documentos/actas/compartida_1.txt",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/informes && shred -n 1 -z -u /home/angel/Documentos/informes/borrador_previo.txt",
+     "DelayAfter": 44000
     },
     {
-     "Command": "ls -la /home/angel/Documentos/actas",
-     "DelayAfter": 644000
+     "Command": "cd /home/angel/Documentos/actas && cp -f /home/angel/Documentos/actas/compartida_1.txt /home/angel/Documentos/compartidas/ 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\\terror\\tcp_dir\\tcp -f /home/angel/Documentos/actas/compartida_1.txt /home/angel/Documentos/compartidas/\\trc=$r >> /home/angel/Documentos/errores.log; }",
+     "DelayAfter": 59000
     },
     {
-     "Command": "echo 'acta de reunion 2 del area (dia 2)' > /home/angel/Documentos/actas/acta_2_$(date -u +%F).txt",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/actas && cp -f /home/angel/Documentos/actas/compartida_1.txt /home/angel/Documentos/actas/compartida_copia.txt && echo -e $(date -u +%FT%TZ)\\treintento\\tcp_dir\\tcp -f /home/angel/Documentos/actas/compartida_1.txt /home/angel/Documentos/actas/compartida_copia.txt\\trc=0 >> /home/angel/Documentos/errores.log",
+     "DelayAfter": 41000
     },
     {
-     "Command": "cat /home/angel/Documentos/actas/acta_2_$(date -u +%F).txt",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/actas && echo 'acta de reunion 1 del area (dia 2)' > /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt",
+     "DelayAfter": 57000
     },
     {
-     "Command": "wc -c /home/angel/Documentos/actas/acta_2_$(date -u +%F).txt",
-     "DelayAfter": 644000
+     "Command": "cd /home/angel/Documentos/actas && cat /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt",
+     "DelayAfter": 43000
     },
     {
-     "Command": "cp -f /home/angel/Documentos/actas/acta_2_$(date -u +%F).txt /home/angel/Documentos/actas/compartida_2.txt",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/actas && wc -c /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt",
+     "DelayAfter": 379000
     },
     {
-     "Command": "sha256sum /home/angel/Documentos/actas/compartida_2.txt",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/actas && cp -f /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt /home/angel/Documentos/actas/compartida_1.txt",
+     "DelayAfter": 62000
     },
     {
-     "Command": "ls -la /home/angel/Documentos/actas",
-     "DelayAfter": 644000
+     "Command": "cd /home/angel/Descargas && wget -q -O /home/angel/Descargas/manual_empleado_wget.pdf http://intranet.local:8080/descargas/manual_empleado.pdf",
+     "DelayAfter": 1210000
     },
     {
-     "Command": "curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -T /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt -o /dev/null -w '%{http_code}' http://nube.local:9092/nube/actas/",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/actas && sha256sum /home/angel/Documentos/actas/compartida_1.txt",
+     "DelayAfter": 596000
     },
     {
-     "Command": "curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -X PROPFIND -H 'Depth: 1' -o /home/angel/.cache/tfg-web/nube_listado.txt -w '%{http_code}' http://nube.local:9092/nube/",
-     "DelayAfter": 644000
+     "Command": "cd /home/angel/Documentos/actas && ls -la /home/angel/Documentos/actas",
+     "DelayAfter": 48000
     },
     {
-     "Command": "curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -T /home/angel/Documentos/informes/informe.txt -o /dev/null -w '%{http_code}' http://nube.local:9092/nube/informes/",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos && ls -la --clasificar /home/angel/Documentos 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\\terror\\topcion\\tls -la --clasificar /home/angel/Documentos\\trc=$r >> /home/angel/Documentos/errores.log; }",
+     "DelayAfter": 55000
     },
     {
-     "Command": "curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -X PROPFIND -H 'Depth: 1' -o /home/angel/.cache/tfg-web/nube_actas.txt -w '%{http_code}' http://nube.local:9092/nube/actas/",
-     "DelayAfter": 644000
+     "Command": "cd /home/angel/Documentos && ls -la --classify /home/angel/Documentos && echo -e $(date -u +%FT%TZ)\\treintento\\topcion\\tls -la --classify /home/angel/Documentos\\trc=0 >> /home/angel/Documentos/errores.log",
+     "DelayAfter": 44000
     },
     {
-     "Command": "curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ayuda.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/portal_tarde.html -w '%{http_code}' http://intranet.local:8080/",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/actas && echo 'acta de reunion 2 del area (dia 2)' > /home/angel/Documentos/actas/acta_2_$(date -u +%F).txt",
+     "DelayAfter": 433000
     },
     {
-     "Command": "curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/.cache/tfg-web/portal_tarde.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/noticias_tarde.html -w '%{http_code}' http://intranet.local:8080/noticias.html",
-     "DelayAfter": 644000
+     "Command": "cd /home/angel/Documentos/actas && cat /home/angel/Documentos/actas/acta_2_$(date -u +%F).txt",
+     "DelayAfter": 59000
     },
     {
-     "Command": "tar -czf /home/angel/Descargas/informe_dia2.tar.gz -C /home/angel/Documentos/informes informe.txt",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/actas && wc -c /home/angel/Documentos/actas/acta_2_$(date -u +%F).txt",
+     "DelayAfter": 203000
     },
     {
-     "Command": "sha256sum /home/angel/Descargas/informe_dia2.tar.gz",
-     "DelayAfter": 644000
+     "Command": "cd /home/angel/Descargas && timeout 5 curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -o /home/angel/.cache/tfg-web/intranet_tarde.html -w '%{http_code}' http://intranet.local:8080/",
+     "DelayAfter": 41000
     },
     {
-     "Command": "du -sh /home/angel/Descargas/informe_dia2.tar.gz",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/actas && cp -f /home/angel/Documentos/actas/acta_2_$(date -u +%F).txt /home/angel/Documentos/actas/compartida_2.txt",
+     "DelayAfter": 57000
     },
     {
-     "Command": "ls -la /home/angel/Descargas",
-     "DelayAfter": 644000
+     "Command": "cd /home/angel/Documentos/actas && sha256sum /home/angel/Documentos/actas/compartida_2.txt",
+     "DelayAfter": 508000
     },
     {
-     "Command": "curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/.cache/tfg-web/portal_tarde.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/Descargas/plantilla_dia2.csv -w '%{http_code}' http://intranet.local:8080/descargas/plantilla_informe.csv",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/actas && ls -la /home/angel/Documentos/actas",
+     "DelayAfter": 142000
     },
     {
-     "Command": "wc -c /home/angel/Descargas/plantilla_dia2.csv",
-     "DelayAfter": 176000
+     "Command": "cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -T /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt -o /dev/null -w '%{http_code}' http://nube.local:9092/nube/actas/",
+     "DelayAfter": 43000
+    },
+    {
+     "Command": "cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -X PROPFIND -H 'Depth: 1' -o /home/angel/.cache/tfg-web/nube_listado.txt -w '%{http_code}' http://nube.local:9092/nube/",
+     "DelayAfter": 62000
+    },
+    {
+     "Command": "cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -T /home/angel/Documentos/informes/informe.txt -o /dev/null -w '%{http_code}' http://nube.local:9092/nube/informes/",
+     "DelayAfter": 48000
+    },
+    {
+     "Command": "cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -X PROPFIND -H 'Depth: 1' -o /home/angel/.cache/tfg-web/nube_actas.txt -w '%{http_code}' http://nube.local:9092/nube/actas/",
+     "DelayAfter": 55000
+    },
+    {
+     "Command": "cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ayuda.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/portal_tarde.html -w '%{http_code}' http://intranet.local:8080/",
+     "DelayAfter": 393000
+    },
+    {
+     "Command": "cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/.cache/tfg-web/portal_tarde.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/noticias_tarde.html -w '%{http_code}' http://intranet.local:8080/noticias.html",
+     "DelayAfter": 44000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/informes && gzip -d /home/angel/Documentos/informes/informe.bak 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\\terror\\tgzip\\tgzip -d /home/angel/Documentos/informes/informe.bak\\trc=$r >> /home/angel/Documentos/errores.log; }",
+     "DelayAfter": 311000
+    },
+    {
+     "Command": "cd /home/angel/Documentos/informes && gzip -kf /home/angel/Documentos/informes/informe.bak && echo -e $(date -u +%FT%TZ)\\treintento\\tgzip\\tgzip -kf /home/angel/Documentos/informes/informe.bak\\trc=0 >> /home/angel/Documentos/errores.log",
+     "DelayAfter": 59000
+    },
+    {
+     "Command": "cd /home/angel/Descargas && tar -czf /home/angel/Descargas/informe_dia2.tar.gz -C /home/angel/Documentos/informes informe.txt",
+     "DelayAfter": 41000
+    },
+    {
+     "Command": "cd /home/angel/Descargas && sha256sum /home/angel/Descargas/informe_dia2.tar.gz",
+     "DelayAfter": 352000
+    },
+    {
+     "Command": "cd /home/angel/Descargas && du -sh /home/angel/Descargas/informe_dia2.tar.gz",
+     "DelayAfter": 80000
+    },
+    {
+     "Command": "cd /home/angel/Descargas && ls -la /home/angel/Descargas",
+     "DelayAfter": 57000
+    },
+    {
+     "Command": "cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/.cache/tfg-web/portal_tarde.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/Descargas/plantilla_dia2.csv -w '%{http_code}' http://intranet.local:8080/descargas/plantilla_informe.csv",
+     "DelayAfter": 528000
+    },
+    {
+     "Command": "cd /home/angel/Descargas && wc -c /home/angel/Descargas/plantilla_dia2.csv",
+     "DelayAfter": 120000
     }
    ]
   },
@@ -470,52 +614,52 @@
    "HandlerArgs": {},
    "TimeLineEvents": [
     {
-     "Command": "tar -czf /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz -C /home/angel/Documentos informes actas",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/copias && tar -czf /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz -C /home/angel/Documentos informes actas",
+     "DelayAfter": 516000
     },
     {
-     "Command": "sha256sum /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz",
-     "DelayAfter": 456000
+     "Command": "cd /home/angel/Documentos/copias && sha256sum /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz",
+     "DelayAfter": 43000
     },
     {
-     "Command": "cat /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz.sha256",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Documentos/copias && cat /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz.sha256",
+     "DelayAfter": 62000
     },
     {
-     "Command": "curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -T /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz -o /dev/null -w '%{http_code}' http://nube.local:9092/nube/copias/",
-     "DelayAfter": 456000
+     "Command": "cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -T /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz -o /dev/null -w '%{http_code}' http://nube.local:9092/nube/copias/",
+     "DelayAfter": 48000
     },
     {
-     "Command": "curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -X PROPFIND -H 'Depth: 1' -o /home/angel/.cache/tfg-web/copias_nube.txt -w '%{http_code}' http://nube.local:9092/nube/copias/",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -X PROPFIND -H 'Depth: 1' -o /home/angel/.cache/tfg-web/copias_nube.txt -w '%{http_code}' http://nube.local:9092/nube/copias/",
+     "DelayAfter": 441000
     },
     {
-     "Command": "du -sh /home/angel/Documentos",
-     "DelayAfter": 456000
+     "Command": "cd /home/angel/Documentos && du -sh /home/angel/Documentos",
+     "DelayAfter": 55000
     },
     {
-     "Command": "df -h /",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel && df -h /",
+     "DelayAfter": 374000
     },
     {
-     "Command": "cp -f /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz /home/angel/Descargas/copia_final_2.tar.gz",
-     "DelayAfter": 456000
+     "Command": "cd /home/angel/Documentos/copias && cp -f /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz /home/angel/Descargas/copia_final_2.tar.gz",
+     "DelayAfter": 44000
     },
     {
-     "Command": "wc -c /home/angel/Descargas/copia_final_2.tar.gz",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel/Descargas && wc -c /home/angel/Descargas/copia_final_2.tar.gz",
+     "DelayAfter": 59000
     },
     {
-     "Command": "rm -f /home/angel/Descargas/tmp_*.csv",
-     "DelayAfter": 456000
+     "Command": "cd /home/angel/Descargas && rm -f /home/angel/Descargas/tmp_*.csv",
+     "DelayAfter": 582000
     },
     {
-     "Command": "date -u +%FT%TZ",
-     "DelayAfter": 50000
+     "Command": "cd /home/angel && date -u +%FT%TZ",
+     "DelayAfter": 416000
     },
     {
-     "Command": "ls -la /home/angel/Documentos /home/angel/Descargas",
-     "DelayAfter": 180000
+     "Command": "cd /home/angel/Documentos && ls -la /home/angel/Documentos /home/angel/Descargas",
+     "DelayAfter": 120000
     }
    ]
   }

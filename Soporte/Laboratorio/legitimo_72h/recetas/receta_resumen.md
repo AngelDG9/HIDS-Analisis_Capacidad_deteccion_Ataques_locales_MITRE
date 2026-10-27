@@ -1,367 +1,546 @@
-# `receta_resumen.md` — receta de actividad legítima (3 días)
+# `receta_resumen.md` — receta de actividad legítima **v2** (3 días)
 
-> Generado por `_artefactos/scripts/construir_receta_legitima.py` (receta v1).
-> Jornada **09:00–18:00 local** (08:00–17:00 UTC), con **café** (20 min) y **comida** (60 min).
-> Solo handler `Command`; **cero** `random`, **cero** `Curl`, **cero** navegador.
+> Generado por `_artefactos/scripts/construir_receta_legitima.py` (receta **v2**, bloque
+> `legitimo-v3`, plan §5.1). Jornada **09:00–18:00 local** (08:00–17:00 UTC), con **café**
+> (20 min) y **comida** (60 min). Solo handler `Command`; **cero** `random`, **cero**
+> `Curl`, **cero** navegador, **cero** pipes (DT9).
+> **`cwd` por acción**: `cd <carpeta coherente> && <comando>` (ninguna en el directorio del cliente).
+> **Sin fecha**: `TFG_MAPA_DIAS` se pasa con `--t0` y se fija al cerrar **T4**.
+
+## Qué cambia respecto de la v1 (M1–M4)
+
+| Mejora | Qué hace | Cómo se comprueba |
+|---|---|---|
+| **M1 `cwd`** | Cada comando arranca en su carpeta (`~/Documentos`, `~/Descargas`,
+  `~/Documentos/informes`, …) con `cd <carpeta> && `; `cd` es builtin (0 `execve` extra) |
+  `--check` exige el prefijo y que la carpeta esté en la lista; `audit_cwd` en E0 |
+| **M2 ritmo** | Tabla de jitter **literal** (`INTRA`, `RAFAGAS`, `HUECOS`, `PAUSA_LARGA`):
+  ráfagas 1–6, intra 41–62 s, huecos 80 s–22 min y 2 pausas largas (B3/B4) |
+  `--check` valida hueco ∈ [40, 1320] s, ráfagas ≤ 6 y ≥ 2 huecos ≥ 20 min |
+| **M3 errores** | 10 errores/día de 6 familias, **cada uno con su reintento correcto** y
+  registro en `~/Documentos/errores.log` (`ts · tipo · familia · comando · rc`) |
+  `--check` cuenta los pares y el `rc` se lee de `$?` en ejecución |
+| **M4 corpus** | 12 binarios nuevos con uso de oficina: `xargs`, `timeout`, `sed`, `ip`,
+  `openssl`, `tee`, `free`, `logger`, `seq`, `rsync`, `shred`, `wget` |
+  `cobertura_exes.py` (receta v2 = 23/50 del corpus) |
+
+## Bloques y recuentos
 
 | Bloque | UTC | Local | Tipo | D1 | D2 | D3 |
 |---|---|---|---|---|---|---|
-| B1 Llegada | 08:00–08:12 | 09:00-09:12 | trabajo | 9 | 9 | 9 |
-| B2 Correo y mañana | 08:12–10:00 | 09:12-11:00 | trabajo | 26 | 32 | 22 |
+| B1 Llegada | 08:00–08:12 | 09:00-09:12 | trabajo | 11 | 11 | 11 |
+| B2 Correo y mañana | 08:12–10:00 | 09:12-11:00 | trabajo | 33 | 39 | 29 |
 | P1 Café | 10:00–10:20 | 11:00-11:20 | pausa | 0 | 0 | 0 |
-| B3 Documentos | 10:20–13:00 | 11:20-14:00 | trabajo | 42 | 34 | 46 |
+| B3 Documentos | 10:20–13:00 | 11:20-14:00 | trabajo | 56 | 48 | 60 |
 | P2 Comida | 13:00–14:00 | 14:00-15:00 | pausa | 0 | 0 | 0 |
-| B4 Reuniones y tarde | 14:00–16:15 | 15:00-17:15 | trabajo | 22 | 30 | 16 |
+| B4 Reuniones y tarde | 14:00–16:15 | 15:00-17:15 | trabajo | 35 | 43 | 29 |
 | B5 Cierre | 16:15–17:00 | 17:15-18:00 | trabajo | 12 | 12 | 12 |
-| **Total** | 08:00–17:00 | 09:00–18:00 | — | **111** | **117** | **105** |
+| **Total** | 08:00–17:00 | 09:00–18:00 | — | **147** | **153** | **141** |
 
-**Total ventana (3 días): 333 acciones.**
+**Total ventana (3 días): 441 acciones** (v1: 333; +108 por M3/M4, ≈ 32 %).
 
-## Día 1 — «cierre de informes» (111 acciones)
+## Ritmo medido (tabla de jitter fija)
 
-| # | UTC | Bloque | Familia | Comando |
+| Día | Bloque | Acciones | Ráfagas | Hueco mín | Hueco máx | ≥ 20 min |
+|---|---|---|---|---|---|---|
+| d1 | B1 | 11 | 4 | 41 s | 1.8 min | 0 |
+| d1 | B2 | 33 | 12 | 41 s | 19.0 min | 0 |
+| d1 | B3 | 56 | 20 | 41 s | 20.8 min | 1 |
+| d1 | B4 | 35 | 13 | 41 s | 20.2 min | 1 |
+| d1 | B5 | 12 | 5 | 41 s | 11.6 min | 0 |
+| d2 | B1 | 11 | 4 | 41 s | 1.9 min | 0 |
+| d2 | B2 | 39 | 15 | 41 s | 13.8 min | 0 |
+| d2 | B3 | 48 | 17 | 41 s | 20.8 min | 1 |
+| d2 | B4 | 43 | 17 | 41 s | 20.2 min | 1 |
+| d2 | B5 | 12 | 6 | 43 s | 9.7 min | 0 |
+| d3 | B1 | 11 | 4 | 41 s | 1.8 min | 0 |
+| d3 | B2 | 29 | 10 | 41 s | 18.5 min | 0 |
+| d3 | B3 | 60 | 22 | 41 s | 20.8 min | 1 |
+| d3 | B4 | 29 | 11 | 41 s | 20.2 min | 1 |
+| d3 | B5 | 12 | 5 | 41 s | 11.5 min | 0 |
+
+## Errores humanos (M3, 10/día, con reintento)
+
+| # | Bloque | Familia | Comando que FALLA | Comando del reintento |
 |---|---|---|---|---|
-| 1 | 08:00 | B1 | llegada | `date -u +%FT%TZ > /home/angel/Documentos/llegada_$(date -u +%F).txt` |
-| 2 | 08:00 | B1 | listar | `ls -la /home/angel/Documentos` |
-| 3 | 08:01 | B1 | estructura | `mkdir -p /home/angel/Documentos/informes /home/angel/Documentos/actas /home/angel/Documentos/copias /home/angel/Documentos/correo /home/angel/Descargas /home/angel/.cache/tfg-web` |
-| 4 | 08:04 | B1 | agenda | `echo '09:30 reunion de area; 12:00 informe; 17:00 cierre' > /home/angel/Documentos/agenda_$(date -u +%F).txt` |
-| 5 | 08:05 | B1 | agenda | `cat /home/angel/Documentos/agenda_$(date -u +%F).txt` |
-| 6 | 08:05 | B1 | web-sesion | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -c /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/index.html -w '%{http_code}' http://intranet.local:8080/` |
-| 7 | 08:08 | B1 | web-requisitos | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/styles.css -w '%{http_code}' http://intranet.local:8080/styles.css && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/portal.js -w '%{http_code}' http://intranet.local:8080/portal.js && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/logo.svg -w '%{http_code}' http://intranet.local:8080/assets/logo.svg` |
-| 8 | 08:09 | B1 | web-huella | `wc -c /home/angel/.cache/tfg-web/index.html && sha256sum /home/angel/.cache/tfg-web/styles.css` |
-| 9 | 08:10 | B1 | correo | `echo 're: estado del informe mensual' > /home/angel/Documentos/correo/borrador_1.txt` |
-| 10 | 08:12 | B2 | correo-buzon | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/plain;q=0.9,*/*;q=0.8' -X POST --data 'consulta_buzon_d1_r1' -o /home/angel/.cache/tfg-web/buzon_1.txt -w '%{http_code}' http://intranet.local:9090/paste` |
-| 11 | 08:12 | B2 | correo-escribir | `echo 'ronda 1: pendiente de revisar el informe del area' >> /home/angel/Documentos/correo/borrador_1.txt` |
-| 12 | 08:13 | B2 | correo-leer | `cat /home/angel/Documentos/correo/borrador_1.txt` |
-| 13 | 08:23 | B2 | correo-buzon | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/plain;q=0.9,*/*;q=0.8' -X POST --data 'consulta_buzon_d1_r2' -o /home/angel/.cache/tfg-web/buzon_2.txt -w '%{http_code}' http://intranet.local:9090/paste` |
-| 14 | 08:24 | B2 | correo-escribir | `echo 'ronda 2: pendiente de revisar el informe del area' >> /home/angel/Documentos/correo/borrador_2.txt` |
-| 15 | 08:25 | B2 | correo-leer | `cat /home/angel/Documentos/correo/borrador_2.txt` |
-| 16 | 08:35 | B2 | correo-buzon | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/plain;q=0.9,*/*;q=0.8' -X POST --data 'consulta_buzon_d1_r3' -o /home/angel/.cache/tfg-web/buzon_3.txt -w '%{http_code}' http://intranet.local:9090/paste` |
-| 17 | 08:36 | B2 | correo-escribir | `echo 'ronda 3: pendiente de revisar el informe del area' >> /home/angel/Documentos/correo/borrador_3.txt` |
-| 18 | 08:37 | B2 | correo-leer | `cat /home/angel/Documentos/correo/borrador_3.txt` |
-| 19 | 08:47 | B2 | correo-buzon | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/plain;q=0.9,*/*;q=0.8' -X POST --data 'consulta_buzon_d1_r4' -o /home/angel/.cache/tfg-web/buzon_4.txt -w '%{http_code}' http://intranet.local:9090/paste` |
-| 20 | 08:48 | B2 | correo-escribir | `echo 'ronda 4: pendiente de revisar el informe del area' >> /home/angel/Documentos/correo/borrador_4.txt` |
-| 21 | 08:49 | B2 | correo-leer | `cat /home/angel/Documentos/correo/borrador_4.txt` |
-| 22 | 08:59 | B2 | informe | `echo 'informe del area - jornada 1' > /home/angel/Documentos/informes/informe.txt` |
-| 23 | 09:00 | B2 | adjunto | `tar -czf /home/angel/Documentos/informes/adjunto_1_$(date -u +%F).tar.gz -C /home/angel/Documentos/informes informe.txt` |
-| 24 | 09:01 | B2 | huella | `sha256sum /home/angel/Documentos/informes/adjunto_1_$(date -u +%F).tar.gz` |
-| 25 | 09:11 | B2 | tamano | `du -sh /home/angel/Documentos/informes/adjunto_1_$(date -u +%F).tar.gz` |
-| 26 | 09:12 | B2 | listar | `ls -la /home/angel/Documentos/informes` |
-| 27 | 09:13 | B2 | adjunto | `tar -czf /home/angel/Documentos/informes/adjunto_2_$(date -u +%F).tar.gz -C /home/angel/Documentos/informes informe.txt` |
-| 28 | 09:23 | B2 | huella | `sha256sum /home/angel/Documentos/informes/adjunto_2_$(date -u +%F).tar.gz` |
-| 29 | 09:24 | B2 | tamano | `du -sh /home/angel/Documentos/informes/adjunto_2_$(date -u +%F).tar.gz` |
-| 30 | 09:34 | B2 | listar | `ls -la /home/angel/Documentos/informes` |
-| 31 | 09:35 | B2 | copia | `cp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes/informe.bak` |
-| 32 | 09:46 | B2 | renombrar | `mv -f /home/angel/Documentos/correo/borrador_1.txt /home/angel/Documentos/correo/enviado_1.txt` |
-| 33 | 09:46 | B2 | contar | `find /home/angel/Documentos -type f > /home/angel/.cache/tfg-web/lista_ficheros.txt` |
-| 34 | 09:57 | B2 | listar | `ls -la /home/angel/Documentos/correo` |
-| 35 | 09:58 | B2 | contar | `wc -l /home/angel/Documentos/informes/informe.txt` |
-| 36 | 10:20 | B3 | web-navegar | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/.cache/tfg-web/index.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/Descargas/noticias.html -w '%{http_code}' http://intranet.local:8080/noticias.html` |
-| 37 | 10:20 | B3 | web-navegar | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/Descargas/noticias.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /dev/null -w '%{http_code}' http://intranet.local:8080/ayuda.html` |
-| 38 | 10:21 | B3 | web-descarga | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ayuda.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/plantilla_informe.csv -w '%{http_code}' http://intranet.local:8080/descargas/plantilla_informe.csv` |
-| 39 | 10:22 | B3 | web-pdf | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/Descargas/noticias.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/Descargas/manual_empleado.pdf -w '%{http_code}' http://intranet.local:8080/descargas/manual_empleado.pdf` |
-| 40 | 10:33 | B3 | web-huella | `wc -c /home/angel/Descargas/manual_empleado.pdf && sha256sum /home/angel/Descargas/manual_empleado.pdf` |
-| 41 | 10:34 | B3 | redactar | `echo '1. alcance del informe (dia 1)' >> /home/angel/Documentos/informes/informe.txt` |
-| 42 | 10:35 | B3 | leer | `cat /home/angel/Documentos/informes/informe.txt` |
-| 43 | 10:36 | B3 | contar | `wc -l /home/angel/Documentos/informes/informe.txt` |
-| 44 | 10:47 | B3 | redactar | `echo '2. actividades del area (dia 1)' >> /home/angel/Documentos/informes/informe.txt` |
-| 45 | 10:48 | B3 | leer | `cat /home/angel/Documentos/informes/informe.txt` |
-| 46 | 10:48 | B3 | contar | `wc -l /home/angel/Documentos/informes/informe.txt` |
-| 47 | 10:49 | B3 | redactar | `echo '3. incidencias de la semana (dia 1)' >> /home/angel/Documentos/informes/informe.txt` |
-| 48 | 11:00 | B3 | leer | `cat /home/angel/Documentos/informes/informe.txt` |
-| 49 | 11:01 | B3 | contar | `wc -l /home/angel/Documentos/informes/informe.txt` |
-| 50 | 11:02 | B3 | redactar | `echo '4. indicadores del mes (dia 1)' >> /home/angel/Documentos/informes/informe.txt` |
-| 51 | 11:13 | B3 | leer | `cat /home/angel/Documentos/informes/informe.txt` |
-| 52 | 11:14 | B3 | contar | `wc -l /home/angel/Documentos/informes/informe.txt` |
-| 53 | 11:15 | B3 | redactar | `echo '5. riesgos identificados (dia 1)' >> /home/angel/Documentos/informes/informe.txt` |
-| 54 | 11:26 | B3 | leer | `cat /home/angel/Documentos/informes/informe.txt` |
-| 55 | 11:27 | B3 | contar | `wc -l /home/angel/Documentos/informes/informe.txt` |
-| 56 | 11:28 | B3 | redactar | `echo '6. plan de accion (dia 1)' >> /home/angel/Documentos/informes/informe.txt` |
-| 57 | 11:39 | B3 | leer | `cat /home/angel/Documentos/informes/informe.txt` |
-| 58 | 11:40 | B3 | contar | `wc -l /home/angel/Documentos/informes/informe.txt` |
-| 59 | 11:41 | B3 | redactar | `echo '7. conclusiones (dia 1)' >> /home/angel/Documentos/informes/informe.txt` |
-| 60 | 11:52 | B3 | leer | `cat /home/angel/Documentos/informes/informe.txt` |
-| 61 | 11:53 | B3 | contar | `wc -l /home/angel/Documentos/informes/informe.txt` |
-| 62 | 11:53 | B3 | redactar | `echo '8. anexo de datos (dia 1)' >> /home/angel/Documentos/informes/informe.txt` |
-| 63 | 12:05 | B3 | leer | `cat /home/angel/Documentos/informes/informe.txt` |
-| 64 | 12:05 | B3 | contar | `wc -l /home/angel/Documentos/informes/informe.txt` |
-| 65 | 12:06 | B3 | comprimir | `gzip -kf /home/angel/Documentos/informes/informe.txt` |
-| 66 | 12:17 | B3 | huella | `md5sum /home/angel/Documentos/informes/informe.txt.gz` |
-| 67 | 12:18 | B3 | huella | `sha256sum /home/angel/Documentos/informes/informe.txt.gz` |
-| 68 | 12:19 | B3 | listar | `ls -la /home/angel/Documentos/informes` |
-| 69 | 12:30 | B3 | tamano | `du -sh /home/angel/Documentos/informes` |
-| 70 | 12:31 | B3 | contar | `wc -l /home/angel/Documentos/informes/informe.txt.gz` |
-| 71 | 12:32 | B3 | consolidar | `tar -czf /home/angel/Descargas/informes.tar.gz -C /home/angel/Documentos informes` |
-| 72 | 12:43 | B3 | copia | `cp -f /home/angel/Descargas/informes.tar.gz /home/angel/Descargas/informes_copia_1.tar.gz` |
-| 73 | 12:44 | B3 | huella | `sha256sum /home/angel/Descargas/informes.tar.gz` |
-| 74 | 12:45 | B3 | contar | `find /home/angel/Documentos -type f > /home/angel/.cache/tfg-web/lista_ficheros_d1.txt` |
-| 75 | 12:56 | B3 | tamano | `du -sh /home/angel/Descargas` |
-| 76 | 12:57 | B3 | listar | `ls -la /home/angel/Descargas` |
-| 77 | 12:57 | B3 | revisar | `grep -c 'informe' /home/angel/Documentos/informes/informe.txt` |
-| 78 | 14:00 | B4 | acta | `echo 'acta de reunion 1 del area (dia 1)' > /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt` |
-| 79 | 14:00 | B4 | acta | `cat /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt` |
-| 80 | 14:12 | B4 | acta | `wc -c /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt` |
-| 81 | 14:13 | B4 | acta | `cp -f /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt /home/angel/Documentos/actas/compartida_1.txt` |
-| 82 | 14:24 | B4 | acta | `sha256sum /home/angel/Documentos/actas/compartida_1.txt` |
-| 83 | 14:25 | B4 | acta | `ls -la /home/angel/Documentos/actas` |
-| 84 | 14:36 | B4 | nube | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -T /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt -o /dev/null -w '%{http_code}' http://nube.local:9092/nube/actas/` |
-| 85 | 14:37 | B4 | nube | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -X PROPFIND -H 'Depth: 1' -o /home/angel/.cache/tfg-web/nube_listado.txt -w '%{http_code}' http://nube.local:9092/nube/` |
-| 86 | 14:48 | B4 | nube | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -T /home/angel/Documentos/informes/informe.txt -o /dev/null -w '%{http_code}' http://nube.local:9092/nube/informes/` |
-| 87 | 14:49 | B4 | nube | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -X PROPFIND -H 'Depth: 1' -o /home/angel/.cache/tfg-web/nube_actas.txt -w '%{http_code}' http://nube.local:9092/nube/actas/` |
-| 88 | 15:00 | B4 | portal | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ayuda.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/portal_tarde.html -w '%{http_code}' http://intranet.local:8080/` |
-| 89 | 15:01 | B4 | portal | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/.cache/tfg-web/portal_tarde.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/noticias_tarde.html -w '%{http_code}' http://intranet.local:8080/noticias.html` |
-| 90 | 15:13 | B4 | informe | `tar -czf /home/angel/Descargas/informe_dia1.tar.gz -C /home/angel/Documentos/informes informe.txt` |
-| 91 | 15:13 | B4 | huella | `sha256sum /home/angel/Descargas/informe_dia1.tar.gz` |
-| 92 | 15:25 | B4 | tamano | `du -sh /home/angel/Descargas/informe_dia1.tar.gz` |
-| 93 | 15:26 | B4 | listar | `ls -la /home/angel/Descargas` |
-| 94 | 15:37 | B4 | descarga | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/.cache/tfg-web/portal_tarde.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/Descargas/plantilla_dia1.csv -w '%{http_code}' http://intranet.local:8080/descargas/plantilla_informe.csv` |
-| 95 | 15:38 | B4 | descarga | `wc -c /home/angel/Descargas/plantilla_dia1.csv` |
-| 96 | 15:49 | B4 | descarga | `sha256sum /home/angel/Descargas/plantilla_dia1.csv` |
-| 97 | 15:50 | B4 | portal | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/ayuda_tarde.html -w '%{http_code}' http://intranet.local:8080/ayuda.html` |
-| 98 | 16:01 | B4 | portal | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ayuda.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/styles_tarde.css -w '%{http_code}' http://intranet.local:8080/styles.css` |
-| 99 | 16:13 | B4 | portal | `wc -l /home/angel/.cache/tfg-web/ayuda_tarde.html` |
-| 100 | 16:15 | B5 | copia | `tar -czf /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz -C /home/angel/Documentos informes actas` |
-| 101 | 16:15 | B5 | huella | `sha256sum /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz` |
-| 102 | 16:23 | B5 | huella | `cat /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz.sha256` |
-| 103 | 16:24 | B5 | nube | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -T /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz -o /dev/null -w '%{http_code}' http://nube.local:9092/nube/copias/` |
-| 104 | 16:31 | B5 | nube | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -X PROPFIND -H 'Depth: 1' -o /home/angel/.cache/tfg-web/copias_nube.txt -w '%{http_code}' http://nube.local:9092/nube/copias/` |
-| 105 | 16:32 | B5 | tamano | `du -sh /home/angel/Documentos` |
-| 106 | 16:40 | B5 | disco | `df -h /` |
-| 107 | 16:41 | B5 | copia | `cp -f /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz /home/angel/Descargas/copia_final_1.tar.gz` |
-| 108 | 16:48 | B5 | tamano | `wc -c /home/angel/Descargas/copia_final_1.tar.gz` |
-| 109 | 16:49 | B5 | limpiar | `rm -f /home/angel/Descargas/tmp_*.csv` |
-| 110 | 16:57 | B5 | cierre | `date -u +%FT%TZ` |
-| 111 | 16:58 | B5 | cierre | `ls -la /home/angel/Documentos /home/angel/Descargas` |
+| 1 | B1 | `error/ruta_mal` | `ls -la /home/angel/Documentos/informe` | `ls -la /home/angel/Documentos/informes` |
+| 2 | B2 | `error/opcion` | `df -h --max-depth=1 /` | `df -h /` |
+| 3 | B2 | `error/cp_dir` | `cp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes_2026/informe.bak` | `cp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes/informe.bak` |
+| 4 | B2 | `error/ruta_mal` | `stat /home/angel/Documentos/informes/informe_2026.txt` | `stat /home/angel/Documentos/informes/informe.txt` |
+| 5 | B3 | `error/gzip` | `gzip -d /home/angel/Documentos/informes/informe.txt` | `gzip -kf /home/angel/Documentos/informes/informe.txt` |
+| 6 | B3 | `error/rm_inexistente` | `rm /home/angel/Descargas/tmp_borradores.csv` | `rm -f /home/angel/Descargas/tmp_borradores.csv` |
+| 7 | B4 | `error/cat_dir` | `cat /home/angel/Documentos/actas` | `cat /home/angel/Documentos/informes/informe.bak` |
+| 8 | B4 | `error/cp_dir` | `cp -f /home/angel/Documentos/actas/compartida_1.txt /home/angel/Documentos/compartidas/` | `cp -f /home/angel/Documentos/actas/compartida_1.txt /home/angel/Documentos/actas/compartida_copia.txt` |
+| 9 | B4 | `error/opcion` | `ls -la --clasificar /home/angel/Documentos` | `ls -la --classify /home/angel/Documentos` |
+| 10 | B4 | `error/gzip` | `gzip -d /home/angel/Documentos/informes/informe.bak` | `gzip -kf /home/angel/Documentos/informes/informe.bak` |
 
-## Día 2 — «reuniones y portal» (117 acciones)
+## Binarios declarados (lista blanca: 34; usados: 33)
 
-| # | UTC | Bloque | Familia | Comando |
-|---|---|---|---|---|
-| 1 | 08:00 | B1 | llegada | `date -u +%FT%TZ > /home/angel/Documentos/llegada_$(date -u +%F).txt` |
-| 2 | 08:00 | B1 | listar | `ls -la /home/angel/Documentos` |
-| 3 | 08:01 | B1 | estructura | `mkdir -p /home/angel/Documentos/informes /home/angel/Documentos/actas /home/angel/Documentos/copias /home/angel/Documentos/correo /home/angel/Descargas /home/angel/.cache/tfg-web` |
-| 4 | 08:04 | B1 | agenda | `echo '09:30 reunion de area; 12:00 informe; 17:00 cierre' > /home/angel/Documentos/agenda_$(date -u +%F).txt` |
-| 5 | 08:05 | B1 | agenda | `cat /home/angel/Documentos/agenda_$(date -u +%F).txt` |
-| 6 | 08:05 | B1 | web-sesion | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -c /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/index.html -w '%{http_code}' http://intranet.local:8080/` |
-| 7 | 08:08 | B1 | web-requisitos | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/styles.css -w '%{http_code}' http://intranet.local:8080/styles.css && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/portal.js -w '%{http_code}' http://intranet.local:8080/portal.js && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/logo.svg -w '%{http_code}' http://intranet.local:8080/assets/logo.svg` |
-| 8 | 08:09 | B1 | web-huella | `wc -c /home/angel/.cache/tfg-web/index.html && sha256sum /home/angel/.cache/tfg-web/styles.css` |
-| 9 | 08:10 | B1 | correo | `echo 're: confirmacion de la reunion de area' > /home/angel/Documentos/correo/borrador_1.txt` |
-| 10 | 08:12 | B2 | correo-buzon | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/plain;q=0.9,*/*;q=0.8' -X POST --data 'consulta_buzon_d2_r1' -o /home/angel/.cache/tfg-web/buzon_1.txt -w '%{http_code}' http://intranet.local:9090/paste` |
-| 11 | 08:12 | B2 | correo-escribir | `echo 'ronda 1: pendiente de revisar el informe del area' >> /home/angel/Documentos/correo/borrador_1.txt` |
-| 12 | 08:13 | B2 | correo-leer | `cat /home/angel/Documentos/correo/borrador_1.txt` |
-| 13 | 08:14 | B2 | correo-buzon | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/plain;q=0.9,*/*;q=0.8' -X POST --data 'consulta_buzon_d2_r2' -o /home/angel/.cache/tfg-web/buzon_2.txt -w '%{http_code}' http://intranet.local:9090/paste` |
-| 14 | 08:24 | B2 | correo-escribir | `echo 'ronda 2: pendiente de revisar el informe del area' >> /home/angel/Documentos/correo/borrador_2.txt` |
-| 15 | 08:25 | B2 | correo-leer | `cat /home/angel/Documentos/correo/borrador_2.txt` |
-| 16 | 08:25 | B2 | correo-buzon | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/plain;q=0.9,*/*;q=0.8' -X POST --data 'consulta_buzon_d2_r3' -o /home/angel/.cache/tfg-web/buzon_3.txt -w '%{http_code}' http://intranet.local:9090/paste` |
-| 17 | 08:26 | B2 | correo-escribir | `echo 'ronda 3: pendiente de revisar el informe del area' >> /home/angel/Documentos/correo/borrador_3.txt` |
-| 18 | 08:36 | B2 | correo-leer | `cat /home/angel/Documentos/correo/borrador_3.txt` |
-| 19 | 08:37 | B2 | correo-buzon | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/plain;q=0.9,*/*;q=0.8' -X POST --data 'consulta_buzon_d2_r4' -o /home/angel/.cache/tfg-web/buzon_4.txt -w '%{http_code}' http://intranet.local:9090/paste` |
-| 20 | 08:38 | B2 | correo-escribir | `echo 'ronda 4: pendiente de revisar el informe del area' >> /home/angel/Documentos/correo/borrador_4.txt` |
-| 21 | 08:47 | B2 | correo-leer | `cat /home/angel/Documentos/correo/borrador_4.txt` |
-| 22 | 08:48 | B2 | copia | `cp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes/informe.bak` |
-| 23 | 08:49 | B2 | renombrar | `mv -f /home/angel/Documentos/correo/borrador_1.txt /home/angel/Documentos/correo/enviado_1.txt` |
-| 24 | 08:59 | B2 | contar | `find /home/angel/Documentos -type f > /home/angel/.cache/tfg-web/lista_ficheros.txt` |
-| 25 | 09:00 | B2 | listar | `ls -la /home/angel/Documentos/correo` |
-| 26 | 09:00 | B2 | contar | `wc -l /home/angel/Documentos/informes/informe.txt` |
-| 27 | 09:10 | B2 | leer | `cat /home/angel/Documentos/correo/enviado_1.txt` |
-| 28 | 09:11 | B2 | tamano | `du -sh /home/angel/Documentos/correo` |
-| 29 | 09:12 | B2 | copia | `cp -f /home/angel/Documentos/informes/informe.txt /home/angel/Descargas/informe_copia_2.txt` |
-| 30 | 09:22 | B2 | limpiar | `rm -f /home/angel/Descargas/tmp_borradores.csv` |
-| 31 | 09:22 | B2 | agenda | `echo 'revisado el buzon de la manana' >> /home/angel/Documentos/agenda_$(date -u +%F).txt` |
-| 32 | 09:23 | B2 | huella | `md5sum /home/angel/Documentos/informes/informe.bak` |
-| 33 | 09:33 | B2 | listar | `ls -la /home/angel/Documentos` |
-| 34 | 09:34 | B2 | informe | `echo 'informe del area - jornada 2' > /home/angel/Documentos/informes/informe.txt` |
-| 35 | 09:35 | B2 | adjunto | `tar -czf /home/angel/Documentos/informes/adjunto_1_$(date -u +%F).tar.gz -C /home/angel/Documentos/informes informe.txt` |
-| 36 | 09:44 | B2 | huella | `sha256sum /home/angel/Documentos/informes/adjunto_1_$(date -u +%F).tar.gz` |
-| 37 | 09:45 | B2 | tamano | `du -sh /home/angel/Documentos/informes/adjunto_1_$(date -u +%F).tar.gz` |
-| 38 | 09:46 | B2 | listar | `ls -la /home/angel/Documentos/informes` |
-| 39 | 09:56 | B2 | adjunto | `tar -czf /home/angel/Documentos/informes/adjunto_2_$(date -u +%F).tar.gz -C /home/angel/Documentos/informes informe.txt` |
-| 40 | 09:57 | B2 | huella | `sha256sum /home/angel/Documentos/informes/adjunto_2_$(date -u +%F).tar.gz` |
-| 41 | 09:57 | B2 | tamano | `du -sh /home/angel/Documentos/informes/adjunto_2_$(date -u +%F).tar.gz` |
-| 42 | 10:20 | B3 | web-navegar | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/.cache/tfg-web/index.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/Descargas/noticias.html -w '%{http_code}' http://intranet.local:8080/noticias.html` |
-| 43 | 10:20 | B3 | web-navegar | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/Descargas/noticias.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /dev/null -w '%{http_code}' http://intranet.local:8080/ayuda.html` |
-| 44 | 10:21 | B3 | web-descarga | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ayuda.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/plantilla_informe.csv -w '%{http_code}' http://intranet.local:8080/descargas/plantilla_informe.csv` |
-| 45 | 10:33 | B3 | web-pdf | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/Descargas/noticias.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/Descargas/manual_empleado.pdf -w '%{http_code}' http://intranet.local:8080/descargas/manual_empleado.pdf` |
-| 46 | 10:34 | B3 | web-huella | `wc -c /home/angel/Descargas/manual_empleado.pdf && sha256sum /home/angel/Descargas/manual_empleado.pdf` |
-| 47 | 10:35 | B3 | comprimir | `gzip -kf /home/angel/Documentos/informes/informe.txt` |
-| 48 | 10:46 | B3 | huella | `md5sum /home/angel/Documentos/informes/informe.txt.gz` |
-| 49 | 10:47 | B3 | huella | `sha256sum /home/angel/Documentos/informes/informe.txt.gz` |
-| 50 | 10:48 | B3 | listar | `ls -la /home/angel/Documentos/informes` |
-| 51 | 11:00 | B3 | tamano | `du -sh /home/angel/Documentos/informes` |
-| 52 | 11:00 | B3 | contar | `wc -l /home/angel/Documentos/informes/informe.txt.gz` |
-| 53 | 11:01 | B3 | redactar | `echo '1. alcance del informe (dia 2)' >> /home/angel/Documentos/informes/informe.txt` |
-| 54 | 11:13 | B3 | leer | `cat /home/angel/Documentos/informes/informe.txt` |
-| 55 | 11:14 | B3 | contar | `wc -l /home/angel/Documentos/informes/informe.txt` |
-| 56 | 11:15 | B3 | redactar | `echo '2. actividades del area (dia 2)' >> /home/angel/Documentos/informes/informe.txt` |
-| 57 | 11:26 | B3 | leer | `cat /home/angel/Documentos/informes/informe.txt` |
-| 58 | 11:27 | B3 | contar | `wc -l /home/angel/Documentos/informes/informe.txt` |
-| 59 | 11:28 | B3 | redactar | `echo '3. incidencias de la semana (dia 2)' >> /home/angel/Documentos/informes/informe.txt` |
-| 60 | 11:40 | B3 | leer | `cat /home/angel/Documentos/informes/informe.txt` |
-| 61 | 11:41 | B3 | contar | `wc -l /home/angel/Documentos/informes/informe.txt` |
-| 62 | 11:41 | B3 | redactar | `echo '4. indicadores del mes (dia 2)' >> /home/angel/Documentos/informes/informe.txt` |
-| 63 | 11:53 | B3 | leer | `cat /home/angel/Documentos/informes/informe.txt` |
-| 64 | 11:54 | B3 | contar | `wc -l /home/angel/Documentos/informes/informe.txt` |
-| 65 | 11:55 | B3 | redactar | `echo '5. riesgos identificados (dia 2)' >> /home/angel/Documentos/informes/informe.txt` |
-| 66 | 12:06 | B3 | leer | `cat /home/angel/Documentos/informes/informe.txt` |
-| 67 | 12:07 | B3 | contar | `wc -l /home/angel/Documentos/informes/informe.txt` |
-| 68 | 12:19 | B3 | redactar | `echo '6. plan de accion (dia 2)' >> /home/angel/Documentos/informes/informe.txt` |
-| 69 | 12:20 | B3 | leer | `cat /home/angel/Documentos/informes/informe.txt` |
-| 70 | 12:32 | B3 | contar | `wc -l /home/angel/Documentos/informes/informe.txt` |
-| 71 | 12:32 | B3 | redactar | `echo '7. conclusiones (dia 2)' >> /home/angel/Documentos/informes/informe.txt` |
-| 72 | 12:44 | B3 | leer | `cat /home/angel/Documentos/informes/informe.txt` |
-| 73 | 12:45 | B3 | contar | `wc -l /home/angel/Documentos/informes/informe.txt` |
-| 74 | 12:57 | B3 | redactar | `echo '8. anexo de datos (dia 2)' >> /home/angel/Documentos/informes/informe.txt` |
-| 75 | 12:57 | B3 | leer | `cat /home/angel/Documentos/informes/informe.txt` |
-| 76 | 14:00 | B4 | acta | `echo 'acta de reunion 1 del area (dia 2)' > /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt` |
-| 77 | 14:00 | B4 | acta | `cat /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt` |
-| 78 | 14:01 | B4 | acta | `wc -c /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt` |
-| 79 | 14:12 | B4 | acta | `cp -f /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt /home/angel/Documentos/actas/compartida_1.txt` |
-| 80 | 14:13 | B4 | acta | `sha256sum /home/angel/Documentos/actas/compartida_1.txt` |
-| 81 | 14:14 | B4 | acta | `ls -la /home/angel/Documentos/actas` |
-| 82 | 14:24 | B4 | acta | `echo 'acta de reunion 1 del area (dia 2)' > /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt` |
-| 83 | 14:25 | B4 | acta | `cat /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt` |
-| 84 | 14:26 | B4 | acta | `wc -c /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt` |
-| 85 | 14:37 | B4 | acta | `cp -f /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt /home/angel/Documentos/actas/compartida_1.txt` |
-| 86 | 14:38 | B4 | acta | `sha256sum /home/angel/Documentos/actas/compartida_1.txt` |
-| 87 | 14:38 | B4 | acta | `ls -la /home/angel/Documentos/actas` |
-| 88 | 14:49 | B4 | acta | `echo 'acta de reunion 2 del area (dia 2)' > /home/angel/Documentos/actas/acta_2_$(date -u +%F).txt` |
-| 89 | 14:50 | B4 | acta | `cat /home/angel/Documentos/actas/acta_2_$(date -u +%F).txt` |
-| 90 | 14:51 | B4 | acta | `wc -c /home/angel/Documentos/actas/acta_2_$(date -u +%F).txt` |
-| 91 | 15:02 | B4 | acta | `cp -f /home/angel/Documentos/actas/acta_2_$(date -u +%F).txt /home/angel/Documentos/actas/compartida_2.txt` |
-| 92 | 15:02 | B4 | acta | `sha256sum /home/angel/Documentos/actas/compartida_2.txt` |
-| 93 | 15:03 | B4 | acta | `ls -la /home/angel/Documentos/actas` |
-| 94 | 15:14 | B4 | nube | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -T /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt -o /dev/null -w '%{http_code}' http://nube.local:9092/nube/actas/` |
-| 95 | 15:15 | B4 | nube | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -X PROPFIND -H 'Depth: 1' -o /home/angel/.cache/tfg-web/nube_listado.txt -w '%{http_code}' http://nube.local:9092/nube/` |
-| 96 | 15:25 | B4 | nube | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -T /home/angel/Documentos/informes/informe.txt -o /dev/null -w '%{http_code}' http://nube.local:9092/nube/informes/` |
-| 97 | 15:26 | B4 | nube | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -X PROPFIND -H 'Depth: 1' -o /home/angel/.cache/tfg-web/nube_actas.txt -w '%{http_code}' http://nube.local:9092/nube/actas/` |
-| 98 | 15:37 | B4 | portal | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ayuda.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/portal_tarde.html -w '%{http_code}' http://intranet.local:8080/` |
-| 99 | 15:38 | B4 | portal | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/.cache/tfg-web/portal_tarde.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/noticias_tarde.html -w '%{http_code}' http://intranet.local:8080/noticias.html` |
-| 100 | 15:49 | B4 | informe | `tar -czf /home/angel/Descargas/informe_dia2.tar.gz -C /home/angel/Documentos/informes informe.txt` |
-| 101 | 15:49 | B4 | huella | `sha256sum /home/angel/Descargas/informe_dia2.tar.gz` |
-| 102 | 16:00 | B4 | tamano | `du -sh /home/angel/Descargas/informe_dia2.tar.gz` |
-| 103 | 16:01 | B4 | listar | `ls -la /home/angel/Descargas` |
-| 104 | 16:12 | B4 | descarga | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/.cache/tfg-web/portal_tarde.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/Descargas/plantilla_dia2.csv -w '%{http_code}' http://intranet.local:8080/descargas/plantilla_informe.csv` |
-| 105 | 16:13 | B4 | descarga | `wc -c /home/angel/Descargas/plantilla_dia2.csv` |
-| 106 | 16:15 | B5 | copia | `tar -czf /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz -C /home/angel/Documentos informes actas` |
-| 107 | 16:15 | B5 | huella | `sha256sum /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz` |
-| 108 | 16:23 | B5 | huella | `cat /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz.sha256` |
-| 109 | 16:24 | B5 | nube | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -T /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz -o /dev/null -w '%{http_code}' http://nube.local:9092/nube/copias/` |
-| 110 | 16:31 | B5 | nube | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -X PROPFIND -H 'Depth: 1' -o /home/angel/.cache/tfg-web/copias_nube.txt -w '%{http_code}' http://nube.local:9092/nube/copias/` |
-| 111 | 16:32 | B5 | tamano | `du -sh /home/angel/Documentos` |
-| 112 | 16:40 | B5 | disco | `df -h /` |
-| 113 | 16:41 | B5 | copia | `cp -f /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz /home/angel/Descargas/copia_final_2.tar.gz` |
-| 114 | 16:48 | B5 | tamano | `wc -c /home/angel/Descargas/copia_final_2.tar.gz` |
-| 115 | 16:49 | B5 | limpiar | `rm -f /home/angel/Descargas/tmp_*.csv` |
-| 116 | 16:57 | B5 | cierre | `date -u +%FT%TZ` |
-| 117 | 16:58 | B5 | cierre | `ls -la /home/angel/Documentos /home/angel/Descargas` |
+`cat`, `cp`, `curl`, `date`, `df`, `du`, `echo`, `find`, `free`, `grep`, `gzip`, `head`, `ip`, `logger`, `ls`, `md5sum`, `mkdir`, `mv`, `openssl`, `rm`, `rsync`, `sed`, `seq`, `sha256sum`, `shred`, `stat`, `tail`, `tar`, `tee`, `timeout`, `wc`, `wget`, `xargs`
 
-## Día 3 — «revisión y copias» (105 acciones)
+**Justificación** (plan §5.2.1 / corpus de ataques: 50 `basenames` distintos en
+`audit_command`): de los 22 de la v1, **11** tienen gemelo en el corpus (`curl`,
+`cat`, `sha256sum`, `cp`, `tar`, `find`, `gzip`, `mkdir`, `grep`, `head`, `rm`).
+Los **12 nuevos son los que el corpus usa y un oficinista puede usar**: `xargs`
+(2 497 detecciones), `timeout` (96), `ip` (73), `openssl` (16), `sed` (14), `rsync`
+(10), `free` (5), `seq`/`tee`/`wget` (4) y `logger`/`shred` (2). Con ellos la receta
+cubre **23/50 = 46 %** (T2 añadirá `systemctl`/`crontab` en la campaña ⇒ 25/50).
+Quedan fuera, **a propósito**: `systemctl`/`crontab` (solo campaña), `git`, `dd`,
+`passwd`, `nc.openbsd`, `perl`, `busybox`, `sqlite3` y todo lo que exige root o GUI.
 
-| # | UTC | Bloque | Familia | Comando |
-|---|---|---|---|---|
-| 1 | 08:00 | B1 | llegada | `date -u +%FT%TZ > /home/angel/Documentos/llegada_$(date -u +%F).txt` |
-| 2 | 08:00 | B1 | listar | `ls -la /home/angel/Documentos` |
-| 3 | 08:01 | B1 | estructura | `mkdir -p /home/angel/Documentos/informes /home/angel/Documentos/actas /home/angel/Documentos/copias /home/angel/Documentos/correo /home/angel/Descargas /home/angel/.cache/tfg-web` |
-| 4 | 08:04 | B1 | agenda | `echo '09:30 reunion de area; 12:00 informe; 17:00 cierre' > /home/angel/Documentos/agenda_$(date -u +%F).txt` |
-| 5 | 08:05 | B1 | agenda | `cat /home/angel/Documentos/agenda_$(date -u +%F).txt` |
-| 6 | 08:05 | B1 | web-sesion | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -c /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/index.html -w '%{http_code}' http://intranet.local:8080/` |
-| 7 | 08:08 | B1 | web-requisitos | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/styles.css -w '%{http_code}' http://intranet.local:8080/styles.css && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/portal.js -w '%{http_code}' http://intranet.local:8080/portal.js && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/logo.svg -w '%{http_code}' http://intranet.local:8080/assets/logo.svg` |
-| 8 | 08:09 | B1 | web-huella | `wc -c /home/angel/.cache/tfg-web/index.html && sha256sum /home/angel/.cache/tfg-web/styles.css` |
-| 9 | 08:10 | B1 | correo | `echo 're: revision de las copias de seguridad' > /home/angel/Documentos/correo/borrador_1.txt` |
-| 10 | 08:12 | B2 | copia | `cp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes/informe.bak` |
-| 11 | 08:12 | B2 | renombrar | `mv -f /home/angel/Documentos/correo/borrador_1.txt /home/angel/Documentos/correo/enviado_1.txt` |
-| 12 | 08:13 | B2 | contar | `find /home/angel/Documentos -type f > /home/angel/.cache/tfg-web/lista_ficheros.txt` |
-| 13 | 08:24 | B2 | listar | `ls -la /home/angel/Documentos/correo` |
-| 14 | 08:25 | B2 | contar | `wc -l /home/angel/Documentos/informes/informe.txt` |
-| 15 | 08:26 | B2 | leer | `cat /home/angel/Documentos/correo/enviado_1.txt` |
-| 16 | 08:36 | B2 | tamano | `du -sh /home/angel/Documentos/correo` |
-| 17 | 08:37 | B2 | copia | `cp -f /home/angel/Documentos/informes/informe.txt /home/angel/Descargas/informe_copia_3.txt` |
-| 18 | 08:48 | B2 | limpiar | `rm -f /home/angel/Descargas/tmp_borradores.csv` |
-| 19 | 08:49 | B2 | agenda | `echo 'revisado el buzon de la manana' >> /home/angel/Documentos/agenda_$(date -u +%F).txt` |
-| 20 | 08:59 | B2 | huella | `md5sum /home/angel/Documentos/informes/informe.bak` |
-| 21 | 09:00 | B2 | listar | `ls -la /home/angel/Documentos` |
-| 22 | 09:11 | B2 | correo-buzon | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/plain;q=0.9,*/*;q=0.8' -X POST --data 'consulta_buzon_d3_r1' -o /home/angel/.cache/tfg-web/buzon_1.txt -w '%{http_code}' http://intranet.local:9090/paste` |
-| 23 | 09:12 | B2 | correo-escribir | `echo 'ronda 1: pendiente de revisar el informe del area' >> /home/angel/Documentos/correo/borrador_1.txt` |
-| 24 | 09:22 | B2 | correo-leer | `cat /home/angel/Documentos/correo/borrador_1.txt` |
-| 25 | 09:23 | B2 | correo-buzon | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/plain;q=0.9,*/*;q=0.8' -X POST --data 'consulta_buzon_d3_r2' -o /home/angel/.cache/tfg-web/buzon_2.txt -w '%{http_code}' http://intranet.local:9090/paste` |
-| 26 | 09:34 | B2 | correo-escribir | `echo 'ronda 2: pendiente de revisar el informe del area' >> /home/angel/Documentos/correo/borrador_2.txt` |
-| 27 | 09:35 | B2 | correo-leer | `cat /home/angel/Documentos/correo/borrador_2.txt` |
-| 28 | 09:45 | B2 | correo-buzon | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/plain;q=0.9,*/*;q=0.8' -X POST --data 'consulta_buzon_d3_r3' -o /home/angel/.cache/tfg-web/buzon_3.txt -w '%{http_code}' http://intranet.local:9090/paste` |
-| 29 | 09:46 | B2 | correo-escribir | `echo 'ronda 3: pendiente de revisar el informe del area' >> /home/angel/Documentos/correo/borrador_3.txt` |
-| 30 | 09:57 | B2 | correo-leer | `cat /home/angel/Documentos/correo/borrador_3.txt` |
-| 31 | 09:58 | B2 | correo-buzon | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/plain;q=0.9,*/*;q=0.8' -X POST --data 'consulta_buzon_d3_r4' -o /home/angel/.cache/tfg-web/buzon_4.txt -w '%{http_code}' http://intranet.local:9090/paste` |
-| 32 | 10:20 | B3 | web-navegar | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/.cache/tfg-web/index.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/Descargas/noticias.html -w '%{http_code}' http://intranet.local:8080/noticias.html` |
-| 33 | 10:20 | B3 | web-navegar | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/Descargas/noticias.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /dev/null -w '%{http_code}' http://intranet.local:8080/ayuda.html` |
-| 34 | 10:21 | B3 | web-descarga | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ayuda.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/plantilla_informe.csv -w '%{http_code}' http://intranet.local:8080/descargas/plantilla_informe.csv` |
-| 35 | 10:22 | B3 | web-pdf | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/Descargas/noticias.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/Descargas/manual_empleado.pdf -w '%{http_code}' http://intranet.local:8080/descargas/manual_empleado.pdf` |
-| 36 | 10:33 | B3 | web-huella | `wc -c /home/angel/Descargas/manual_empleado.pdf && sha256sum /home/angel/Descargas/manual_empleado.pdf` |
-| 37 | 10:34 | B3 | revisar | `grep -c 'informe' /home/angel/Documentos/informes/informe.txt` |
-| 38 | 10:35 | B3 | revisar | `head -n 5 /home/angel/Documentos/informes/informe.txt` |
-| 39 | 10:35 | B3 | revisar | `tail -n 5 /home/angel/Documentos/informes/informe.txt` |
-| 40 | 10:46 | B3 | revisar | `wc -l /home/angel/Documentos/informes/informe.txt` |
-| 41 | 10:47 | B3 | listar | `ls -la /home/angel/Documentos/informes` |
-| 42 | 10:48 | B3 | disco | `df -h /` |
-| 43 | 10:49 | B3 | estado | `stat /home/angel/Documentos/informes/informe.txt` |
-| 44 | 11:00 | B3 | leer | `cat /home/angel/Documentos/informes/informe.bak` |
-| 45 | 11:00 | B3 | redactar | `echo '1. alcance del informe (dia 3)' >> /home/angel/Documentos/informes/informe.txt` |
-| 46 | 11:01 | B3 | leer | `cat /home/angel/Documentos/informes/informe.txt` |
-| 47 | 11:02 | B3 | contar | `wc -l /home/angel/Documentos/informes/informe.txt` |
-| 48 | 11:13 | B3 | redactar | `echo '2. actividades del area (dia 3)' >> /home/angel/Documentos/informes/informe.txt` |
-| 49 | 11:14 | B3 | leer | `cat /home/angel/Documentos/informes/informe.txt` |
-| 50 | 11:15 | B3 | contar | `wc -l /home/angel/Documentos/informes/informe.txt` |
-| 51 | 11:15 | B3 | redactar | `echo '3. incidencias de la semana (dia 3)' >> /home/angel/Documentos/informes/informe.txt` |
-| 52 | 11:26 | B3 | leer | `cat /home/angel/Documentos/informes/informe.txt` |
-| 53 | 11:27 | B3 | contar | `wc -l /home/angel/Documentos/informes/informe.txt` |
-| 54 | 11:28 | B3 | redactar | `echo '4. indicadores del mes (dia 3)' >> /home/angel/Documentos/informes/informe.txt` |
-| 55 | 11:29 | B3 | leer | `cat /home/angel/Documentos/informes/informe.txt` |
-| 56 | 11:40 | B3 | contar | `wc -l /home/angel/Documentos/informes/informe.txt` |
-| 57 | 11:41 | B3 | redactar | `echo '5. riesgos identificados (dia 3)' >> /home/angel/Documentos/informes/informe.txt` |
-| 58 | 11:41 | B3 | leer | `cat /home/angel/Documentos/informes/informe.txt` |
-| 59 | 11:42 | B3 | contar | `wc -l /home/angel/Documentos/informes/informe.txt` |
-| 60 | 11:53 | B3 | redactar | `echo '6. plan de accion (dia 3)' >> /home/angel/Documentos/informes/informe.txt` |
-| 61 | 11:54 | B3 | leer | `cat /home/angel/Documentos/informes/informe.txt` |
-| 62 | 11:55 | B3 | contar | `wc -l /home/angel/Documentos/informes/informe.txt` |
-| 63 | 12:06 | B3 | redactar | `echo '7. conclusiones (dia 3)' >> /home/angel/Documentos/informes/informe.txt` |
-| 64 | 12:06 | B3 | leer | `cat /home/angel/Documentos/informes/informe.txt` |
-| 65 | 12:07 | B3 | contar | `wc -l /home/angel/Documentos/informes/informe.txt` |
-| 66 | 12:18 | B3 | redactar | `echo '8. anexo de datos (dia 3)' >> /home/angel/Documentos/informes/informe.txt` |
-| 67 | 12:19 | B3 | leer | `cat /home/angel/Documentos/informes/informe.txt` |
-| 68 | 12:20 | B3 | contar | `wc -l /home/angel/Documentos/informes/informe.txt` |
-| 69 | 12:31 | B3 | consolidar | `tar -czf /home/angel/Descargas/informes.tar.gz -C /home/angel/Documentos informes` |
-| 70 | 12:32 | B3 | copia | `cp -f /home/angel/Descargas/informes.tar.gz /home/angel/Descargas/informes_copia_3.tar.gz` |
-| 71 | 12:32 | B3 | huella | `sha256sum /home/angel/Descargas/informes.tar.gz` |
-| 72 | 12:43 | B3 | contar | `find /home/angel/Documentos -type f > /home/angel/.cache/tfg-web/lista_ficheros_d3.txt` |
-| 73 | 12:44 | B3 | tamano | `du -sh /home/angel/Descargas` |
-| 74 | 12:45 | B3 | listar | `ls -la /home/angel/Descargas` |
-| 75 | 12:56 | B3 | comprimir | `gzip -kf /home/angel/Documentos/informes/informe.txt` |
-| 76 | 12:57 | B3 | huella | `md5sum /home/angel/Documentos/informes/informe.txt.gz` |
-| 77 | 12:57 | B3 | huella | `sha256sum /home/angel/Documentos/informes/informe.txt.gz` |
-| 78 | 14:00 | B4 | acta | `echo 'acta de reunion 1 del area (dia 3)' > /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt` |
-| 79 | 14:00 | B4 | acta | `cat /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt` |
-| 80 | 14:12 | B4 | acta | `wc -c /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt` |
-| 81 | 14:13 | B4 | acta | `cp -f /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt /home/angel/Documentos/actas/compartida_1.txt` |
-| 82 | 14:25 | B4 | acta | `sha256sum /home/angel/Documentos/actas/compartida_1.txt` |
-| 83 | 14:26 | B4 | acta | `ls -la /home/angel/Documentos/actas` |
-| 84 | 14:37 | B4 | nube | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -T /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt -o /dev/null -w '%{http_code}' http://nube.local:9092/nube/actas/` |
-| 85 | 14:38 | B4 | nube | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -X PROPFIND -H 'Depth: 1' -o /home/angel/.cache/tfg-web/nube_listado.txt -w '%{http_code}' http://nube.local:9092/nube/` |
-| 86 | 14:50 | B4 | nube | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -T /home/angel/Documentos/informes/informe.txt -o /dev/null -w '%{http_code}' http://nube.local:9092/nube/informes/` |
-| 87 | 15:02 | B4 | nube | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -X PROPFIND -H 'Depth: 1' -o /home/angel/.cache/tfg-web/nube_actas.txt -w '%{http_code}' http://nube.local:9092/nube/actas/` |
-| 88 | 15:14 | B4 | portal | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ayuda.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/portal_tarde.html -w '%{http_code}' http://intranet.local:8080/` |
-| 89 | 15:25 | B4 | portal | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/.cache/tfg-web/portal_tarde.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/noticias_tarde.html -w '%{http_code}' http://intranet.local:8080/noticias.html` |
-| 90 | 15:37 | B4 | informe | `tar -czf /home/angel/Descargas/informe_dia3.tar.gz -C /home/angel/Documentos/informes informe.txt` |
-| 91 | 15:49 | B4 | huella | `sha256sum /home/angel/Descargas/informe_dia3.tar.gz` |
-| 92 | 16:01 | B4 | tamano | `du -sh /home/angel/Descargas/informe_dia3.tar.gz` |
-| 93 | 16:12 | B4 | listar | `ls -la /home/angel/Descargas` |
-| 94 | 16:15 | B5 | copia | `tar -czf /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz -C /home/angel/Documentos informes actas` |
-| 95 | 16:15 | B5 | huella | `sha256sum /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz` |
-| 96 | 16:23 | B5 | huella | `cat /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz.sha256` |
-| 97 | 16:24 | B5 | nube | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -T /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz -o /dev/null -w '%{http_code}' http://nube.local:9092/nube/copias/` |
-| 98 | 16:31 | B5 | nube | `curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -X PROPFIND -H 'Depth: 1' -o /home/angel/.cache/tfg-web/copias_nube.txt -w '%{http_code}' http://nube.local:9092/nube/copias/` |
-| 99 | 16:32 | B5 | tamano | `du -sh /home/angel/Documentos` |
-| 100 | 16:40 | B5 | disco | `df -h /` |
-| 101 | 16:41 | B5 | copia | `cp -f /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz /home/angel/Descargas/copia_final_3.tar.gz` |
-| 102 | 16:48 | B5 | tamano | `wc -c /home/angel/Descargas/copia_final_3.tar.gz` |
-| 103 | 16:49 | B5 | limpiar | `rm -f /home/angel/Descargas/tmp_*.csv` |
-| 104 | 16:57 | B5 | cierre | `date -u +%FT%TZ` |
-| 105 | 16:58 | B5 | cierre | `ls -la /home/angel/Documentos /home/angel/Descargas` |
+## Día 1 — «cierre de informes» (147 acciones)
+
+| # | UTC | Bloque | Familia | cwd | Comando |
+|---|---|---|---|---|---|
+| 1 | 08:00 | B1 | estructura | `~` | `cd /home/angel && mkdir -p /home/angel/Documentos/informes /home/angel/Documentos/actas /home/angel/Documentos/copias /home/angel/Documentos/correo /home/angel/Descargas /home/angel/.cache/tfg-web` |
+| 2 | 08:00 | B1 | llegada | `~/Documentos` | `cd /home/angel/Documentos && date -u +%FT%TZ > /home/angel/Documentos/llegada_$(date -u +%F).txt` |
+| 3 | 08:02 | B1 | listar | `~/Documentos` | `cd /home/angel/Documentos && ls -la /home/angel/Documentos` |
+| 4 | 08:03 | B1 | agenda | `~/Documentos` | `cd /home/angel/Documentos && echo '09:30 reunion de area; 12:00 informe; 17:00 cierre' > /home/angel/Documentos/agenda_$(date -u +%F).txt` |
+| 5 | 08:04 | B1 | error | `~/Documentos` | `cd /home/angel/Documentos && ls -la /home/angel/Documentos/informe 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\terror\truta_mal\tls -la /home/angel/Documentos/informe\trc=$r >> /home/angel/Documentos/errores.log; }` |
+| 6 | 08:05 | B1 | reintento | `~/Documentos` | `cd /home/angel/Documentos && ls -la /home/angel/Documentos/informes && echo -e $(date -u +%FT%TZ)\treintento\truta_mal\tls -la /home/angel/Documentos/informes\trc=0 >> /home/angel/Documentos/errores.log` |
+| 7 | 08:06 | B1 | agenda | `~/Documentos` | `cd /home/angel/Documentos && cat /home/angel/Documentos/agenda_$(date -u +%F).txt` |
+| 8 | 08:08 | B1 | web-sesion | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -c /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/index.html -w '%{http_code}' http://intranet.local:8080/` |
+| 9 | 08:09 | B1 | web-requisitos | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/styles.css -w '%{http_code}' http://intranet.local:8080/styles.css && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/portal.js -w '%{http_code}' http://intranet.local:8080/portal.js && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/logo.svg -w '%{http_code}' http://intranet.local:8080/assets/logo.svg` |
+| 10 | 08:09 | B1 | web-huella | `~/.cache/tfg-web` | `cd /home/angel/.cache/tfg-web && wc -c /home/angel/.cache/tfg-web/index.html && sha256sum /home/angel/.cache/tfg-web/styles.css` |
+| 11 | 08:11 | B1 | correo | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && echo 're: estado del informe mensual' > /home/angel/Documentos/correo/borrador_1.txt` |
+| 12 | 08:12 | B2 | correo-buzon | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/plain;q=0.9,*/*;q=0.8' -X POST --data 'consulta_buzon_d1_r1' -o /home/angel/.cache/tfg-web/buzon_1.txt -w '%{http_code}' http://intranet.local:9090/paste` |
+| 13 | 08:12 | B2 | correo-escribir | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && echo 'ronda 1: pendiente de revisar el informe del area' >> /home/angel/Documentos/correo/borrador_1.txt` |
+| 14 | 08:13 | B2 | correo-leer | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && cat /home/angel/Documentos/correo/borrador_1.txt` |
+| 15 | 08:20 | B2 | correo-buzon | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/plain;q=0.9,*/*;q=0.8' -X POST --data 'consulta_buzon_d1_r2' -o /home/angel/.cache/tfg-web/buzon_2.txt -w '%{http_code}' http://intranet.local:9090/paste` |
+| 16 | 08:24 | B2 | correo-escribir | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && echo 'ronda 2: pendiente de revisar el informe del area' >> /home/angel/Documentos/correo/borrador_2.txt` |
+| 17 | 08:25 | B2 | red | `~` | `cd /home/angel && ip -brief addr` |
+| 18 | 08:26 | B2 | correo-leer | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && cat /home/angel/Documentos/correo/borrador_2.txt` |
+| 19 | 08:27 | B2 | correo-buzon | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/plain;q=0.9,*/*;q=0.8' -X POST --data 'consulta_buzon_d1_r3' -o /home/angel/.cache/tfg-web/buzon_3.txt -w '%{http_code}' http://intranet.local:9090/paste` |
+| 20 | 08:27 | B2 | correo-escribir | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && echo 'ronda 3: pendiente de revisar el informe del area' >> /home/angel/Documentos/correo/borrador_3.txt` |
+| 21 | 08:38 | B2 | correo-leer | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && cat /home/angel/Documentos/correo/borrador_3.txt` |
+| 22 | 08:39 | B2 | correo-buzon | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/plain;q=0.9,*/*;q=0.8' -X POST --data 'consulta_buzon_d1_r4' -o /home/angel/.cache/tfg-web/buzon_4.txt -w '%{http_code}' http://intranet.local:9090/paste` |
+| 23 | 08:44 | B2 | correo-escribir | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && echo 'ronda 4: pendiente de revisar el informe del area' >> /home/angel/Documentos/correo/borrador_4.txt` |
+| 24 | 08:45 | B2 | correo-leer | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && cat /home/angel/Documentos/correo/borrador_4.txt` |
+| 25 | 08:46 | B2 | informe | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo 'informe del area - jornada 1' > /home/angel/Documentos/informes/informe.txt` |
+| 26 | 08:46 | B2 | adjunto | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && tar -czf /home/angel/Documentos/informes/adjunto_1_$(date -u +%F).tar.gz -C /home/angel/Documentos/informes informe.txt` |
+| 27 | 09:01 | B2 | error | `~` | `cd /home/angel && df -h --max-depth=1 / 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\terror\topcion\tdf -h --max-depth=1 /\trc=$r >> /home/angel/Documentos/errores.log; }` |
+| 28 | 09:06 | B2 | reintento | `~` | `cd /home/angel && df -h / && echo -e $(date -u +%FT%TZ)\treintento\topcion\tdf -h /\trc=0 >> /home/angel/Documentos/errores.log` |
+| 29 | 09:07 | B2 | error | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes_2026/informe.bak 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\terror\tcp_dir\tcp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes_2026/informe.bak\trc=$r >> /home/angel/Documentos/errores.log; }` |
+| 30 | 09:08 | B2 | reintento | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes/informe.bak && echo -e $(date -u +%FT%TZ)\treintento\tcp_dir\tcp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes/informe.bak\trc=0 >> /home/angel/Documentos/errores.log` |
+| 31 | 09:13 | B2 | huella | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && sha256sum /home/angel/Documentos/informes/adjunto_1_$(date -u +%F).tar.gz` |
+| 32 | 09:14 | B2 | tamano | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && du -sh /home/angel/Documentos/informes/adjunto_1_$(date -u +%F).tar.gz` |
+| 33 | 09:18 | B2 | listar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && ls -la /home/angel/Documentos/informes` |
+| 34 | 09:19 | B2 | adjunto | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && tar -czf /home/angel/Documentos/informes/adjunto_2_$(date -u +%F).tar.gz -C /home/angel/Documentos/informes informe.txt` |
+| 35 | 09:20 | B2 | huella | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && sha256sum /home/angel/Documentos/informes/adjunto_2_$(date -u +%F).tar.gz` |
+| 36 | 09:21 | B2 | tamano | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && du -sh /home/angel/Documentos/informes/adjunto_2_$(date -u +%F).tar.gz` |
+| 37 | 09:22 | B2 | listar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && ls -la /home/angel/Documentos/informes` |
+| 38 | 09:28 | B2 | copia | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes/informe.bak` |
+| 39 | 09:47 | B2 | error | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && stat /home/angel/Documentos/informes/informe_2026.txt 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\terror\truta_mal\tstat /home/angel/Documentos/informes/informe_2026.txt\trc=$r >> /home/angel/Documentos/errores.log; }` |
+| 40 | 09:48 | B2 | reintento | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && stat /home/angel/Documentos/informes/informe.txt && echo -e $(date -u +%FT%TZ)\treintento\truta_mal\tstat /home/angel/Documentos/informes/informe.txt\trc=0 >> /home/angel/Documentos/errores.log` |
+| 41 | 09:56 | B2 | renombrar | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && mv -f /home/angel/Documentos/correo/borrador_1.txt /home/angel/Documentos/correo/enviado_1.txt` |
+| 42 | 09:57 | B2 | contar | `~/Documentos` | `cd /home/angel/Documentos && find /home/angel/Documentos -type f > /home/angel/.cache/tfg-web/lista_ficheros.txt` |
+| 43 | 09:57 | B2 | listar | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && ls -la /home/angel/Documentos/correo` |
+| 44 | 09:59 | B2 | contar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt` |
+| 45 | 10:20 | B3 | web-navegar | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/.cache/tfg-web/index.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/Descargas/noticias.html -w '%{http_code}' http://intranet.local:8080/noticias.html` |
+| 46 | 10:20 | B3 | web-navegar | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/Descargas/noticias.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /dev/null -w '%{http_code}' http://intranet.local:8080/ayuda.html` |
+| 47 | 10:25 | B3 | web-descarga | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ayuda.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/plantilla_informe.csv -w '%{http_code}' http://intranet.local:8080/descargas/plantilla_informe.csv` |
+| 48 | 10:32 | B3 | web-pdf | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/Descargas/noticias.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/Descargas/manual_empleado.pdf -w '%{http_code}' http://intranet.local:8080/descargas/manual_empleado.pdf` |
+| 49 | 10:32 | B3 | web-huella | `~/Descargas` | `cd /home/angel/Descargas && wc -c /home/angel/Descargas/manual_empleado.pdf && sha256sum /home/angel/Descargas/manual_empleado.pdf` |
+| 50 | 10:33 | B3 | csv | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo 'referencia;area;importe' > /home/angel/Documentos/informes/export.csv` |
+| 51 | 10:34 | B3 | csv | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && sed -i 's/;/,/g' /home/angel/Documentos/informes/export.csv` |
+| 52 | 10:37 | B3 | csv | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && sed -n '1,5p' /home/angel/Documentos/informes/export.csv` |
+| 53 | 10:38 | B3 | redactar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo '1. alcance del informe (dia 1)' >> /home/angel/Documentos/informes/informe.txt` |
+| 54 | 10:39 | B3 | huella | `~/Descargas` | `cd /home/angel/Descargas && openssl dgst -sha256 /home/angel/Descargas/manual_empleado.pdf` |
+| 55 | 10:45 | B3 | leer | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.txt` |
+| 56 | 10:46 | B3 | contar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt` |
+| 57 | 10:54 | B3 | redactar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo '2. actividades del area (dia 1)' >> /home/angel/Documentos/informes/informe.txt` |
+| 58 | 10:55 | B3 | leer | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.txt` |
+| 59 | 10:56 | B3 | error | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && gzip -d /home/angel/Documentos/informes/informe.txt 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\terror\tgzip\tgzip -d /home/angel/Documentos/informes/informe.txt\trc=$r >> /home/angel/Documentos/errores.log; }` |
+| 60 | 10:56 | B3 | reintento | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && gzip -kf /home/angel/Documentos/informes/informe.txt && echo -e $(date -u +%FT%TZ)\treintento\tgzip\tgzip -kf /home/angel/Documentos/informes/informe.txt\trc=0 >> /home/angel/Documentos/errores.log` |
+| 61 | 10:57 | B3 | contar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt` |
+| 62 | 10:58 | B3 | redactar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo '3. incidencias de la semana (dia 1)' >> /home/angel/Documentos/informes/informe.txt` |
+| 63 | 11:02 | B3 | leer | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.txt` |
+| 64 | 11:07 | B3 | contar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt` |
+| 65 | 11:08 | B3 | redactar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo '4. indicadores del mes (dia 1)' >> /home/angel/Documentos/informes/informe.txt` |
+| 66 | 11:08 | B3 | leer | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.txt` |
+| 67 | 11:11 | B3 | contar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt` |
+| 68 | 11:12 | B3 | redactar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo '5. riesgos identificados (dia 1)' >> /home/angel/Documentos/informes/informe.txt` |
+| 69 | 11:19 | B3 | estado | `~` | `cd /home/angel && free -m` |
+| 70 | 11:20 | B3 | registro | `~` | `cd /home/angel && logger -t ofimatica 'repaso del informe del area'` |
+| 71 | 11:21 | B3 | leer | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.txt` |
+| 72 | 11:21 | B3 | contar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt` |
+| 73 | 11:26 | B3 | redactar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo '6. plan de accion (dia 1)' >> /home/angel/Documentos/informes/informe.txt` |
+| 74 | 11:46 | B3 | leer | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.txt` |
+| 75 | 11:48 | B3 | contar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt` |
+| 76 | 11:48 | B3 | redactar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo '7. conclusiones (dia 1)' >> /home/angel/Documentos/informes/informe.txt` |
+| 77 | 11:49 | B3 | leer | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.txt` |
+| 78 | 11:50 | B3 | contar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt` |
+| 79 | 11:54 | B3 | redactar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo '8. anexo de datos (dia 1)' >> /home/angel/Documentos/informes/informe.txt` |
+| 80 | 11:55 | B3 | leer | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.txt` |
+| 81 | 12:03 | B3 | contar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt` |
+| 82 | 12:03 | B3 | comprimir | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && gzip -kf /home/angel/Documentos/informes/informe.txt` |
+| 83 | 12:04 | B3 | error | `~/Descargas` | `cd /home/angel/Descargas && rm /home/angel/Descargas/tmp_borradores.csv 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\terror\trm_inexistente\trm /home/angel/Descargas/tmp_borradores.csv\trc=$r >> /home/angel/Documentos/errores.log; }` |
+| 84 | 12:08 | B3 | reintento | `~/Descargas` | `cd /home/angel/Descargas && rm -f /home/angel/Descargas/tmp_borradores.csv && echo -e $(date -u +%FT%TZ)\treintento\trm_inexistente\trm -f /home/angel/Descargas/tmp_borradores.csv\trc=0 >> /home/angel/Documentos/errores.log` |
+| 85 | 12:11 | B3 | huella | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && md5sum /home/angel/Documentos/informes/informe.txt.gz` |
+| 86 | 12:12 | B3 | huella | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && sha256sum /home/angel/Documentos/informes/informe.txt.gz` |
+| 87 | 12:13 | B3 | lotes | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && seq 1 12 > /home/angel/.cache/tfg-web/lotes.txt` |
+| 88 | 12:14 | B3 | lotes | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && xargs -a /home/angel/.cache/tfg-web/lotes.txt -I{} cp /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes/lote_{}.txt` |
+| 89 | 12:21 | B3 | listar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && ls -la /home/angel/Documentos/informes` |
+| 90 | 12:22 | B3 | tamano | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && du -sh /home/angel/Documentos/informes` |
+| 91 | 12:35 | B3 | contar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt.gz` |
+| 92 | 12:35 | B3 | consolidar | `~/Descargas` | `cd /home/angel/Descargas && tar -czf /home/angel/Descargas/informes.tar.gz -C /home/angel/Documentos informes` |
+| 93 | 12:36 | B3 | copia | `~/Descargas` | `cd /home/angel/Descargas && cp -f /home/angel/Descargas/informes.tar.gz /home/angel/Descargas/informes_copia_1.tar.gz` |
+| 94 | 12:37 | B3 | huella | `~/Descargas` | `cd /home/angel/Descargas && sha256sum /home/angel/Descargas/informes.tar.gz` |
+| 95 | 12:38 | B3 | bitacora | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo 'pendiente: firmar el acta de la reunion' > /home/angel/Documentos/informes/nota.txt` |
+| 96 | 12:39 | B3 | bitacora | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && tee -a /home/angel/Documentos/informes/bitacora.txt < /home/angel/Documentos/informes/nota.txt` |
+| 97 | 12:42 | B3 | contar | `~/Documentos` | `cd /home/angel/Documentos && find /home/angel/Documentos -type f > /home/angel/.cache/tfg-web/lista_ficheros_d1.txt` |
+| 98 | 12:57 | B3 | tamano | `~/Descargas` | `cd /home/angel/Descargas && du -sh /home/angel/Descargas` |
+| 99 | 12:58 | B3 | listar | `~/Descargas` | `cd /home/angel/Descargas && ls -la /home/angel/Descargas` |
+| 100 | 12:59 | B3 | revisar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && grep -c 'informe' /home/angel/Documentos/informes/informe.txt` |
+| 101 | 14:00 | B4 | acta | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && echo 'acta de reunion 1 del area (dia 1)' > /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt` |
+| 102 | 14:01 | B4 | acta | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && cat /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt` |
+| 103 | 14:11 | B4 | error | `~/Documentos` | `cd /home/angel/Documentos && cat /home/angel/Documentos/actas 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\terror\tcat_dir\tcat /home/angel/Documentos/actas\trc=$r >> /home/angel/Documentos/errores.log; }` |
+| 104 | 14:11 | B4 | reintento | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.bak && echo -e $(date -u +%FT%TZ)\treintento\tcat_dir\tcat /home/angel/Documentos/informes/informe.bak\trc=0 >> /home/angel/Documentos/errores.log` |
+| 105 | 14:12 | B4 | acta | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && wc -c /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt` |
+| 106 | 14:13 | B4 | copia | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && rsync -a --delete /home/angel/Documentos/informes/ /home/angel/Documentos/copias/informes/` |
+| 107 | 14:14 | B4 | acta | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && cp -f /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt /home/angel/Documentos/actas/compartida_1.txt` |
+| 108 | 14:22 | B4 | acta | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && sha256sum /home/angel/Documentos/actas/compartida_1.txt` |
+| 109 | 14:31 | B4 | acta | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && ls -la /home/angel/Documentos/actas` |
+| 110 | 14:32 | B4 | borrador | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo 'borrador previo del informe del area' > /home/angel/Documentos/informes/borrador_previo.txt` |
+| 111 | 14:33 | B4 | borrador | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && shred -n 1 -z -u /home/angel/Documentos/informes/borrador_previo.txt` |
+| 112 | 14:34 | B4 | error | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && cp -f /home/angel/Documentos/actas/compartida_1.txt /home/angel/Documentos/compartidas/ 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\terror\tcp_dir\tcp -f /home/angel/Documentos/actas/compartida_1.txt /home/angel/Documentos/compartidas/\trc=$r >> /home/angel/Documentos/errores.log; }` |
+| 113 | 14:35 | B4 | reintento | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && cp -f /home/angel/Documentos/actas/compartida_1.txt /home/angel/Documentos/actas/compartida_copia.txt && echo -e $(date -u +%FT%TZ)\treintento\tcp_dir\tcp -f /home/angel/Documentos/actas/compartida_1.txt /home/angel/Documentos/actas/compartida_copia.txt\trc=0 >> /home/angel/Documentos/errores.log` |
+| 114 | 14:36 | B4 | nube | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -T /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt -o /dev/null -w '%{http_code}' http://nube.local:9092/nube/actas/` |
+| 115 | 14:56 | B4 | descarga | `~/Descargas` | `cd /home/angel/Descargas && wget -q -O /home/angel/Descargas/manual_empleado_wget.pdf http://intranet.local:8080/descargas/manual_empleado.pdf` |
+| 116 | 14:57 | B4 | nube | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -X PROPFIND -H 'Depth: 1' -o /home/angel/.cache/tfg-web/nube_listado.txt -w '%{http_code}' http://nube.local:9092/nube/` |
+| 117 | 14:58 | B4 | nube | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -T /home/angel/Documentos/informes/informe.txt -o /dev/null -w '%{http_code}' http://nube.local:9092/nube/informes/` |
+| 118 | 15:08 | B4 | error | `~/Documentos` | `cd /home/angel/Documentos && ls -la --clasificar /home/angel/Documentos 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\terror\topcion\tls -la --clasificar /home/angel/Documentos\trc=$r >> /home/angel/Documentos/errores.log; }` |
+| 119 | 15:14 | B4 | reintento | `~/Documentos` | `cd /home/angel/Documentos && ls -la --classify /home/angel/Documentos && echo -e $(date -u +%FT%TZ)\treintento\topcion\tls -la --classify /home/angel/Documentos\trc=0 >> /home/angel/Documentos/errores.log` |
+| 120 | 15:15 | B4 | nube | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -X PROPFIND -H 'Depth: 1' -o /home/angel/.cache/tfg-web/nube_actas.txt -w '%{http_code}' http://nube.local:9092/nube/actas/` |
+| 121 | 15:16 | B4 | portal | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ayuda.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/portal_tarde.html -w '%{http_code}' http://intranet.local:8080/` |
+| 122 | 15:17 | B4 | red | `~/Descargas` | `cd /home/angel/Descargas && timeout 5 curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -o /home/angel/.cache/tfg-web/intranet_tarde.html -w '%{http_code}' http://intranet.local:8080/` |
+| 123 | 15:18 | B4 | portal | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/.cache/tfg-web/portal_tarde.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/noticias_tarde.html -w '%{http_code}' http://intranet.local:8080/noticias.html` |
+| 124 | 15:18 | B4 | informe | `~/Descargas` | `cd /home/angel/Descargas && tar -czf /home/angel/Descargas/informe_dia1.tar.gz -C /home/angel/Documentos/informes informe.txt` |
+| 125 | 15:34 | B4 | huella | `~/Descargas` | `cd /home/angel/Descargas && sha256sum /home/angel/Descargas/informe_dia1.tar.gz` |
+| 126 | 15:35 | B4 | tamano | `~/Descargas` | `cd /home/angel/Descargas && du -sh /home/angel/Descargas/informe_dia1.tar.gz` |
+| 127 | 15:43 | B4 | listar | `~/Descargas` | `cd /home/angel/Descargas && ls -la /home/angel/Descargas` |
+| 128 | 15:55 | B4 | descarga | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/.cache/tfg-web/portal_tarde.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/Descargas/plantilla_dia1.csv -w '%{http_code}' http://intranet.local:8080/descargas/plantilla_informe.csv` |
+| 129 | 15:56 | B4 | descarga | `~/Descargas` | `cd /home/angel/Descargas && wc -c /home/angel/Descargas/plantilla_dia1.csv` |
+| 130 | 15:57 | B4 | error | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && gzip -d /home/angel/Documentos/informes/informe.bak 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\terror\tgzip\tgzip -d /home/angel/Documentos/informes/informe.bak\trc=$r >> /home/angel/Documentos/errores.log; }` |
+| 131 | 15:58 | B4 | reintento | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && gzip -kf /home/angel/Documentos/informes/informe.bak && echo -e $(date -u +%FT%TZ)\treintento\tgzip\tgzip -kf /home/angel/Documentos/informes/informe.bak\trc=0 >> /home/angel/Documentos/errores.log` |
+| 132 | 16:02 | B4 | descarga | `~/Descargas` | `cd /home/angel/Descargas && sha256sum /home/angel/Descargas/plantilla_dia1.csv` |
+| 133 | 16:03 | B4 | portal | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/ayuda_tarde.html -w '%{http_code}' http://intranet.local:8080/ayuda.html` |
+| 134 | 16:13 | B4 | portal | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ayuda.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/styles_tarde.css -w '%{http_code}' http://intranet.local:8080/styles.css` |
+| 135 | 16:14 | B4 | portal | `~/.cache/tfg-web` | `cd /home/angel/.cache/tfg-web && wc -l /home/angel/.cache/tfg-web/ayuda_tarde.html` |
+| 136 | 16:15 | B5 | copia | `~/Documentos/copias` | `cd /home/angel/Documentos/copias && tar -czf /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz -C /home/angel/Documentos informes actas` |
+| 137 | 16:15 | B5 | huella | `~/Documentos/copias` | `cd /home/angel/Documentos/copias && sha256sum /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz` |
+| 138 | 16:16 | B5 | huella | `~/Documentos/copias` | `cd /home/angel/Documentos/copias && cat /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz.sha256` |
+| 139 | 16:17 | B5 | nube | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -T /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz -o /dev/null -w '%{http_code}' http://nube.local:9092/nube/copias/` |
+| 140 | 16:27 | B5 | nube | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -X PROPFIND -H 'Depth: 1' -o /home/angel/.cache/tfg-web/copias_nube.txt -w '%{http_code}' http://nube.local:9092/nube/copias/` |
+| 141 | 16:28 | B5 | tamano | `~/Documentos` | `cd /home/angel/Documentos && du -sh /home/angel/Documentos` |
+| 142 | 16:37 | B5 | disco | `~` | `cd /home/angel && df -h /` |
+| 143 | 16:38 | B5 | copia | `~/Documentos/copias` | `cd /home/angel/Documentos/copias && cp -f /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz /home/angel/Descargas/copia_final_1.tar.gz` |
+| 144 | 16:38 | B5 | tamano | `~/Descargas` | `cd /home/angel/Descargas && wc -c /home/angel/Descargas/copia_final_1.tar.gz` |
+| 145 | 16:46 | B5 | limpiar | `~/Descargas` | `cd /home/angel/Descargas && rm -f /home/angel/Descargas/tmp_*.csv` |
+| 146 | 16:57 | B5 | cierre | `~` | `cd /home/angel && date -u +%FT%TZ` |
+| 147 | 16:59 | B5 | cierre | `~/Documentos` | `cd /home/angel/Documentos && ls -la /home/angel/Documentos /home/angel/Descargas` |
+
+## Día 2 — «reuniones y portal» (153 acciones)
+
+| # | UTC | Bloque | Familia | cwd | Comando |
+|---|---|---|---|---|---|
+| 1 | 08:00 | B1 | estructura | `~` | `cd /home/angel && mkdir -p /home/angel/Documentos/informes /home/angel/Documentos/actas /home/angel/Documentos/copias /home/angel/Documentos/correo /home/angel/Descargas /home/angel/.cache/tfg-web` |
+| 2 | 08:00 | B1 | llegada | `~/Documentos` | `cd /home/angel/Documentos && date -u +%FT%TZ > /home/angel/Documentos/llegada_$(date -u +%F).txt` |
+| 3 | 08:01 | B1 | listar | `~/Documentos` | `cd /home/angel/Documentos && ls -la /home/angel/Documentos` |
+| 4 | 08:02 | B1 | agenda | `~/Documentos` | `cd /home/angel/Documentos && echo '09:30 reunion de area; 12:00 informe; 17:00 cierre' > /home/angel/Documentos/agenda_$(date -u +%F).txt` |
+| 5 | 08:04 | B1 | error | `~/Documentos` | `cd /home/angel/Documentos && ls -la /home/angel/Documentos/informe 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\terror\truta_mal\tls -la /home/angel/Documentos/informe\trc=$r >> /home/angel/Documentos/errores.log; }` |
+| 6 | 08:05 | B1 | reintento | `~/Documentos` | `cd /home/angel/Documentos && ls -la /home/angel/Documentos/informes && echo -e $(date -u +%FT%TZ)\treintento\truta_mal\tls -la /home/angel/Documentos/informes\trc=0 >> /home/angel/Documentos/errores.log` |
+| 7 | 08:06 | B1 | agenda | `~/Documentos` | `cd /home/angel/Documentos && cat /home/angel/Documentos/agenda_$(date -u +%F).txt` |
+| 8 | 08:07 | B1 | web-sesion | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -c /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/index.html -w '%{http_code}' http://intranet.local:8080/` |
+| 9 | 08:08 | B1 | web-requisitos | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/styles.css -w '%{http_code}' http://intranet.local:8080/styles.css && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/portal.js -w '%{http_code}' http://intranet.local:8080/portal.js && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/logo.svg -w '%{http_code}' http://intranet.local:8080/assets/logo.svg` |
+| 10 | 08:10 | B1 | web-huella | `~/.cache/tfg-web` | `cd /home/angel/.cache/tfg-web && wc -c /home/angel/.cache/tfg-web/index.html && sha256sum /home/angel/.cache/tfg-web/styles.css` |
+| 11 | 08:11 | B1 | correo | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && echo 're: confirmacion de la reunion de area' > /home/angel/Documentos/correo/borrador_1.txt` |
+| 12 | 08:12 | B2 | correo-buzon | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/plain;q=0.9,*/*;q=0.8' -X POST --data 'consulta_buzon_d2_r1' -o /home/angel/.cache/tfg-web/buzon_1.txt -w '%{http_code}' http://intranet.local:9090/paste` |
+| 13 | 08:12 | B2 | correo-escribir | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && echo 'ronda 1: pendiente de revisar el informe del area' >> /home/angel/Documentos/correo/borrador_1.txt` |
+| 14 | 08:16 | B2 | correo-leer | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && cat /home/angel/Documentos/correo/borrador_1.txt` |
+| 15 | 08:17 | B2 | correo-buzon | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/plain;q=0.9,*/*;q=0.8' -X POST --data 'consulta_buzon_d2_r2' -o /home/angel/.cache/tfg-web/buzon_2.txt -w '%{http_code}' http://intranet.local:9090/paste` |
+| 16 | 08:17 | B2 | correo-escribir | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && echo 'ronda 2: pendiente de revisar el informe del area' >> /home/angel/Documentos/correo/borrador_2.txt` |
+| 17 | 08:18 | B2 | correo-leer | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && cat /home/angel/Documentos/correo/borrador_2.txt` |
+| 18 | 08:23 | B2 | red | `~` | `cd /home/angel && ip -brief addr` |
+| 19 | 08:37 | B2 | correo-buzon | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/plain;q=0.9,*/*;q=0.8' -X POST --data 'consulta_buzon_d2_r3' -o /home/angel/.cache/tfg-web/buzon_3.txt -w '%{http_code}' http://intranet.local:9090/paste` |
+| 20 | 08:37 | B2 | correo-escribir | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && echo 'ronda 3: pendiente de revisar el informe del area' >> /home/angel/Documentos/correo/borrador_3.txt` |
+| 21 | 08:38 | B2 | correo-leer | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && cat /home/angel/Documentos/correo/borrador_3.txt` |
+| 22 | 08:44 | B2 | correo-buzon | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/plain;q=0.9,*/*;q=0.8' -X POST --data 'consulta_buzon_d2_r4' -o /home/angel/.cache/tfg-web/buzon_4.txt -w '%{http_code}' http://intranet.local:9090/paste` |
+| 23 | 08:45 | B2 | correo-escribir | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && echo 'ronda 4: pendiente de revisar el informe del area' >> /home/angel/Documentos/correo/borrador_4.txt` |
+| 24 | 08:53 | B2 | correo-leer | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && cat /home/angel/Documentos/correo/borrador_4.txt` |
+| 25 | 08:54 | B2 | copia | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes/informe.bak` |
+| 26 | 08:54 | B2 | renombrar | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && mv -f /home/angel/Documentos/correo/borrador_1.txt /home/angel/Documentos/correo/enviado_1.txt` |
+| 27 | 08:55 | B2 | contar | `~/Documentos` | `cd /home/angel/Documentos && find /home/angel/Documentos -type f > /home/angel/.cache/tfg-web/lista_ficheros.txt` |
+| 28 | 08:56 | B2 | listar | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && ls -la /home/angel/Documentos/correo` |
+| 29 | 08:59 | B2 | contar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt` |
+| 30 | 09:11 | B2 | leer | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && cat /home/angel/Documentos/correo/enviado_1.txt` |
+| 31 | 09:12 | B2 | error | `~` | `cd /home/angel && df -h --max-depth=1 / 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\terror\topcion\tdf -h --max-depth=1 /\trc=$r >> /home/angel/Documentos/errores.log; }` |
+| 32 | 09:16 | B2 | reintento | `~` | `cd /home/angel && df -h / && echo -e $(date -u +%FT%TZ)\treintento\topcion\tdf -h /\trc=0 >> /home/angel/Documentos/errores.log` |
+| 33 | 09:17 | B2 | tamano | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && du -sh /home/angel/Documentos/correo` |
+| 34 | 09:18 | B2 | copia | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cp -f /home/angel/Documentos/informes/informe.txt /home/angel/Descargas/informe_copia_2.txt` |
+| 35 | 09:18 | B2 | limpiar | `~/Descargas` | `cd /home/angel/Descargas && rm -f /home/angel/Descargas/tmp_borradores.csv` |
+| 36 | 09:22 | B2 | agenda | `~/Documentos` | `cd /home/angel/Documentos && echo 'revisado el buzon de la manana' >> /home/angel/Documentos/agenda_$(date -u +%F).txt` |
+| 37 | 09:31 | B2 | huella | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && md5sum /home/angel/Documentos/informes/informe.bak` |
+| 38 | 09:33 | B2 | listar | `~/Documentos` | `cd /home/angel/Documentos && ls -la /home/angel/Documentos` |
+| 39 | 09:33 | B2 | informe | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo 'informe del area - jornada 2' > /home/angel/Documentos/informes/informe.txt` |
+| 40 | 09:38 | B2 | adjunto | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && tar -czf /home/angel/Documentos/informes/adjunto_1_$(date -u +%F).tar.gz -C /home/angel/Documentos/informes informe.txt` |
+| 41 | 09:39 | B2 | error | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes_2026/informe.bak 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\terror\tcp_dir\tcp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes_2026/informe.bak\trc=$r >> /home/angel/Documentos/errores.log; }` |
+| 42 | 09:42 | B2 | reintento | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes/informe.bak && echo -e $(date -u +%FT%TZ)\treintento\tcp_dir\tcp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes/informe.bak\trc=0 >> /home/angel/Documentos/errores.log` |
+| 43 | 09:43 | B2 | huella | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && sha256sum /home/angel/Documentos/informes/adjunto_1_$(date -u +%F).tar.gz` |
+| 44 | 09:44 | B2 | error | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && stat /home/angel/Documentos/informes/informe_2026.txt 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\terror\truta_mal\tstat /home/angel/Documentos/informes/informe_2026.txt\trc=$r >> /home/angel/Documentos/errores.log; }` |
+| 45 | 09:44 | B2 | reintento | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && stat /home/angel/Documentos/informes/informe.txt && echo -e $(date -u +%FT%TZ)\treintento\truta_mal\tstat /home/angel/Documentos/informes/informe.txt\trc=0 >> /home/angel/Documentos/errores.log` |
+| 46 | 09:45 | B2 | tamano | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && du -sh /home/angel/Documentos/informes/adjunto_1_$(date -u +%F).tar.gz` |
+| 47 | 09:46 | B2 | listar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && ls -la /home/angel/Documentos/informes` |
+| 48 | 09:54 | B2 | adjunto | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && tar -czf /home/angel/Documentos/informes/adjunto_2_$(date -u +%F).tar.gz -C /home/angel/Documentos/informes informe.txt` |
+| 49 | 09:57 | B2 | huella | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && sha256sum /home/angel/Documentos/informes/adjunto_2_$(date -u +%F).tar.gz` |
+| 50 | 09:59 | B2 | tamano | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && du -sh /home/angel/Documentos/informes/adjunto_2_$(date -u +%F).tar.gz` |
+| 51 | 10:20 | B3 | web-navegar | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/.cache/tfg-web/index.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/Descargas/noticias.html -w '%{http_code}' http://intranet.local:8080/noticias.html` |
+| 52 | 10:20 | B3 | web-navegar | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/Descargas/noticias.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /dev/null -w '%{http_code}' http://intranet.local:8080/ayuda.html` |
+| 53 | 10:21 | B3 | web-descarga | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ayuda.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/plantilla_informe.csv -w '%{http_code}' http://intranet.local:8080/descargas/plantilla_informe.csv` |
+| 54 | 10:25 | B3 | web-pdf | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/Descargas/noticias.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/Descargas/manual_empleado.pdf -w '%{http_code}' http://intranet.local:8080/descargas/manual_empleado.pdf` |
+| 55 | 10:26 | B3 | web-huella | `~/Descargas` | `cd /home/angel/Descargas && wc -c /home/angel/Descargas/manual_empleado.pdf && sha256sum /home/angel/Descargas/manual_empleado.pdf` |
+| 56 | 10:34 | B3 | csv | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo 'referencia;area;importe' > /home/angel/Documentos/informes/export.csv` |
+| 57 | 10:35 | B3 | csv | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && sed -i 's/;/,/g' /home/angel/Documentos/informes/export.csv` |
+| 58 | 10:35 | B3 | csv | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && sed -n '1,5p' /home/angel/Documentos/informes/export.csv` |
+| 59 | 10:36 | B3 | comprimir | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && gzip -kf /home/angel/Documentos/informes/informe.txt` |
+| 60 | 10:37 | B3 | huella | `~/Descargas` | `cd /home/angel/Descargas && openssl dgst -sha256 /home/angel/Descargas/manual_empleado.pdf` |
+| 61 | 10:38 | B3 | huella | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && md5sum /home/angel/Documentos/informes/informe.txt.gz` |
+| 62 | 10:43 | B3 | huella | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && sha256sum /home/angel/Documentos/informes/informe.txt.gz` |
+| 63 | 10:50 | B3 | lotes | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && seq 1 12 > /home/angel/.cache/tfg-web/lotes.txt` |
+| 64 | 10:51 | B3 | lotes | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && xargs -a /home/angel/.cache/tfg-web/lotes.txt -I{} cp /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes/lote_{}.txt` |
+| 65 | 10:52 | B3 | error | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && gzip -d /home/angel/Documentos/informes/informe.txt 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\terror\tgzip\tgzip -d /home/angel/Documentos/informes/informe.txt\trc=$r >> /home/angel/Documentos/errores.log; }` |
+| 66 | 10:56 | B3 | reintento | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && gzip -kf /home/angel/Documentos/informes/informe.txt && echo -e $(date -u +%FT%TZ)\treintento\tgzip\tgzip -kf /home/angel/Documentos/informes/informe.txt\trc=0 >> /home/angel/Documentos/errores.log` |
+| 67 | 10:57 | B3 | listar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && ls -la /home/angel/Documentos/informes` |
+| 68 | 11:07 | B3 | tamano | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && du -sh /home/angel/Documentos/informes` |
+| 69 | 11:08 | B3 | contar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt.gz` |
+| 70 | 11:09 | B3 | redactar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo '1. alcance del informe (dia 2)' >> /home/angel/Documentos/informes/informe.txt` |
+| 71 | 11:10 | B3 | leer | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.txt` |
+| 72 | 11:13 | B3 | contar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt` |
+| 73 | 11:18 | B3 | estado | `~` | `cd /home/angel && free -m` |
+| 74 | 11:19 | B3 | registro | `~` | `cd /home/angel && logger -t ofimatica 'repaso del informe del area'` |
+| 75 | 11:20 | B3 | redactar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo '2. actividades del area (dia 2)' >> /home/angel/Documentos/informes/informe.txt` |
+| 76 | 11:21 | B3 | leer | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.txt` |
+| 77 | 11:22 | B3 | contar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt` |
+| 78 | 11:43 | B3 | redactar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo '3. incidencias de la semana (dia 2)' >> /home/angel/Documentos/informes/informe.txt` |
+| 79 | 11:43 | B3 | leer | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.txt` |
+| 80 | 11:59 | B3 | contar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt` |
+| 81 | 12:00 | B3 | redactar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo '4. indicadores del mes (dia 2)' >> /home/angel/Documentos/informes/informe.txt` |
+| 82 | 12:00 | B3 | leer | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.txt` |
+| 83 | 12:04 | B3 | contar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt` |
+| 84 | 12:23 | B3 | redactar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo '5. riesgos identificados (dia 2)' >> /home/angel/Documentos/informes/informe.txt` |
+| 85 | 12:24 | B3 | error | `~/Descargas` | `cd /home/angel/Descargas && rm /home/angel/Descargas/tmp_borradores.csv 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\terror\trm_inexistente\trm /home/angel/Descargas/tmp_borradores.csv\trc=$r >> /home/angel/Documentos/errores.log; }` |
+| 86 | 12:24 | B3 | reintento | `~/Descargas` | `cd /home/angel/Descargas && rm -f /home/angel/Descargas/tmp_borradores.csv && echo -e $(date -u +%FT%TZ)\treintento\trm_inexistente\trm -f /home/angel/Descargas/tmp_borradores.csv\trc=0 >> /home/angel/Documentos/errores.log` |
+| 87 | 12:25 | B3 | leer | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.txt` |
+| 88 | 12:33 | B3 | contar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt` |
+| 89 | 12:33 | B3 | redactar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo '6. plan de accion (dia 2)' >> /home/angel/Documentos/informes/informe.txt` |
+| 90 | 12:44 | B3 | leer | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.txt` |
+| 91 | 12:45 | B3 | contar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt` |
+| 92 | 12:46 | B3 | redactar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo '7. conclusiones (dia 2)' >> /home/angel/Documentos/informes/informe.txt` |
+| 93 | 12:47 | B3 | bitacora | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo 'pendiente: firmar el acta de la reunion' > /home/angel/Documentos/informes/nota.txt` |
+| 94 | 12:47 | B3 | bitacora | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && tee -a /home/angel/Documentos/informes/bitacora.txt < /home/angel/Documentos/informes/nota.txt` |
+| 95 | 12:48 | B3 | leer | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.txt` |
+| 96 | 12:54 | B3 | contar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt` |
+| 97 | 12:58 | B3 | redactar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo '8. anexo de datos (dia 2)' >> /home/angel/Documentos/informes/informe.txt` |
+| 98 | 12:59 | B3 | leer | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.txt` |
+| 99 | 14:00 | B4 | acta | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && echo 'acta de reunion 1 del area (dia 2)' > /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt` |
+| 100 | 14:00 | B4 | acta | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && cat /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt` |
+| 101 | 14:10 | B4 | acta | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && wc -c /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt` |
+| 102 | 14:11 | B4 | error | `~/Documentos` | `cd /home/angel/Documentos && cat /home/angel/Documentos/actas 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\terror\tcat_dir\tcat /home/angel/Documentos/actas\trc=$r >> /home/angel/Documentos/errores.log; }` |
+| 103 | 14:12 | B4 | reintento | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.bak && echo -e $(date -u +%FT%TZ)\treintento\tcat_dir\tcat /home/angel/Documentos/informes/informe.bak\trc=0 >> /home/angel/Documentos/errores.log` |
+| 104 | 14:13 | B4 | acta | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && cp -f /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt /home/angel/Documentos/actas/compartida_1.txt` |
+| 105 | 14:18 | B4 | copia | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && rsync -a --delete /home/angel/Documentos/informes/ /home/angel/Documentos/copias/informes/` |
+| 106 | 14:19 | B4 | acta | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && sha256sum /home/angel/Documentos/actas/compartida_1.txt` |
+| 107 | 14:20 | B4 | acta | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && ls -la /home/angel/Documentos/actas` |
+| 108 | 14:28 | B4 | borrador | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo 'borrador previo del informe del area' > /home/angel/Documentos/informes/borrador_previo.txt` |
+| 109 | 14:31 | B4 | borrador | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && shred -n 1 -z -u /home/angel/Documentos/informes/borrador_previo.txt` |
+| 110 | 14:32 | B4 | error | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && cp -f /home/angel/Documentos/actas/compartida_1.txt /home/angel/Documentos/compartidas/ 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\terror\tcp_dir\tcp -f /home/angel/Documentos/actas/compartida_1.txt /home/angel/Documentos/compartidas/\trc=$r >> /home/angel/Documentos/errores.log; }` |
+| 111 | 14:33 | B4 | reintento | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && cp -f /home/angel/Documentos/actas/compartida_1.txt /home/angel/Documentos/actas/compartida_copia.txt && echo -e $(date -u +%FT%TZ)\treintento\tcp_dir\tcp -f /home/angel/Documentos/actas/compartida_1.txt /home/angel/Documentos/actas/compartida_copia.txt\trc=0 >> /home/angel/Documentos/errores.log` |
+| 112 | 14:33 | B4 | acta | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && echo 'acta de reunion 1 del area (dia 2)' > /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt` |
+| 113 | 14:34 | B4 | acta | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && cat /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt` |
+| 114 | 14:35 | B4 | acta | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && wc -c /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt` |
+| 115 | 14:41 | B4 | acta | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && cp -f /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt /home/angel/Documentos/actas/compartida_1.txt` |
+| 116 | 14:42 | B4 | descarga | `~/Descargas` | `cd /home/angel/Descargas && wget -q -O /home/angel/Descargas/manual_empleado_wget.pdf http://intranet.local:8080/descargas/manual_empleado.pdf` |
+| 117 | 15:03 | B4 | acta | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && sha256sum /home/angel/Documentos/actas/compartida_1.txt` |
+| 118 | 15:12 | B4 | acta | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && ls -la /home/angel/Documentos/actas` |
+| 119 | 15:13 | B4 | error | `~/Documentos` | `cd /home/angel/Documentos && ls -la --clasificar /home/angel/Documentos 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\terror\topcion\tls -la --clasificar /home/angel/Documentos\trc=$r >> /home/angel/Documentos/errores.log; }` |
+| 120 | 15:14 | B4 | reintento | `~/Documentos` | `cd /home/angel/Documentos && ls -la --classify /home/angel/Documentos && echo -e $(date -u +%FT%TZ)\treintento\topcion\tls -la --classify /home/angel/Documentos\trc=0 >> /home/angel/Documentos/errores.log` |
+| 121 | 15:15 | B4 | acta | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && echo 'acta de reunion 2 del area (dia 2)' > /home/angel/Documentos/actas/acta_2_$(date -u +%F).txt` |
+| 122 | 15:22 | B4 | acta | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && cat /home/angel/Documentos/actas/acta_2_$(date -u +%F).txt` |
+| 123 | 15:23 | B4 | acta | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && wc -c /home/angel/Documentos/actas/acta_2_$(date -u +%F).txt` |
+| 124 | 15:26 | B4 | red | `~/Descargas` | `cd /home/angel/Descargas && timeout 5 curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -o /home/angel/.cache/tfg-web/intranet_tarde.html -w '%{http_code}' http://intranet.local:8080/` |
+| 125 | 15:27 | B4 | acta | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && cp -f /home/angel/Documentos/actas/acta_2_$(date -u +%F).txt /home/angel/Documentos/actas/compartida_2.txt` |
+| 126 | 15:28 | B4 | acta | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && sha256sum /home/angel/Documentos/actas/compartida_2.txt` |
+| 127 | 15:37 | B4 | acta | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && ls -la /home/angel/Documentos/actas` |
+| 128 | 15:39 | B4 | nube | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -T /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt -o /dev/null -w '%{http_code}' http://nube.local:9092/nube/actas/` |
+| 129 | 15:40 | B4 | nube | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -X PROPFIND -H 'Depth: 1' -o /home/angel/.cache/tfg-web/nube_listado.txt -w '%{http_code}' http://nube.local:9092/nube/` |
+| 130 | 15:41 | B4 | nube | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -T /home/angel/Documentos/informes/informe.txt -o /dev/null -w '%{http_code}' http://nube.local:9092/nube/informes/` |
+| 131 | 15:42 | B4 | nube | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -X PROPFIND -H 'Depth: 1' -o /home/angel/.cache/tfg-web/nube_actas.txt -w '%{http_code}' http://nube.local:9092/nube/actas/` |
+| 132 | 15:42 | B4 | portal | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ayuda.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/portal_tarde.html -w '%{http_code}' http://intranet.local:8080/` |
+| 133 | 15:49 | B4 | portal | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/.cache/tfg-web/portal_tarde.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/noticias_tarde.html -w '%{http_code}' http://intranet.local:8080/noticias.html` |
+| 134 | 15:50 | B4 | error | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && gzip -d /home/angel/Documentos/informes/informe.bak 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\terror\tgzip\tgzip -d /home/angel/Documentos/informes/informe.bak\trc=$r >> /home/angel/Documentos/errores.log; }` |
+| 135 | 15:55 | B4 | reintento | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && gzip -kf /home/angel/Documentos/informes/informe.bak && echo -e $(date -u +%FT%TZ)\treintento\tgzip\tgzip -kf /home/angel/Documentos/informes/informe.bak\trc=0 >> /home/angel/Documentos/errores.log` |
+| 136 | 15:56 | B4 | informe | `~/Descargas` | `cd /home/angel/Descargas && tar -czf /home/angel/Descargas/informe_dia2.tar.gz -C /home/angel/Documentos/informes informe.txt` |
+| 137 | 15:57 | B4 | huella | `~/Descargas` | `cd /home/angel/Descargas && sha256sum /home/angel/Descargas/informe_dia2.tar.gz` |
+| 138 | 16:02 | B4 | tamano | `~/Descargas` | `cd /home/angel/Descargas && du -sh /home/angel/Descargas/informe_dia2.tar.gz` |
+| 139 | 16:04 | B4 | listar | `~/Descargas` | `cd /home/angel/Descargas && ls -la /home/angel/Descargas` |
+| 140 | 16:05 | B4 | descarga | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/.cache/tfg-web/portal_tarde.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/Descargas/plantilla_dia2.csv -w '%{http_code}' http://intranet.local:8080/descargas/plantilla_informe.csv` |
+| 141 | 16:14 | B4 | descarga | `~/Descargas` | `cd /home/angel/Descargas && wc -c /home/angel/Descargas/plantilla_dia2.csv` |
+| 142 | 16:15 | B5 | copia | `~/Documentos/copias` | `cd /home/angel/Documentos/copias && tar -czf /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz -C /home/angel/Documentos informes actas` |
+| 143 | 16:23 | B5 | huella | `~/Documentos/copias` | `cd /home/angel/Documentos/copias && sha256sum /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz` |
+| 144 | 16:24 | B5 | huella | `~/Documentos/copias` | `cd /home/angel/Documentos/copias && cat /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz.sha256` |
+| 145 | 16:25 | B5 | nube | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -T /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz -o /dev/null -w '%{http_code}' http://nube.local:9092/nube/copias/` |
+| 146 | 16:26 | B5 | nube | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -X PROPFIND -H 'Depth: 1' -o /home/angel/.cache/tfg-web/copias_nube.txt -w '%{http_code}' http://nube.local:9092/nube/copias/` |
+| 147 | 16:33 | B5 | tamano | `~/Documentos` | `cd /home/angel/Documentos && du -sh /home/angel/Documentos` |
+| 148 | 16:34 | B5 | disco | `~` | `cd /home/angel && df -h /` |
+| 149 | 16:40 | B5 | copia | `~/Documentos/copias` | `cd /home/angel/Documentos/copias && cp -f /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz /home/angel/Descargas/copia_final_2.tar.gz` |
+| 150 | 16:41 | B5 | tamano | `~/Descargas` | `cd /home/angel/Descargas && wc -c /home/angel/Descargas/copia_final_2.tar.gz` |
+| 151 | 16:42 | B5 | limpiar | `~/Descargas` | `cd /home/angel/Descargas && rm -f /home/angel/Descargas/tmp_*.csv` |
+| 152 | 16:52 | B5 | cierre | `~` | `cd /home/angel && date -u +%FT%TZ` |
+| 153 | 16:59 | B5 | cierre | `~/Documentos` | `cd /home/angel/Documentos && ls -la /home/angel/Documentos /home/angel/Descargas` |
+
+## Día 3 — «revisión y copias» (141 acciones)
+
+| # | UTC | Bloque | Familia | cwd | Comando |
+|---|---|---|---|---|---|
+| 1 | 08:00 | B1 | estructura | `~` | `cd /home/angel && mkdir -p /home/angel/Documentos/informes /home/angel/Documentos/actas /home/angel/Documentos/copias /home/angel/Documentos/correo /home/angel/Descargas /home/angel/.cache/tfg-web` |
+| 2 | 08:00 | B1 | llegada | `~/Documentos` | `cd /home/angel/Documentos && date -u +%FT%TZ > /home/angel/Documentos/llegada_$(date -u +%F).txt` |
+| 3 | 08:02 | B1 | listar | `~/Documentos` | `cd /home/angel/Documentos && ls -la /home/angel/Documentos` |
+| 4 | 08:03 | B1 | agenda | `~/Documentos` | `cd /home/angel/Documentos && echo '09:30 reunion de area; 12:00 informe; 17:00 cierre' > /home/angel/Documentos/agenda_$(date -u +%F).txt` |
+| 5 | 08:04 | B1 | error | `~/Documentos` | `cd /home/angel/Documentos && ls -la /home/angel/Documentos/informe 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\terror\truta_mal\tls -la /home/angel/Documentos/informe\trc=$r >> /home/angel/Documentos/errores.log; }` |
+| 6 | 08:04 | B1 | reintento | `~/Documentos` | `cd /home/angel/Documentos && ls -la /home/angel/Documentos/informes && echo -e $(date -u +%FT%TZ)\treintento\truta_mal\tls -la /home/angel/Documentos/informes\trc=0 >> /home/angel/Documentos/errores.log` |
+| 7 | 08:06 | B1 | agenda | `~/Documentos` | `cd /home/angel/Documentos && cat /home/angel/Documentos/agenda_$(date -u +%F).txt` |
+| 8 | 08:07 | B1 | web-sesion | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -c /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/index.html -w '%{http_code}' http://intranet.local:8080/` |
+| 9 | 08:09 | B1 | web-requisitos | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/styles.css -w '%{http_code}' http://intranet.local:8080/styles.css && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/portal.js -w '%{http_code}' http://intranet.local:8080/portal.js && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/logo.svg -w '%{http_code}' http://intranet.local:8080/assets/logo.svg` |
+| 10 | 08:10 | B1 | web-huella | `~/.cache/tfg-web` | `cd /home/angel/.cache/tfg-web && wc -c /home/angel/.cache/tfg-web/index.html && sha256sum /home/angel/.cache/tfg-web/styles.css` |
+| 11 | 08:11 | B1 | correo | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && echo 're: revision de las copias de seguridad' > /home/angel/Documentos/correo/borrador_1.txt` |
+| 12 | 08:12 | B2 | copia | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes/informe.bak` |
+| 13 | 08:12 | B2 | renombrar | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && mv -f /home/angel/Documentos/correo/borrador_1.txt /home/angel/Documentos/correo/enviado_1.txt` |
+| 14 | 08:13 | B2 | contar | `~/Documentos` | `cd /home/angel/Documentos && find /home/angel/Documentos -type f > /home/angel/.cache/tfg-web/lista_ficheros.txt` |
+| 15 | 08:21 | B2 | listar | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && ls -la /home/angel/Documentos/correo` |
+| 16 | 08:22 | B2 | red | `~` | `cd /home/angel && ip -brief addr` |
+| 17 | 08:28 | B2 | contar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt` |
+| 18 | 08:29 | B2 | leer | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && cat /home/angel/Documentos/correo/enviado_1.txt` |
+| 19 | 08:30 | B2 | tamano | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && du -sh /home/angel/Documentos/correo` |
+| 20 | 08:31 | B2 | copia | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cp -f /home/angel/Documentos/informes/informe.txt /home/angel/Descargas/informe_copia_3.txt` |
+| 21 | 08:32 | B2 | limpiar | `~/Descargas` | `cd /home/angel/Descargas && rm -f /home/angel/Descargas/tmp_borradores.csv` |
+| 22 | 08:48 | B2 | error | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes_2026/informe.bak 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\terror\tcp_dir\tcp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes_2026/informe.bak\trc=$r >> /home/angel/Documentos/errores.log; }` |
+| 23 | 08:57 | B2 | reintento | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes/informe.bak && echo -e $(date -u +%FT%TZ)\treintento\tcp_dir\tcp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes/informe.bak\trc=0 >> /home/angel/Documentos/errores.log` |
+| 24 | 08:58 | B2 | agenda | `~/Documentos` | `cd /home/angel/Documentos && echo 'revisado el buzon de la manana' >> /home/angel/Documentos/agenda_$(date -u +%F).txt` |
+| 25 | 09:03 | B2 | huella | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && md5sum /home/angel/Documentos/informes/informe.bak` |
+| 26 | 09:04 | B2 | listar | `~/Documentos` | `cd /home/angel/Documentos && ls -la /home/angel/Documentos` |
+| 27 | 09:05 | B2 | error | `~` | `cd /home/angel && df -h --max-depth=1 / 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\terror\topcion\tdf -h --max-depth=1 /\trc=$r >> /home/angel/Documentos/errores.log; }` |
+| 28 | 09:06 | B2 | reintento | `~` | `cd /home/angel && df -h / && echo -e $(date -u +%FT%TZ)\treintento\topcion\tdf -h /\trc=0 >> /home/angel/Documentos/errores.log` |
+| 29 | 09:19 | B2 | correo-buzon | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/plain;q=0.9,*/*;q=0.8' -X POST --data 'consulta_buzon_d3_r1' -o /home/angel/.cache/tfg-web/buzon_1.txt -w '%{http_code}' http://intranet.local:9090/paste` |
+| 30 | 09:26 | B2 | correo-escribir | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && echo 'ronda 1: pendiente de revisar el informe del area' >> /home/angel/Documentos/correo/borrador_1.txt` |
+| 31 | 09:27 | B2 | correo-leer | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && cat /home/angel/Documentos/correo/borrador_1.txt` |
+| 32 | 09:28 | B2 | correo-buzon | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/plain;q=0.9,*/*;q=0.8' -X POST --data 'consulta_buzon_d3_r2' -o /home/angel/.cache/tfg-web/buzon_2.txt -w '%{http_code}' http://intranet.local:9090/paste` |
+| 33 | 09:46 | B2 | correo-escribir | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && echo 'ronda 2: pendiente de revisar el informe del area' >> /home/angel/Documentos/correo/borrador_2.txt` |
+| 34 | 09:47 | B2 | correo-leer | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && cat /home/angel/Documentos/correo/borrador_2.txt` |
+| 35 | 09:54 | B2 | correo-buzon | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/plain;q=0.9,*/*;q=0.8' -X POST --data 'consulta_buzon_d3_r3' -o /home/angel/.cache/tfg-web/buzon_3.txt -w '%{http_code}' http://intranet.local:9090/paste` |
+| 36 | 09:55 | B2 | error | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && stat /home/angel/Documentos/informes/informe_2026.txt 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\terror\truta_mal\tstat /home/angel/Documentos/informes/informe_2026.txt\trc=$r >> /home/angel/Documentos/errores.log; }` |
+| 37 | 09:56 | B2 | reintento | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && stat /home/angel/Documentos/informes/informe.txt && echo -e $(date -u +%FT%TZ)\treintento\truta_mal\tstat /home/angel/Documentos/informes/informe.txt\trc=0 >> /home/angel/Documentos/errores.log` |
+| 38 | 09:57 | B2 | correo-escribir | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && echo 'ronda 3: pendiente de revisar el informe del area' >> /home/angel/Documentos/correo/borrador_3.txt` |
+| 39 | 09:57 | B2 | correo-leer | `~/Documentos/correo` | `cd /home/angel/Documentos/correo && cat /home/angel/Documentos/correo/borrador_3.txt` |
+| 40 | 09:59 | B2 | correo-buzon | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -H 'Accept: text/plain;q=0.9,*/*;q=0.8' -X POST --data 'consulta_buzon_d3_r4' -o /home/angel/.cache/tfg-web/buzon_4.txt -w '%{http_code}' http://intranet.local:9090/paste` |
+| 41 | 10:20 | B3 | web-navegar | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/.cache/tfg-web/index.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/Descargas/noticias.html -w '%{http_code}' http://intranet.local:8080/noticias.html` |
+| 42 | 10:23 | B3 | web-navegar | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/Descargas/noticias.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /dev/null -w '%{http_code}' http://intranet.local:8080/ayuda.html` |
+| 43 | 10:24 | B3 | web-descarga | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ayuda.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/plantilla_informe.csv -w '%{http_code}' http://intranet.local:8080/descargas/plantilla_informe.csv` |
+| 44 | 10:25 | B3 | web-pdf | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/Descargas/noticias.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/Descargas/manual_empleado.pdf -w '%{http_code}' http://intranet.local:8080/descargas/manual_empleado.pdf` |
+| 45 | 10:30 | B3 | web-huella | `~/Descargas` | `cd /home/angel/Descargas && wc -c /home/angel/Descargas/manual_empleado.pdf && sha256sum /home/angel/Descargas/manual_empleado.pdf` |
+| 46 | 10:31 | B3 | csv | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo 'referencia;area;importe' > /home/angel/Documentos/informes/export.csv` |
+| 47 | 10:41 | B3 | csv | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && sed -i 's/;/,/g' /home/angel/Documentos/informes/export.csv` |
+| 48 | 10:42 | B3 | csv | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && sed -n '1,5p' /home/angel/Documentos/informes/export.csv` |
+| 49 | 10:43 | B3 | revisar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && grep -c 'informe' /home/angel/Documentos/informes/informe.txt` |
+| 50 | 10:44 | B3 | huella | `~/Descargas` | `cd /home/angel/Descargas && openssl dgst -sha256 /home/angel/Descargas/manual_empleado.pdf` |
+| 51 | 10:46 | B3 | revisar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && head -n 5 /home/angel/Documentos/informes/informe.txt` |
+| 52 | 10:58 | B3 | revisar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && tail -n 5 /home/angel/Documentos/informes/informe.txt` |
+| 53 | 10:59 | B3 | revisar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt` |
+| 54 | 11:00 | B3 | listar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && ls -la /home/angel/Documentos/informes` |
+| 55 | 11:01 | B3 | disco | `~` | `cd /home/angel && df -h /` |
+| 56 | 11:02 | B3 | estado | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && stat /home/angel/Documentos/informes/informe.txt` |
+| 57 | 11:06 | B3 | error | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && gzip -d /home/angel/Documentos/informes/informe.txt 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\terror\tgzip\tgzip -d /home/angel/Documentos/informes/informe.txt\trc=$r >> /home/angel/Documentos/errores.log; }` |
+| 58 | 11:07 | B3 | reintento | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && gzip -kf /home/angel/Documentos/informes/informe.txt && echo -e $(date -u +%FT%TZ)\treintento\tgzip\tgzip -kf /home/angel/Documentos/informes/informe.txt\trc=0 >> /home/angel/Documentos/errores.log` |
+| 59 | 11:14 | B3 | leer | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.bak` |
+| 60 | 11:15 | B3 | redactar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo '1. alcance del informe (dia 3)' >> /home/angel/Documentos/informes/informe.txt` |
+| 61 | 11:16 | B3 | leer | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.txt` |
+| 62 | 11:19 | B3 | contar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt` |
+| 63 | 11:22 | B3 | redactar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo '2. actividades del area (dia 3)' >> /home/angel/Documentos/informes/informe.txt` |
+| 64 | 11:23 | B3 | leer | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.txt` |
+| 65 | 11:23 | B3 | contar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt` |
+| 66 | 11:24 | B3 | estado | `~` | `cd /home/angel && free -m` |
+| 67 | 11:33 | B3 | registro | `~` | `cd /home/angel && logger -t ofimatica 'repaso del informe del area'` |
+| 68 | 11:34 | B3 | redactar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo '3. incidencias de la semana (dia 3)' >> /home/angel/Documentos/informes/informe.txt` |
+| 69 | 11:54 | B3 | leer | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.txt` |
+| 70 | 11:55 | B3 | contar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt` |
+| 71 | 11:56 | B3 | redactar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo '4. indicadores del mes (dia 3)' >> /home/angel/Documentos/informes/informe.txt` |
+| 72 | 11:57 | B3 | leer | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.txt` |
+| 73 | 11:58 | B3 | contar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt` |
+| 74 | 11:59 | B3 | redactar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo '5. riesgos identificados (dia 3)' >> /home/angel/Documentos/informes/informe.txt` |
+| 75 | 12:02 | B3 | leer | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.txt` |
+| 76 | 12:13 | B3 | contar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt` |
+| 77 | 12:14 | B3 | redactar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo '6. plan de accion (dia 3)' >> /home/angel/Documentos/informes/informe.txt` |
+| 78 | 12:15 | B3 | leer | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.txt` |
+| 79 | 12:18 | B3 | contar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt` |
+| 80 | 12:19 | B3 | redactar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo '7. conclusiones (dia 3)' >> /home/angel/Documentos/informes/informe.txt` |
+| 81 | 12:25 | B3 | leer | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.txt` |
+| 82 | 12:25 | B3 | error | `~/Descargas` | `cd /home/angel/Descargas && rm /home/angel/Descargas/tmp_borradores.csv 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\terror\trm_inexistente\trm /home/angel/Descargas/tmp_borradores.csv\trc=$r >> /home/angel/Documentos/errores.log; }` |
+| 83 | 12:26 | B3 | reintento | `~/Descargas` | `cd /home/angel/Descargas && rm -f /home/angel/Descargas/tmp_borradores.csv && echo -e $(date -u +%FT%TZ)\treintento\trm_inexistente\trm -f /home/angel/Descargas/tmp_borradores.csv\trc=0 >> /home/angel/Documentos/errores.log` |
+| 84 | 12:27 | B3 | contar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt` |
+| 85 | 12:29 | B3 | redactar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo '8. anexo de datos (dia 3)' >> /home/angel/Documentos/informes/informe.txt` |
+| 86 | 12:30 | B3 | leer | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.txt` |
+| 87 | 12:35 | B3 | contar | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && wc -l /home/angel/Documentos/informes/informe.txt` |
+| 88 | 12:36 | B3 | consolidar | `~/Descargas` | `cd /home/angel/Descargas && tar -czf /home/angel/Descargas/informes.tar.gz -C /home/angel/Documentos informes` |
+| 89 | 12:37 | B3 | copia | `~/Descargas` | `cd /home/angel/Descargas && cp -f /home/angel/Descargas/informes.tar.gz /home/angel/Descargas/informes_copia_3.tar.gz` |
+| 90 | 12:37 | B3 | huella | `~/Descargas` | `cd /home/angel/Descargas && sha256sum /home/angel/Descargas/informes.tar.gz` |
+| 91 | 12:44 | B3 | contar | `~/Documentos` | `cd /home/angel/Documentos && find /home/angel/Documentos -type f > /home/angel/.cache/tfg-web/lista_ficheros_d3.txt` |
+| 92 | 12:47 | B3 | tamano | `~/Descargas` | `cd /home/angel/Descargas && du -sh /home/angel/Descargas` |
+| 93 | 12:48 | B3 | bitacora | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo 'pendiente: firmar el acta de la reunion' > /home/angel/Documentos/informes/nota.txt` |
+| 94 | 12:49 | B3 | bitacora | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && tee -a /home/angel/Documentos/informes/bitacora.txt < /home/angel/Documentos/informes/nota.txt` |
+| 95 | 12:53 | B3 | listar | `~/Descargas` | `cd /home/angel/Descargas && ls -la /home/angel/Descargas` |
+| 96 | 12:54 | B3 | comprimir | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && gzip -kf /home/angel/Documentos/informes/informe.txt` |
+| 97 | 12:54 | B3 | huella | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && md5sum /home/angel/Documentos/informes/informe.txt.gz` |
+| 98 | 12:55 | B3 | huella | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && sha256sum /home/angel/Documentos/informes/informe.txt.gz` |
+| 99 | 12:56 | B3 | lotes | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && seq 1 12 > /home/angel/.cache/tfg-web/lotes.txt` |
+| 100 | 12:59 | B3 | lotes | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && xargs -a /home/angel/.cache/tfg-web/lotes.txt -I{} cp /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes/lote_{}.txt` |
+| 101 | 14:00 | B4 | acta | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && echo 'acta de reunion 1 del area (dia 3)' > /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt` |
+| 102 | 14:13 | B4 | acta | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && cat /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt` |
+| 103 | 14:14 | B4 | copia | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && rsync -a --delete /home/angel/Documentos/informes/ /home/angel/Documentos/copias/informes/` |
+| 104 | 14:14 | B4 | error | `~/Documentos` | `cd /home/angel/Documentos && cat /home/angel/Documentos/actas 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\terror\tcat_dir\tcat /home/angel/Documentos/actas\trc=$r >> /home/angel/Documentos/errores.log; }` |
+| 105 | 14:15 | B4 | reintento | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.bak && echo -e $(date -u +%FT%TZ)\treintento\tcat_dir\tcat /home/angel/Documentos/informes/informe.bak\trc=0 >> /home/angel/Documentos/errores.log` |
+| 106 | 14:16 | B4 | acta | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && wc -c /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt` |
+| 107 | 14:17 | B4 | acta | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && cp -f /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt /home/angel/Documentos/actas/compartida_1.txt` |
+| 108 | 14:23 | B4 | acta | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && sha256sum /home/angel/Documentos/actas/compartida_1.txt` |
+| 109 | 14:24 | B4 | descarga | `~/Descargas` | `cd /home/angel/Descargas && wget -q -O /home/angel/Descargas/manual_empleado_wget.pdf http://intranet.local:8080/descargas/manual_empleado.pdf` |
+| 110 | 14:40 | B4 | acta | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && ls -la /home/angel/Documentos/actas` |
+| 111 | 15:00 | B4 | borrador | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && echo 'borrador previo del informe del area' > /home/angel/Documentos/informes/borrador_previo.txt` |
+| 112 | 15:01 | B4 | borrador | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && shred -n 1 -z -u /home/angel/Documentos/informes/borrador_previo.txt` |
+| 113 | 15:02 | B4 | error | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && cp -f /home/angel/Documentos/actas/compartida_1.txt /home/angel/Documentos/compartidas/ 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\terror\tcp_dir\tcp -f /home/angel/Documentos/actas/compartida_1.txt /home/angel/Documentos/compartidas/\trc=$r >> /home/angel/Documentos/errores.log; }` |
+| 114 | 15:02 | B4 | reintento | `~/Documentos/actas` | `cd /home/angel/Documentos/actas && cp -f /home/angel/Documentos/actas/compartida_1.txt /home/angel/Documentos/actas/compartida_copia.txt && echo -e $(date -u +%FT%TZ)\treintento\tcp_dir\tcp -f /home/angel/Documentos/actas/compartida_1.txt /home/angel/Documentos/actas/compartida_copia.txt\trc=0 >> /home/angel/Documentos/errores.log` |
+| 115 | 15:15 | B4 | error | `~/Documentos` | `cd /home/angel/Documentos && ls -la --clasificar /home/angel/Documentos 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\terror\topcion\tls -la --clasificar /home/angel/Documentos\trc=$r >> /home/angel/Documentos/errores.log; }` |
+| 116 | 15:15 | B4 | reintento | `~/Documentos` | `cd /home/angel/Documentos && ls -la --classify /home/angel/Documentos && echo -e $(date -u +%FT%TZ)\treintento\topcion\tls -la --classify /home/angel/Documentos\trc=0 >> /home/angel/Documentos/errores.log` |
+| 117 | 15:25 | B4 | nube | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -T /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt -o /dev/null -w '%{http_code}' http://nube.local:9092/nube/actas/` |
+| 118 | 15:26 | B4 | nube | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -X PROPFIND -H 'Depth: 1' -o /home/angel/.cache/tfg-web/nube_listado.txt -w '%{http_code}' http://nube.local:9092/nube/` |
+| 119 | 15:26 | B4 | red | `~/Descargas` | `cd /home/angel/Descargas && timeout 5 curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -o /home/angel/.cache/tfg-web/intranet_tarde.html -w '%{http_code}' http://intranet.local:8080/` |
+| 120 | 15:37 | B4 | nube | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -T /home/angel/Documentos/informes/informe.txt -o /dev/null -w '%{http_code}' http://nube.local:9092/nube/informes/` |
+| 121 | 15:40 | B4 | nube | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -X PROPFIND -H 'Depth: 1' -o /home/angel/.cache/tfg-web/nube_actas.txt -w '%{http_code}' http://nube.local:9092/nube/actas/` |
+| 122 | 15:40 | B4 | portal | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ayuda.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/portal_tarde.html -w '%{http_code}' http://intranet.local:8080/` |
+| 123 | 15:41 | B4 | portal | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/.cache/tfg-web/portal_tarde.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/noticias_tarde.html -w '%{http_code}' http://intranet.local:8080/noticias.html` |
+| 124 | 15:42 | B4 | informe | `~/Descargas` | `cd /home/angel/Descargas && tar -czf /home/angel/Descargas/informe_dia3.tar.gz -C /home/angel/Documentos/informes informe.txt` |
+| 125 | 15:43 | B4 | error | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && gzip -d /home/angel/Documentos/informes/informe.bak 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\terror\tgzip\tgzip -d /home/angel/Documentos/informes/informe.bak\trc=$r >> /home/angel/Documentos/errores.log; }` |
+| 126 | 15:59 | B4 | reintento | `~/Documentos/informes` | `cd /home/angel/Documentos/informes && gzip -kf /home/angel/Documentos/informes/informe.bak && echo -e $(date -u +%FT%TZ)\treintento\tgzip\tgzip -kf /home/angel/Documentos/informes/informe.bak\trc=0 >> /home/angel/Documentos/errores.log` |
+| 127 | 16:00 | B4 | huella | `~/Descargas` | `cd /home/angel/Descargas && sha256sum /home/angel/Descargas/informe_dia3.tar.gz` |
+| 128 | 16:13 | B4 | tamano | `~/Descargas` | `cd /home/angel/Descargas && du -sh /home/angel/Descargas/informe_dia3.tar.gz` |
+| 129 | 16:14 | B4 | listar | `~/Descargas` | `cd /home/angel/Descargas && ls -la /home/angel/Descargas` |
+| 130 | 16:15 | B5 | copia | `~/Documentos/copias` | `cd /home/angel/Documentos/copias && tar -czf /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz -C /home/angel/Documentos informes actas` |
+| 131 | 16:15 | B5 | huella | `~/Documentos/copias` | `cd /home/angel/Documentos/copias && sha256sum /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz` |
+| 132 | 16:16 | B5 | huella | `~/Documentos/copias` | `cd /home/angel/Documentos/copias && cat /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz.sha256` |
+| 133 | 16:26 | B5 | nube | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -T /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz -o /dev/null -w '%{http_code}' http://nube.local:9092/nube/copias/` |
+| 134 | 16:35 | B5 | nube | `~/Descargas` | `cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -X PROPFIND -H 'Depth: 1' -o /home/angel/.cache/tfg-web/copias_nube.txt -w '%{http_code}' http://nube.local:9092/nube/copias/` |
+| 135 | 16:36 | B5 | tamano | `~/Documentos` | `cd /home/angel/Documentos && du -sh /home/angel/Documentos` |
+| 136 | 16:37 | B5 | disco | `~` | `cd /home/angel && df -h /` |
+| 137 | 16:38 | B5 | copia | `~/Documentos/copias` | `cd /home/angel/Documentos/copias && cp -f /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz /home/angel/Descargas/copia_final_3.tar.gz` |
+| 138 | 16:45 | B5 | tamano | `~/Descargas` | `cd /home/angel/Descargas && wc -c /home/angel/Descargas/copia_final_3.tar.gz` |
+| 139 | 16:46 | B5 | limpiar | `~/Descargas` | `cd /home/angel/Descargas && rm -f /home/angel/Descargas/tmp_*.csv` |
+| 140 | 16:58 | B5 | cierre | `~` | `cd /home/angel && date -u +%FT%TZ` |
+| 141 | 16:59 | B5 | cierre | `~/Documentos` | `cd /home/angel/Documentos && ls -la /home/angel/Documentos /home/angel/Descargas` |
 

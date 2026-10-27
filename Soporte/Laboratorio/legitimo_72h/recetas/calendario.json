@@ -1,5 +1,5 @@
 {
- "receta_version": 1,
+ "receta_version": 2,
  "zona": "Europe/Madrid (CET=UTC+1 desde 2026-10-25)",
  "dia_local": "09:00-18:00",
  "jornada_utc": {
@@ -66,34 +66,63 @@
  ],
  "cuentas": {
   "1": {
-   "B1": 9,
-   "B2": 26,
-   "B3": 42,
-   "B4": 22,
+   "B1": 11,
+   "B2": 33,
+   "B3": 56,
+   "B4": 35,
    "B5": 12
   },
   "2": {
-   "B1": 9,
-   "B2": 32,
-   "B3": 34,
-   "B4": 30,
+   "B1": 11,
+   "B2": 39,
+   "B3": 48,
+   "B4": 43,
    "B5": 12
   },
   "3": {
-   "B1": 9,
-   "B2": 22,
-   "B3": 46,
-   "B4": 16,
+   "B1": 11,
+   "B2": 29,
+   "B3": 60,
+   "B4": 29,
    "B5": 12
   }
  },
- "total_ventana": 333,
- "mapa_dias": {
-  "2026-10-26": 1,
-  "2026-10-27": 2,
-  "2026-10-28": 3
- },
+ "total_ventana": 441,
+ "mapa_dias": {},
  "regla_dia": "k = 1 + ((fecha_utc - fecha_t0) mod 3)",
- "hueco_max_intra_bloque_s": 720,
+ "mapa_dias_como_se_pasa": "construir_receta_legitima.py --t0 AAAA-MM-DD  (o --mapa-dias a:1,b:2,c:3)",
+ "cwd": {
+  "base": "/home/angel",
+  "regla": "cd <carpeta> && <comando>",
+  "carpetas": [
+   "/home/angel",
+   "/home/angel/Documentos",
+   "/home/angel/Descargas",
+   "/home/angel/.cache/tfg-web",
+   "/home/angel/Documentos/informes",
+   "/home/angel/Documentos/actas",
+   "/home/angel/Documentos/correo",
+   "/home/angel/Documentos/copias"
+  ],
+  "nota": "ninguna acción se ejecuta en el directorio del cliente"
+ },
+ "errores": {
+  "por_dia": 10,
+  "familias": [
+   "ruta_mal",
+   "cp_dir",
+   "gzip",
+   "rm_inexistente",
+   "cat_dir",
+   "opcion"
+  ],
+  "registro": "/home/angel/Documentos/errores.log"
+ },
+ "hueco_max_intra_bloque_s": 1320,
+ "hueco_min_s": 40,
+ "pausas_largas_s": {
+  "B3": 1250,
+  "B4": 1210
+ },
  "fuente": "_artefactos/scripts/construir_receta_legitima.py"
 }

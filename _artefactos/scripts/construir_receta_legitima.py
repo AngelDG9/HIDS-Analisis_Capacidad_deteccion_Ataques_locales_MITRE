@@ -1,31 +1,45 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""construir_receta_legitima.py — receta de actividad legítima del TFG (bloque `legitimo-fix`).
+"""construir_receta_legitima.py — receta de actividad legítima del TFG (bloque `legitimo-v3`, receta v2).
 
 Genera **tres timelines GHOSTS** (un día de oficina cada una, `d1/d2/d3`), su **calendario**
 (`calendario.json` + `bloques.env`, la misma fuente para la vigilancia y el keepalive) y un
 **resumen** legible (`receta_resumen.md`). Incluye un **validador** (`--check`) con todos los
-invariantes del plan (§5.5, §5.7, DT10) y un modo **dry** (`--dry --base HH:MMZ`) que comprime
-la jornada ×40 para la prueba en seco DT9.
+invariantes del plan (§5.1, §5.2.1, CA-01…CA-03) y un modo **dry** (`--dry --base HH:MMZ`) que
+comprime la jornada para la prueba en seco DT9.
 
-Principios (plan §5.1) — todos verificados por `--check`:
+Novedades de la **v2** (plan §5.1, T1) sobre la v1:
 
-1. **Jornada de oficina** 09:00–18:00 local (08:00–17:00 UTC), con café (20 min) y comida (60 min).
-2. **Ráfagas y pausas**: ráfagas de acciones a 40–60 s separadas por huecos; **hueco máximo
-   intra-bloque ≤ 12 min** (validado; el plan admite hasta 20).
-3. **Determinismo**: solo `Command` (bash). **Cero** `"Command":"random"`, **cero** delays
-   aleatorios (`delay-jitter`), **cero** handler `Curl` (inyecta UA aleatoria) y **cero**
-   handlers de navegador (`Browser*`).
-4. **Bloques disjuntos** (una ventana UTC por bloque, sin solape) ⇒ sin concurrencia.
-5. **Legítimo por construcción**: lista blanca de binarios; rutas solo bajo `/home/angel`
-   (más `/dev/null`); sin `sudo`; sin dobles comillas en los comandos.
-6. **Sesión web *browser-like* con `curl`** (§5.7): UA fija y honesta, cookie jar, `Referer`,
-   `Accept`/`Accept-Encoding`, requisitos de página (CSS/JS/SVG) y descarga real del PDF.
-   Ocupa **8 posiciones que ya existían** ⇒ **no cambia el recuento** (111/117/105).
+1. **`cwd` realista (M1, §5.1 y §1.4)** — cada acción se ejecuta como
+   `cd <carpeta coherente> && <comando>`. La carpeta es la del primer fichero que el comando
+   toca (regla `cwd_de`), con dos excepciones declaradas (`mkdir -p` y los `xargs`). Resultado:
+   **ninguna** acción se ejecuta en `~/ghosts-client` (el plan B de §1.9.2, aplicado en la
+   receta). `cd` es un *builtin*: no añade `execve`; sí cambia el `audit_cwd` del hijo. Sin
+   pipes (DT9: GHOSTS pierde el reporte).
+2. **Ritmo irregular determinista (M2, §5.1 y §1.4)** — **tabla de jitter literal** (`INTRA`,
+   `RAFAGAS`, `HUECOS`, `PAUSA_LARGA`): ráfagas de **1–6** acciones, huecos intra de
+   **41–62 s**, huecos entre ráfagas de **80 s–22 min** y **dos pausas largas** (20–22 min),
+   una en `B3` y otra en `B4`. **Cero `random`**: dos generaciones son byte-idénticas.
+   Regla dura: **ningún hueco > `CAP_HUECO_S` = 1320 s**.
+3. **Errores humanos con reintento (M3, §5.1 y §1.4)** — **10/día**, de 6 familias (ruta mal
+   escrita, `cp` a carpeta inexistente, `gzip` repetido, `rm` inexistente, `cat` de una
+   carpeta, opción inválida). Cada error va **seguido del reintento correcto** y deja
+   **dos líneas** en `~/Documentos/errores.log` (`ts · tipo · familia · comando · rc`): el
+   `rc` se captura con `$?`, **no** se escribe a mano.
+4. **Herramientas del corpus (M4, §5.2)** — 12 binarios nuevos **elegidos por el corpus**
+   (`xargs`, `timeout`, `sed`, `ip`, `openssl`, `tee`, `free`, `logger`, `seq`, `rsync`,
+   `shred`, `wget`), cada uno con una acción con sentido de oficina. Lista blanca: **34**.
+5. **Sin fechas (v5, §17.9)** — `MAPA_DIAS` deja de estar hardcodeado: se pasa con `--t0`
+   (o `--mapa-dias`), y `--check` lo acepta como entrada. Sin fecha, el mapa queda **vacío**
+   y se fija al cerrar T4.
+
+**No** incluye el bloque de campaña `B6` (es T2).
 
 Uso:
-    python _artefactos/scripts/construir_receta_legitima.py            # genera
-    python _artefactos/scripts/construir_receta_legitima.py --check    # valida lo versionado
+    python _artefactos/scripts/construir_receta_legitima.py                     # genera (sin fecha)
+    python _artefactos/scripts/construir_receta_legitima.py --t0 2026-11-02      # genera con la ventana
+    python _artefactos/scripts/construir_receta_legitima.py --check             # valida lo versionado
+    python _artefactos/scripts/construir_receta_legitima.py --check --t0 2026-11-02
     python _artefactos/scripts/construir_receta_legitima.py --dry --base 10:00Z --out /tmp/dry.json
 
 Salida por defecto: `Soporte/Laboratorio/legitimo_72h/recetas/`.
@@ -38,22 +52,30 @@ import hashlib
 import json
 import os
 import re
-import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 # --------------------------------------------------------------------------
 # Constantes de la receta (una sola fuente de verdad)
 # --------------------------------------------------------------------------
-VERSION_RECETA = 1
+VERSION_RECETA = 2
 
-DOC = "/home/angel/Documentos"
-DOWN = "/home/angel/Descargas"
-CACHE = "/home/angel/.cache/tfg-web"
+HOME = "/home/angel"
+DOC = HOME + "/Documentos"
+DOWN = HOME + "/Descargas"
+CACHE = HOME + "/.cache/tfg-web"
 COOKIES = CACHE + "/cookies.txt"
+INFORMES = DOC + "/informes"
+ACTAS = DOC + "/actas"
+CORREO = DOC + "/correo"
+COPIAS = DOC + "/copias"
+REGISTRO = DOC + "/errores.log"          # registro de errores humanos (M3)
 WEB = "http://intranet.local:8080"
 PASTE = "http://intranet.local:9090"
 CLOUD = "http://nube.local:9092"
 UA = "TFG-Legit/1.0 (Linux; x86_64; sesion-web)"
+
+# Carpetas de trabajo admitidas en el prefijo `cd <carpeta> && ` (M1).
+DIRS_CWD = (HOME, DOC, DOWN, CACHE, INFORMES, ACTAS, CORREO, COPIAS)
 
 # Bloques del día (UTC). Local = UTC+1 (Europe/Madrid, tras el DST del 2026-10-25).
 BLOQUES = [
@@ -72,44 +94,79 @@ BLOQUES = [
     {"id": "B5", "on": "16:15:00", "off": "17:00:00", "tipo": "trabajo",
      "nombre": "Cierre", "local": "17:15-18:00"},
 ]
+BLOQUES_TRABAJO = [b for b in BLOQUES if b["tipo"] == "trabajo"]
+IDS_TRABAJO = [b["id"] for b in BLOQUES_TRABAJO]
 JORNADA = ("08:00:00", "17:00:00")
 
-# Recuento por día (plan §5.3/§5.4)
-CUENTAS = {
-    1: {"B1": 9, "B2": 26, "B3": 42, "B4": 22, "B5": 12},   # 111
-    2: {"B1": 9, "B2": 32, "B3": 34, "B4": 30, "B5": 12},   # 117
-    3: {"B1": 9, "B2": 22, "B3": 46, "B4": 16, "B5": 12},   # 105
+# Recuento BASE por día (v1, sin las adiciones de la v2). Las adiciones se suman aparte y el
+# total se **calcula** (no se escribe a mano) para que no haya dos verdades.
+BASE_CUENTAS = {
+    1: {"B1": 9, "B2": 26, "B3": 42, "B4": 22, "B5": 12},
+    2: {"B1": 9, "B2": 32, "B3": 34, "B4": 30, "B5": 12},
+    3: {"B1": 9, "B2": 22, "B3": 46, "B4": 16, "B5": 12},
 }
 TEMAS = {1: "cierre de informes", 2: "reuniones y portal", 3: "revisión y copias"}
 
-# Mapeo de días de la ventana propuesta (26/10 lunes → d1)
-MAPA_DIAS = {"2026-10-26": 1, "2026-10-27": 2, "2026-10-28": 3}
-
-# Plan de tiempos: ráfagas mínimas por bloque y separación intra-ráfaga (s)
-PLAN_TIMES = {
-    "B1": {"min_rafagas": 3, "intra": 45},
-    "B2": {"min_rafagas": 10, "intra": 50},
-    "B3": {"min_rafagas": 13, "intra": 50},
-    "B4": {"min_rafagas": 12, "intra": 50},
-    "B5": {"min_rafagas": 6, "intra": 50},
+# --------------------------------------------------------------------------
+# Tabla de jitter FIJA (M2). Todo son constantes literales: no hay `random`.
+# --------------------------------------------------------------------------
+# Hueco dentro de ráfaga (s). 41–62 s ⇒ mínimo del plan ≥ 40 s.
+INTRA = (41, 57, 43, 62, 48, 55, 44, 59)
+# Acciones por ráfaga (1–6), patrón literal que se recorre en ciclo.
+RAFAGAS = {
+    "B1": (3, 2, 4, 2),
+    "B2": (3, 1, 4, 2, 3, 1, 5, 2, 4, 1, 3, 2, 5, 1, 2, 4, 1, 3, 2, 6, 1, 4, 2, 3),
+    "B3": (2, 4, 1, 3, 5, 2, 1, 4, 3, 2, 6, 1, 3, 2, 4, 1, 5, 2, 3, 1, 4, 2, 6, 1, 3, 2, 4),
+    "B4": (3, 1, 2, 4, 1, 3, 2, 5, 1, 2, 4, 3, 1, 6, 2, 1, 4, 2, 3, 1, 5, 2),
+    "B5": (2, 3, 1, 4, 2, 3, 1, 4),
 }
-CAP_HUECO_S = 720          # 12 min (plan §5.2)
-COLA_FIN_S = 120           # la última acción cae 2 min antes de UtcTimeOff
-GUARDIAN_S = 60            # el último DelayAfter acaba 1 min DESPUÉS de UtcTimeOff
+# Hueco entre ráfagas (s): **forma** literal. Se ajusta de forma proporcional a la duración
+# del bloque (misma forma en los 3 días, escala distinta porque el nº de acciones cambia).
+HUECOS = {
+    "B1": (100, 115, 105, 120, 95, 130, 110),
+    "B2": (110, 150, 450, 190, 250, 100, 380, 140, 115, 310, 160, 95, 250, 120, 340, 135, 105),
+    "B3": (120, 220, 380, 95, 450, 180, 260, 140, 90, 320, 150, 110, 430, 130, 210, 95,
+           170, 260, 120, 140, 90, 200, 130, 160, 110, 250, 95),
+    "B4": (520, 110, 780, 610, 340, 900, 480, 700, 260, 560, 400, 880, 640, 300, 750, 210,
+           580, 460),
+    "B5": (450, 700, 500, 640, 480, 620, 530),
+}
+# Pausa larga declarada (s): una por día en B3 y otra en B4 (20–22 min). Es literal.
+PAUSA_LARGA = {"B3": 1250, "B4": 1210, "B1": 0, "B2": 0, "B5": 0}   # 20:50 y 20:10
+PAUSA_POS = {"B3": 0.50, "B4": 0.34}                                 # dónde cae (fracción)
+CAP_HUECO_S = 1320          # 22 min (una sola regla; sustituye a los 720/1200 de la v1)
+MIN_HUECO_S = 40            # 40 s
+MIN_HUECO_INTER_S = 80      # separación mínima ráfaga↔ráfaga (deja inequívoco el corte)
+COLA_FIN_S = 60             # la última acción cae 1 min antes de UtcTimeOff
+GUARDIAN_S = 60             # el último DelayAfter acaba 1 min DESPUÉS de UtcTimeOff
 
-# Lista blanca (plan §5.1-6)
+# --------------------------------------------------------------------------
+# Lista blanca (M4). 34 binarios. Justificación (plan §5.2 / corpus: 50 basenames):
+#   · 22 de la v1: ofimática básica (mkdir, echo, cat, cp, mv, tar, gzip, md5sum, sha256sum,
+#     ls, find, du, df, wc, date, curl, grep, head, tail, stat, rm, true).
+#   · 12 nuevos ELEGIDOS POR EL CORPUS (aparecen en `audit_command` de alguna detección):
+#     xargs (2497 filas), curl (852, ya estaba), timeout (96), ip (73), openssl (16),
+#     sed (14), rsync (10), seq (4), tee (4), wget (4), free (5), logger (2), shred (2).
+#   · NO entran (a propósito): systemctl/crontab (solo campaña, T2), git/dd/passwd/nc/perl/
+#     busybox/sqlite3 (no son actividad de usuario ofimático), y los de root o GUI
+#     (mount, losetup, umount, sfdisk, wipefs, mke2fs, useradd, userdel, xclip, xdotool,
+#     xwd, xwud, xinput).
+#   · `cd`, `echo` y los `[`/`test` implícitos son builtins: `cd` NO se valida como binario.
+# --------------------------------------------------------------------------
 BINARIOS_OK = {
+    # v1 (22)
     "mkdir", "echo", "cat", "cp", "mv", "tar", "gzip", "md5sum", "sha256sum",
     "ls", "find", "du", "df", "wc", "date", "curl", "grep", "head", "tail",
     "stat", "rm", "true",
+    # v2 (12, M4)
+    "xargs", "timeout", "sed", "ip", "openssl", "tee", "free", "logger",
+    "seq", "rsync", "shred", "wget",
 }
+# Familias de error admitidas (M3, §5.1 y §1.4). Nada fuera de esta lista.
+FAMILIAS_ERROR = ("ruta_mal", "cp_dir", "gzip", "rm_inexistente", "cat_dir", "opcion")
 
 HANDLERS_PROHIBIDOS = {"BrowserFirefox", "BrowserChrome", "Curl", "NpcSystem"}
 PLACEHOLDERS = ("{uuid}", "{n}", "{c}", "{now}")
-
-# Posiciones globales de la sesión web (¶5.7): B1-6..8 y B3-36..40
-WEB_POS_B1 = (6, 7, 8)
-WEB_POS_B3 = (36, 37, 38, 39, 40)
 
 
 # --------------------------------------------------------------------------
@@ -118,6 +175,11 @@ WEB_POS_B3 = (36, 37, 38, 39, 40)
 def hms_to_s(h: str) -> int:
     hh, mm, ss = (int(x) for x in h.split(":"))
     return hh * 3600 + mm * 60 + ss
+
+
+def _fmt_hms(s: int) -> str:
+    s %= 24 * 3600
+    return f"{s // 3600:02d}:{(s % 3600) // 60:02d}:{s % 60:02d}"
 
 
 def bloque_por_id(bid: str):
@@ -129,53 +191,53 @@ def dur_bloque(bid: str) -> int:
     return hms_to_s(b["off"]) - hms_to_s(b["on"])
 
 
-def repartir(n: int, c: int):
-    """Reparte `n` acciones en `c` ráfagas lo más iguales posible (determinista)."""
-    base, extra = divmod(n, c)
-    return [base + 1] * extra + [base] * (c - extra)
+def cwd_de(cmd: str) -> str:
+    """Carpeta de trabajo de una acción (M1).
 
-
-def plan_tiempos(n: int, dur_s: int, min_rafagas: int, intra_s: int,
-                 cap_s: int = CAP_HUECO_S, cola_s: int = COLA_FIN_S):
-    """Desplazamientos (s, desde el inicio del bloque) de las `n` acciones.
-
-    Estructura: `c` ráfagas de 2–6 acciones separadas `intra_s`; huecos entre ráfagas
-    calculados para que la última acción caiga `cola_s` antes de `UtcTimeOff`.
+    Regla: el **primer** `/home/angel/...` del comando, recortado a la carpeta conocida más
+    larga (así `.../informes/informe.txt` ⇒ `~/Documentos/informes` y
+    `.../llegada_$(date…).txt` ⇒ `~/Documentos`). Sin rutas ⇒ `~`. Tres excepciones declaradas:
+    `mkdir -p` se lanza desde `~` (aún no existen las carpetas), **`curl` desde `~/Descargas`**
+    (la caché web es un destino, no un sitio donde uno trabaje) y las acciones con fichero de
+    apoyo pasan `cwd` explícito.
     """
-    if n <= 1:
-        return [0]
-    objetivo = dur_s - cola_s
-    c = None
-    for cand in range(max(2, min_rafagas), n + 1):
-        intra_total = (n - cand) * intra_s
-        inter = (objetivo - intra_total) / (cand - 1)
-        if 120 <= inter <= cap_s:
-            c = cand
-            break
-    if c is None:                     # no cabe: usa el máximo de ráfagas
-        c = n
-        intra_total = 0
-        inter = 0
-    intra_total = (n - c) * intra_s
-    inter = (objetivo - intra_total) / (c - 1) if c > 1 else 0
-    tiempos = [0]
-    for tam in repartir(n, c):
-        for _ in range(tam - 1):
-            tiempos.append(tiempos[-1] + intra_s)
-        if len(tiempos) < n:
-            tiempos.append(tiempos[-1] + int(round(inter)))
-    assert len(tiempos) == n, (len(tiempos), n)
-    return tiempos
+    if cmd.startswith("mkdir -p "):
+        return HOME
+    if cmd.startswith("curl ") or cmd.startswith("timeout "):
+        return DOWN
+    m = re.search(r"/home/angel[A-Za-z0-9_./-]*", cmd)
+    if not m:
+        return HOME
+    p = m.group(0)
+    mejor = HOME
+    for d in DIRS_CWD:
+        if (p == d or p.startswith(d + "/")) and len(d) > len(mejor):
+            mejor = d
+    return mejor
 
 
-def delays_desde_tiempos(tiempos, dur_s):
-    """Convierte desplazamientos en `DelayAfter` (ms), con guardián de fin de bloque."""
+def binarios_de(cmd: str):
+    """Binarios que ejecuta un comando: primer token de **cada** segmento.
+
+    Cubre los encadenados con `&&`, los grupos de reintento `|| { …; }` y los `;` internos.
+    Se ignoran las cadenas entrecomilladas con `'` (p. ej. `sed 's/;/,/g'`) y el prefijo
+    `cd <carpeta> && ` (builtin, sin `execve`).
+    """
+    c = re.sub(r"'[^']*'", "''", cmd.strip())
+    m = re.match(r"^cd (/home/angel[^\s&]*)\s+&&\s+", c)
+    if m:
+        c = c[m.end():]
     out = []
-    for i, t in enumerate(tiempos):
-        if i + 1 < len(tiempos):
-            out.append((tiempos[i + 1] - t) * 1000)
-        else:
-            out.append((dur_s - t + GUARDIAN_S) * 1000)
+    for seg in re.split(r"\s*(?:&&|\|\||;)\s*", c):
+        seg = seg.strip().strip("{}").strip()
+        if not seg:
+            continue
+        tok = seg.split()[0]
+        if tok in ("{", "}"):
+            continue
+        if re.match(r"^[A-Za-z_][A-Za-z0-9_]*=", tok):     # r=$?  ├│  rc=0
+            continue
+        out.append(tok)
     return out
 
 
@@ -211,16 +273,97 @@ def curl_propfind(url, out):
 
 
 # --------------------------------------------------------------------------
-# Bloques: acciones de cada día
+# Errores humanos (M3): fallo + reintento + registro en `errores.log`
+# --------------------------------------------------------------------------
+def pareja_error(fam: str, fallo: str, ok: str, cwd_fallo: str, cwd_ok: str):
+    """Devuelve las dos acciones (fallo, reintento) de una familia de error.
+
+    · El **fallo** es una acción propia: `exit≠0` (visible en `auditd`) y no corta la ráfaga.
+    · Su `rc` real se captura con `$?` y se escribe en `errores.log` (no se teclea a mano).
+    · El **reintento correcto** va inmediatamente después y, si sale bien, deja su línea.
+    Formato del registro (TAB): `ts_utc · tipo · familia · comando · rc` (2 líneas por error).
+    """
+    a = (f"{fallo} 2>/dev/null || {{ r=$?; "
+         f"echo -e $(date -u +%FT%TZ)\\terror\\t{fam}\\t{fallo}\\trc=$r >> {REGISTRO}; }}")
+    b = (f"{ok} && "
+         f"echo -e $(date -u +%FT%TZ)\\treintento\\t{fam}\\t{ok}\\trc=0 >> {REGISTRO}")
+    return [("error", a, cwd_fallo), ("reintento", b, cwd_ok)]
+
+
+def errores_dia(day: int):
+    """Los 10 errores del día: 6 familias (2 repetidas) repartidas en B1-B4."""
+    return {
+        "B1": [pareja_error(
+            "ruta_mal",
+            f"ls -la {DOC}/informe",
+            f"ls -la {DOC}/informes",
+            DOC, DOC)],
+        "B2": [
+            pareja_error(
+                "cp_dir",
+                f"cp -f {INFORMES}/informe.txt {DOC}/informes_2026/informe.bak",
+                f"cp -f {INFORMES}/informe.txt {INFORMES}/informe.bak",
+                INFORMES, INFORMES),
+            pareja_error(
+                "opcion",
+                "df -h --max-depth=1 /",
+                "df -h /",
+                HOME, HOME),
+            pareja_error(
+                "ruta_mal",
+                f"stat {INFORMES}/informe_2026.txt",
+                f"stat {INFORMES}/informe.txt",
+                INFORMES, INFORMES),
+        ],
+        "B3": [
+            pareja_error(
+                "gzip",
+                f"gzip -d {INFORMES}/informe.txt",
+                f"gzip -kf {INFORMES}/informe.txt",
+                INFORMES, INFORMES),
+            pareja_error(
+                "rm_inexistente",
+                f"rm {DOWN}/tmp_borradores.csv",
+                f"rm -f {DOWN}/tmp_borradores.csv",
+                DOWN, DOWN),
+        ],
+        "B4": [
+            pareja_error(
+                "cat_dir",
+                f"cat {ACTAS}",
+                f"cat {INFORMES}/informe.bak",
+                DOC, INFORMES),
+            pareja_error(
+                "opcion",
+                f"ls -la --clasificar {DOC}",
+                f"ls -la --classify {DOC}",
+                DOC, DOC),
+            pareja_error(
+                "cp_dir",
+                f"cp -f {ACTAS}/compartida_1.txt {DOC}/compartidas/",
+                f"cp -f {ACTAS}/compartida_1.txt {ACTAS}/compartida_copia.txt",
+                ACTAS, ACTAS),
+            pareja_error(
+                "gzip",
+                f"gzip -d {INFORMES}/informe.bak",
+                f"gzip -kf {INFORMES}/informe.bak",
+                INFORMES, INFORMES),
+        ],
+    }
+
+
+# --------------------------------------------------------------------------
+# Bloques: acciones de cada día (familia, comando)
 # --------------------------------------------------------------------------
 def b1(day: int):
     tema = {1: "estado del informe mensual",
             2: "confirmacion de la reunion de area",
             3: "revision de las copias de seguridad"}[day]
     return [
+        # La estructura va PRIMERO: el resto de acciones hacen `cd` a carpetas que crea esta.
+        ("estructura", f"mkdir -p {INFORMES} {ACTAS} {COPIAS} {CORREO} {DOWN} {CACHE}"),
         ("llegada", f"date -u +%FT%TZ > {DOC}/llegada_$(date -u +%F).txt"),
         ("listar", f"ls -la {DOC}"),
-        ("estructura", f"mkdir -p {DOC}/informes {DOC}/actas {DOC}/copias {DOC}/correo {DOWN} {CACHE}"),
         ("agenda", f"echo '09:30 reunion de area; 12:00 informe; 17:00 cierre' > {DOC}/agenda_$(date -u +%F).txt"),
         ("agenda", f"cat {DOC}/agenda_$(date -u +%F).txt"),
         # --- sesión web browser-like: abrir portal (cookie jar) ---
@@ -233,7 +376,7 @@ def b1(day: int):
         ])),
         # --- tamaño + huella de lo descargado ---
         ("web-huella", f"wc -c {CACHE}/index.html && sha256sum {CACHE}/styles.css"),
-        ("correo", f"echo 're: {tema}' > {DOC}/correo/borrador_1.txt"),
+        ("correo", f"echo 're: {tema}' > {CORREO}/borrador_1.txt"),
     ]
 
 
@@ -243,35 +386,35 @@ def b2_correo(day: int):
         out.append(("correo-buzon",
                     curl_post(PASTE + "/paste", f"consulta_buzon_d{day}_r{r}", f"{CACHE}/buzon_{r}.txt")))
         out.append(("correo-escribir",
-                    f"echo 'ronda {r}: pendiente de revisar el informe del area' >> {DOC}/correo/borrador_{r}.txt"))
-        out.append(("correo-leer", f"cat {DOC}/correo/borrador_{r}.txt"))
+                    f"echo 'ronda {r}: pendiente de revisar el informe del area' >> {CORREO}/borrador_{r}.txt"))
+        out.append(("correo-leer", f"cat {CORREO}/borrador_{r}.txt"))
     return out
 
 
 def b2_adjuntos(day: int):
-    out = [("informe", f"echo 'informe del area - jornada {day}' > {DOC}/informes/informe.txt")]
+    out = [("informe", f"echo 'informe del area - jornada {day}' > {INFORMES}/informe.txt")]
     for i in (1, 2):
         out.append(("adjunto",
-                    f"tar -czf {DOC}/informes/adjunto_{i}_$(date -u +%F).tar.gz -C {DOC}/informes informe.txt"))
-        out.append(("huella", f"sha256sum {DOC}/informes/adjunto_{i}_$(date -u +%F).tar.gz"))
-        out.append(("tamano", f"du -sh {DOC}/informes/adjunto_{i}_$(date -u +%F).tar.gz"))
-        out.append(("listar", f"ls -la {DOC}/informes"))
+                    f"tar -czf {INFORMES}/adjunto_{i}_$(date -u +%F).tar.gz -C {INFORMES} informe.txt"))
+        out.append(("huella", f"sha256sum {INFORMES}/adjunto_{i}_$(date -u +%F).tar.gz"))
+        out.append(("tamano", f"du -sh {INFORMES}/adjunto_{i}_$(date -u +%F).tar.gz"))
+        out.append(("listar", f"ls -la {INFORMES}"))
     return out
 
 
 def b2_ordenar(day: int):
     return [
-        ("copia", f"cp -f {DOC}/informes/informe.txt {DOC}/informes/informe.bak"),
-        ("renombrar", f"mv -f {DOC}/correo/borrador_1.txt {DOC}/correo/enviado_1.txt"),
+        ("copia", f"cp -f {INFORMES}/informe.txt {INFORMES}/informe.bak"),
+        ("renombrar", f"mv -f {CORREO}/borrador_1.txt {CORREO}/enviado_1.txt"),
         ("contar", f"find {DOC} -type f > {CACHE}/lista_ficheros.txt"),
-        ("listar", f"ls -la {DOC}/correo"),
-        ("contar", f"wc -l {DOC}/informes/informe.txt"),
-        ("leer", f"cat {DOC}/correo/enviado_1.txt"),
-        ("tamano", f"du -sh {DOC}/correo"),
-        ("copia", f"cp -f {DOC}/informes/informe.txt {DOWN}/informe_copia_{day}.txt"),
+        ("listar", f"ls -la {CORREO}"),
+        ("contar", f"wc -l {INFORMES}/informe.txt"),
+        ("leer", f"cat {CORREO}/enviado_1.txt"),
+        ("tamano", f"du -sh {CORREO}"),
+        ("copia", f"cp -f {INFORMES}/informe.txt {DOWN}/informe_copia_{day}.txt"),
         ("limpiar", f"rm -f {DOWN}/tmp_borradores.csv"),
         ("agenda", f"echo 'revisado el buzon de la manana' >> {DOC}/agenda_$(date -u +%F).txt"),
-        ("huella", f"md5sum {DOC}/informes/informe.bak"),
+        ("huella", f"md5sum {INFORMES}/informe.bak"),
         ("listar", f"ls -la {DOC}"),
     ]
 
@@ -304,20 +447,20 @@ def b3_redactar(day: int):
     ]
     out = []
     for i, tema in enumerate(temas, start=1):
-        out.append(("redactar", f"echo '{i}. {tema} (dia {day})' >> {DOC}/informes/informe.txt"))
-        out.append(("leer", f"cat {DOC}/informes/informe.txt"))
-        out.append(("contar", f"wc -l {DOC}/informes/informe.txt"))
+        out.append(("redactar", f"echo '{i}. {tema} (dia {day})' >> {INFORMES}/informe.txt"))
+        out.append(("leer", f"cat {INFORMES}/informe.txt"))
+        out.append(("contar", f"wc -l {INFORMES}/informe.txt"))
     return out
 
 
 def b3_comprimir(day: int):
     return [
-        ("comprimir", f"gzip -kf {DOC}/informes/informe.txt"),
-        ("huella", f"md5sum {DOC}/informes/informe.txt.gz"),
-        ("huella", f"sha256sum {DOC}/informes/informe.txt.gz"),
-        ("listar", f"ls -la {DOC}/informes"),
-        ("tamano", f"du -sh {DOC}/informes"),
-        ("contar", f"wc -l {DOC}/informes/informe.txt.gz"),
+        ("comprimir", f"gzip -kf {INFORMES}/informe.txt"),
+        ("huella", f"md5sum {INFORMES}/informe.txt.gz"),
+        ("huella", f"sha256sum {INFORMES}/informe.txt.gz"),
+        ("listar", f"ls -la {INFORMES}"),
+        ("tamano", f"du -sh {INFORMES}"),
+        ("contar", f"wc -l {INFORMES}/informe.txt.gz"),
     ]
 
 
@@ -334,14 +477,14 @@ def b3_consolidar(day: int):
 
 def b3_repaso(day: int):
     return [
-        ("revisar", f"grep -c 'informe' {DOC}/informes/informe.txt"),
-        ("revisar", f"head -n 5 {DOC}/informes/informe.txt"),
-        ("revisar", f"tail -n 5 {DOC}/informes/informe.txt"),
-        ("revisar", f"wc -l {DOC}/informes/informe.txt"),
-        ("listar", f"ls -la {DOC}/informes"),
+        ("revisar", f"grep -c 'informe' {INFORMES}/informe.txt"),
+        ("revisar", f"head -n 5 {INFORMES}/informe.txt"),
+        ("revisar", f"tail -n 5 {INFORMES}/informe.txt"),
+        ("revisar", f"wc -l {INFORMES}/informe.txt"),
+        ("listar", f"ls -la {INFORMES}"),
         ("disco", "df -h /"),
-        ("estado", f"stat {DOC}/informes/informe.txt"),
-        ("leer", f"cat {DOC}/informes/informe.bak"),
+        ("estado", f"stat {INFORMES}/informe.txt"),
+        ("leer", f"cat {INFORMES}/informe.bak"),
     ]
 
 
@@ -350,28 +493,27 @@ POOL_B3 = {"web": b3_web, "redactar": b3_redactar, "comprimir": b3_comprimir,
 ORDEN_B3 = {1: ["redactar", "comprimir", "consolidar", "repaso"],
             2: ["comprimir", "redactar", "consolidar", "repaso"],
             3: ["repaso", "redactar", "consolidar", "comprimir"]}
-# La sesión web va SIEMPRE primero en B3 (posiciones 36..40), como en §5.7.
 
 
 def b4_acta(day: int, n: int = 1):
     out = []
     for k in range(1, n + 1):
         out += [
-            ("acta", f"echo 'acta de reunion {k} del area (dia {day})' > {DOC}/actas/acta_{k}_$(date -u +%F).txt"),
-            ("acta", f"cat {DOC}/actas/acta_{k}_$(date -u +%F).txt"),
-            ("acta", f"wc -c {DOC}/actas/acta_{k}_$(date -u +%F).txt"),
-            ("acta", f"cp -f {DOC}/actas/acta_{k}_$(date -u +%F).txt {DOC}/actas/compartida_{k}.txt"),
-            ("acta", f"sha256sum {DOC}/actas/compartida_{k}.txt"),
-            ("acta", f"ls -la {DOC}/actas"),
+            ("acta", f"echo 'acta de reunion {k} del area (dia {day})' > {ACTAS}/acta_{k}_$(date -u +%F).txt"),
+            ("acta", f"cat {ACTAS}/acta_{k}_$(date -u +%F).txt"),
+            ("acta", f"wc -c {ACTAS}/acta_{k}_$(date -u +%F).txt"),
+            ("acta", f"cp -f {ACTAS}/acta_{k}_$(date -u +%F).txt {ACTAS}/compartida_{k}.txt"),
+            ("acta", f"sha256sum {ACTAS}/compartida_{k}.txt"),
+            ("acta", f"ls -la {ACTAS}"),
         ]
     return out
 
 
 def b4_nube(day: int):
     return [
-        ("nube", curl_put(f"{DOC}/actas/acta_1_$(date -u +%F).txt", CLOUD + "/nube/actas/")),
+        ("nube", curl_put(f"{ACTAS}/acta_1_$(date -u +%F).txt", CLOUD + "/nube/actas/")),
         ("nube", curl_propfind(CLOUD + "/nube/", f"{CACHE}/nube_listado.txt")),
-        ("nube", curl_put(f"{DOC}/informes/informe.txt", CLOUD + "/nube/informes/")),
+        ("nube", curl_put(f"{INFORMES}/informe.txt", CLOUD + "/nube/informes/")),
         ("nube", curl_propfind(CLOUD + "/nube/actas/", f"{CACHE}/nube_actas.txt")),
         ("portal", curl_get(WEB + "/", f"{CACHE}/portal_tarde.html", referer=WEB + "/ayuda.html")),
         ("portal", curl_get(WEB + "/noticias.html", f"{CACHE}/noticias_tarde.html",
@@ -393,7 +535,7 @@ def b4_descargas(day: int):
 
 def b4_informe(day: int):
     return [
-        ("informe", f"tar -czf {DOWN}/informe_dia{day}.tar.gz -C {DOC}/informes informe.txt"),
+        ("informe", f"tar -czf {DOWN}/informe_dia{day}.tar.gz -C {INFORMES} informe.txt"),
         ("huella", f"sha256sum {DOWN}/informe_dia{day}.tar.gz"),
         ("tamano", f"du -sh {DOWN}/informe_dia{day}.tar.gz"),
         ("listar", f"ls -la {DOWN}"),
@@ -410,14 +552,14 @@ ORDEN_B4 = {1: ["acta1", "nube", "informe", "descargas"],
 
 def b5(day: int):
     return [
-        ("copia", f"tar -czf {DOC}/copias/copia_$(date -u +%F).tar.gz -C {DOC} informes actas"),
-        ("huella", f"sha256sum {DOC}/copias/copia_$(date -u +%F).tar.gz"),
-        ("huella", f"cat {DOC}/copias/copia_$(date -u +%F).tar.gz.sha256"),
-        ("nube", curl_put(f"{DOC}/copias/copia_$(date -u +%F).tar.gz", CLOUD + "/nube/copias/")),
+        ("copia", f"tar -czf {COPIAS}/copia_$(date -u +%F).tar.gz -C {DOC} informes actas"),
+        ("huella", f"sha256sum {COPIAS}/copia_$(date -u +%F).tar.gz"),
+        ("huella", f"cat {COPIAS}/copia_$(date -u +%F).tar.gz.sha256"),
+        ("nube", curl_put(f"{COPIAS}/copia_$(date -u +%F).tar.gz", CLOUD + "/nube/copias/")),
         ("nube", curl_propfind(CLOUD + "/nube/copias/", f"{CACHE}/copias_nube.txt")),
         ("tamano", f"du -sh {DOC}"),
         ("disco", "df -h /"),
-        ("copia", f"cp -f {DOC}/copias/copia_$(date -u +%F).tar.gz {DOWN}/copia_final_{day}.tar.gz"),
+        ("copia", f"cp -f {COPIAS}/copia_$(date -u +%F).tar.gz {DOWN}/copia_final_{day}.tar.gz"),
         ("tamano", f"wc -c {DOWN}/copia_final_{day}.tar.gz"),
         ("limpiar", f"rm -f {DOWN}/tmp_*.csv"),
         ("cierre", "date -u +%FT%TZ"),
@@ -426,73 +568,296 @@ def b5(day: int):
 
 
 # --------------------------------------------------------------------------
+# Adiciones de la v2: herramientas del corpus (M4) + errores (M3)
+# --------------------------------------------------------------------------
+def _pos(cmd_lista, sub: str, defecto: int) -> int:
+    """Índice (dentro de la lista) de la primera acción que contiene `sub` (+1)."""
+    for i, (_fam, cmd) in enumerate(cmd_lista):
+        if sub in cmd:
+            return min(i + 1, len(cmd_lista))
+    return min(defecto, len(cmd_lista))
+
+
+def _pos_frac(n: int, frac: float) -> int:
+    return max(0, min(n, int(round(n * frac))))
+
+
+def herramientas_dia(day: int, base: dict):
+    """Acciones con las 12 herramientas nuevas del corpus (M4), con sentido de oficina.
+
+    Devuelve {bloque: [(pos, [(familia, comando, cwd)]), …]}.
+    """
+    b2 = base["B2"]
+    b3 = base["B3"]
+    b4 = base["B4"]
+    # B2: "no me va la intranet, miro la red" (ip). Lo natural es a media mañana.
+    b2_g = [(max(1, _pos_frac(len(b2), 0.20)), [
+        ("red", "ip -brief addr", HOME),
+    ])]
+    # B3: normalizar el CSV de la plantilla, mirar memoria, dejar constancia, cifrar la huella,
+    #     numerar lotes (seq + xargs) y anotar en la bitácora (tee).
+    b3_g = [
+        (5, [
+            ("csv", f"echo 'referencia;area;importe' > {INFORMES}/export.csv", INFORMES),
+            ("csv", f"sed -i 's/;/,/g' {INFORMES}/export.csv", INFORMES),
+            ("csv", f"sed -n '1,5p' {INFORMES}/export.csv", INFORMES),
+        ]),
+        (6, [
+            ("huella", f"openssl dgst -sha256 {DOWN}/manual_empleado.pdf", DOWN),
+        ]),
+        (_pos_frac(len(b3), 0.42), [
+            ("estado", "free -m", HOME),
+            ("registro", "logger -t ofimatica 'repaso del informe del area'", HOME),
+        ]),
+        (_pos(b3, "gzip -kf", _pos_frac(len(b3), 0.60)) + 2, [
+            ("lotes", f"seq 1 12 > {CACHE}/lotes.txt", INFORMES),
+            ("lotes", f"xargs -a {CACHE}/lotes.txt -I{{}} cp {INFORMES}/informe.txt {INFORMES}/lote_{{}}.txt", INFORMES),
+        ]),
+        (max(1, len(b3) - 4), [
+            ("bitacora", f"echo 'pendiente: firmar el acta de la reunion' > {INFORMES}/nota.txt", INFORMES),
+            ("bitacora", f"tee -a {INFORMES}/bitacora.txt < {INFORMES}/nota.txt", INFORMES),
+        ]),
+    ]
+    # B4: sincronizar informes con la carpeta de copias, descargar el manual sin navegador,
+    #     acotar la espera de la intranet (timeout) y destruir un borrador (shred).
+    b4_g = [
+        (max(1, _pos_frac(len(b4), 0.12)), [
+            ("copia", f"rsync -a --delete {INFORMES}/ {COPIAS}/informes/", INFORMES),
+        ]),
+        (max(1, _pos_frac(len(b4), 0.34)), [
+            ("descarga", f"wget -q -O {DOWN}/manual_empleado_wget.pdf {WEB}/descargas/manual_empleado.pdf", DOWN),
+        ]),
+        (max(1, _pos_frac(len(b4), 0.50)), [
+            ("red", f"timeout 5 curl -sS -A '{UA}' -b {COOKIES} -o {CACHE}/intranet_tarde.html "
+                    f"-w '%{{http_code}}' {WEB}/", DOWN),
+        ]),
+        (_pos(b4, "compartida_1.txt", _pos_frac(len(b4), 0.62)) + 2, [
+            ("borrador", f"echo 'borrador previo del informe del area' > {INFORMES}/borrador_previo.txt", INFORMES),
+            ("borrador", f"shred -n 1 -z -u {INFORMES}/borrador_previo.txt", INFORMES),
+        ]),
+    ]
+    return {"B2": b2_g, "B3": b3_g, "B4": b4_g}
+
+
+def adiciones_dia(day: int, base: dict):
+    """{bloque: [(pos, [(familia, comando, cwd)]), …]} con herramientas + errores."""
+    err = errores_dia(day)
+    grupos = {bid: [] for bid in IDS_TRABAJO}
+    # errores: posición concreta por bloque (después de lo que necesitan)
+    grupos["B1"].append((4, err["B1"][0]))
+    b2 = base["B2"]
+    p_informe = _pos(b2, "informe del area - jornada", _pos_frac(len(b2), 0.35))
+    grupos["B2"] += [
+        (p_informe + 1, err["B2"][0]),                       # cp a carpeta inexistente
+        (max(1, _pos_frac(len(b2), 0.55)), err["B2"][1]),    # df --max-depth (opción)
+        (max(1, _pos_frac(len(b2), 0.85)), err["B2"][2]),    # stat de fichero inexistente
+    ]
+    b3 = base["B3"]
+    grupos["B3"] += [
+        (max(1, _pos_frac(len(b3), 0.25)), err["B3"][0]),    # gzip -d repetido
+        (max(1, _pos_frac(len(b3), 0.72)), err["B3"][1]),    # rm de algo que no está
+    ]
+    b4 = base["B4"]
+    grupos["B4"] += [
+        (max(1, _pos_frac(len(b4), 0.10)), err["B4"][0]),    # cat de una carpeta
+        (max(1, _pos_frac(len(b4), 0.40)), err["B4"][1]),    # ls con opción mal escrita
+        (_pos(b4, "compartida_1.txt", _pos_frac(len(b4), 0.55)) + 2, err["B4"][2]),  # cp a carpeta inexistente
+        (max(1, _pos_frac(len(b4), 0.80)), err["B4"][3]),    # gzip -d repetido
+    ]
+    herr = herramientas_dia(day, base)
+    for bid, gs in herr.items():
+        grupos[bid] += gs
+    return grupos
+
+
+def _insertar(base, grupos):
+    """Añade a cada acción su prefijo `cd <carpeta> && ` (M1) y devuelve (familia, comando, cwd)."""
+    def con_cwd(fam, cmd, cwd):
+        d = cwd or cwd_de(cmd)
+        return (fam, f"cd {d} && {cmd}", d)
+
+    lista = [con_cwd(fam, cmd, None) for (fam, cmd) in base]
+    # Orden descendente de posición para que los índices no se desplacen.
+    for pos, grupo in sorted(grupos, key=lambda g: -g[0]):
+        for k, (fam, cmd, cwd) in enumerate(grupo):
+            lista.insert(min(pos + k, len(lista)), con_cwd(fam, cmd, cwd))
+    return lista
+
+
+# --------------------------------------------------------------------------
 # Composición de un día
 # --------------------------------------------------------------------------
+def base_bloque(day: int, bid: str):
+    if bid == "B1":
+        pool = b1(day)
+    elif bid == "B2":
+        pool = []
+        for cat in ORDEN_B2[day]:
+            pool += POOL_B2[cat](day)
+    elif bid == "B3":
+        pool = list(POOL_B3["web"](day))          # sesión web primero (§5.7 de la v1)
+        for cat in ORDEN_B3[day]:
+            pool += POOL_B3[cat](day)
+    elif bid == "B4":
+        pool = []
+        for cat in ORDEN_B4[day]:
+            pool += POOL_B4[cat](day)
+    else:
+        pool = b5(day)
+    n = BASE_CUENTAS[day][bid]
+    if len(pool) < n:
+        raise SystemExit(f"ERROR: pool {bid} dia {day} tiene {len(pool)} acciones, faltan {n}")
+    return pool[:n]
+
+
+def componer_bloque(day: int, bid: str):
+    base = base_bloque(day, bid)
+    grupos = adiciones_dia(day, {b: base_bloque(day, b) for b in IDS_TRABAJO}).get(bid, [])
+    return _insertar(base, grupos)
+
+
+def cuentas_de(day: int):
+    return {bid: len(componer_bloque(day, bid)) for bid in IDS_TRABAJO}
+
+
 def componer_dia(day: int):
-    """Devuelve [(bloque, familia, comando)] con el recuento exacto del plan."""
+    """Devuelve [(bloque, familia, comando, cwd)] en orden."""
     acciones = []
-    for bid in ("B1", "B2", "B3", "B4", "B5"):
-        n = CUENTAS[day][bid]
-        if bid == "B1":
-            lista = b1(day)
-        elif bid == "B2":
-            pool = []
-            for cat in ORDEN_B2[day]:
-                pool += POOL_B2[cat](day)
-            lista = pool
-        elif bid == "B3":
-            pool = list(POOL_B3["web"](day))          # sesión web primero (§5.7)
-            for cat in ORDEN_B3[day]:
-                pool += POOL_B3[cat](day)
-            lista = pool
-        elif bid == "B4":
-            pool = []
-            for cat in ORDEN_B4[day]:
-                pool += POOL_B4[cat](day)
-            lista = pool
-        else:
-            lista = b5(day)
-        if len(lista) < n:
-            raise SystemExit(f"ERROR: pool {bid} dia {day} tiene {len(lista)} acciones, faltan {n}")
-        lista = lista[:n]
-        acciones += [(bid, fam, cmd) for fam, cmd in lista]
+    for bid in IDS_TRABAJO:
+        acciones += [(bid, fam, cmd, cwd) for (fam, cmd, cwd) in componer_bloque(day, bid)]
     return acciones
 
 
+CUENTAS = {d: cuentas_de(d) for d in (1, 2, 3)}
+
+
+# --------------------------------------------------------------------------
+# Ritmo: tabla de jitter fija, encajada en la duración del bloque
+# --------------------------------------------------------------------------
+def _tomar_rafagas(patron, n: int, off: int):
+    """Tamaños de ráfaga (1–6) que suman exactamente `n`, en ciclo desde `off`."""
+    sizes, total, i = [], 0, off
+    while total < n:
+        s = patron[i % len(patron)]
+        if total + s > n:
+            s = n - total
+        sizes.append(s)
+        total += s
+        i += 1
+    return sizes
+
+
+def _cuadrar(vals, objetivo: int, minimo: int):
+    """Lleva `sum(vals)` a `objetivo` (±1 s por hueco, determinista)."""
+    dif = objetivo - sum(vals)
+    if dif == 0 or not vals:
+        return vals
+    paso = 1 if dif > 0 else -1
+    q, r = divmod(abs(dif), len(vals))
+    out = [max(minimo, v + paso * q + (paso if j < r else 0)) for j, v in enumerate(vals)]
+    # segundo pase por si el tope `minimo` dejó diferencia
+    dif2 = objetivo - sum(out)
+    j = 0
+    while dif2 != 0 and j < 4 * len(out):
+        k = j % len(out)
+        if dif2 > 0 or out[k] > minimo:
+            out[k] += 1 if dif2 > 0 else -1
+            dif2 += -1 if dif2 > 0 else 1
+        j += 1
+    if sum(out) != objetivo:
+        raise SystemExit(f"ERROR: no se pudo encajar el ritmo (objetivo={objetivo} suma={sum(out)})")
+    return out
+
+
+def plan_irregular(n: int, dur_s: int, bid: str, day: int, cola_s: int = COLA_FIN_S):
+    """Desplazamientos (s) de las `n` acciones de un bloque, con la tabla de jitter fija.
+
+    · ráfagas de 1–6 acciones (patrón literal `RAFAGAS`)
+    · intra-ráfaga: `INTRA` (41–62 s)
+    · entre ráfagas: `HUECOS` (forma literal) escalada al hueco que queda, con mínimo 80 s
+    · una **pausa larga literal** por día en B3 y en B4 (`PAUSA_LARGA`, 20–22 min)
+    · la última acción cae `cola_s` antes de `UtcTimeOff`
+    """
+    idx = IDS_TRABAJO.index(bid)
+    patron, huecos = RAFAGAS[bid], HUECOS[bid]
+    sizes = _tomar_rafagas(patron, n, (day * 3 + idx) % len(patron))
+    c = len(sizes)
+    intra = [INTRA[(day * 5 + idx * 2 + k) % len(INTRA)] for k in range(n - c)]
+    lit = [huecos[(day * 7 + idx * 3 + j) % len(huecos)] for j in range(c - 1)]
+
+    objetivo = dur_s - cola_s - sum(intra)
+    pausa = PAUSA_LARGA.get(bid, 0)
+    lit = list(lit)
+    k_pausa = None
+    if pausa:
+        if not lit:
+            raise SystemExit(f"ERROR: {bid} dia {day}: no hay hueco donde poner la pausa larga")
+        k_pausa = min(len(lit) - 1, max(0, int(round(len(lit) * PAUSA_POS[bid]))))
+        lit.pop(k_pausa)                 # la pausa ocupa el sitio de ese hueco
+        objetivo -= pausa
+    if objetivo <= 0 or not lit:
+        raise SystemExit(f"ERROR: {bid} dia {day}: el bloque no da para {n} acciones")
+    escala = objetivo / sum(lit)
+    inter = [max(MIN_HUECO_INTER_S, int(round(g * escala))) for g in lit]
+    inter = _cuadrar(inter, objetivo, MIN_HUECO_INTER_S)
+
+    if pausa:                            # se inserta literal (no se escala)
+        inter.insert(k_pausa, pausa)
+
+    gaps, ii = [], 0
+    for k, s in enumerate(sizes):
+        for _ in range(s - 1):
+            gaps.append(intra[ii])
+            ii += 1
+        if k < len(sizes) - 1:
+            gaps.append(inter[k])
+    tiempos = [0]
+    for g in gaps:
+        tiempos.append(tiempos[-1] + g)
+    assert len(tiempos) == n, (len(tiempos), n)
+    assert ii == len(intra), (ii, len(intra))
+    return tiempos
+
+
+def delays_desde_tiempos(tiempos, dur_s):
+    """Convierte desplazamientos en `DelayAfter` (ms), con guardián de fin de bloque."""
+    out = []
+    for i, t in enumerate(tiempos):
+        if i + 1 < len(tiempos):
+            out.append((tiempos[i + 1] - t) * 1000)
+        else:
+            out.append((dur_s - t + GUARDIAN_S) * 1000)
+    return out
+
+
 def construir_timeline(day: int, dry: bool = False, base_s: int = 10 * 3600,
-                        factor: int = 40, pausa_dry_s: int = 30):
+                       pausa_dry_s: int = 20):
     acciones = componer_dia(day)
     handlers = []
-    for b in BLOQUES:
-        if b["tipo"] != "trabajo":
-            continue
-        n = CUENTAS[day][b["id"]]
+    reloj = base_s
+    for b in BLOQUES_TRABAJO:
+        seleccion = [a for a in acciones if a[0] == b["id"]]
+        n = len(seleccion)
         dur = dur_bloque(b["id"])
-        cfg = PLAN_TIMES[b["id"]]
         if dry:
-            # La ventana del bloque (dur_d) es MAYOR que el hueco que ocupan las acciones
-            # (dur_span): asi el desfase de ejecucion (~0,1 s/accion) no empuja eventos fuera
-            # de la ventana (WorkingHours.Is los mandaria al dia siguiente y se perderian).
-            dur_span = max(8, dur // 90)
-            dur_d = max(dur_span + 6, dur // 55)
-            tiempos = plan_tiempos(n, dur_span, cfg["min_rafagas"], max(1, cfg["intra"] // 2),
-                                   cap_s=max(3, CAP_HUECO_S // 90),
-                                   cola_s=max(2, COLA_FIN_S // 60))
-            base_s += dur_d + pausa_dry_s
-            on_s = base_s - dur_d - pausa_dry_s
-            on, off = on_s, on_s + dur_d
+            # Ventana comprimida (solo prueba en seco): cadencia ~2 s, sin huecos largos.
+            dur_span = max(8, 2 * n + 4)
+            tiempos = [2 * i + (i % 3) for i in range(n)]
+            on_s = reloj
+            reloj += dur_span + pausa_dry_s
             delays = []
             for i, t in enumerate(tiempos):
                 if i + 1 < len(tiempos):
                     delays.append(max(500, (tiempos[i + 1] - t) * 1000))
                 else:
-                    delays.append(max(500, (dur_d - t) * 1000 + 500))
+                    delays.append(max(500, (dur_span - t) * 1000 + 500))
+            on, off = on_s, on_s + dur_span
         else:
             on, off = hms_to_s(b["on"]), hms_to_s(b["off"])
-            tiempos = plan_tiempos(n, dur, cfg["min_rafagas"], cfg["intra"])
+            tiempos = plan_irregular(n, dur, b["id"], day)
             delays = delays_desde_tiempos(tiempos, dur)
         eventos = [{"Command": cmd, "DelayAfter": int(dl)}
-                   for (bb, _fam, cmd), dl in zip([a for a in acciones if a[0] == b["id"]], delays)]
+                   for (_bid, _fam, cmd, _cwd), dl in zip(seleccion, delays)]
         assert len(eventos) == n
         handlers.append({
             "HandlerType": "Command",
@@ -506,11 +871,6 @@ def construir_timeline(day: int, dry: bool = False, base_s: int = 10 * 3600,
     return {"Status": "Run", "TimeLineHandlers": handlers}, acciones
 
 
-def _fmt_hms(s: int) -> str:
-    s %= 24 * 3600
-    return f"{s // 3600:02d}:{(s % 3600) // 60:02d}:{s % 60:02d}"
-
-
 # --------------------------------------------------------------------------
 # Escritura
 # --------------------------------------------------------------------------
@@ -521,7 +881,11 @@ def escribir_json(path, obj):
         fh.write("\n")
 
 
-def escribir_calendario(outdir):
+def mapa_a_texto(mapa):
+    return ",".join(f"{k}:{mapa[k]}" for k in sorted(mapa))
+
+
+def escribir_calendario(outdir, mapa):
     cal = {
         "receta_version": VERSION_RECETA,
         "zona": "Europe/Madrid (CET=UTC+1 desde 2026-10-25)",
@@ -530,9 +894,16 @@ def escribir_calendario(outdir):
         "bloques": BLOQUES,
         "cuentas": {str(k): v for k, v in CUENTAS.items()},
         "total_ventana": sum(sum(v.values()) for v in CUENTAS.values()),
-        "mapa_dias": MAPA_DIAS,
+        "mapa_dias": mapa,
         "regla_dia": "k = 1 + ((fecha_utc - fecha_t0) mod 3)",
+        "mapa_dias_como_se_pasa": "construir_receta_legitima.py --t0 AAAA-MM-DD  (o --mapa-dias a:1,b:2,c:3)",
+        "cwd": {"base": HOME, "regla": "cd <carpeta> && <comando>", "carpetas": list(DIRS_CWD),
+                "nota": "ninguna acción se ejecuta en el directorio del cliente"},
+        "errores": {"por_dia": sum(1 for a in componer_dia(1) if a[1] == "error"),
+                    "familias": list(FAMILIAS_ERROR), "registro": REGISTRO},
         "hueco_max_intra_bloque_s": CAP_HUECO_S,
+        "hueco_min_s": MIN_HUECO_S,
+        "pausas_largas_s": {k: v for k, v in PAUSA_LARGA.items() if v},
         "fuente": "_artefactos/scripts/construir_receta_legitima.py",
     }
     escribir_json(os.path.join(outdir, "calendario.json"), cal)
@@ -540,51 +911,144 @@ def escribir_calendario(outdir):
     lineas = [
         "# bloques y pausas de la receta legitima (UTC). Generado; NO editar a mano.",
         f"# jornada {JORNADA[0]} - {JORNADA[1]} UTC (09:00-18:00 local)",
-        "TFG_RECETA_VERSION=1",
+        f"TFG_RECETA_VERSION={VERSION_RECETA}",
         f"TFG_JORNADA={JORNADA[0]}-{JORNADA[1]}",
+        f"TFG_CWD_BASE={HOME}",
+        f"TFG_REGISTRO_ERRORES={REGISTRO}",
     ]
     for b in BLOQUES:
         lineas.append(f"{b['id']}={b['on'][:5]}-{b['off'][:5]} {b['tipo']}")
     lineas += [
-        "# mapeo de dias de la ventana (fecha_utc del dia -> fichero de receta)",
-        "TFG_MAPA_DIAS=2026-10-26:1,2026-10-27:2,2026-10-28:3",
+        "# mapeo de dias de la ventana (fecha_utc del dia -> fichero de receta).",
+        ("# fijado con --t0/--mapa-dias (la ventana se cierra en T4)." if mapa else
+         "# VACIO a proposito: se fija al cerrar T4 con `construir_receta_legitima.py --t0 AAAA-MM-DD`."),
+        f"TFG_MAPA_DIAS={mapa_a_texto(mapa) if mapa else ''}",
     ]
     with open(os.path.join(outdir, "bloques.env"), "w", encoding="utf-8", newline="\n") as fh:
         fh.write("\n".join(lineas) + "\n")
 
 
+def _comando_de_error(cmd: str):
+    """Extrae (comando que falla | comando del reintento) de una acción de error."""
+    m = re.search(r"&& (.*?) 2>/dev/null \|\|", cmd)
+    if m:
+        return "fallo", m.group(1)
+    m = re.search(r"&& (.*?) && echo -e ", cmd)
+    if m:
+        return "reintento", m.group(1)
+    return "", cmd
+
+
 def escribir_resumen(outdir, timelines):
+    tot = {d: sum(CUENTAS[d].values()) for d in (1, 2, 3)}
     lineas = [
-        "# `receta_resumen.md` — receta de actividad legítima (3 días)",
+        "# `receta_resumen.md` — receta de actividad legítima **v2** (3 días)",
         "",
-        "> Generado por `_artefactos/scripts/construir_receta_legitima.py` (receta v1).",
-        "> Jornada **09:00–18:00 local** (08:00–17:00 UTC), con **café** (20 min) y **comida** (60 min).",
-        "> Solo handler `Command`; **cero** `random`, **cero** `Curl`, **cero** navegador.",
+        "> Generado por `_artefactos/scripts/construir_receta_legitima.py` (receta **v2**, bloque",
+        "> `legitimo-v3`, plan §5.1). Jornada **09:00–18:00 local** (08:00–17:00 UTC), con **café**",
+        "> (20 min) y **comida** (60 min). Solo handler `Command`; **cero** `random`, **cero**",
+        "> `Curl`, **cero** navegador, **cero** pipes (DT9).",
+        "> **`cwd` por acción**: `cd <carpeta coherente> && <comando>` (ninguna en el directorio del cliente).",
+        "> **Sin fecha**: `TFG_MAPA_DIAS` se pasa con `--t0` y se fija al cerrar **T4**.",
+        "",
+        "## Qué cambia respecto de la v1 (M1–M4)",
+        "",
+        "| Mejora | Qué hace | Cómo se comprueba |",
+        "|---|---|---|",
+        "| **M1 `cwd`** | Cada comando arranca en su carpeta (`~/Documentos`, `~/Descargas`,",
+        "  `~/Documentos/informes`, …) con `cd <carpeta> && `; `cd` es builtin (0 `execve` extra) |",
+        "  `--check` exige el prefijo y que la carpeta esté en la lista; `audit_cwd` en E0 |",
+        "| **M2 ritmo** | Tabla de jitter **literal** (`INTRA`, `RAFAGAS`, `HUECOS`, `PAUSA_LARGA`):",
+        "  ráfagas 1–6, intra 41–62 s, huecos 80 s–22 min y 2 pausas largas (B3/B4) |",
+        "  `--check` valida hueco ∈ [40, 1320] s, ráfagas ≤ 6 y ≥ 2 huecos ≥ 20 min |",
+        "| **M3 errores** | 10 errores/día de 6 familias, **cada uno con su reintento correcto** y",
+        "  registro en `~/Documentos/errores.log` (`ts · tipo · familia · comando · rc`) |",
+        "  `--check` cuenta los pares y el `rc` se lee de `$?` en ejecución |",
+        "| **M4 corpus** | 12 binarios nuevos con uso de oficina: `xargs`, `timeout`, `sed`, `ip`,",
+        "  `openssl`, `tee`, `free`, `logger`, `seq`, `rsync`, `shred`, `wget` |",
+        "  `cobertura_exes.py` (receta v2 = 23/50 del corpus) |",
+        "",
+        "## Bloques y recuentos",
         "",
         "| Bloque | UTC | Local | Tipo | D1 | D2 | D3 |",
         "|---|---|---|---|---|---|---|",
     ]
     for b in BLOQUES:
-        c = CUENTAS
-        vals = [str(c[d][b["id"]]) if b["tipo"] == "trabajo" else "0" for d in (1, 2, 3)]
+        vals = [str(CUENTAS[d][b["id"]]) if b["tipo"] == "trabajo" else "0" for d in (1, 2, 3)]
         lineas.append(f"| {b['id']} {b['nombre']} | {b['on'][:5]}–{b['off'][:5]} | {b['local']} | "
                       f"{b['tipo']} | {vals[0]} | {vals[1]} | {vals[2]} |")
-    tot = {d: sum(CUENTAS[d].values()) for d in (1, 2, 3)}
     lineas.append(f"| **Total** | 08:00–17:00 | 09:00–18:00 | — | **{tot[1]}** | **{tot[2]}** | **{tot[3]}** |")
-    lineas += ["", f"**Total ventana (3 días): {sum(tot.values())} acciones.**", ""]
+    lineas += ["", f"**Total ventana (3 días): {sum(tot.values())} acciones** "
+                   f"(v1: 333; +{sum(tot.values()) - 333} por M3/M4, ≈ "
+                   f"{(sum(tot.values()) - 333) * 100 // 333} %).", ""]
+
+    # --- ritmo medido (por día y bloque) ---
+    lineas += ["## Ritmo medido (tabla de jitter fija)", "",
+               "| Día | Bloque | Acciones | Ráfagas | Hueco mín | Hueco máx | ≥ 20 min |",
+               "|---|---|---|---|---|---|---|"]
+    for day in (1, 2, 3):
+        tl, _acc = timelines[day]
+        for h, b in zip(tl["TimeLineHandlers"], BLOQUES_TRABAJO):
+            evs = h["TimeLineEvents"]
+            gaps = [evs[i]["DelayAfter"] / 1000.0 for i in range(len(evs) - 1)]
+            rafagas = 1 + sum(1 for g in gaps if g >= 70)
+            largos = sum(1 for g in gaps if g >= 1200)
+            lineas.append(f"| d{day} | {b['id']} | {len(evs)} | {rafagas} | "
+                          f"{min(gaps):.0f} s | {max(gaps) / 60:.1f} min | {largos} |")
+    lineas.append("")
+
+    # --- errores del día (tabla) ---
+    lineas += ["## Errores humanos (M3, 10/día, con reintento)", "",
+               "| # | Bloque | Familia | Comando que FALLA | Comando del reintento |", "|---|---|---|---|---|"]
+    k = 0
+    for bid in IDS_TRABAJO:
+        for (fam, cmd, _cwd) in componer_bloque(1, bid):
+            tipo, txt = _comando_de_error(cmd)
+            if tipo == "fallo":
+                k += 1
+                sig = None
+                bloque = componer_bloque(1, bid)
+                i = [c for c in bloque].index((fam, cmd, _cwd))
+                if i + 1 < len(bloque):
+                    t2, txt2 = _comando_de_error(bloque[i + 1][1])
+                    sig = txt2 if t2 == "reintento" else None
+                m = re.search(r"\\terror\\t([a-z_]+)\\t", cmd)
+                fam_txt = m.group(1) if m else "?"
+                lineas.append(f"| {k} | {bid} | `error/{fam_txt}` | `{txt}` | `{sig or '—'}` |")
+    lineas.append("")
+
+    # --- binarios ---
+    usados = set()
+    for day in (1, 2, 3):
+        for (_b, _f, cmd, _c) in componer_dia(day):
+            usados.update(binarios_de(cmd))
+    lineas += ["## Binarios declarados (lista blanca: 34; usados: %d)" % len(usados), "",
+               "`" + "`, `".join(sorted(usados)) + "`", "",
+               "**Justificación** (plan §5.2.1 / corpus de ataques: 50 `basenames` distintos en",
+               "`audit_command`): de los 22 de la v1, **11** tienen gemelo en el corpus (`curl`,",
+               "`cat`, `sha256sum`, `cp`, `tar`, `find`, `gzip`, `mkdir`, `grep`, `head`, `rm`).",
+               "Los **12 nuevos son los que el corpus usa y un oficinista puede usar**: `xargs`",
+               "(2 497 detecciones), `timeout` (96), `ip` (73), `openssl` (16), `sed` (14), `rsync`",
+               "(10), `free` (5), `seq`/`tee`/`wget` (4) y `logger`/`shred` (2). Con ellos la receta",
+               "cubre **23/50 = 46 %** (T2 añadirá `systemctl`/`crontab` en la campaña ⇒ 25/50).",
+               "Quedan fuera, **a propósito**: `systemctl`/`crontab` (solo campaña), `git`, `dd`,",
+               "`passwd`, `nc.openbsd`, `perl`, `busybox`, `sqlite3` y todo lo que exige root o GUI.",
+               ""]
+
     for day in (1, 2, 3):
         lineas.append(f"## Día {day} — «{TEMAS[day]}» ({tot[day]} acciones)")
         lineas.append("")
-        lineas.append("| # | UTC | Bloque | Familia | Comando |")
-        lineas.append("|---|---|---|---|---|")
-        tl, acciones = construir_timeline(day)
+        lineas.append("| # | UTC | Bloque | Familia | cwd | Comando |")
+        lineas.append("|---|---|---|---|---|---|")
+        tl, acciones = timelines[day]
         idx = 0
-        for h, b in zip(tl["TimeLineHandlers"], [x for x in BLOQUES if x["tipo"] == "trabajo"]):
+        for h, b in zip(tl["TimeLineHandlers"], BLOQUES_TRABAJO):
             t = hms_to_s(b["on"])
             for ev in h["TimeLineEvents"]:
-                _, fam, cmd = acciones[idx]
+                _bb, fam, cmd, cwd = acciones[idx]
                 idx += 1
-                lineas.append(f"| {idx} | {_fmt_hms(t)[:5]} | {b['id']} | {fam} | `{cmd}` |")
+                lineas.append(f"| {idx} | {_fmt_hms(t)[:5]} | {b['id']} | {fam} | "
+                              f"`{cwd.replace(HOME, '~')}` | `{cmd}` |")
                 t += ev["DelayAfter"] // 1000
         lineas.append("")
     with open(os.path.join(outdir, "receta_resumen.md"), "w", encoding="utf-8", newline="\n") as fh:
@@ -594,19 +1058,27 @@ def escribir_resumen(outdir, timelines):
 # --------------------------------------------------------------------------
 # Validador
 # --------------------------------------------------------------------------
-def binarios_de(cmd: str):
-    """Primer token de cada segmento encadenado con `&&`."""
-    out = []
-    for seg in cmd.split(" && "):
-        tok = seg.strip().split()[0] if seg.strip() else ""
-        out.append(tok)
-    return out
+def _mapa_valido(m) -> str | None:
+    if not m:
+        return None
+    if len(m) != 3 or sorted(m.values()) != [1, 2, 3]:
+        return "mapa_dias debe tener exactamente las fechas de los días 1, 2 y 3"
+    fechas = sorted(m)
+    d0 = datetime.strptime(fechas[0], "%Y-%m-%d")
+    for i, f in enumerate(fechas):
+        if (d0 + timedelta(days=i)).strftime("%Y-%m-%d") != f:
+            return "mapa_dias: las fechas no son consecutivas"
+        if m[f] != i + 1:
+            return "mapa_dias: el día k debe crecer con la fecha"
+    return None
 
 
-def validar(outdir, verbose=True):
+def validar(outdir, verbose=True, mapa_esperado=None):
     fallos = []
     avisos = []
     datos = {}
+    internet = {d: 0 for d in (1, 2, 3)}
+
     for day in (1, 2, 3):
         path = os.path.join(outdir, f"d{day}.json")
         if not os.path.isfile(path):
@@ -617,118 +1089,218 @@ def validar(outdir, verbose=True):
         if tl.get("Status") != "Run":
             fallos.append(f"d{day}: Status != Run")
         hs = tl.get("TimeLineHandlers", [])
-        trabajo = [b for b in BLOQUES if b["tipo"] == "trabajo"]
-        if len(hs) != len(trabajo):
-            fallos.append(f"d{day}: {len(hs)} handlers (se esperan {len(trabajo)})")
+        if len(hs) != len(BLOQUES_TRABAJO):
+            fallos.append(f"d{day}: {len(hs)} handlers (se esperan {len(BLOQUES_TRABAJO)})")
             continue
         total = 0
-        for h, b in zip(hs, trabajo):
+        for h, b in zip(hs, BLOQUES_TRABAJO):
+            bid = b["id"]
             if h.get("HandlerType") != "Command":
-                fallos.append(f"d{day}/{b['id']}: HandlerType={h.get('HandlerType')}")
+                fallos.append(f"d{day}/{bid}: HandlerType={h.get('HandlerType')}")
             if h.get("HandlerType") in HANDLERS_PROHIBIDOS:
-                fallos.append(f"d{day}/{b['id']}: handler prohibido {h.get('HandlerType')}")
+                fallos.append(f"d{day}/{bid}: handler prohibido {h.get('HandlerType')}")
             if not h.get("Loop"):
-                fallos.append(f"d{day}/{b['id']}: Loop != true")
+                fallos.append(f"d{day}/{bid}: Loop != true")
             if h.get("HandlerArgs"):
-                fallos.append(f"d{day}/{b['id']}: HandlerArgs no vacío")
+                fallos.append(f"d{day}/{bid}: HandlerArgs no vacío")
             if h.get("UtcTimeOn") != b["on"] or h.get("UtcTimeOff") != b["off"]:
-                fallos.append(f"d{day}/{b['id']}: ventana {h.get('UtcTimeOn')}-{h.get('UtcTimeOff')} != {b['on']}-{b['off']}")
+                fallos.append(f"d{day}/{bid}: ventana {h.get('UtcTimeOn')}-{h.get('UtcTimeOff')} "
+                              f"!= {b['on']}-{b['off']}")
             evs = h.get("TimeLineEvents", [])
             total += len(evs)
-            if len(evs) != CUENTAS[day][b["id"]]:
-                fallos.append(f"d{day}/{b['id']}: {len(evs)} eventos != {CUENTAS[day][b['id']]}")
-            # huecos
-            dur = dur_bloque(b["id"])
-            t = 0
+            if len(evs) != CUENTAS[day][bid]:
+                fallos.append(f"d{day}/{bid}: {len(evs)} eventos != {CUENTAS[day][bid]}")
+
+            dur = dur_bloque(bid)
+            # (a) tiempos dentro de la ventana del bloque
+            t, fuera = 0, 0
             for i, ev in enumerate(evs):
-                if i == 0:
-                    t = 0
-                else:
+                if i > 0:
                     t += evs[i - 1]["DelayAfter"] / 1000.0
-            gap_max = max([evs[i]["DelayAfter"] / 1000.0 for i in range(len(evs) - 1)] or [0])
-            if gap_max > 20 * 60:
-                fallos.append(f"d{day}/{b['id']}: hueco {gap_max/60:.1f} min > 20 min")
-            elif gap_max > CAP_HUECO_S:
-                fallos.append(f"d{day}/{b['id']}: hueco {gap_max/60:.1f} min > 12 min (regla interna)")
+                if t < 0 or t >= dur:
+                    fuera += 1
+            if fuera:
+                fallos.append(f"d{day}/{bid}: {fuera} acciones fuera de la ventana del bloque")
+
+            # (b) huecos: una sola regla (22 min) y mínimo 40 s
+            gaps = [evs[i]["DelayAfter"] / 1000.0 for i in range(len(evs) - 1)]
+            if gaps:
+                if max(gaps) > CAP_HUECO_S:
+                    fallos.append(f"d{day}/{bid}: hueco {max(gaps)/60:.1f} min > 22 min")
+                if min(gaps) < MIN_HUECO_S:
+                    fallos.append(f"d{day}/{bid}: hueco {min(gaps):.0f} s < 40 s")
+                run = mejor_run = 0
+                for g in gaps:
+                    run = run + 1 if g < 70 else 0
+                    mejor_run = max(mejor_run, run)
+                if mejor_run > 5:
+                    fallos.append(f"d{day}/{bid}: ráfaga de {mejor_run + 1} acciones (> 6)")
+                internet[day] += sum(1 for g in gaps if g >= 1200)
             suma = sum(ev["DelayAfter"] for ev in evs) / 1000.0
             if suma < dur:
-                fallos.append(f"d{day}/{b['id']}: suma(delays)={suma:.0f}s < duración {dur}s")
+                fallos.append(f"d{day}/{bid}: suma(delays)={suma:.0f}s < duración {dur}s")
+
+            # (c) comandos
             for ev in evs:
                 cmd = ev["Command"]
                 if '"' in cmd:
-                    fallos.append(f"d{day}/{b['id']}: comillas dobles en: {cmd[:60]}")
-                if cmd.strip() == "random" or "random" == cmd.strip():
-                    fallos.append(f"d{day}/{b['id']}: comando random prohibido")
-                if "|" in cmd:
-                    fallos.append(f"d{day}/{b['id']}: comando con PIPE (GHOSTS pierde el reporte): {cmd[:60]}")
+                    fallos.append(f"d{day}/{bid}: comillas dobles en: {cmd[:60]}")
+                if cmd.strip() == "random":
+                    fallos.append(f"d{day}/{bid}: comando random prohibido")
+                if re.search(r"(?<!\|)\|(?!\|)", cmd):
+                    fallos.append(f"d{day}/{bid}: comando con PIPE (GHOSTS pierde el reporte): {cmd[:60]}")
+                m = re.match(r"^cd (/home/angel[^\s&]*)\s+&&\s+\S", cmd)
+                if not m:
+                    fallos.append(f"d{day}/{bid}: acción sin prefijo `cd <carpeta> && `: {cmd[:60]}")
+                elif m.group(1) not in DIRS_CWD:
+                    fallos.append(f"d{day}/{bid}: cwd no admitido {m.group(1)}: {cmd[:60]}")
+                if "ghosts-client" in cmd:
+                    fallos.append(f"d{day}/{bid}: cwd prohibido en: {cmd[:60]}")
+                if "sudo" in cmd.split():
+                    fallos.append(f"d{day}/{bid}: sudo prohibido")
                 for tok in binarios_de(cmd):
                     if tok not in BINARIOS_OK:
-                        fallos.append(f"d{day}/{b['id']}: binario no permitido '{tok}' en {cmd[:60]}")
-                if "sudo" in cmd.split():
-                    fallos.append(f"d{day}/{b['id']}: sudo prohibido")
-                for ruta in re.findall(r"(?<![\w.])/[A-Za-z0-9_./$()-]+", re.sub(r"https?://\S+", "", cmd)):
+                        fallos.append(f"d{day}/{bid}: binario no permitido '{tok}' en {cmd[:70]}")
+                sin_citas = re.sub(r"'[^']*'", "''", cmd)
+                for ruta in re.findall(r"(?<![\w.])/[A-Za-z0-9_./$()-]+",
+                                       re.sub(r"https?://\S+", "", sin_citas)):
                     if ruta.startswith("/dev/null"):
                         continue
                     if not ruta.startswith("/home/angel"):
-                        fallos.append(f"d{day}/{b['id']}: ruta fuera de /home/angel: {ruta}")
+                        fallos.append(f"d{day}/{bid}: ruta fuera de /home/angel: {ruta}")
                 for ph in PLACEHOLDERS:
                     if ph in cmd:
-                        fallos.append(f"d{day}/{b['id']}: placeholder {ph} en {cmd[:60]}")
+                        fallos.append(f"d{day}/{bid}: placeholder {ph} en {cmd[:60]}")
                 if "-A 'Mozilla" in cmd or "-A 'curl" in cmd:
-                    fallos.append(f"d{day}/{b['id']}: UA que suplanta un navegador")
+                    fallos.append(f"d{day}/{bid}: UA que suplanta un navegador")
         if total != sum(CUENTAS[day].values()):
             fallos.append(f"d{day}: total {total} != {sum(CUENTAS[day].values())}")
+        if internet[day] < 2:
+            fallos.append(f"d{day}: solo {internet[day]} huecos ≥ 20 min (se exigen ≥ 2)")
 
-    # sesión web (8 posiciones, siempre las mismas)
+    # (d) errores: 10/día, cada fallo seguido de su reintento de la misma familia
     for day, tl in datos.items():
-        if len(tl.get("TimeLineHandlers", [])) != 5:
+        if len(tl.get("TimeLineHandlers", [])) != len(BLOQUES_TRABAJO):
             continue
-        cmds_b1 = [ev["Command"] for ev in tl["TimeLineHandlers"][0]["TimeLineEvents"]]
-        cmds_b3 = [ev["Command"] for ev in tl["TimeLineHandlers"][2]["TimeLineEvents"]]
-        # globales 6..8 = B1[5:8]; globales 36..40 = B3[0:5] (B1=9 + B2=26 = 35 previas)
-        web = cmds_b1[WEB_POS_B1[0] - 1:WEB_POS_B1[-1]] + cmds_b3[:WEB_POS_B3[-1] - WEB_POS_B3[0] + 1]
-        if len(web) != 8:
-            fallos.append(f"d{day}: sesión web con {len(web)} acciones (se esperan 8)")
-        for i, c in enumerate(web):
-            if "curl " in c:
-                if UA not in c:
-                    fallos.append(f"d{day}: acción web sin UA fija: {c[:60]}")
-                if COOKIES not in c:
-                    fallos.append(f"d{day}: acción web sin cookie jar: {c[:60]}")
-            if i > 0 and "cookies.txt" in c and "-e " not in c:
-                fallos.append(f"d{day}: acción web sin Referer: {c[:60]}")
-        if web[1].count("curl ") != 3:
+        n_err = n_reint = 0
+        for h, b in zip(tl["TimeLineHandlers"], BLOQUES_TRABAJO):
+            evs = h["TimeLineEvents"]
+            for i, ev in enumerate(evs):
+                cmd = ev["Command"]
+                mf = re.search(r"\\terror\\t([a-z_]+)\\t", cmd)
+                if mf:
+                    n_err += 1
+                    fam = mf.group(1)
+                    if fam not in FAMILIAS_ERROR:
+                        fallos.append(f"d{day}/{b['id']}: familia de error no permitida '{fam}'")
+                    if i + 1 >= len(evs):
+                        fallos.append(f"d{day}/{b['id']}: error sin reintento posterior ({fam})")
+                        continue
+                    mr = re.search(r"\\treintento\\t([a-z_]+)\\t", evs[i + 1]["Command"])
+                    if not mr or mr.group(1) != fam:
+                        fallos.append(f"d{day}/{b['id']}: el reintento de '{fam}' no es el siguiente")
+                    else:
+                        n_reint += 1
+                    if REGISTRO not in cmd:
+                        fallos.append(f"d{day}/{b['id']}: error sin registro en errores.log")
+        if n_err < 8:
+            fallos.append(f"d{day}: {n_err} errores declarados (< 8/día, CA-03)")
+        if n_reint != n_err:
+            fallos.append(f"d{day}: {n_reint} reintentos emparejados != {n_err} errores")
+
+    # (e) sesión web (por contenido, no por posición: la v2 inserta acciones)
+    for day, tl in datos.items():
+        if len(tl.get("TimeLineHandlers", [])) != len(BLOQUES_TRABAJO):
+            continue
+        cmds = [ev["Command"] for h in tl["TimeLineHandlers"] for ev in h["TimeLineEvents"]]
+        curl_cmds = [c for c in cmds if "curl " in c]
+        for c in curl_cmds:
+            if UA not in c:
+                fallos.append(f"d{day}: acción web sin UA fija: {c[:60]}")
+            if COOKIES not in c:
+                fallos.append(f"d{day}: acción web sin cookie jar: {c[:60]}")
+        if not any(("-c " + COOKIES) in c for c in curl_cmds):
+            fallos.append(f"d{day}: falta abrir la sesión web (cookie jar con -c)")
+        if not any(c.count("curl ") == 3 for c in curl_cmds):
             fallos.append(f"d{day}: los requisitos no son 3 peticiones")
-        if "manual_empleado.pdf" not in web[6]:
+        if not any("manual_empleado.pdf" in c and "-o " + DOWN in c for c in cmds):
             fallos.append(f"d{day}: falta la descarga del PDF")
-        if "sha256sum" not in web[7]:
+        if not any(("sha256sum " + DOWN + "/manual_empleado.pdf") in c for c in cmds):
             fallos.append(f"d{day}: falta la huella de la descarga")
 
-    # calendario / bloques.env
+    # (f) calendario / bloques.env
     cal_path = os.path.join(outdir, "calendario.json")
     env_path = os.path.join(outdir, "bloques.env")
+    cal = None
     if not os.path.isfile(cal_path):
         fallos.append("falta calendario.json")
     else:
         cal = json.load(open(cal_path, encoding="utf-8"))
-        if cal.get("mapa_dias") != MAPA_DIAS:
-            fallos.append("calendario.json: mapa de días incorrecto")
+        if cal.get("receta_version") != VERSION_RECETA:
+            fallos.append(f"calendario.json: receta_version {cal.get('receta_version')} != {VERSION_RECETA}")
+        if cal.get("cuentas") != {str(k): v for k, v in CUENTAS.items()}:
+            fallos.append("calendario.json: cuentas distintas de las del generador")
         if cal.get("total_ventana") != sum(sum(v.values()) for v in CUENTAS.values()):
             fallos.append("calendario.json: total de la ventana incorrecto")
+        if cal.get("hueco_max_intra_bloque_s") != CAP_HUECO_S:
+            fallos.append(f"calendario.json: hueco_max_intra_bloque_s != {CAP_HUECO_S}")
+        err = _mapa_valido(cal.get("mapa_dias") or {})
+        if err:
+            fallos.append("calendario.json: " + err)
+        if mapa_esperado is not None and (cal.get("mapa_dias") or {}) != mapa_esperado:
+            fallos.append("calendario.json: mapa_dias no coincide con el que se pasa por parámetro")
+        if not cal.get("mapa_dias") and mapa_esperado is None:
+            avisos.append("sin fecha: mapa_dias vacío (se fija al cerrar T4 con --t0)")
     if not os.path.isfile(env_path):
         fallos.append("falta bloques.env")
+    else:
+        env = {}
+        for linea in open(env_path, encoding="utf-8"):
+            linea = linea.strip()
+            if not linea or linea.startswith("#") or "=" not in linea:
+                continue
+            k, v = linea.split("=", 1)
+            env[k.strip()] = v.strip()
+        if env.get("TFG_RECETA_VERSION") != str(VERSION_RECETA):
+            fallos.append(f"bloques.env: TFG_RECETA_VERSION != {VERSION_RECETA}")
+        if env.get("TFG_JORNADA") != f"{JORNADA[0]}-{JORNADA[1]}":
+            fallos.append("bloques.env: TFG_JORNADA incorrecta")
+        for b in BLOQUES:
+            if env.get(b["id"]) != f"{b['on'][:5]}-{b['off'][:5]} {b['tipo']}":
+                fallos.append(f"bloques.env: línea {b['id']} incorrecta")
+        if env.get("TFG_CWD_BASE") != HOME:
+            fallos.append("bloques.env: TFG_CWD_BASE incorrecto")
+        mapa_env = {}
+        if env.get("TFG_MAPA_DIAS"):
+            try:
+                for par in env["TFG_MAPA_DIAS"].split(","):
+                    f, kk = par.split(":")
+                    mapa_env[f.strip()] = int(kk)
+            except ValueError:
+                fallos.append("bloques.env: TFG_MAPA_DIAS con formato inválido")
+        if cal is not None and mapa_env != (cal.get("mapa_dias") or {}):
+            fallos.append("bloques.env: TFG_MAPA_DIAS no coincide con calendario.json")
+        if mapa_esperado is not None and mapa_env != mapa_esperado:
+            fallos.append("bloques.env: TFG_MAPA_DIAS no coincide con el parámetro")
+        if env.get("B6"):
+            avisos.append("bloques.env ya trae B6 (campaña, T2)")
+
+    if not os.path.isfile(os.path.join(outdir, "receta_resumen.md")):
+        fallos.append("falta receta_resumen.md")
 
     resumen = {
+        "version": VERSION_RECETA,
         "dias": {d: sum(CUENTAS[d].values()) for d in (1, 2, 3)},
         "total": sum(sum(v.values()) for v in CUENTAS.values()),
-        "web_session": 1,
-        "handlers_browser": 0,
+        "binarios_blanco": len(BINARIOS_OK),
+        "errores": {d: sum(1 for a in componer_dia(d) if a[1] == "error") for d in (1, 2, 3)},
         "fallos": fallos,
         "avisos": avisos,
     }
     if verbose:
         print(f"receta v{VERSION_RECETA}: dias={resumen['dias']} total={resumen['total']} "
-              f"web_session=1 handlers_browser=0")
+              f"errores={resumen['errores']} binarios_ok={resumen['binarios_blanco']} "
+              f"cwd=cd-por-accion handlers_browser=0")
         for a in avisos:
             print(f"AVISO: {a}")
         for f in fallos:
@@ -740,21 +1312,47 @@ def validar(outdir, verbose=True):
 # --------------------------------------------------------------------------
 # main
 # --------------------------------------------------------------------------
+def mapa_desde(t0, mapa):
+    """Construye el mapeo fecha→día desde `--t0` (3 días consecutivos) o `--mapa-dias`."""
+    if mapa:
+        out = {}
+        for par in mapa.split(","):
+            f, kk = par.split(":")
+            out[f.strip()] = int(kk)
+        return out
+    if t0:
+        d0 = datetime.strptime(t0, "%Y-%m-%d").replace(tzinfo=timezone.utc)
+        return {(d0 + timedelta(days=i)).strftime("%Y-%m-%d"): i + 1 for i in range(3)}
+    return {}
+
+
 def main(argv=None):
-    ap = argparse.ArgumentParser(description="Genera/valida la receta legítima (3 días).")
+    ap = argparse.ArgumentParser(description="Genera/valida la receta legítima v2 (3 días).")
     ap.add_argument("--out-dir", default=None)
     ap.add_argument("--check", action="store_true")
-    ap.add_argument("--dry", action="store_true", help="timeline comprimida ×40 para la prueba en seco")
+    ap.add_argument("--dry", action="store_true", help="timeline comprimida para la prueba en seco")
     ap.add_argument("--base", default="10:00Z", help="hora UTC de inicio del día comprimido (HH:MMZ)")
     ap.add_argument("--out", default=None, help="fichero de salida del modo dry")
     ap.add_argument("--day", type=int, default=1, choices=(1, 2, 3))
+    ap.add_argument("--t0", default=None,
+                    help="primer día de la ventana (AAAA-MM-DD): deriva el mapa de los 3 días")
+    ap.add_argument("--mapa-dias", default=None,
+                    help="mapeo explícito fecha:k (p. ej. 2026-11-02:1,2026-11-03:2,2026-11-04:3)")
     args = ap.parse_args(argv)
 
     raiz = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     outdir = args.out_dir or os.path.join(raiz, "Soporte", "Laboratorio", "legitimo_72h", "recetas")
 
+    try:
+        mapa = mapa_desde(args.t0, args.mapa_dias)
+    except (ValueError, IndexError):
+        ap.error("--t0 debe ser AAAA-MM-DD y --mapa-dias 'fecha:k,...'")
+    err = _mapa_valido(mapa)
+    if err:
+        ap.error(err)
+
     if args.check:
-        res = validar(outdir)
+        res = validar(outdir, mapa_esperado=mapa if mapa else None)
         return 0 if not res["fallos"] else 1
 
     if args.dry:
@@ -773,13 +1371,18 @@ def main(argv=None):
         tl, acciones = construir_timeline(day)
         timelines[day] = (tl, acciones)
         escribir_json(os.path.join(outdir, f"d{day}.json"), tl)
-    escribir_calendario(outdir)
+    escribir_calendario(outdir, mapa)
     escribir_resumen(outdir, timelines)
     for day in (1, 2, 3):
         p = os.path.join(outdir, f"d{day}.json")
         h = hashlib.sha256(open(p, "rb").read()).hexdigest()
-        print(f"d{day}.json  {sum(CUENTAS[day].values())} acciones  sha256={h}")
-    res = validar(outdir)
+        tl, _a = timelines[day]
+        gaps = [ev["DelayAfter"] / 1000.0 for hh in tl["TimeLineHandlers"]
+                for ev in hh["TimeLineEvents"][:-1]]
+        print(f"d{day}.json  {sum(CUENTAS[day].values())} acciones  "
+              f"hueco={min(gaps):.0f}-{max(gaps):.0f}s ({max(gaps)/60:.1f} min)  sha256={h}")
+    print(f"mapa_dias={mapa_a_texto(mapa) if mapa else '(vacio: se fija en T4 con --t0)'}")
+    res = validar(outdir, mapa_esperado=mapa if mapa else None)
     return 0 if not res["fallos"] else 1
 
 
