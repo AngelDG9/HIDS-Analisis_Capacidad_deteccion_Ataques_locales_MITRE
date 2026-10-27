@@ -463,8 +463,10 @@ switch ($Phase) {
       $doingAgeMin = [int]((([string]$q).Trim() -split "`r?`n")[0])
     }
     if ($cal.estado -eq 'bloque' -and $doingAgeMin -ge 0) {
-      if ($doingAgeMin -gt 30) { $nivel = 2; $notas.Add('doing>30m') }
-      elseif ($doingAgeMin -gt 15) { if ($nivel -lt 1) { $nivel = 1 }; $notas.Add('doing>15m') }
+      # Umbrales CA-30 del plan v5: AVISO > 25 min, ALARMA > 35 min (los huecos de la receta
+      # v2 llegan a 20,8 min y el keepalive usa STALE=30; con 15 min habia AVISO espurios).
+      if ($doingAgeMin -gt 35) { $nivel = 2; $notas.Add('doing>35m') }
+      elseif ($doingAgeMin -gt 25) { if ($nivel -lt 1) { $nivel = 1 }; $notas.Add('doing>25m') }
     } elseif ($cal.estado -eq 'bloque' -and $doingAgeMin -lt 0) {
       $nivel = 2; $notas.Add('sin_acciones_nunca')
     }

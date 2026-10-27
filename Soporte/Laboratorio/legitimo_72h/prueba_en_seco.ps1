@@ -59,6 +59,21 @@ function Res([string]$id, [bool]$ok, [string]$detalle = '') {
 }
 function Code([string]$txt) { Say '```text'; Say $txt.TrimEnd(); Say '```' }
 
+# Conteos y umbrales REALES de la receta (F-3): se leen del generador (`--check`), no se
+# teclean. Devuelve @{ d = @(d1,d2,d3); hueco_s = 1320; pass = $bool }.
+function Get-RecetaInfo([string]$Texto = '') {
+  if (-not $Texto) {
+    $Texto = & python (Join-Path $Repo '_artefactos\scripts\construir_receta_legitima.py') --check 2>&1 | Out-String
+  }
+  $d = @(0, 0, 0)
+  if ($Texto -match 'dias=\{1: (\d+), 2: (\d+), 3: (\d+)\}') {
+    $d = @([int]$Matches[1], [int]$Matches[2], [int]$Matches[3])
+  }
+  $h = 0
+  if ($Texto -match 'hueco_max=(\d+)s') { $h = [int]$Matches[1] }
+  return @{ d = $d; hueco_s = $h; pass = ($Texto -match 'RESULT=PASS'); raw = $Texto }
+}
+
 function OnVic([string]$cmd, [switch]$Pw) {
   if ($Pw) { return ([string](($GuestPw | & $Ssh -i $Key -o StrictHostKeyChecking=no $Vic $cmd 2>&1 | Out-String))) }
   return ([string](& $Ssh -i $Key -o StrictHostKeyChecking=no $Vic $cmd 2>&1 | Out-String))
@@ -365,7 +380,9 @@ function DT7 {
 # DT9 - DOBLE EJECUCION de la receta (misma secuencia)
 # --------------------------------------------------------------------------
 function DT9 {
-  Sec 'DT9' 'DOBLE EJECUCION de la receta (misma secuencia, 111 acciones)'
+  $info = Get-RecetaInfo
+  $esperado = $info.d[0]          # acciones del día 1 (la dry es d1), leídas de --check
+  Sec 'DT9' "DOBLE EJECUCION de la receta (misma secuencia, $esperado acciones)"
   $seqs = @(); $cuentas = @()
   foreach ($run in 1,2) {
     $base = (Get-Date).ToUniversalTime().AddMinutes(1).ToString('HH:mm') + 'Z'
@@ -397,8 +414,8 @@ function DT9 {
     }
   }
   ColocarTimeline (Join-Path $Recetas 'd1.json')
-  $ok = $igual -and ($a.Count -eq 111) -and ($cuentas[0][1] -eq 0) -and ($cuentas[1][1] -eq 0)
-  return (Res 'DT9' $ok '111 acciones en ambos runs y recovery.log vacio')
+  $ok = $igual -and ($a.Count -eq $esperado) -and ($cuentas[0][1] -eq 0) -and ($cuentas[1][1] -eq 0)
+  return (Res 'DT9' $ok "$esperado acciones en ambos runs y recovery.log vacio")
 }
 
 # --------------------------------------------------------------------------
@@ -529,7 +546,10 @@ switch ($DT) {
     Sec 'DT10' 'Invariantes de la receta (--check)'
     $chk = & python (Join-Path $Repo '_artefactos\scripts\construir_receta_legitima.py') --check 2>&1 | Out-String
     Code $chk
-    $resultados['DT10'] = Res 'DT10' ($chk -match 'RESULT=PASS') '111/117/105, hueco <= 12 min, 0 random, 0 Browser*, web_session=1'
+    $info = Get-RecetaInfo $chk
+    $hmin = [math]::Round($info.hueco_s / 60.0)
+    $det = ("{0}/{1}/{2}, hueco <= {3} min, 0 random, 0 Browser*, web_session=1" -f $info.d[0], $info.d[1], $info.d[2], $hmin)
+    $resultados['DT10'] = Res 'DT10' ($chk -match 'RESULT=PASS') $det
   }
   'DT11'  { $resultados['DT11'] = DT11 }
   'DT4A'  { $script:dt4pid = DT4_Arrancar }

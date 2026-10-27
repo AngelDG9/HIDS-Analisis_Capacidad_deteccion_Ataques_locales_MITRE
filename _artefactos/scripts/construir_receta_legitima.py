@@ -164,6 +164,14 @@ BINARIOS_OK = {
 }
 # Familias de error admitidas (M3, §5.1 y §1.4). Nada fuera de esta lista.
 FAMILIAS_ERROR = ("ruta_mal", "cp_dir", "gzip", "rm_inexistente", "cat_dir", "opcion")
+# Builtins de bash que NO generan `execve` y por tanto no se validan como binarios.
+BUILTINS = {"cd", "printf"}
+# Formato del registro de errores (F-1): 5 campos separados por TAB, terminados en \n.
+# Va **entre comillas simples** en el comando ⇒ lo interpreta `printf`, no el shell.
+FMT_REGISTRO = "%s\\t%s\\t%s\\t%s\\trc=%s\\n"
+# `printf '<fmt>' $(date …) <tipo> <familia> '<comando>' $r >> errores.log`
+RE_REGISTRO = re.compile(
+    r"printf '([^']*)' \$\(date -u \+%FT%TZ\) (error|reintento) ([a-z_]+) '([^']*)' \$r")
 
 HANDLERS_PROHIBIDOS = {"BrowserFirefox", "BrowserChrome", "Curl", "NpcSystem"}
 PLACEHOLDERS = ("{uuid}", "{n}", "{c}", "{now}")
@@ -220,8 +228,8 @@ def binarios_de(cmd: str):
     """Binarios que ejecuta un comando: primer token de **cada** segmento.
 
     Cubre los encadenados con `&&`, los grupos de reintento `|| { …; }` y los `;` internos.
-    Se ignoran las cadenas entrecomilladas con `'` (p. ej. `sed 's/;/,/g'`) y el prefijo
-    `cd <carpeta> && ` (builtin, sin `execve`).
+    Se ignoran las cadenas entrecomilladas con `'` (p. ej. `sed 's/;/,/g'`), el prefijo
+    `cd <carpeta> && ` y los **builtins** (`cd`, `printf`), que no generan `execve`.
     """
     c = re.sub(r"'[^']*'", "''", cmd.strip())
     m = re.match(r"^cd (/home/angel[^\s&]*)\s+&&\s+", c)
@@ -236,6 +244,8 @@ def binarios_de(cmd: str):
         if tok in ("{", "}"):
             continue
         if re.match(r"^[A-Za-z_][A-Za-z0-9_]*=", tok):     # r=$?  ├│  rc=0
+            continue
+        if tok in BUILTINS:                                # cd / printf: sin execve
             continue
         out.append(tok)
     return out
@@ -275,18 +285,25 @@ def curl_propfind(url, out):
 # --------------------------------------------------------------------------
 # Errores humanos (M3): fallo + reintento + registro en `errores.log`
 # --------------------------------------------------------------------------
-def pareja_error(fam: str, fallo: str, ok: str, cwd_fallo: str, cwd_ok: str):
+def pareja_error(fam: str, fallo: str, ok: str, cwd_fallo: str, cwd_ok: str,
+                 registro: str = REGISTRO):
     """Devuelve las dos acciones (fallo, reintento) de una familia de error.
 
     · El **fallo** es una acción propia: `exit≠0` (visible en `auditd`) y no corta la ráfaga.
     · Su `rc` real se captura con `$?` y se escribe en `errores.log` (no se teclea a mano).
-    · El **reintento correcto** va inmediatamente después y, si sale bien, deja su línea.
+    · El **reintento correcto** va inmediatamente después y, si sale bien, deja su línea con
+      **su** `rc` también capturado (`$?`, F-2), no tecleado.
+    · El registro se escribe con **`printf` y formato entrecomillado con `'`** (F-1): así el
+      propio `printf` interpreta `\\t`/`\\n`. Un `echo -e …\\t…` **sin comillas** no sirve: el
+      shell se come la barra invertida antes de que `echo` la vea y los campos salen pegados
+      (`…Zterrortruta_mal…`). Además `echo -e` no existe en `dash`.
     Formato del registro (TAB): `ts_utc · tipo · familia · comando · rc` (2 líneas por error).
     """
+    assert "'" not in fallo and "'" not in ok, "el comando no puede llevar comillas simples"
     a = (f"{fallo} 2>/dev/null || {{ r=$?; "
-         f"echo -e $(date -u +%FT%TZ)\\terror\\t{fam}\\t{fallo}\\trc=$r >> {REGISTRO}; }}")
-    b = (f"{ok} && "
-         f"echo -e $(date -u +%FT%TZ)\\treintento\\t{fam}\\t{ok}\\trc=0 >> {REGISTRO}")
+         f"printf '{FMT_REGISTRO}' $(date -u +%FT%TZ) error {fam} '{fallo}' $r >> {registro}; }}")
+    b = (f"{ok} && {{ r=$?; "
+         f"printf '{FMT_REGISTRO}' $(date -u +%FT%TZ) reintento {fam} '{ok}' $r >> {registro}; }}")
     return [("error", a, cwd_fallo), ("reintento", b, cwd_ok)]
 
 
@@ -929,14 +946,14 @@ def escribir_calendario(outdir, mapa):
 
 
 def _comando_de_error(cmd: str):
-    """Extrae (comando que falla | comando del reintento) de una acción de error."""
-    m = re.search(r"&& (.*?) 2>/dev/null \|\|", cmd)
+    """Extrae (tipo, comando, familia) de una acción de error, leyendo el `printf`."""
+    m = RE_REGISTRO.search(cmd)
     if m:
-        return "fallo", m.group(1)
-    m = re.search(r"&& (.*?) && echo -e ", cmd)
+        return m.group(2), m.group(4), m.group(3)
+    m = re.search(r"^(.*?) 2>/dev/null \|\|", cmd)
     if m:
-        return "reintento", m.group(1)
-    return "", cmd
+        return "error", m.group(1), ""
+    return "", cmd, ""
 
 
 def escribir_resumen(outdir, timelines):
@@ -1003,17 +1020,15 @@ def escribir_resumen(outdir, timelines):
     k = 0
     for bid in IDS_TRABAJO:
         for (fam, cmd, _cwd) in componer_bloque(1, bid):
-            tipo, txt = _comando_de_error(cmd)
-            if tipo == "fallo":
+            tipo, txt, fam_txt = _comando_de_error(cmd)
+            if tipo == "error":
                 k += 1
                 sig = None
                 bloque = componer_bloque(1, bid)
                 i = [c for c in bloque].index((fam, cmd, _cwd))
                 if i + 1 < len(bloque):
-                    t2, txt2 = _comando_de_error(bloque[i + 1][1])
+                    t2, txt2, _f2 = _comando_de_error(bloque[i + 1][1])
                     sig = txt2 if t2 == "reintento" else None
-                m = re.search(r"\\terror\\t([a-z_]+)\\t", cmd)
-                fam_txt = m.group(1) if m else "?"
                 lineas.append(f"| {k} | {bid} | `error/{fam_txt}` | `{txt}` | `{sig or '—'}` |")
     lineas.append("")
 
@@ -1158,6 +1173,12 @@ def validar(outdir, verbose=True, mapa_esperado=None):
                     fallos.append(f"d{day}/{bid}: cwd prohibido en: {cmd[:60]}")
                 if "sudo" in cmd.split():
                     fallos.append(f"d{day}/{bid}: sudo prohibido")
+                # F-1: el registro de errores NO puede usar `echo -e` ni `\t` sin comillas
+                # (el shell se come la barra y los campos salen pegados).
+                if "echo -e" in cmd:
+                    fallos.append(f"d{day}/{bid}: `echo -e` prohibido (F-1); usar printf: {cmd[:70]}")
+                if "\\t" in re.sub(r"'[^']*'", "''", cmd):
+                    fallos.append(f"d{day}/{bid}: `\\t` sin comillas simples (F-1): {cmd[:70]}")
                 for tok in binarios_de(cmd):
                     if tok not in BINARIOS_OK:
                         fallos.append(f"d{day}/{bid}: binario no permitido '{tok}' en {cmd[:70]}")
@@ -1187,22 +1208,37 @@ def validar(outdir, verbose=True, mapa_esperado=None):
             evs = h["TimeLineEvents"]
             for i, ev in enumerate(evs):
                 cmd = ev["Command"]
-                mf = re.search(r"\\terror\\t([a-z_]+)\\t", cmd)
-                if mf:
+                mreg = RE_REGISTRO.search(cmd)
+                if not mreg:
+                    continue
+                tipo, fam = mreg.group(2), mreg.group(3)
+                # F-1: formato exacto entre comillas simples + `rc` capturado con `$?`
+                if mreg.group(1) != FMT_REGISTRO:
+                    fallos.append(f"d{day}/{b['id']}: formato de errores.log distinto de "
+                                  f"FMT_REGISTRO ({tipo}/{fam})")
+                if "r=$?;" not in cmd or "$r" not in cmd:
+                    fallos.append(f"d{day}/{b['id']}: rc no capturado con $? ({tipo}/{fam})")
+                if "rc=0" in cmd:
+                    fallos.append(f"d{day}/{b['id']}: rc tecleado (rc=0) en {tipo}/{fam}")
+                if REGISTRO not in cmd:
+                    fallos.append(f"d{day}/{b['id']}: error sin registro en errores.log")
+                if tipo == "error":
                     n_err += 1
-                    fam = mf.group(1)
                     if fam not in FAMILIAS_ERROR:
                         fallos.append(f"d{day}/{b['id']}: familia de error no permitida '{fam}'")
                     if i + 1 >= len(evs):
                         fallos.append(f"d{day}/{b['id']}: error sin reintento posterior ({fam})")
                         continue
-                    mr = re.search(r"\\treintento\\t([a-z_]+)\\t", evs[i + 1]["Command"])
-                    if not mr or mr.group(1) != fam:
+                    msig = RE_REGISTRO.search(evs[i + 1]["Command"])
+                    if (not msig or msig.group(2) != "reintento" or msig.group(3) != fam
+                            or msig.group(4) == mreg.group(4)):
                         fallos.append(f"d{day}/{b['id']}: el reintento de '{fam}' no es el siguiente")
                     else:
                         n_reint += 1
-                    if REGISTRO not in cmd:
-                        fallos.append(f"d{day}/{b['id']}: error sin registro en errores.log")
+                else:
+                    prev = RE_REGISTRO.search(evs[i - 1]["Command"]) if i > 0 else None
+                    if not prev or prev.group(2) != "error" or prev.group(3) != fam:
+                        fallos.append(f"d{day}/{b['id']}: reintento sin fallo previo ({fam})")
         if n_err < 8:
             fallos.append(f"d{day}: {n_err} errores declarados (< 8/día, CA-03)")
         if n_reint != n_err:
@@ -1300,7 +1336,7 @@ def validar(outdir, verbose=True, mapa_esperado=None):
     if verbose:
         print(f"receta v{VERSION_RECETA}: dias={resumen['dias']} total={resumen['total']} "
               f"errores={resumen['errores']} binarios_ok={resumen['binarios_blanco']} "
-              f"cwd=cd-por-accion handlers_browser=0")
+              f"hueco_max={CAP_HUECO_S}s cwd=cd-por-accion handlers_browser=0")
         for a in avisos:
             print(f"AVISO: {a}")
         for f in fallos:

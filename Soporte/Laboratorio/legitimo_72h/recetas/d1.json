@@ -26,11 +26,11 @@
      "DelayAfter": 59000
     },
     {
-     "Command": "cd /home/angel/Documentos && ls -la /home/angel/Documentos/informe 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\\terror\\truta_mal\\tls -la /home/angel/Documentos/informe\\trc=$r >> /home/angel/Documentos/errores.log; }",
+     "Command": "cd /home/angel/Documentos && ls -la /home/angel/Documentos/informe 2>/dev/null || { r=$?; printf '%s\\t%s\\t%s\\t%s\\trc=%s\\n' $(date -u +%FT%TZ) error ruta_mal 'ls -la /home/angel/Documentos/informe' $r >> /home/angel/Documentos/errores.log; }",
      "DelayAfter": 107000
     },
     {
-     "Command": "cd /home/angel/Documentos && ls -la /home/angel/Documentos/informes && echo -e $(date -u +%FT%TZ)\\treintento\\truta_mal\\tls -la /home/angel/Documentos/informes\\trc=0 >> /home/angel/Documentos/errores.log",
+     "Command": "cd /home/angel/Documentos && ls -la /home/angel/Documentos/informes && { r=$?; printf '%s\\t%s\\t%s\\t%s\\trc=%s\\n' $(date -u +%FT%TZ) reintento ruta_mal 'ls -la /home/angel/Documentos/informes' $r >> /home/angel/Documentos/errores.log; }",
      "DelayAfter": 41000
     },
     {
@@ -124,19 +124,19 @@
      "DelayAfter": 863000
     },
     {
-     "Command": "cd /home/angel && df -h --max-depth=1 / 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\\terror\\topcion\\tdf -h --max-depth=1 /\\trc=$r >> /home/angel/Documentos/errores.log; }",
+     "Command": "cd /home/angel && df -h --max-depth=1 / 2>/dev/null || { r=$?; printf '%s\\t%s\\t%s\\t%s\\trc=%s\\n' $(date -u +%FT%TZ) error opcion 'df -h --max-depth=1 /' $r >> /home/angel/Documentos/errores.log; }",
      "DelayAfter": 342000
     },
     {
-     "Command": "cd /home/angel && df -h / && echo -e $(date -u +%FT%TZ)\\treintento\\topcion\\tdf -h /\\trc=0 >> /home/angel/Documentos/errores.log",
+     "Command": "cd /home/angel && df -h / && { r=$?; printf '%s\\t%s\\t%s\\t%s\\trc=%s\\n' $(date -u +%FT%TZ) reintento opcion 'df -h /' $r >> /home/angel/Documentos/errores.log; }",
      "DelayAfter": 57000
     },
     {
-     "Command": "cd /home/angel/Documentos/informes && cp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes_2026/informe.bak 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\\terror\\tcp_dir\\tcp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes_2026/informe.bak\\trc=$r >> /home/angel/Documentos/errores.log; }",
+     "Command": "cd /home/angel/Documentos/informes && cp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes_2026/informe.bak 2>/dev/null || { r=$?; printf '%s\\t%s\\t%s\\t%s\\trc=%s\\n' $(date -u +%FT%TZ) error cp_dir 'cp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes_2026/informe.bak' $r >> /home/angel/Documentos/errores.log; }",
      "DelayAfter": 43000
     },
     {
-     "Command": "cd /home/angel/Documentos/informes && cp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes/informe.bak && echo -e $(date -u +%FT%TZ)\\treintento\\tcp_dir\\tcp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes/informe.bak\\trc=0 >> /home/angel/Documentos/errores.log",
+     "Command": "cd /home/angel/Documentos/informes && cp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes/informe.bak && { r=$?; printf '%s\\t%s\\t%s\\t%s\\trc=%s\\n' $(date -u +%FT%TZ) reintento cp_dir 'cp -f /home/angel/Documentos/informes/informe.txt /home/angel/Documentos/informes/informe.bak' $r >> /home/angel/Documentos/errores.log; }",
      "DelayAfter": 266000
     },
     {
@@ -172,11 +172,11 @@
      "DelayAfter": 1142000
     },
     {
-     "Command": "cd /home/angel/Documentos/informes && stat /home/angel/Documentos/informes/informe_2026.txt 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\\terror\\truta_mal\\tstat /home/angel/Documentos/informes/informe_2026.txt\\trc=$r >> /home/angel/Documentos/errores.log; }",
+     "Command": "cd /home/angel/Documentos/informes && stat /home/angel/Documentos/informes/informe_2026.txt 2>/dev/null || { r=$?; printf '%s\\t%s\\t%s\\t%s\\trc=%s\\n' $(date -u +%FT%TZ) error ruta_mal 'stat /home/angel/Documentos/informes/informe_2026.txt' $r >> /home/angel/Documentos/errores.log; }",
      "DelayAfter": 41000
     },
     {
-     "Command": "cd /home/angel/Documentos/informes && stat /home/angel/Documentos/informes/informe.txt && echo -e $(date -u +%FT%TZ)\\treintento\\truta_mal\\tstat /home/angel/Documentos/informes/informe.txt\\trc=0 >> /home/angel/Documentos/errores.log",
+     "Command": "cd /home/angel/Documentos/informes && stat /home/angel/Documentos/informes/informe.txt && { r=$?; printf '%s\\t%s\\t%s\\t%s\\trc=%s\\n' $(date -u +%FT%TZ) reintento ruta_mal 'stat /home/angel/Documentos/informes/informe.txt' $r >> /home/angel/Documentos/errores.log; }",
      "DelayAfter": 482000
     },
     {
@@ -262,11 +262,11 @@
      "DelayAfter": 57000
     },
     {
-     "Command": "cd /home/angel/Documentos/informes && gzip -d /home/angel/Documentos/informes/informe.txt 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\\terror\\tgzip\\tgzip -d /home/angel/Documentos/informes/informe.txt\\trc=$r >> /home/angel/Documentos/errores.log; }",
+     "Command": "cd /home/angel/Documentos/informes && gzip -d /home/angel/Documentos/informes/informe.txt 2>/dev/null || { r=$?; printf '%s\\t%s\\t%s\\t%s\\trc=%s\\n' $(date -u +%FT%TZ) error gzip 'gzip -d /home/angel/Documentos/informes/informe.txt' $r >> /home/angel/Documentos/errores.log; }",
      "DelayAfter": 43000
     },
     {
-     "Command": "cd /home/angel/Documentos/informes && gzip -kf /home/angel/Documentos/informes/informe.txt && echo -e $(date -u +%FT%TZ)\\treintento\\tgzip\\tgzip -kf /home/angel/Documentos/informes/informe.txt\\trc=0 >> /home/angel/Documentos/errores.log",
+     "Command": "cd /home/angel/Documentos/informes && gzip -kf /home/angel/Documentos/informes/informe.txt && { r=$?; printf '%s\\t%s\\t%s\\t%s\\trc=%s\\n' $(date -u +%FT%TZ) reintento gzip 'gzip -kf /home/angel/Documentos/informes/informe.txt' $r >> /home/angel/Documentos/errores.log; }",
      "DelayAfter": 62000
     },
     {
@@ -358,11 +358,11 @@
      "DelayAfter": 57000
     },
     {
-     "Command": "cd /home/angel/Descargas && rm /home/angel/Descargas/tmp_borradores.csv 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\\terror\\trm_inexistente\\trm /home/angel/Descargas/tmp_borradores.csv\\trc=$r >> /home/angel/Documentos/errores.log; }",
+     "Command": "cd /home/angel/Descargas && rm /home/angel/Descargas/tmp_borradores.csv 2>/dev/null || { r=$?; printf '%s\\t%s\\t%s\\t%s\\trc=%s\\n' $(date -u +%FT%TZ) error rm_inexistente 'rm /home/angel/Descargas/tmp_borradores.csv' $r >> /home/angel/Documentos/errores.log; }",
      "DelayAfter": 187000
     },
     {
-     "Command": "cd /home/angel/Descargas && rm -f /home/angel/Descargas/tmp_borradores.csv && echo -e $(date -u +%FT%TZ)\\treintento\\trm_inexistente\\trm -f /home/angel/Descargas/tmp_borradores.csv\\trc=0 >> /home/angel/Documentos/errores.log",
+     "Command": "cd /home/angel/Descargas && rm -f /home/angel/Descargas/tmp_borradores.csv && { r=$?; printf '%s\\t%s\\t%s\\t%s\\trc=%s\\n' $(date -u +%FT%TZ) reintento rm_inexistente 'rm -f /home/angel/Descargas/tmp_borradores.csv' $r >> /home/angel/Documentos/errores.log; }",
      "DelayAfter": 237000
     },
     {
@@ -448,11 +448,11 @@
      "DelayAfter": 599000
     },
     {
-     "Command": "cd /home/angel/Documentos && cat /home/angel/Documentos/actas 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\\terror\\tcat_dir\\tcat /home/angel/Documentos/actas\\trc=$r >> /home/angel/Documentos/errores.log; }",
+     "Command": "cd /home/angel/Documentos && cat /home/angel/Documentos/actas 2>/dev/null || { r=$?; printf '%s\\t%s\\t%s\\t%s\\trc=%s\\n' $(date -u +%FT%TZ) error cat_dir 'cat /home/angel/Documentos/actas' $r >> /home/angel/Documentos/errores.log; }",
      "DelayAfter": 48000
     },
     {
-     "Command": "cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.bak && echo -e $(date -u +%FT%TZ)\\treintento\\tcat_dir\\tcat /home/angel/Documentos/informes/informe.bak\\trc=0 >> /home/angel/Documentos/errores.log",
+     "Command": "cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.bak && { r=$?; printf '%s\\t%s\\t%s\\t%s\\trc=%s\\n' $(date -u +%FT%TZ) reintento cat_dir 'cat /home/angel/Documentos/informes/informe.bak' $r >> /home/angel/Documentos/errores.log; }",
      "DelayAfter": 55000
     },
     {
@@ -484,11 +484,11 @@
      "DelayAfter": 57000
     },
     {
-     "Command": "cd /home/angel/Documentos/actas && cp -f /home/angel/Documentos/actas/compartida_1.txt /home/angel/Documentos/compartidas/ 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\\terror\\tcp_dir\\tcp -f /home/angel/Documentos/actas/compartida_1.txt /home/angel/Documentos/compartidas/\\trc=$r >> /home/angel/Documentos/errores.log; }",
+     "Command": "cd /home/angel/Documentos/actas && cp -f /home/angel/Documentos/actas/compartida_1.txt /home/angel/Documentos/compartidas/ 2>/dev/null || { r=$?; printf '%s\\t%s\\t%s\\t%s\\trc=%s\\n' $(date -u +%FT%TZ) error cp_dir 'cp -f /home/angel/Documentos/actas/compartida_1.txt /home/angel/Documentos/compartidas/' $r >> /home/angel/Documentos/errores.log; }",
      "DelayAfter": 43000
     },
     {
-     "Command": "cd /home/angel/Documentos/actas && cp -f /home/angel/Documentos/actas/compartida_1.txt /home/angel/Documentos/actas/compartida_copia.txt && echo -e $(date -u +%FT%TZ)\\treintento\\tcp_dir\\tcp -f /home/angel/Documentos/actas/compartida_1.txt /home/angel/Documentos/actas/compartida_copia.txt\\trc=0 >> /home/angel/Documentos/errores.log",
+     "Command": "cd /home/angel/Documentos/actas && cp -f /home/angel/Documentos/actas/compartida_1.txt /home/angel/Documentos/actas/compartida_copia.txt && { r=$?; printf '%s\\t%s\\t%s\\t%s\\trc=%s\\n' $(date -u +%FT%TZ) reintento cp_dir 'cp -f /home/angel/Documentos/actas/compartida_1.txt /home/angel/Documentos/actas/compartida_copia.txt' $r >> /home/angel/Documentos/errores.log; }",
      "DelayAfter": 62000
     },
     {
@@ -508,11 +508,11 @@
      "DelayAfter": 630000
     },
     {
-     "Command": "cd /home/angel/Documentos && ls -la --clasificar /home/angel/Documentos 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\\terror\\topcion\\tls -la --clasificar /home/angel/Documentos\\trc=$r >> /home/angel/Documentos/errores.log; }",
+     "Command": "cd /home/angel/Documentos && ls -la --clasificar /home/angel/Documentos 2>/dev/null || { r=$?; printf '%s\\t%s\\t%s\\t%s\\trc=%s\\n' $(date -u +%FT%TZ) error opcion 'ls -la --clasificar /home/angel/Documentos' $r >> /home/angel/Documentos/errores.log; }",
      "DelayAfter": 351000
     },
     {
-     "Command": "cd /home/angel/Documentos && ls -la --classify /home/angel/Documentos && echo -e $(date -u +%FT%TZ)\\treintento\\topcion\\tls -la --classify /home/angel/Documentos\\trc=0 >> /home/angel/Documentos/errores.log",
+     "Command": "cd /home/angel/Documentos && ls -la --classify /home/angel/Documentos && { r=$?; printf '%s\\t%s\\t%s\\t%s\\trc=%s\\n' $(date -u +%FT%TZ) reintento opcion 'ls -la --classify /home/angel/Documentos' $r >> /home/angel/Documentos/errores.log; }",
      "DelayAfter": 44000
     },
     {
@@ -556,11 +556,11 @@
      "DelayAfter": 55000
     },
     {
-     "Command": "cd /home/angel/Documentos/informes && gzip -d /home/angel/Documentos/informes/informe.bak 2>/dev/null || { r=$?; echo -e $(date -u +%FT%TZ)\\terror\\tgzip\\tgzip -d /home/angel/Documentos/informes/informe.bak\\trc=$r >> /home/angel/Documentos/errores.log; }",
+     "Command": "cd /home/angel/Documentos/informes && gzip -d /home/angel/Documentos/informes/informe.bak 2>/dev/null || { r=$?; printf '%s\\t%s\\t%s\\t%s\\trc=%s\\n' $(date -u +%FT%TZ) error gzip 'gzip -d /home/angel/Documentos/informes/informe.bak' $r >> /home/angel/Documentos/errores.log; }",
      "DelayAfter": 44000
     },
     {
-     "Command": "cd /home/angel/Documentos/informes && gzip -kf /home/angel/Documentos/informes/informe.bak && echo -e $(date -u +%FT%TZ)\\treintento\\tgzip\\tgzip -kf /home/angel/Documentos/informes/informe.bak\\trc=0 >> /home/angel/Documentos/errores.log",
+     "Command": "cd /home/angel/Documentos/informes && gzip -kf /home/angel/Documentos/informes/informe.bak && { r=$?; printf '%s\\t%s\\t%s\\t%s\\trc=%s\\n' $(date -u +%FT%TZ) reintento gzip 'gzip -kf /home/angel/Documentos/informes/informe.bak' $r >> /home/angel/Documentos/errores.log; }",
      "DelayAfter": 269000
     },
     {
