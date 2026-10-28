@@ -1,0 +1,9 @@
+﻿2026-10-28T22:16:40.285+0000 | audit_ts=None | cwd=/home/angel/Documentos/campana_fp/C-01 | cmd=rm
+2026-10-28T22:16:40.288+0000 | audit_ts=None | cwd=/home/angel/Documentos/campana_fp/C-01 | cmd=rm
+2026-10-28T22:16:40.290+0000 | audit_ts=None | cwd=/home/angel/Documentos/campana_fp/C-01 | cmd=rm
+2026-10-28T22:16:40.293+0000 | audit_ts=None | cwd=/home/angel/Documentos/campana_fp/C-01 | cmd=rm
+2026-10-28T22:20:20.341+0000 | audit_ts=None | cwd=/home/angel/Documentos/campana_fp/C-02 | cmd=rm
+2026-10-28T22:20:20.342+0000 | audit_ts=None | cwd=/home/angel/Documentos/campana_fp/C-02 | cmd=rm
+2026-10-28T22:20:20.345+0000 | audit_ts=None | cwd=/home/angel/Documentos/campana_fp/C-02 | cmd=rm
+2026-10-28T22:23:58.389+0000 | audit_ts=None | cwd=/home/angel/Documentos/campana_fp/C-03 | cmd=rm
+total_exe=58

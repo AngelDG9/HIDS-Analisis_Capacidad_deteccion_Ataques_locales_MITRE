@@ -1,0 +1,34 @@
+﻿Wed Oct 28 11:01:17 PM CET 2026
+17309 bash -c timeout 40 sh -c date -u +%FT%TZ; pgrep -af ghosts.client.linux; echo ---CLIENTOUT---; tail -20 /home/angel/ghosts-client/client.out; echo ---APPLOG---; tail -10 /home/angel/ghosts-client/logs/app.log
+---CLIENTOUT---
+ |  |_( O- )|   .|  |/   |  | |  |\  :` `. '--.  .--'\  :` `.
+ |  | .--, \|       |\_) |  |\|  | '..`''.)   |  |    '..`''.)
+(|  | '. (_/|  .-.  |  \ |  | |  |.-._)   \   |  |   .-._)   \
+ |  '--'  | |  | |  |   `'  '-'  '\       /   |  |   \       /
+  `------'  `--' `--'     `-----'  `-----'    `--'    `-----'
+
+
+GHOSTS (ghosts.client.linux:8.0.0.0 [8.2.3.0]) running in production mode. Installed path: /home/angel/ghosts-client
+Connecting to http://192.168.65.1:5000/clientHub...
+Connection state: Disconnected
+Sleeping for 36006589 milliseconds until the next action time.
+Sleeping for 65706582 milliseconds until the next action time.
+Sleeping for 44406586 milliseconds until the next action time.
+Sleeping for 57606583 milliseconds until the next action time.
+Sleeping for 36726589 milliseconds until the next action time.
+Sleeping for 68766579 milliseconds until the next action time.
+Connected to http://192.168.65.1:5000/clientHub
+Peeking into queue...
+ID: 7c33a13a-fe89-4a56-bf3c-fcd499e1e557
+Heartbeat 2026-10-28T21:59:53.6319668Z
+---APPLOG---
+28/10/2026 22:00:54 PM|ghosts.client.linux.Comms.CheckId.get_Id|Returning cached ID: 7c33a13a-fe89-4a56-bf3c-fcd499e1e557
+28/10/2026 22:00:54 PM|ghosts.client.linux.Infrastructure.WebClientBuilder.GetHeaders|Webrequest headers generated: {"UserAgent":"Ghosts Client","ghosts-id":"7c33a13a-fe89-4a56-bf3c-fcd499e1e557","ghosts-name":"victima-linux","ghosts-fqdn":"localhost","ghosts-host":"victima-linux","ghosts-domain":"(none)","ghosts-resolvedhost":"localhost","ghosts-ip":"127.0.1.1","ghosts-user":"YW5nZWw=","ghosts-version":"8.0.0.0"}
+28/10/2026 22:00:54 PM|ghosts.client.linux.Comms.Updates.GetServerUpdates|10/28/2026 11:00:54ÔÇ»PM - No new configuration found
+28/10/2026 22:01:07 PM|ghosts.client.linux.timelineManager.Orchestrator.OnChanged|FileWatcher event raised: /home/angel/ghosts-client/config/timeline.json timeline.json Changed
+28/10/2026 22:01:07 PM|ghosts.client.linux.timelineManager.Orchestrator.OnChanged|FileWatcher Processing: /home/angel/ghosts-client/config/timeline.json Changed
+28/10/2026 22:01:07 PM|ghosts.client.linux.timelineManager.Orchestrator.OnChanged|Reloading ghosts.client.linux.timelineManager.Orchestrator
+28/10/2026 22:01:07 PM|ghosts.client.linux.timelineManager.Orchestrator.OnChanged|terminate existing tasks and rerun orchestrator
+28/10/2026 22:01:07 PM|ghosts.client.linux.timelineManager.Orchestrator.StopCommon|Stopping all threads.
+28/10/2026 22:01:07 PM|ghosts.client.linux.handlers.Bash..ctor|Thread aborted, Command handler exiting
+28/10/2026 22:01:07 PM|ghosts.client.linux.handlers.Bash..ctor|Thread aborted, Command handler exiting

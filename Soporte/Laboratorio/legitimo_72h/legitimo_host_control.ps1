@@ -17,13 +17,16 @@
 #              + checklist
 #   watch    : vigilancia de 9 senales (7 en vivo + 2 post-hoc: RAM y recovery.log), 3 niveles, SIN tocar
 #              la victima (host + manager)             [cada 30 min en la ventana]
+#              + re-pausa de Windows Update del HOST (C-3): protege V8 (sin reinicio); WU es
+#              del host, NO del sistema medido -> no toca la victima ni altera la medida.
 #   stop     : stop victima (soft). El manager SIGUE encendido (extraccion)
 #   drytest  : ensayo de la receta comprimida en el invitado (fuera de ventana)
 #   cleanup  : parada total y restauracion (logall_json OFF, VMs, GHOSTS, internet local)
 #   status   : imprime el estado (VMs, API GHOSTS, manager, logall_json)
 #
 # Uso:
-#   $env:TFG_GUEST_PW = '<pw>'    # solo en memoria
+#   $env:TFG_GUEST_PW = '<pw>'    # persistida en HKCU\Environment (la necesitan las tareas
+#                                 # TFG-Legit-*); se borra al cerrar la ventana
 #   powershell -NoProfile -ExecutionPolicy Bypass -File legitimo_host_control.ps1 -Phase prep
 # ============================================================================
 [CmdletBinding()]
@@ -37,6 +40,10 @@ param(
   # Solo prueba en seco: permite ejecutar `watch` fuera de [t0,t1] y forzar bloque
   [switch]$Test,
   [switch]$ForzarBloque,
+  # Solo prueba en seco del bloque de Windows Update (C-3): lee el estado, decide y lo
+  # registra, pero NO ejecuta `pausar_windows_update.ps1`. Asi se puede ensayar el codigo
+  # sin tocar el host, y sin VM. No viaja a la ventana.
+  [switch]$DryRunWu,
   # Solo prueba en seco: umbral de RAM libre de G-12 (MB). Su unico fin es poder
   # ejercitar la NEGATIVA de G-12 (codigo 48) sin tocar la VM; en la ventana se usa
   # el valor del plan (1500 MB) porque es el valor por defecto.
@@ -190,7 +197,11 @@ function Set-TimelineEnVictima([string]$Path) {
 }
 
 function Get-ClientEstado {
-  $s = Invoke-OnVm $Vic "pgrep -af "(^|/)ghosts[.]client[.]linux" | head -1" '' -SinLog
+  # H-1 (T4-a): sin comillas dobles anidadas. Windows PowerShell se comia las `"` y el
+  # remoto recibia un `pgrep` roto (falso negativo que ademas disparaba un `start` de mas).
+  # El patron va entre COMILLAS SIMPLES (las resuelve el shell del invitado) y es el mismo
+  # de `client_ctl.sh:35`: no se autoempareja con su propio literal.
+  $s = Invoke-OnVm $Vic "pgrep -af '(^|/)ghosts[.]client[.]linux' | head -1" '' -SinLog
   return ([string]$s).Trim()
 }
 
@@ -249,6 +260,26 @@ function Hms2S([string]$h) {
 function Test-VmEnMarcha([string]$Vmx) {
   $lista = (& $Vmrun -T ws list 2>&1 | Out-String)
   return ($lista -match [regex]::Escape((Split-Path $Vmx -Leaf)))
+}
+
+# C-3: estado de Windows Update del HOST y ultimo arranque (solo LECTURA).
+#   `wuauserv` vuelve a `Manual` en 3-10 min (E0 v5, H-6; Visor de eventos System 7040):
+#   la pausa NO se sostiene sola. Este helper alimenta la re-pausa del `watch`.
+function Get-WuHostEstado {
+  $svc  = Get-Service wuauserv -ErrorAction SilentlyContinue
+  $au   = 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU'
+  $noAu = (Get-ItemProperty $au -Name NoAutoUpdate -ErrorAction SilentlyContinue).NoAutoUpdate
+  $noRb = (Get-ItemProperty $au -Name NoAutoRebootWithLoggedOnUsers -ErrorAction SilentlyContinue).NoAutoRebootWithLoggedOnUsers
+  $boot = $null
+  try { $boot = (Get-CimInstance Win32_OperatingSystem -ErrorAction Stop).LastBootUpTime } catch { }
+  $bootTxt = if ($boot) { ([datetime]$boot).ToUniversalTime().ToString('yyyy-MM-ddTHH:mmZ') } else { 'n/a' }
+  [pscustomobject]@{
+    Estado   = if ($svc) { [string]$svc.Status } else { 'n/a' }
+    Tipo     = if ($svc) { [string]$svc.StartType } else { 'n/a' }
+    NoAuto   = if ($null -ne $noAu) { [int]$noAu } else { -1 }
+    NoReboot = if ($null -ne $noRb) { [int]$noRb } else { -1 }
+    Boot     = $bootTxt
+  }
 }
 
 # ===========================================================================
@@ -572,12 +603,44 @@ switch ($Phase) {
     # (anadiria otra falsa alarma por diseno).
     $recN = 'post-hoc'; $rotN = 'post-hoc'
 
+    # --- C-3 (host): re-pausa de Windows Update -------------------------
+    # Protege V8 (sin reinicio). WU es del HOST, no del sistema medido: esta accion NO toca
+    # la victima ni altera la medida (es una accion declarada del host). Idempotente: solo
+    # actua si StartType != Disabled, asi que un `watch` de mas no hace nada.
+    # Motivo (H-6 del E0 v5, System 7040): `wuauserv` vuelve a `Manual` en 3-10 min, luego
+    # re-pausar justo antes de `t0` NO basta; se re-pausa en cada chequeo (~30 min).
+    $wu = Get-WuHostEstado
+    $wuReps = 'no'
+    if ($wu.Tipo -ne 'Disabled') {
+      $wuPrev = "$($wu.Estado)/$($wu.Tipo)"
+      if ($DryRunWu) {
+        $wuReps = 'si(dryrun)'
+        Write-Log "WU re-pausado ($wuPrev) [DRY-RUN: no se ejecuta pausar_windows_update.ps1]"
+      } else {
+        & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Base 'pausar_windows_update.ps1') pausar 2>&1 | Out-Null
+        $wuRc = $LASTEXITCODE
+        $wu = Get-WuHostEstado
+        if ($wuRc -ne 0) {
+          # El log NO puede mentir: si `pausar_windows_update.ps1` sale != 0, la pausa fallo.
+          $wuReps = 'fallo'
+          Write-Log "WU re-pausa FALLIDA (rc=$wuRc)"
+        } else {
+          $wuReps = 'si'
+          Write-Log "WU re-pausado ($wuPrev)"
+        }
+        if ($wu.NoAuto -ne 1 -or $wu.NoReboot -ne 1) {
+          # Aviso sin cambiar el estado global del `watch` (no es una senal de nivel).
+          $notas.Add('WU AVISO: politica no aplicada')
+        }
+      }
+    }
+
     # --- senal 9: RAM (post-hoc) ----------------------------------------
     $estadoTxt = @('OK','AVISO','ALARMA')[$nivel]
     $bloqueTxt = if ($cal.estado -eq 'bloque') { 'si' } else { $cal.estado }
     $doingTxt = if ($doingAgeMin -ge 0) { "$($doingAgeMin)m" } else { 'n/a' }
     $hbTxt = if ($kaEdad -ge 0) { "$($kaEdad)s" } else { 'n/a' }
-    $line = "[$(TsUtc)] [watch] estado=$estadoTxt doing_age=$doingTxt bloque=$bloqueTxt mins_bloque=$minsBloque hb=$hbTxt ag=$($wm['agente_status']) mgr=$($wm['manager'])/$($wm['daemons']) arch=$($archDelta)B dia=$($alertDelta)B df=$(if($dfGb -ge 0){"${dfGb}G"}else{'n/a'}) tasa=$($dfTasa)MB/h db=${dbMb}MB host=${hostGb}G ram=post-hoc rec=post-hoc rot=post-hoc notas=$($notas -join ',')"
+    $line = "[$(TsUtc)] [watch] estado=$estadoTxt doing_age=$doingTxt bloque=$bloqueTxt mins_bloque=$minsBloque hb=$hbTxt ag=$($wm['agente_status']) mgr=$($wm['manager'])/$($wm['daemons']) arch=$($archDelta)B dia=$($alertDelta)B df=$(if($dfGb -ge 0){"${dfGb}G"}else{'n/a'}) tasa=$($dfTasa)MB/h db=${dbMb}MB host=${hostGb}G wu=$($wu.Estado)/$($wu.Tipo) au=$(if($wu.NoAuto -eq 1){'1'}else{'0'}) noreb=$(if($wu.NoReboot -eq 1){'1'}else{'0'}) boot=$($wu.Boot) reps=$wuReps ram=post-hoc rec=post-hoc rot=post-hoc notas=$($notas -join ',')"
 
     Add-Content -Path $VigLog -Value $line -Encoding utf8
     Add-Content -Path $Log -Value $line -Encoding utf8

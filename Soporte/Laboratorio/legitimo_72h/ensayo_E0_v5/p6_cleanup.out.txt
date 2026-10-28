@@ -1,0 +1,18 @@
+[2026-10-28T22:57:23Z] [cleanup] === START cleanup (host UTC 2026-10-28T22:57:23Z) ===
+[2026-10-28T22:57:24Z] [cleanup] cleanup: victima_en_marcha=False manager_en_marcha=True
+[2026-10-28T22:57:24Z] [cleanup] cleanup: victima APAGADA -> se omite la fase remota (H1c, sin SSH)
+Deteniendo GHOSTS API (PID 16732)...
+esperando que el servidor se detenga.... listo
+servidor detenido
+PostgreSQL detenido.
+127.0.0.1:5432 - sin respuesta
+Fin.
+Deteniendo PID 10916: "C:\Users\angel\AppData\Local\Programs\Python\Python313\python.exe" "D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\internet_local\serve_site.py" --bind 192.168.65.1 --port 8080 --root "D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\internet_local\site" --log "D:\TFG-VMs\lab-logs\web_access.log" 
+Deteniendo PID 3284: "C:\Users\angel\AppData\Local\Programs\Python\Python313\python.exe" "D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Ataques\receiver\sink_http.py" --bind 192.168.65.1 --port 9090 --log "D:\TFG-VMs\lab-logs\sink_http.log" 
+Deteniendo PID 1408: "C:\Users\angel\AppData\Local\Programs\Python\Python313\python.exe" "D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Ataques\receiver\sink_webdav.py" --bind 192.168.65.1 --port 9092 --root "D:\TFG-VMs\lab-logs\cloud_bucket" --log "D:\TFG-VMs\lab-logs\sink_webdav.log" 
+Regla retirada: TFG-web-8080
+Regla retirada: TFG-sink-9090
+Regla retirada: TFG-webdav-9092
+Fin.
+[2026-10-28T22:58:24Z] [cleanup] firewall: regla TFG-ghosts-5000 retirada
+[2026-10-28T22:58:24Z] [cleanup] === END cleanup ===

@@ -953,7 +953,20 @@ escribir la fecha en `state.md`/`ventana_meta.md`.
 | **E0-7** | **Borde** del `watch` (2 chequeos en un inicio de bloque) y **primer chequeo** | `estado=OK` con `gracia_borde`; **sin** `AVISO` inicial |
 | **E0-8** | `stop` + `cleanup` **con la VM apagada** | sin intento de SSH; 0 procesos; `logall_json=no`; `CONFIG_IDENTICA` |
 | **E0-9** | **No mutación de la campaña**: tras el ensayo comprimido, `crontab -l` **idéntico** al de antes y `find` de estado **sin** ficheros fuera de `campana_fp/` | `diff` de `crontab -l` y listado de estado; **0** cambios |
-| **E0-10** | Revert a `lab-listo-legit-v2` y dejarlo apagado | **5 snapshots**; 0 VMs; `verificar_arreglos.sh` = `PASS` |
+| **E0-10** | Revert a `lab-listo-legit-v3` y dejarlo apagado | **6 snapshots**; 0 VMs; `verificar_arreglos.sh` = `PASS` |
+
+> **Corrección factual (2026-10-29, cierre de T4-a).** El E0 **ya se ejecutó** (2026-10-28) y el
+> punto de retorno real es **`lab-listo-legit-v3`**, con **6 snapshots**: la v3 se creó en **T3**
+> (2026-10-28 **02:47:51Z**; en local, CET, son las 03:47; ver `snapshot_v3.md`) porque el deploy no
+> entraba idempotente en la v2, y el deploy vive **dentro** del snapshot. Lo corregido en este pase:
+> **§6 (E0-10)**, **§7.1** (`TFG-Legit-Prep`), **§7.3** (re-pausa de WU, C-3), **§10** (fila
+> `Snapshot`), **§11** (`R9`), **§12** (**CA-07**), **§13** (higiene, punto 9), **§14** (×2: deploy
+> sobre `lab-listo-legit-v3`) y **§16** (refs de `doing_age` 25/35, `:551-554`). Lo que **no** se
+> toca, porque es **registro** y no criterio: **§4** (estado verificado el **2026-10-27**, con 5
+> snapshots), **§5.3** (decisión de v4 en T3) y la prosa de **§1.6, §1.8, §1.9 y §17**, que describe
+> el diseño **anterior** a T3.
+> Registro del ensayo: `Soporte/Laboratorio/legitimo_72h/ensayo_E0_v5.md` (+ evidencias en
+> `ensayo_E0_v5/`).
 
 - **Registro:** `ensayo_E0_v5.md` (salida literal, horas UTC, veredicto).
 - **Antigüedad:** E0 **≤ 7 días** antes de `t0`; si no, **se repite**.
@@ -965,7 +978,7 @@ escribir la fecha en `state.md`/`ventana_meta.md`.
 
 | Tarea | Ámbito | Cuándo (**UTC**) | Qué hace |
 |---|---|---|---|
-| **`TFG-Legit-Prep`** | host | `t0−45 min` | revierte a **`lab-listo-legit-v2`**, enciende, **despliega v4** (idempotente), `logall_json` ON, G-1…G-12, **siembra del `watch`** |
+| **`TFG-Legit-Prep`** | host | `t0−45 min` | revierte a **`lab-listo-legit-v3`**, enciende, **despliega v5** (idempotente), `logall_json` ON, G-1…G-12, **siembra del `watch`** |
 | **`TFG-Legit-Arm`** | host | `t0−20 min` | instala timer (`t0−5`), arranca cliente, checklist |
 | **`TFG-Ghosts-Legit`** | invitado | `t0−5 min` | keepalive v3 (74 h; muere con la VM) |
 | **`TFG-Legit-Watch`** | host | cada 30 min desde `t0` | 9 señales + gracia de borde (**no toca la víctima**) |
@@ -987,12 +1000,19 @@ víctima (valor y tasa)**, disco del host, BD de GHOSTS, recuperaciones/rotacion
 
 | Señal | AVISO | ALARMA | Por qué |
 |---|---|---|---|
-| **`doing_age`** (solo dentro de bloque, `legitimo_host_control.ps1:465-467`) | **> 25 min** | **> 35 min** | El hueco máximo de la receta es **22 min**; 25 deja **3 min** de margen y 35 evita que un hueco normal sea ALARMA. **El umbral de 15 min de v2 era incompatible** (A-3) |
+| **`doing_age`** (solo dentro de bloque, `legitimo_host_control.ps1:551-554`) | **> 25 min** | **> 35 min** | El hueco máximo de la receta es **22 min**; 25 deja **3 min** de margen y 35 evita que un hueco normal sea ALARMA. **El umbral de 15 min de v2 era incompatible** (A-3) |
 | **`STALE` del keepalive** (`tfg_keepalive.sh:34`) | — | **30 min** (sin cambio) | 22 min + caché de 5 min = **27 < 30**; con `GRACIA=15` y `CONFIRMA=5` no hay recuperación espuria |
 | **`sin_eventos`** (2 chequeos con delta 0 dentro de bloque) | — | 2 seguidos | Con hueco máximo 22 min, **ningún intervalo de 30 min** puede quedar a cero salvo borde; la gracia cubre el inicio |
 
 `B6` entra en el calendario como **bloque declarado** (17:05-17:50Z) para que V2 no lo vea como "fuera
 de bloque" y para que `doing_age` se evalúe con su ventana.
+
+> **`watch` y Windows Update (C-3, añadido en T4-a).** Cada `watch` **re-pausa** Windows Update si
+> `wuauserv` ha vuelto a `Manual` (lo hace en **3–10 min**, E0 v5 H-6) y lo registra
+> (`[watch] WU re-pausado (<estado previo>)` + `wu=<estado>/<tipo> au=<0|1> reps=<si|no>` en la
+> línea). Es una acción del **host** (protege **V8**, sin reinicio), **no toca la víctima** y **no
+> altera la medida**. **No** es una señal más: no entra en el recuento de 9 ni cambia los umbrales
+> (`doing_age` sigue en **25/35**).
 
 ### 7.4 Chequeo diario y aborto temprano
 
@@ -1105,7 +1125,7 @@ de FPR**: `M` es uno solo y la tabla de campaña no lo modifica.
 | Medida | **`M` único (ventana completa)**, MB, eventos/h, **acciones/día reales**, alertas, `rule.id`, **tabla de campaña por caso** |
 | **`sudo`** | **no se usa** (declarado); resultado de la comprobación de E0-1 |
 | Navegador | `receptor_navegador=none` |
-| Snapshot | **no se crea**; base **`lab-listo-legit-v2`** + deploy idempotente (§5.3) |
+| Snapshot | **`lab-listo-legit-v3`** (creado en **T3**; **6** en total) + deploy idempotente; **`lab-listo-legit-v2` intacto** (§5.3, §6) |
 | Versiones de medida | `metrica_version=1`, **`boveda_version=2`** |
 
 `boveda_version` → **2 en un solo paso y en tres sitios** (humano/orquestador): `boveda_congelacion.md`
@@ -1132,7 +1152,7 @@ de v2 y entra aquí.
 | **R6** | Un binario nuevo **no está** | Se cae la herramienta | **E0-2** (**36** `command -v`); **no se instala** |
 | **R7** | La campaña dispara reglas de nivel alto | "Sorpresa" | **Es el objetivo**; esperado pre-registrado |
 | **R8** | La campaña llena el disco | Repite L1 | ≤ 40 MB + limpieza por caso + señal 5 |
-| **R9** | **Windows Update** se auto-repara y reinicia | V8 | Re-pausar en T4 **y en la tarde de `prep`** + política 1/1 + chequeo diario |
+| **R9** | **Windows Update** se auto-repara y reinicia | V8 | El **`watch` re-pausa WU cada ~30 min** (además de antes de `t0` y de la tarde de `prep`) + política 1/1 + chequeo diario. Cubre **V8** (sin reinicio) |
 | **R10** | Agente `001` cae | Sin `M` ni alertas | Tope de log 40 MB + señal 2 + señal 5 |
 | **R11** | `logall_json off` antes de copiar | **`M` perdido** | Orden §8 + puerta `t1+45` |
 | **R12** | El humano toca la víctima | V4 | Regla dura + V4 |
@@ -1158,7 +1178,7 @@ de v2 y entra aquí.
 | **CA-04** | **Cobertura de binarios del corpus**: **receta v2 = 23/50** y **conjunto con campaña = 25/50** (script contador, salida literal); umbral mínimo **≥ 22/50** | `cobertura_exes.py` |
 | **CA-05** | **`cwd`**: 100 % de las acciones con `audit_cwd` **≠** `/home/angel/ghosts-client`; valor declarado en B10 | `alertas_detalle.csv` / E0-4 |
 | **CA-06** | **Campaña definida ANTES**: **11 casos** con **esperado por umbral** (`N ≥ 7` y `N ≥ 3`), `rule_id` esperados, **comandos literales** y `sha256`, **con fecha anterior a `t0`** | `git log`/`sha256`/`campana_casos.csv` |
-| **CA-07** | **Sin snapshot nuevo**: **`lab-listo-legit-v2` intacto** (5 snapshots); **deploy idempotente** (2 aplicaciones = mismo `sha256`) y reversible | `vmrun listSnapshots` + `sha256` ×2 |
+| **CA-07** | **Snapshot de trabajo `lab-listo-legit-v3`** (creado en T3) con **`lab-listo-legit-v2` intacto** (**6 snapshots**); **deploy idempotente** (2 aplicaciones = mismo `sha256`) y reversible | `vmrun listSnapshots` + `sha256` ×2 |
 | **CA-08** | **E0 PASS** completo (E0-1…E0-**10**) y **≤ 7 días** antes de `t0` | `ensayo_E0_v5.md` + fecha |
 | **CA-09** | **Ventana**: `prep`/`arm` a su hora (±5 min); `stop` a `t1+10` (tope `t1+15`, tras `cosecha.done`); duración **72 h ± 1 min** | log + `keepalive.log` + `cosecha.done` |
 | **CA-10** | **Cero acceso** a la víctima en `[t0,t1]`; **0** filas `srcip=192.168.65.1` | log + CSV |
@@ -1203,7 +1223,7 @@ de v2 y entra aquí.
    **un solo `M`** (sin segunda cifra), `campana_ventanas.tsv` sin solapes y `campana_fp.csv` con sus
    recuentos por caso.
 8. **Bóveda**: `pytest -q` verde; `boveda_congelacion.sha256` recalcula; `VERSION_BOVEDA == 2`.
-9. **Higiene**: `git status` acotado; 0 secretos; laboratorio cerrado; piloto intacto; **5 snapshots**.
+9. **Higiene**: `git status` acotado; 0 secretos; laboratorio cerrado; piloto intacto; **6 snapshots**.
 
 ## 14. Gate humano (lenguaje sencillo)
 
@@ -1215,7 +1235,7 @@ de v2 y entra aquí.
 
 **Decisiones ya cerradas (no se preguntan):** campaña **DENTRO** de la ventana; **11 casos no
 mutantes** (C-04 retirada: nada de `crontab`); sin segundo usuario; sin actividad **de usuario**
-nocturna; sin instalar; **sin snapshot nuevo** (se despliega sobre `lab-listo-legit-v2`, y solo si el
+nocturna; sin instalar; **sin snapshot nuevo** (se despliega sobre `lab-listo-legit-v3`, y solo si el
 deploy falla dos veces se pediría un snapshot); **3 días**.
 
 **Las 4 condiciones de la campaña (escritas y verificables):**
@@ -1230,7 +1250,7 @@ deploy falla dos veces se pediría un snapshot); **3 días**.
    ventana (`§9.3`, `§9.4`, `§18`).
 
 1. **Qué se va a hacer.** Construir y probar la receta v2 y la campaña; **desplegar** el cambio de
-   `cwd`/receta/campaña sobre `lab-listo-legit-v2` (sin snapshot nuevo); ensayar el armado; correr 72 h
+   `cwd`/receta/campaña sobre `lab-listo-legit-v3` (sin snapshot nuevo); ensayar el armado; correr 72 h
    automáticas y copiar los datos **antes** de apagar la instrumentación.
 2. **Qué necesito que firmes (solo lo que no estaba cerrado):**
    - **Q1. ¿Apruebas las 5 mejoras?** `cwd` realista, ritmo irregular **fijo**, errores con reintento,
@@ -1310,7 +1330,7 @@ deploy falla dos veces se pediría un snapshot); **3 días**.
 | `sudo -n` **solo** funciona tras cachear credenciales con `sudo -S -v` | `guest/instalar_tarea_invitado.sh:18-20` (`echo "$SUDOPWD" \| sudo -S -v`) |
 | `M1b` depende del legítimo | `roadmap.md` §4-§5 |
 | **`M` = eventos decodificados; `FP_uni`; `FPR = FP_uni/M`; titular `C1×N=0`** | `Soporte/Metrica/metrica_hids.md:47-53, 93-104, 170-172` |
-| **`doing_age`: AVISO >15 / ALARMA >30 solo dentro de bloque** | `legitimo_host_control.ps1:465-467`; `Get-BloqueEstado` en `:452` |
+| **`doing_age`: AVISO >25 / ALARMA >35 solo dentro de bloque** | `legitimo_host_control.ps1:551-554`; `Get-BloqueEstado` en `:236` |
 | **`STALE=30`, `GRACIA=15`, `CONFIRMA=5` del keepalive** | `guest/tfg_keepalive.sh:34`; `b10_sellado.md:27` |
 | **`contar_denominador.py` acepta un solo `[desde,hasta]`** — **suficiente en v5**: no hay cortes por rango | `contar_denominador.py:286-287, 309-322` |
 | **`exportar_acciones.sh` escribe por defecto en `Dataset/` y sella `boveda_version=1`** — en v5 se le pasa la salida por argumento (**sin cambiar el script**, salvo MC-1) | `exportar_acciones.sh:17,28` |

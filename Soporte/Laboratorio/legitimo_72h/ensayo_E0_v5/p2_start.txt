@@ -1,0 +1,6 @@
+﻿2026-10-28T22:13:18Z client_ctl: no corria
+sha=010e58bf96c4bcce43221201ebf6ffcfd84071aff8cc508032dac9152647de11
+eventos=64
+arranque_utc=2026-10-28T22:13:19Z
+2026-10-28T22:13:21Z client_ctl: arrancado pid=18118  cwd=/home/angel (stdout -> client.out, tope 20MB x2)
+18118 /home/angel/ghosts-client/ghosts.client.linux

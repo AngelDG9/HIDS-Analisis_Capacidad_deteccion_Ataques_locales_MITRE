@@ -1,0 +1,6 @@
+﻿b4735ceb2e08e3a0f083403e9f57da0a6f1421f7c665adb6c108228dcaf6e646  /home/angel/ghosts-client/config/timeline.json
+2026-10-28T22:01:07Z
+2026-10-28T22:01:07Z client_ctl: ya estaba en marcha (pids=16493 ); NO se duplica (H-A)
+2026-10-28T22:01:07Z
+16493 /home/angel/ghosts-client/ghosts.client.linux
+17243 /usr/bin/python3 /usr/share/apport/apport -p16493 -s6 -c0 -d1 -P16493 -u1000 -g1000 -F -- !home!angel!ghosts-client!ghosts.client.linux

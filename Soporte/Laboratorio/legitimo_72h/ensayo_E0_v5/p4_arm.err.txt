@@ -1,0 +1,30 @@
+^ : El t‚rmino '^' no se reconoce como nombre de un cmdlet, funci¢n, archivo de script o programa ejecutable. 
+Compruebe si escribi¢ correctamente el nombre o, si incluy¢ una ruta de acceso, compruebe que dicha ruta es correcta e 
+int‚ntelo de nuevo.
+En D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\legitimo_72h\legitimo_host_contro
+l.ps1: 193 Car cter: 38
++   $s = Invoke-OnVm $Vic "pgrep -af "(^|/)ghosts[.]client[.]linux" | h ...
++                                      ~
+    + CategoryInfo          : ObjectNotFound: (^:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+^ : El t‚rmino '^' no se reconoce como nombre de un cmdlet, funci¢n, archivo de script o programa ejecutable. 
+Compruebe si escribi¢ correctamente el nombre o, si incluy¢ una ruta de acceso, compruebe que dicha ruta es correcta e 
+int‚ntelo de nuevo.
+En D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\legitimo_72h\legitimo_host_contro
+l.ps1: 193 Car cter: 38
++   $s = Invoke-OnVm $Vic "pgrep -af "(^|/)ghosts[.]client[.]linux" | h ...
++                                      ~
+    + CategoryInfo          : ObjectNotFound: (^:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+^ : El t‚rmino '^' no se reconoce como nombre de un cmdlet, funci¢n, archivo de script o programa ejecutable. 
+Compruebe si escribi¢ correctamente el nombre o, si incluy¢ una ruta de acceso, compruebe que dicha ruta es correcta e 
+int‚ntelo de nuevo.
+En D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\legitimo_72h\legitimo_host_contro
+l.ps1: 193 Car cter: 38
++   $s = Invoke-OnVm $Vic "pgrep -af "(^|/)ghosts[.]client[.]linux" | h ...
++                                      ~
+    + CategoryInfo          : ObjectNotFound: (^:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 

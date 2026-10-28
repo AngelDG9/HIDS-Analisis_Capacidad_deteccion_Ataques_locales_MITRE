@@ -1,0 +1,153 @@
+[2026-10-28T21:55:52Z] [prep] === START prep (host UTC 2026-10-28T21:55:52Z) t0=2026-10-28T22:30:22Z t1=2026-10-31T22:30:22Z ===
+[2026-10-28T21:55:52Z] [prep] G-1 OK: snapshot 'lab-listo-legit-v3' presente | Total snapshots: 6 base-limpia lab-listo lab-listo-legit fallo-2026-10-19-disco-lleno-NO-USAR lab-listo-legit-v2 lab-listo-legit-v3
+[2026-10-28T21:55:52Z] [prep] G-10: D_libre_gb=181 wuauserv_StartType=Disabled sesion=angel
+[2026-10-28T21:55:53Z] [prep] G-4 --check:
+receta v2: dias={1: 147, 2: 153, 3: 141} total=441 errores={1: 10, 2: 10, 3: 10} binarios_ok=34 hueco_max=1320s cwd=cd-por-accion handlers_browser=0
+campana B6: 11 casos, 63 acciones, 22 marcas, 17 binarios, 29 ATA
+RESULT=PASS
+[2026-10-28T21:55:53Z] [prep] G-4 OK: d1=e711bc93 d2=216a747b d3=86057a15 mapa=2026-10-28->d1,2026-10-29->d2,2026-10-30->d3
+[2026-10-28T21:56:10Z] [prep] G-12: ram_free_mb=2528 swap_mb=1915 ram_min_mb=1500
+[2026-10-28T21:56:10Z] [prep] G-12 AVISO (declarado): swap_mb=1915 != 0 (el plan asumia 0; no se toca la VM)
+Despliegue completado (cliente + nlog.config + d1/d2/d3 + calendario + carpetas).
+Arranque manual: bash /home/angel/ghosts-client/client_ctl.sh start
+[2026-10-28T21:57:27Z] [prep] G-2: df_free_mb=4512 inodos_libres_pct=84
+[2026-10-28T21:57:27Z] [prep] scp verificar_arreglos.sh -> angel@192.168.65.129 rc=0 
+[2026-10-28T21:57:28Z] [prep] G-3 verificar_arreglos:
+[2026-10-28T21:57:28Z] [prep] [angel@192.168.65.129] bash /tmp/verificar_arreglos.sh d8f5f1d1154601360e5d81c752ea50b034e915e10f9545625f4a5732352221fb e711bc932c036e466fb7ad6f4ad03c2cebc39666092baa551c4e656c12dbedcd 216a747bde0f2460620a199d73c5a41d37db89fb9fbedcff8d5193fb51c59df6 86057a15a2e498de6f5cf02baa7bb4ebc0e243f84db08745fda5034ad8a11703 c1241001831f4da0d2e4f5b1fc4876798c4e0579b3e30ae8fc256b8c919f8f9b; echo rc=$?
+nlog_console=Warn
+nlog_sha=d8f5f1d1154601360e5d81c752ea50b034e915e10f9545625f4a5732352221fb
+nlog_applog_archive=20
+client_ctl_cap=20
+keepalive_v3=1
+recetas=e711bc93,216a747b,86057a15
+recetas_sha=e711bc932c036e466fb7ad6f4ad03c2cebc39666092baa551c4e656c12dbedcd,216a747bde0f2460620a199d73c5a41d37db89fb9fbedcff8d5193fb51c59df6,86057a15a2e498de6f5cf02baa7bb4ebc0e243f84db08745fda5034ad8a11703
+timeline_activa=e711bc93
+timeline_huella=f1c769c7
+web_session=1
+receptor_navegador=none
+ram_free_mb=2435
+swap_mb=1915
+swap_estado=AVISO (swap_mb=1915 != 0; desviaciÃ³n declarada)
+timer=not-found
+df_free_mb=4512
+df_libre_pct=47
+df_inodes_libres_pct=84
+client_cwd=/home/angel
+keepalive_cwd=/home/angel
+carpetas_cwd=OK
+campana_fp=OK
+campana_fp_casos=0
+RESULT=PASS
+rc=0 nlog_console=Warn
+nlog_sha=d8f5f1d1154601360e5d81c752ea50b034e915e10f9545625f4a5732352221fb
+nlog_applog_archive=20
+client_ctl_cap=20
+keepalive_v3=1
+recetas=e711bc93,216a747b,86057a15
+recetas_sha=e711bc932c036e466fb7ad6f4ad03c2cebc39666092baa551c4e656c12dbedcd,216a747bde0f2460620a199d73c5a41d37db89fb9fbedcff8d5193fb51c59df6,86057a15a2e498de6f5cf02baa7bb4ebc0e243f84db08745fda5034ad8a11703
+timeline_activa=e711bc93
+timeline_huella=f1c769c7
+web_session=1
+receptor_navegador=none
+ram_free_mb=2435
+swap_mb=1915
+swap_estado=AVISO (swap_mb=1915 != 0; desviaciÃ³n declarada)
+timer=not-found
+df_free_mb=4512
+df_libre_pct=47
+df_inodes_libres_pct=84
+client_cwd=/home/angel
+keepalive_cwd=/home/angel
+carpetas_cwd=OK
+campana_fp=OK
+campana_fp_casos=0
+RESULT=PASS
+rc=0
+[2026-10-28T21:57:28Z] [prep] scp arrancar_manager.sh -> angel@192.168.65.128 rc=0 
+[2026-10-28T21:57:29Z] [prep] scp logall_json_ctl.sh -> angel@192.168.65.128 rc=0 
+[2026-10-28T21:57:29Z] [prep] scp diag_wazuh.sh -> angel@192.168.65.128 rc=0 
+[2026-10-28T21:57:29Z] [prep] scp estado_manager.sh -> angel@192.168.65.128 rc=0 
+[2026-10-28T21:57:30Z] [prep] scp exportar_denominador.sh -> angel@192.168.65.128 rc=0 
+[2026-10-28T21:58:50Z] [prep] G-7: conf: <logall_json>yes</logall_json> manager=active daemons_remoted_analysisd=2
+Arrancando web8080 ...
+Arrancando sink9090 ...
+Arrancando webdav9092 ...
+Regla creada: TFG-web-8080 (TCP 8080 desde 192.168.65.0/24)
+Regla creada: TFG-sink-9090 (TCP 9090 desde 192.168.65.0/24)
+Regla creada: TFG-webdav-9092 (TCP 9092 desde 192.168.65.0/24)
+Comprobacion local:
+  8080 -> HTTP 200
+  9090 -> HTTP 200
+  9092 -> sin respuesta (Error en el servidor remoto: (404) No se encontr¢.)
+[2026-10-28T21:58:57Z] [prep] internet local lanzada
+Arrancando PostgreSQL...
+esperando que el servidor se inicie...... listo
+servidor iniciado
+Arrancando GHOSTS API en http://192.168.65.1:5000 ...
+API OK: HTTP 200
+[2026-10-28T21:59:16Z] [prep] servidor GHOSTS lanzado
+[2026-10-28T21:59:17Z] [prep] firewall: regla TFG-ghosts-5000 creada (TCP 5000 desde 192.168.65.0/24)
+[2026-10-28T21:59:18Z] [prep] scp verificar_internet_local.sh -> angel@192.168.65.129 rc=0 
+[2026-10-28T21:59:22Z] [prep] G-8:
+[2026-10-28T21:59:22Z] [prep] [angel@192.168.65.129] bash /tmp/verificar_internet_local.sh
+=== 1) /etc/hosts ===
+192.168.65.1  intranet.local portal.local nube.local
+=== 2) POSITIVAS ===
+8080 root:     200
+8080 pdf:      200 size=633
+8080 zip:      200 size=311
+9090 paste:    200
+9092 put:      201
+9092 propfind: 207
+=== 3) NEGATIVA (debe FALLAR) ===
+ssh.exe : curl: (28) Resolving timed out after 4001 milliseconds
+En D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\legitimo_72h\legitimo_host_contro
+l.ps1: 114 Car cter: 28
++ ... ut = ($Pw | & $Ssh -i $Key -o StrictHostKeyChecking=accept-new $Targe ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (curl: (28) Reso...01 milliseconds:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+example.com: 000
+example.com: FALLA (ok, aislado) exit=28
+curl: (7) Failed to connect to 1.1.1.1 port 80 after 0 ms: Couldn't connect to server
+1.1.1.1:     000
+1.1.1.1: FALLA (ok, aislado) exit=7
+=== 4) RUTA ===
+192.168.65.0/24 dev ens33 proto kernel scope link src 192.168.65.129 
+=== FIN === === 1) /etc/hosts ===
+192.168.65.1  intranet.local portal.local nube.local
+=== 2) POSITIVAS ===
+8080 root:     200
+8080 pdf:      200 size=633
+8080 zip:      200 size=311
+9090 paste:    200
+9092 put:      201
+9092 propfind: 207
+=== 3) NEGATIVA (debe FALLAR) ===
+ssh.exe : curl: (28) Resolving timed out after 4001 milliseconds
+En D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\legitimo_72h\legitimo_host_contro
+l.ps1: 114 Car cter: 28
++ ... ut = ($Pw | & $Ssh -i $Key -o StrictHostKeyChecking=accept-new $Targe ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (curl: (28) Reso...01 milliseconds:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+example.com: 000
+example.com: FALLA (ok, aislado) exit=28
+curl: (7) Failed to connect to 1.1.1.1 port 80 after 0 ms: Couldn't connect to server
+1.1.1.1:     000
+1.1.1.1: FALLA (ok, aislado) exit=7
+=== 4) RUTA ===
+192.168.65.0/24 dev ens33 proto kernel scope link src 192.168.65.129 
+=== FIN ===
+[2026-10-28T21:59:23Z] [prep] G-5: agentd_procs=1 | utc=2026-10-28T21:59:23Z manager=active agente001= Wazuh agent_control. Agent information: Agent ID: 001 Agent Name: victima-linux IP address: any Status: Active Operating system: Linux |victima-linux |6.8.0-139-generic |#139-Ubuntu SMP PREEMPT_DYNAMIC Sat Aug 1 03:52:05 UTC 2026 |x86_64 Client version: Wazuh v4.14.7 Configuration hash: ab73af41699f13fdd81903b5f23d8d00 Shared file hash: e7c5c4c31c37ff20e25ba7c05c17a7e9 Last keep alive: 1793224757 Syscheck last started at: Wed Oct 28 21:56:07 2026 Syscheck last ended at: Wed Oct 28 21:56:30 2026 diario_hoy=200154876 Oct 28 22:59 archives_json=132452715 Oct 28 22:59 logall_json=<logall_json>yes</logall_json> disco=20G libre (57% usado)
+[2026-10-28T21:59:23Z] [prep] G-11: machineids de victima-linux = 7c33a13a-fe89-4a56-bf3c-fcd499e1e557
+[2026-10-28T21:59:24Z] [prep] scp d1.json -> angel@192.168.65.129 rc=0 
+[2026-10-28T21:59:24Z] [prep] [timeline en la victima] e711bc932c036e466fb7ad6f4ad03c2cebc39666092baa551c4e656c12dbedcd /home/angel/ghosts-client/config/timeline.json
+[2026-10-28T21:59:25Z] [prep] prep: timeline activa = e711bc93 (esperado d1=e711bc93)
+[2026-10-28T21:59:25Z] [prep] prep: rotacion.estado = 2026-10-28 (d¡a 1 ya colocado; no se rota el d¡a 1)
+[2026-10-28T21:59:25Z] [prep] G-9 (informativo) ultimo .gz: 
+[2026-10-28T21:59:26Z] [prep] G-6 OK: muestras 'df -P' del agente 001 en archives.json
+[2026-10-28T21:59:26Z] [prep] H1(b) estado del watch sembrado: archives=133559091B alerts=201197200B df_edad_min=-1 (archivo C:\Users\angel\AppData\Local\Temp\opencode\tfg_watch_estado.json)
+[2026-10-28T21:59:27Z] [prep] === END prep (laboratorio LISTO, cliente PARADO) ===

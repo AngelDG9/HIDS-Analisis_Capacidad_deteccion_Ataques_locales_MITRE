@@ -1,0 +1,58 @@
+﻿eventos_audit_con_cwd=832
+lineas_no_json=0
+cwd_distintos=13
+  cwd=/home/angel n=233
+  cwd=/ n=217
+  cwd=/home/angel/Documentos/informes n=140
+  cwd=/var/ossec n=104
+  cwd=/home/angel/Descargas n=61
+  cwd=/home/angel/Documentos n=20
+  cwd=/home/angel/Documentos/copias/informes n=20
+  cwd=/home/angel/Documentos/actas n=13
+  cwd=/home/angel/Documentos/copias n=11
+  cwd=/home/angel/Documentos/correo n=7
+  cwd=/home/angel/.cache/tfg-web n=3
+  cwd=/root n=2
+  cwd=/usr/lib/sysstat n=1
+cwd_ghosts_client=0
+binarios:
+  /usr/bin/bash:152
+  /var/ossec/bin/wazuh-agentd:95
+  /usr/bin/dash:79
+  /usr/bin/date:55
+  /home/angel/ghosts-client/ghosts.client.linux:39
+  /usr/bin/xargs:37
+  /usr/bin/cat:32
+  /usr/lib/systemd/systemd-logind:30
+  /usr/bin/curl:25
+  /usr/bin/rsync:21
+  /usr/bin/shred:21
+  /usr/bin/cp:20
+  /usr/bin/wc:18
+  /usr/bin/ls:14
+  ?:12
+  /usr/bin/gzip:11
+  /usr/bin/env:11
+  /usr/bin/sha256sum:10
+  /usr/bin/tar:10
+  /usr/bin/find:10
+  /usr/bin/uname:9
+  /usr/bin/stat:8
+  /usr/bin/timeout:8
+  /usr/bin/grep:7
+  /usr/bin/du:6
+  /usr/bin/sed:6
+  /usr/bin/rm:6
+  /usr/sbin/sshd:6
+  /usr/bin/cut:6
+  /usr/bin/gettext:6
+  /usr/bin/id:6
+  /usr/bin/gawk:5
+  /usr/bin/tr:5
+  /usr/bin/df:4
+  /usr/bin/python3.12:4
+  /usr/bin/sort:4
+  /usr/bin/run-parts:3
+  /usr/bin/head:3
+  /usr/bin/expr:3
+  /usr/bin/mv:2

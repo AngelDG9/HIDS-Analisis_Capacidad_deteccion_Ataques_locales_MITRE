@@ -1,0 +1,144 @@
+﻿antes=2026-10-28T22:56:33Z
+2026-10-28T22:56:33Z client_ctl: parando pids=18118  (TERM)
+2026-10-28T22:56:34Z client_ctl: parado
+despues=2026-10-28T22:56:34Z
+0 procesos del cliente
+---CAMPANA---
+casos=11
+ficheros=33
+hecho_ok=11
+marcas=22
+marcas_con_formato_mal=0
+--- CASO ini fin n_ficheros
+C-01 2026-10-28T22:16:00Z 2026-10-28T22:16:40Z 3
+C-02 2026-10-28T22:19:50Z 2026-10-28T22:20:19Z 3
+C-03 2026-10-28T22:23:29Z 2026-10-28T22:23:58Z 3
+C-05 2026-10-28T22:27:08Z 2026-10-28T22:27:53Z 3
+C-06 2026-10-28T22:31:03Z 2026-10-28T22:31:48Z 3
+C-07 2026-10-28T22:34:58Z 2026-10-28T22:35:27Z 3
+C-08 2026-10-28T22:38:37Z 2026-10-28T22:39:13Z 3
+C-09 2026-10-28T22:42:23Z 2026-10-28T22:43:05Z 3
+C-10 2026-10-28T22:46:15Z 2026-10-28T22:46:51Z 3
+C-11 2026-10-28T22:50:01Z 2026-10-28T22:50:38Z 3
+C-12 2026-10-28T22:53:48Z 2026-10-28T22:54:07Z 3
+---CONTENIDO (find)
+C-01/fin.txt
+C-01/hecho.txt
+C-01/inicio.txt
+C-02/fin.txt
+C-02/hecho.txt
+C-02/inicio.txt
+C-03/fin.txt
+C-03/hecho.txt
+C-03/inicio.txt
+C-05/fin.txt
+C-05/hecho.txt
+C-05/inicio.txt
+C-06/fin.txt
+C-06/hecho.txt
+C-06/inicio.txt
+C-07/fin.txt
+C-07/hecho.txt
+C-07/inicio.txt
+C-08/fin.txt
+C-08/hecho.txt
+C-08/inicio.txt
+C-09/fin.txt
+C-09/hecho.txt
+C-09/inicio.txt
+C-10/fin.txt
+C-10/hecho.txt
+C-10/inicio.txt
+C-11/fin.txt
+C-11/hecho.txt
+C-11/inicio.txt
+C-12/fin.txt
+C-12/hecho.txt
+C-12/inicio.txt
+---FICHEROS DE ESTADO FUERA DE CAMPANA (ultimos 60 min en $HOME)---
+/home/angel/.cache/tfg-web/ayuda_tarde.html
+/home/angel/.cache/tfg-web/buzon_1.txt
+/home/angel/.cache/tfg-web/buzon_2.txt
+/home/angel/.cache/tfg-web/buzon_3.txt
+/home/angel/.cache/tfg-web/buzon_4.txt
+/home/angel/.cache/tfg-web/cookies.txt
+/home/angel/.cache/tfg-web/copias_nube.txt
+/home/angel/.cache/tfg-web/index.html
+/home/angel/.cache/tfg-web/intranet_tarde.html
+/home/angel/.cache/tfg-web/lista_ficheros_d1.txt
+/home/angel/.cache/tfg-web/lista_ficheros.txt
+/home/angel/.cache/tfg-web/logo.svg
+/home/angel/.cache/tfg-web/lotes.txt
+/home/angel/.cache/tfg-web/noticias_tarde.html
+/home/angel/.cache/tfg-web/nube_actas.txt
+/home/angel/.cache/tfg-web/nube_listado.txt
+/home/angel/.cache/tfg-web/plantilla_informe.csv
+/home/angel/.cache/tfg-web/portal.js
+/home/angel/.cache/tfg-web/portal_tarde.html
+/home/angel/.cache/tfg-web/styles.css
+/home/angel/.cache/tfg-web/styles_tarde.css
+/home/angel/Descargas/copia_final_1.tar.gz
+/home/angel/Descargas/informe_dia1.tar.gz
+/home/angel/Descargas/informes_copia_1.tar.gz
+/home/angel/Descargas/informes.tar.gz
+/home/angel/Descargas/manual_empleado.pdf
+/home/angel/Descargas/noticias.html
+/home/angel/Descargas/plantilla_dia1.csv
+/home/angel/Documentos/actas/acta_1_2026-10-28.txt
+/home/angel/Documentos/actas/compartida_1.txt
+/home/angel/Documentos/actas/compartida_copia.txt
+/home/angel/Documentos/agenda_2026-10-28.txt
+/home/angel/Documentos/copias/copia_2026-10-28.tar.gz
+/home/angel/Documentos/copias/informes/adjunto_1_2026-10-28.tar.gz
+/home/angel/Documentos/copias/informes/adjunto_2_2026-10-28.tar.gz
+/home/angel/Documentos/copias/informes/bitacora.txt
+/home/angel/Documentos/copias/informes/export.csv
+/home/angel/Documentos/copias/informes/informe.bak
+/home/angel/Documentos/copias/informes/informe.txt
+/home/angel/Documentos/copias/informes/informe.txt.gz
+---CRONTAB---
+no crontab for angel
+crontab_rc=1
+---TAR---
+-rw-rw-r-- 1 angel angel 1576 Oct 28 23:56 /tmp/campana_fp.tgz
+---AUTHLOG---
+2026-10-28T23:00:05.840753+01:00 victima-linux sshd[16525]: pam_unix(sshd:session): session opened for user angel(uid=1000) by angel(uid=0)
+2026-10-28T23:00:06.132805+01:00 victima-linux sshd[16581]: Accepted publickey for angel from 192.168.65.1 port 65361 ssh2: ED25519 SHA256:zXJ5XygPDQRSvB6zZ3O6JaREeaWOKax2MzKS6zTK7f4
+2026-10-28T23:00:06.134615+01:00 victima-linux sshd[16581]: pam_unix(sshd:session): session opened for user angel(uid=1000) by angel(uid=0)
+2026-10-28T23:00:13.844051+01:00 victima-linux sshd[16634]: Accepted publickey for angel from 192.168.65.1 port 65364 ssh2: ED25519 SHA256:zXJ5XygPDQRSvB6zZ3O6JaREeaWOKax2MzKS6zTK7f4
+2026-10-28T23:00:13.846546+01:00 victima-linux sshd[16634]: pam_unix(sshd:session): session opened for user angel(uid=1000) by angel(uid=0)
+2026-10-28T23:00:30.011472+01:00 victima-linux sshd[16697]: Accepted publickey for angel from 192.168.65.1 port 65367 ssh2: ED25519 SHA256:zXJ5XygPDQRSvB6zZ3O6JaREeaWOKax2MzKS6zTK7f4
+2026-10-28T23:00:30.018072+01:00 victima-linux sshd[16697]: pam_unix(sshd:session): session opened for user angel(uid=1000) by angel(uid=0)
+2026-10-28T23:00:38.622762+01:00 victima-linux sshd[16769]: Accepted publickey for angel from 192.168.65.1 port 65373 ssh2: ED25519 SHA256:zXJ5XygPDQRSvB6zZ3O6JaREeaWOKax2MzKS6zTK7f4
+2026-10-28T23:00:38.625117+01:00 victima-linux sshd[16769]: pam_unix(sshd:session): session opened for user angel(uid=1000) by angel(uid=0)
+2026-10-28T23:00:42.769185+01:00 victima-linux sshd[16866]: Accepted publickey for angel from 192.168.65.1 port 65374 ssh2: ED25519 SHA256:zXJ5XygPDQRSvB6zZ3O6JaREeaWOKax2MzKS6zTK7f4
+2026-10-28T23:00:42.770382+01:00 victima-linux sshd[16866]: pam_unix(sshd:session): session opened for user angel(uid=1000) by angel(uid=0)
+2026-10-28T23:00:45.937019+01:00 victima-linux sshd[16919]: Accepted publickey for angel from 192.168.65.1 port 65376 ssh2: ED25519 SHA256:zXJ5XygPDQRSvB6zZ3O6JaREeaWOKax2MzKS6zTK7f4
+2026-10-28T23:00:45.938708+01:00 victima-linux sshd[16919]: pam_unix(sshd:session): session opened for user angel(uid=1000) by angel(uid=0)
+2026-10-28T23:00:53.467695+01:00 victima-linux sshd[16975]: Accepted publickey for angel from 192.168.65.1 port 65379 ssh2: ED25519 SHA256:zXJ5XygPDQRSvB6zZ3O6JaREeaWOKax2MzKS6zTK7f4
+2026-10-28T23:00:53.470786+01:00 victima-linux sshd[16975]: pam_unix(sshd:session): session opened for user angel(uid=1000) by angel(uid=0)
+2026-10-28T23:00:53.723206+01:00 victima-linux sshd[17027]: Accepted publickey for angel from 192.168.65.1 port 65380 ssh2: ED25519 SHA256:zXJ5XygPDQRSvB6zZ3O6JaREeaWOKax2MzKS6zTK7f4
+2026-10-28T23:00:53.725721+01:00 victima-linux sshd[17027]: pam_unix(sshd:session): session opened for user angel(uid=1000) by angel(uid=0)
+2026-10-28T23:01:07.521168+01:00 victima-linux sshd[17130]: Accepted publickey for angel from 192.168.65.1 port 65387 ssh2: ED25519 SHA256:zXJ5XygPDQRSvB6zZ3O6JaREeaWOKax2MzKS6zTK7f4
+2026-10-28T23:01:07.524219+01:00 victima-linux sshd[17130]: pam_unix(sshd:session): session opened for user angel(uid=1000) by angel(uid=0)
+2026-10-28T23:01:07.807299+01:00 victima-linux sshd[17184]: Accepted publickey for angel from 192.168.65.1 port 65388 ssh2: ED25519 SHA256:zXJ5XygPDQRSvB6zZ3O6JaREeaWOKax2MzKS6zTK7f4
+2026-10-28T23:01:07.809988+01:00 victima-linux sshd[17184]: pam_unix(sshd:session): session opened for user angel(uid=1000) by angel(uid=0)
+2026-10-28T23:01:17.639970+01:00 victima-linux sshd[17258]: Accepted publickey for angel from 192.168.65.1 port 65391 ssh2: ED25519 SHA256:zXJ5XygPDQRSvB6zZ3O6JaREeaWOKax2MzKS6zTK7f4
+2026-10-28T23:01:17.642311+01:00 victima-linux sshd[17258]: pam_unix(sshd:session): session opened for user angel(uid=1000) by angel(uid=0)
+2026-10-28T23:01:25.734199+01:00 victima-linux sshd[17315]: Accepted publickey for angel from 192.168.65.1 port 65393 ssh2: ED25519 SHA256:zXJ5XygPDQRSvB6zZ3O6JaREeaWOKax2MzKS6zTK7f4
+2026-10-28T23:01:25.735635+01:00 victima-linux sshd[17315]: pam_unix(sshd:session): session opened for user angel(uid=1000) by angel(uid=0)
+2026-10-28T23:12:33.720983+01:00 victima-linux sshd[17764]: Accepted publickey for angel from 192.168.65.1 port 49232 ssh2: ED25519 SHA256:zXJ5XygPDQRSvB6zZ3O6JaREeaWOKax2MzKS6zTK7f4
+2026-10-28T23:12:33.723339+01:00 victima-linux sshd[17764]: pam_unix(sshd:session): session opened for user angel(uid=1000) by angel(uid=0)
+2026-10-28T23:12:41.608661+01:00 victima-linux sshd[17828]: Accepted publickey for angel from 192.168.65.1 port 49234 ssh2: ED25519 SHA256:zXJ5XygPDQRSvB6zZ3O6JaREeaWOKax2MzKS6zTK7f4
+2026-10-28T23:12:41.611875+01:00 victima-linux sshd[17828]: pam_unix(sshd:session): session opened for user angel(uid=1000) by angel(uid=0)
+2026-10-28T23:12:41.858638+01:00 victima-linux sshd[17880]: Accepted publickey for angel from 192.168.65.1 port 49235 ssh2: ED25519 SHA256:zXJ5XygPDQRSvB6zZ3O6JaREeaWOKax2MzKS6zTK7f4
+2026-10-28T23:12:41.860076+01:00 victima-linux sshd[17880]: pam_unix(sshd:session): session opened for user angel(uid=1000) by angel(uid=0)
+2026-10-28T23:13:17.655308+01:00 victima-linux sshd[17978]: Accepted publickey for angel from 192.168.65.1 port 49248 ssh2: ED25519 SHA256:zXJ5XygPDQRSvB6zZ3O6JaREeaWOKax2MzKS6zTK7f4
+2026-10-28T23:13:17.656780+01:00 victima-linux sshd[17978]: pam_unix(sshd:session): session opened for user angel(uid=1000) by angel(uid=0)
+2026-10-28T23:13:18.069161+01:00 victima-linux sshd[18045]: Accepted publickey for angel from 192.168.65.1 port 49249 ssh2: ED25519 SHA256:zXJ5XygPDQRSvB6zZ3O6JaREeaWOKax2MzKS6zTK7f4
+2026-10-28T23:13:18.071180+01:00 victima-linux sshd[18045]: pam_unix(sshd:session): session opened for user angel(uid=1000) by angel(uid=0)
+2026-10-28T23:56:32.898068+01:00 victima-linux sshd[18725]: Accepted publickey for angel from 192.168.65.1 port 50103 ssh2: ED25519 SHA256:zXJ5XygPDQRSvB6zZ3O6JaREeaWOKax2MzKS6zTK7f4
+2026-10-28T23:56:32.901189+01:00 victima-linux sshd[18725]: pam_unix(sshd:session): session opened for user angel(uid=1000) by angel(uid=0)
+2026-10-28T23:56:33.595028+01:00 victima-linux sshd[18829]: Accepted publickey for angel from 192.168.65.1 port 50107 ssh2: ED25519 SHA256:zXJ5XygPDQRSvB6zZ3O6JaREeaWOKax2MzKS6zTK7f4
+2026-10-28T23:56:33.596646+01:00 victima-linux sshd[18829]: pam_unix(sshd:session): session opened for user angel(uid=1000) by angel(uid=0)
+2026-10-28T23:56:34.441372+01:00 victima-linux sudo:    angel : PWD=/home/angel ; USER=root ; COMMAND=/usr/bin/sh -c 'grep -hE \'sshd.*(Accepted publickey|session opened for user angel)\' /var/log/auth.log | tail -40'

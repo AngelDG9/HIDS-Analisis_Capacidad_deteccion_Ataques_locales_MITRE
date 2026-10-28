@@ -1,0 +1,8 @@
+﻿2026-10-28T22:01:25Z client_ctl: no corria
+stop_rc=0
+---
+b4735ceb2e08e3a0f083403e9f57da0a6f1421f7c665adb6c108228dcaf6e646  /home/angel/ghosts-client/config/timeline.json
+2026-10-28T22:01:27Z client_ctl: arrancado pid=17383  cwd=/home/angel (stdout -> client.out, tope 20MB x2)
+start_rc=0
+2026-10-28T22:01:27Z
+17383 /home/angel/ghosts-client/ghosts.client.linux

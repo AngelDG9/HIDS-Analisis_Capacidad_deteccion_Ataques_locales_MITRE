@@ -1,0 +1,8 @@
+[2026-10-28T21:54:50Z] [cleanup] === START cleanup (host UTC 2026-10-28T21:54:50Z) ===
+[2026-10-28T21:54:50Z] [cleanup] cleanup: victima_en_marcha=True manager_en_marcha=True
+[2026-10-28T21:54:51Z] [cleanup] cleanup: cliente parado (fase remota de la victima hecha)
+PostgreSQL detenido.
+127.0.0.1:5432 - sin respuesta
+Fin.
+Fin.
+[2026-10-28T21:55:03Z] [cleanup] === END cleanup ===

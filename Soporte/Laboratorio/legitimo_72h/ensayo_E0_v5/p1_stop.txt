@@ -1,0 +1,25 @@
+﻿antes=2026-10-28T22:12:41Z
+2026-10-28T22:12:41Z client_ctl: parando pids=17383  (TERM)
+2026-10-28T22:12:42Z client_ctl: parado
+despues=2026-10-28T22:12:42Z
+---PROC---
+0 procesos del cliente
+---ERRORES---
+lineas=20
+lineas_mal=0
+rc_distintos=rc=0 rc=1 rc=2 
+--- head -2 (cat -A)
+2026-10-28T22:05:09Z^Ierror^Iruta_mal^Ils -la /home/angel/Documentos/informe^Irc=2$
+2026-10-28T22:05:10Z^Ireintento^Iruta_mal^Ils -la /home/angel/Documentos/informes^Irc=0$
+--- tail -2 (cat -A)
+2026-10-28T22:10:35Z^Ierror^Igzip^Igzip -d /home/angel/Documentos/informes/informe.bak^Irc=2$
+2026-10-28T22:10:38Z^Ireintento^Igzip^Igzip -kf /home/angel/Documentos/informes/informe.bak^Irc=0$
+---CAMPANA---
+campana_entradas=0
+---APPLOG---
+-rw-rw-r-- 1 angel angel 172567 Oct 28 23:12 /home/angel/ghosts-client/logs/app.log
+28/10/2026 22:12:28 PM|ghosts.client.linux.Comms.CheckId.get_Id|Returning cached ID: 7c33a13a-fe89-4a56-bf3c-fcd499e1e557
+28/10/2026 22:12:28 PM|ghosts.client.linux.Infrastructure.WebClientBuilder.GetHeaders|Webrequest headers generated: {"UserAgent":"Ghosts Client","ghosts-id":"7c33a13a-fe89-4a56-bf3c-fcd499e1e557","ghosts-name":"victima-linux","ghosts-fqdn":"localhost","ghosts-host":"victima-linux","ghosts-domain":"(none)","ghosts-resolvedhost":"localhost","ghosts-ip":"127.0.1.1","ghosts-user":"YW5nZWw=","ghosts-version":"8.0.0.0"}
+28/10/2026 22:12:28 PM|ghosts.client.linux.Comms.Updates.GetServerUpdates|10/28/2026 11:12:28ÔÇ»PM - No new configuration found
+---RECOVERY---
+recovery.log NO existe (vacio)

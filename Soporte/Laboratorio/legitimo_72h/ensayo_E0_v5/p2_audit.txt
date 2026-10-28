@@ -1,0 +1,63 @@
+﻿eventos_audit_con_cwd=916
+lineas_no_json=0
+cwd_distintos=18
+  cwd=/var/ossec n=532
+  cwd=/home/angel n=123
+  cwd=/home/angel/Documentos/campana_fp/C-10 n=70
+  cwd=/ n=43
+  cwd=/home/angel/Documentos/campana_fp/C-06 n=24
+  cwd=/home/angel/Documentos/campana_fp n=22
+  cwd=/home/angel/Documentos/campana_fp/C-09 n=16
+  cwd=/home/angel/Documentos/campana_fp/C-07 n=12
+  cwd=/home/angel/Documentos/campana_fp/C-01 n=10
+  cwd=/home/angel/Documentos/campana_fp/C-05 n=10
+  cwd=/root n=9
+  cwd=/home/angel/Documentos/campana_fp/C-03 n=9
+  cwd=/home/angel/Documentos/campana_fp/C-08 n=9
+  cwd=/home/angel/Documentos/campana_fp/C-02 n=8
+  cwd=/home/angel/Documentos/campana_fp/C-11 n=7
+  cwd=/home/angel/Documentos/campana_fp/C-12 n=5
+  cwd=/usr/lib/sysstat n=4
+  cwd=/home/angel/Documentos/campana_fp/C-07/destino n=3
+cwd_ghosts_client=0
+binarios:
+  /var/ossec/bin/wazuh-agentd:480
+  /usr/bin/bash:63
+  /home/angel/ghosts-client/ghosts.client.linux:60
+  /usr/bin/rm:58
+  /usr/bin/xargs:37
+  /usr/bin/dash:29
+  /usr/bin/date:22
+  ?:18
+  /usr/bin/shred:14
+  /usr/bin/mkdir:13
+  /usr/bin/sed:13
+  /usr/bin/udevadm:12
+  /usr/bin/cp:12
+  /usr/lib/systemd/systemd-executor:9
+  /usr/bin/cat:6
+  /usr/bin/df:5
+  /usr/libexec/fwupd/fwupd:5
+  /usr/libexec/upowerd:5
+  /usr/bin/wc:4
+  /usr/lib/sysstat/sadc:4
+  /usr/bin/last:4
+  /usr/bin/stat:4
+  /usr/bin/rsync:4
+  /usr/bin/timeout:4
+  /usr/bin/systemctl:3
+  /usr/bin/curl:3
+  /usr/bin/ip:2
+  /usr/bin/grep:2
+  /usr/bin/openssl:2
+  /usr/bin/ls:2
+  /usr/bin/sort:2
+  /usr/bin/free:1
+  /usr/bin/run-parts:1
+  /usr/bin/crontab:1
+  /usr/bin/sha256sum:1
+  /usr/bin/fwupdmgr:1
+  /usr/bin/kmod:1
+  /usr/lib/systemd/systemd-logind:1
+  /usr/lib/udev/probe-bcache:1
+  /usr/bin/du:1

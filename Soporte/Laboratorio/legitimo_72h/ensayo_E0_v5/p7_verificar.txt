@@ -1,0 +1,24 @@
+﻿nlog_console=Warn
+nlog_sha=d8f5f1d1154601360e5d81c752ea50b034e915e10f9545625f4a5732352221fb
+nlog_applog_archive=20
+client_ctl_cap=20
+keepalive_v3=1
+recetas=e711bc93,216a747b,86057a15
+recetas_sha=e711bc932c036e466fb7ad6f4ad03c2cebc39666092baa551c4e656c12dbedcd,216a747bde0f2460620a199d73c5a41d37db89fb9fbedcff8d5193fb51c59df6,86057a15a2e498de6f5cf02baa7bb4ebc0e243f84db08745fda5034ad8a11703
+timeline_activa=e711bc93
+timeline_huella=f1c769c7
+web_session=1
+receptor_navegador=none
+ram_free_mb=2533
+swap_mb=1915
+swap_estado=AVISO (swap_mb=1915 != 0; desviaci├│n declarada)
+timer=not-found
+df_free_mb=4513
+df_libre_pct=47
+df_inodes_libres_pct=84
+client_cwd=/home/angel
+keepalive_cwd=/home/angel
+carpetas_cwd=OK
+campana_fp=OK
+campana_fp_casos=0
+RESULT=PASS
