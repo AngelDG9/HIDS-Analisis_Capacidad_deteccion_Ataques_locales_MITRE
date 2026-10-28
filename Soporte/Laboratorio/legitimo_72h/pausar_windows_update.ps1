@@ -86,8 +86,19 @@ switch ($Accion) {
     New-ItemProperty -Path $AUPol -Name 'NoAutoRebootWithLoggedOnUsers' -Value 1 -PropertyType DWord -Force | Out-Null
     Log 'PAUSAR: politica NoAutoUpdate=1 + NoAutoRebootWithLoggedOnUsers=1 aplicada'
 
-    try { Stop-Service wuauserv -Force -ErrorAction SilentlyContinue } catch { Log ("PAUSAR: Stop-Service aviso: {0}" -f $_.Exception.Message) }
-    Set-Service wuauserv -StartupType Disabled
+    # E0 v5 (2026-10-28): `Stop-Service`/`Set-Service` devolvian "correcto" pero NO
+    # cambiaban nada en este host (wuauserv quedaba Running/Manual). Se usa `sc.exe`
+    # (config start=disabled + stop) y se COMPRUEBA el resultado; si no queda Disabled,
+    # la fase falla en vez de registrar un exito falso.
+    & sc.exe config wuauserv start= disabled | Out-Null
+    & sc.exe stop wuauserv | Out-Null
+    Start-Sleep -Seconds 3
+    $post = Get-Estado
+    Log ("PAUSAR: wuauserv State={0} StartMode={1} (via sc.exe)" -f $post.wuauserv_State, $post.wuauserv_StartMode)
+    if ("$($post.wuauserv_StartMode)" -ne 'Disabled') {
+      Log 'PAUSAR FALLO: wuauserv NO ha quedado Disabled'
+      exit 1
+    }
     Log 'PAUSAR: wuauserv detenido + StartupType=Disabled'
 
     Get-ScheduledTask -TaskPath '\Microsoft\Windows\UpdateOrchestrator\' -ErrorAction SilentlyContinue |
