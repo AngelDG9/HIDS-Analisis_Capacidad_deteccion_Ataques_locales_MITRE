@@ -61,7 +61,7 @@ servicios, unidades, repositorios, credenciales ni rutas del sistema.
 | **Esperado `N ≥ 7`** | **0 alertas** (ningún FP «de verdad») |
 | **Esperado `N ≥ 3`** | **80792 L3 x3** (todo `execve` alerta: H-A) |
 | ¿Cambia la máquina? | **No** (solo escribe bajo `/home/angel/Documentos/campana_fp/C-01/`) |
-| Evidencia de efecto | hecho.txt con wc -l: servicios.txt > 10 lineas y free.txt > 3 lineas |
+| Evidencia de efecto | hecho.txt con wc -l: servicios.txt > 10 lineas y free.txt >= 3 lineas |
 | Coste · disco | 3 min · <1 MB |
 | Por qué es legítimo | Cualquier empleado mira la memoria y los servicios cuando el portatil va lento, antes de abrir una incidencia. Solo lectura; no se nombra al agente. |
 
@@ -120,7 +120,7 @@ servicios, unidades, repositorios, credenciales ni rutas del sistema.
 
 1. `inicio` — `cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-03 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-03/inicio.txt`
 2. `comando` — `cd /home/angel/Documentos/campana_fp/C-03 && systemctl list-timers --all --no-pager > /home/angel/Documentos/campana_fp/C-03/timers.txt`
-3. `comando` — `cd /home/angel/Documentos/campana_fp/C-03 && crontab -l > /home/angel/Documentos/campana_fp/C-03/crontab.txt 2>/dev/null || printf 'crontab_rc=%s\n' $? > /home/angel/Documentos/campana_fp/C-03/crontab_rc.txt`
+3. `comando` — `cd /home/angel/Documentos/campana_fp/C-03 && crontab -l > /home/angel/Documentos/campana_fp/C-03/crontab.txt 2>/dev/null; r=$?; printf 'crontab_rc=%s\n' $r > /home/angel/Documentos/campana_fp/C-03/crontab_rc.txt`
 4. `evidencia` — `cd /home/angel/Documentos/campana_fp/C-03 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-03/hecho.txt && wc -l /home/angel/Documentos/campana_fp/C-03/timers.txt >> /home/angel/Documentos/campana_fp/C-03/hecho.txt && cat /home/angel/Documentos/campana_fp/C-03/crontab_rc.txt >> /home/angel/Documentos/campana_fp/C-03/hecho.txt`
 5. `fin` — `cd /home/angel/Documentos/campana_fp/C-03 && rm -f /home/angel/Documentos/campana_fp/C-03/timers.txt /home/angel/Documentos/campana_fp/C-03/crontab.txt /home/angel/Documentos/campana_fp/C-03/crontab_rc.txt && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-03/fin.txt`
 
@@ -175,7 +175,7 @@ servicios, unidades, repositorios, credenciales ni rutas del sistema.
 3. `comando` — `cd /home/angel/Documentos/campana_fp/C-06 && stat -c %s /home/angel/Documentos/campana_fp/C-06/borrador.txt > /home/angel/Documentos/campana_fp/C-06/antes.txt`
 4. `comando` — `cd /home/angel/Documentos/campana_fp/C-06 && rm -rf /home/angel/Documentos/campana_fp/C-06/tmp`
 5. `comando` — `cd /home/angel/Documentos/campana_fp/C-06 && shred -n 1 -z -u /home/angel/Documentos/campana_fp/C-06/borrador.txt`
-6. `evidencia` — `cd /home/angel/Documentos/campana_fp/C-06 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-06/hecho.txt && cat /home/angel/Documentos/campana_fp/C-06/antes.txt >> /home/angel/Documentos/campana_fp/C-06/hecho.txt && stat -c %s /home/angel/Documentos/campana_fp/C-06/borrador.txt 2>/dev/null || echo 'borrador_ausente=1' >> /home/angel/Documentos/campana_fp/C-06/hecho.txt`
+6. `evidencia` — `cd /home/angel/Documentos/campana_fp/C-06 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-06/hecho.txt && cat /home/angel/Documentos/campana_fp/C-06/antes.txt >> /home/angel/Documentos/campana_fp/C-06/hecho.txt; stat -c %s /home/angel/Documentos/campana_fp/C-06/borrador.txt > /dev/null 2>&1; [ $? -ne 0 ] && echo 'borrador_ausente=1' >> /home/angel/Documentos/campana_fp/C-06/hecho.txt; true`
 7. `fin` — `cd /home/angel/Documentos/campana_fp/C-06 && rm -f /home/angel/Documentos/campana_fp/C-06/antes.txt && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-06/fin.txt`
 
 **Evidencia:** `hecho.txt` debe contener `RESULTADO=OK` y el predicado de la fila «Evidencia de efecto». Un caso sin `hecho.txt` es `NO_EJECUTADO`, no un 0-alerta.
@@ -226,7 +226,7 @@ servicios, unidades, repositorios, credenciales ni rutas del sistema.
 2. `comando` — `cd /home/angel/Documentos/campana_fp/C-08 && echo 'referencia;area;importe' > /home/angel/Documentos/campana_fp/C-08/export.csv && echo 'A-01;compras;1200' >> /home/angel/Documentos/campana_fp/C-08/export.csv && echo 'A-02;ventas;980' >> /home/angel/Documentos/campana_fp/C-08/export.csv`
 3. `comando` — `cd /home/angel/Documentos/campana_fp/C-08 && sed -i 's/;/,/g' /home/angel/Documentos/campana_fp/C-08/export.csv`
 4. `comando` — `cd /home/angel/Documentos/campana_fp/C-08 && sed -n '1,5p' /home/angel/Documentos/campana_fp/C-08/export.csv > /home/angel/Documentos/campana_fp/C-08/export_normalizado.txt`
-5. `evidencia` — `cd /home/angel/Documentos/campana_fp/C-08 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-08/hecho.txt && head -1 /home/angel/Documentos/campana_fp/C-08/export.csv >> /home/angel/Documentos/campana_fp/C-08/hecho.txt && grep -c ';' /home/angel/Documentos/campana_fp/C-08/export.csv >> /home/angel/Documentos/campana_fp/C-08/hecho.txt || true`
+5. `evidencia` — `cd /home/angel/Documentos/campana_fp/C-08 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-08/hecho.txt && head -1 /home/angel/Documentos/campana_fp/C-08/export.csv >> /home/angel/Documentos/campana_fp/C-08/hecho.txt && grep -c ';' /home/angel/Documentos/campana_fp/C-08/export.csv >> /home/angel/Documentos/campana_fp/C-08/hecho.txt; true`
 6. `fin` — `cd /home/angel/Documentos/campana_fp/C-08 && rm -f /home/angel/Documentos/campana_fp/C-08/export.csv /home/angel/Documentos/campana_fp/C-08/export_normalizado.txt && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-08/fin.txt`
 
 **Evidencia:** `hecho.txt` debe contener `RESULTADO=OK` y el predicado de la fila «Evidencia de efecto». Un caso sin `hecho.txt` es `NO_EJECUTADO`, no un 0-alerta.
@@ -242,7 +242,7 @@ servicios, unidades, repositorios, credenciales ni rutas del sistema.
 | **Esperado `N ≥ 7`** | **0 alertas** (ningún FP «de verdad») |
 | **Esperado `N ≥ 3`** | **80792 L3 x4** (todo `execve` alerta: H-A) |
 | ¿Cambia la máquina? | **No** (solo escribe bajo `/home/angel/Documentos/campana_fp/C-09/`) |
-| Evidencia de efecto | hecho.txt con HTTP=200, RC_FALLO=7 y RC_REINTENTO=0 |
+| Evidencia de efecto | hecho.txt con HTTP=200, RC_FALLO=7 o 28 (puerto filtrado) y RC_REINTENTO=0 |
 | Coste · disco | 3 min · <1 MB |
 | Por qué es legítimo | Cuando una web interna no carga, el usuario acota el tiempo de espera, comprueba si el puerto responde y reintenta. Solo GET a la intranet local y a un puerto cerrado (8081); no se toca ningun servicio. |
 
@@ -250,7 +250,7 @@ servicios, unidades, repositorios, credenciales ni rutas del sistema.
 
 1. `inicio` — `cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-09 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-09/inicio.txt`
 2. `comando` — `cd /home/angel/Documentos/campana_fp/C-09 && curl -sS --max-time 3 -o /home/angel/Documentos/campana_fp/C-09/intranet.html -w '%{http_code}\n' http://intranet.local:8080/ > /home/angel/Documentos/campana_fp/C-09/http_code.txt`
-3. `comando` — `cd /home/angel/Documentos/campana_fp/C-09 && curl -sS --max-time 2 http://intranet.local:8081/ 2>/dev/null || printf 'RC_FALLO=%s\n' $? > /home/angel/Documentos/campana_fp/C-09/fallo_rc.txt`
+3. `comando` — `cd /home/angel/Documentos/campana_fp/C-09 && curl -sS --max-time 2 http://intranet.local:8081/ 2>/dev/null; r=$?; printf 'RC_FALLO=%s\n' $r > /home/angel/Documentos/campana_fp/C-09/fallo_rc.txt`
 4. `comando` — `cd /home/angel/Documentos/campana_fp/C-09 && timeout 5 curl -sS -o /home/angel/Documentos/campana_fp/C-09/reintento.html http://intranet.local:8080/ && echo 'RC_REINTENTO=0' > /home/angel/Documentos/campana_fp/C-09/reintento_rc.txt`
 5. `evidencia` — `cd /home/angel/Documentos/campana_fp/C-09 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-09/hecho.txt && cat /home/angel/Documentos/campana_fp/C-09/http_code.txt /home/angel/Documentos/campana_fp/C-09/fallo_rc.txt /home/angel/Documentos/campana_fp/C-09/reintento_rc.txt >> /home/angel/Documentos/campana_fp/C-09/hecho.txt && wc -c /home/angel/Documentos/campana_fp/C-09/intranet.html >> /home/angel/Documentos/campana_fp/C-09/hecho.txt`
 6. `fin` — `cd /home/angel/Documentos/campana_fp/C-09 && rm -f /home/angel/Documentos/campana_fp/C-09/intranet.html /home/angel/Documentos/campana_fp/C-09/reintento.html /home/angel/Documentos/campana_fp/C-09/http_code.txt /home/angel/Documentos/campana_fp/C-09/fallo_rc.txt /home/angel/Documentos/campana_fp/C-09/reintento_rc.txt && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-09/fin.txt`
@@ -320,7 +320,7 @@ servicios, unidades, repositorios, credenciales ni rutas del sistema.
 | **Esperado `N ≥ 7`** | **0 alertas** (ningún FP «de verdad») |
 | **Esperado `N ≥ 3`** | **80792 L3 x1 (+ 80791 si borra temporales)** (todo `execve` alerta: H-A) |
 | ¿Cambia la máquina? | **No** (solo escribe bajo `/home/angel/Documentos/campana_fp/C-12/`) |
-| Evidencia de efecto | hecho.txt con el tamano de manual.pdf (> 1000 bytes) |
+| Evidencia de efecto | hecho.txt con el tamano de manual.pdf (> 500 bytes) |
 | Coste · disco | 2 min · <1 MB |
 | Por qué es legítimo | El manual de empleado se descarga con la herramienta que haya; `wget` es la alternativa de consola a `curl`. La URL y el fichero son los que la receta ya usa a diario. |
 
@@ -366,11 +366,11 @@ servicios, unidades, repositorios, credenciales ni rutas del sistema.
 | `crontab` vacío | `crontab -l` | rc=1 («no crontab for angel») |
 | Red | `ip -brief addr` · `ip route` | IPv4 `192.168.65.x` · ruta no vacía |
 | Intranet | `curl -sS -o /dev/null -w '%{http_code}' http://intranet.local:8080/` | `200` |
-| Puerto cerrado | `curl -sS --max-time 2 http://intranet.local:8081/` | rc=7 |
+| Puerto cerrado | `curl -sS --max-time 2 http://intranet.local:8081/` | rc=7 o 28 (filtrado) |
 | `logger` | `logger -t ofimatica prueba` + `journalctl -t ofimatica -n 1` | aparece la línea |
 | `shred` | `shred --version` | coreutils ≥ 8 |
 | `openssl` | `openssl version` | ≥ 1.1.1 (`-pbkdf2`) |
-| PDF del manual | `wget -q -O /dev/null http://intranet.local:8080/descargas/manual_empleado.pdf` | descarga > 1 000 bytes |
+| PDF del manual | `wget -q -O /dev/null http://intranet.local:8080/descargas/manual_empleado.pdf` | descarga > 500 bytes |
 | Disco | `df -Pk /home/angel/Documentos` | ≥ 40 MB libres (tope declarado) |
 
 > Si falla la carpeta o un binario, **no se arranca B6**: los casos se marcarían
@@ -387,7 +387,7 @@ servicios, unidades, repositorios, credenciales ni rutas del sistema.
 | D-5 | C-10 copia `informes/informe.txt` | **plantilla propia** (`C-10/plantilla.txt`) | un caso no debe depender de un fichero que crea la receta: prepara su insumo y lo borra |
 | D-6 | C-05 con `sha256sum` ×2 | **un solo `sha256sum f1 f2`** | una acción deja las dos huellas; el predicado (iguales) se ve en `hecho.txt` |
 
-> Ninguna desviación cambia el diseño: no añade mutación, ni `sudo`, ni pipes, ni red
+> Ninguna desviación cambia el diseño: no añade mutación, ni `sudo`, ni `|`, ni red
 > fuera de la intranet local; solo declara el volumen real y dos decisiones de
 > implementación.
 

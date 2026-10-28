@@ -15,7 +15,7 @@ Novedades de la **v2** (plan §5.1, T1) sobre la v1:
    toca (regla `cwd_de`), con dos excepciones declaradas (`mkdir -p` y los `xargs`). Resultado:
    **ninguna** acción se ejecuta en `~/ghosts-client` (el plan B de §1.9.2, aplicado en la
    receta). `cd` es un *builtin*: no añade `execve`; sí cambia el `audit_cwd` del hijo. Sin
-   pipes (DT9: GHOSTS pierde el reporte).
+   `|` de ningún tipo (H-1: la API de GHOSTS parte el resultado por `|` y pierde la acción).
 2. **Ritmo irregular determinista (M2, §5.1 y §1.4)** — **tabla de jitter literal** (`INTRA`,
    `RAFAGAS`, `HUECOS`, `PAUSA_LARGA`): ráfagas de **1–6** acciones, huecos intra de
    **41–62 s**, huecos entre ráfagas de **80 s–22 min** y **dos pausas largas** (20–22 min),
@@ -173,7 +173,8 @@ BINARIOS_CAMPANA = BINARIOS_OK | campana.BINARIOS_SOLO_CAMPANA
 # Familias de error admitidas (M3, §5.1 y §1.4). Nada fuera de esta lista.
 FAMILIAS_ERROR = ("ruta_mal", "cp_dir", "gzip", "rm_inexistente", "cat_dir", "opcion")
 # Builtins de bash que NO generan `execve` y por tanto no se validan como binarios.
-BUILTINS = {"cd", "printf"}
+# `[` (condición POSIX) es builtin en bash: no añade `execve` ni entra en la lista blanca.
+BUILTINS = {"cd", "printf", "["}
 # Formato del registro de errores (F-1): 5 campos separados por TAB, terminados en \n.
 # Va **entre comillas simples** en el comando ⇒ lo interpreta `printf`, no el shell.
 FMT_REGISTRO = "%s\\t%s\\t%s\\t%s\\trc=%s\\n"
@@ -308,10 +309,15 @@ def pareja_error(fam: str, fallo: str, ok: str, cwd_fallo: str, cwd_ok: str,
     Formato del registro (TAB): `ts_utc · tipo · familia · comando · rc` (2 líneas por error).
     """
     assert "'" not in fallo and "'" not in ok, "el comando no puede llevar comillas simples"
-    a = (f"{fallo} 2>/dev/null || {{ r=$?; "
-         f"printf '{FMT_REGISTRO}' $(date -u +%FT%TZ) error {fam} '{fallo}' $r >> {registro}; }}")
-    b = (f"{ok} && {{ r=$?; "
-         f"printf '{FMT_REGISTRO}' $(date -u +%FT%TZ) reintento {fam} '{ok}' $r >> {registro}; }}")
+    # H-1 (T3): NADA de `|` en los comandos. La API de GHOSTS parte cada línea de
+    # resultado por `|` (`QueueSyncService.cs:178`) y, si el comando lleva `||`, el
+    # JSON se trunca y la acción NO se reporta. Forma equivalente sin pipe:
+    #   fallo:   cmd; r=$?; [ $r -ne 0 ] && printf …   (`[` es builtin: 0 execve)
+    #   reintento: cmd; r=$?; printf …                 (siempre registra)
+    a = (f"{fallo} 2>/dev/null; r=$?; [ $r -ne 0 ] && "
+         f"printf '{FMT_REGISTRO}' $(date -u +%FT%TZ) error {fam} '{fallo}' $r >> {registro}")
+    b = (f"{ok}; r=$?; "
+         f"printf '{FMT_REGISTRO}' $(date -u +%FT%TZ) reintento {fam} '{ok}' $r >> {registro}")
     return [("error", a, cwd_fallo), ("reintento", b, cwd_ok)]
 
 
@@ -1013,7 +1019,7 @@ def escribir_resumen(outdir, timelines):
         "> Generado por `_artefactos/scripts/construir_receta_legitima.py` (receta **v2**, bloque",
         "> `legitimo-v3`, plan §5.1). Jornada **09:00–18:00 local** (08:00–17:00 UTC), con **café**",
         "> (20 min) y **comida** (60 min). Solo handler `Command`; **cero** `random`, **cero**",
-        "> `Curl`, **cero** navegador, **cero** pipes (DT9).",
+        "> `Curl`, **cero** navegador, **cero** `|` (H-1: la API de GHOSTS parte el resultado).",
         "> **`cwd` por acción**: `cd <carpeta coherente> && <comando>` (ninguna en el directorio del cliente).",
         "> **Sin fecha**: `TFG_MAPA_DIAS` se pasa con `--t0` y se fija al cerrar **T4**.",
         "> **Campaña `B6`** (T2): 11 casos no mutantes en `17:05-17:50Z`, reparto **3/4/4** e",
@@ -1263,8 +1269,11 @@ def validar(outdir, verbose=True, mapa_esperado=None):
                     fallos.append(f"d{day}/{bid}: comillas dobles en: {cmd[:60]}")
                 if cmd.strip() == "random":
                     fallos.append(f"d{day}/{bid}: comando random prohibido")
-                if re.search(r"(?<!\|)\|(?!\|)", cmd):
-                    fallos.append(f"d{day}/{bid}: comando con PIPE (GHOSTS pierde el reporte): {cmd[:60]}")
+                # H-1 (T3): NINGÚN `|` (ni simple ni `||`). La API de GHOSTS parte la
+                # línea de resultado por `|` y descarta el reporte de la acción.
+                if "|" in cmd:
+                    fallos.append(f"d{day}/{bid}: comando con '|' (GHOSTS pierde el "
+                                  f"reporte): {cmd[:60]}")
                 m = re.match(r"^cd (/home/angel[^\s&]*)\s+&&\s+\S", cmd)
                 if not m:
                     fallos.append(f"d{day}/{bid}: acción sin prefijo `cd <carpeta> && `: {cmd[:60]}")

@@ -75,7 +75,7 @@ act=$(sha "$DIR/config/timeline.json")
 say "timeline_activa=${act:0:8}"
 # El cliente REESCRIBE el fichero al arrancar (mismo contenido, sha distinto): ademas del
 # sha se compara la HUELLA DE COMANDOS con d1.
-huella() { grep -o 'Command[^:]*:[[:space:]]*"[^"]*"' "$1" 2>/dev/null | sed 's/.*:[[:space:]]*"//' | md5sum | cut -d' ' -f1; }
+huella() { grep -o '"Command"[[:space:]]*:[[:space:]]*"[^"]*"' "$1" 2>/dev/null | sed 's/.*"Command"[[:space:]]*:[[:space:]]*"//; s/"$//' | md5sum | cut -d' ' -f1; }
 h_act=$(huella "$DIR/config/timeline.json"); h_d1=$(huella "$DIR/config/timeline.d1.json")
 say "timeline_huella=${h_act:0:8}"
 if [ -n "$h_d1" ] && [ "$h_act" != "$h_d1" ]; then bad "timeline_activa=FALLO (el contenido no es d1)"; fi
@@ -130,6 +130,35 @@ say "df_free_mb=${df_free_mb}"
 say "df_libre_pct=${df_free_mb_pct}"
 say "df_inodes_libres_pct=${df_inodes_libres_pct}"
 [ "$df_free_mb" -ge 4096 ] || say "df_estado=AVISO (menos de 4 GB; G-2 lo comprueba en prep)"
+
+# --- 10) cwd realista + carpetas base + prerrequisito de la campana (T3) --
+# El cliente debe arrancar fuera del directorio del binario (CA-05) y las carpetas
+# donde trabaja la receta v2 deben existir. `campana_fp` es BLOQUEANTE: sin ella,
+# el `cd` de las 11 marcas falla y los 11 casos se pierden (NO_EJECUTADO).
+cwd_ctl=$(grep -o 'TFG_CWD_BASE:-[^}]*' "$CTL" 2>/dev/null | head -1 | sed 's/.*:-//')
+say "client_cwd=${cwd_ctl:-none}"
+[ "$cwd_ctl" = "/home/angel" ] || bad "client_cwd=FALLO (se espera /home/angel)"
+
+cwd_ka=$(grep -o 'TFG_CWD_BASE:-[^}]*' "$KA" 2>/dev/null | head -1 | sed 's/.*:-//')
+say "keepalive_cwd=${cwd_ka:-none}"
+[ "$cwd_ka" = "/home/angel" ] || bad "keepalive_cwd=FALLO (se espera /home/angel)"
+
+carpetas_falta=""
+for d in /home/angel/Documentos/informes /home/angel/Documentos/actas \
+         /home/angel/Documentos/copias /home/angel/Documentos/correo \
+         /home/angel/Descargas /home/angel/.cache/tfg-web; do
+  [ -d "$d" ] || carpetas_falta="$carpetas_falta $(basename "$d")"
+done
+if [ -z "$carpetas_falta" ]; then say "carpetas_cwd=OK"; else bad "carpetas_cwd=FALLO (faltan:$carpetas_falta)"; fi
+
+CAMP=/home/angel/Documentos/campana_fp
+if [ -d "$CAMP" ] && [ -w "$CAMP" ]; then
+  say "campana_fp=OK"
+  say "campana_fp_casos=$(find "$CAMP" -mindepth 1 -maxdepth 1 -type d -name 'C-*' | wc -l)"
+else
+  say "campana_fp=FALLO"
+  bad "campana_fp=FALLO (no existe o no es escribible: $CAMP)"
+fi
 
 # --- resultado -----------------------------------------------------------
 if [ "$FAIL" -eq 0 ]; then echo "RESULT=PASS"; exit 0; else echo "RESULT=FAIL"; exit 40; fi

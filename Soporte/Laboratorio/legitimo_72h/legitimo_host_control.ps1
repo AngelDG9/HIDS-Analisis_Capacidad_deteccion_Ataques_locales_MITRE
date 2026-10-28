@@ -9,9 +9,10 @@
 # y se pasan por STDIN a los scripts remotos (nunca a fichero, nunca al log).
 #
 # Fases:
-#   prep     : G-1..G-12 -> revert victima a `lab-listo-legit-v2` + start + deploy del
+#   prep     : G-1..G-12 -> revert victima a `lab-listo-legit-v3` + start + deploy del
 #              cliente arreglado + manager + internet local + GHOSTS + logall_json ON
 #              + verificar_arreglos + receta d1 (cliente PARADO)
+#              `lab-listo-legit-v2` es el snapshot ANTERIOR y NO se toca (red de seguridad).
 #   arm      : instala la tarea del invitado con T0 (timer t0-5min) + arranca el cliente
 #              + checklist
 #   watch    : vigilancia de 9 senales (7 en vivo + 2 post-hoc: RAM y recovery.log), 3 niveles, SIN tocar
@@ -58,7 +59,7 @@ $Recetas = Join-Path $Base 'recetas'
 $Vmrun   = 'C:\Program Files\VMware\VMware Workstation\vmrun.exe'
 $Victim  = 'D:\TFG-VMs\victima-linux\victima-linux.vmx'
 $Manager = 'D:\TFG-VMs\wazuh-server\wazuh-server.vmx'
-$Snap    = 'lab-listo-legit-v2'
+$Snap    = 'lab-listo-legit-v3'
 
 $Ssh = 'C:\Program Files\Git\usr\bin\ssh.exe'
 $Scp = 'C:\Program Files\Git\usr\bin\scp.exe'
@@ -223,18 +224,31 @@ function Get-Calendario {
 
 function Get-BloqueEstado([datetime]$AhoraUtc) {
   $cal = Get-Calendario
-  $res = @{ estado = 'fuera'; bloque = '' }
+  $res = @{ estado = 'fuera'; bloque = ''; ini = '' }
   if (-not $cal) { return $res }
   $hhmm = $AhoraUtc.ToString('HH:mm')
   foreach ($b in $cal.bloques) {
     $on = $b.on.Substring(0,5); $off = $b.off.Substring(0,5)
     if ($hhmm -ge $on -and $hhmm -lt $off) {
       $res.bloque = $b.id
+      $res.ini = $b.on            # HH:MM:SS del inicio del bloque (hora de reloj, UTC)
       $res.estado = if ($b.tipo -eq 'trabajo') { 'bloque' } else { 'pausa' }
       return $res
     }
   }
   return $res
+}
+
+function Hms2S([string]$h) {
+  if (-not $h) { return 0 }
+  $p = $h.Split(':')
+  return ([int]$p[0] * 3600 + [int]$p[1] * 60 + [int]$p[2])
+}
+
+# H1(c): ¿esta la VM en marcha? (para no intentar SSH contra una VM apagada)
+function Test-VmEnMarcha([string]$Vmx) {
+  $lista = (& $Vmrun -T ws list 2>&1 | Out-String)
+  return ($lista -match [regex]::Escape((Split-Path $Vmx -Leaf)))
 }
 
 # ===========================================================================
@@ -249,7 +263,7 @@ switch ($Phase) {
   'prep' {
     Write-Log "=== START prep (host UTC $(TsUtc)) t0=$T0 t1=$T1 ==="
 
-    # --- G-1: el snapshot v2 existe -------------------------------------
+    # --- G-1: el snapshot v3 existe (v2 NO se toca) ----------------------
     $snaps = (& $Vmrun -T ws listSnapshots $Victim 2>&1 | Out-String)
     if ($snaps -notmatch [regex]::Escape($Snap)) {
       Write-Log "G-1 FALLO: no existe el snapshot '$Snap'. NO se arma nada."; exit 41
@@ -261,7 +275,15 @@ switch ($Phase) {
     $wu = (Get-Service wuauserv -ErrorAction SilentlyContinue).StartType
     Write-Log "G-10: D_libre_gb=$dFreeGb wuauserv_StartType=$wu sesion=$env:USERNAME"
     if ($dFreeGb -lt 60) { Write-Log "G-10 FALLO: D: < 60 GB"; exit 47 }
-    if ("$wu" -ne 'Disabled') { Write-Log "G-10 FALLO: Windows Update NO esta pausado (ejecuta pausar_windows_update.ps1 pausar)"; exit 47 }
+    if ("$wu" -ne 'Disabled') {
+      if ($Test) {
+        # Prueba en seco: NO se toca Windows Update (eso es T4). Se omite SOLO este
+        # bloqueo con `-Test`, que no viaja a la ventana.
+        Write-Log "G-10 AVISO (test): Windows Update NO esta pausado (se omite el bloqueo; T4 lo pausa antes de t0)"
+      } else {
+        Write-Log "G-10 FALLO: Windows Update NO esta pausado (ejecuta pausar_windows_update.ps1 pausar)"; exit 47
+      }
+    }
 
     # --- G-4: receta valida y mapeo de dias ------------------------------
     $chk = & python (Join-Path $Repo '_artefactos\scripts\construir_receta_legitima.py') --check 2>&1 | Out-String
@@ -274,7 +296,9 @@ switch ($Phase) {
       $exp = Get-RepoHash "Soporte/Laboratorio/legitimo_72h/recetas/d$d.json"
       if ($exp -and $sha[$d] -ne $exp) { Write-Log "G-4 FALLO: d$d.json no coincide con sha256sums.txt"; exit 20 }
     }
-    Write-Log ("G-4 OK: d1=$($sha[1].Substring(0,8)) d2=$($sha[2].Substring(0,8)) d3=$($sha[3].Substring(0,8)) mapa 26/27/28 -> d1/d2/d3")
+    $calMap = (Get-Calendario).mapa_dias
+    $mapaTxt = if ($calMap) { ($calMap.PSObject.Properties | ForEach-Object { "$($_.Name)->d$($_.Value)" }) -join ',' } else { '(vacio: se fija en T4)' }
+    Write-Log ("G-4 OK: d1=$($sha[1].Substring(0,8)) d2=$($sha[2].Substring(0,8)) d3=$($sha[3].Substring(0,8)) mapa=$mapaTxt")
 
     # --- revert + start --------------------------------------------------
     Invoke-Vmrun @('-T','ws','revertToSnapshot',$Victim,$Snap) | Out-Null
@@ -395,6 +419,25 @@ switch ($Phase) {
     if (-not $ok6) { Write-Log "G-6 FALLO: no llega ninguna muestra 'df -P' del agente 001 en 7 min"; exit 46 }
     Write-Log "G-6 OK: muestras 'df -P' del agente 001 en archives.json"
 
+    # --- H1(b): sembrar el estado de la vigilancia (primer chequeo SIN AVISO) ---
+    # El primer `watch` de la ventana veria `arch=-1B` (sin delta previo) y `sin_df`
+    # (watch_manager arranca su offset de cero). Se ejecuta una vez AQUI (t0-45min) y se
+    # deja el estado del host con los TAMANOS actuales: el chequeo de t0 ya tiene delta
+    # y la muestra de `df` esta en /tmp del manager.
+    $seed = Invoke-WatchManager
+    $seedObj = [ordered]@{
+      ts          = TsUtc
+      archives    = [int]$seed['archives_bytes']
+      alerts      = [int]$seed['alerts_bytes']
+      alarma_sig  = ''
+      alarma_n    = 0
+      cero_n      = 0
+    }
+    $seedDir = Split-Path $WatchState
+    if (-not (Test-Path $seedDir)) { New-Item -ItemType Directory -Force -Path $seedDir | Out-Null }
+    $seedObj | ConvertTo-Json | Set-Content -Path $WatchState -Encoding utf8
+    Write-Log "H1(b) estado del watch sembrado: archives=$($seedObj.archives)B alerts=$($seedObj.alerts)B df_edad_min=$($seed['df_muestras_edad_min']) (archivo $WatchState)"
+
     Invoke-Vmrun @('-T','ws','listSnapshots',$Victim) | Out-Null
     Write-Log "=== END prep (laboratorio LISTO, cliente PARADO) ==="
   }
@@ -450,9 +493,18 @@ switch ($Phase) {
     }
 
     $cal = Get-BloqueEstado $now
-    if ($ForzarBloque) { $cal = @{ estado = 'bloque'; bloque = 'TEST' } }
+    if ($ForzarBloque) { $cal = @{ estado = 'bloque'; bloque = 'TEST'; ini = '' } }
     $nivel = 0   # 0 OK, 1 AVISO, 2 ALARMA
     $notas = New-Object System.Collections.Generic.List[string]
+
+    # H1(a): gracia de borde. Si el bloque acaba de empezar (< 15 min) y la ultima accion
+    # es del bloque anterior, `doing_age` es enorme por diseño. No se juzga (nota
+    # `gracia_borde`): es una de las 2 falsas alarmas/dia que documentó v2.
+    $minsBloque = -1
+    if ($cal.estado -eq 'bloque' -and $cal.ini) {
+      $minsBloque = [int][math]::Floor(((Hms2S $now.ToString('HH:mm:ss')) - (Hms2S $cal.ini)) / 60)
+    }
+    $graciaBorde = ($minsBloque -ge 0 -and $minsBloque -lt 15)
 
     # --- senal 1: ?esta haciendo? (GHOSTS, host) ------------------------
     $ids = Get-MachineIds 'victima-linux'
@@ -465,7 +517,9 @@ switch ($Phase) {
     if ($cal.estado -eq 'bloque' -and $doingAgeMin -ge 0) {
       # Umbrales CA-30 del plan v5: AVISO > 25 min, ALARMA > 35 min (los huecos de la receta
       # v2 llegan a 20,8 min y el keepalive usa STALE=30; con 15 min habia AVISO espurios).
-      if ($doingAgeMin -gt 35) { $nivel = 2; $notas.Add('doing>35m') }
+      if ($graciaBorde -and $doingAgeMin -gt 25) {
+        $notas.Add("gracia_borde($($minsBloque)m del bloque)")
+      } elseif ($doingAgeMin -gt 35) { $nivel = 2; $notas.Add('doing>35m') }
       elseif ($doingAgeMin -gt 25) { if ($nivel -lt 1) { $nivel = 1 }; $notas.Add('doing>25m') }
     } elseif ($cal.estado -eq 'bloque' -and $doingAgeMin -lt 0) {
       $nivel = 2; $notas.Add('sin_acciones_nunca')
@@ -513,6 +567,9 @@ switch ($Phase) {
 
     # --- senal 8: recuperaciones/rotaciones (informativo) ----------------
     # La vigilancia NO toca la victima (S7.1): `recovery.log` se lee AL CERRAR (post-hoc).
+    # H1(d) (plan §5.3): la rotacion diaria es POST-HOC por decision; si falla, se juzga en
+    # V2 ("0 acciones fuera de bloques" con incidencia), no con una 10.ª senal en vivo
+    # (anadiria otra falsa alarma por diseno).
     $recN = 'post-hoc'; $rotN = 'post-hoc'
 
     # --- senal 9: RAM (post-hoc) ----------------------------------------
@@ -520,7 +577,7 @@ switch ($Phase) {
     $bloqueTxt = if ($cal.estado -eq 'bloque') { 'si' } else { $cal.estado }
     $doingTxt = if ($doingAgeMin -ge 0) { "$($doingAgeMin)m" } else { 'n/a' }
     $hbTxt = if ($kaEdad -ge 0) { "$($kaEdad)s" } else { 'n/a' }
-    $line = "[$(TsUtc)] [watch] estado=$estadoTxt doing_age=$doingTxt bloque=$bloqueTxt hb=$hbTxt ag=$($wm['agente_status']) mgr=$($wm['manager'])/$($wm['daemons']) arch=$($archDelta)B dia=$($alertDelta)B df=$(if($dfGb -ge 0){"${dfGb}G"}else{'n/a'}) tasa=$($dfTasa)MB/h db=${dbMb}MB host=${hostGb}G ram=post-hoc rec=post-hoc rot=post-hoc notas=$($notas -join ',')"
+    $line = "[$(TsUtc)] [watch] estado=$estadoTxt doing_age=$doingTxt bloque=$bloqueTxt mins_bloque=$minsBloque hb=$hbTxt ag=$($wm['agente_status']) mgr=$($wm['manager'])/$($wm['daemons']) arch=$($archDelta)B dia=$($alertDelta)B df=$(if($dfGb -ge 0){"${dfGb}G"}else{'n/a'}) tasa=$($dfTasa)MB/h db=${dbMb}MB host=${hostGb}G ram=post-hoc rec=post-hoc rot=post-hoc notas=$($notas -join ',')"
 
     Add-Content -Path $VigLog -Value $line -Encoding utf8
     Add-Content -Path $Log -Value $line -Encoding utf8
@@ -588,12 +645,26 @@ switch ($Phase) {
   # =========================================================================
   'cleanup' {
     Write-Log "=== START cleanup (host UTC $(TsUtc)) ==="
-    Invoke-OnVm $Vic "bash $GuestClient/client_ctl.sh stop" '' -SinLog | Out-Null
-    Invoke-OnVm $Man 'bash /tmp/logall_json_ctl.sh off' $ManagerPw | Out-Null
-    Invoke-OnVm $Man 'bash /tmp/logall_json_ctl.sh status' $ManagerPw | Out-Null
-    Invoke-OnVm $Man 'sudo -S -p '''' diff /var/ossec/etc/ossec.conf.tfg-bak /var/ossec/etc/ossec.conf && echo CONFIG_IDENTICA || echo CONFIG_DIFIERE; sudo -S -p '''' ls -l /var/ossec/logs/archives/ 2>/dev/null | tail -3' $ManagerPw | Out-Null
-    Invoke-Vmrun @('-T','ws','stop',$Victim,'soft')  | Out-Null
-    Invoke-Vmrun @('-T','ws','stop',$Manager,'soft') | Out-Null
+    # H1(c): no se intenta SSH contra una VM apagada (el hueco inofensivo de 3 min que
+    # documentó v2 en `legitimo-72h-v2/incidencias.md`). Se consulta `vmrun list` antes.
+    $vicUp = Test-VmEnMarcha $Victim
+    $manUp = Test-VmEnMarcha $Manager
+    Write-Log "cleanup: victima_en_marcha=$vicUp manager_en_marcha=$manUp"
+    if ($vicUp) {
+      Invoke-OnVm $Vic "bash $GuestClient/client_ctl.sh stop" '' -SinLog | Out-Null
+      Write-Log "cleanup: cliente parado (fase remota de la victima hecha)"
+    } else {
+      Write-Log "cleanup: victima APAGADA -> se omite la fase remota (H1c, sin SSH)"
+    }
+    if ($manUp) {
+      Invoke-OnVm $Man 'bash /tmp/logall_json_ctl.sh off' $ManagerPw | Out-Null
+      Invoke-OnVm $Man 'bash /tmp/logall_json_ctl.sh status' $ManagerPw | Out-Null
+      Invoke-OnVm $Man 'sudo -S -p '''' diff /var/ossec/etc/ossec.conf.tfg-bak /var/ossec/etc/ossec.conf && echo CONFIG_IDENTICA || echo CONFIG_DIFIERE; sudo -S -p '''' ls -l /var/ossec/logs/archives/ 2>/dev/null | tail -3' $ManagerPw | Out-Null
+    } else {
+      Write-Log "cleanup: manager APAGADO -> se omite logall/diff remoto (H1c, sin SSH)"
+    }
+    if ($vicUp)    { Invoke-Vmrun @('-T','ws','stop',$Victim,'soft')  | Out-Null }
+    if ($manUp)    { Invoke-Vmrun @('-T','ws','stop',$Manager,'soft') | Out-Null }
     & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Ghosts 'stop_ghosts.ps1')
     & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Inet 'stop_internet_local.ps1')
     if (Get-NetFirewallRule -DisplayName 'TFG-ghosts-5000' -ErrorAction SilentlyContinue) {

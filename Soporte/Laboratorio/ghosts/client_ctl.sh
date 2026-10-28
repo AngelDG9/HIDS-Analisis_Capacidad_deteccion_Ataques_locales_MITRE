@@ -1,10 +1,11 @@
 #!/bin/bash
 # ============================================================================
-# client_ctl.sh v2 — control del cliente GHOSTS en victima-linux.
-# Bloque `legitimo-fix` (L1-fix). Sustituye al v1 (que redirigía el stdout SIN TOPE:
-# `ghasts.out` llegó a 4,78 GB y llenó el disco el 2026-10-19).
+# client_ctl.sh v3 — control del cliente GHOSTS en victima-linux.
+# Bloque `legitimo-fix` (v2) + `legitimo-v3` (v3: cwd realista, mejora 1).
+# Sustituye al v1 (que redirigía el stdout SIN TOPE: `ghasts.out` llegó a 4,78 GB
+# y llenó el disco el 2026-10-19).
 #
-# Cambios respecto al v1:
+# Cambios de la v2:
 #   · stdout -> `client.out` en modo APPEND (historial de todos los arranques)
 #   · TOPE DURO por construcción: TFG_CLIENT_OUT_MAX_MB (def. 20 MB) con copytruncate
 #     a `client.out.1`  => máximo 20 + 20 = 40 MB en disco. `rotate` lo llama el
@@ -13,6 +14,14 @@
 #   · `stop` ESCALADO (H-B): TERM -> 5 s -> KILL (poder recuperar un cliente colgado).
 #   · `log`: tail de client.out y client.out.1
 #
+# Cambio de la v3 (plan §5.1 mejora 1 / CA-05):
+#   · el cliente arranca con `cwd=$TFG_CWD_BASE` (def. `/home/angel`), NO en el
+#     directorio del binario. El ejecutable se lanza por ruta ABSOLUTA y sus rutas
+#     de config/instance/log las resuelve `ApplicationDetails.InstalledPath`
+#     (directorio del exe). Si E0 demuestra que NLog resolviera `logs/app.log`
+#     contra el cwd, se revierte esta línea (plan B: `cd` por acción, ya aplicado
+#     en la receta v2).
+#
 # No contiene secretos.
 # Uso:  bash client_ctl.sh start|stop|status|id|log|rotate [DIR]
 #   DIR por defecto: /home/angel/ghosts-client
@@ -20,6 +29,7 @@
 set -u
 
 DIR="${2:-/home/angel/ghosts-client}"
+CWD="${TFG_CWD_BASE:-/home/angel}"
 MAX_MB="${TFG_CLIENT_OUT_MAX_MB:-20}"
 OUT="$DIR/client.out"
 PATRON='(^|/)ghosts[.]client[.]linux'   # no se autoempareja con el patron literal
@@ -46,16 +56,17 @@ rotar() {
 case "${1:-}" in
   start)
     if [ ! -d "$DIR" ]; then log "no existe $DIR"; exit 1; fi
+    if [ ! -d "$CWD" ]; then log "no existe el cwd $CWD"; exit 1; fi
     rotar
     if pgrep -f "$PATRON" >/dev/null 2>&1; then
       log "ya estaba en marcha (pids=$(pids)); NO se duplica (H-A)"
       exit 0
     fi
-    cd "$DIR" || exit 1
-    ( nohup ./ghosts.client.linux >> "$OUT" 2>&1 & )
+    cd "$CWD" || exit 1
+    ( nohup "$DIR/ghosts.client.linux" >> "$OUT" 2>&1 & )
     sleep 2
     p=$(pids)
-    if [ -n "$p" ]; then log "arrancado pid=$p (stdout -> client.out, tope ${MAX_MB}MB x2)"
+    if [ -n "$p" ]; then log "arrancado pid=$p cwd=$CWD (stdout -> client.out, tope ${MAX_MB}MB x2)"
     else log "NO arranco (revisar client.out)"; exit 2; fi
     ;;
   stop)

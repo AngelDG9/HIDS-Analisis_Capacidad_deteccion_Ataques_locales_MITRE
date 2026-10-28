@@ -18,6 +18,8 @@
 #   · RAM post-hoc: lee `/proc/meminfo` con `read` de bash (sin fork) cada 10 min y deja
 #     `ram_free_mb=`/`ALARMA_RAM` en `keepalive.log` (§4.10).
 #   · `recovery.log`: una línea por acción (rotacion|arranque|recuperacion|alarma_disco|alarma_ram).
+#   · **`cwd`** (bloque `legitimo-v3`, CA-05): arranca en `$TFG_CWD_BASE` (def.
+#     `/home/angel`), no en `~/ghosts-client`; sus forks heredan ese `cwd`.
 #
 # Los overrides `TFG_*` SOLO se aceptan con `TFG_TEST_MODE=1` (prueba en seco). En la
 # ventana no se exporta esa variable: los valores son los del plan.
@@ -53,7 +55,16 @@ EST="$DIR/rotacion.estado"
 BLOQUES_ENV="$DIR/recetas/bloques.env"
 CTL="$DIR/client_ctl.sh"
 
-cd "$DIR" 2>/dev/null || { echo "keepalive: no existe $DIR"; exit 1; }
+# v3 (`legitimo-v3`, CA-05): el keepalive NO arranca desde el directorio del binario.
+# Todos sus forks (`date`, `curl`, `awk`, `sha256sum`, …) heredan el cwd, y un cwd
+# `/home/angel/ghosts-client` en esos `execve` es el mismo artefacto que se corrige en
+# el cliente. Las rutas de trabajo son absolutas (`$DIR/...`), así que el `cd` solo
+# cambia el `audit_cwd`. Si el `cd` fallara, se cae al directorio del cliente.
+CWD="${TFG_CWD_BASE:-/home/angel}"
+if ! cd "$CWD" 2>/dev/null; then
+  cd "$DIR" 2>/dev/null || { echo "keepalive: no existe $DIR"; exit 1; }
+fi
+[ -d "$DIR" ] || { echo "keepalive: no existe $DIR"; exit 1; }
 ts() { date -u '+%Y-%m-%dT%H:%M:%SZ'; }
 klog() { echo "$(ts) keepalive: $*" >> "$KA_LOG"; }
 rlog() { echo "$(ts) $*" >> "$REC_LOG"; }
@@ -145,8 +156,12 @@ sha8() { sha256sum "$1" 2>/dev/null | cut -c1-8; }
 # DelayBefore, ScheduleType). El CONTENIDO es el mismo, pero el sha256 cambia => comparar
 # shas daria una rotacion falsa el dia 1. Se compara la HUELLA DE LOS COMANDOS.
 huella_timeline() {
-  grep -o 'Command[^:]*:[[:space:]]*"[^"]*"' "$1" 2>/dev/null \
-    | sed 's/.*:[[:space:]]*"//' | md5sum | cut -d' ' -f1
+  # v3: la huella debe funcionar con el JSON PRETTY (repo) y con el COMPACTO que
+  # reescribe el cliente al arrancar. El patrón viejo (`Command[^:]*:`) se comía
+  # parte del comando en cuanto había un `:` (URLs, `%{http_code}`) y daba una
+  # huella distinta con el mismo contenido => rotación falsa (hallazgo de T3).
+  grep -o '"Command"[[:space:]]*:[[:space:]]*"[^"]*"' "$1" 2>/dev/null \
+    | sed 's/.*"Command"[[:space:]]*:[[:space:]]*"//; s/"$//' | md5sum | cut -d' ' -f1
 }
 
 # --- rotación diaria de la receta ----------------------------------------

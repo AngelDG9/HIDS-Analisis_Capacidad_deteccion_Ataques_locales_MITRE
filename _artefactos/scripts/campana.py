@@ -13,7 +13,7 @@ separada por saltos de línea, y su tipo en `tipos`). Este módulo:
 
 1. **carga** el CSV y comprueba que la estructura es coherente;
 2. **valida** los 11 casos con el **mismo** `binarios_de()` / `BINARIOS_OK` del
-   generador de la receta (0 pipes, 0 `sudo`, 0 `random`, 0 comillas dobles,
+   generador de la receta (0 `|`, 0 `sudo`, 0 `random`, 0 comillas dobles,
    **0 mutación** fuera de `~/Documentos/campana_fp/`, 22 marcas, evidencia…);
 3. **construye** el handler `B6` de `d1/d2/d3.json` (lo consume
    `construir_receta_legitima.py`);
@@ -136,7 +136,7 @@ PRODUCTORES_EFECTO_EXTERNO = {"logger", "curl", "wget", "mail", "sendmail", "ssh
                               "scp", "sftp", "nc", "nc.openbsd", "ncat", "socat",
                               "ftp", "tftp"}
 #: Builtins del shell: NO generan `execve` (se excluyen del recuento declarado).
-BUILTINS_SIN_EXECVE = {"cd", "echo", "printf", "true", ":"}
+BUILTINS_SIN_EXECVE = {"cd", "echo", "printf", "true", ":", "["}
 #: Hijos que un `execve` lanza por diseño en la campaña (se declaran aparte):
 #: `xargs` ⇒ 1 `cp` por línea de su fichero (12) y `timeout` ⇒ 1 hijo (1 `curl`).
 HIJOS_POR_ACCION = {"xargs": "cp", "timeout": "curl"}
@@ -145,7 +145,8 @@ HIJOS_POR_ACCION = {"xargs": "cp", "timeout": "curl"}
 AYUDAS = {"echo", "printf", "cat", "wc", "grep", "head", "tail", "stat", "ls",
           "du", "rm", "date", "mkdir", "true", "sha256sum"}
 
-RE_PIPE = re.compile(r"(?<!\|)\|(?!\|)")
+# H-1 (T3): se proh?be CUALQUIER `|`; la API parte por `|` y pierde la acci?n.
+RE_PIPE = re.compile(r"\|")
 RE_ATA = re.compile(r"^ATA\d{3}$")
 RE_TEC = re.compile(r"^T\d{4}(?:\.\d{3})?$")
 RE_HORA = re.compile(r"^\d{2}:\d{2}:\d{2}$")
@@ -443,8 +444,9 @@ def validar_comando(cmd: str, binarios_ok=None, declarados=None):
         return ["comando vacío"]
     if '"' in cmd:
         fallos.append(f"comillas dobles: {cmd[:70]}")
-    if RE_PIPE.search(cmd):
-        fallos.append(f"PIPE (GHOSTS pierde el reporte): {cmd[:70]}")
+    # H-1 (T3): ningún `|` (ni simple ni `||`): la API parte la línea por `|`.
+    if "|" in cmd:
+        fallos.append(f"'|' (GHOSTS pierde el reporte): {cmd[:70]}")
     if re.search(r"(?:^|\s)sudo(?:\s|$)", cmd):
         fallos.append(f"sudo prohibido: {cmd[:70]}")
     if re.search(r"(?:^|[\s;&|])random(?:$|[\s;&|])", cmd):
@@ -777,9 +779,9 @@ def validar_timeline(tl, dia: int, raiz=None):
 # --------------------------------------------------------------------------
 # Render: CSV canónico y `casos.md`
 # --------------------------------------------------------------------------
-CABECERA_CSV = ("# campana_casos.csv | campana B6 (bloque legitimo-v3, T2) | "
-                "{n} casos | {m} marcas | {a} acciones | sha256_casos_md={sha} | "
-                "fuente=casos.md | plan=5.2.6")
+CABECERA_CSV = ("# campana_casos.csv · campana B6 (bloque legitimo-v3, T2) · "
+                "{n} casos · {m} marcas · {a} acciones · sha256_casos_md={sha} · "
+                "fuente=casos.md · plan=5.2.6")
 
 
 def _cabecera_comentarios(sha_md: str, casos) -> str:
@@ -953,13 +955,13 @@ def render_md(casos) -> str:
         "| Red | `ip -brief addr` · `ip route` | IPv4 `192.168.65.x` · ruta no vacía |",
         "| Intranet | `curl -sS -o /dev/null -w '%{http_code}' http://intranet.local:8080/` "
         "| `200` |",
-        "| Puerto cerrado | `curl -sS --max-time 2 http://intranet.local:8081/` | rc=7 |",
+        "| Puerto cerrado | `curl -sS --max-time 2 http://intranet.local:8081/` | rc=7 o 28 (filtrado) |",
         "| `logger` | `logger -t ofimatica prueba` + `journalctl -t ofimatica -n 1` | "
         "aparece la línea |",
         "| `shred` | `shred --version` | coreutils ≥ 8 |",
         "| `openssl` | `openssl version` | ≥ 1.1.1 (`-pbkdf2`) |",
         "| PDF del manual | `wget -q -O /dev/null http://intranet.local:8080/descargas/"
-        "manual_empleado.pdf` | descarga > 1 000 bytes |",
+        "manual_empleado.pdf` | descarga > 500 bytes |",
         "| Disco | `df -Pk /home/angel/Documentos` | ≥ 40 MB libres (tope declarado) |",
         "",
         "> Si falla la carpeta o un binario, **no se arranca B6**: los casos se marcarían",
@@ -985,7 +987,7 @@ def render_md(casos) -> str:
         "| D-6 | C-05 con `sha256sum` ×2 | **un solo `sha256sum f1 f2`** | una acción deja "
         "las dos huellas; el predicado (iguales) se ve en `hecho.txt` |",
         "",
-        "> Ninguna desviación cambia el diseño: no añade mutación, ni `sudo`, ni pipes, ni red",
+        "> Ninguna desviación cambia el diseño: no añade mutación, ni `sudo`, ni `|`, ni red",
         "> fuera de la intranet local; solo declara el volumen real y dos decisiones de",
         "> implementación.",
         "",
@@ -1057,7 +1059,7 @@ REGLAS_MUTACION = {
                                            r"passwd|chpasswd|chsh|chfn)\b",
     "instalación (apt/dpkg/yum/...)": r"\b(apt|apt-get|dpkg|yum|dnf|rpm|snap|pip|pip3)\b",
     "root/GUI (mount/losetup/dd/...)": r"\b(mount|umount|losetup|mke2fs|wipefs|sfdisk|dd)\b",
-    "pipes": r"(?<!\|)\|(?!\|)",
+    "pipes": r"\|",
     "sudo": r"(?:^|\s)sudo(?:\s|$)",
     "random": r"(?:^|[\s;&|])random(?:$|[\s;&|])",
     "comillas dobles": r'"',

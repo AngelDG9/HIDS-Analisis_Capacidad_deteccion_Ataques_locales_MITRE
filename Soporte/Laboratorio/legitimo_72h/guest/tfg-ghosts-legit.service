@@ -5,7 +5,14 @@ After=network-online.target
 [Service]
 Type=simple
 User=angel
-WorkingDirectory=/home/angel/ghosts-client
+# `legitimo-v3` (CA-05): el cliente y el keepalive NO trabajan desde el directorio
+# del binario. `config/`, `instance/` y los logs los resuelve GHOSTS por el
+# directorio del ejecutable (`ApplicationDetails.InstalledPath`); el `cwd` solo
+# afecta al `audit_cwd` de los `execve`.
+WorkingDirectory=/home/angel
+# `legitimo-v3` (D-4): el `cwd` del servicio se declara TAMBIÉN como variable, igual que
+# `client_ctl.sh` y el keepalive (`TFG_CWD_BASE`). `WorkingDirectory` es su equivalente.
+Environment=TFG_CWD_BASE=/home/angel
 # @T0@ lo sustituye instalar_tarea_invitado.sh (t0 de la ventana, ISO UTC).
 ExecStart=/home/angel/ghosts-client/tfg_keepalive.sh 74 @T0@
 Restart=on-failure

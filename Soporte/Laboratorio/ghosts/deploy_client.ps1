@@ -6,6 +6,13 @@
 #   - copia `recetas\bloques.env` + `calendario.json` al invitado (`<remote>/recetas/`),
 #     que es la MISMA fuente que usan el keepalive y la vigilancia.
 #
+# Bloque `legitimo-v3` (T3): ademas
+#   - crea las CARPETAS BASE del cwd de la receta v2 (`~/Documentos/{informes,actas,
+#     copias,correo}`, `~/Descargas`, `~/.cache/tfg-web`);
+#   - crea `~/Documentos/campana_fp/` y la deja VACIA de casos previos (prerrequisito
+#     bloqueante de B6: si la carpeta no existe, las 11 marcas se pierden);
+#   - despliega `client_ctl.sh` v3 y el keepalive con `cwd=/home/angel` (CA-05).
+#
 # Pre-staging: el cliente ya se publico en el HOST con
 #   dotnet publish src/ghosts.client.linux/ghosts.client.linux.csproj -c Release -r linux-x64 --self-contained true
 #
@@ -66,9 +73,28 @@ foreach ($it in $items) {
 & $Ssh -i $Key $Victim "chmod +x $Remote/tfg_keepalive.sh"
 & $Scp -i $Key (Join-Path $Repo "Soporte\Laboratorio\legitimo_72h\guest\verificar_arreglos.sh") "$Victim`:$Remote/"
 
+# 3c) carpetas base del `cwd` de la receta v2 + prerrequisito BLOQUEANTE de la campana.
+#     Sin `~/Documentos/campana_fp/` el `cd` de las 11 marcas falla y los 11 casos se
+#     pierden (NO_EJECUTADO). Se crea ANTES de B6 (el deploy corre en `prep`, t0-45min).
+$CarpetasCwd = @(
+    "/home/angel/Documentos/informes",
+    "/home/angel/Documentos/actas",
+    "/home/angel/Documentos/copias",
+    "/home/angel/Documentos/correo",
+    "/home/angel/Descargas",
+    "/home/angel/.cache/tfg-web"
+)
+& $Ssh -i $Key $Victim ("mkdir -p " + ($CarpetasCwd -join " "))
+if ($LASTEXITCODE -ne 0) { throw "no se pudieron crear las carpetas base del cwd (rc=$LASTEXITCODE)" }
+
+# La campana se deja SOLO con la carpeta: los casos de una prueba/ventana anterior no
+# deben confundir las marcas nuevas. Es el unico borrado del deploy y esta declarado.
+& $Ssh -i $Key $Victim "mkdir -p /home/angel/Documentos/campana_fp && find /home/angel/Documentos/campana_fp -mindepth 1 -maxdepth 1 -exec rm -rf -- {} +"
+if ($LASTEXITCODE -ne 0) { throw "no se pudo limpiar ~/Documentos/campana_fp (rc=$LASTEXITCODE)" }
+
 # 4) carpetas y alias de la "internet local"
 & $Ssh -i $Key $Victim "chmod +x $Remote/ghosts.client.linux $Remote/client_ctl.sh; mkdir -p ~/Documentos ~/Descargas ~/.cache/tfg-web"
 & $Ssh -i $Key $Victim "grep -q 'intranet.local' /etc/hosts || echo '192.168.65.1  intranet.local portal.local nube.local' | sudo tee -a /etc/hosts"
 
-Write-Host "Despliegue completado (cliente + nlog.config + d1/d2/d3 + calendario)."
+Write-Host "Despliegue completado (cliente + nlog.config + d1/d2/d3 + calendario + carpetas)."
 Write-Host "Arranque manual: bash $Remote/client_ctl.sh start"

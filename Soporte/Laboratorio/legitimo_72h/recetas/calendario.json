@@ -144,7 +144,7 @@
   },
   "marcas": 22,
   "fuente": "campana/campana_casos.csv",
-  "sha256_casos_md": "0485d75e3472fe1e73c758df1ae2d17839d2ffa67d664b03fdd17de7dd8a9c46",
+  "sha256_casos_md": "2003c9cc71624c40ca8a70931027b552bed15a17b9cc0044720c5801c99f2a49",
   "no_mutante": true,
   "efectos_declarados": [
    "logger",
