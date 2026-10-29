@@ -256,3 +256,10 @@ receta (`d1/d2/d3`, `calendario`, `bloques`, `receta_resumen`), `campana/{campan
 los scripts de validación/generación, `client_ctl.sh`, `deploy_client.ps1`, `tfg_keepalive.sh`,
 `verificar_arreglos.sh`, la unit, `legitimo_host_control.ps1`, `snapshot_v3.md`, este documento,
 `prueba_b6_comprimida.py` y `comprimir_timeline_prueba.py`.
+
+> **2026-10-29 — corrección posterior (W1):** `fix_receta_v3.md` recoge los **cinco defectos
+> de ejecución** (W-1…W-4 y L-1) que encontró el tester en la receta Windows —y el mismo tipo
+> de fallo en `B5` de la de Linux—, los tests que ahora **ejecutan** los comandos y la
+> evidencia del sandbox. **La receta Linux cambia de `sha256`** (`d1/d2/d3`): hay que
+> **repetir P1** antes de la ventana del lunes. Los conteos (147/153/141 + 16/25/22) y todos
+> los `DelayAfter` **no** cambian.

@@ -782,6 +782,14 @@ la fila) · el corpus · el ruleset · la config de Sysmon · `construir_receta_
 `legitimo_host_control.ps1` · los **3** snapshots de `victima-windows` y los **6** de `victima-linux` ·
 `Soporte/Laboratorio/windows/*` (baseline histórico, se conserva como **histórico**).
 
+> **Excepción declarada (2026-10-29, W1).** `construir_receta_legitima.py` **se ha modificado** (48 líneas):
+> la acción `B5#1` hacía `sha256sum X` **sin redirección** ⇒ el fichero `.sha256` no se creaba y `B5#2`
+> (`cat …sha256`) **fallaba todos los días** en **Linux** (defecto heredado, detectado al ejecutar la
+> receta de Windows). Se añade `> X.sha256` y un **auditor** que falla si una huella se lee sin haberse
+> escrito. **Consecuencia:** el hash de `d1/d2/d3` cambia (1 acción/día) ⇒ **hay que repetir P1 antes de
+> la ventana**. Detalle: `Soporte/Laboratorio/legitimo_72h/fix_receta_v3.md`. El resto de la lista sigue
+> vigente.
+
 ---
 
 ## 17. Trazabilidad

@@ -582,9 +582,13 @@ ORDEN_B4 = {1: ["acta1", "nube", "informe", "descargas"],
 
 
 def b5(day: int):
+    # L-1 (fix v3): la huella **se escribe en su fichero** (`> … .sha256`). Sin la
+    # redirección, `sha256sum` solo imprime por pantalla y la acción siguiente
+    # (`cat … .sha256`) falla todos los días: un `cat` de un fichero que nadie crea.
     return [
         ("copia", f"tar -czf {COPIAS}/copia_$(date -u +%F).tar.gz -C {DOC} informes actas"),
-        ("huella", f"sha256sum {COPIAS}/copia_$(date -u +%F).tar.gz"),
+        ("huella", f"sha256sum {COPIAS}/copia_$(date -u +%F).tar.gz > "
+                   f"{COPIAS}/copia_$(date -u +%F).tar.gz.sha256"),
         ("huella", f"cat {COPIAS}/copia_$(date -u +%F).tar.gz.sha256"),
         ("nube", curl_put(f"{COPIAS}/copia_$(date -u +%F).tar.gz", CLOUD + "/nube/copias/")),
         ("nube", curl_propfind(CLOUD + "/nube/copias/", f"{CACHE}/copias_nube.txt")),
@@ -1193,6 +1197,45 @@ def _mapa_valido(m) -> str | None:
     return None
 
 
+#: L-1 (fix v3): una huella **se escribe** con `>`/`>>` en su fichero…
+RE_ESCRITURA_HUELLA = re.compile(
+    r">>?\s*(/home/angel[^\s;&|]+\.(?:sha256|md5|sha1))(?=\s|$)")
+#: …y solo entonces se puede **leer** con `cat`.
+RE_LECTURA_HUELLA = re.compile(
+    r"\bcat\s+(/home/angel[^\s;&|]+\.(?:sha256|md5|sha1))(?=\s|$|;)")
+
+
+def _sin_sustituciones(cmd: str) -> str:
+    """Sustituye `$(date -u +%F)` por un token sin espacios (para poder analizar rutas)."""
+    return re.sub(r"\$\(date -u \+%F\)", "FECHA", cmd)
+
+
+def auditar_huellas_escritas(datos):
+    """L-1: ningún `cat X.sha256` puede leer una huella que nadie ha escrito.
+
+    El fallo original: `sha256sum fichero` **sin redirección** imprime por pantalla y no
+    crea `fichero.sha256`; la acción siguiente (`cat fichero.sha256`) falla **todos los
+    días**. Aquí se recorre cada día en orden y se exige que toda lectura de huella tenga
+    una escritura anterior en la misma jornada.
+    """
+    fallos = []
+    for day, tl in datos.items():
+        if len(tl.get("TimeLineHandlers", [])) != len(BLOQUES_TRABAJO) + 1:
+            continue
+        escritas = set()
+        for h, b in zip(tl["TimeLineHandlers"], BLOQUES_TRABAJO):
+            for ev in h["TimeLineEvents"]:
+                cmd = _sin_sustituciones(ev["Command"])
+                for m in RE_ESCRITURA_HUELLA.finditer(cmd):
+                    escritas.add(m.group(1))
+                for m in RE_LECTURA_HUELLA.finditer(cmd):
+                    if m.group(1) not in escritas:
+                        fallos.append(
+                            f"d{day}/{b['id']}: `cat` de una huella que nadie escribe con "
+                            f"`>` (L-1): {m.group(1)}")
+    return fallos
+
+
 def validar(outdir, verbose=True, mapa_esperado=None):
     fallos = []
     avisos = []
@@ -1355,6 +1398,9 @@ def validar(outdir, verbose=True, mapa_esperado=None):
             fallos.append(f"d{day}: {n_err} errores declarados (< 8/día, CA-03)")
         if n_reint != n_err:
             fallos.append(f"d{day}: {n_reint} reintentos emparejados != {n_err} errores")
+
+    # (d-bis) L-1: nada se lee de un fichero de huella que nadie ha escrito con `>`.
+    fallos += auditar_huellas_escritas(datos)
 
     # (e) sesión web (por contenido, no por posición: la v2 inserta acciones).
     #     Solo los bloques de jornada: B6 tiene sus propios `curl` (C-09) sin UA.

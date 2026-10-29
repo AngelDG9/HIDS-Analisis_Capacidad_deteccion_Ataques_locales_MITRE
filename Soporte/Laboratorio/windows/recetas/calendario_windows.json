@@ -1,0 +1,205 @@
+{
+ "receta_version": 1,
+ "plataforma": "windows",
+ "boveda_version": 3,
+ "espejo_de": {
+  "receta_linux": "Soporte/Laboratorio/legitimo_72h/recetas/d{1,2,3}.json",
+  "sha256": {
+   "d1": "0b2fa91cdbc7f16cfc3e59e3ace7b67269d78de4279b641f4fbfae221b50c7df",
+   "d2": "0e0329cc979797f5fa63420a79a9d5d5af26ae6d4d6cec7dd961ed31adddc58a",
+   "d3": "885a80b2f698ed2e6cc4a249a5f36bdd6756a246352b01dc52953638db611345"
+  },
+  "regla": "mismos handlers, mismos UtcTimeOn/Off, mismos DelayAfter"
+ },
+ "zona": "Europe/Madrid (CET=UTC+1 desde 2026-10-25)",
+ "dia_local": "09:00-18:00",
+ "jornada_utc": {
+  "on": "08:00:00",
+  "off": "17:00:00"
+ },
+ "bloques": [
+  {
+   "id": "B1",
+   "on": "08:00:00",
+   "off": "08:12:00",
+   "tipo": "trabajo",
+   "nombre": "Llegada",
+   "local": "09:00-09:12"
+  },
+  {
+   "id": "B2",
+   "on": "08:12:00",
+   "off": "10:00:00",
+   "tipo": "trabajo",
+   "nombre": "Correo y mañana",
+   "local": "09:12-11:00"
+  },
+  {
+   "id": "P1",
+   "on": "10:00:00",
+   "off": "10:20:00",
+   "tipo": "pausa",
+   "nombre": "Café",
+   "local": "11:00-11:20"
+  },
+  {
+   "id": "B3",
+   "on": "10:20:00",
+   "off": "13:00:00",
+   "tipo": "trabajo",
+   "nombre": "Documentos",
+   "local": "11:20-14:00"
+  },
+  {
+   "id": "P2",
+   "on": "13:00:00",
+   "off": "14:00:00",
+   "tipo": "pausa",
+   "nombre": "Comida",
+   "local": "14:00-15:00"
+  },
+  {
+   "id": "B4",
+   "on": "14:00:00",
+   "off": "16:15:00",
+   "tipo": "trabajo",
+   "nombre": "Reuniones y tarde",
+   "local": "15:00-17:15"
+  },
+  {
+   "id": "B5",
+   "on": "16:15:00",
+   "off": "17:00:00",
+   "tipo": "trabajo",
+   "nombre": "Cierre",
+   "local": "17:15-18:00"
+  },
+  {
+   "id": "B6",
+   "on": "17:05:00",
+   "off": "17:50:00",
+   "tipo": "campana",
+   "nombre": "Repaso del sistema",
+   "local": "18:05-18:50"
+  }
+ ],
+ "cuentas": {
+  "1": {
+   "B1": 11,
+   "B2": 33,
+   "B3": 56,
+   "B4": 35,
+   "B5": 12
+  },
+  "2": {
+   "B1": 11,
+   "B2": 39,
+   "B3": 48,
+   "B4": 43,
+   "B5": 12
+  },
+  "3": {
+   "B1": 11,
+   "B2": 29,
+   "B3": 60,
+   "B4": 29,
+   "B5": 12
+  }
+ },
+ "total_ventana": 441,
+ "campana": {
+  "version": 1,
+  "bloque": {
+   "id": "B6",
+   "on": "17:05:00",
+   "off": "17:50:00",
+   "tipo": "campana",
+   "nombre": "Repaso del sistema",
+   "local": "18:05-18:50"
+  },
+  "casos": 11,
+  "reparto": {
+   "d1": 3,
+   "d2": 4,
+   "d3": 4
+  },
+  "inicios": {
+   "d1": "17:06:00",
+   "d2": "17:17:00",
+   "d3": "17:11:00"
+  },
+  "separacion_min_s": 180,
+  "atribucion_s": {
+   "pre": 10,
+   "post": 60
+  },
+  "acciones": {
+   "d1": 16,
+   "d2": 25,
+   "d3": 22
+  },
+  "total_acciones": 63,
+  "marcas": 22,
+  "fuente": "campana/campana_casos.csv (Linux) traducida a W-01…W-11",
+  "base": "C:\\lab-legit\\campana",
+  "mapeo_casos": {
+   "C-01": "W-01",
+   "C-02": "W-02",
+   "C-03": "W-03",
+   "C-05": "W-04",
+   "C-06": "W-05",
+   "C-07": "W-06",
+   "C-08": "W-07",
+   "C-09": "W-08",
+   "C-10": "W-09",
+   "C-11": "W-10",
+   "C-12": "W-11"
+  },
+  "no_mutante": true,
+  "efectos_declarados": [
+   "eventcreate: 1 evento en el registro de aplicaciones (W-10)",
+   "curl.exe: peticiones HTTP a la intranet local (fuera de la víctima)"
+  ]
+ },
+ "total_con_campana": 504,
+ "mapa_dias": {},
+ "regla_dia": "k = 1 + ((fecha_utc - fecha_t0) mod 3)",
+ "mapa_dias_como_se_pasa": "construir_receta_legitima_windows.py --t0 AAAA-MM-DD (o --mapa-dias a:1,b:2,c:3)",
+ "cwd": {
+  "base": "C:\\Users\\angel",
+  "regla": "cd /d <carpeta> && <comando>",
+  "carpetas": [
+   "C:\\Users\\angel",
+   "C:\\Users\\angel\\Documentos",
+   "C:\\Users\\angel\\Descargas",
+   "C:\\Users\\angel\\.cache\\tfg-web",
+   "C:\\Users\\angel\\Documentos\\informes",
+   "C:\\Users\\angel\\Documentos\\actas",
+   "C:\\Users\\angel\\Documentos\\correo",
+   "C:\\Users\\angel\\Documentos\\copias"
+  ],
+  "campana": "C:\\lab-legit\\campana",
+  "nota": "0 acciones en C:\\Windows\\System32 ni en el directorio del cliente"
+ },
+ "errores": {
+  "por_dia": 10,
+  "familias": [
+   "ruta_mal",
+   "cp_dir",
+   "gzip",
+   "rm_inexistente",
+   "cat_dir",
+   "opcion"
+  ],
+  "registro": "C:\\Users\\angel\\Documentos\\errores.log",
+  "formato": "TSV de 5 campos: ts · tipo · familia · comando · rc",
+  "rc": "rc=ge1 (cmd solo da umbral); rc=0 en el reintento que funciona"
+ },
+ "hueco_max_intra_bloque_s": 1320,
+ "hueco_min_s": 40,
+ "pausas_largas_s": {
+  "B3": 1250,
+  "B4": 1210
+ },
+ "fuente": "_artefactos/scripts/construir_receta_legitima_windows.py"
+}

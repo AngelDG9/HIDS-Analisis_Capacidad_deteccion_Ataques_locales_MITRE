@@ -594,7 +594,7 @@
      "DelayAfter": 55000
     },
     {
-     "Command": "cd /home/angel/Documentos/copias && sha256sum /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz",
+     "Command": "cd /home/angel/Documentos/copias && sha256sum /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz > /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz.sha256",
      "DelayAfter": 44000
     },
     {

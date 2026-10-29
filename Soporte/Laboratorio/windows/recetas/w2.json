@@ -1,0 +1,777 @@
+{
+ "Status": "Run",
+ "TimeLineHandlers": [
+  {
+   "HandlerType": "Command",
+   "Initial": "",
+   "UtcTimeOn": "08:00:00",
+   "UtcTimeOff": "08:12:00",
+   "Loop": true,
+   "HandlerArgs": {},
+   "TimeLineEvents": [
+    {
+     "Command": "cd /d C:\\Users\\angel && (if not exist C:\\Users\\angel\\Documentos\\informes md C:\\Users\\angel\\Documentos\\informes) & (if not exist C:\\Users\\angel\\Documentos\\actas md C:\\Users\\angel\\Documentos\\actas) & (if not exist C:\\Users\\angel\\Documentos\\copias md C:\\Users\\angel\\Documentos\\copias) & (if not exist C:\\Users\\angel\\Documentos\\correo md C:\\Users\\angel\\Documentos\\correo) & (if not exist C:\\Users\\angel\\Descargas md C:\\Users\\angel\\Descargas) & (if not exist C:\\Users\\angel\\.cache\\tfg-web md C:\\Users\\angel\\.cache\\tfg-web)",
+     "DelayAfter": 43000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos && > C:\\Users\\angel\\Documentos\\llegada.txt echo %DATE%_%TIME%",
+     "DelayAfter": 62000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos && dir C:\\Users\\angel\\Documentos",
+     "DelayAfter": 48000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos && > C:\\Users\\angel\\Documentos\\agenda.txt echo 09:30 reunion de area; 12:00 informe; 17:00 cierre",
+     "DelayAfter": 96000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos && dir C:\\Users\\angel\\Documentos\\informe >nul 2>&1 & if errorlevel 1 (>> C:\\Users\\angel\\Documentos\\errores.log echo %DATE%_%TIME%\terror\truta_mal\tdir C:\\Users\\angel\\Documentos\\informe\trc=ge1)",
+     "DelayAfter": 55000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos && dir C:\\Users\\angel\\Documentos\\informes >nul 2>&1 & if errorlevel 1 (>> C:\\Users\\angel\\Documentos\\errores.log echo %DATE%_%TIME%\treintento\truta_mal\tdir C:\\Users\\angel\\Documentos\\informes\trc=ge1) else (>> C:\\Users\\angel\\Documentos\\errores.log echo %DATE%_%TIME%\treintento\truta_mal\tdir C:\\Users\\angel\\Documentos\\informes\trc=0)",
+     "DelayAfter": 111000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos && type C:\\Users\\angel\\Documentos\\agenda.txt",
+     "DelayAfter": 44000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Descargas && curl.exe -sS -A \"TFG-Legit/1.0 (Windows; x86_64; sesion-web)\" -c C:\\Users\\angel\\.cache\\tfg-web\\cookies.txt -H \"Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\" -H \"Accept-Language: es-ES,es;q=0.9,en;q=0.5\" --compressed -o C:\\Users\\angel\\.cache\\tfg-web\\index.html -w \"%{http_code}\" http://intranet.local:8080/",
+     "DelayAfter": 59000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Descargas && curl.exe -sS -A \"TFG-Legit/1.0 (Windows; x86_64; sesion-web)\" -b C:\\Users\\angel\\.cache\\tfg-web\\cookies.txt -e http://intranet.local:8080/ -H \"Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\" -H \"Accept-Language: es-ES,es;q=0.9,en;q=0.5\" --compressed -o C:\\Users\\angel\\.cache\\tfg-web\\styles.css -w \"%{http_code}\" http://intranet.local:8080/styles.css && curl.exe -sS -A \"TFG-Legit/1.0 (Windows; x86_64; sesion-web)\" -b C:\\Users\\angel\\.cache\\tfg-web\\cookies.txt -e http://intranet.local:8080/ -H \"Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\" -H \"Accept-Language: es-ES,es;q=0.9,en;q=0.5\" --compressed -o C:\\Users\\angel\\.cache\\tfg-web\\portal.js -w \"%{http_code}\" http://intranet.local:8080/portal.js && curl.exe -sS -A \"TFG-Legit/1.0 (Windows; x86_64; sesion-web)\" -b C:\\Users\\angel\\.cache\\tfg-web\\cookies.txt -e http://intranet.local:8080/ -H \"Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\" -H \"Accept-Language: es-ES,es;q=0.9,en;q=0.5\" --compressed -o C:\\Users\\angel\\.cache\\tfg-web\\logo.svg -w \"%{http_code}\" http://intranet.local:8080/assets/logo.svg",
+     "DelayAfter": 101000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\.cache\\tfg-web && dir C:\\Users\\angel\\.cache\\tfg-web\\index.html && certutil -hashfile C:\\Users\\angel\\.cache\\tfg-web\\styles.css SHA256",
+     "DelayAfter": 41000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\correo && > C:\\Users\\angel\\Documentos\\correo\\borrador_1.txt echo re: confirmacion de la reunion de area",
+     "DelayAfter": 120000
+    }
+   ]
+  },
+  {
+   "HandlerType": "Command",
+   "Initial": "",
+   "UtcTimeOn": "08:12:00",
+   "UtcTimeOff": "10:00:00",
+   "Loop": true,
+   "HandlerArgs": {},
+   "TimeLineEvents": [
+    {
+     "Command": "cd /d C:\\Users\\angel\\Descargas && curl.exe -sS -A \"TFG-Legit/1.0 (Windows; x86_64; sesion-web)\" -b C:\\Users\\angel\\.cache\\tfg-web\\cookies.txt -H \"Accept: text/plain;q=0.9,*/*;q=0.8\" -X POST --data consulta_buzon_d2_r1 -o C:\\Users\\angel\\.cache\\tfg-web\\buzon_1.txt -w \"%{http_code}\" http://intranet.local:9090/paste",
+     "DelayAfter": 48000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\correo && >> C:\\Users\\angel\\Documentos\\correo\\borrador_1.txt echo ronda 1: pendiente de revisar el informe del area",
+     "DelayAfter": 202000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\correo && type C:\\Users\\angel\\Documentos\\correo\\borrador_1.txt",
+     "DelayAfter": 55000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Descargas && curl.exe -sS -A \"TFG-Legit/1.0 (Windows; x86_64; sesion-web)\" -b C:\\Users\\angel\\.cache\\tfg-web\\cookies.txt -H \"Accept: text/plain;q=0.9,*/*;q=0.8\" -X POST --data consulta_buzon_d2_r2 -o C:\\Users\\angel\\.cache\\tfg-web\\buzon_2.txt -w \"%{http_code}\" http://intranet.local:9090/paste",
+     "DelayAfter": 44000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\correo && >> C:\\Users\\angel\\Documentos\\correo\\borrador_2.txt echo ronda 2: pendiente de revisar el informe del area",
+     "DelayAfter": 59000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\correo && type C:\\Users\\angel\\Documentos\\correo\\borrador_2.txt",
+     "DelayAfter": 276000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel && ipconfig /all",
+     "DelayAfter": 829000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Descargas && curl.exe -sS -A \"TFG-Legit/1.0 (Windows; x86_64; sesion-web)\" -b C:\\Users\\angel\\.cache\\tfg-web\\cookies.txt -H \"Accept: text/plain;q=0.9,*/*;q=0.8\" -X POST --data consulta_buzon_d2_r3 -o C:\\Users\\angel\\.cache\\tfg-web\\buzon_3.txt -w \"%{http_code}\" http://intranet.local:9090/paste",
+     "DelayAfter": 41000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\correo && >> C:\\Users\\angel\\Documentos\\correo\\borrador_3.txt echo ronda 3: pendiente de revisar el informe del area",
+     "DelayAfter": 57000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\correo && type C:\\Users\\angel\\Documentos\\correo\\borrador_3.txt",
+     "DelayAfter": 350000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Descargas && curl.exe -sS -A \"TFG-Legit/1.0 (Windows; x86_64; sesion-web)\" -b C:\\Users\\angel\\.cache\\tfg-web\\cookies.txt -H \"Accept: text/plain;q=0.9,*/*;q=0.8\" -X POST --data consulta_buzon_d2_r4 -o C:\\Users\\angel\\.cache\\tfg-web\\buzon_4.txt -w \"%{http_code}\" http://intranet.local:9090/paste",
+     "DelayAfter": 43000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\correo && >> C:\\Users\\angel\\Documentos\\correo\\borrador_4.txt echo ronda 4: pendiente de revisar el informe del area",
+     "DelayAfter": 460000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\correo && type C:\\Users\\angel\\Documentos\\correo\\borrador_4.txt",
+     "DelayAfter": 62000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && copy /y C:\\Users\\angel\\Documentos\\informes\\informe.txt C:\\Users\\angel\\Documentos\\informes\\informe.bak",
+     "DelayAfter": 48000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\correo && move /y C:\\Users\\angel\\Documentos\\correo\\borrador_1.txt C:\\Users\\angel\\Documentos\\correo\\enviado_1.txt",
+     "DelayAfter": 55000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos && dir /b /s /a-d C:\\Users\\angel\\Documentos > C:\\Users\\angel\\.cache\\tfg-web\\lista_ficheros.txt",
+     "DelayAfter": 44000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\correo && dir C:\\Users\\angel\\Documentos\\correo",
+     "DelayAfter": 184000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && find /c /v \"\" C:\\Users\\angel\\Documentos\\informes\\informe.txt",
+     "DelayAfter": 700000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\correo && type C:\\Users\\angel\\Documentos\\correo\\enviado_1.txt",
+     "DelayAfter": 59000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel && dir /max-depth=1 C:\\ >nul 2>&1 & if errorlevel 1 (>> C:\\Users\\angel\\Documentos\\errores.log echo %DATE%_%TIME%\terror\topcion\tdir /max-depth=1 C:\\\trc=ge1)",
+     "DelayAfter": 258000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel && dir C:\\ >nul 2>&1 & if errorlevel 1 (>> C:\\Users\\angel\\Documentos\\errores.log echo %DATE%_%TIME%\treintento\topcion\tdir C:\\\trc=ge1) else (>> C:\\Users\\angel\\Documentos\\errores.log echo %DATE%_%TIME%\treintento\topcion\tdir C:\\\trc=0)",
+     "DelayAfter": 41000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\correo && dir /s C:\\Users\\angel\\Documentos\\correo",
+     "DelayAfter": 57000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && copy /y C:\\Users\\angel\\Documentos\\informes\\informe.txt C:\\Users\\angel\\Descargas\\informe_copia_2.txt",
+     "DelayAfter": 43000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Descargas && del /f /q C:\\Users\\angel\\Descargas\\tmp_borradores.csv 2>nul",
+     "DelayAfter": 212000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos && >> C:\\Users\\angel\\Documentos\\agenda.txt echo revisado el buzon de la manana",
+     "DelayAfter": 571000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && certutil -hashfile C:\\Users\\angel\\Documentos\\informes\\informe.bak MD5",
+     "DelayAfter": 62000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos && dir C:\\Users\\angel\\Documentos",
+     "DelayAfter": 48000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && > C:\\Users\\angel\\Documentos\\informes\\informe.txt echo informe del area - jornada 2",
+     "DelayAfter": 295000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && tar -czf C:\\Users\\angel\\Documentos\\informes\\adjunto_1.tar.gz -C C:\\Users\\angel\\Documentos\\informes informe.txt",
+     "DelayAfter": 55000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && copy /y C:\\Users\\angel\\Documentos\\informes\\informe.txt C:\\Users\\angel\\Documentos\\informes_2026\\informe.bak >nul 2>&1 & if errorlevel 1 (>> C:\\Users\\angel\\Documentos\\errores.log echo %DATE%_%TIME%\terror\tcp_dir\tcopy /y C:\\Users\\angel\\Documentos\\informes\\informe.txt C:\\Users\\angel\\Documentos\\informes_2026\\informe.bak\trc=ge1)",
+     "DelayAfter": 175000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && copy /y C:\\Users\\angel\\Documentos\\informes\\informe.txt C:\\Users\\angel\\Documentos\\informes\\informe.bak >nul 2>&1 & if errorlevel 1 (>> C:\\Users\\angel\\Documentos\\errores.log echo %DATE%_%TIME%\treintento\tcp_dir\tcopy /y C:\\Users\\angel\\Documentos\\informes\\informe.txt C:\\Users\\angel\\Documentos\\informes\\informe.bak\trc=ge1) else (>> C:\\Users\\angel\\Documentos\\errores.log echo %DATE%_%TIME%\treintento\tcp_dir\tcopy /y C:\\Users\\angel\\Documentos\\informes\\informe.txt C:\\Users\\angel\\Documentos\\informes\\informe.bak\trc=0)",
+     "DelayAfter": 44000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && certutil -hashfile C:\\Users\\angel\\Documentos\\informes\\adjunto_1.tar.gz SHA256",
+     "DelayAfter": 59000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && dir C:\\Users\\angel\\Documentos\\informes\\informe_2026.txt >nul 2>&1 & if errorlevel 1 (>> C:\\Users\\angel\\Documentos\\errores.log echo %DATE%_%TIME%\terror\truta_mal\tdir C:\\Users\\angel\\Documentos\\informes\\informe_2026.txt\trc=ge1)",
+     "DelayAfter": 41000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && dir C:\\Users\\angel\\Documentos\\informes\\informe.txt >nul 2>&1 & if errorlevel 1 (>> C:\\Users\\angel\\Documentos\\errores.log echo %DATE%_%TIME%\treintento\truta_mal\tdir C:\\Users\\angel\\Documentos\\informes\\informe.txt\trc=ge1) else (>> C:\\Users\\angel\\Documentos\\errores.log echo %DATE%_%TIME%\treintento\truta_mal\tdir C:\\Users\\angel\\Documentos\\informes\\informe.txt\trc=0)",
+     "DelayAfter": 57000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && dir /s C:\\Users\\angel\\Documentos\\informes\\adjunto_1.tar.gz",
+     "DelayAfter": 43000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && dir C:\\Users\\angel\\Documentos\\informes",
+     "DelayAfter": 460000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && tar -czf C:\\Users\\angel\\Documentos\\informes\\adjunto_2.tar.gz -C C:\\Users\\angel\\Documentos\\informes informe.txt",
+     "DelayAfter": 221000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && certutil -hashfile C:\\Users\\angel\\Documentos\\informes\\adjunto_2.tar.gz SHA256",
+     "DelayAfter": 62000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && dir /s C:\\Users\\angel\\Documentos\\informes\\adjunto_2.tar.gz",
+     "DelayAfter": 120000
+    }
+   ]
+  },
+  {
+   "HandlerType": "Command",
+   "Initial": "",
+   "UtcTimeOn": "10:20:00",
+   "UtcTimeOff": "13:00:00",
+   "Loop": true,
+   "HandlerArgs": {},
+   "TimeLineEvents": [
+    {
+     "Command": "cd /d C:\\Users\\angel\\Descargas && curl.exe -sS -A \"TFG-Legit/1.0 (Windows; x86_64; sesion-web)\" -b C:\\Users\\angel\\.cache\\tfg-web\\cookies.txt -e C:\\Users\\angel\\.cache\\tfg-web\\index.html -H \"Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\" -H \"Accept-Language: es-ES,es;q=0.9,en;q=0.5\" --compressed -o C:\\Users\\angel\\Descargas\\noticias.html -w \"%{http_code}\" http://intranet.local:8080/noticias.html",
+     "DelayAfter": 44000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Descargas && curl.exe -sS -A \"TFG-Legit/1.0 (Windows; x86_64; sesion-web)\" -b C:\\Users\\angel\\.cache\\tfg-web\\cookies.txt -e C:\\Users\\angel\\Descargas\\noticias.html -H \"Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\" -H \"Accept-Language: es-ES,es;q=0.9,en;q=0.5\" --compressed -o NUL -w \"%{http_code}\" http://intranet.local:8080/ayuda.html",
+     "DelayAfter": 59000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Descargas && curl.exe -sS -A \"TFG-Legit/1.0 (Windows; x86_64; sesion-web)\" -b C:\\Users\\angel\\.cache\\tfg-web\\cookies.txt -e http://intranet.local:8080/ayuda.html -H \"Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\" -H \"Accept-Language: es-ES,es;q=0.9,en;q=0.5\" --compressed -o C:\\Users\\angel\\.cache\\tfg-web\\plantilla_informe.csv -w \"%{http_code}\" http://intranet.local:8080/descargas/plantilla_informe.csv",
+     "DelayAfter": 219000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Descargas && curl.exe -sS -A \"TFG-Legit/1.0 (Windows; x86_64; sesion-web)\" -b C:\\Users\\angel\\.cache\\tfg-web\\cookies.txt -e C:\\Users\\angel\\Descargas\\noticias.html -H \"Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\" -H \"Accept-Language: es-ES,es;q=0.9,en;q=0.5\" --compressed -o C:\\Users\\angel\\Descargas\\manual_empleado.pdf -w \"%{http_code}\" http://intranet.local:8080/descargas/manual_empleado.pdf",
+     "DelayAfter": 41000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Descargas && dir C:\\Users\\angel\\Descargas\\manual_empleado.pdf && certutil -hashfile C:\\Users\\angel\\Descargas\\manual_empleado.pdf SHA256",
+     "DelayAfter": 488000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && > C:\\Users\\angel\\Documentos\\informes\\export.csv echo referencia;area;importe",
+     "DelayAfter": 57000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && > C:\\Users\\angel\\Documentos\\informes\\export_comas.csv echo referencia,area,importe",
+     "DelayAfter": 43000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && more +0 C:\\Users\\angel\\Documentos\\informes\\export.csv",
+     "DelayAfter": 62000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && tar -czf C:\\Users\\angel\\Documentos\\informes\\informe.txt.gz -C C:\\Users\\angel\\Documentos\\informes informe.txt",
+     "DelayAfter": 48000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Descargas && certutil -hashfile C:\\Users\\angel\\Descargas\\manual_empleado.pdf SHA256",
+     "DelayAfter": 55000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && certutil -hashfile C:\\Users\\angel\\Documentos\\informes\\informe.txt.gz MD5",
+     "DelayAfter": 317000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && certutil -hashfile C:\\Users\\angel\\Documentos\\informes\\informe.txt.gz SHA256",
+     "DelayAfter": 390000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && for /L %i in (1,1,12) do @echo %i>>C:\\Users\\angel\\.cache\\tfg-web\\lotes.txt",
+     "DelayAfter": 44000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && for /f %i in (C:\\Users\\angel\\.cache\\tfg-web\\lotes.txt) do @cmd /c copy /y C:\\Users\\angel\\Documentos\\informes\\informe.txt C:\\Users\\angel\\Documentos\\informes\\lote_%i.txt",
+     "DelayAfter": 59000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && tar -xzf C:\\Users\\angel\\Documentos\\informes\\informe.txt -C C:\\Users\\angel\\Documentos\\informes >nul 2>&1 & if errorlevel 1 (>> C:\\Users\\angel\\Documentos\\errores.log echo %DATE%_%TIME%\terror\tgzip\ttar -xzf C:\\Users\\angel\\Documentos\\informes\\informe.txt -C C:\\Users\\angel\\Documentos\\informes\trc=ge1)",
+     "DelayAfter": 268000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && tar -czf C:\\Users\\angel\\Documentos\\informes\\informe.txt.gz -C C:\\Users\\angel\\Documentos\\informes informe.txt >nul 2>&1 & if errorlevel 1 (>> C:\\Users\\angel\\Documentos\\errores.log echo %DATE%_%TIME%\treintento\tgzip\ttar -czf C:\\Users\\angel\\Documentos\\informes\\informe.txt.gz -C C:\\Users\\angel\\Documentos\\informes informe.txt\trc=ge1) else (>> C:\\Users\\angel\\Documentos\\errores.log echo %DATE%_%TIME%\treintento\tgzip\ttar -czf C:\\Users\\angel\\Documentos\\informes\\informe.txt.gz -C C:\\Users\\angel\\Documentos\\informes informe.txt\trc=0)",
+     "DelayAfter": 41000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && dir C:\\Users\\angel\\Documentos\\informes",
+     "DelayAfter": 610000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && dir /s C:\\Users\\angel\\Documentos\\informes",
+     "DelayAfter": 57000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && find /c /v \"\" C:\\Users\\angel\\Documentos\\informes\\informe.txt.gz",
+     "DelayAfter": 43000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && >> C:\\Users\\angel\\Documentos\\informes\\informe.txt echo 1. alcance del informe (dia 2)",
+     "DelayAfter": 62000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && type C:\\Users\\angel\\Documentos\\informes\\informe.txt",
+     "DelayAfter": 232000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && find /c /v \"\" C:\\Users\\angel\\Documentos\\informes\\informe.txt",
+     "DelayAfter": 293000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel && systeminfo",
+     "DelayAfter": 48000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel && eventcreate /T INFORMATION /ID 100 /L APPLICATION /SO ofimatica /D \"repaso del informe del area\"",
+     "DelayAfter": 55000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && >> C:\\Users\\angel\\Documentos\\informes\\informe.txt echo 2. actividades del area (dia 2)",
+     "DelayAfter": 44000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && type C:\\Users\\angel\\Documentos\\informes\\informe.txt",
+     "DelayAfter": 59000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && find /c /v \"\" C:\\Users\\angel\\Documentos\\informes\\informe.txt",
+     "DelayAfter": 1250000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && >> C:\\Users\\angel\\Documentos\\informes\\informe.txt echo 3. incidencias de la semana (dia 2)",
+     "DelayAfter": 41000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && type C:\\Users\\angel\\Documentos\\informes\\informe.txt",
+     "DelayAfter": 927000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && find /c /v \"\" C:\\Users\\angel\\Documentos\\informes\\informe.txt",
+     "DelayAfter": 57000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && >> C:\\Users\\angel\\Documentos\\informes\\informe.txt echo 4. indicadores del mes (dia 2)",
+     "DelayAfter": 43000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && type C:\\Users\\angel\\Documentos\\informes\\informe.txt",
+     "DelayAfter": 232000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && find /c /v \"\" C:\\Users\\angel\\Documentos\\informes\\informe.txt",
+     "DelayAfter": 1098000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && >> C:\\Users\\angel\\Documentos\\informes\\informe.txt echo 5. riesgos identificados (dia 2)",
+     "DelayAfter": 62000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Descargas && type C:\\Users\\angel\\Descargas\\tmp_borradores.csv >nul 2>&1 & if errorlevel 1 (>> C:\\Users\\angel\\Documentos\\errores.log echo %DATE%_%TIME%\terror\trm_inexistente\ttype C:\\Users\\angel\\Descargas\\tmp_borradores.csv\trc=ge1)",
+     "DelayAfter": 48000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Descargas && del /f /q C:\\Users\\angel\\Descargas\\tmp_borradores.csv 2>nul & if errorlevel 1 (>> C:\\Users\\angel\\Documentos\\errores.log echo %DATE%_%TIME%\treintento\trm_inexistente\tdel /f /q C:\\Users\\angel\\Descargas\\tmp_borradores.csv\trc=ge1) else (>> C:\\Users\\angel\\Documentos\\errores.log echo %DATE%_%TIME%\treintento\trm_inexistente\tdel /f /q C:\\Users\\angel\\Descargas\\tmp_borradores.csv\trc=0)",
+     "DelayAfter": 55000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && type C:\\Users\\angel\\Documentos\\informes\\informe.txt",
+     "DelayAfter": 439000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && find /c /v \"\" C:\\Users\\angel\\Documentos\\informes\\informe.txt",
+     "DelayAfter": 44000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && >> C:\\Users\\angel\\Documentos\\informes\\informe.txt echo 6. plan de accion (dia 2)",
+     "DelayAfter": 634000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && type C:\\Users\\angel\\Documentos\\informes\\informe.txt",
+     "DelayAfter": 59000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && find /c /v \"\" C:\\Users\\angel\\Documentos\\informes\\informe.txt",
+     "DelayAfter": 41000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && >> C:\\Users\\angel\\Documentos\\informes\\informe.txt echo 7. conclusiones (dia 2)",
+     "DelayAfter": 57000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && > C:\\Users\\angel\\Documentos\\informes\\nota.txt echo pendiente: firmar el acta de la reunion",
+     "DelayAfter": 43000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && type C:\\Users\\angel\\Documentos\\informes\\nota.txt >> C:\\Users\\angel\\Documentos\\informes\\bitacora.txt",
+     "DelayAfter": 62000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && type C:\\Users\\angel\\Documentos\\informes\\informe.txt",
+     "DelayAfter": 342000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && find /c /v \"\" C:\\Users\\angel\\Documentos\\informes\\informe.txt",
+     "DelayAfter": 220000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && >> C:\\Users\\angel\\Documentos\\informes\\informe.txt echo 8. anexo de datos (dia 2)",
+     "DelayAfter": 48000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && type C:\\Users\\angel\\Documentos\\informes\\informe.txt",
+     "DelayAfter": 120000
+    }
+   ]
+  },
+  {
+   "HandlerType": "Command",
+   "Initial": "",
+   "UtcTimeOn": "14:00:00",
+   "UtcTimeOff": "16:15:00",
+   "Loop": true,
+   "HandlerArgs": {},
+   "TimeLineEvents": [
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\actas && > C:\\Users\\angel\\Documentos\\actas\\acta_1.txt echo acta de reunion 1 del area (dia 2)",
+     "DelayAfter": 41000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\actas && type C:\\Users\\angel\\Documentos\\actas\\acta_1.txt",
+     "DelayAfter": 608000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\actas && dir C:\\Users\\angel\\Documentos\\actas\\acta_1.txt",
+     "DelayAfter": 57000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos && type C:\\Users\\angel\\Documentos\\actas >nul 2>&1 & if errorlevel 1 (>> C:\\Users\\angel\\Documentos\\errores.log echo %DATE%_%TIME%\terror\tcat_dir\ttype C:\\Users\\angel\\Documentos\\actas\trc=ge1)",
+     "DelayAfter": 43000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && type C:\\Users\\angel\\Documentos\\informes\\informe.bak >nul 2>&1 & if errorlevel 1 (>> C:\\Users\\angel\\Documentos\\errores.log echo %DATE%_%TIME%\treintento\tcat_dir\ttype C:\\Users\\angel\\Documentos\\informes\\informe.bak\trc=ge1) else (>> C:\\Users\\angel\\Documentos\\errores.log echo %DATE%_%TIME%\treintento\tcat_dir\ttype C:\\Users\\angel\\Documentos\\informes\\informe.bak\trc=0)",
+     "DelayAfter": 62000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\actas && copy /y C:\\Users\\angel\\Documentos\\actas\\acta_1.txt C:\\Users\\angel\\Documentos\\actas\\compartida_1.txt",
+     "DelayAfter": 324000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && robocopy C:\\Users\\angel\\Documentos\\informes\\ C:\\Users\\angel\\Documentos\\copias\\informes\\ /MIR /NFL /NDL /NJH /NJS /NP",
+     "DelayAfter": 48000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\actas && certutil -hashfile C:\\Users\\angel\\Documentos\\actas\\compartida_1.txt SHA256",
+     "DelayAfter": 55000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\actas && dir C:\\Users\\angel\\Documentos\\actas",
+     "DelayAfter": 473000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && > C:\\Users\\angel\\Documentos\\informes\\borrador_previo.txt echo borrador previo del informe del area",
+     "DelayAfter": 175000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && powershell -NoProfile -Command \"$p='C:\\Users\\angel\\Documentos\\informes\\borrador_previo.txt'; $a=[IO.File]::ReadAllBytes($p); $z=New-Object byte[] $a.Length; [IO.File]::WriteAllBytes($p,$z); for($i=0;$i -lt $a.Length;$i++){$z[$i]=[byte](($i*37)%251)}; [IO.File]::WriteAllBytes($p,$z); Remove-Item -LiteralPath $p -Force\"",
+     "DelayAfter": 44000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\actas && copy /y C:\\Users\\angel\\Documentos\\actas\\compartida_1.txt C:\\Users\\angel\\Documentos\\compartidas\\ >nul 2>&1 & if errorlevel 1 (>> C:\\Users\\angel\\Documentos\\errores.log echo %DATE%_%TIME%\terror\tcp_dir\tcopy /y C:\\Users\\angel\\Documentos\\actas\\compartida_1.txt C:\\Users\\angel\\Documentos\\compartidas\\\trc=ge1)",
+     "DelayAfter": 59000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\actas && copy /y C:\\Users\\angel\\Documentos\\actas\\compartida_1.txt C:\\Users\\angel\\Documentos\\actas\\compartida_copia.txt >nul 2>&1 & if errorlevel 1 (>> C:\\Users\\angel\\Documentos\\errores.log echo %DATE%_%TIME%\treintento\tcp_dir\tcopy /y C:\\Users\\angel\\Documentos\\actas\\compartida_1.txt C:\\Users\\angel\\Documentos\\actas\\compartida_copia.txt\trc=ge1) else (>> C:\\Users\\angel\\Documentos\\errores.log echo %DATE%_%TIME%\treintento\tcp_dir\tcopy /y C:\\Users\\angel\\Documentos\\actas\\compartida_1.txt C:\\Users\\angel\\Documentos\\actas\\compartida_copia.txt\trc=0)",
+     "DelayAfter": 41000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\actas && > C:\\Users\\angel\\Documentos\\actas\\acta_1.txt echo acta de reunion 1 del area (dia 2)",
+     "DelayAfter": 57000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\actas && type C:\\Users\\angel\\Documentos\\actas\\acta_1.txt",
+     "DelayAfter": 43000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\actas && dir C:\\Users\\angel\\Documentos\\actas\\acta_1.txt",
+     "DelayAfter": 379000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\actas && copy /y C:\\Users\\angel\\Documentos\\actas\\acta_1.txt C:\\Users\\angel\\Documentos\\actas\\compartida_1.txt",
+     "DelayAfter": 62000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Descargas && curl.exe -sS -o C:\\Users\\angel\\Descargas\\manual_empleado_wget.pdf http://intranet.local:8080/descargas/manual_empleado.pdf",
+     "DelayAfter": 1210000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\actas && certutil -hashfile C:\\Users\\angel\\Documentos\\actas\\compartida_1.txt SHA256",
+     "DelayAfter": 596000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\actas && dir C:\\Users\\angel\\Documentos\\actas",
+     "DelayAfter": 48000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos && dir /clasificar C:\\Users\\angel\\Documentos >nul 2>&1 & if errorlevel 1 (>> C:\\Users\\angel\\Documentos\\errores.log echo %DATE%_%TIME%\terror\topcion\tdir /clasificar C:\\Users\\angel\\Documentos\trc=ge1)",
+     "DelayAfter": 55000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos && dir /a C:\\Users\\angel\\Documentos >nul 2>&1 & if errorlevel 1 (>> C:\\Users\\angel\\Documentos\\errores.log echo %DATE%_%TIME%\treintento\topcion\tdir /a C:\\Users\\angel\\Documentos\trc=ge1) else (>> C:\\Users\\angel\\Documentos\\errores.log echo %DATE%_%TIME%\treintento\topcion\tdir /a C:\\Users\\angel\\Documentos\trc=0)",
+     "DelayAfter": 44000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\actas && > C:\\Users\\angel\\Documentos\\actas\\acta_2.txt echo acta de reunion 2 del area (dia 2)",
+     "DelayAfter": 433000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\actas && type C:\\Users\\angel\\Documentos\\actas\\acta_2.txt",
+     "DelayAfter": 59000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\actas && dir C:\\Users\\angel\\Documentos\\actas\\acta_2.txt",
+     "DelayAfter": 203000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Descargas && curl.exe --max-time 5 -sS -A \"TFG-Legit/1.0 (Windows; x86_64; sesion-web)\" -b C:\\Users\\angel\\.cache\\tfg-web\\cookies.txt -o C:\\Users\\angel\\.cache\\tfg-web\\intranet_tarde.html -w \"%{http_code}\" http://intranet.local:8080/",
+     "DelayAfter": 41000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\actas && copy /y C:\\Users\\angel\\Documentos\\actas\\acta_2.txt C:\\Users\\angel\\Documentos\\actas\\compartida_2.txt",
+     "DelayAfter": 57000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\actas && certutil -hashfile C:\\Users\\angel\\Documentos\\actas\\compartida_2.txt SHA256",
+     "DelayAfter": 508000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\actas && dir C:\\Users\\angel\\Documentos\\actas",
+     "DelayAfter": 142000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Descargas && curl.exe -sS -A \"TFG-Legit/1.0 (Windows; x86_64; sesion-web)\" -b C:\\Users\\angel\\.cache\\tfg-web\\cookies.txt -T C:\\Users\\angel\\Documentos\\actas\\acta_1.txt -o NUL -w \"%{http_code}\" http://nube.local:9092/nube/actas/",
+     "DelayAfter": 43000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Descargas && curl.exe -sS -A \"TFG-Legit/1.0 (Windows; x86_64; sesion-web)\" -b C:\\Users\\angel\\.cache\\tfg-web\\cookies.txt -X PROPFIND -H \"Depth: 1\" -o C:\\Users\\angel\\.cache\\tfg-web\\nube_listado.txt -w \"%{http_code}\" http://nube.local:9092/nube/",
+     "DelayAfter": 62000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Descargas && curl.exe -sS -A \"TFG-Legit/1.0 (Windows; x86_64; sesion-web)\" -b C:\\Users\\angel\\.cache\\tfg-web\\cookies.txt -T C:\\Users\\angel\\Documentos\\informes\\informe.txt -o NUL -w \"%{http_code}\" http://nube.local:9092/nube/informes/",
+     "DelayAfter": 48000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Descargas && curl.exe -sS -A \"TFG-Legit/1.0 (Windows; x86_64; sesion-web)\" -b C:\\Users\\angel\\.cache\\tfg-web\\cookies.txt -X PROPFIND -H \"Depth: 1\" -o C:\\Users\\angel\\.cache\\tfg-web\\nube_actas.txt -w \"%{http_code}\" http://nube.local:9092/nube/actas/",
+     "DelayAfter": 55000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Descargas && curl.exe -sS -A \"TFG-Legit/1.0 (Windows; x86_64; sesion-web)\" -b C:\\Users\\angel\\.cache\\tfg-web\\cookies.txt -e http://intranet.local:8080/ayuda.html -H \"Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\" -H \"Accept-Language: es-ES,es;q=0.9,en;q=0.5\" --compressed -o C:\\Users\\angel\\.cache\\tfg-web\\portal_tarde.html -w \"%{http_code}\" http://intranet.local:8080/",
+     "DelayAfter": 393000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Descargas && curl.exe -sS -A \"TFG-Legit/1.0 (Windows; x86_64; sesion-web)\" -b C:\\Users\\angel\\.cache\\tfg-web\\cookies.txt -e C:\\Users\\angel\\.cache\\tfg-web\\portal_tarde.html -H \"Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\" -H \"Accept-Language: es-ES,es;q=0.9,en;q=0.5\" --compressed -o C:\\Users\\angel\\.cache\\tfg-web\\noticias_tarde.html -w \"%{http_code}\" http://intranet.local:8080/noticias.html",
+     "DelayAfter": 44000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && tar -xzf C:\\Users\\angel\\Documentos\\informes\\informe.bak -C C:\\Users\\angel\\Documentos\\informes >nul 2>&1 & if errorlevel 1 (>> C:\\Users\\angel\\Documentos\\errores.log echo %DATE%_%TIME%\terror\tgzip\ttar -xzf C:\\Users\\angel\\Documentos\\informes\\informe.bak -C C:\\Users\\angel\\Documentos\\informes\trc=ge1)",
+     "DelayAfter": 311000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\informes && tar -czf C:\\Users\\angel\\Documentos\\informes\\informe.bak.gz -C C:\\Users\\angel\\Documentos\\informes informe.bak >nul 2>&1 & if errorlevel 1 (>> C:\\Users\\angel\\Documentos\\errores.log echo %DATE%_%TIME%\treintento\tgzip\ttar -czf C:\\Users\\angel\\Documentos\\informes\\informe.bak.gz -C C:\\Users\\angel\\Documentos\\informes informe.bak\trc=ge1) else (>> C:\\Users\\angel\\Documentos\\errores.log echo %DATE%_%TIME%\treintento\tgzip\ttar -czf C:\\Users\\angel\\Documentos\\informes\\informe.bak.gz -C C:\\Users\\angel\\Documentos\\informes informe.bak\trc=0)",
+     "DelayAfter": 59000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Descargas && tar -czf C:\\Users\\angel\\Descargas\\informe_dia2.tar.gz -C C:\\Users\\angel\\Documentos\\informes informe.txt",
+     "DelayAfter": 41000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Descargas && certutil -hashfile C:\\Users\\angel\\Descargas\\informe_dia2.tar.gz SHA256",
+     "DelayAfter": 352000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Descargas && dir /s C:\\Users\\angel\\Descargas\\informe_dia2.tar.gz",
+     "DelayAfter": 80000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Descargas && dir C:\\Users\\angel\\Descargas",
+     "DelayAfter": 57000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Descargas && curl.exe -sS -A \"TFG-Legit/1.0 (Windows; x86_64; sesion-web)\" -b C:\\Users\\angel\\.cache\\tfg-web\\cookies.txt -e C:\\Users\\angel\\.cache\\tfg-web\\portal_tarde.html -H \"Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\" -H \"Accept-Language: es-ES,es;q=0.9,en;q=0.5\" --compressed -o C:\\Users\\angel\\Descargas\\plantilla_dia2.csv -w \"%{http_code}\" http://intranet.local:8080/descargas/plantilla_informe.csv",
+     "DelayAfter": 528000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Descargas && dir C:\\Users\\angel\\Descargas\\plantilla_dia2.csv",
+     "DelayAfter": 120000
+    }
+   ]
+  },
+  {
+   "HandlerType": "Command",
+   "Initial": "",
+   "UtcTimeOn": "16:15:00",
+   "UtcTimeOff": "17:00:00",
+   "Loop": true,
+   "HandlerArgs": {},
+   "TimeLineEvents": [
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\copias && tar -czf C:\\Users\\angel\\Documentos\\copias\\copia.tar.gz -C C:\\Users\\angel\\Documentos informes actas",
+     "DelayAfter": 516000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\copias && certutil -hashfile C:\\Users\\angel\\Documentos\\copias\\copia.tar.gz SHA256 > C:\\Users\\angel\\Documentos\\copias\\copia.tar.gz.sha256 2>&1",
+     "DelayAfter": 43000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\copias && type C:\\Users\\angel\\Documentos\\copias\\copia.tar.gz.sha256",
+     "DelayAfter": 62000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Descargas && curl.exe -sS -A \"TFG-Legit/1.0 (Windows; x86_64; sesion-web)\" -b C:\\Users\\angel\\.cache\\tfg-web\\cookies.txt -T C:\\Users\\angel\\Documentos\\copias\\copia.tar.gz -o NUL -w \"%{http_code}\" http://nube.local:9092/nube/copias/",
+     "DelayAfter": 48000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Descargas && curl.exe -sS -A \"TFG-Legit/1.0 (Windows; x86_64; sesion-web)\" -b C:\\Users\\angel\\.cache\\tfg-web\\cookies.txt -X PROPFIND -H \"Depth: 1\" -o C:\\Users\\angel\\.cache\\tfg-web\\copias_nube.txt -w \"%{http_code}\" http://nube.local:9092/nube/copias/",
+     "DelayAfter": 441000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos && dir /s C:\\Users\\angel\\Documentos",
+     "DelayAfter": 55000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel && dir C:\\",
+     "DelayAfter": 374000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos\\copias && copy /y C:\\Users\\angel\\Documentos\\copias\\copia.tar.gz C:\\Users\\angel\\Descargas\\copia_final_2.tar.gz",
+     "DelayAfter": 44000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Descargas && dir C:\\Users\\angel\\Descargas\\copia_final_2.tar.gz",
+     "DelayAfter": 59000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Descargas && del /f /q C:\\Users\\angel\\Descargas\\tmp_*.csv 2>nul",
+     "DelayAfter": 582000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel && echo %DATE%_%TIME%",
+     "DelayAfter": 416000
+    },
+    {
+     "Command": "cd /d C:\\Users\\angel\\Documentos && dir C:\\Users\\angel\\Documentos C:\\Users\\angel\\Descargas",
+     "DelayAfter": 120000
+    }
+   ]
+  },
+  {
+   "HandlerType": "Command",
+   "Initial": "",
+   "UtcTimeOn": "17:17:00",
+   "UtcTimeOff": "17:50:00",
+   "Loop": true,
+   "HandlerArgs": {},
+   "TimeLineEvents": [
+    {
+     "Command": "cd /d C:\\lab-legit\\campana && (if not exist C:\\lab-legit\\campana\\W-04 md C:\\lab-legit\\campana\\W-04) & > C:\\lab-legit\\campana\\W-04\\inicio.txt echo %DATE%_%TIME%",
+     "DelayAfter": 8000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\campana\\W-04 && > C:\\lab-legit\\campana\\W-04\\informe.txt echo informe del area: datos de cliente, importe 1200",
+     "DelayAfter": 6000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\campana\\W-04 && powershell -NoProfile -Command \"$k=[byte[]](0..31); $v=[byte[]](0..15); $a=[IO.File]::ReadAllBytes('C:\\lab-legit\\campana\\W-04\\informe.txt'); $s=[Security.Cryptography.Aes]::Create(); $s.Mode='CBC'; $s.Padding='PKCS7'; $s.Key=$k; $s.IV=$v; $e=$s.CreateEncryptor(); $b=$e.TransformFinalBlock($a,0,$a.Length); [IO.File]::WriteAllBytes('C:\\lab-legit\\campana\\W-04\\informe.txt.enc',$b)\"",
+     "DelayAfter": 10000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\campana\\W-04 && powershell -NoProfile -Command \"$k=[byte[]](0..31); $v=[byte[]](0..15); $a=[IO.File]::ReadAllBytes('C:\\lab-legit\\campana\\W-04\\informe.txt.enc'); $s=[Security.Cryptography.Aes]::Create(); $s.Mode='CBC'; $s.Padding='PKCS7'; $s.Key=$k; $s.IV=$v; $d=$s.CreateDecryptor(); $b=$d.TransformFinalBlock($a,0,$a.Length); [IO.File]::WriteAllBytes('C:\\lab-legit\\campana\\W-04\\informe.txt.rec',$b)\"",
+     "DelayAfter": 7000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\campana\\W-04 && certutil -hashfile C:\\lab-legit\\campana\\W-04\\informe.txt SHA256 > C:\\lab-legit\\campana\\W-04\\huellas.txt 2>&1 & certutil -hashfile C:\\lab-legit\\campana\\W-04\\informe.txt.rec SHA256 >> C:\\lab-legit\\campana\\W-04\\huellas.txt 2>&1",
+     "DelayAfter": 9000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\campana\\W-04 && > C:\\lab-legit\\campana\\W-04\\hecho.txt echo RESULTADO=OK && type C:\\lab-legit\\campana\\W-04\\huellas.txt >> C:\\lab-legit\\campana\\W-04\\hecho.txt",
+     "DelayAfter": 5000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\campana\\W-04 && del /f /q C:\\lab-legit\\campana\\W-04\\informe.txt 2>nul & del /f /q C:\\lab-legit\\campana\\W-04\\informe.txt.enc 2>nul & del /f /q C:\\lab-legit\\campana\\W-04\\informe.txt.rec 2>nul & del /f /q C:\\lab-legit\\campana\\W-04\\huellas.txt 2>nul & > C:\\lab-legit\\campana\\W-04\\fin.txt echo %DATE%_%TIME%",
+     "DelayAfter": 465000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\campana && (if not exist C:\\lab-legit\\campana\\W-05 md C:\\lab-legit\\campana\\W-05) & > C:\\lab-legit\\campana\\W-05\\inicio.txt echo %DATE%_%TIME%",
+     "DelayAfter": 7000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\campana\\W-05 && (if not exist C:\\lab-legit\\campana\\W-05\\tmp md C:\\lab-legit\\campana\\W-05\\tmp) && > C:\\lab-legit\\campana\\W-05\\tmp\\borrador_tmp.txt echo temporal del dia && > C:\\lab-legit\\campana\\W-05\\borrador.txt echo borrador con datos personales",
+     "DelayAfter": 9000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\campana\\W-05 && for %I in (C:\\lab-legit\\campana\\W-05\\borrador.txt) do @echo %~zI > C:\\lab-legit\\campana\\W-05\\antes.txt",
+     "DelayAfter": 5000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\campana\\W-05 && rd /s /q C:\\lab-legit\\campana\\W-05\\tmp 2>nul",
+     "DelayAfter": 8000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\campana\\W-05 && powershell -NoProfile -Command \"$p='C:\\lab-legit\\campana\\W-05\\borrador.txt'; $a=[IO.File]::ReadAllBytes($p); $z=New-Object byte[] $a.Length; [IO.File]::WriteAllBytes($p,$z); for($i=0;$i -lt $a.Length;$i++){$z[$i]=[byte](($i*37)%251)}; [IO.File]::WriteAllBytes($p,$z); Remove-Item -LiteralPath $p -Force\"",
+     "DelayAfter": 7000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\campana\\W-05 && echo RESULTADO=OK > C:\\lab-legit\\campana\\W-05\\hecho.txt && type C:\\lab-legit\\campana\\W-05\\antes.txt >> C:\\lab-legit\\campana\\W-05\\hecho.txt && if not exist C:\\lab-legit\\campana\\W-05\\borrador.txt >> C:\\lab-legit\\campana\\W-05\\hecho.txt echo borrador_ausente=1",
+     "DelayAfter": 9000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\campana\\W-05 && del /f /q C:\\lab-legit\\campana\\W-05\\antes.txt 2>nul & > C:\\lab-legit\\campana\\W-05\\fin.txt echo %DATE%_%TIME%",
+     "DelayAfter": 415000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\campana && (if not exist C:\\lab-legit\\campana\\W-06 md C:\\lab-legit\\campana\\W-06) & > C:\\lab-legit\\campana\\W-06\\inicio.txt echo %DATE%_%TIME%",
+     "DelayAfter": 8000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\campana\\W-06 && (if not exist C:\\lab-legit\\campana\\W-06\\origen md C:\\lab-legit\\campana\\W-06\\origen) & (if not exist C:\\lab-legit\\campana\\W-06\\destino md C:\\lab-legit\\campana\\W-06\\destino) && > C:\\lab-legit\\campana\\W-06\\origen\\informe_1.txt echo informe uno && > C:\\lab-legit\\campana\\W-06\\origen\\informe_2.txt echo informe dos && > C:\\lab-legit\\campana\\W-06\\destino\\obsoleto.txt echo copia obsoleta",
+     "DelayAfter": 7000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\campana\\W-06 && robocopy C:\\lab-legit\\campana\\W-06\\origen\\ C:\\lab-legit\\campana\\W-06\\destino\\ /MIR /NFL /NDL /NJH /NJS /NP",
+     "DelayAfter": 9000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\campana\\W-06 && > C:\\lab-legit\\campana\\W-06\\hecho.txt echo RESULTADO=OK && dir /s C:\\lab-legit\\campana\\W-06\\origen C:\\lab-legit\\campana\\W-06\\destino >> C:\\lab-legit\\campana\\W-06\\hecho.txt && dir C:\\lab-legit\\campana\\W-06\\destino >> C:\\lab-legit\\campana\\W-06\\hecho.txt",
+     "DelayAfter": 5000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\campana\\W-06 && rd /s /q C:\\lab-legit\\campana\\W-06\\origen 2>nul & rd /s /q C:\\lab-legit\\campana\\W-06\\destino 2>nul & > C:\\lab-legit\\campana\\W-06\\fin.txt echo %DATE%_%TIME%",
+     "DelayAfter": 461000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\campana && (if not exist C:\\lab-legit\\campana\\W-07 md C:\\lab-legit\\campana\\W-07) & > C:\\lab-legit\\campana\\W-07\\inicio.txt echo %DATE%_%TIME%",
+     "DelayAfter": 5000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\campana\\W-07 && > C:\\lab-legit\\campana\\W-07\\export.csv echo referencia;area;importe && >> C:\\lab-legit\\campana\\W-07\\export.csv echo A-01;compras;1200 && >> C:\\lab-legit\\campana\\W-07\\export.csv echo A-02;ventas;980",
+     "DelayAfter": 8000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\campana\\W-07 && powershell -NoProfile -Command \"(Get-Content -LiteralPath 'C:\\lab-legit\\campana\\W-07\\export.csv') -replace ';',',' | Set-Content -LiteralPath 'C:\\lab-legit\\campana\\W-07\\export.csv'\"",
+     "DelayAfter": 6000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\campana\\W-07 && more +0 C:\\lab-legit\\campana\\W-07\\export.csv > C:\\lab-legit\\campana\\W-07\\export_normalizado.txt",
+     "DelayAfter": 10000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\campana\\W-07 && > C:\\lab-legit\\campana\\W-07\\hecho.txt echo RESULTADO=OK && more +0 C:\\lab-legit\\campana\\W-07\\export.csv >> C:\\lab-legit\\campana\\W-07\\hecho.txt && find /c \";\" C:\\lab-legit\\campana\\W-07\\export.csv >> C:\\lab-legit\\campana\\W-07\\hecho.txt",
+     "DelayAfter": 7000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\campana\\W-07 && del /f /q C:\\lab-legit\\campana\\W-07\\export.csv 2>nul & del /f /q C:\\lab-legit\\campana\\W-07\\export_normalizado.txt 2>nul & > C:\\lab-legit\\campana\\W-07\\fin.txt echo %DATE%_%TIME%",
+     "DelayAfter": 544000
+    }
+   ]
+  }
+ ]
+}
