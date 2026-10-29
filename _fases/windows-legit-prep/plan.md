@@ -1,15 +1,24 @@
 ---
 bloque: windows-legit-prep
 nombre: W0 — preparación del espejo Windows de la ventana legítima (sin ejecutarla)
-version: 1
-status: draft
+version: 2
+status: approved_by_human
 fecha: 2026-10-29
+fecha_aprobacion: 2026-10-29
+aprobado_por: humano
+correcciones: "2026-10-29 · W1+W2: rutas/nombres reales y cambios ejecutados (W-04->AES, W-05->PowerShell, W-09->cmd /c copy, W-11 sin certutil -urlcache, rm_inexistente->type). Ver §16.4. Sin cambio de fondo."
 autor: tfg-planner
 depende_de: legitimo-v3 (Linux, plan v5 APROBADO y PAUSADO hasta el 2026-11-05) · legitimo-fix (cerrado, PASA) · legitimo-72h-v2 (abortado, lecciones) · fase-02b-baseline (cerrado, PASA) · reencuadre-metrica (métrica v1 CONGELADA)
 no_toca: plan.md (raíz, bloque Linux) · _recursos/ · Hojas/ · Dataset/ · Soporte/Metrica/ · laboratorio · corpus
 ejecuta_ahora: NADA. Las VMs siguen apagadas. Este documento es de preparación; la ejecución se decide después.
 ventana_ejecucion: sin fecha. Se fija al cerrar WE0 (§8), con la misma regla que Linux (≥ 48 h de margen, primer lunes→jueves), y **solo después** de que cierre la ventana Linux (2–5/11).
-gate: pendiente. Seis preguntas en §15, en lenguaje sencillo.
+gate: |
+  **APROBADO (2026-10-29) — OK del humano a las 4 decisiones de fondo:** (1) usar el **cliente GHOSTS de
+  Windows** y **trasladar la receta por ranuras** (mismos tiempos y conteos que Linux); (2) **los 11 casos**,
+  con los 2 difíciles escritos a mano en PowerShell, **declarado**; (3) **aislar el denominador**
+  (`--agent-id 002` + VM Linux apagada); (4) **construir ahora** (papel y scripts) y **ejecutar después**
+  del 2026-11-05. **Excepción a §16.3 declarada** para `construir_receta_legitima.py` (fix L-1).
+  Se mantiene: nada de VMs hasta cerrar Linux, y WE0 obligatorio antes de armar.
 ---
 
 # plan.md — Bloque `windows-legit-prep` (W0)
@@ -62,7 +71,7 @@ adaptado. Si algo no se puede replicar, se declara y se explica por qué.*
 | **N-1** | **La campaña derivada del corpus de ataques** | En Linux las 11 fichas se reconstruyeron **desde el corpus** (4 107 detecciones `80792` con `audit_exe`; `plan.md:620-653`). **No existe corpus de ataques Windows**: `Dataset/Ataques/Resultados/Wazuh/` solo tiene `linux/`, `Auditado/`, `CSV/`, `Logs/`, `Perf/` **[H]**, y el bloque **B1 (`fase-03b`) no ha empezado** (`roadmap.md:83`) | La lista se deriva del **ruleset congelado** (`active_ruleset.txt:144-191`) + el **inventario P1-Windows** (89 técnicas, 77 aplicables, 75 factibles, 38 con ART; `Hojas/inventario_p1_windows.csv`) + la **baseline Windows de 2×4 h**. Se etiqueta como **[S] predicción**, no como medida, hasta que exista B1 |
 | **N-2** | **`auditd` y el par `execve`/`audit_cwd`** | Windows no tiene `auditd`. La telemetría es **eventos de registro** (4688, Sysmon 1, 4104) + FIM (`telemetria_windows.md:11-25`) | El ancla equivalente es `win_image ∧ win_command_line ∧ win_cwd` (`telemetria_windows.md:60-67`). **`cwd` solo existe en Sysmon EID 1**: 4688 no lo lleva **[H, doc. del propio proyecto]** ⇒ el ancla `cwd` depende de Sysmon |
 | **N-3** | **El extractor de alertas congelado** | `extraer_alertas.py` solo lee `data.audit.*` y `syscheck.path` (`extraer_alertas.py:337-340`); en Windows `audit_exe`/`audit_cwd` salen **vacíos** — ya ocurrió: `Dataset/Legitimo/windows/baseline_detalle_v1.csv` tiene esas columnas en blanco **[H]** | **Extractor nuevo** `extraer_alertas_windows.py` (no se toca el congelado: está en la lista de prohibidos, `plan.md:1305`) |
-| **N-4** | **Cifrado con contraseña de un fichero (`openssl enc`)** | Windows 10 Pro **no trae** ninguna herramienta nativa de cifrado simétrico con contraseña por línea de comandos (sin instalar) **[S]** | `certutil -hashfile` + `tar -a -c -f` (integridad + empaquetado) ⇒ el caso **C-05 baja a parcial**: se pierde T1486-legítimo |
+| **N-4** | **Cifrado con contraseña de un fichero (`openssl enc`)** | Windows 10 Pro **no trae** ninguna herramienta nativa de cifrado simétrico con contraseña por línea de comandos (sin instalar) **[S]** | **AES en PowerShell** (clave fija, sin contraseña) + `certutil -hashfile` ⇒ el caso **C-05 baja a parcial**: se pierde la variante con contraseña de T1486-legítimo (W-04, ya ejecutado; §16.4) |
 | **N-5** | **Borrado seguro (`shred`)** | El equivalente (`cipher /w:<dir>`) **reescribe el espacio libre 3 veces**: GB escritos y horas de disco en una VM de 12 GB **[S]** | Solo borrado (`del`, `rd`). El caso **C-06 baja a parcial**: se pierde T1561-legítimo |
 | **N-6** | **Persistencia benigna (crear+borrar tarea programada)** | Ya se retiró en Linux (**C-04**, `plan.md:695-700`): la campaña es **no mutante** | Se mantiene fuera en Windows **por la misma decisión**, aunque aquí la tentación es mayor (T1053.005 es la técnica de persistencia por excelencia en Windows) |
 | **N-7** | **1 acción = 1 `execve`** | En Windows **sí se mantiene la unidad**, pero por otra razón: GHOSTS `Cmd` arranca **`cmd /c <comando>` por acción** (`Cmd.cs:106`) ⇒ 1 acción = 1 `cmd.exe` (+ hijos). **No** es un problema; se documenta porque el *baseline* histórico **no** lo hacía: su script usaba cmdlets dentro de un único `powershell.exe` y produjo **68 eventos de proceso en 4 h** (`baseline_resultado.md:§11-12`) | Regla de la receta: **una entrada = un `cmd /c`**; nada de scripts internos que agrupen N acciones |
@@ -81,8 +90,8 @@ adaptado. Si algo no se puede replicar, se declara y se explica por qué.*
 | **2** | **Receta**: `d1/d2/d3` con B1–B6, P1 café, P2 comida, jornada **08:00–17:00Z**, jitter literal, **147/153/141 acciones** (`plan.md:472-504`; `bloques.env`; `state.md:10`) | mismos días, **mismos bloques y mismas horas UTC**, **mismo vector de `DelayAfter`** (traslado **por ranuras**: `n` eventos y `DelayAfter` idénticos por bloque) | cambian los **comandos** (POSIX → `cmd`/PowerShell), no el **ritmo** | elimina una variable (el tiempo) y deja una sola (la plataforma); el validador comprueba la igualdad de ranuras |
 | **3** | **`cwd` realista** `/home/angel` (mejora 1, `plan.md:574-577, §1.9.2`) | `WorkingDirectory` de la tarea = `C:\Users\angel` + `cd /d` explícito por comando; se mide `win_cwd` en **Sysmon EID 1** | en Windows el `cwd` **no viaja en 4688**; depende de Sysmon | mismo objetivo: quitar el artefacto «cwd de bot» (aquí el riesgo es `C:\Windows\System32`, que es el `cwd` de una tarea SYSTEM) |
 | **4** | **Errores con reintento**, ~10/día, con `errores.log` de 5-6 campos (`plan.md:583-585`; CA-03) | `if errorlevel N (...)` + reintento correcto + `errores.log` (TSV) | sintaxis y **trampa real**: `%ERRORLEVEL%` se expande **antes** de ejecutar ⇒ hay que usar `if errorlevel` o `call` (§4.4) | misma familia de eventos (`rc≠0` + reintento) y mismo producto sellable |
-| **5** | **Herramientas de doble uso elegidas por el corpus** (12: `xargs`, `sed`, `openssl`, `ip`, `rsync`…) (`plan.md:601-609`) | `certutil`, `curl.exe`, `bitsadmin`, `schtasks`, `reg`, `sc`, `net`, `whoami`, `tasklist`, `ipconfig`, `route`, `netsh`, `wevtutil`, `robocopy`, `xcopy`, `tar`, `makecab`, `findstr`, `icacls`, `eventcreate`, `powershell` | **la selección no puede venir del corpus** (N-1): viene del **ruleset** y del **inventario P1-Windows** | misma lógica (herramientas que atacan y se usan a diario), distinta fuente de evidencia: se declara |
-| **6** | **Campaña B6**: 11 casos **no mutantes**, 3/4/4, `17:05–17:50Z`, inicios **17:06/17:17/17:11**, marcas `inicio/fin/hecho` (`plan.md:501-504, 666-678`) | **11 casos espejo** en `C:\lab-legit\campana\W-XX\`, mismo reparto, mismas horas, mismas marcas | 2 casos **parciales** (N-4, N-5); 1 cambia de mecanismo (`xargs` → `for /L` + `xcopy`); el resto se reescribe en `cmd` | la estructura (bloque declarado, marcas, esperado por umbral, publicación aparte, no mutación) es **idéntica** |
+| **5** | **Herramientas de doble uso elegidas por el corpus** (12: `xargs`, `sed`, `openssl`, `ip`, `rsync`…) (`plan.md:601-609`) | `certutil`, `curl.exe`, `bitsadmin`, `schtasks`, `reg`, `sc`, `net`, `whoami`, `tasklist`, `ipconfig`, `route`, `netsh`, `wevtutil`, `robocopy`, `tar`, `makecab`, `findstr`, `icacls`, `eventcreate`, `powershell` | **la selección no puede venir del corpus** (N-1): viene del **ruleset** y del **inventario P1-Windows** | misma lógica (herramientas que atacan y se usan a diario), distinta fuente de evidencia: se declara |
+| **6** | **Campaña B6**: 11 casos **no mutantes**, 3/4/4, `17:05–17:50Z`, inicios **17:06/17:17/17:11**, marcas `inicio/fin/hecho` (`plan.md:501-504, 666-678`) | **11 casos espejo** en `C:\lab-legit\campana\W-XX\`, mismo reparto, mismas horas, mismas marcas | 2 casos **parciales** (N-4, N-5); 1 cambia de mecanismo (`xargs` → `for /L` + `cmd /c copy`, tras corregir `xcopy` en W1); el resto se reescribe en `cmd` | la estructura (bloque declarado, marcas, esperado por umbral, publicación aparte, no mutación) es **idéntica** |
 | **7** | **Denominador `M`**: `logall_json` en el manager + `contar_denominador.py`, filtrado al agente **`001`** (`plan.md:1049-1053`; `contar_denominador.py:288` por defecto `001`) | mismo `logall_json`, **`--agent-id 002 --agent-name victima-windows`**; agente `001` **apagado** (VM Linux off) | el volumen es **desconocido** y probablemente **mucho mayor** (Sysmon + Security). Se mide en WE0 (§6.3) | `M` es por plataforma (la métrica ya lo declara per-HIDS, `metrica_hids.md:66-68`); el método de conteo es el mismo script |
 | **8** | **Extracción**: cosecha SSH → `cosecha.done` → `stop` → `M` → `logall_json off` → alertas → acciones → campaña (`plan.md:1029-1046`) | mismo orden, pero la cosecha es **`vmrun copyFileFromGuestToHost`** (Windows no tiene SSH) y las alertas se extraen con **extractor nuevo** (N-3) | transporte y extractor | mismo orden crítico (`off` borra `archives.json`) y mismos productos |
 | **9** | **Validez V1–V8** (`plan.md:1066-1075`) | **W-V1…W-V9** con umbrales propios (§9) | el fondo Windows es **intermitente**: la baseline histórica midió **hueco máximo 40,8 min** (`baseline_meta.md:145`) ⇒ «ningún hueco > 30 min» **fallaría por diseño** | mismos criterios, umbrales **pre-registrados con evidencia** en vez de copiados |
@@ -280,11 +289,11 @@ comparación con Linux exige el mismo reloj, y el desfase local ya está declara
 | **Familia** | **Herramientas** | **Reglas que puede tocar (fuente)** |
 |---|---|---|
 | **Descubrimiento** | `whoami`, `hostname`, `systeminfo`, `tasklist`, `ipconfig`, `route`, `getmac`, `arp`, `nslookup` | `67027` L3 (proceso), `92xxx` (Sysmon 1) |
-| **Ficheros / ofimática de consola** | `dir`, `type`, `more`, `findstr`, `fc`, `copy`, `move`, `xcopy`, `robocopy`, `tar` **[S]**, `makecab`, `certutil -hashfile`, `attrib`, `icacls` (lectura) | `67027`, `92xxx`, `92200-92227` (Sysmon 11) |
+| **Ficheros / ofimática de consola** | `dir`, `type`, `more`, `findstr`, `fc`, `copy`, `move`, `robocopy`, `tar` **[S]**, `makecab`, `certutil -hashfile`, `attrib`, `icacls` (lectura) | `67027`, `92xxx`, `92200-92227` (Sysmon 11) |
 | **Sistema / registro (lectura)** | `reg query`, `sc query`, `schtasks /query`, `wevtutil qe`, `netsh advfirewall show`, `net start`, `net user` (lectura) | `67027`, `60xxx`, `60100-60232` |
 | **Red** | `curl.exe` **[S]**, `ping`, `tracert`, `bitsadmin /list` **[S]** | `67027`, `92101-92110` (Sysmon 3) |
 | **Scripting** | `powershell -NoProfile -Command …` (CSV, JSON, fechas, hashes) | `91801-91846` (**4104**), `67027` |
-| **Compresión / empaquetado** | `tar -a` **[S]**, `makecab`, `expand` | `67027`, `92200-92227` |
+| **Compresión / empaquetado** | `tar -czf` / `tar -xzf` **[S]**, `makecab`, `expand` | `67027`, `92200-92227` |
 
 > **[S]** `curl.exe` (desde Windows 10 1803), `tar.exe`/bsdtar y `bitsadmin` (obsoleto pero presente)
 > **se suponen** en la imagen. **WE0-2b** lo comprueba con `where`, que es el espejo de `command -v` de
@@ -323,7 +332,7 @@ correcto**. Familias (espejo de las de Linux, `plan.md:583`):
 2. `copy` a carpeta inexistente (rc 1) → `md` → `copy`.
 3. `type` de un directorio (rc 1).
 4. Opción inválida → `certutil -hashfile x MD6` (rc 1) → `SHA256`.
-5. `del` de inexistente (rc 1; **es «error» solo si el usuario lo esperaba**: se declara).
+5. **`type` de un temporal ausente** (rc 1; **en Windows `del` de un fichero inexistente devuelve 0**, así que el «error» se materializa con `type` y el reintento con `del /f /q`; se declara).
 6. `robocopy` con origen inexistente (**rc 16**, es una máscara: se compara `if errorlevel 8`).
 7. `curl.exe` a puerto cerrado (**rc 7**) → reintento al 8080.
 8. `findstr` sin coincidencias (**rc 1 legítimo, no es error**): se declara para no inflar el conteo.
@@ -373,20 +382,20 @@ tiene y que es superficie real de Windows.
 | # | Caso (espejo de) | Qué hace | Ejecutables | Se confunde con | Esperado `N≥3` | Esperado `N≥7` | ¿Muta? | Dónde |
 |---|---|---|---|---|---|---|---|---|
 | **W-01** | El equipo va lento (C-01) | `tasklist /svc`; `systeminfo`; `sc query state= all` | `tasklist`, `systeminfo`, `sc` | T1057 · T1082 (ATA004/045 Linux) | `67027` L3 ×3 | **0** | No | `C:\lab-legit\campana\W-01\` |
-| **W-02** | No me va la intranet (C-02) | `ipconfig /all`; `route print`; `ping -n 2 192.168.65.1` | `ipconfig`, `route`, `ping` | T1016 · T1018 (ATA054/055) | `67027` L3 ×3 | **0** | No | idem |
-| **W-03** | ¿Está la copia programada? (C-03) | `schtasks /query /fo LIST /v`; `reg query HKCU\Software\Microsoft\Windows\CurrentVersion\Run` | `schtasks`, `reg` | T1053.005 (lectura) · T1547.001 (lectura) (ATA021) | `67027` L3 ×2 | **0** (solo lectura) | No | idem |
-| **W-04** | Protejo el informe (C-05, **parcial**) | `certutil -hashfile informe.txt SHA256`; `tar -a -c -f informe.zip informe.txt`; `certutil -hashfile informe.zip SHA256` | `certutil`, `tar` | T1560.001 · T1565 (ATA001/019/041) | `67027` L3 ×3 | **0** | Transitorio (se borra) | idem |
-| **W-05** | Limpio temporales (C-06, **parcial**) | `del /f /q borrador.txt`; `rd /s /q tmp` | (builtins ⇒ 1 `cmd.exe`/acción) | T1070.004 · T1485 (ATA003/005) | `67027` L3 ×2 | **0** | Solo lo suyo | idem |
+| **W-02** | No me va la intranet (C-02) | `ipconfig /all`; `route print`; `findstr /c:"192.168.65."` sobre la salida (evidencia) | `ipconfig`, `route` | T1016 · T1018 (ATA054/055) | `67027` L3 ×2 | **0** | No | idem |
+| **W-03** | ¿Está la copia programada? (C-03) | `schtasks /query /fo LIST`; `reg query HKCU\Software\Microsoft\Windows\CurrentVersion\Run` | `schtasks`, `reg` | T1053.005 (lectura) · T1547.001 (lectura) (ATA021) | `67027` L3 ×2 | **0** (solo lectura) | No | idem |
+| **W-04** | Protejo el informe (C-05, **parcial**) | `powershell` AES cifra/descifra con clave fija; `certutil -hashfile informe.txt SHA256`; `certutil -hashfile informe.txt.rec SHA256` | `powershell`, `certutil` | T1486 (ATA001/019/041) | `67027` L3 ×3 + `91801-91846` (4104) | **0** | Transitorio (se borra) | idem |
+| **W-05** | Limpio temporales (C-06, **parcial**) | `rd /s /q tmp`; `powershell` sobrescribe `borrador.txt` (**2 sobrescrituras: ceros + patrón**) **+ borrado** | `powershell` (builtin `rd` ⇒ 1 `cmd.exe`/acción) | T1070.004 · T1485 (ATA003/005) | `67027` L3 ×2 + `91801-91846` | **0** | Solo lo suyo | idem |
 | **W-06** | Sincronizo informes (C-07) | `robocopy C:\lab-legit\campana\W-06\origen C:\lab-legit\campana\W-06\destino /MIR` | `robocopy` | T1039 · T1074.001 (ATA039/040) | `67027` L3 ×1 + `92200-92227` por fichero creado | **0** **[S]** | Transitorio | idem |
 | **W-07** | Normalizo el CSV (C-08) | `powershell -NoProfile -Command "(Get-Content …\export.csv) -replace ';',',' \| Set-Content …\export2.csv"` | `powershell` | T1565.001 (ATA006/032/026) | `67027` L3 ×1 + **`91801-91846` (4104)** | **0** **[S]** | Transitorio | idem |
 | **W-08** | La intranet no responde (C-09) | `curl.exe -sS --max-time 3 -o intranet.html -w "%{http_code}" http://intranet.local:8080/`; `curl.exe -sS --max-time 2 http://intranet.local:8081/`; `curl.exe -sS -o reintento.html http://intranet.local:8080/` | `curl` | T1496.001 · T1048 (ATA025/009/050) | `67027` L3 ×3 comandos (≈6 procesos) | **0** | No | idem |
-| **W-09** | Preparo el lote (C-10) | `for /L %i in (1,1,12) do xcopy /y informe.txt lote_%i.txt` | `xcopy` (12 procesos, **espejo de `xargs`**) | T1499.002/.003 (ATA046/047) | `67027` L3 ×13 (1 `cmd` + 12 `xcopy`) | **0** | Transitorio | idem |
+| **W-09** | Preparo el lote (C-10) | `for /L %i in (1,1,12) do @cmd /c copy /y plantilla.txt lote_%i.txt` | `cmd /c copy` (12 procesos, **espejo de `xargs`**) | T1499.002/.003 (ATA046/047) | `67027` L3 ×13 (1 `cmd` + 12 `cmd /c`) | **0** | Transitorio | idem |
 | **W-10** | Dejo constancia (C-11) | `eventcreate /T INFORMATION /ID 100 /L APPLICATION /SO ofimatica /D "…"` | `eventcreate` | T1056.001-adyacente (ATA018); **escritura benigna en registro** | `67027` L3 ×1 + `60600-61072` (app log) **[S]** | **0** **[S]** | **1 evento** (declarado, no se borra) | idem |
-| **W-11** | Descargo el manual (C-12) | `certutil -urlcache -split -f http://intranet.local:8080/descargas/manual_empleado.pdf manual.pdf`; `curl.exe -o manual_curl.pdf …/manual_empleado.pdf` | `certutil`, `curl` | **T1105** (ATA008/043) | `67027` L3 ×2 | **0**, **salvo hipótesis abierta**: `certutil -urlcache` es un patrón clásico de detección ⇒ si dispara `N≥7`, **es hallazgo** | Transitorio | idem |
+| **W-11** | Descargo el manual (C-12) | `curl.exe -o manual.pdf http://intranet.local:8080/descargas/manual_empleado.pdf` | `curl` | **T1105** (ATA008/043) | `67027` L3 ×1 | **0** (`certutil -urlcache` **retirado**: era una hipótesis y un patrón clásico de detección) | Transitorio | idem |
 
-**Cuentas:** 11 casos · **22 marcas** (`inicio`/`fin`) · **~40 comandos** (más preparación y
-evidencia) y **~55 procesos** (`cmd.exe` + hijos). El número exacto lo fija `campana_windows.csv` y se
-sella (CA-W2).
+**Cuentas:** 11 casos · **22 marcas** (`inicio`/`fin`) · **63 acciones** y **75 procesos** (cota
+inferior: 63 `cmd.exe` + 12 hijos de W-09), medidos en el pre-registro (W2; antes el plan
+estimaba ~40/~55). El número exacto lo fija `campana_windows.csv` y se sella (CA-W2).
 
 > **Cómo leer «Esperado `N≥3`».** Cada acción es un `cmd /c` ⇒ **~2 procesos por comando** (el `cmd.exe`
 > y la herramienta). El recuento de `67027` es por tanto **≥ el número de comandos**, y el número exacto
@@ -399,14 +408,14 @@ sella (CA-W2).
 | Cambio | Motivo | Coste asumido |
 |---|---|---|
 | **C-05 y C-06 pasan a parciales** | sin cifrado con contraseña ni borrado seguro nativos (N-4, N-5) | se pierde la medición legítima de T1486 y T1561 **en Windows**; se declara |
-| **C-10 usa `for /L` + `xcopy`** | Windows no tiene `xargs`; `xcopy` conserva el **abanico de 12 procesos** | misma intención y mismo fan-out; se valida en WE0-6 |
+| **C-10 usa `for /L` + `cmd /c copy`** | Windows no tiene `xargs`; el `copy` del `cmd` hijo conserva el **abanico de 12 procesos** (W1 descartó `xcopy`: no creaba los 12 ficheros) | misma intención y mismo fan-out; se valida en WE0-6 |
 | **C-11 usa `eventcreate`** | `logger` no existe; es el «escribir en el registro de eventos» | **riesgo:** `eventcreate` puede exigir elevación. **[D]** Si en WE0 falla como `angel`, el caso se convierte en **lectura** (`wevtutil qe Application /c:5 /rd:true /f:text`) y se declara la pérdida |
 | **C-04 sigue fuera** | no mutación (N-6) | se pierde la única vía benigna a una regla de persistencia; **se declara** |
 | **No hay `systemctl`/`crontab`** | no existen | `sc`/`schtasks` cubren el mecanismo (en **lectura**) |
 
 ### 5.4 Pre-registro y ejecución
 
-- **`campana_windows.md`** (esta tabla + H-W1..H-W3) y **`campana_windows.csv`** (11 filas, comandos
+- **`casos_windows.md`** (esta tabla + H-W1..H-W3) y **`campana_windows.csv`** (11 filas, comandos
   literales), con **`sha256` y fecha anterior a `t0`** (CA-W2).
 - **Marcas:** `inicio.txt` → comandos → `hecho.txt` (evidencia de efecto) → `fin.txt`. **2 marcas por
   caso** (22), declaradas como acciones.
@@ -466,28 +475,28 @@ proyeccion_72h = bytes(archives en 60 min) × 72
 
 | Se construye | Cómo se prueba |
 |---|---|
-| `construir_receta_windows.py`: traslado por ranuras desde `recetas/d1-d3.json`; `--check`; `bloques.env` compatible; escribe `recetas_windows/{d1,d2,d3}.json`, `calendario.json`, `receta_resumen.md` | **dos generaciones byte-idénticas** (`sha256`); **0** `random`/`Get-Random`; 0 pipes; 0 comandos mutantes; **igualdad de ranuras** con Linux (CA-W1, CA-W3) |
+| `construir_receta_legitima_windows.py`: traslado por ranuras desde `recetas/d1-d3.json`; `--check`; `bloques.env` compatible; escribe `Soporte/Laboratorio/windows/recetas/{w1,w2,w3}.json`, `calendario_windows.json`, `bloques_windows.env`, `receta_windows_resumen.md`; `verificar_espejo.py` comprueba 504=504 y los `DelayAfter` | **dos generaciones byte-idénticas** (`sha256`); **0** `random`/`Get-Random`; 0 pipes; 0 comandos mutantes; **igualdad de ranuras** con Linux (CA-W1, CA-W3) |
 | Traducción de las ~150 mini-tareas a `cmd`/PowerShell + documento de trazado por bloque | revisión humana de la tabla «tarea Linux → tarea Windows» (no se automatiza el juicio) |
 | Familias de error (§4.4) + `errores.log` | prueba en seco de los 10 patrones: 10 líneas con rc, 10 reintentos correctos |
 
-**Salida:** `Soporte/Laboratorio/windows_legit/recetas_windows/` + `receta_resumen.md`.
+**Salida:** `Soporte/Laboratorio/windows/recetas/` + `receta_windows_resumen.md`.
 
 ### W2 — Campaña, validador y extractores · ~8 h
 
 | Se construye | Cómo se prueba |
 |---|---|
-| `campana_windows.csv` (11 casos, comandos literales) + `campana_windows.md` (pre-registro) | `sha256` + fecha; 11 filas; 22 marcas; 0 mutaciones; set de `rule_id` esperado por umbral |
+| `campana_windows.csv` (11 casos, comandos literales) + `casos_windows.md` (pre-registro) | `sha256` + fecha; 11 filas; 22 marcas; 0 mutaciones; set de `rule_id` esperado por umbral |
 | `campana_windows.py` (constantes Windows: `RULE_EXEC="67027"`, `UMBRAL_N7=7`, `B6`) y generación del bloque B6 en `d*.json` | misma estructura que `campana.py` (que **no se edita**); el runner de Linux se reutiliza con `--agente victima-windows --agente-id 002` |
 | `extraer_alertas_windows.py` (columnas actuales + `win_image`, `win_command_line`, `win_cwd`, `win_user`, `event_id`) | prueba con las **159 alertas históricas** de `Dataset/Legitimo/windows/` (debe reproducir los 7 `rule_id` y los recuentos 72/87) |
-| `cobertura_herramientas_windows.py` (análogo de `cobertura_exes.py`, pero contra el **ruleset** y el inventario) | salida literal: nº de herramientas de la receta con regla candidata / total propuesto |
+| `cobertura_herramientas_windows.py` (mismo **procedimiento** de conteo que `cobertura_exes.py`; **no** cobertura comparable) | salida literal: `cobertura_herramientas_windows = n/50` + línea `NOTA:` que declara que mide **solape de `basename`** con el corpus **Linux** y **no** es comparable con el 23/50 de Linux (3/50; solo **2/50** —`curl`, `tar`— estrictamente comparables; `find` de Windows es un filtro de texto, no el `find` GNU). La lectura «contra ruleset + inventario» queda declarada para `B1`/`L2`, no simulada |
 
-**Salida:** `campana_windows.{md,csv}` + `_artefactos/scripts/extraer_alertas_windows.py` (+ tests).
+**Salida:** `Soporte/Laboratorio/windows/campana/{casos_windows.md,campana_windows.csv}` + `_artefactos/scripts/extraer_alertas_windows.py` y `cobertura_herramientas_windows.py` (+ tests).
 
 ### W3 — Despliegue, controlador y snapshot · ~5 h
 
 | Se construye | Cómo se prueba |
 |---|---|
-| `deploy_windows.ps1` **idempotente y reversible**: cliente GHOSTS, `recetas_windows/`, `campana_windows/`, `hosts` (`intranet.local`), tarea del invitado como **`angel`** con `WorkingDirectory`, keepalive, `errores.log`, tope de `client.out` | 2 aplicaciones = **mismo `sha256`**; revert limpio |
+| `deploy_windows.ps1` **idempotente y reversible**: cliente GHOSTS, `recetas/`, `campana/`, `hosts` (`intranet.local`), tarea del invitado como **`angel`** con `WorkingDirectory`, keepalive, `errores.log`, tope de `client.out` | 2 aplicaciones = **mismo `sha256`**; revert limpio |
 | `windows_legit_host_control.ps1` (fases `prep/arm/watch/stop/cleanup/status/drytest`) con **G-W1…G-W12** | prueba en seco de cada fase con `drytest` (sin ventana) |
 | `tfg_keepalive_windows.ps1` (tarea **SYSTEM** cada 5 min: latido, **guarda de disco ≥ 500 MB**, **guarda de WU**; **reinicia la actividad con `schtasks /run /tn TFG-WinLegit-Actividad`**, nunca lanzando el cliente desde SYSTEM) | 2 h de funcionamiento; 1 muerte provocada del cliente ⇒ recuperación en ≤ 2 ciclos **y `win_user` sigue siendo `angel`** |
 | **Snapshot** `lab-listo-windows-legit` con todo dentro | revert + arranque: tarea `Ready`, cliente presente, `Sysmon64`/`WazuhSvc` `Running`, `powercfg STANDBYIDLE=0`, sin residuos |
@@ -572,7 +581,7 @@ fallida · duplicados por recuperación (contados) · fallo de herramienta de ex
 
 | # | Criterio | Si falla |
 |---|---|---|
-| **CW1 — Ejecución** | ≥ 9/11 con `inicio`, `fin` y `hecho.txt` | campaña **parcial**; el resto `NO_EJECUTADO` |
+| **CW1 — Ejecución** | ≥ 9/11 con `inicio`, `fin` y `hecho.txt` | campaña **parcial**; sin marcas ⇒ `NO_EJECUTADO`; marcas sin `hecho.txt` ⇒ `NO_EVALUABLE` |
 | **CW2 — Atribución** | ventanas `[ini−10 s, fin+60 s]` sin solape | campaña **no concluyente** |
 | **CW3 — Esperado** | cada caso con `esperado_cumplido`; un `NO` a `N≥3` ⇒ **caso no ejecutado** | se reclasifica; **no** se re-ejecuta |
 | **CW4 — No mutación** | `reg query` + `schtasks /query` idénticos; 0 ficheros fuera de `campana\` | campaña inválida como campaña; **la ventana sigue** |
@@ -580,7 +589,7 @@ fallida · duplicados por recuperación (contados) · fallo de herramienta de ex
 ### 9.5 Titular
 
 **Un solo `M`** (ventana completa, agente `002`) + **tabla de campaña aparte** con sus recuentos por
-caso (`extraer_campana.py --agente victima-windows --agente-id 002`). **No** se publica un FPR
+caso (`extraer_campana_windows.py --agente victima-windows --agente-id 002`). **No** se publica un FPR
 alternativo. Misma decisión que Linux (`plan.md:1106-1110`).
 
 ### 9.6 Limitaciones declaradas (para la memoria)
@@ -603,7 +612,7 @@ alternativo. Misma decisión que Linux (`plan.md:1106-1110`).
 | Momento | Paso | Producto |
 |---|---|---|
 | `t1+2 min` | **Cosecha** (única interacción con el invitado, ya fuera de ventana): `vmrun copyFileFromGuestToHost` de `C:\lab-legit\` (log del cliente, `errores.log`, `keepalive.log`, `estado.json`, `campana\**\{inicio,fin,hecho}.txt`) + `reg query` de las claves vigiladas + `schtasks /query` + `ipconfig /all` + `systeminfo` de cierre. Al terminar, **crear `cosecha.done` en el host** | `ventana_*/evidencia/*.txt` |
-| `t1+5` | Ventanas de campaña: `extraer_campana.py --solo-ventanas` | `campana_ventanas.tsv` |
+| `t1+5` | Ventanas de campaña: `extraer_campana_windows.py --solo-ventanas` | `campana_ventanas_windows.tsv` |
 | `t1+10` | **Parada** suave del invitado (**solo si `cosecha.done` existe**; tope `t1+15`) | — |
 | `t1+15` | `exportar_denominador.sh info` | log |
 | `t1+30` | Copia de los diarios + `MANIFEST.tsv` + **dedupe `sha256`** (fuera del repo) | `D:\TFG-VMs\legitimo-windows-<t0>\denominador\` |
@@ -612,7 +621,7 @@ alternativo. Misma decisión que Linux (`plan.md:1106-1110`).
 | `t1+60` | `logall_json off` + `status` + `diff` `CONFIG_IDENTICA` | — |
 | `t1+70` | **Alertas**: `extraer_alertas_windows.py` sobre los 3 diarios | `alertas_detalle.csv`, `ruleids_legitimos.csv` |
 | `t1+80` | **Acciones**: `exportar_acciones.sh` (**sin editar**; se le pasa la salida) + verificación **1 sola `machineid`** | `ghosts_acciones.csv` |
-| `t1+90` | **Tabla de campaña** (`extraer_campana.py --agente … --agente-id 002`) | `campana_fp.csv` |
+| `t1+90` | **Tabla de campaña** (`extraer_campana_windows.py --agente … --agente-id 002`) | `campana_fp_windows.csv` |
 | `t1+100` | `sha256` de cada producto + `MANIFEST.md` | — |
 
 ---
@@ -626,7 +635,7 @@ alternativo. Misma decisión que Linux (`plan.md:1106-1110`).
 | **Agente** | `ossec.conf` del `002` (`sha256`) + versión 4.14.7 + **usuario con el que corre** |
 | **Cliente** | GHOSTS **v8.3.1** + **`sha256` del binario Windows** + origen (CMU Box o build local, **declarado**) |
 | **Receta** | `sha256` de `d1/d2/d3` + calendario + `bloques_windows.env` + conteos de `--check` + **igualdad de ranuras con Linux** (n y `DelayAfter`) |
-| **Campaña** | `sha256` de `campana_windows.md` (fecha anterior a `t0`) + `campana_windows.csv` (11 filas) + ventanas |
+| **Campaña** | `sha256` de `casos_windows.md` (fecha anterior a `t0`) + `campana_windows.csv` (11 filas) + ventanas |
 | **`errores.log`** | `sha256` + conteo de `rc≠0` y reintentos + muestra |
 | **Deploy** | `sha256` de `deploy_windows.ps1` + ficheros desplegados + **idempotencia** (2 aplicaciones = mismo hash) |
 | **Método** | `logall_json` ON solo `[t0,t1]`; `--estricto`; **un `M`**; `--agent-id 002` **explícito** |
@@ -683,8 +692,8 @@ recalcula nada de Linux** y **no se reescribe** `boveda_congelacion.md` de Linux
 | **CA-W11** | **Snapshot** `lab-listo-windows-legit` con los 3 originales intactos (**4**); deploy idempotente y reversible | `vmrun listSnapshots` + `sha256` ×2 |
 | **CA-W12** | **Ventana**: `prep`/`arm` a su hora (±5 min); `stop` a `t1+10` tras `cosecha.done`; **72 h ± 1 min** | log + `cosecha.done` |
 | **CA-W13** | **Cero acceso** al invitado en `[t0,t1]`: 0 `4624` desde `192.168.65.1`, **0** procesos con padre `vmtoolsd.exe` | CSV + Sysmon |
-| **CA-W14** | **Campaña**: 11/11 (o ≥ 9/11) con `hecho.txt` y `esperado_cumplido`; tabla por caso **y por umbral** `{0,3,7,10,12}` + severidad `P` | `campana_fp.csv` |
-| **CA-W15** | **Tabla de campaña separable**: el titular es la ventana completa; **no** hay FPR alternativo | `campana_fp.csv` + `denominador_M.csv` |
+| **CA-W14** | **Campaña**: 11/11 (o ≥ 9/11) con `hecho.txt` y `esperado_cumplido`; tabla por caso **y por umbral** `{0,3,7,10,12}` + severidad `P` | `campana_fp_windows.csv` |
+| **CA-W15** | **Tabla de campaña separable**: el titular es la ventana completa; **no** hay FPR alternativo | `campana_fp_windows.csv` + `denominador_M.csv` |
 | **CA-W16** | **`logall_json=no`** y `CONFIG_IDENTICA` al cerrar; `sha256` de Sysmon igual antes/después | `diff` + huella |
 | **CA-W17** | **B10-W** sellado con telemetría, `sha256` de Sysmon y de la config, cliente, receta, campaña, `errores.log`, `boveda_version=3`, `plataforma=windows` | `b10_windows_sellado.md` |
 | **CA-W18** | **Cero daño colateral**: `git diff --stat` vacío en `Soporte/Metrica/`, `Hojas/`, `_recursos/`, corpus y `Dataset/` (salvo promoción declarada) | `git status` |
@@ -704,7 +713,7 @@ recalcula nada de Linux** y **no se reescribe** `boveda_congelacion.md` de Linux
 2. **Unidad**: WE0-2 (5/5 reportadas) y WE0-4 (`67027` ≥ nº procesos).
 3. **Ancla**: `Select-String` de `win_cwd`/`win_user`/`win_image` sobre una muestra; 0 filas con
    `System32` o `SYSTEM`.
-4. **Campaña**: 11 filas con umbral; `sha256` previo; `campana_fp.csv` con 9 columnas; **0 `N ≥ 7`**
+4. **Campaña**: 11 filas con umbral; `sha256` previo; `campana_fp_windows.csv` con 9 columnas; **0 `N ≥ 7`**
    salvo hallazgo declarado; 0 mutación.
 5. **`M`**: `--estricto` `exit 0`; `MANIFEST` cuadra; `--agent-id 002` en la cabecera; 1 `machineid`.
 6. **Validez**: recalcular W-V1…W-V9; **0** falsas alarmas de borde y **0** `ALARMA` sin explicar.
@@ -757,14 +766,14 @@ ninguna máquina** hasta que cierre la ventana de Linux (2–5/11).
 | Ruta | Qué |
 |---|---|
 | `_fases/windows-legit-prep/plan.md` | Este plan |
-| `Soporte/Laboratorio/windows_legit/` | Directorio del bloque (espejo de `legitimo_72h/`) |
-| `…/windows_legit/recetas_windows/{d1,d2,d3}.json`, `calendario.json`, `bloques_windows.env`, `receta_resumen.md` | Receta Windows |
-| `…/windows_legit/campana_windows/{campana_windows.md,campana_windows.csv,campana_fp.csv,campana_ventanas.tsv}` | Pre-registro y resultado de la campaña |
-| `…/windows_legit/{deploy_windows.ps1,windows_legit_host_control.ps1,pausar_wu_invitado.ps1,verificar_arreglos_windows.ps1}` | Despliegue, control y garantías |
-| `…/windows_legit/guest/{tfg_keepalive_windows.ps1,verificar_windows.ps1}` | Guardián del invitado |
-| `…/windows_legit/{snapshot_windows_legit.md,ensayo_WE0.md,b10_windows_sellado.md,boveda_windows.sha256,sha256sums.txt,resultado.md,README.md}` | Documentación y sellado |
-| `…/windows_legit/ventana_<t0>/{ventana_meta.md,veredicto_validez.md,MANIFEST.md,evidencia/*}` | Ficha y evidencia |
-| `_artefactos/scripts/{construir_receta_windows.py,campana_windows.py,extraer_alertas_windows.py,cobertura_herramientas_windows.py}` + `tests/` | Herramientas (deterministas, con tests) |
+| `Soporte/Laboratorio/windows/` | Directorio del bloque (**no** `windows_legit/`): conviven el histórico de `fase-02b-baseline` y los subdirectorios nuevos `recetas/`, `campana/`, `guest/` |
+| `Soporte/Laboratorio/windows/recetas/{w1,w2,w3}.json`, `calendario_windows.json`, `bloques_windows.env`, `receta_windows_resumen.md` | Receta Windows (W1, ya generada) |
+| `Soporte/Laboratorio/windows/campana/{casos_windows.md,campana_windows.csv,campana_fp_windows.csv,campana_ventanas_windows.tsv}` | Pre-registro y resultado de la campaña (W2). `casos_windows.md` es el `campana_windows.md` que decía este plan |
+| `Soporte/Laboratorio/windows/{deploy_windows.ps1,windows_legit_host_control.ps1,pausar_wu_invitado.ps1,verificar_arreglos_windows.ps1}` | Despliegue, control y garantías (W3) |
+| `Soporte/Laboratorio/windows/guest/{tfg_keepalive_windows.ps1,verificar_windows.ps1}` | Guardián del invitado (W3) |
+| `Soporte/Laboratorio/windows/{snapshot_windows_legit.md,ensayo_WE0.md,b10_windows_sellado.md,boveda_windows.sha256,resultado.md,README.md}` | Documentación y sellado. **No** hay `sha256sums.txt` propio: el del bloque es el **compartido** `Soporte/Laboratorio/legitimo_72h/sha256sums.txt`, que ya incluye las entradas Windows |
+| `Soporte/Laboratorio/windows/ventana_<t0>/{ventana_meta.md,veredicto_validez.md,MANIFEST.md,evidencia/*}` | Ficha y evidencia |
+| `_artefactos/scripts/{construir_receta_legitima_windows.py,verificar_espejo.py,campana_windows.py,extraer_campana_windows.py,extraer_alertas_windows.py,cobertura_herramientas_windows.py}` + `tests/` | Herramientas (deterministas, con tests) |
 | `Dataset/Legitimo/windows/legitimo_72h/ventana_<t0>/…` | **Solo si VÁLIDA** |
 
 ### 16.2 Modificados (mínimo indispensable)
@@ -789,6 +798,57 @@ la fila) · el corpus · el ruleset · la config de Sysmon · `construir_receta_
 > escrito. **Consecuencia:** el hash de `d1/d2/d3` cambia (1 acción/día) ⇒ **hay que repetir P1 antes de
 > la ventana**. Detalle: `Soporte/Laboratorio/legitimo_72h/fix_receta_v3.md`. El resto de la lista sigue
 > vigente.
+
+### 16.4 Nota de corrección factual (2026-10-29, W1+W2) — **sin cambio de fondo**
+
+> Corrección posterior a la aprobación (v2) de **nombres y rutas reales** y de lo **ya
+> ejecutado** al construir W1/W2. No cambia ninguna decisión (D1–D6), ningún criterio
+> (W-V*, CA-W*) ni el alcance: sustituye lo que el plan describía **antes** de tener el
+> árbol construido. Donde haya conflicto, manda esta nota.
+
+**Rutas y nombres reales** (los de §16.1 y §7):
+
+| El plan decía | Real |
+|---|---|
+| `Soporte/Laboratorio/windows_legit/` | `Soporte/Laboratorio/windows/` (**no existe** `windows_legit/`) |
+| `recetas_windows/{d1,d2,d3}.json`, `calendario.json`, `receta_resumen.md` | `recetas/{w1,w2,w3}.json`, `calendario_windows.json`, `receta_windows_resumen.md` (+ `bloques_windows.env`) |
+| `campana_windows/{campana_windows.md,campana_fp.csv,campana_ventanas.tsv}` | `campana/{casos_windows.md,campana_fp_windows.csv,campana_ventanas_windows.tsv}` (+ `campana_windows.csv`) |
+| `construir_receta_windows.py` | `construir_receta_legitima_windows.py` (+ `verificar_espejo.py`, 504 = 504) |
+| (extractor de campaña no listado en §16.1) | `extraer_campana_windows.py` |
+| `sha256sums.txt` propio de `windows_legit/` | el **compartido** `Soporte/Laboratorio/legitimo_72h/sha256sums.txt`, con las entradas Windows |
+| `campana_windows.md` (§11) | `casos_windows.md` |
+| `campana_fp.csv` (§14) | `campana_fp_windows.csv` |
+
+**Cambios ya ejecutados al construir (declarados, no silenciosos):**
+
+| Caso / familia | El plan decía | Ejecutado | Motivo |
+|---|---|---|---|
+| **W-04** | `tar -a -c -f` + `certutil` | **AES en PowerShell** + `certutil -hashfile` | `tar -a` no cifra: no era T1486 |
+| **W-05** | `del /f /q` + `rd /s /q` | **`powershell`** sobrescribe y borra + `rd /s /q` | `del` de un fichero ausente devuelve rc=0; no produce error ni borrado mínimamente seguro |
+| **W-09** | `for /L` + `xcopy` | **`for /L` + `cmd /c copy`** | `xcopy` no creaba los 12 ficheros; `copy` conserva el fan-out de 12 procesos |
+| **W-11** | `certutil -urlcache` + `curl.exe` | **solo `curl.exe`** | `certutil -urlcache` era una hipótesis abierta y un patrón clásico de detección; se retira |
+| **`rm_inexistente`** (§4.4) | `del` de inexistente (rc≠0) | **`type` del temporal (rc=1)** + `del` de reintento | en Windows `del` de un fichero ausente devuelve **rc=0**: el fallo no se registraba |
+
+> **Otras correcciones de §5.2 (2026-10-29).** **W-02** no usa `ping`: son `ipconfig /all` +
+> `route print`, y la evidencia se extrae con `findstr` (2 comandos, no 3). **W-03** usa
+> `schtasks /query /fo LIST` (sin `/v`). Las cuentas reales del pre-registro son **63 acciones /
+> 75 procesos** (cota inferior, D-W5), no «~40 / ~55».
+
+> **Lectura del `3/50` (2026-10-29).** `cobertura_herramientas_windows.py` mide **solape de
+> `basename`** con el corpus **Linux**; **no** es cobertura equivalente ni comparable con el
+> **23/50** de Linux (el corpus es Linux-específico). El 3/50 incluye `find` como solape
+> **nominal** (el `find` de Windows es un filtro de texto, **no** el `find` GNU) ⇒
+> estrictamente comparables: **2/50** (`curl`, `tar`). El script lo imprime en una línea
+> `NOTA:`; «mismo corpus y criterio» (§7) nunca significó «mismo número».
+
+> **CA-W23 — alcance de la prueba (declarado).** El JSON crudo del manager del 08/10 **no**
+> está en el repositorio (solo se conservaron los productos `baseline_detalle_v{1,2}.csv`).
+> La regresión reproduce **72 + 87 = 159** alertas y **7 `rule_id`** sobre esos productos
+> congelados; el mapeo JSON→`win_*` se prueba con **fixtures sintéticos**, no con datos
+> históricos. No se maquilla: si los recuentos no cuadran, la regresión falla.
+
+Detalle: `Soporte/Laboratorio/windows/recetas/receta_windows_resumen.md` y
+`casos_windows.md` (tabla «Desviaciones respecto del plan», D-W1…D-W7).
 
 ---
 

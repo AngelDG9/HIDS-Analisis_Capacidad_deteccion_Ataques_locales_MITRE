@@ -1,0 +1,117 @@
+# campana_windows.csv · campana B6-W (bloque windows-legit-prep, W2) · 11 casos · 22 marcas · 63 acciones · sha256_casos_md=7ed97cae16a3a56511403ec1c589a23489a670a555110536e5884387e61458dc · fuente=casos_windows.md · plataforma=windows · boveda_version=3 · corpus_windows=NO_EXISTE (prediccion) · plan=5.2
+caso,nombre,dia,hora_inicio,mecanismo,muta,binarios,tecnica,ata_linux,rule_ids,esperado_n7,esperado_n3,efecto_declarado,evidencia,coste,por_que,tipos,comandos
+W-01,El equipo va lento: miro memoria y servicios,1,17:06:00,C-01,No,systeminfo;sc;tasklist,T1057;T1082;T1007,ATA004;ATA045;ATA038,67027,0,67027 L3 >=6 (1 cmd.exe por acción; predicción),,"hecho.txt con «RESULTADO=OK», el recuento de servicios.txt (> 10), free.txt (>= 3) y fallidos.txt",3 min · <1 MB,"Cualquier empleado mira el estado del equipo y sus servicios cuando el portátil va lento, antes de abrir una incidencia. Solo lectura: `systeminfo`, `sc query` y `tasklist` no cambian nada.","inicio
+comando
+comando
+comando
+evidencia
+fin","cd /d C:\lab-legit\campana && (if not exist C:\lab-legit\campana\W-01 md C:\lab-legit\campana\W-01) & > C:\lab-legit\campana\W-01\inicio.txt echo %DATE%_%TIME%
+cd /d C:\lab-legit\campana\W-01 && systeminfo > C:\lab-legit\campana\W-01\free.txt
+cd /d C:\lab-legit\campana\W-01 && sc query state= all > C:\lab-legit\campana\W-01\fallidos.txt
+cd /d C:\lab-legit\campana\W-01 && tasklist /svc > C:\lab-legit\campana\W-01\servicios.txt
+cd /d C:\lab-legit\campana\W-01 && > C:\lab-legit\campana\W-01\hecho.txt echo RESULTADO=OK && find /c /v """" C:\lab-legit\campana\W-01\servicios.txt C:\lab-legit\campana\W-01\free.txt C:\lab-legit\campana\W-01\fallidos.txt >> C:\lab-legit\campana\W-01\hecho.txt && type C:\lab-legit\campana\W-01\hecho.txt
+cd /d C:\lab-legit\campana\W-01 && del /f /q C:\lab-legit\campana\W-01\servicios.txt 2>nul & del /f /q C:\lab-legit\campana\W-01\free.txt 2>nul & del /f /q C:\lab-legit\campana\W-01\fallidos.txt 2>nul & > C:\lab-legit\campana\W-01\fin.txt echo %DATE%_%TIME%"
+W-02,No me va la intranet: miro la red,1,17:15:20,C-02,No,ipconfig;route,T1016;T1018,ATA054;ATA055,67027,0,67027 L3 >=5 (1 cmd.exe por acción; predicción),,hecho.txt con la IPv4 192.168.65.x (findstr) y la tabla de rutas,2 min · <1 MB,Comprobar la IP y la puerta de enlace es el primer paso cuando una web interna no carga. `ipconfig /all` y `route print` son de lectura: no se usa `netsh` ni `route add`.,"inicio
+comando
+comando
+evidencia
+fin","cd /d C:\lab-legit\campana && (if not exist C:\lab-legit\campana\W-02 md C:\lab-legit\campana\W-02) & > C:\lab-legit\campana\W-02\inicio.txt echo %DATE%_%TIME%
+cd /d C:\lab-legit\campana\W-02 && ipconfig /all > C:\lab-legit\campana\W-02\ip_addr.txt
+cd /d C:\lab-legit\campana\W-02 && route print > C:\lab-legit\campana\W-02\ip_route.txt
+cd /d C:\lab-legit\campana\W-02 && > C:\lab-legit\campana\W-02\hecho.txt echo RESULTADO=OK && findstr /c:""192.168.65."" C:\lab-legit\campana\W-02\ip_addr.txt >> C:\lab-legit\campana\W-02\hecho.txt && type C:\lab-legit\campana\W-02\ip_route.txt >> C:\lab-legit\campana\W-02\hecho.txt
+cd /d C:\lab-legit\campana\W-02 && del /f /q C:\lab-legit\campana\W-02\ip_addr.txt 2>nul & del /f /q C:\lab-legit\campana\W-02\ip_route.txt 2>nul & > C:\lab-legit\campana\W-02\fin.txt echo %DATE%_%TIME%"
+W-03,Compruebo si la copia esta programada,1,17:24:40,C-03,No,schtasks;reg,T1053.005;T1547.001,ATA021;ATA004,67027,0,67027 L3 >=5 (1 cmd.exe por acción; predicción),,hecho.txt con el nº de tareas (find /c) y tarea_rc=0/ge1,2 min · <1 MB,"Comprobar si la copia automática está programada es una duda corriente. `schtasks /query` y `reg query` solo leen; no hay `/create`, ni `reg add`, ni `sc config`.","inicio
+comando
+comando
+evidencia
+fin","cd /d C:\lab-legit\campana && (if not exist C:\lab-legit\campana\W-03 md C:\lab-legit\campana\W-03) & > C:\lab-legit\campana\W-03\inicio.txt echo %DATE%_%TIME%
+cd /d C:\lab-legit\campana\W-03 && schtasks /query /fo LIST > C:\lab-legit\campana\W-03\timers.txt
+cd /d C:\lab-legit\campana\W-03 && reg query HKCU\Software\Microsoft\Windows\CurrentVersion\Run > C:\lab-legit\campana\W-03\crontab.txt 2>nul & if errorlevel 1 (> C:\lab-legit\campana\W-03\crontab_rc.txt echo tarea_rc=ge1) else (> C:\lab-legit\campana\W-03\crontab_rc.txt echo tarea_rc=0)
+cd /d C:\lab-legit\campana\W-03 && > C:\lab-legit\campana\W-03\hecho.txt echo RESULTADO=OK && find /c /v """" C:\lab-legit\campana\W-03\timers.txt >> C:\lab-legit\campana\W-03\hecho.txt && type C:\lab-legit\campana\W-03\crontab_rc.txt >> C:\lab-legit\campana\W-03\hecho.txt
+cd /d C:\lab-legit\campana\W-03 && del /f /q C:\lab-legit\campana\W-03\timers.txt 2>nul & del /f /q C:\lab-legit\campana\W-03\crontab.txt 2>nul & del /f /q C:\lab-legit\campana\W-03\crontab_rc.txt 2>nul & > C:\lab-legit\campana\W-03\fin.txt echo %DATE%_%TIME%"
+W-04,"Protejo el informe antes de enviarlo (cifrado, parcial)",2,17:17:00,C-05,No,powershell;certutil,T1486,ATA001;ATA019;ATA041,67027;91801-91846,0,67027 L3 >=7 (1 cmd.exe por acción; predicción),,hecho.txt con las dos huellas SHA256 (original == descifrado),4 min · <1 MB,Proteger un informe con datos de cliente antes de enviarlo es práctica de oficina. El fichero es de juguete y la clave es fija y simbólica. **Parcial**: Windows 10 Pro no trae cifrado simétrico con contrasena por linea de comandos sin instalar (§N-4); se pierde la variante `openssl enc -pass` de T1486.,"inicio
+comando
+comando
+comando
+comando
+evidencia
+fin","cd /d C:\lab-legit\campana && (if not exist C:\lab-legit\campana\W-04 md C:\lab-legit\campana\W-04) & > C:\lab-legit\campana\W-04\inicio.txt echo %DATE%_%TIME%
+cd /d C:\lab-legit\campana\W-04 && > C:\lab-legit\campana\W-04\informe.txt echo informe del area: datos de cliente, importe 1200
+cd /d C:\lab-legit\campana\W-04 && powershell -NoProfile -Command ""$k=[byte[]](0..31); $v=[byte[]](0..15); $a=[IO.File]::ReadAllBytes('C:\lab-legit\campana\W-04\informe.txt'); $s=[Security.Cryptography.Aes]::Create(); $s.Mode='CBC'; $s.Padding='PKCS7'; $s.Key=$k; $s.IV=$v; $e=$s.CreateEncryptor(); $b=$e.TransformFinalBlock($a,0,$a.Length); [IO.File]::WriteAllBytes('C:\lab-legit\campana\W-04\informe.txt.enc',$b)""
+cd /d C:\lab-legit\campana\W-04 && powershell -NoProfile -Command ""$k=[byte[]](0..31); $v=[byte[]](0..15); $a=[IO.File]::ReadAllBytes('C:\lab-legit\campana\W-04\informe.txt.enc'); $s=[Security.Cryptography.Aes]::Create(); $s.Mode='CBC'; $s.Padding='PKCS7'; $s.Key=$k; $s.IV=$v; $d=$s.CreateDecryptor(); $b=$d.TransformFinalBlock($a,0,$a.Length); [IO.File]::WriteAllBytes('C:\lab-legit\campana\W-04\informe.txt.rec',$b)""
+cd /d C:\lab-legit\campana\W-04 && certutil -hashfile C:\lab-legit\campana\W-04\informe.txt SHA256 > C:\lab-legit\campana\W-04\huellas.txt 2>&1 & certutil -hashfile C:\lab-legit\campana\W-04\informe.txt.rec SHA256 >> C:\lab-legit\campana\W-04\huellas.txt 2>&1
+cd /d C:\lab-legit\campana\W-04 && > C:\lab-legit\campana\W-04\hecho.txt echo RESULTADO=OK && type C:\lab-legit\campana\W-04\huellas.txt >> C:\lab-legit\campana\W-04\hecho.txt
+cd /d C:\lab-legit\campana\W-04 && del /f /q C:\lab-legit\campana\W-04\informe.txt 2>nul & del /f /q C:\lab-legit\campana\W-04\informe.txt.enc 2>nul & del /f /q C:\lab-legit\campana\W-04\informe.txt.rec 2>nul & del /f /q C:\lab-legit\campana\W-04\huellas.txt 2>nul & > C:\lab-legit\campana\W-04\fin.txt echo %DATE%_%TIME%"
+W-05,Limpio temporales y destruyo un borrador (parcial),2,17:25:30,C-06,No,powershell,T1070.004;T1485,ATA003;ATA005,67027;91801-91846,0,67027 L3 >=7 (1 cmd.exe por acción; predicción),,hecho.txt con el tamaño previo y borrador_ausente=1,2 min · <1 MB,"Borrar temporales y destruir un borrador con datos personales es lo que recomienda cualquier manual de protección de datos. Los dos objetos los crea el propio caso. **Parcial**: `cipher /w:` reescribe el espacio libre 3 veces (GB y horas de disco, §N-5); se sustituye por sobrescritura del propio fichero en PowerShell.","inicio
+comando
+comando
+comando
+comando
+evidencia
+fin","cd /d C:\lab-legit\campana && (if not exist C:\lab-legit\campana\W-05 md C:\lab-legit\campana\W-05) & > C:\lab-legit\campana\W-05\inicio.txt echo %DATE%_%TIME%
+cd /d C:\lab-legit\campana\W-05 && (if not exist C:\lab-legit\campana\W-05\tmp md C:\lab-legit\campana\W-05\tmp) && > C:\lab-legit\campana\W-05\tmp\borrador_tmp.txt echo temporal del dia && > C:\lab-legit\campana\W-05\borrador.txt echo borrador con datos personales
+cd /d C:\lab-legit\campana\W-05 && for %I in (C:\lab-legit\campana\W-05\borrador.txt) do @echo %~zI > C:\lab-legit\campana\W-05\antes.txt
+cd /d C:\lab-legit\campana\W-05 && rd /s /q C:\lab-legit\campana\W-05\tmp 2>nul
+cd /d C:\lab-legit\campana\W-05 && powershell -NoProfile -Command ""$p='C:\lab-legit\campana\W-05\borrador.txt'; $a=[IO.File]::ReadAllBytes($p); $z=New-Object byte[] $a.Length; [IO.File]::WriteAllBytes($p,$z); for($i=0;$i -lt $a.Length;$i++){$z[$i]=[byte](($i*37)%251)}; [IO.File]::WriteAllBytes($p,$z); Remove-Item -LiteralPath $p -Force""
+cd /d C:\lab-legit\campana\W-05 && echo RESULTADO=OK > C:\lab-legit\campana\W-05\hecho.txt && type C:\lab-legit\campana\W-05\antes.txt >> C:\lab-legit\campana\W-05\hecho.txt && if not exist C:\lab-legit\campana\W-05\borrador.txt >> C:\lab-legit\campana\W-05\hecho.txt echo borrador_ausente=1
+cd /d C:\lab-legit\campana\W-05 && del /f /q C:\lab-legit\campana\W-05\antes.txt 2>nul & > C:\lab-legit\campana\W-05\fin.txt echo %DATE%_%TIME%"
+W-06,Sincronizo los informes con la carpeta de copias,2,17:33:10,C-07,No,robocopy,T1039;T1074.001,ATA039;ATA040,67027;92200-92227,0,67027 L3 >=5 (1 cmd.exe por acción; predicción),,hecho.txt con dir /s de origen y destino (mismo tamaño) y dir del destino,3 min · <1 MB,Sincronizar la carpeta de informes con la de copias es lo que hace cualquiera que haya perdido un fichero una vez. Origen y destino son del caso; `/MIR` solo afecta a `W-06\destino\`.,"inicio
+comando
+comando
+evidencia
+fin","cd /d C:\lab-legit\campana && (if not exist C:\lab-legit\campana\W-06 md C:\lab-legit\campana\W-06) & > C:\lab-legit\campana\W-06\inicio.txt echo %DATE%_%TIME%
+cd /d C:\lab-legit\campana\W-06 && (if not exist C:\lab-legit\campana\W-06\origen md C:\lab-legit\campana\W-06\origen) & (if not exist C:\lab-legit\campana\W-06\destino md C:\lab-legit\campana\W-06\destino) && > C:\lab-legit\campana\W-06\origen\informe_1.txt echo informe uno && > C:\lab-legit\campana\W-06\origen\informe_2.txt echo informe dos && > C:\lab-legit\campana\W-06\destino\obsoleto.txt echo copia obsoleta
+cd /d C:\lab-legit\campana\W-06 && robocopy C:\lab-legit\campana\W-06\origen\ C:\lab-legit\campana\W-06\destino\ /MIR /NFL /NDL /NJH /NJS /NP
+cd /d C:\lab-legit\campana\W-06 && > C:\lab-legit\campana\W-06\hecho.txt echo RESULTADO=OK && dir /s C:\lab-legit\campana\W-06\origen C:\lab-legit\campana\W-06\destino >> C:\lab-legit\campana\W-06\hecho.txt && dir C:\lab-legit\campana\W-06\destino >> C:\lab-legit\campana\W-06\hecho.txt
+cd /d C:\lab-legit\campana\W-06 && rd /s /q C:\lab-legit\campana\W-06\origen 2>nul & rd /s /q C:\lab-legit\campana\W-06\destino 2>nul & > C:\lab-legit\campana\W-06\fin.txt echo %DATE%_%TIME%"
+W-07,Normalizo el CSV del informe,2,17:41:20,C-08,No,powershell,T1565.001,ATA006;ATA032;ATA026;ATA017,67027;91801-91846,0,67027 L3 >=6 (1 cmd.exe por acción; predicción),,hecho.txt con el CSV normalizado (more) y el recuento de `;`,2 min · <1 MB,Cambiar el separador de un export para abrirlo en Excel es una tarea de oficina diaria. El único fichero que se reescribe es el del caso; el pipe vive **dentro** de `powershell -Command` (§4.5).,"inicio
+comando
+comando
+comando
+evidencia
+fin","cd /d C:\lab-legit\campana && (if not exist C:\lab-legit\campana\W-07 md C:\lab-legit\campana\W-07) & > C:\lab-legit\campana\W-07\inicio.txt echo %DATE%_%TIME%
+cd /d C:\lab-legit\campana\W-07 && > C:\lab-legit\campana\W-07\export.csv echo referencia;area;importe && >> C:\lab-legit\campana\W-07\export.csv echo A-01;compras;1200 && >> C:\lab-legit\campana\W-07\export.csv echo A-02;ventas;980
+cd /d C:\lab-legit\campana\W-07 && powershell -NoProfile -Command ""(Get-Content -LiteralPath 'C:\lab-legit\campana\W-07\export.csv') -replace ';',',' | Set-Content -LiteralPath 'C:\lab-legit\campana\W-07\export.csv'""
+cd /d C:\lab-legit\campana\W-07 && more +0 C:\lab-legit\campana\W-07\export.csv > C:\lab-legit\campana\W-07\export_normalizado.txt
+cd /d C:\lab-legit\campana\W-07 && > C:\lab-legit\campana\W-07\hecho.txt echo RESULTADO=OK && more +0 C:\lab-legit\campana\W-07\export.csv >> C:\lab-legit\campana\W-07\hecho.txt && find /c "";"" C:\lab-legit\campana\W-07\export.csv >> C:\lab-legit\campana\W-07\hecho.txt
+cd /d C:\lab-legit\campana\W-07 && del /f /q C:\lab-legit\campana\W-07\export.csv 2>nul & del /f /q C:\lab-legit\campana\W-07\export_normalizado.txt 2>nul & > C:\lab-legit\campana\W-07\fin.txt echo %DATE%_%TIME%"
+W-08,La intranet no responde: acoto el tiempo y reintento,3,17:11:00,C-09,No,curl.exe,T1071.001;T1048,ATA025;ATA009;ATA010;ATA020;ATA023;ATA028;ATA041;ATA050,67027,0,67027 L3 >=6 (1 cmd.exe por acción; predicción),descargas_http,"hecho.txt con http_code, fallo_rc, reintento_rc y el tamaño de intranet.html",3 min · <1 MB,"Cuando una web interna no responde, el usuario acota el tiempo de espera y reintenta. Los puertos son de la intranet local: 8080 (abierto) y 8081 (cerrado, el «no responde»).","inicio
+comando
+comando
+comando
+evidencia
+fin","cd /d C:\lab-legit\campana && (if not exist C:\lab-legit\campana\W-08 md C:\lab-legit\campana\W-08) & > C:\lab-legit\campana\W-08\inicio.txt echo %DATE%_%TIME%
+cd /d C:\lab-legit\campana\W-08 && curl.exe -sS --max-time 3 -o C:\lab-legit\campana\W-08\intranet.html -w ""%{http_code}\n"" http://intranet.local:8080/ > C:\lab-legit\campana\W-08\http_code.txt
+cd /d C:\lab-legit\campana\W-08 && curl.exe -sS --max-time 2 http://intranet.local:8081/ >nul 2>&1 & if errorlevel 1 (> C:\lab-legit\campana\W-08\fallo_rc.txt echo RC_FALLO=ge1) else (> C:\lab-legit\campana\W-08\fallo_rc.txt echo RC_FALLO=0)
+cd /d C:\lab-legit\campana\W-08 && curl.exe --max-time 5 -sS -o C:\lab-legit\campana\W-08\reintento.html http://intranet.local:8080/ && > C:\lab-legit\campana\W-08\reintento_rc.txt echo RC_REINTENTO=0
+cd /d C:\lab-legit\campana\W-08 && > C:\lab-legit\campana\W-08\hecho.txt echo RESULTADO=OK && type C:\lab-legit\campana\W-08\http_code.txt C:\lab-legit\campana\W-08\fallo_rc.txt C:\lab-legit\campana\W-08\reintento_rc.txt >> C:\lab-legit\campana\W-08\hecho.txt && dir C:\lab-legit\campana\W-08\intranet.html >> C:\lab-legit\campana\W-08\hecho.txt
+cd /d C:\lab-legit\campana\W-08 && del /f /q C:\lab-legit\campana\W-08\intranet.html 2>nul & del /f /q C:\lab-legit\campana\W-08\reintento.html 2>nul & del /f /q C:\lab-legit\campana\W-08\http_code.txt 2>nul & del /f /q C:\lab-legit\campana\W-08\fallo_rc.txt 2>nul & del /f /q C:\lab-legit\campana\W-08\reintento_rc.txt 2>nul & > C:\lab-legit\campana\W-08\fin.txt echo %DATE%_%TIME%"
+W-09,Preparo el lote de plantillas del mes,3,17:19:30,C-10,No,copy,T1499.002;T1499.003,ATA046;ATA047,67027;92200-92227,0,67027 L3 >=18 (1 cmd.exe por acción; predicción),,hecho.txt con el tamaño de lote_12.txt y dir de lote_*.txt,4 min · <1 MB,Preparar doce copias de una plantilla para el lote del mes es mecánico y corriente. **Cambia de mecanismo**: Windows no tiene `xargs`; se conserva el abanico de 12 con `for /L` + `cmd /c copy`.,"inicio
+comando
+comando
+comando
+evidencia
+fin","cd /d C:\lab-legit\campana && (if not exist C:\lab-legit\campana\W-09 md C:\lab-legit\campana\W-09) & > C:\lab-legit\campana\W-09\inicio.txt echo %DATE%_%TIME%
+cd /d C:\lab-legit\campana\W-09 && > C:\lab-legit\campana\W-09\plantilla.txt echo plantilla del informe del mes && for /L %i in (1,1,12) do @echo %i>>C:\lab-legit\campana\W-09\lotes.txt
+cd /d C:\lab-legit\campana\W-09 && for /L %i in (1,1,12) do @cmd /c copy /y C:\lab-legit\campana\W-09\plantilla.txt C:\lab-legit\campana\W-09\lote_%i.txt
+cd /d C:\lab-legit\campana\W-09 && find /c /v """" C:\lab-legit\campana\W-09\lote_1.txt > C:\lab-legit\campana\W-09\lote1_wc.txt
+cd /d C:\lab-legit\campana\W-09 && > C:\lab-legit\campana\W-09\hecho.txt echo RESULTADO=OK && for %I in (C:\lab-legit\campana\W-09\lote_12.txt) do @echo %~zI >> C:\lab-legit\campana\W-09\hecho.txt && dir C:\lab-legit\campana\W-09\lote_*.txt >> C:\lab-legit\campana\W-09\hecho.txt
+cd /d C:\lab-legit\campana\W-09 && del /f /q C:\lab-legit\campana\W-09\lote_*.txt 2>nul & del /f /q C:\lab-legit\campana\W-09\lotes.txt 2>nul & del /f /q C:\lab-legit\campana\W-09\plantilla.txt 2>nul & del /f /q C:\lab-legit\campana\W-09\lote1_wc.txt 2>nul & > C:\lab-legit\campana\W-09\fin.txt echo %DATE%_%TIME%"
+W-10,Dejo constancia de la incidencia en el registro,3,17:27:10,C-11,No,eventcreate,T1056.001,ATA018,67027;60600-61072,0,67027 L3 >=6 (1 cmd.exe por acción; predicción),registro_eventos,hecho.txt con el contenido de registro.log,2 min · <1 MB,Dejar constancia de una incidencia en el registro de la aplicación es lo que pide cualquier procedimiento. Escribe **1 evento** INFORMATION declarado que no se borra (borrarlo sería otra mutación).,"inicio
+comando
+comando
+comando
+evidencia
+fin","cd /d C:\lab-legit\campana && (if not exist C:\lab-legit\campana\W-10 md C:\lab-legit\campana\W-10) & > C:\lab-legit\campana\W-10\inicio.txt echo %DATE%_%TIME%
+cd /d C:\lab-legit\campana\W-10 && > C:\lab-legit\campana\W-10\nota.txt echo W-10: incidencia cerrada; copia del dia revisada
+cd /d C:\lab-legit\campana\W-10 && eventcreate /T INFORMATION /ID 100 /L APPLICATION /SO ofimatica /D ""W-10: incidencia cerrada; copia del dia revisada""
+cd /d C:\lab-legit\campana\W-10 && type C:\lab-legit\campana\W-10\nota.txt >> C:\lab-legit\campana\W-10\registro.log
+cd /d C:\lab-legit\campana\W-10 && > C:\lab-legit\campana\W-10\hecho.txt echo RESULTADO=OK && more C:\lab-legit\campana\W-10\registro.log >> C:\lab-legit\campana\W-10\hecho.txt
+cd /d C:\lab-legit\campana\W-10 && del /f /q C:\lab-legit\campana\W-10\nota.txt 2>nul & del /f /q C:\lab-legit\campana\W-10\registro.log 2>nul & > C:\lab-legit\campana\W-10\fin.txt echo %DATE%_%TIME%"
+W-11,Descargo el manual de la intranet,3,17:35:40,C-12,No,curl.exe,T1105,ATA008;ATA043,67027,0,67027 L3 >=4 (1 cmd.exe por acción; predicción),descargas_http,hecho.txt con el éxito y el tamaño de manual.pdf (> 500 bytes),2 min · <1 MB,Descargar el manual del empleado desde la intranet es lo que hace cualquiera el primer día. **Desviación declarada**: el plan preveía `certutil -urlcache`; la receta (W1) usa solo `curl.exe` porque `certutil -urlcache` es un patrón clásico de detección y habría mezclado la hipótesis con el mecanismo.,"inicio
+comando
+evidencia
+fin","cd /d C:\lab-legit\campana && (if not exist C:\lab-legit\campana\W-11 md C:\lab-legit\campana\W-11) & > C:\lab-legit\campana\W-11\inicio.txt echo %DATE%_%TIME%
+cd /d C:\lab-legit\campana\W-11 && curl.exe -sS -o C:\lab-legit\campana\W-11\manual.pdf http://intranet.local:8080/descargas/manual_empleado.pdf
+cd /d C:\lab-legit\campana\W-11 && > C:\lab-legit\campana\W-11\hecho.txt echo RESULTADO=OK && for %I in (C:\lab-legit\campana\W-11\manual.pdf) do @echo %~zI >> C:\lab-legit\campana\W-11\hecho.txt
+cd /d C:\lab-legit\campana\W-11 && del /f /q C:\lab-legit\campana\W-11\manual.pdf 2>nul & > C:\lab-legit\campana\W-11\fin.txt echo %DATE%_%TIME%"
