@@ -152,7 +152,11 @@
   ]
  },
  "total_con_campana": 504,
- "mapa_dias": {},
+ "mapa_dias": {
+  "2026-11-02": 1,
+  "2026-11-03": 2,
+  "2026-11-04": 3
+ },
  "regla_dia": "k = 1 + ((fecha_utc - fecha_t0) mod 3)",
  "mapa_dias_como_se_pasa": "construir_receta_legitima.py --t0 AAAA-MM-DD  (o --mapa-dias a:1,b:2,c:3)",
  "cwd": {
