@@ -1,0 +1,5 @@
+# promocion | metrica_version=1 boveda_version=2 | t0=2026-11-02T00:00:00Z t1=2026-11-05T00:00:00Z | sha256_origen=109fea517f762082b44f83de0888578dc9c7658f67499dd9921831192e6aec4f | origen=Soporte/Laboratorio/legitimo_72h/ventana_2026-11-02/denominador_M.csv | ventana=legitimo-v3 | estado=VALIDA_CON_INCIDENCIA
+# contar_denominador.py | metrica_version=1 boveda_version=2 | desde=2026-11-02T00:00:00Z hasta=2026-11-05T00:00:00Z | agente=001/victima-linux | ficheros=4 | sha256_entradas=0adf47b84241d2b5478e1716ba7f2fd82ede18aa9b803e4e2a3712a0c68d6242:ossec-archive-02.json.gz,ed39daf02ed82899adf0617db38e6ae186ebea5f45e87be794ee8424a0fbeb99:ossec-archive-03.json.gz,78f504aecd7a5d1679c4d9ded67243c9a3bc3ee9ebcb4c94d0a808cdad30a4c2:ossec-archive-04.json.gz,ae53465c95b67e11a246c3edd33d61e67e090c16351753f64862dc394d2da850:ossec-archive-05.json
+metrica_version,boveda_version,ambito,eventos,primer_ts,ultimo_ts
+1,2,total,394739,2026-11-02T00:00:04Z,2026-11-04T23:59:56Z
+1,2,endpoint,342966,2026-11-02T00:00:04Z,2026-11-04T23:59:56Z

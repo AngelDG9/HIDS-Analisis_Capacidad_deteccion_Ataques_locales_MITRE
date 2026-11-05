@@ -7,7 +7,8 @@
 #   (total + por handler + por hora → soporta FP/acción y FP/hora; R2 §2.2).
 #
 # Uso:
-#   bash exportar_acciones.sh 2026-10-19T00:00:00Z 2026-10-22T00:00:00Z [SALIDA.csv]
+#   bash exportar_acciones.sh 2026-10-19T00:00:00Z 2026-10-22T00:00:00Z [SALIDA.csv] [BOVEDA_VERSION]
+#   BOVEDA_VERSION (4.o arg o env TFG_BOVEDA_VERSION) solo sella la cabecera; defecto 1 (MC-1).
 # Sin secretos: PostgreSQL escucha en 127.0.0.1 y se inicializó con `initdb -A trust`.
 # ============================================================================
 set -eu
@@ -15,6 +16,8 @@ PSQL="D:/TFG-VMs/material-ghosts/pgsql/bin/psql.exe"
 T0="${1:?falta t0 UTC (YYYY-MM-DDTHH:MM:SSZ)}"
 T1="${2:?falta t1 UTC}"
 OUT="${3:-Dataset/Legitimo/legitimo_72h/ghosts_acciones.csv}"
+# MC-1: version de boveda por parametro (4.o arg) o entorno; defecto 1. Solo afecta a la cabecera.
+BOVEDA="${4:-${TFG_BOVEDA_VERSION:-1}}"
 # PostgreSQL necesita 'YYYY-MM-DD HH:MM:SS' (UTC naive)
 T0SQL="${T0%Z}"; T0SQL="${T0SQL/T/ }"
 T1SQL="${T1%Z}"; T1SQL="${T1SQL/T/ }"
@@ -25,7 +28,7 @@ GEN="$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
 run() { "$PSQL" -h 127.0.0.1 -p 5432 -U ghosts -d ghosts -t -A -F',' -c "$1"; }
 
 {
-  echo "# ghosts_acciones.csv | metrica_version=1 boveda_version=1 | t0=${T0} t1=${T1} | generado=${GEN} | fuente=ghosts.history_timeline (createdutc UTC)"
+  echo "# ghosts_acciones.csv | metrica_version=1 boveda_version=${BOVEDA} | t0=${T0} t1=${T1} | generado=${GEN} | fuente=ghosts.history_timeline (createdutc UTC)"
   echo "tipo,clave,acciones"
   tot=$(run "select count(*) from history_timeline where createdutc >= '${T0SQL}' and createdutc < '${T1SQL}';")
   echo "total,,${tot}"

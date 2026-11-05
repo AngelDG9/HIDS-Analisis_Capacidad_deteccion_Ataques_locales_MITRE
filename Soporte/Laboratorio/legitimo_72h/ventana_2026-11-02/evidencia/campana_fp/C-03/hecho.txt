@@ -1,0 +1,3 @@
+RESULTADO=OK
+19 /home/angel/Documentos/campana_fp/C-03/timers.txt
+crontab_rc=1

@@ -1,0 +1,3 @@
+RESULTADO=OK
+referencia,area,importe
+0

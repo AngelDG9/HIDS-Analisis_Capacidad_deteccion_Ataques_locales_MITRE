@@ -1,0 +1,13 @@
+# promocion | metrica_version=1 boveda_version=2 | t0=2026-11-02T00:00:00Z t1=2026-11-05T00:00:00Z | sha256_origen=399c4b06a8c799fc2e0de4f060ede51996381efb6d8f3c7d23f104cf8a2ceb65 | origen=Soporte/Laboratorio/legitimo_72h/ventana_2026-11-02/ruleids_legitimos.csv | ventana=legitimo-v3 | estado=VALIDA_CON_INCIDENCIA
+rule_id,rule_level,rule_description,groups,count,first_seen,last_seen,rs_origen
+11,4,,stats,1,2026-11-02T00:48:11Z,2026-11-02T00:48:11Z,UNKNOWN
+554,5,File added to the system.,ossec|syscheck|syscheck_entry_added|syscheck_file,3,2026-11-02T11:15:40Z,2026-11-02T11:15:40Z,RS1
+591,3,Log file rotated.,ossec,47,2026-11-02T00:17:13Z,2026-11-04T23:16:19Z,RS1
+80711,10,Auditd: Process ended abnormally.,audit|audit_anom,2,2026-11-03T07:45:23Z,2026-11-04T07:45:07Z,RS2
+80730,3,Auditd: SELinux permission check.,audit|audit_selinux,72,2026-11-02T00:15:41Z,2026-11-04T23:29:00Z,RS2
+80780,3,Audit: Watch - Write access.,audit|audit_watch_write,1871,2026-11-02T00:05:02Z,2026-11-04T23:55:02Z,RS2
+80781,3,Audit: Watch - Write access: /etc/.pwd.lock.,audit|audit_watch_write,93,2026-11-02T00:15:56Z,2026-11-04T23:29:08Z,RS2
+80782,3,Audit: Watch - Write access: /.,audit|audit_watch_write,227,2026-11-02T00:15:41Z,2026-11-04T23:29:00Z,RS2
+80790,3,Audit: Created: /home/angel/Documentos/informes/adjunto_1_2026-11-02.tar.gz.,audit|audit_watch_create|audit_watch_write,11,2026-11-02T08:46:54Z,2026-11-04T16:15:00Z,RS2
+80791,3,Audit: Deleted: var/run/.,audit|audit_watch_delete|audit_watch_write,55649,2026-11-02T00:00:08Z,2026-11-04T23:59:56Z,RS2
+80792,3,Audit: Command: /usr/bin/bash.,audit|audit_command,236277,2026-11-02T00:00:04Z,2026-11-04T23:59:37Z,RS2

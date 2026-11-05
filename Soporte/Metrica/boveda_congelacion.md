@@ -1,20 +1,23 @@
 ---
 bloque: reencuadre-metrica
 nombre: Bóveda de congelación (lo que se sella antes de medir)
-version: 1
+version: 2
 status: congelada
 fecha: 2026-10-16
+fecha_actualizacion: 2026-11-05
+actualizado_por: cierre legitimo-v3 (B10 medido)
 autor: tfg-executor
 sha256: boveda_congelacion.sha256
 depende_de: Soporte/Metrica/metrica_hids.md (v1)
 ---
 
-# Bóveda de congelación — versión 1
+# Bóveda de congelación — versión 2
 
 > **Qué es esta bóveda.** El conjunto de elementos que se **sellan antes de la primera medida**.
 > Si **cualquiera** de B1–B10 cambia ⇒ la **métrica/medida queda invalidada**
 > (`metrica_hids.md` §9) y hay que **recalcular y declarar**. Las huellas están en
-> `boveda_congelacion.sha256`. Los `sha256` citados abajo son de la fecha de congelación.
+> `boveda_congelacion.sha256`. Los `sha256` citados abajo son de la fecha de congelación
+> (B1–B9: 2026-10-16; **B10: 2026-11-05**, al cerrar `legitimo-v3`).
 
 ## B1 — Versión del HIDS
 
@@ -91,9 +94,45 @@ depende_de: Soporte/Metrica/metrica_hids.md (v1)
 
 ## B10 — Config del legítimo
 
-- **GHOSTS** (versión) + **"internet local"** + **fichero de instrumentación del denominador**
-  (`<logall_json>` ⇒ `archives.json`). **Estado: pendiente** — se sella al construir el legítimo
-  (`L0`/`L1`). Hoy **no existe**; declarado (caso L11 y `metrica_hids.md` §13).
+> **Sellado el 2026-11-05** (cierre de `legitimo-v3`) con los valores **medidos** de la ventana
+> `2026-11-02T00:00:00Z .. 2026-11-05T00:00:00Z`. Detalle completo y huellas:
+> `Soporte/Laboratorio/legitimo_72h/b10_sellado.md` (**v3**) y
+> `Soporte/Laboratorio/legitimo_72h/sha256sums.txt`.
+
+- **Ventana:** **2026-11-02T00:00:00Z → 2026-11-05T00:00:00Z** (72 h, 3 días, medianoche UTC).
+  `t0`/`t1` firmados; `logall_json` **ON solo** en `[t0,t1]`; `off` + `CONFIG_IDENTICA` al cerrar.
+- **GHOSTS:** `cmu-sei/GHOSTS` **v8.3.1** (commit `4d2e160860f508f699f935472b5515358f534844`),
+  .NET 8, PostgreSQL 16.15. Cliente Linux en `/home/angel/ghosts-client` con **`cwd=/home/angel`**;
+  binario `ghosts.client.linux`
+  `sha256 = 3e1a73a49f7e95fc52864a4c52e89e5af38a0644791bee2115a7ac96b742c659`.
+- **Wazuh:** **`4.14.7-1`**, config **virgen `C1 = {RS1, RS2}`** (`RS3 = RS4 = 0`); ruleset
+  `sha256 = 64213db71cb9497270f6b0281cc806146cb76b81e55781e8289af722678ad72b`.
+- **Receta v2 ejecutada:** `d1` **163** / `d2` **178** / `d3` **163** acciones
+  (`sha256 0b2fa91c…c7df` / `0e0329cc…c58a` / `885a80b2…1345`) + `calendario.json`
+  (`14463efd…26a7`) + `bloques.env` (`ee43ff46…64fd`, **B6 17:05–17:50**).
+- **Campaña de FP:** **11 casos no mutantes**, pre-registrados (`casos.md`
+  `sha256 = 2003c9cc71624c40ca8a70931027b552bed15a17b9cc0044720c5801c99f2a49`), **dentro** de la
+  ventana; **11/11 `SI`**, **0 alertas `N ≥ 7`**.
+- **Instrumentación `M`:** `<logall_json>yes</logall_json>` ⇒ `archives.json`; rotación diaria
+  `ossec-archive-<DD>.json.gz`; copia con `MANIFEST` + dedupe `sha256`; contador `--estricto`
+  (**`exit 0`**, sin solapes). **Un solo `M` sobre `[t0,t1]`**.
+- **Medida:** **`M` endpoint (001) = 342 966** eventos (total con manager: 394 739; **el manager
+  se excluye** del denominador). Cobertura `2026-11-02T00:00:04Z .. 2026-11-04T23:59:56Z`.
+  **43 567 376 B** (41,55 MiB) en 3 `.gz` → **0,61 MB/h**; **4 763,4 eventos/h**;
+  **acciones/día 163 / 178 / 163**; **294 253 alertas** y **11 `rule_id`**.
+- **Lo que actuó dentro:** **0 recuperaciones**, **2 rotaciones** (`2026-11-03T07:45:27Z` y
+  `2026-11-04T07:45:08Z`, `resultado=ok`), **3 arranques** del cliente; **144** chequeos de
+  vigilancia (**140 OK + 4 AVISO** de `sin_df` en la rotación de medianoche, **0 `ALARMA`**).
+- **Snapshot:** **`lab-listo-legit-v3`** (6 en total; `lab-listo-legit-v2` intacto).
+- **Navegador:** **`receptor_navegador = none`**.
+- **Versiones de medida:** **`metrica_version = 1`**, **`boveda_version = 2`**.
+- **Incidencia declarada (V6):** orden de extracción invertido (`off` antes de cerrar la copia);
+  **fuente diaria íntegra** y `M` **re-extraído idéntico** (`exit 0`) ⇒ ventana **VÁLIDA CON
+  INCIDENCIA**.
+- **Límites declarados:** 4 `AVISO` de rotación; `rule 11` = **UNKNOWN** (1 alerta `stats`);
+  `ghosts_acciones.csv` con granularidad **horaria**; `n_acciones` vacío en `campana_fp.csv`;
+  swap ~1,9 GB en la víctima; sin navegador. La campaña está **dentro** de `M` (tabla aparte, sin
+  FPR alternativo).
 
 ---
 

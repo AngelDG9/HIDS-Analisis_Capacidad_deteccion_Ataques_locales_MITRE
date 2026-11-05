@@ -1,0 +1,8 @@
+RESULTADO=OK
+24	/home/angel/Documentos/campana_fp/C-07/origen
+24	/home/angel/Documentos/campana_fp/C-07/destino
+total 16
+drwxr-xr-x 2 angel angel 4096 Nov  3 18:33 .
+drwxr-xr-x 4 angel angel 4096 Nov  3 18:33 ..
+-rw-r--r-- 1 angel angel   12 Nov  3 18:33 informe_1.txt
+-rw-r--r-- 1 angel angel   12 Nov  3 18:33 informe_2.txt

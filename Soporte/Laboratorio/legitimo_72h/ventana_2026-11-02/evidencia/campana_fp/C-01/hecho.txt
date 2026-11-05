@@ -1,0 +1,5 @@
+RESULTADO=OK
+  30 /home/angel/Documentos/campana_fp/C-01/servicios.txt
+   3 /home/angel/Documentos/campana_fp/C-01/free.txt
+   3 /home/angel/Documentos/campana_fp/C-01/fallidos.txt
+  36 total

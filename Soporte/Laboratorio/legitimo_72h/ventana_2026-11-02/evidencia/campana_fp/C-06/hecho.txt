@@ -1,0 +1,3 @@
+RESULTADO=OK
+30
+borrador_ausente=1

@@ -2,9 +2,10 @@
 bloque: legitimo-v3
 nombre: L1-v5 — estudio en frío del realismo, ventana de 72 h mejorada (receta v2) + campaña dirigida de falsos positivos (11 casos no mutantes)
 version: 5
-status: approved_by_human
+status: closed
 fecha: 2026-10-27
 fecha_aprobacion: 2026-10-27
+fecha_cierre: 2026-11-05
 aprobado_por: humano
 autor: tfg-planner
 depende_de: legitimo-72h-v2 (ABORTADO 2026-10-27, 39 h 53 min, sin analizar) · legitimo-fix (cerrado, PASA) · legitimo-infra (L0, GO) · reencuadre-metrica (métrica v1 congelada)

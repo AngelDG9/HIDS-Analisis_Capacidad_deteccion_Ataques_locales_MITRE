@@ -1,0 +1,2 @@
+RESULTADO=OK
+C-11: incidencia cerrada; copia del dia revisada

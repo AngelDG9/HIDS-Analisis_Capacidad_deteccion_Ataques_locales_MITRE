@@ -1,0 +1,5 @@
+RESULTADO=OK
+200
+RC_FALLO=28
+RC_REINTENTO=0
+1749 /home/angel/Documentos/campana_fp/C-09/intranet.html

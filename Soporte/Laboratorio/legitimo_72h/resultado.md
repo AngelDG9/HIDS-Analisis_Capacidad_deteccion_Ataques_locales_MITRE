@@ -1,5 +1,51 @@
 # `resultado.md` - evidencia operativa host-side
 
+## Ventana ejecutada (2026-11-02 → 2026-11-05)
+
+> **Cierre de `legitimo-v3`.** Esta es la sección **vigente**; debajo se conserva, sin reescribir,
+> el registro histórico de L1. Ficha completa: `ventana_2026-11-02/ventana_meta.md` · veredicto:
+> `ventana_2026-11-02/veredicto_validez.md` · sellado: `b10_sellado.md` (**v3**).
+> `metrica_version = 1` · `boveda_version = 2` · `receptor_navegador = none`.
+
+| Concepto | Valor |
+|---|---|
+| Ventana | `t0` **2026-11-02T00:00:00Z** → `t1` **2026-11-05T00:00:00Z** (**72 h**) |
+| **`M` endpoint (agente `001`)** | **342 966** eventos (`M` total con manager `000`: 394 739) |
+| Cobertura de `M` | `2026-11-02T00:00:04Z .. 2026-11-04T23:59:56Z` (4 763,4 eventos/h) |
+| **Alertas del agente `001`** | **294 253** (98 064 / 98 254 / 97 935 por día) |
+| **`rule_id` distintos** | **11**: `11` (L4, UNKNOWN) · `554` (L5) · `591` (L3) · `80711` (L10) · `80730` (L3) · `80780` (L3) · `80781` (L3) · `80782` (L3) · `80790` (L3) · `80791` (L3) · `80792` (L3) |
+| **Acciones GHOSTS** | **163 / 178 / 163 = 504** (7,0 acciones/h; 504 acciones ≈ 0,15 % de `M`) |
+| **Campaña de FP (dentro de la ventana)** | **11/11 casos `SI`**, 22 marcas, inicios `d1 17:06Z` / `d2 17:17Z` / `d3 17:11Z`; **0 alertas `N ≥ 7`** (todas de nivel 3); **0 mutación** |
+| **Veredicto** | **VÁLIDA CON INCIDENCIA** (**V6**: orden de extracción invertido; fuente diaria íntegra y `M` re-extraído) |
+
+### Incidencias declaradas
+
+1. **Manager excluido del denominador.** Se usa el endpoint `001` (**342 966**), no el total
+   (**394 739**): las **3 224** alertas del manager `000` se descartaron y se declaran.
+2. **4 `AVISO` de rotación de medianoche** (`sin_df`): transitorios y esperados; **0 `ALARMA`**
+   (144 chequeos: 140 OK + 4 AVISO). Las 2 rotaciones reales (día 2 y día 3) dieron `resultado=ok`.
+3. **Orden de extracción invertido (V6).** El `logall_json off` fue a las **00:12:15Z** y la copia se
+   cerró después (00:15Z). Los **3 diarios estaban íntegros**; `M` se re-extrajo con
+   `contar_denominador.py --estricto --manifest` → **`exit 0`**, sin solapes ni duplicados.
+   Por eso la ventana es **válida con incidencia**, no inválida.
+4. **`rule 11` = UNKNOWN.** Una alerta `stats` del agente `001`, sin RuleSet; su tratamiento como
+   auto-ruido corresponde al filtro de la métrica.
+5. **`n_acciones` vacío** en `campana_fp.csv`: la BD de GHOSTS estaba parada al rehacer la tabla.
+   El recuento de acciones de la campaña se toma de `ghosts_acciones.csv` (granularidad horaria).
+
+### Cierre del laboratorio (CA-16)
+
+- **0 VMs** encendidas · **0 tareas `TFG-Legit-*`** · **0 reglas de firewall `TFG-*`** · **0 procesos**
+  del laboratorio (postgres/dotnet/python).
+- Las **4 tareas `TFG-Baseline-*`** quedan **`Disabled`** (no se borran): se desactivaron para la
+  ventana porque podían apagar el manager o revertir la VM; **no se rearman**.
+- **Windows Update restaurado** (`pausar_windows_update.ps1 restaurar`): `wuauserv` = `Running` /
+  `Manual` y políticas `NoAutoUpdate` / `NoAutoRebootWithLoggedOnUsers` retiradas.
+- **`TFG_GUEST_PW` retirada** del entorno de usuario (verificada ausente).
+- `logall_json = no` y **`CONFIG_IDENTICA`** (log 00:12:16Z / 00:12:17Z; `incidencias.md:146-147`).
+
+---
+
 > **ESTADO (2026-10-21, bloque `legitimo-fix`).** La ventana de L1 (19-22/10) es **INVALIDA**
 > (`diagnostico_fallo.md`) y **no se rescata**. El bloque `legitimo-fix` ha **arreglado la
 > causa**, **redisenado la actividad**, **probado en seco (DT0-DT13 + DT-B)** y dejado el

@@ -1,0 +1,32 @@
+# promocion | metrica_version=1 boveda_version=2 | t0=2026-11-02T00:00:00Z t1=2026-11-05T00:00:00Z | sha256_origen=4312d652a9bbecafe5c4a7d71dbf3f28ec1721bee164868baca69fc896d83b0a | origen=Soporte/Laboratorio/legitimo_72h/ventana_2026-11-02/ghosts_acciones.csv | ventana=legitimo-v3 | estado=VALIDA_CON_INCIDENCIA
+# ghosts_acciones.csv | metrica_version=1 boveda_version=2 | t0=2026-11-02T00:00:00Z t1=2026-11-05T00:00:00Z | generado=2026-11-05T00:20:01Z | fuente=ghosts.history_timeline (createdutc UTC)
+tipo,clave,acciones
+total,,504
+handler,Command,504
+hora,2026-11-02T08:00Z,26
+hora,2026-11-02T09:00Z,18
+hora,2026-11-02T10:00Z,18
+hora,2026-11-02T11:00Z,18
+hora,2026-11-02T12:00Z,20
+hora,2026-11-02T14:00Z,17
+hora,2026-11-02T15:00Z,14
+hora,2026-11-02T16:00Z,16
+hora,2026-11-02T17:00Z,16
+hora,2026-11-03T08:00Z,29
+hora,2026-11-03T09:00Z,21
+hora,2026-11-03T10:00Z,17
+hora,2026-11-03T11:00Z,13
+hora,2026-11-03T12:00Z,18
+hora,2026-11-03T14:00Z,18
+hora,2026-11-03T15:00Z,21
+hora,2026-11-03T16:00Z,16
+hora,2026-11-03T17:00Z,25
+hora,2026-11-04T08:00Z,24
+hora,2026-11-04T09:00Z,16
+hora,2026-11-04T10:00Z,13
+hora,2026-11-04T11:00Z,21
+hora,2026-11-04T12:00Z,26
+hora,2026-11-04T14:00Z,10
+hora,2026-11-04T15:00Z,16
+hora,2026-11-04T16:00Z,15
+hora,2026-11-04T17:00Z,22

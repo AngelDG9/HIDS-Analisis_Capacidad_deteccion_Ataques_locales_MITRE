@@ -1,0 +1,90 @@
+             ('-. .-.               .-')    .-') _     .-')
+            ( OO )  /              ( OO ). (  OO) )   ( OO ).
+  ,----.    ,--. ,--. .-'),-----. (_)---\_)/     '._ (_)---\_)
+ '  .-./-') |  | |  |( OO'  .-.  '/    _ | |'--...__)/    _ |
+ |  |_( O- )|   .|  |/   |  | |  |\  :` `. '--.  .--'\  :` `.
+ |  | .--, \|       |\_) |  |\|  | '..`''.)   |  |    '..`''.)
+(|  | '. (_/|  .-.  |  \ |  | |  |.-._)   \   |  |   .-._)   \
+ |  '--'  | |  | |  |   `'  '-'  '\       /   |  |   \       /
+  `------'  `--' `--'     `-----'  `-----'    `--'    `-----'
+
+
+GHOSTS (ghosts.client.linux:8.0.0.0 [8.2.3.0]) running in production mode. Installed path: /home/angel/ghosts-client
+Connecting to http://192.168.65.1:5000/clientHub...
+Sleeping for 29995118 milliseconds until the next action time.
+Sleeping for 38395116 milliseconds until the next action time.
+Sleeping for 51595114 milliseconds until the next action time.
+Sleeping for 30715117 milliseconds until the next action time.
+Sleeping for 59695110 milliseconds until the next action time.
+Sleeping for 62755107 milliseconds until the next action time.
+Connection state: Disconnected
+Connected to http://192.168.65.1:5000/clientHub
+Peeking into queue...
+ID: 7c33a13a-fe89-4a56-bf3c-fcd499e1e557
+Heartbeat 2026-11-01T23:40:07.6522387Z
+Sleeping for 85619571 milliseconds until the next action time.
+Sleeping for 79859236 milliseconds until the next action time.
+Sleeping for 76739420 milliseconds until the next action time.
+Sleeping for 78239203 milliseconds until the next action time.
+Sleeping for 83639822 milliseconds until the next action time.
+Sleeping for 83699798 milliseconds until the next action time.
+             ('-. .-.               .-')    .-') _     .-')
+            ( OO )  /              ( OO ). (  OO) )   ( OO ).
+  ,----.    ,--. ,--. .-'),-----. (_)---\_)/     '._ (_)---\_)
+ '  .-./-') |  | |  |( OO'  .-.  '/    _ | |'--...__)/    _ |
+ |  |_( O- )|   .|  |/   |  | |  |\  :` `. '--.  .--'\  :` `.
+ |  | .--, \|       |\_) |  |\|  | '..`''.)   |  |    '..`''.)
+(|  | '. (_/|  .-.  |  \ |  | |  |.-._)   \   |  |   .-._)   \
+ |  '--'  | |  | |  |   `'  '-'  '\       /   |  |   \       /
+  `------'  `--' `--'     `-----'  `-----'    `--'    `-----'
+
+
+GHOSTS (ghosts.client.linux:8.0.0.0 [8.2.3.0]) running in production mode. Installed path: /home/angel/ghosts-client
+Connecting to http://192.168.65.1:5000/clientHub...
+Sleeping for 873114 milliseconds until the next action time.
+Sleeping for 1593114 milliseconds until the next action time.
+Sleeping for 9273113 milliseconds until the next action time.
+Sleeping for 22473101 milliseconds until the next action time.
+Sleeping for 30573101 milliseconds until the next action time.
+Sleeping for 34293100 milliseconds until the next action time.
+Connection state: Disconnected
+Connected to http://192.168.65.1:5000/clientHub
+Peeking into queue...
+ID: 7c33a13a-fe89-4a56-bf3c-fcd499e1e557
+Heartbeat 2026-11-03T07:45:27.5812036Z
+Sleeping for 85619584 milliseconds until the next action time.
+Sleeping for 79859442 milliseconds until the next action time.
+Sleeping for 76739012 milliseconds until the next action time.
+Sleeping for 78238436 milliseconds until the next action time.
+Sleeping for 83639845 milliseconds until the next action time.
+Sleeping for 84358819 milliseconds until the next action time.
+             ('-. .-.               .-')    .-') _     .-')
+            ( OO )  /              ( OO ). (  OO) )   ( OO ).
+  ,----.    ,--. ,--. .-'),-----. (_)---\_)/     '._ (_)---\_)
+ '  .-./-') |  | |  |( OO'  .-.  '/    _ | |'--...__)/    _ |
+ |  |_( O- )|   .|  |/   |  | |  |\  :` `. '--.  .--'\  :` `.
+ |  | .--, \|       |\_) |  |\|  | '..`''.)   |  |    '..`''.)
+(|  | '. (_/|  .-.  |  \ |  | |  |.-._)   \   |  |   .-._)   \
+ |  '--'  | |  | |  |   `'  '-'  '\       /   |  |   \       /
+  `------'  `--' `--'     `-----'  `-----'    `--'    `-----'
+
+
+GHOSTS (ghosts.client.linux:8.0.0.0 [8.2.3.0]) running in production mode. Installed path: /home/angel/ghosts-client
+Connecting to http://192.168.65.1:5000/clientHub...
+Connection state: Disconnected
+Sleeping for 1611907 milliseconds until the next action time.
+Sleeping for 891907 milliseconds until the next action time.
+Sleeping for 9291900 milliseconds until the next action time.
+Sleeping for 22491899 milliseconds until the next action time.
+Sleeping for 30591889 milliseconds until the next action time.
+Sleeping for 33951887 milliseconds until the next action time.
+Connected to http://192.168.65.1:5000/clientHub
+Peeking into queue...
+ID: 7c33a13a-fe89-4a56-bf3c-fcd499e1e557
+Heartbeat 2026-11-04T07:45:08.6019716Z
+Sleeping for 85619684 milliseconds until the next action time.
+Sleeping for 79859619 milliseconds until the next action time.
+Sleeping for 76739318 milliseconds until the next action time.
+Sleeping for 78239245 milliseconds until the next action time.
+Sleeping for 83639838 milliseconds until the next action time.
+Sleeping for 83997665 milliseconds until the next action time.

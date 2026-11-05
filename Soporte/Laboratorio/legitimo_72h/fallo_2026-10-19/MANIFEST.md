@@ -64,3 +64,18 @@
 ```powershell
 Get-FileHash Soporte\Laboratorio\legitimo_72h\fallo_2026-10-19\evidencia\* -Algorithm SHA256
 ```
+
+## Retirada definitiva de la ficha de `Dataset/` (2026-11-05)
+
+> Al promocionar la ventana **`legitimo-v3`** (2026-11-02 → 2026-11-05) se sustituyó la ficha
+> **PREPARADA** de L1 que seguía en `Dataset/Legitimo/legitimo_72h/ventana_meta.md`.
+> **No se borró sin huella:** su `sha256` queda registrado aquí.
+
+| Fichero | Bytes | `sha256` |
+|---|---|---|
+| `ventana_meta_INVALIDA_2026-10-19.md` (archivada, **LF**) | 4815 | `061d555bebc923369c7a4f48dca6db9be5122324b21c3284beafc1dfe3b2451a` |
+| `Dataset/Legitimo/legitimo_72h/ventana_meta.md` (retirada, **CRLF**) | 4886 | `1fe77e48bb3e5c99f796e057bdcfaa81848ec23ba43883e64c6826698c9fbd07` |
+
+El **contenido es idéntico** (mismas 71 líneas); solo cambia el fin de línea (CRLF en la copia de
+`Dataset/`, LF en la archivada). La copia retirada sigue en el historial de git. Ver
+`Dataset/Legitimo/legitimo_72h/PROMOCION.md`.

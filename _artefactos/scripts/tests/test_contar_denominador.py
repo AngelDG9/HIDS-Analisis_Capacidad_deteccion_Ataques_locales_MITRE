@@ -62,8 +62,18 @@ def test_cabecera_obligatoria(tmp_path):
     CD.main(["--desde", "2026-10-19T00:00:00Z", "--hasta", "2026-10-22T00:00:00Z", "--out", str(out), str(arch)])
     primera = out.read_text(encoding="utf-8").splitlines()[0]
     assert "metrica_version=1" in primera
-    assert "boveda_version=1" in primera
+    assert "boveda_version=2" in primera
     assert "sha256_entradas=" in primera
+
+
+def test_boveda_version_por_flag(tmp_path):
+    """El flag sigue mandando sobre el defecto (semántica intacta)."""
+    arch = _escribir(tmp_path / "archives.json")
+    out = tmp_path / "denominador_M.csv"
+    CD.main(["--desde", "2026-10-19T00:00:00Z", "--hasta", "2026-10-22T00:00:00Z",
+             "--boveda-version", "1", "--out", str(out), str(arch)])
+    primera = out.read_text(encoding="utf-8").splitlines()[0]
+    assert "boveda_version=1" in primera
 
 
 def test_gz(tmp_path):

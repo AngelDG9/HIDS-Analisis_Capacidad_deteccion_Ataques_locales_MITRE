@@ -33,7 +33,7 @@ import math
 # Versiones (deben coincidir con los documentos congelados)
 # --------------------------------------------------------------------------
 VERSION_METRICA = 1
-VERSION_BOVEDA = 1
+VERSION_BOVEDA = 2
 FECHA_METRICA = "2026-10-16"
 
 # --------------------------------------------------------------------------

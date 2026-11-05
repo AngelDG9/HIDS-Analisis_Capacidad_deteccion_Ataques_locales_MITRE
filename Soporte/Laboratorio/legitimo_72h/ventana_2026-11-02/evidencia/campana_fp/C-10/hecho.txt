@@ -1,0 +1,14 @@
+RESULTADO=OK
+30
+-rw-r--r-- 1 angel angel 30 Nov  4 18:19 /home/angel/Documentos/campana_fp/C-10/lote_10.txt
+-rw-r--r-- 1 angel angel 30 Nov  4 18:19 /home/angel/Documentos/campana_fp/C-10/lote_11.txt
+-rw-r--r-- 1 angel angel 30 Nov  4 18:19 /home/angel/Documentos/campana_fp/C-10/lote_12.txt
+-rw-r--r-- 1 angel angel 30 Nov  4 18:19 /home/angel/Documentos/campana_fp/C-10/lote_1.txt
+-rw-r--r-- 1 angel angel 30 Nov  4 18:19 /home/angel/Documentos/campana_fp/C-10/lote_2.txt
+-rw-r--r-- 1 angel angel 30 Nov  4 18:19 /home/angel/Documentos/campana_fp/C-10/lote_3.txt
+-rw-r--r-- 1 angel angel 30 Nov  4 18:19 /home/angel/Documentos/campana_fp/C-10/lote_4.txt
+-rw-r--r-- 1 angel angel 30 Nov  4 18:19 /home/angel/Documentos/campana_fp/C-10/lote_5.txt
+-rw-r--r-- 1 angel angel 30 Nov  4 18:19 /home/angel/Documentos/campana_fp/C-10/lote_6.txt
+-rw-r--r-- 1 angel angel 30 Nov  4 18:19 /home/angel/Documentos/campana_fp/C-10/lote_7.txt
+-rw-r--r-- 1 angel angel 30 Nov  4 18:19 /home/angel/Documentos/campana_fp/C-10/lote_8.txt
+-rw-r--r-- 1 angel angel 30 Nov  4 18:19 /home/angel/Documentos/campana_fp/C-10/lote_9.txt

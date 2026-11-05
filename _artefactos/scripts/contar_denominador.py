@@ -45,7 +45,9 @@ import sys
 from datetime import datetime, timezone
 
 VERSION_METRICA = 1
-VERSION_BOVEDA = 1
+# Debe coincidir con `metrica_hids.py` (fuente de verdad). La bóveda pasó a 2 al
+# cerrar `legitimo-v3`; el flag `--boveda-version` sigue mandando cuando se pasa.
+VERSION_BOVEDA = 2
 
 CSV_HEADER = [
     "metrica_version",
