@@ -1,4 +1,4 @@
-# promocion | metrica_version=1 boveda_version=2 | t0=2026-11-02T00:00:00Z t1=2026-11-05T00:00:00Z | sha256_origen=6b07a3506e51211d1a82941145a844f2dfc24c616269eea1d4109f9d6e3e7323 | origen=Soporte/Laboratorio/legitimo_72h/ventana_2026-11-02/campana_ventanas.tsv | ventana=legitimo-v3 | estado=VALIDA_CON_INCIDENCIA
+# promocion | metrica_version=1 boveda_version=2 | t0=2026-11-02T00:00:00Z t1=2026-11-05T00:00:00Z | sha256_origen=6b07a3506e51211d1a82941145a844f2dfc24c616269eea1d4109f9d6e3e7323 | origen=Soporte/Laboratorio/legitimo_72h/campana/campana_ventanas.tsv | ventana=legitimo-v3 | estado=VALIDA_CON_INCIDENCIA
 # campana_ventanas.tsv | 22 marcas | fuente=evidencia/campana_fp/C-*/{inicio,fin}.txt | casos=11 | plan=5.2.6,8
 caso	ini	fin
 C-01	2026-11-02T17:06:00Z	2026-11-02T17:06:40Z

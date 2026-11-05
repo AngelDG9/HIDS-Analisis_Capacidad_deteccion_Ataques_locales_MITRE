@@ -2,8 +2,9 @@
 
 > Ventana **2026-11-02T00:00:00Z .. 2026-11-05T00:00:00Z** · veredicto **VÁLIDA CON INCIDENCIA** (V6) ·
 > `metrica_version=1`, `boveda_version=2`.
-> Copia **desde** `Soporte/Laboratorio/legitimo_72h/ventana_2026-11-02/` (los originales
-> **no** se modifican). A cada CSV se le antepone **una línea `#`** de procedencia con
+> Copia **desde** `Soporte/Laboratorio/legitimo_72h/ventana_2026-11-02/` y
+> `Soporte/Laboratorio/legitimo_72h/campana/` (los originales **no** se modifican).
+> A cada CSV se le antepone **una línea `#`** de procedencia con
 > `t0`/`t1` y el `sha256` del origen; la copia, sin esa línea, es **byte a byte idéntica**
 > al origen.
 
@@ -15,7 +16,7 @@
 | `ghosts_acciones.csv` | `4312d652a9bbecafe5c4a7d71dbf3f28ec1721bee164868baca69fc896d83b0a` | `dc49bca12aff13d9c3889c96f2e29b3157d51bb27f2b7fc9c624eb98c452443f` | 1286 |
 | `campana_fp.csv` | `f41ea4ee9bcf9acbdd8ad4bc2d5c8ffbc0d2828dec872a6efc01ff68fc579d20` | `c320264627d59576c0c4b848406f1d11cc8ee9d007b597d79ca88febb37583d3` | 1592 |
 | `ventana_meta.md` | `e740c6603edbc0a74b3f87ec685031828b4de86d728799ffaa143abe75d6d179` | `e740c6603edbc0a74b3f87ec685031828b4de86d728799ffaa143abe75d6d179` | 13533 |
-| `campana_ventanas.tsv` | `6b07a3506e51211d1a82941145a844f2dfc24c616269eea1d4109f9d6e3e7323` | `0a2e95da6cbd7b8f53102ae478d22ac04195823ecf0d786f556f93060d69b52c` | 957 |
+| `campana_ventanas.tsv` | `6b07a3506e51211d1a82941145a844f2dfc24c616269eea1d4109f9d6e3e7323` | `b7ff7b173d69f21a3c6179d1ba0e76a5eab56af6637acd4f35f7d5072865ce0f` | 946 |
 
 ## Ficha inválida anterior (L1, 19–22/10)
 
@@ -28,6 +29,7 @@ Huella de la copia retirada (CRLF): **`1fe77e48bb3e5c99f796e057bdcfaa81848ec23ba
 ## Trazabilidad
 
 - Productos y evidencia: `Soporte/Laboratorio/legitimo_72h/ventana_2026-11-02/`.
+- Campaña FP: `Soporte/Laboratorio/legitimo_72h/campana/` (`campana_ventanas.tsv`).
 - Veredicto literal: `…/veredicto_validez.md`. Ficha: `…/ventana_meta.md`.
 - Sellado: `Soporte/Laboratorio/legitimo_72h/b10_sellado.md` (v3) +
   `Soporte/Metrica/boveda_congelacion.md` (v2).

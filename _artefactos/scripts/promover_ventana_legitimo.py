@@ -3,7 +3,8 @@
 """Promociona a `Dataset/` los productos de una ventana legitima VALIDA.
 
 Copia (no mueve) los productos desde `Soporte/Laboratorio/legitimo_72h/ventana_<t0>/`
-a `Dataset/Legitimo/legitimo_72h/` y **antepone una linea `#` de procedencia** a cada CSV
+(y `…/campana/` para `campana_ventanas.tsv`) a `Dataset/Legitimo/legitimo_72h/` y
+**antepone una linea `#` de procedencia** a cada CSV
 con `metrica_version`, `boveda_version`, `t0`/`t1` y el `sha256` del fichero de origen.
 El producto de `Soporte/` **no se modifica**.
 
@@ -53,11 +54,13 @@ def sha256_file(path: Path) -> str:
     return sha256_bytes(path.read_bytes())
 
 
-def cabecera(nombre: str, sha_origen: str) -> bytes:
+def cabecera(sha_origen: str, origen: Path) -> bytes:
+    # Cada fichero declara SU ruta real (no todas viven en ventana_<t0>/).
+    origen_rel = origen.relative_to(REPO).as_posix()
     linea = (
         f"# promocion | metrica_version={METRICA_VERSION} boveda_version={BOVEDA_VERSION} "
         f"| t0={T0} t1={T1} | sha256_origen={sha_origen} "
-        f"| origen=Soporte/Laboratorio/legitimo_72h/ventana_2026-11-02/{nombre} "
+        f"| origen={origen_rel} "
         f"| ventana=legitimo-v3 | estado=VALIDA_CON_INCIDENCIA\n"
     )
     return linea.encode("utf-8")
@@ -97,12 +100,12 @@ def main(argv=None) -> int:
     for nombre, origen, es_csv in inventario():
         datos = origen.read_bytes()
         sha_origen = sha256_bytes(datos)
-        salida = datos if not es_csv else cabecera(nombre, sha_origen) + datos
+        salida = datos if not es_csv else cabecera(sha_origen, origen) + datos
         destino = DESTINO / nombre
         destino.write_bytes(salida)
         # verificacion: quitar la cabecera anadida debe devolver el origen exacto
         if es_csv:
-            n = len(cabecera(nombre, sha_origen))
+            n = len(cabecera(sha_origen, origen))
             ok = destino.read_bytes()[n:] == datos
         else:
             ok = destino.read_bytes() == datos
@@ -116,8 +119,9 @@ def main(argv=None) -> int:
         "",
         f"> Ventana **{T0} .. {T1}** · veredicto **VÁLIDA CON INCIDENCIA** (V6) ·",
         f"> `metrica_version={METRICA_VERSION}`, `boveda_version={BOVEDA_VERSION}`.",
-        "> Copia **desde** `Soporte/Laboratorio/legitimo_72h/ventana_2026-11-02/` (los originales",
-        "> **no** se modifican). A cada CSV se le antepone **una línea `#`** de procedencia con",
+        "> Copia **desde** `Soporte/Laboratorio/legitimo_72h/ventana_2026-11-02/` y",
+        "> `Soporte/Laboratorio/legitimo_72h/campana/` (los originales **no** se modifican).",
+        "> A cada CSV se le antepone **una línea `#`** de procedencia con",
         "> `t0`/`t1` y el `sha256` del origen; la copia, sin esa línea, es **byte a byte idéntica**",
         "> al origen.",
         "",
@@ -139,6 +143,7 @@ def main(argv=None) -> int:
         "## Trazabilidad",
         "",
         "- Productos y evidencia: `Soporte/Laboratorio/legitimo_72h/ventana_2026-11-02/`.",
+        "- Campaña FP: `Soporte/Laboratorio/legitimo_72h/campana/` (`campana_ventanas.tsv`).",
         "- Veredicto literal: `…/veredicto_validez.md`. Ficha: `…/ventana_meta.md`.",
         "- Sellado: `Soporte/Laboratorio/legitimo_72h/b10_sellado.md` (v3) +",
         "  `Soporte/Metrica/boveda_congelacion.md` (v2).",

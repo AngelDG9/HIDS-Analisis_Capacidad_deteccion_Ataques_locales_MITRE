@@ -71,7 +71,7 @@ El contraste umbral↔ruido es un **resultado**, no un defecto.
 
 **0 VMs · 0 tareas `TFG-Legit-*` · 0 reglas `TFG-*` · 0 procesos del laboratorio ·**
 `TFG-Baseline-*` **Disabled** (no borradas; se desactivaron porque podían apagar el manager o
-revertir la VM) · **Windows Update restaurado** (`Running/Manual`, políticas retiradas) ·
+revertir la VM) · **Windows Update restaurado** (`Manual`, servicio parado, políticas retiradas) ·
 **`TFG_GUEST_PW` borrada** del entorno · `logall_json=no` + `CONFIG_IDENTICA` ·
 `tfg_watch_estado.json` borrado.
 
