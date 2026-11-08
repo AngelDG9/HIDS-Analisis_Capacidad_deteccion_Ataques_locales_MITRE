@@ -1,0 +1,33 @@
+# clases_evento.csv | C0 Windows B1.0 (dry run 2026-11-08, ~2 min) | event_id -> rule_id + level + alerta | sin ataques
+clase,event_id,canal,rule_id,rule_level,alerta,evidencia,nota
+sysmon_1,1,Sysmon,92029,6,SI,2026-11-08T16:15:27Z,Process creation (regla de deteccion sobre Sysmon 1)
+sysmon_1,1,Sysmon,92033,3,SI,2026-11-08T16:15:27Z,Discovery activity spawned via powershell execution
+sysmon_1,1,Sysmon,92039,3,SI,2026-11-08T16:15:27Z,A net.exe account discovery command was initiated
+sysmon_1,1,Sysmon,92004,4,SI,2026-11-08T16:15:27Z,Powershell process spawned Windows command shell instance
+sysmon_1,1,Sysmon,92027,4,SI,2026-11-08T16:15:27Z,Powershell process spawned powershell instance
+sysmon_1,1,Sysmon,92052,4,SI,2026-11-08T16:15:27Z,Windows command prompt started by an abnormal process
+sysmon_3,3,Sysmon,185001,0,NO,2026-11-08T16:15:29Z,Evento generado; regla base nivel 0 sin alerta -> punto ciego (solo reglas especificas alertan)
+sysmon_11,11,Sysmon,92213,15,SI,2026-11-08T16:15:27Z,Executable file dropped in folder commonly used by malware
+sysmon_11,11,Sysmon,92200,6,SI,2026-11-08T16:15:27Z,Scripting file created under Windows Temp or User folder
+sysmon_23,23,Sysmon,,,NO,2026-11-08T16:15:27Z,No se genera con la config Sysmon actual -> punto ciego
+seguridad_4688,4688,Security,67027,3,SI,2026-11-08T16:15:27Z,A process was created
+powershell_4104,4104,PowerShell,91818,4,SI,2026-11-08T16:15:27Z,Script block logging (4104)
+fim_fichero,,FIM,554,5,SI,2026-11-08T16:15:28Z,File added to the system
+fim_fichero,,FIM,553,7,SI,2026-11-08T16:15:28Z,File deleted
+fim_registro,,FIM,598,5,SI,2026-11-08T16:19:29Z,Registry Key Entry Added to the System (barrido forzado)
+fim_registro,,FIM,752,5,SI,2026-11-08T16:19:29Z,Registry Value Entry Added to the System (barrido forzado)
+fim_registro,,FIM,594,5,SI,2026-11-08T16:19:29Z,Registry Key Integrity Checksum Changed (barrido forzado)
+fim_registro,,FIM,750,5,SI,2026-11-08T16:19:29Z,Registry Value Integrity Checksum Changed (barrido forzado)
+fim_registro,,PowerShell,91844,12,SI,2026-11-08T16:19:29Z,Posible adicion de item de inicio en registro (4104)
+servicio_7045,7045,System,61138,5,SI,2026-11-08T16:15:47Z,New Windows Service Created
+servicio_7036,7036,System,,,NO,2026-11-08T16:19:31Z,0 eventos 7036 en System tras stop/start de Spooler -> punto ciego
+servicio_7040,7040,System,61104,3,SI,2026-11-08T16:16:46Z,Service startup type was changed (extra)
+tarea_4698,4698,Security,60228,4,NO,2026-11-08T16:15:29Z,No se genera con la politica de auditoria actual -> punto ciego
+tarea_106,106,TaskScheduler,,,NO,2026-11-08T16:15:29Z,No se genera (canal TaskScheduler) -> punto ciego
+cuenta_4720,4720,Security,60109,8,SI,2026-11-08T16:15:29Z,User account enabled or created
+cuenta_4726,4726,Security,60111,8,SI,2026-11-08T16:15:29Z,User account disabled or deleted
+shutdown_1074,1074,System,67018,3,SI,2026-11-08T16:16:16Z,Windows shutdown/restart initiated (abortado)
+sysmon_13,13,Sysmon,92307,3,SI,2026-11-08T16:16:46Z,Registry value set (extra)
+huella_canal,4624,Security,67022,3,SI,2026-11-08T16:15:04Z,Huella del canal runProgramInGuest (logon); no esta en catalogo v1
+huella_canal,4634,Security,67023,3,SI,2026-11-08T16:15:04Z,Huella del canal runProgramInGuest (logoff); no esta en catalogo v1
+huella_canal,4672,Security,67028,3,SI,2026-11-08T16:15:04Z,Huella del canal runProgramInGuest (privilegios); no esta en catalogo v1

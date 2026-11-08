@@ -2,9 +2,9 @@
 fase: 3
 tarea: A2.1 (T-11 · R-09/R-13) · A3.0 (H3/H4) · A3.0 (ancla implícita + evento de ejecución) · A3.0 (métrica + pertenencia al ataque) · A3.0 (rule_id 11 stats)
 nombre: Política de filtrado de ruido y etiquetado auditado de alertas
-version: 7
+version: 8
 status: implementada
-fecha: 2026-10-01
+fecha: 2026-11-08
 autor: tfg-executor
 ---
 
@@ -301,3 +301,87 @@ declarada sin ataque (plan §8-a). **No** sustituye al modo ataque.
 - Baseline: `Dataset/Legitimo/baseline_meta.md` §9 y §14.5.
 - Convención de señales (H4): `Soporte/Ataques/plantilla_esperado.md`.
 - Criterio de doble iteración (H2): `Soporte/Ataques/criterio_doble_iteracion.md`.
+
+---
+
+## 9. Perfil Windows — `filtrar_ruido_windows.py` (v8, aditivo, B1.0)
+
+> **Aplica a Windows; Linux no cambia.** Se mantienen **las mismas categorías y el mismo orden
+> de decisión** de §2. Cambian los **datos** (campos, raíz y catálogo). El perfil Linux sigue
+> usando `filtrar_ruido.py` sin modificaciones.
+
+### 9.1 Diferencias de datos
+
+| Elemento | Linux | Windows |
+|---|---|---|
+| Script | `filtrar_ruido.py` | `filtrar_ruido_windows.py` |
+| `ATTACK_ROOT` | `/home/angel/lab-attack/` | `C:\lab-attack\` |
+| Campos de señal | `audit_exe`, `audit_cwd`, `audit_key`, `syscheck_path`, `rule_id`, `rule_group` | `win_image`, `win_command_line`, `win_cwd`, `win_target`, `syscheck_path`, `rule_id`, `rule_group` |
+| Evento de ejecución | grupo `audit_command` (execve) | `event_id ∈ {1, 4688}` (Sysmon 1 o Seguridad 4688) |
+| Catálogo | `Dataset/Legitimo/ruleids_legitimos.csv` | `Dataset/Legitimo/windows/ruleids_legitimos.csv` (v1+v2) |
+| `auto_ruido` | procesos `wazuh-*`, `cwd=/var/ossec`, `rule_id=11 ∧ stats` | **vacío en B1.0** (decisión declarada; el catálogo absorbe el ruido de régimen) |
+| Predicado `OPERADOR` | `5715` por `srcip` + `19004/sca` | **no implementado** (el `srcip` de 4624/4635 no está en el detalle normalizado; no es demostrable) |
+
+### 9.2 Ancla H4-W
+
+Una señal `tipo=deteccion, campo=win_image` cuenta como `deteccion` **solo si**:
+
+1. casa la **imagen** (`win_image`, ruta completa o nombre base; glob case-insensitive); **y**
+2. casa **al menos un ancla** — `win_cwd`, `win_command_line`, `win_target` o
+   `syscheck_path` — con `C:\lab-attack\ATA<NNN>`; **y**
+3. la fila es un **evento de ejecución** (`event_id` 1 o 4688; fallback por grupo
+   `sysmon_eid1`/`sysmon_event1` o `rule_id=67027`).
+
+Lo que casa la imagen y falla el ancla/evento → **`dudosa`** (`motivo=sin_ancla:<senal_id>`),
+**nunca** `deteccion` ni `ruido_conocido`. Si el `esperado` no declara `win_image`, una señal
+`win_command_line` puede detectar por sí sola (legado) y se emite **`AVISO`**.
+
+### 9.3 Pertenencia al ataque (Windows)
+
+La carpeta `C:\lab-attack\ATA<NNN>\` es la prueba demostrable. Se comprueba en `win_cwd`,
+`win_command_line`, `win_target` y `syscheck_path` (normalizados a `\` y minúsculas). Una fila
+del ataque que no case una detección declarada cae en **`artefacto_ataque`** (`motivo=del_ataque`),
+**nunca** en `ruido_conocido`. El guardarraíl de plegado (`veredicto=ruido` prohibido sobre una
+fila del ataque) se mantiene idéntico.
+
+### 9.4 Salida y determinismo
+
+- **Mismas 15 columnas** que Linux (§6). `OUT_HEADER` no cambia.
+- Cabecera `#` con rutas y `sha256` de las entradas + conteos, sin reloj.
+- Orden estable `(timestamp_utc, rule_id, evidencia)`; LF; UTF-8 sin BOM.
+- Defaults Windows: `Dataset/Ataques/Resultados/Wazuh/windows/Auditado` y
+  `Dataset/Ataques/Comandos/windows`.
+
+### 9.5 Replay de la baseline Windows (CA-B1-08)
+
+`filtrar_ruido_windows.py --replay-baseline` ejecuta:
+
+| Ventana | Fichero | Catálogo | Esperado |
+|---|---|---|---|
+| v1 | `Dataset/Legitimo/windows/baseline_detalle_v1.csv` (72) | `ruleids_legitimos_v1.csv` | **0 `deteccion`** |
+| v2 | `Dataset/Legitimo/windows/baseline_detalle_v2.csv` (87) | `ruleids_legitimos.csv` (v1+v2) | **0 `deteccion`** |
+
+Mezclar el catálogo de una ventana con la otra **no** es prueba válida.
+
+### 9.6 Puntos ciegos declarados (C0 Windows, B1.0)
+
+- **Sysmon 3** (conexión de red): el evento se genera, pero la regla base es nivel 0 y no
+  alerta para conexiones genéricas (solo reglas específicas). Se declara punto ciego.
+- **Sysmon 23** (FileDelete archivado): **no se genera** con la config Sysmon actual.
+- **7036** (cambio de estado de servicio): **0 eventos** locales tras stop/start de Spooler;
+  no hay alerta.
+- **4698/106** (tarea programada creada): **no se generan** con la política de auditoría
+  actual; el caso T1029 se apoya en `4688`/Sysmon 1 (`schtasks.exe`).
+- **FIM de registro**: no es realtime; requiere `agent_control -r -u 002` (barrido forzado).
+- **Huella del canal `runProgramInGuest`**: cada invocación genera eventos de logon
+  (`4624/4634/4672`) que el manager alerta como `67022/67023/67028` (nivel 3). **No están en
+  el catálogo baseline v1** y, con `auto_ruido` vacío, contarían como `novel` en B1.1. Se
+  declara riesgo abierto para el gate G-B1.0; la mitigación (catálogo de canal o `auto_ruido`
+  con evidencia) se decide antes de B1.1.
+
+### 9.7 Referencias
+
+- Código: `_artefactos/scripts/filtrar_ruido_windows.py`.
+- Plantilla v5 (H4-W): `Soporte/Ataques/plantilla_esperado.md` §7.
+- C0: `Soporte/Ataques/c0/windows/clases_evento.csv`.
+- Extractores: `_artefactos/scripts/extraer_alertas_windows.py`.

@@ -2,9 +2,9 @@
 fase: 3
 tarea: A3.0 (H4) · A3.0 (ancla implícita + evento de ejecución) · A3.0 (pertenencia al ataque)
 nombre: Plantilla y convención de señales esperadas por ataque
-version: 4
+version: 5
 status: vigente
-fecha: 2026-09-28
+fecha: 2026-11-08
 autor: tfg-executor
 ---
 
@@ -19,6 +19,10 @@ autor: tfg-executor
 > (política §3.ter/§5). En **v4** se declara que la pertenencia es **mecánica** y cubre **solo**
 > `ATTACK_ROOT/<ATA_id>`: una fila del ataque **fuera** de esa carpeta se atribuye por el
 > **veredicto humano** (`artefacto`), **nunca** `ruido`.
+>
+> **v5 (B1.0, 2026-11-08) — aditivo Windows.** Se añaden los campos `win_*` y el **ancla
+> H4-W** (mecanismo `win_image ∧ ancla ∧ evento de ejecución`). **No** se toca el esquema de
+> 7 columnas ni la convención H4 de Linux; un `esperado` Linux sigue siendo válido sin cambios.
 
 ---
 
@@ -114,3 +118,75 @@ T1486-A1,ambigua,syscheck_path,/home/angel/lab-attack/*,File Modification,T1486,
 - Decisión: `plan.md` bloque `fase-03-afinado` §5 (H4).
 - Esquema y consumo: `Soporte/Wazuh/Configuracion/politica_filtrado_ruido.md` §4.
 - Procedimiento por ventana: `Soporte/Ataques/piloto_procedimiento.md`.
+
+---
+
+## 7. Perfil Windows — esquema v5 (aditivo, B1.0)
+
+> **Aplica a Windows; Linux no cambia.** El fichero sigue teniendo **7 columnas**. Los campos
+> `win_*` se usan **solo** en los `ATA<NNN>_esperado.csv` de `victima-windows`.
+
+### 7.1 Campos admitidos en `campo`
+
+| `campo` | Qué es | Uso |
+|---|---|---|
+| `win_image` | `Image` de Sysmon 1 / `NewProcessName` de 4688 | **detector** (proceso) |
+| `win_command_line` | `CommandLine` de Sysmon 1 / 4688 | **ancla** si hay `win_image`; detector si no lo hay |
+| `win_cwd` | `CurrentDirectory` (Sysmon 1; **puede faltar en 4688**) | **ancla** |
+| `win_target` | `TargetFilename` de Sysmon 11 / destino de red de Sysmon 3 | **ancla** (si el extractor lo emite) |
+| `syscheck_path` | ruta FIM | **ancla** y señal ambigua |
+| `rule_id` | `rule.id` de Wazuh | detector |
+| `rule_group` | grupo de la regla | detector |
+
+- Los patrones son **glob** (`*`, `?`) y se comparan **sin distinguir mayúsculas** en Windows.
+- El `win_image` se prueba **ruta completa y nombre base** (p. ej. `*\powershell.exe` casa
+  `C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe`).
+
+### 7.2 Regla H4-W (mecanismo, no aspiración)
+
+Una señal `tipo=deteccion, campo=win_image` cuenta como **`deteccion`** solo si:
+
+1. casa la **imagen**; **y**
+2. casa **al menos una ancla** — `win_cwd`, `win_command_line`, `win_target` o
+   `syscheck_path` — con `C:\lab-attack\ATA<NNN>`; **y**
+3. la fila es un **evento de ejecución**: `event_id ∈ {1, 4688}` (Sysmon 1 o Seguridad 4688).
+
+Lo que casa la imagen y **falla** el ancla o el evento → **`dudosa`**
+(`motivo=sin_ancla:<senal_id>`), **nunca** `deteccion` ni `ruido`.
+
+- Si el `esperado` **no** declara `win_image`, una señal `win_command_line` puede detectar por
+  sí sola (comportamiento legado); se emite **`AVISO`** por `stderr` invitando a declarar
+  `win_image` + ancla.
+- Si el `esperado` declara `win_image` pero **no** declara ninguna ancla, se emite **`AVISO`**
+  (recuento ancho) y se mantiene el comportamiento legado.
+- La **pertenencia al ataque** es mecánica: `win_cwd`, `win_command_line`, `win_target` o
+  `syscheck_path` bajo `C:\lab-attack\ATA<NNN>`. Una fila del ataque que no case una detección
+  declarada cae en **`artefacto_ataque`**, nunca en `ruido_conocido`.
+
+### 7.3 Ejemplo (T1041 / ATA074)
+
+```csv
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1041-S1,deteccion,win_image,*\powershell.exe,Process Creation,T1041,cliente de exfiltracion
+T1041-S2,deteccion,win_command_line,*ATA074*,Command Execution,T1041,ancla H4-W
+T1041-S3,deteccion,win_cwd,C:\lab-attack\ATA074*,Process Creation,T1041,ancla H4-W (solo Sysmon 1)
+T1041-S4,deteccion,win_target,*ATA074*,Network Connection Creation,T1041,prediccion (Sysmon 3)
+T1041-A1,ambigua,syscheck_path,C:\lab-attack\ATA074\*,File Creation,T1041,artefacto del ataque
+```
+
+> **Honestidad (B1.0).** `win_target` solo es evaluable si el extractor de Windows emite esa
+> columna; si no está, la señal **no es evaluable** (no se inventa). En B1.0 el extractor
+> (`extraer_alertas_windows.py`) emite `win_image`, `win_command_line`, `win_cwd`, `win_user` y
+> `event_id`; `win_target` queda como **campo declarado pendiente** de ampliación aditiva en
+> B1.1. Un `rule_id` solo se declara si está **probado**; si se predice, la columna `nota`
+> lleva **`prediccion`**.
+
+### 7.4 Reglas de oro (Windows)
+
+1. `win_image` **siempre** acompañado de al menos un ancla (`win_command_line` o `win_cwd`).
+2. El `esperado` se firma **antes** de `t0`; no se reescribe después.
+3. **Nada del ataque se llama ruido**: la carpeta `C:\lab-attack\ATA<NNN>\` es la prueba.
+4. Las `dudosa` se resuelven con `deteccion` / `artefacto` / `ruido` (este último **prohibido**
+   sobre una fila del ataque).
+5. Las reglas de Windows **no** están probadas en su mayoría: los `rule_id` predichos llevan
+   `prediccion` en la nota (ver C0 `Soporte/Ataques/c0/windows/clases_evento.csv`).

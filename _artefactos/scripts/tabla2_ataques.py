@@ -35,6 +35,7 @@ import metrica_hids as M  # noqa: E402
 import tabla_comun as TC  # noqa: E402
 
 DEFAULT_AUDITADO = "Dataset/Ataques/Resultados/Wazuh/linux/Auditado"
+DEFAULT_FICHA_DIR = "Dataset/Ataques/Resultados/Wazuh/linux"
 DEFAULT_ATA_INDEX = "Hojas/ATA_index.csv"
 DEFAULT_REPETICIONES = "Hojas/repeticiones.csv"
 DEFAULT_BITACORA = "Bitacora"
@@ -171,6 +172,11 @@ def _bloque(rows, config_rs, umbral):
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="T2 (ataques) — recorte determinista del corpus.")
     ap.add_argument("--auditado", default=DEFAULT_AUDITADO)
+    ap.add_argument(
+        "--ficha-dir",
+        default=DEFAULT_FICHA_DIR,
+        help="directorio de las fichas <ATA>_meta.md (default: Linux; B1 usa windows/)",
+    )
     ap.add_argument("--ata-index", default=DEFAULT_ATA_INDEX)
     ap.add_argument("--repeticiones", default=DEFAULT_REPETICIONES)
     ap.add_argument("--bitacora", default=DEFAULT_BITACORA)
@@ -193,6 +199,7 @@ def main(argv=None) -> int:
     idx = _pcap_ata_index(args.ata_index)
     rep = _repeticiones(args.repeticiones)
     rs_con_reglas = {s.strip() for s in args.rs_con_reglas.split(",") if s.strip()}
+    ficha_dir = args.ficha_dir.replace("\\", "/").rstrip("/")
 
     ata_ids = sorted(idx.keys())
     filas = []
@@ -216,7 +223,7 @@ def main(argv=None) -> int:
         dur = it.get("duracion_s", "")
         meta = idx[ata]
         tecnica = str(meta.get("tecnica", ""))
-        ficha = f"Dataset/Ataques/Resultados/Wazuh/linux/{ata}_meta.md"
+        ficha = f"{ficha_dir}/{ata}_meta.md"
         analisis = ficha if os.path.isfile(os.path.join(TC.ROOT, ficha)) else ""
         meta_row = {
             "n": n0,

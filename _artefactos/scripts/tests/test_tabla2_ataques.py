@@ -158,3 +158,20 @@ def test_smoke_corpus_real_53_55(tmp_path):
     fn = [r["ata_id"] for r in rows if r["Detection"] == "NO"]
     assert len(tp) == 53
     assert sorted(fn) == ["ATA013", "ATA034"]
+
+def test_ficha_dir_windows(tmp_path):
+    """`--ficha-dir` (B1.0): la ficha se busca en el directorio indicado; default = Linux."""
+    casos = {"ATA906": {"iter1": [("80792", 3, "RS2", "deteccion", "2026-01-01T00:00:10Z")]}}
+    aud, idx, rep, bit = _fixture(tmp_path, casos)
+    fdir = tmp_path / "fichas_win"
+    fdir.mkdir()
+    (fdir / "ATA906_meta.md").write_text("ficha windows", encoding="utf-8")
+    out = tmp_path / "T2.csv"
+    assert T2.main([
+        "--auditado", str(aud), "--ata-index", str(idx), "--repeticiones", str(rep),
+        "--bitacora", str(bit), "--out", str(out), "--ficha-dir", str(fdir),
+        "--config", "C1", "--umbral", "0",
+    ]) == 0
+    rows = list(csv.DictReader([ln for ln in out.read_text(encoding="utf-8").splitlines()
+                                if not ln.startswith("#")]))
+    assert rows[0]["analisis_manual"].replace("\\", "/").endswith("fichas_win/ATA906_meta.md")
