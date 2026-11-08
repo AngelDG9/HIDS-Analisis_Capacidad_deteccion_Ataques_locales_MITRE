@@ -1,0 +1,8 @@
+ata=ATA057
+iter=2
+esperado=Dataset/Ataques/Comandos/windows/T1567.004-Exfiltration_Over_Webhook/ATA057_esperado.csv
+sha256_esperado=2e58477ab0f1ef6e8c6feb995fae7edd743e622e7b06d1b960a11cef89b4065d
+sha256_sellado=2e58477ab0f1ef6e8c6feb995fae7edd743e622e7b06d1b960a11cef89b4065d
+coincide=True
+timestamp_utc=2026-11-08T20:51:35Z
+nota=verificacion antes de t0 (CA-B1-02)

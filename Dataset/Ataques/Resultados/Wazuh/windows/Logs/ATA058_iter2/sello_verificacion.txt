@@ -1,0 +1,8 @@
+ata=ATA058
+iter=2
+esperado=Dataset/Ataques/Comandos/windows/T1567.002-Exfiltration_to_Cloud_Storage/ATA058_esperado.csv
+sha256_esperado=8dc73e5c88a8ab5ae223e953664fe574f4c27cf03a267e806943a041d2e923bc
+sha256_sellado=8dc73e5c88a8ab5ae223e953664fe574f4c27cf03a267e806943a041d2e923bc
+coincide=True
+timestamp_utc=2026-11-08T20:58:57Z
+nota=verificacion antes de t0 (CA-B1-02)

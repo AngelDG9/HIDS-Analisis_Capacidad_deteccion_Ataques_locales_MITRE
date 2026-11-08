@@ -54,8 +54,8 @@ fecha: 2026-11-08
 
 | Iter | `t0` (UTC) | `t1` (UTC) | Dur | filas | deteccion | `rule_id` | dudosas resueltas |
 |---|---|---|---|---|---|---|---|
-| 1 | `2026-11-08T19:10:16Z` | `2026-11-08T19:10:17Z` | 1 s | 18 | **5** | `67027,92032,92052` | 1 |
-| 2 | `2026-11-08T19:15:17Z` | `2026-11-08T19:15:18Z` | 1 s | 18 | **5** | `67027,92032,92052` | 1 |
+| 1 | `2026-11-08T20:43:54Z` | `2026-11-08T20:43:56Z` | 2 s | 18 | **5** | `67027,92032,92052` | 1 |
+| 2 | `2026-11-08T20:47:30Z` | `2026-11-08T20:47:31Z` | 1 s | 18 | **5** | `67027,92032,92052` | 1 |
 
 ## 5. Comando ejecutado (literal)
 
@@ -67,46 +67,46 @@ ssh -i <clave> angel@192.168.65.130 "cmd /c C:\lab-attack\ATA056\run.cmd"
 
 `Logs/ATA056_iter{1,2}/efecto.txt`: PUT al sink con sha256 del fichero (36 B).
 
-**Iter 1** (`sha256=b63fa7a041bcbef7f3ef3ea5850ba647bc4def255042463ab6b6bc412e153d54`):
+**Iter 1** (`sha256=ff1361f3a28cdbb317db89d7f726cd20ea55d7f60b1c65b74831983e731ca866`):
 
 ```text
 ata=ATA056
 tecnica=T1020
 fuente=ART
 guid=9c780d3d-3a14-4278-8ee5-faaeb2ccfbe0
-t0=2026-11-08T19:10:16Z
-t1=2026-11-08T19:10:17Z
+t0=2026-11-08T20:43:55Z
+t1=2026-11-08T20:43:55Z
 url=http://192.168.65.1:9090/upload/ATA056
 file=C:\lab-attack\ATA056\T1020_exfilFile.txt
 sha256=70c919c954bb6149648b26f7cfc831a32568693195f47a716de981af9608cec4
 resultado=HTTP=200
 sink.log (HOST):
-2026-11-08T19:10:17Z PUT /upload/ATA056 from=192.168.65.130 len=36 sha256=70c919c954bb6149648b26f7cfc831a32568693195f47a716de981af9608cec4 content_type=application/octet-stream
+2026-11-08T20:43:55Z PUT /upload/ATA056 from=192.168.65.130 len=36 sha256=70c919c954bb6149648b26f7cfc831a32568693195f47a716de981af9608cec4 content_type=application/octet-stream
 ```
 
-**Iter 2** (`sha256=5e9a3a0b83e4b26dd82ae1d9e279194c463dc2b132e93faa4b3b54004abda4dd`):
+**Iter 2** (`sha256=3734f4a246442fe7d33b3a25379f92aa1c7222615e4f941cf673871556783870`):
 
 ```text
 ata=ATA056
 tecnica=T1020
 fuente=ART
 guid=9c780d3d-3a14-4278-8ee5-faaeb2ccfbe0
-t0=2026-11-08T19:15:18Z
-t1=2026-11-08T19:15:18Z
+t0=2026-11-08T20:47:31Z
+t1=2026-11-08T20:47:31Z
 url=http://192.168.65.1:9090/upload/ATA056
 file=C:\lab-attack\ATA056\T1020_exfilFile.txt
 sha256=70c919c954bb6149648b26f7cfc831a32568693195f47a716de981af9608cec4
 resultado=HTTP=200
 sink.log (HOST):
-2026-11-08T19:15:18Z PUT /upload/ATA056 from=192.168.65.130 len=36 sha256=70c919c954bb6149648b26f7cfc831a32568693195f47a716de981af9608cec4 content_type=application/octet-stream
+2026-11-08T20:47:31Z PUT /upload/ATA056 from=192.168.65.130 len=36 sha256=70c919c954bb6149648b26f7cfc831a32568693195f47a716de981af9608cec4 content_type=application/octet-stream
 ```
 
 ## 7. Ventana extraida
 
 | Iter | Detalle | filas | `sha256` |
 |---|---|---|---|
-| 1 | `Dataset/Ataques/Resultados/Wazuh/windows/CSV/ATA056_iter1-Detalle.csv` | 18 | `6c23175656ab89b0ba25258b04f13aaa8f8ac7298a866e0b1d8814dedf598008` |
-| 2 | `Dataset/Ataques/Resultados/Wazuh/windows/CSV/ATA056_iter2-Detalle.csv` | 18 | `d643bcbf2875ffac520944d158cf23daddb6a3f5761eb90a31b6a61b695905d1` |
+| 1 | `Dataset/Ataques/Resultados/Wazuh/windows/CSV/ATA056_iter1-Detalle.csv` | 18 | `b747317de79d8b9eafb1bb99a5999cae4d15d3a90fd6febaff609be1421ea64b` |
+| 2 | `Dataset/Ataques/Resultados/Wazuh/windows/CSV/ATA056_iter2-Detalle.csv` | 18 | `7453eae45fad0cf21e506a74095e0aaff37d0aa2e919112b13c41f37e013c322` |
 
 ## 8. Resultado (metrica v1)
 
@@ -119,8 +119,8 @@ sink.log (HOST):
 
 | Iter | alertas | `rule_id` distintos | primera evidencia |
 |---|---|---|---|
-| 1 | 5 | 3 -> `67027,92032,92052` | `2026-11-08T19:10:17.374Z` `rule_id=92052` |
-| 2 | 5 | 3 -> `67027,92032,92052` | `2026-11-08T19:15:18.813Z` `rule_id=92052` |
+| 1 | 5 | 3 -> `67027,92032,92052` | `2026-11-08T20:43:56.008Z` `rule_id=92052` |
+| 2 | 5 | 3 -> `67027,92032,92052` | `2026-11-08T20:47:31.856Z` `rule_id=92052` |
 
 - Las detecciones son **procesos del ataque** (`cmd.exe` / `powershell.exe` / `rclone.exe`) anclados
   por `win_command_line` a la carpeta `C:\lab-attack\ATA056` (H4-W) y evento de ejecucion.

@@ -54,8 +54,8 @@ fecha: 2026-11-08
 
 | Iter | `t0` (UTC) | `t1` (UTC) | Dur | filas | deteccion | `rule_id` | dudosas resueltas |
 |---|---|---|---|---|---|---|---|
-| 1 | `2026-11-08T19:33:01Z` | `2026-11-08T19:33:03Z` | 2 s | 18 | **6** | `67027,92032,92052` | 2 |
-| 2 | `2026-11-08T19:36:40Z` | `2026-11-08T19:36:42Z` | 2 s | 18 | **6** | `67027,92032,92052` | 2 |
+| 1 | `2026-11-08T20:58:25Z` | `2026-11-08T20:58:30Z` | 5 s | 20 | **6** | `67027,92032,92052` | 2 |
+| 2 | `2026-11-08T21:02:04Z` | `2026-11-08T21:02:10Z` | 6 s | 25 | **6** | `67027,92032,92052` | 2 |
 
 ## 5. Comando ejecutado (literal)
 
@@ -67,70 +67,70 @@ ssh -i <clave> angel@192.168.65.130 "cmd /c C:\lab-attack\ATA058\run.cmd"
 
 `Logs/ATA058_iter{1,2}/efecto.txt`: 4 ficheros en el bucket WebDAV con sha256 coincidente.
 
-**Iter 1** (`sha256=ff7149b3590b275abd3a55f8f33d3fedb6aca5b5082124873bde998043e65982`):
+**Iter 1** (`sha256=56522723c986aab5b819261782252ff7819f5d5bf5f4cfe3b326e62207e18ea0`):
 
 ```text
 ata=ATA058
 tecnica=T1567.002
 fuente=ART_adaptado
 guid=8529ee44-279a-4a19-80bf-b846a40dda58
-t0=2026-11-08T19:33:02Z
-t1=2026-11-08T19:33:03Z
-remote=nube:ATA058/run_20261108T193302Z
+t0=2026-11-08T20:58:29Z
+t1=2026-11-08T20:58:30Z
+remote=nube:ATA058/run_20261108T205829Z
 rclone_rc=0
 sha256_local_clientes.csv=cdec283f3a36b508989c68c737a7567f5504d02e94927199ce9ea1c77b0c5ace
 sha256_local_contratos.csv=ded9088b4be1044de045fe76d29c5b8fbf8737778495298e7b73a2e89ffc32e6
 sha256_local_facturas.csv=ac9a2a05625d5193aa4b4259fa06dfe478c34bb0da07107fb50982427ec8993a
 sha256_local_nominas.csv=377bfe414b652a745779f08b44a67146240dc1df12f2e9ea0f3fec37c751c752
 sink.log (HOST):
-2026-11-08T19:33:03Z PUT /ATA058/run_20261108T193302Z/contratos.csv from=192.168.65.130 len=68 sha256=ded9088b4be1044de045fe76d29c5b8fbf8737778495298e7b73a2e89ffc32e6
-2026-11-08T19:33:03Z PUT /ATA058/run_20261108T193302Z/facturas.csv from=192.168.65.130 len=69 sha256=ac9a2a05625d5193aa4b4259fa06dfe478c34bb0da07107fb50982427ec8993a
-2026-11-08T19:33:03Z PUT /ATA058/run_20261108T193302Z/clientes.csv from=192.168.65.130 len=105 sha256=cdec283f3a36b508989c68c737a7567f5504d02e94927199ce9ea1c77b0c5ace
-2026-11-08T19:33:03Z PUT /ATA058/run_20261108T193302Z/nominas.csv from=192.168.65.130 len=50 sha256=377bfe414b652a745779f08b44a67146240dc1df12f2e9ea0f3fec37c751c752
+2026-11-08T20:58:29Z PUT /ATA058/run_20261108T205829Z/clientes.csv from=192.168.65.130 len=105 sha256=cdec283f3a36b508989c68c737a7567f5504d02e94927199ce9ea1c77b0c5ace
+2026-11-08T20:58:29Z PUT /ATA058/run_20261108T205829Z/facturas.csv from=192.168.65.130 len=69 sha256=ac9a2a05625d5193aa4b4259fa06dfe478c34bb0da07107fb50982427ec8993a
+2026-11-08T20:58:29Z PUT /ATA058/run_20261108T205829Z/nominas.csv from=192.168.65.130 len=50 sha256=377bfe414b652a745779f08b44a67146240dc1df12f2e9ea0f3fec37c751c752
+2026-11-08T20:58:29Z PUT /ATA058/run_20261108T205829Z/contratos.csv from=192.168.65.130 len=68 sha256=ded9088b4be1044de045fe76d29c5b8fbf8737778495298e7b73a2e89ffc32e6
 ```
 
-**Iter 2** (`sha256=ecbbf7a790d23cb3b75dca149167768da7c72605cf7c9692b9651f02b65e4ccf`):
+**Iter 2** (`sha256=706a292eff8762d97f185d1108b2e3d99733251ab1eaeb877fc1fad0822f8f43`):
 
 ```text
 ata=ATA058
 tecnica=T1567.002
 fuente=ART_adaptado
 guid=8529ee44-279a-4a19-80bf-b846a40dda58
-t0=2026-11-08T19:36:41Z
-t1=2026-11-08T19:36:42Z
-remote=nube:ATA058/run_20261108T193641Z
+t0=2026-11-08T21:02:08Z
+t1=2026-11-08T21:02:09Z
+remote=nube:ATA058/run_20261108T210208Z
 rclone_rc=0
 sha256_local_clientes.csv=cdec283f3a36b508989c68c737a7567f5504d02e94927199ce9ea1c77b0c5ace
 sha256_local_contratos.csv=ded9088b4be1044de045fe76d29c5b8fbf8737778495298e7b73a2e89ffc32e6
 sha256_local_facturas.csv=ac9a2a05625d5193aa4b4259fa06dfe478c34bb0da07107fb50982427ec8993a
 sha256_local_nominas.csv=377bfe414b652a745779f08b44a67146240dc1df12f2e9ea0f3fec37c751c752
 sink.log (HOST):
-2026-11-08T19:36:42Z PUT /ATA058/run_20261108T193641Z/clientes.csv from=192.168.65.130 len=105 sha256=cdec283f3a36b508989c68c737a7567f5504d02e94927199ce9ea1c77b0c5ace
-2026-11-08T19:36:42Z PUT /ATA058/run_20261108T193641Z/contratos.csv from=192.168.65.130 len=68 sha256=ded9088b4be1044de045fe76d29c5b8fbf8737778495298e7b73a2e89ffc32e6
-2026-11-08T19:36:42Z PUT /ATA058/run_20261108T193641Z/facturas.csv from=192.168.65.130 len=69 sha256=ac9a2a05625d5193aa4b4259fa06dfe478c34bb0da07107fb50982427ec8993a
-2026-11-08T19:36:42Z PUT /ATA058/run_20261108T193641Z/nominas.csv from=192.168.65.130 len=50 sha256=377bfe414b652a745779f08b44a67146240dc1df12f2e9ea0f3fec37c751c752
+2026-11-08T21:02:09Z PUT /ATA058/run_20261108T210208Z/contratos.csv from=192.168.65.130 len=68 sha256=ded9088b4be1044de045fe76d29c5b8fbf8737778495298e7b73a2e89ffc32e6
+2026-11-08T21:02:09Z PUT /ATA058/run_20261108T210208Z/facturas.csv from=192.168.65.130 len=69 sha256=ac9a2a05625d5193aa4b4259fa06dfe478c34bb0da07107fb50982427ec8993a
+2026-11-08T21:02:09Z PUT /ATA058/run_20261108T210208Z/clientes.csv from=192.168.65.130 len=105 sha256=cdec283f3a36b508989c68c737a7567f5504d02e94927199ce9ea1c77b0c5ace
+2026-11-08T21:02:09Z PUT /ATA058/run_20261108T210208Z/nominas.csv from=192.168.65.130 len=50 sha256=377bfe414b652a745779f08b44a67146240dc1df12f2e9ea0f3fec37c751c752
 ```
 
 ## 7. Ventana extraida
 
 | Iter | Detalle | filas | `sha256` |
 |---|---|---|---|
-| 1 | `Dataset/Ataques/Resultados/Wazuh/windows/CSV/ATA058_iter1-Detalle.csv` | 18 | `efd913eb6fc22879a1ef7e4ed85472fbb5b54a5c56cc542b5b6e25461e15885f` |
-| 2 | `Dataset/Ataques/Resultados/Wazuh/windows/CSV/ATA058_iter2-Detalle.csv` | 18 | `74990a01e55c3d575b71c0282fd817039f55138b183cbfc0455e7fc4b64fd481` |
+| 1 | `Dataset/Ataques/Resultados/Wazuh/windows/CSV/ATA058_iter1-Detalle.csv` | 20 | `ccf48a12846182b0e02fe3777be49edefde17d6e4dc149a5dce3c552d0de5e62` |
+| 2 | `Dataset/Ataques/Resultados/Wazuh/windows/CSV/ATA058_iter2-Detalle.csv` | 25 | `3429e09c9448134c6e083e18512fd95bb963883dfe39a0d24825fc61e9607e31` |
 
 ## 8. Resultado (metrica v1)
 
 | Iter | filas | deteccion | auto_ruido | ruido_conocido | dudosa | artefacto_ataque | RS1 | RS2 | RS3 | RS4 |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 1 | 18 | **6** | 3 | 7 | **0** | 2 | 18 | 0 | 0 | 0 |
-| 2 | 18 | **6** | 3 | 7 | **0** | 2 | 18 | 0 | 0 | 0 |
+| 1 | 20 | **6** | 3 | 9 | **0** | 2 | 20 | 0 | 0 | 0 |
+| 2 | 25 | **6** | 3 | 9 | **0** | 7 | 25 | 0 | 0 | 0 |
 
 ### 8.1 Detecciones
 
 | Iter | alertas | `rule_id` distintos | primera evidencia |
 |---|---|---|---|
-| 1 | 6 | 3 -> `67027,92032,92052` | `2026-11-08T19:33:03.178Z` `rule_id=67027` |
-| 2 | 6 | 3 -> `67027,92032,92052` | `2026-11-08T19:36:42.026Z` `rule_id=92052` |
+| 1 | 6 | 3 -> `67027,92032,92052` | `2026-11-08T20:58:26.975Z` `rule_id=92052` |
+| 2 | 6 | 3 -> `67027,92032,92052` | `2026-11-08T21:02:06.363Z` `rule_id=92052` |
 
 - Las detecciones son **procesos del ataque** (`cmd.exe` / `powershell.exe` / `rclone.exe`) anclados
   por `win_command_line` a la carpeta `C:\lab-attack\ATA058` (H4-W) y evento de ejecucion.
@@ -149,8 +149,6 @@ sink.log (HOST):
    **ninguna** fila del ataque cae en `ruido` (candado de pertenencia).
 3. **FIM**: en este filtro congelado es **ancla/artefacto**, no deteccion (H4-W).
 4. **rclone**: el remote Mega se sustituye por WebDAV local; `rclone.exe` v1.68.1 pre-staged (60,6 MB, fuera del repo).
-5. **FIM**: en estas dos ventanas no se observaron filas `554` de `rclone.conf`/`loot` dentro de `[t0,t1]`
-   (la copia de `loot` es pre-`t0`; el `rclone.conf` no alerto en la ventana). Se declara; no afecta a la
-   deteccion (proceso) ni al efecto (4/4 PUT).
-6. **Realismo acotado**: rutas conocidas por el analista; entorno limpio; red host-only.
+5. **FIM**: en iter2 se observaron `554` de `rclone.conf`/`rclone.out` (artefacto); en iter1 no. No afecta a la deteccion (proceso) ni al efecto (4/4 PUT).
+5. **Realismo acotado**: rutas conocidas por el analista; entorno limpio; red host-only.
 

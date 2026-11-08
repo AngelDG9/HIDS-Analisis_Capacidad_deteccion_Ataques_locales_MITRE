@@ -257,6 +257,11 @@ def detectar_auto_ruido(row: dict):
 # --------------------------------------------------------------------------
 # Pertenencia al ataque (§3) — prueba DEMOSTRABLE por carpeta
 # --------------------------------------------------------------------------
+def _sin_dobles(v: str) -> str:
+    """Colapsa barras invertidas repetidas (Wazuh escapa `\\\\` en `win_command_line`)."""
+    return re.sub(r"\\{2,}", r"\\", v or "")
+
+
 def es_del_ataque(row: dict, ata_id: str) -> str:
     """Devuelve `campo=valor` si la fila es DEL ATAQUE, o "".
 
@@ -267,17 +272,18 @@ def es_del_ataque(row: dict, ata_id: str) -> str:
         return ""
     carpeta = (ATTACK_ROOT.rstrip("\\") + "\\" + ata_id).rstrip("\\")
 
-    cwd = (row.get("win_cwd") or "").strip()
+    cwd = _sin_dobles((row.get("win_cwd") or "").strip())
     if cwd and _bajo_carpeta(_ruta_win_abs(cwd, ""), carpeta):
         return f"win_cwd={cwd}"
 
     for field in ("syscheck_path", "win_target"):
-        raw = row.get(field) or ""
+        raw = _sin_dobles(row.get(field) or "")
         if raw and _bajo_carpeta(_ruta_win_abs(raw, cwd), carpeta):
             return f"{field}={raw}"
 
-    cmd = (row.get("win_command_line") or "").strip()
-    if cmd and _norm(carpeta) in _norm(cmd):
+    cmd = _sin_dobles((row.get("win_command_line") or "").strip())
+    carpeta_n = _sin_dobles(_norm(carpeta))
+    if cmd and carpeta_n in _sin_dobles(_norm(cmd)):
         return f"win_command_line={cmd}"
 
     return ""

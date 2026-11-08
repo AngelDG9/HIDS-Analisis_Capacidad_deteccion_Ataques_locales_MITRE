@@ -52,8 +52,8 @@ fecha: 2026-11-08
 
 | Iter | `t0` (UTC) | `t1` (UTC) | Dur | filas | deteccion | `rule_id` | dudosas resueltas |
 |---|---|---|---|---|---|---|---|
-| 1 | `2026-11-08T19:54:01Z` | `2026-11-08T19:54:02Z` | 1 s | 29 | **5** | `67027,92032,92052` | 2 |
-| 2 | `2026-11-08T19:57:13Z` | `2026-11-08T19:57:14Z` | 1 s | 29 | **5** | `67027,92032,92052` | 2 |
+| 1 | `2026-11-08T21:20:04Z` | `2026-11-08T21:20:05Z` | 1 s | 29 | **5** | `67027,92032,92052` | 2 |
+| 2 | `2026-11-08T21:23:17Z` | `2026-11-08T21:23:18Z` | 1 s | 29 | **5** | `67027,92032,92052` | 2 |
 
 ## 5. Comando ejecutado (literal)
 
@@ -65,15 +65,15 @@ ssh -i <clave> angel@192.168.65.130 "cmd /c C:\lab-attack\ATA061\run.cmd"
 
 `Logs/ATA061_iter{1,2}/efecto.txt`: 5/5 ficheros: sha256(original)!=sha256(.enc) y descifrado==original.
 
-**Iter 1** (`sha256=b5869a9403a5fa47988dbf409b70e3652f5ee8725dcfd7878daa218d0afe7b48`):
+**Iter 1** (`sha256=36108a4faaeff54bbb6cb66d599ae8e8b9599bcb468f352eeadb74b284ba4da7`):
 
 ```text
 ata=ATA061
 tecnica=T1486
 fuente=propio
 algoritmo=AES-256-CBC
-t0=2026-11-08T19:54:02Z
-t1=2026-11-08T19:54:02Z
+t0=2026-11-08T21:20:05Z
+t1=2026-11-08T21:20:05Z
 ficheros_total=5
 ficheros_cifrados_ok=5
 file=empleados.csv.txt before=0bc52130a1106dead5d8d8e690d49b0ba050668999cdc012419962f9fe6170c3 enc=4a696a0c03c0d53059919e71d1fce83dc58a4a8367f054b6760e64a34b591ad2 dec=0bc52130a1106dead5d8d8e690d49b0ba050668999cdc012419962f9fe6170c3 cifrado=True roundtrip=True
@@ -83,15 +83,15 @@ file=servidores.csv.txt before=7499eb9d105edadc074e31e6e6e4f61df188a480e9c4c3c0d
 file=usuarios.csv.txt before=949c1a13c1fb5a6f47b8684ac4563932401154493271dfaf0716a75e9e2ce308 enc=60a1557457b72dc8bd7cf527d2c508c9d4c842b98c0e0eed7a1fe605c7bbe15b dec=949c1a13c1fb5a6f47b8684ac4563932401154493271dfaf0716a75e9e2ce308 cifrado=True roundtrip=True
 ```
 
-**Iter 2** (`sha256=1319632723de014b55e7cfa45321ca03620122d18e0818413a30fcff81b71619`):
+**Iter 2** (`sha256=a450a83d3f04e43c7617c5253f355a7992b2c1e521ac2aecc3ba49d20e87e7ac`):
 
 ```text
 ata=ATA061
 tecnica=T1486
 fuente=propio
 algoritmo=AES-256-CBC
-t0=2026-11-08T19:57:14Z
-t1=2026-11-08T19:57:14Z
+t0=2026-11-08T21:23:18Z
+t1=2026-11-08T21:23:18Z
 ficheros_total=5
 ficheros_cifrados_ok=5
 file=empleados.csv.txt before=0bc52130a1106dead5d8d8e690d49b0ba050668999cdc012419962f9fe6170c3 enc=4a696a0c03c0d53059919e71d1fce83dc58a4a8367f054b6760e64a34b591ad2 dec=0bc52130a1106dead5d8d8e690d49b0ba050668999cdc012419962f9fe6170c3 cifrado=True roundtrip=True
@@ -105,8 +105,8 @@ file=usuarios.csv.txt before=949c1a13c1fb5a6f47b8684ac4563932401154493271dfaf071
 
 | Iter | Detalle | filas | `sha256` |
 |---|---|---|---|
-| 1 | `Dataset/Ataques/Resultados/Wazuh/windows/CSV/ATA061_iter1-Detalle.csv` | 29 | `5cde1a42235e57b01cb2845ebf810b63b9e976819a2c52a21286709ec4777dda` |
-| 2 | `Dataset/Ataques/Resultados/Wazuh/windows/CSV/ATA061_iter2-Detalle.csv` | 29 | `0a589e6df8b10e5ba41f72a1ee1db6a3eb263a44690f4fb473527943044f1327` |
+| 1 | `Dataset/Ataques/Resultados/Wazuh/windows/CSV/ATA061_iter1-Detalle.csv` | 29 | `168fac4b8a61a6e88a9b823acb82cf1492fb0b0f9a348dc6b8e2a8397ed8ad1e` |
+| 2 | `Dataset/Ataques/Resultados/Wazuh/windows/CSV/ATA061_iter2-Detalle.csv` | 29 | `654cba44401a4b3b3e417af25314097c9626918c0a88be2ffc9bf83017d627d3` |
 
 ## 8. Resultado (metrica v1)
 
@@ -119,8 +119,8 @@ file=usuarios.csv.txt before=949c1a13c1fb5a6f47b8684ac4563932401154493271dfaf071
 
 | Iter | alertas | `rule_id` distintos | primera evidencia |
 |---|---|---|---|
-| 1 | 5 | 3 -> `67027,92032,92052` | `2026-11-08T19:54:02.653Z` `rule_id=92052` |
-| 2 | 5 | 3 -> `67027,92032,92052` | `2026-11-08T19:57:14.719Z` `rule_id=92052` |
+| 1 | 5 | 3 -> `67027,92032,92052` | `2026-11-08T21:20:05.805Z` `rule_id=92052` |
+| 2 | 5 | 3 -> `67027,92032,92052` | `2026-11-08T21:23:18.719Z` `rule_id=67027` |
 
 - Las detecciones son **procesos del ataque** (`cmd.exe` / `powershell.exe` / `rclone.exe`) anclados
   por `win_command_line` a la carpeta `C:\lab-attack\ATA061` (H4-W) y evento de ejecucion.

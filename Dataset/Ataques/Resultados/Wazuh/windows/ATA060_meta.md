@@ -52,8 +52,8 @@ fecha: 2026-11-08
 
 | Iter | `t0` (UTC) | `t1` (UTC) | Dur | filas | deteccion | `rule_id` | dudosas resueltas |
 |---|---|---|---|---|---|---|---|
-| 1 | `2026-11-08T19:46:31Z` | `2026-11-08T19:47:05Z` | 34 s | 21 | **5** | `67027,92032,92052` | 2 |
-| 2 | `2026-11-08T19:50:21Z` | `2026-11-08T19:50:53Z` | 32 s | 21 | **5** | `67027,92032,92052` | 2 |
+| 1 | `2026-11-08T21:12:41Z` | `2026-11-08T21:13:17Z` | 36 s | 22 | **5** | `67027,92032,92052` | 2 |
+| 2 | `2026-11-08T21:16:24Z` | `2026-11-08T21:16:56Z` | 32 s | 21 | **5** | `67027,92032,92052` | 2 |
 
 ## 5. Comando ejecutado (literal)
 
@@ -65,62 +65,62 @@ ssh -i <clave> angel@192.168.65.130 "cmd /c C:\lab-attack\ATA060\run.cmd"
 
 `Logs/ATA060_iter{1,2}/efecto.txt`: CPU 11,3 % -> 97,8 %; Available MBytes 2975 -> 2967.
 
-**Iter 1** (`sha256=7698e33b7c681ae75c95e5886003d51e684c382c0ba4337a38405c2e7139ef87`):
+**Iter 1** (`sha256=50d08e11ef0679e89cda18b04c22bf2492d516f1508689d6a557c0c0c5d53a52`):
 
 ```text
 ata=ATA060
 tecnica=T1496.001
 fuente=propio
-t0=2026-11-08T19:46:34Z
-t1=2026-11-08T19:47:04Z
+t0=2026-11-08T21:12:46Z
+t1=2026-11-08T21:13:16Z
 workers=4
 duracion_objetivo_s=30
-cpu_before_pct=11.3
-cpu_during_samples=99.2316227772875,97.1857297677385,96.8784917191629
-cpu_during_avg_pct=97.77
-mem_before_available_mb=2975.4
-mem_during_available_mb=2966.8
-delta_cpu_pct=86.47
+cpu_before_pct=10.95
+cpu_during_samples=100,97.0149749869232,100
+cpu_during_avg_pct=99
+mem_before_available_mb=3135.4
+mem_during_available_mb=3115.4
+delta_cpu_pct=88.05
 ```
 
-**Iter 2** (`sha256=de847e95834cbf3bcae058edf0f69bd60306d9ead401c646d456ccb810ba0e87`):
+**Iter 2** (`sha256=390c17172053351d39155a6220a38d46c88519991cc469471600e85175f331f2`):
 
 ```text
 ata=ATA060
 tecnica=T1496.001
 fuente=propio
-t0=2026-11-08T19:50:23Z
-t1=2026-11-08T19:50:53Z
+t0=2026-11-08T21:16:26Z
+t1=2026-11-08T21:16:56Z
 workers=4
 duracion_objetivo_s=30
-cpu_before_pct=11.99
-cpu_during_samples=95.3033325748528,100,94.6028821670147
-cpu_during_avg_pct=96.64
-mem_before_available_mb=3003.6
-mem_during_available_mb=2993.8
-delta_cpu_pct=84.65
+cpu_before_pct=2.26
+cpu_during_samples=96.967229581206,98.5282432244557,95.4519412085175
+cpu_during_avg_pct=96.98
+mem_before_available_mb=3030.5
+mem_during_available_mb=3023.3
+delta_cpu_pct=94.72
 ```
 
 ## 7. Ventana extraida
 
 | Iter | Detalle | filas | `sha256` |
 |---|---|---|---|
-| 1 | `Dataset/Ataques/Resultados/Wazuh/windows/CSV/ATA060_iter1-Detalle.csv` | 21 | `015557ba39a4ecba37840f1ce83c68b5aef3732aebffa29bc7b02484bde75af6` |
-| 2 | `Dataset/Ataques/Resultados/Wazuh/windows/CSV/ATA060_iter2-Detalle.csv` | 21 | `9ec450c7fc168078dac702f2bb32de11b20c3b3374fa89a34627c304c5245ee5` |
+| 1 | `Dataset/Ataques/Resultados/Wazuh/windows/CSV/ATA060_iter1-Detalle.csv` | 22 | `e384216a87b9af3969b56fb9f7623aa7e6224d4afe316d8e66bd601c3b4b94bd` |
+| 2 | `Dataset/Ataques/Resultados/Wazuh/windows/CSV/ATA060_iter2-Detalle.csv` | 21 | `778c0ef69226138d4c295000e4d11aef96498a736f68cc158bd000d920e715d1` |
 
 ## 8. Resultado (metrica v1)
 
 | Iter | filas | deteccion | auto_ruido | ruido_conocido | dudosa | artefacto_ataque | RS1 | RS2 | RS3 | RS4 |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 1 | 21 | **5** | 3 | 10 | **0** | 3 | 21 | 0 | 0 | 0 |
+| 1 | 22 | **5** | 3 | 10 | **0** | 4 | 22 | 0 | 0 | 0 |
 | 2 | 21 | **5** | 3 | 10 | **0** | 3 | 21 | 0 | 0 | 0 |
 
 ### 8.1 Detecciones
 
 | Iter | alertas | `rule_id` distintos | primera evidencia |
 |---|---|---|---|
-| 1 | 5 | 3 -> `67027,92032,92052` | `2026-11-08T19:46:33.370Z` `rule_id=92052` |
-| 2 | 5 | 3 -> `67027,92032,92052` | `2026-11-08T19:50:22.900Z` `rule_id=92052` |
+| 1 | 5 | 3 -> `67027,92032,92052` | `2026-11-08T21:12:43.113Z` `rule_id=92052` |
+| 2 | 5 | 3 -> `67027,92032,92052` | `2026-11-08T21:16:25.655Z` `rule_id=92052` |
 
 - Las detecciones son **procesos del ataque** (`cmd.exe` / `powershell.exe` / `rclone.exe`) anclados
   por `win_command_line` a la carpeta `C:\lab-attack\ATA060` (H4-W) y evento de ejecucion.

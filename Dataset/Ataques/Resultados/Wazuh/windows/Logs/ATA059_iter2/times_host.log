@@ -1,9 +1,9 @@
-2026-11-08T19:40:26Z == ATA059 iter2 ==
-2026-11-08T19:41:27Z ssh_up=2026-11-08T19:41:10Z agent_active=2026-11-08T19:41:27Z
-2026-11-08T19:43:03Z servicios=on off_http=201685 off_webdav=158806
-2026-11-08T19:43:04Z caso copiado
-2026-11-08T19:43:19Z t0=2026-11-08T19:43:19Z run=cmd /c C:\lab-attack\ATA059\run.cmd
-2026-11-08T19:43:20Z t1=2026-11-08T19:43:20Z
-2026-11-08T19:43:31Z evidencias cosechadas
-2026-11-08T19:43:35Z servicios=off sink recortado
-2026-11-08T19:43:35Z fin ATA059 iter2
+2026-11-08T21:06:15Z == ATA059 iter2 ==
+2026-11-08T21:07:18Z ssh_up=2026-11-08T21:06:59Z agent_active=2026-11-08T21:07:18Z
+2026-11-08T21:08:54Z servicios=on off_http=204599 off_webdav=160810
+2026-11-08T21:08:55Z caso copiado
+2026-11-08T21:09:10Z t0=2026-11-08T21:09:10Z run=cmd /c C:\lab-attack\ATA059\run.cmd
+2026-11-08T21:09:15Z t1=2026-11-08T21:09:15Z
+2026-11-08T21:09:26Z evidencias cosechadas
+2026-11-08T21:09:30Z servicios=off sink recortado
+2026-11-08T21:09:30Z fin ATA059 iter2

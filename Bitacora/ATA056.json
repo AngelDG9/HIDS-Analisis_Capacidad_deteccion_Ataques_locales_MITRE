@@ -28,18 +28,18 @@
   "iteraciones": [
     {
       "iter": 1,
-      "t0": "2026-11-08T19:10:16Z",
-      "t1": "2026-11-08T19:10:17Z",
-      "duracion_s": 1,
+      "t0": "2026-11-08T20:43:54Z",
+      "t1": "2026-11-08T20:43:56Z",
+      "duracion_s": 2,
       "snapshot": "lab-listo-windows-ataques-ssh",
       "canal": "ssh",
       "diario": "/var/ossec/logs/alerts/2026/Nov/ossec-alerts-08.json",
       "detalle": "Dataset/Ataques/Resultados/Wazuh/windows/CSV/ATA056_iter1-Detalle.csv",
-      "detalle_sha256": "6c23175656ab89b0ba25258b04f13aaa8f8ac7298a866e0b1d8814dedf598008",
+      "detalle_sha256": "b747317de79d8b9eafb1bb99a5999cae4d15d3a90fd6febaff609be1421ea64b",
       "audited": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA056_iter1-Audited.csv",
-      "audited_sha256": "22337bebead19516c1768c61b4a94afb21c9d959a4a2820a1ede39887c1d1311",
+      "audited_sha256": "2da10b1e29f89512562c74d34fa0307788a311f785d996427e4c52619a8832a5",
       "revision": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA056_iter1-Revision.csv",
-      "revision_sha256": "1d04b03b7696edc2ca5f5b6e52dff5f6029635157ecd0bbe18ece36f3564bc5f",
+      "revision_sha256": "73dda1153b95ea162d8dce24da8db3cb4dcdcc3cac93c19a9d29cadd2af61d29",
       "conteos": {
         "deteccion": 5,
         "auto_ruido": 3,
@@ -70,24 +70,26 @@
       "dudosas_resueltas": 1,
       "efecto": {
         "fichero": "Dataset/Ataques/Resultados/Wazuh/windows/Logs/ATA056_iter1/efecto.txt",
-        "sha256": "b63fa7a041bcbef7f3ef3ea5850ba647bc4def255042463ab6b6bc412e153d54",
+        "sha256": "ff1361f3a28cdbb317db89d7f726cd20ea55d7f60b1c65b74831983e731ca866",
         "resumen": "PUT al sink con sha256 del fichero (36 B)"
-      }
+      },
+      "revision_pre": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA056_iter1-Revision_pre.csv",
+      "revision_pre_sha256": "e586701f4f1b35d0872d285d548f4453072dc98ebc73cec4abd7b801e965eada"
     },
     {
       "iter": 2,
-      "t0": "2026-11-08T19:15:17Z",
-      "t1": "2026-11-08T19:15:18Z",
+      "t0": "2026-11-08T20:47:30Z",
+      "t1": "2026-11-08T20:47:31Z",
       "duracion_s": 1,
       "snapshot": "lab-listo-windows-ataques-ssh",
       "canal": "ssh",
       "diario": "/var/ossec/logs/alerts/2026/Nov/ossec-alerts-08.json",
       "detalle": "Dataset/Ataques/Resultados/Wazuh/windows/CSV/ATA056_iter2-Detalle.csv",
-      "detalle_sha256": "d643bcbf2875ffac520944d158cf23daddb6a3f5761eb90a31b6a61b695905d1",
+      "detalle_sha256": "7453eae45fad0cf21e506a74095e0aaff37d0aa2e919112b13c41f37e013c322",
       "audited": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA056_iter2-Audited.csv",
-      "audited_sha256": "eb7c6130e6683daf75b4b05bee6774fd997509c9d80c39b91f67c46aa9366813",
+      "audited_sha256": "86e02361a4207260ff9dcbe83ec8f852decc11b3539696f9b725c7866f4e1b63",
       "revision": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA056_iter2-Revision.csv",
-      "revision_sha256": "6940c77b67d665c9dd15c51d6d249cd48a2cf76bac8172821581dfffaa6d62fa",
+      "revision_sha256": "4e31a93113de91eec67a94fa4a959fb05bdf415ce6b8a658e1433ae77ab5bc69",
       "conteos": {
         "deteccion": 5,
         "auto_ruido": 3,
@@ -118,15 +120,17 @@
       "dudosas_resueltas": 1,
       "efecto": {
         "fichero": "Dataset/Ataques/Resultados/Wazuh/windows/Logs/ATA056_iter2/efecto.txt",
-        "sha256": "5e9a3a0b83e4b26dd82ae1d9e279194c463dc2b132e93faa4b3b54004abda4dd",
+        "sha256": "3734f4a246442fe7d33b3a25379f92aa1c7222615e4f941cf673871556783870",
         "resumen": "PUT al sink con sha256 del fichero (36 B)"
-      }
+      },
+      "revision_pre": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA056_iter2-Revision_pre.csv",
+      "revision_pre_sha256": "f1182bd123618aba7a1e249c644bf847bb6ed1b18cb1e9fff8f4b80eeaee63e7"
     }
   ],
   "revision_global": {
     "fecha": "2026-11-08",
     "veredicto": "artefacto/ruido segun fila (ver -Revision.csv)",
-    "motivo": "92213 (Sysmon 11) -> artefacto; canal -> operador/auto_ruido",
+    "motivo": "Sysmon 11 y 4104 del ataque sin ancla de ejecucion H4-W -> artefacto; 60642 del catalogo -> ruido",
     "revisor": "executor B1.1"
   },
   "doble_iteracion": "iguales",
@@ -157,22 +161,22 @@
   },
   "eventos": [
     {
-      "ts": "2026-11-08T19:10:16Z",
+      "ts": "2026-11-08T20:43:54Z",
       "tipo": "t0",
       "detalle": "iter1 t0 (revert + Active + 90 s)"
     },
     {
-      "ts": "2026-11-08T19:10:17Z",
+      "ts": "2026-11-08T20:43:56Z",
       "tipo": "t1",
       "detalle": "iter1 t1"
     },
     {
-      "ts": "2026-11-08T19:15:17Z",
+      "ts": "2026-11-08T20:47:30Z",
       "tipo": "t0",
       "detalle": "iter2 t0 (revert + Active + 90 s)"
     },
     {
-      "ts": "2026-11-08T19:15:18Z",
+      "ts": "2026-11-08T20:47:31Z",
       "tipo": "t1",
       "detalle": "iter2 t1"
     },

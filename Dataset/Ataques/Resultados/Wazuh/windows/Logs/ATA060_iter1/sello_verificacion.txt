@@ -1,0 +1,8 @@
+ata=ATA060
+iter=1
+esperado=Dataset/Ataques/Comandos/windows/T1496.001-Compute_Hijacking/ATA060_esperado.csv
+sha256_esperado=9b553e21bc249ba93895f57f62e474b75c540cf1036ede416c7dc148ab5ee731
+sha256_sellado=9b553e21bc249ba93895f57f62e474b75c540cf1036ede416c7dc148ab5ee731
+coincide=True
+timestamp_utc=2026-11-08T21:09:41Z
+nota=verificacion antes de t0 (CA-B1-02)

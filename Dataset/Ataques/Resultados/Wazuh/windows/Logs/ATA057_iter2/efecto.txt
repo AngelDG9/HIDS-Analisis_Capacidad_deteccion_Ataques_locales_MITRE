@@ -1,21 +1,21 @@
 # ATA057 iter2 - prueba de efecto (NO es deteccion)
 
-2026-11-08T19:22:24Z t0=2026-11-08T19:22:24Z run=cmd /c C:\lab-attack\ATA057\run.cmd
-2026-11-08T19:22:25Z t1=2026-11-08T19:22:25Z
+2026-11-08T20:54:33Z t0=2026-11-08T20:54:33Z run=cmd /c C:\lab-attack\ATA057\run.cmd
+2026-11-08T20:54:40Z t1=2026-11-08T20:54:40Z
 
-evidencia_local: ata=ATA057
+evidencia_local:
   ata=ATA057
   tecnica=T1567.004
   fuente=ART
   guid=f0057c81-24dc-4a2e-b658-5809c242180b
-  t0=2026-11-08T19:22:25Z
-  t1=2026-11-08T19:22:25Z
+  t0=2026-11-08T20:54:37Z
+  t1=2026-11-08T20:54:39Z
   url=http://192.168.65.1:9090/hook/ATA057
   staged=C:\lab-attack\ATA057\T1567.004_loot.txt
   sha256_body=a14f54349e5ef38eb8eec5e0f3650b5b90dadf6a0a0d4fd95999dd6f5409e2f8
   len_body=1809
   resultado=HTTP=200
 sink.log (HOST):
-  2026-11-08T19:22:25Z POST /hook/ATA057 from=192.168.65.130 len=1809 sha256=a14f54349e5ef38eb8eec5e0f3650b5b90dadf6a0a0d4fd95999dd6f5409e2f8 content_type=application/json
+  2026-11-08T20:54:39Z POST /hook/ATA057 from=192.168.65.130 len=1809 sha256=a14f54349e5ef38eb8eec5e0f3650b5b90dadf6a0a0d4fd95999dd6f5409e2f8 content_type=application/json
 
 VEREDICTO: EFECTO DEMOSTRADO (sha256 local a14f54349e5ef38e... coincide con sink.log=True)

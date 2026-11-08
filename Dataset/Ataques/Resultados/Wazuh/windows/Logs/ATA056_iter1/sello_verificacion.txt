@@ -1,0 +1,8 @@
+ata=ATA056
+iter=1
+esperado=Dataset/Ataques/Comandos/windows/T1020-Automated_Exfiltration/ATA056_esperado.csv
+sha256_esperado=6aaa7af3c3e9d5027dd05d8c62a70efeaead5eb201b9b18a8328d329caafccb7
+sha256_sellado=6aaa7af3c3e9d5027dd05d8c62a70efeaead5eb201b9b18a8328d329caafccb7
+coincide=True
+timestamp_utc=2026-11-08T20:41:00Z
+nota=verificacion antes de t0 (CA-B1-02)

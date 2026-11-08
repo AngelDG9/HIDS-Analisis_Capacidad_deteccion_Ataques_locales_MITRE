@@ -1,0 +1,8 @@
+ata=ATA061
+iter=2
+esperado=Dataset/Ataques/Comandos/windows/T1486-Data_Encrypted_for_Impact/ATA061_esperado.csv
+sha256_esperado=8953087c46bed443d6e5050a51433e0d00a72ab743c35a349d302388bff9a701
+sha256_sellado=8953087c46bed443d6e5050a51433e0d00a72ab743c35a349d302388bff9a701
+coincide=True
+timestamp_utc=2026-11-08T21:20:29Z
+nota=verificacion antes de t0 (CA-B1-02)

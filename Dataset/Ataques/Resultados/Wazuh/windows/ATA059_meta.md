@@ -54,8 +54,8 @@ fecha: 2026-11-08
 
 | Iter | `t0` (UTC) | `t1` (UTC) | Dur | filas | deteccion | `rule_id` | dudosas resueltas |
 |---|---|---|---|---|---|---|---|
-| 1 | `2026-11-08T19:39:59Z` | `2026-11-08T19:40:01Z` | 2 s | 18 | **5** | `67027,92032,92052` | 1 |
-| 2 | `2026-11-08T19:43:19Z` | `2026-11-08T19:43:20Z` | 1 s | 18 | **5** | `67027,92032,92052` | 1 |
+| 1 | `2026-11-08T21:05:40Z` | `2026-11-08T21:05:46Z` | 6 s | 19 | **5** | `67027,92032,92052` | 1 |
+| 2 | `2026-11-08T21:09:10Z` | `2026-11-08T21:09:15Z` | 5 s | 19 | **5** | `67027,92032,92052` | 1 |
 
 ## 5. Comando ejecutado (literal)
 
@@ -67,60 +67,60 @@ ssh -i <clave> angel@192.168.65.130 "cmd /c C:\lab-attack\ATA059\run.cmd"
 
 `Logs/ATA059_iter{1,2}/efecto.txt`: POST del dato al sink con sha256 del cuerpo (52 B).
 
-**Iter 1** (`sha256=21376f0aa38596be624f26a0047d4115166a2044034aad2fab3a94183d5e29a3`):
+**Iter 1** (`sha256=8db3b73f7e7f5a0ed8caf46c2e13feac52f776cb06fd5e0669939b1af85dfca4`):
 
 ```text
 ata=ATA059
 tecnica=T1567.003
 fuente=ART_adaptado
 guid=c2e8ab6e-431e-460a-a2aa-3bc6a32022e3
-t0=2026-11-08T19:40:00Z
-t1=2026-11-08T19:40:00Z
+t0=2026-11-08T21:05:44Z
+t1=2026-11-08T21:05:45Z
 url=http://192.168.65.1:9090/paste/ATA059
 sha256_body=93f8f3b7f9745840b9fa36f7f6d830cd86faaae810e251de4d3681b28f21fd40
 len_body=52
 resultado=HTTP=200
 sink.log (HOST):
-2026-11-08T19:40:00Z POST /paste/ATA059 from=192.168.65.130 len=52 sha256=93f8f3b7f9745840b9fa36f7f6d830cd86faaae810e251de4d3681b28f21fd40 content_type=text/plain
+2026-11-08T21:05:44Z POST /paste/ATA059 from=192.168.65.130 len=52 sha256=93f8f3b7f9745840b9fa36f7f6d830cd86faaae810e251de4d3681b28f21fd40 content_type=text/plain
 ```
 
-**Iter 2** (`sha256=54974562fb948de650276c8d7286431cdbd6b05e3ec6e63e48873200fb075d1e`):
+**Iter 2** (`sha256=3a4a6c7e4d86a8ce1833a22e7a607bb3bf5cb82fa09951e0f631cfe2b7b00db6`):
 
 ```text
 ata=ATA059
 tecnica=T1567.003
 fuente=ART_adaptado
 guid=c2e8ab6e-431e-460a-a2aa-3bc6a32022e3
-t0=2026-11-08T19:43:20Z
-t1=2026-11-08T19:43:20Z
+t0=2026-11-08T21:09:14Z
+t1=2026-11-08T21:09:15Z
 url=http://192.168.65.1:9090/paste/ATA059
 sha256_body=93f8f3b7f9745840b9fa36f7f6d830cd86faaae810e251de4d3681b28f21fd40
 len_body=52
 resultado=HTTP=200
 sink.log (HOST):
-2026-11-08T19:43:20Z POST /paste/ATA059 from=192.168.65.130 len=52 sha256=93f8f3b7f9745840b9fa36f7f6d830cd86faaae810e251de4d3681b28f21fd40 content_type=text/plain
+2026-11-08T21:09:14Z POST /paste/ATA059 from=192.168.65.130 len=52 sha256=93f8f3b7f9745840b9fa36f7f6d830cd86faaae810e251de4d3681b28f21fd40 content_type=text/plain
 ```
 
 ## 7. Ventana extraida
 
 | Iter | Detalle | filas | `sha256` |
 |---|---|---|---|
-| 1 | `Dataset/Ataques/Resultados/Wazuh/windows/CSV/ATA059_iter1-Detalle.csv` | 18 | `9b275da130b056e6b80a561050ea3fe8592ed95fba6f3067093b8bcd38127383` |
-| 2 | `Dataset/Ataques/Resultados/Wazuh/windows/CSV/ATA059_iter2-Detalle.csv` | 18 | `232aaf96129b248d2852e9850adf35f6917b7ba8a020e7dd7129fe1bf2b1d7be` |
+| 1 | `Dataset/Ataques/Resultados/Wazuh/windows/CSV/ATA059_iter1-Detalle.csv` | 19 | `62b73afb05d5eb63379627f6bb227102c12a57da41811c1c8b0038464b355efd` |
+| 2 | `Dataset/Ataques/Resultados/Wazuh/windows/CSV/ATA059_iter2-Detalle.csv` | 19 | `1a8c529a9377928bdf6642dc7b430b93cb2f54c81d56536bb260bec118f5a2d2` |
 
 ## 8. Resultado (metrica v1)
 
 | Iter | filas | deteccion | auto_ruido | ruido_conocido | dudosa | artefacto_ataque | RS1 | RS2 | RS3 | RS4 |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 1 | 18 | **5** | 3 | 6 | **0** | 4 | 18 | 0 | 0 | 0 |
-| 2 | 18 | **5** | 3 | 6 | **0** | 4 | 18 | 0 | 0 | 0 |
+| 1 | 19 | **5** | 3 | 6 | **0** | 5 | 19 | 0 | 0 | 0 |
+| 2 | 19 | **5** | 3 | 6 | **0** | 5 | 19 | 0 | 0 | 0 |
 
 ### 8.1 Detecciones
 
 | Iter | alertas | `rule_id` distintos | primera evidencia |
 |---|---|---|---|
-| 1 | 5 | 3 -> `67027,92032,92052` | `2026-11-08T19:40:00.795Z` `rule_id=92052` |
-| 2 | 5 | 3 -> `67027,92032,92052` | `2026-11-08T19:43:20.888Z` `rule_id=92052` |
+| 1 | 5 | 3 -> `67027,92032,92052` | `2026-11-08T21:05:42.559Z` `rule_id=92052` |
+| 2 | 5 | 3 -> `67027,92032,92052` | `2026-11-08T21:09:11.987Z` `rule_id=92052` |
 
 - Las detecciones son **procesos del ataque** (`cmd.exe` / `powershell.exe` / `rclone.exe`) anclados
   por `win_command_line` a la carpeta `C:\lab-attack\ATA059` (H4-W) y evento de ejecucion.

@@ -2,8 +2,8 @@ ata=ATA061
 tecnica=T1486
 fuente=propio
 algoritmo=AES-256-CBC
-t0=2026-11-08T19:57:14Z
-t1=2026-11-08T19:57:14Z
+t0=2026-11-08T21:23:18Z
+t1=2026-11-08T21:23:18Z
 ficheros_total=5
 ficheros_cifrados_ok=5
 file=empleados.csv.txt before=0bc52130a1106dead5d8d8e690d49b0ba050668999cdc012419962f9fe6170c3 enc=4a696a0c03c0d53059919e71d1fce83dc58a4a8367f054b6760e64a34b591ad2 dec=0bc52130a1106dead5d8d8e690d49b0ba050668999cdc012419962f9fe6170c3 cifrado=True roundtrip=True
