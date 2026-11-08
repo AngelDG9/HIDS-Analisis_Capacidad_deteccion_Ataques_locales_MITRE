@@ -30,7 +30,7 @@ Clasificación ──▶ Ataques ──▶ Análisis
 | Macro-fase | Bloques | Estado |
 |---|---|---|
 | **Clasificación** | R0 ✔ · **R1 (este)** · R2 | R0 cerrado; **R1 en curso** |
-| **Ataques** | M1a/M1b · L0/L1/L2 · V0/V1 · B1 | histórico parcial (M1a) |
+| **Ataques** | M1a/M1b · L0/L1/L2 · V0/V1 · B1 | Linux Wazuh cerrado (M1a/M1b · L0/L1/L2 ✔); faltan V0/V1 y B1 |
 | **Análisis** | A1 · A2 | pendiente |
 
 **Resultado del trabajo:** **5 tablas (T1–T5) + Requisitos + Leyenda** + **memoria**.
@@ -72,8 +72,8 @@ Clasificación ──▶ Ataques ──▶ Análisis
 | M1a | `virgen-wazuh-ataques` *(histórico)* | Recorte determinista de los 55 ATA por `rule_level`×`rs_origen` → T2/T4 (baseline **viejo**). | R2 |
 | L0 | `legitimo-infra` | ✅ **HECHO (2026-10-18): GO** — GHOSTS v8.3.1 + "internet local" + prueba de `logall_json` (**≈300 MB/72 h ⇒ denominador por evento VIABLE**); snapshot `lab-listo-legit`. | R2 |
 | L1 | `legitimo-72h` / `legitimo-v3` | **HECHO (2026-11-05)**: captura legítima **72 h** + denominador (**VÁLIDA CON INCIDENCIA**, `M`=342.966, 294.253 alertas, 11 `rule_id`, campaña 11/11, B10 v3 / bóveda v2, promovido a `Dataset/`). | L0 |
-| M1b | `virgen-wazuh-ataques` *(re-ejecución)* | Re-corre el recorte con el **legítimo nuevo**. | L1, M1a |
-| L2 | `legitimo-analisis` | T3/T4 (legítimo) → cierra T4 virgen. | L1, M1b |
+| M1b | `virgen-wazuh-ataques` *(re-ejecución)* | ✅ **HECHO (2026-11-08)**: re-corte de las **128 ventanas** con el **legítimo nuevo** → **0 filas cambiadas**; **T2 550/550 idéntica**, **53/55** (`FN=ATA013, ATA034`); salida en `M1b/Auditado/`. | L1, M1a |
+| L2 | `legitimo-analisis` | ✅ **HECHO (2026-11-08)**: **T3/T4/T5** del legítimo (**FPR=0,857963**; `N7`=2; `N12`=0; sin auto-ruido **0,664693**); cierra **T4 virgen**; doble uso `80792` en **53/55**. | L1, M1b |
 
 **Velociraptor VIRGEN:** `V0 velociraptor-lab` · `V1 velociraptor-virgen`.
 

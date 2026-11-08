@@ -28,6 +28,7 @@ import tabla_comun as TC  # noqa: E402
 
 DEFAULT_T2 = "Hojas/T2_ataques.csv"
 DEFAULT_T3 = "Hojas/T3_legitimo.csv"
+DEFAULT_AUDITADO = "Dataset/Ataques/Resultados/Wazuh/linux/Auditado"
 DEFAULT_OUT = "Hojas/T4_rendimiento.csv"
 
 # Fila -> (etiqueta, P-Excel, fórmula literal)
@@ -78,10 +79,16 @@ def _leer_t3(path):
     return [r for r in rows if r.get("seccion") == "agregado"]
 
 
+def _sha_txt(path: str) -> str:
+    p = os.path.join(TC.ROOT, path)
+    return TC.sha256_file(p) if os.path.isfile(p) else "-"
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="T4 (rendimiento) — agrega T2+T3 y aplica fórmulas.")
     ap.add_argument("--t2", default=DEFAULT_T2)
     ap.add_argument("--t3", default=DEFAULT_T3)
+    ap.add_argument("--auditado", default=DEFAULT_AUDITADO)
     ap.add_argument("--hids", default="wazuh")
     ap.add_argument("--out", default=DEFAULT_OUT)
     args = ap.parse_args(argv)
@@ -163,6 +170,10 @@ def main(argv=None) -> int:
         f"boveda_version={M.VERSION_BOVEDA}",
         f"hids={args.hids}",
         f"M={'n/a (fallback L11: FPR/TNR/GM/Precision/F1/Usabilidad no publicables)' if not hay_m else 'instrumentado'}",
+        f"auditado={args.auditado}",
+        f"t2={args.t2}",
+        f"t3={args.t3}",
+        f"sha256_entradas={_sha_txt(args.t2)},{_sha_txt(args.t3)}",
         f"columnas={','.join(colnames)}",
         "formulas_literales=metrica_hids.py (§2.5)",
         "layout=ancho(1 columna por HIDS x config x umbral; las filas de metrica pueden empezar por '#')",

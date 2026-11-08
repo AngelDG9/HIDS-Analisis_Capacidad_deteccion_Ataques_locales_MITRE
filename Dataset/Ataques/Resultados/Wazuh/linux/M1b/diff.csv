@@ -1,0 +1,2 @@
+# diff.csv | M1b | comparacion de DATOS (sin lineas '#') entre Dataset/Ataques/Resultados/Wazuh/linux/Auditado y Dataset/Ataques/Resultados/Wazuh/linux/M1b/Auditado | diferencias=0
+fichero,tipo,linea_original,linea_m1b

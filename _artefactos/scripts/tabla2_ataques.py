@@ -177,6 +177,7 @@ def main(argv=None) -> int:
     ap.add_argument("--config", nargs="+", default=list(M.CONFIGS_VIRGEN))
     ap.add_argument("--umbral", nargs="+", type=int, default=list(M.UMBRALES))
     ap.add_argument("--rs-con-reglas", default=",".join(RS_CON_REGLAS_VIRGEN))
+    ap.add_argument("--nota", default="", help="nota declarativa para la cabecera (opcional)")
     ap.add_argument("--out", default=DEFAULT_OUT)
     args = ap.parse_args(argv)
 
@@ -297,6 +298,8 @@ def main(argv=None) -> int:
         f"ata_index_sha256={TC.sha256_file(os.path.join(TC.ROOT, args.ata_index))}",
         f"repeticiones_sha256={TC.sha256_file(os.path.join(TC.ROOT, args.repeticiones))}",
     ]
+    if args.nota:
+        partes.append(f"nota={args.nota}")
     for (cfg, u) in sorted(resumen):
         rr = resumen[(cfg, u)]
         etiqueta = "vacio(L8)" if rr.get("vacio") else f"TP={rr['tp']}/FN={rr['fn']}"

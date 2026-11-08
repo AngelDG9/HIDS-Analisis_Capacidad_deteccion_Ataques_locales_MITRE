@@ -303,6 +303,7 @@ def main(argv=None) -> int:
         "layout=largo(1 fila por variante x config x umbral)",
         f"t2={args.t2}",
         f"t3={args.t3}",
+        f"auditado={args.auditado}",
         f"sha256_entradas={_sha_txt(args.t2)},{_sha_txt(args.t3)}",
         "columnas=" + ",".join(HEADER),
     ]
@@ -314,8 +315,14 @@ def main(argv=None) -> int:
             os.path.basename(args.steps),
             "TFG HIDS - R2 T5 steps (pasos de la variante agresiva; solo reglas QUITADAS)",
             f"metrica_version={M.VERSION_METRICA}",
+            f"boveda_version={M.VERSION_BOVEDA}",
             f"estado={estado}",
+            f"auditado={args.auditado}",
+            f"t2={args.t2}",
+            f"t3={args.t3}",
+            f"sha256_entradas={_sha_txt(args.t2)},{_sha_txt(args.t3)}",
             "declaracion=orden: FP-only (rule.id asc) y luego mixtas en orden de evaluacion (impacto legitimo desc); las mixtas CONSERVADAS no se listan",
+            "layout=largo(1 fila por paso x config x umbral)",
             "columnas=" + ",".join(STEPS_HEADER),
         ]
     )

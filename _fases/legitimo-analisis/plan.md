@@ -37,12 +37,12 @@ nota_gate: |
 | 3 | `FPR` C1×N0 / `TNR` | **0,857963** / **0,142037** | T3/T4 |
 | 4 | `FP_uni` C0×N0 / `FPR` | **50** / **0,000146** | T3/T4 |
 | 5 | `FP_uni` C1×N7/N10 / N12 | **2** / **0** | T3/T4 |
-| 6 | Variante **sin `auto_ruido`** | **227.967** unidades; FPR **0,664691** | T3 |
+| 6 | Variante **sin `auto_ruido`** | **227.967** unidades; FPR **0,664693** | T3 |
 | 7 | `auto_ruido` en 72 h | **66.285** alertas-evento (**22,5266 %**) | §3.2 / catálogo |
 | 8 | Reglas de **doble uso** | **4**: `80781`, `80790`, `80791`, `80792` | T5 |
 | 9 | `80792` en ataques | **1.988** detecciones canónicas; **53/55** casos | T5 |
 | 10 | M1b | **128/128** ventanas re-juzgadas; **0** cambios de fila; **53/55**; FN = {ATA013, ATA034} | T2/T4 |
-| 11 | Sensibilidad catálogo 72 h **puro** | **55/55** (flipa ATA013/ATA034 por ruido del operador) → **NO canónica** | §6.4 |
+| 11 | Sensibilidad catálogo 72 h **puro** | **54/55** (flipa solo ATA034; ATA013 sigue FN por `dudosa`) → **NO canónica** | §6.4 |
 | 12 | `pytest` | **≥ 342 + nuevos**, todo verde | §9 |
 
 **Lectura:** el ruido del legítimo es **estructural** (`auditd`: `80792` = 80 %, `80791` = 19 %)
@@ -185,7 +185,7 @@ una alerta es `auto_ruido` si **el origen es el propio Wazuh**, por **campos**, 
   **baseline sintético de 2×4 h** (`state.md:96`; `politica_filtrado_ruido.md:106`). En 72 h es
   **22,5266 %**. Se declara; **no se cambia la métrica** (§14.1).
 - **Variante sin `auto_ruido`** (complemento obligatorio): `FP_uni = 227.967`;
-  `FPR = 0,664691` (66,4691 %). Se publica **junto** al titular, nunca en su lugar.
+  `FPR = 0,664693` (66,4691 %). Se publica **junto** al titular, nunca en su lugar.
 
 ### 3.3 `ruido_conocido` y `dudosa` en el legítimo
 
@@ -363,7 +363,7 @@ alertas_auto,alertas_no_auto,pct_auto,origen_catalogo
 - **Complementos**: `FP/acción = A_FP/504`; `FP/hora = A_FP/72`. C1×N0: **583,8333** y
   **4.086,8333**; C0×N0: **0,0992** y **0,6944**. (Se usa `A_FP`, como la plantilla T3; se
   declara.)
-- **Variante sin `auto_ruido`** (C1×N0/N3): `FP_uni = 227.967`; `FPR = 0,664691`.
+- **Variante sin `auto_ruido`** (C1×N0/N3): `FP_uni = 227.967`; `FPR = 0,664693`.
 - **`#Alertas_correlacionadas`** = `#Unidades_FP` (1 evento → 1 alerta); se declara.
 
 **T4** — `Hojas/T4_rendimiento.csv` (ancho, 10 columnas C0/C1 × N):
@@ -471,10 +471,10 @@ Ver §7. Todos con cabecera `metrica_version=1`, `boveda_version=2`, `sha256` de
 clasificadas `ruido_conocido` en **ATA013** (8+3) y **ATA034** (1+10): **16** son
 `5501/5502` (`baseline`) y **6** son `5715` (`operador`).
 
-- **Si se re-juzga con el catálogo 72 h puro**, las **16** filas de `5501/5502` pasan a
+- **Si se re-juzga con el catálogo 72 h puro**, solo **8** de las **16** filas de `5501/5502` (las de ATA034) pasan a
   `novel → deteccion` (paso 4-5 de `filtrar_ruido.py:685-693`); las **6** de `5715` siguen
   como `operador:5715` (paso 1.5, no depende del catálogo). Aun así, **ATA013/ATA034 se
-  convierten en TP**: TPR **55/55 = 100 %**. Eso sería un **falso positivo de método**: son
+  convierten en TP**: TPR **54/55 = 98,2 %**. Eso sería un **falso positivo de método**: son
   sesiones del **operador** (PAM/sudo), no del ataque; el ataque de ATA013 sigue siendo el
   punto ciego de `python3`/`92600` y ATA034 sigue sin telemetría.
 - **Decisión:** catálogo M1b = **72 h ∪ {5402,5501,5502,5715}**, con `origen_catalogo` y
@@ -483,7 +483,7 @@ clasificadas `ruido_conocido` en **ATA013** (8+3) y **ATA034** (1+10): **16** so
   **para lo que las 72 h observaron**; para lo **no observado**, la ausencia no es evidencia
   (misma lógica que `dudosa`, regla 6). Se lleva al **gate** (§12).
 - **Sensibilidad obligatoria:** ejecutar también el catálogo **72 h puro** y publicar
-  `Hojas/T2_sensibilidad_catalogo72h.csv` con TPR **55/55** y la lista de las **16** filas
+  `Hojas/T2_sensibilidad_catalogo72h.csv` con TPR **54/55** y la lista de las **8** filas (las de ATA034; las de ATA013 quedan `dudosa`->ruido); diff total: **462** lineas en **42** de las 128 ventanas (**109** en **13** canonicas)
   flipadas (`5501/5502`; las 6 de `5715` no cambian). **No es canónica**; sirve para demostrar
   que el catálogo puro **no** es defendible.
 
@@ -541,7 +541,7 @@ clasificadas `ruido_conocido` en **ATA013** (8+3) y **ATA034** (1+10): **16** so
 ### 6.4 Sensibilidad: catálogo 72 h puro (no canónica)
 
 - Ejecutar T2 con `M1b/sensibilidad_72h/` y el catálogo de **11** reglas.
-- **Esperado:** `ATA013` y `ATA034` pasan a **TP**; TPR **55/55 = 100 %**; **16** filas
+- **Esperado:** `solo `ATA034` pasa a **TP**; TPR **54/55 = 98,2 %**; **8** filas (las de ATA034)
   `5501/5502` → `deteccion` (PAM del operador); las **6** de `5715` siguen
   `ruido_conocido`/`operador:5715`. **Se declara como artefacto** y se **rechaza** como medida.
 - Producto: `Hojas/T2_sensibilidad_catalogo72h.csv` + nota en el `change-doc`. **No** se usa en
@@ -615,7 +615,7 @@ ventana_meta.md,PROMOCION.md}` · `Dataset/Ataques/.../Auditado/*` (originales) 
 | **CA-L2-02** | Índice = **294.252** filas; multiconjunto `(timestamp,rule_id)` == alertas sin `rule 11` | comparación exacta; 0 diferencias |
 | **CA-L2-03** | `FP_uni(C1,N0)=294.252`; `FPR=0,857963`; `TNR=0,142037` | T3 |
 | **CA-L2-04** | `FP_uni(C0,N0)=50`; `FPR=0,000146`; `FP_uni(C1,N7)=2`; `FP_uni(C1,N12)=0` | T3 |
-| **CA-L2-05** | `FP_uni` sin `auto_ruido` = **227.967**; `FPR=0,664691`; auto = **66.285** | T3 |
+| **CA-L2-05** | `FP_uni` sin `auto_ruido` = **227.967**; `FPR=0,664693`; auto = **66.285** | T3 |
 | **CA-L2-06** | T3 tiene **10** filas agregadas (C0/C1 × 5 umbrales); C2/C3 declaradas vacías | T3 |
 | **CA-L2-07** | T4 completo: **10** columnas, **0** celdas vacías salvo las degeneradas declaradas; valores = Anexo A (±0,000001) | T4 |
 | **CA-L2-08** | Catálogo 72 h: **11** reglas; suma `count` = **294.253**; `auto` = **66.285** | catálogo |
@@ -634,7 +634,7 @@ ventana_meta.md,PROMOCION.md}` · `Dataset/Ataques/.../Auditado/*` (originales) 
 | **CA-M1b-02** | **0** filas de datos distintas entre `-Audited` original y M1b (130.017 filas × 128); solo cambia la cabecera | `diff` |
 | **CA-M1b-03** | T2 M1b == T2 M1a en **550/550** filas (**todas las columnas de datos**: `Detection`, `#Alertas`, `#rule.id_distintos`, `#Alertas_correlacionadas`, `t_hasta_1a_deteccion_s`, `primera_evidencia_rule_id`, `%Deteccion`) | `T2_M1b_vs_M1a.csv` |
 | **CA-M1b-04** | Invariantes: **55** casos, **128** ventanas, **53 TP**, **2 FN** = `{ATA013, ATA034}`, **9** repeticiones | T2 + `repeticiones.csv` |
-| **CA-M1b-05** | Sensibilidad 72 h puro: TPR **55/55**; **16** filas `5501/5502` flipadas (5715 sigue `operador`); **no** canónica | `T2_sensibilidad` |
+| **CA-M1b-05** | Sensibilidad 72 h puro: TPR **54/55**; **8** filas `5501/5502` flipadas (las de ATA034; ATA013 queda `dudosa`->ruido); **no** canónica | `T2_sensibilidad` |
 | **CA-M1b-06** | T4 M1b: C1×N0 TPR **0,963636**, FPR **0,857963**, P **0,006764**, F1 **0,013435**, GM **0,369963**, Usab **146,8323** | T4 |
 | **CA-M1b-07** | 0 originales de ataque modificados; `sha256` de los 128 `-Audited` originales sin cambios | `sha256sum` + `git status` |
 | **CA-M1b-08** | 0 VMs / 0 SSH / 0 cambios de laboratorio | checklist |
@@ -778,7 +778,7 @@ se documenta en `lo que no cuadra` y se pregunta.
     Se documenta; no se mezclan.
 11. **El catálogo 72 h no cubre PAM/sudo** porque la ventana no tuvo sesiones del operador en el
     endpoint (V4). La unión con las 4 reglas históricas es una **decisión** (gate), no un hecho.
-    La sensibilidad 72 h puro (55/55) se publica para que se vea el efecto.
+    La sensibilidad 72 h puro (54/55) se publica para que se vea el efecto.
 12. **La ventana es sintética (GHOSTS) y de 3 días.** No cubre ciclos semanales/mensuales ni
     actividad humana real; ya declarado en L1. No se extrapola.
 13. **`archives` está fuera del repo.** El índice compacto (1,35 MB) lo mitiga, pero la
@@ -832,3 +832,10 @@ de la base); GM **0,547509**; TPR **53/55**.
 ---
 
 *Fin del plan v1 (draft). Pendiente de gate humano.*
+
+> **Correccion factual (2026-11-08, cierre del bloque).** Tras ejecutar M1b se corrigen dos errores del plan:
+> (1) `FPR` sin `auto_ruido` = **0,664693** (el plan decia 0,664691; usaba `M=342.967`);
+> (2) la sensibilidad con catalogo 72 h puro da **54/55** (no 55/55): solo **ATA034** pasa a TP;
+> **ATA013 sigue FN** porque sus filas `5501/5502` quedan `dudosa`->ruido (paso 3 antes del 4).
+> Flipan **8** filas (las de ATA034); el diff total es **462** lineas en **42** de las 128 ventanas (**109** en **13** canonicas).
+> El producto y el veredicto **no cambian**.
