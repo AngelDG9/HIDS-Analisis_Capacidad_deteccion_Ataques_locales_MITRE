@@ -319,8 +319,8 @@ declarada sin ataque (plan §8-a). **No** sustituye al modo ataque.
 | Campos de señal | `audit_exe`, `audit_cwd`, `audit_key`, `syscheck_path`, `rule_id`, `rule_group` | `win_image`, `win_command_line`, `win_cwd`, `win_target`, `syscheck_path`, `rule_id`, `rule_group` |
 | Evento de ejecución | grupo `audit_command` (execve) | `event_id ∈ {1, 4688}` (Sysmon 1 o Seguridad 4688) |
 | Catálogo | `Dataset/Legitimo/ruleids_legitimos.csv` | `Dataset/Legitimo/windows/ruleids_legitimos.csv` (v1+v2) |
-| `auto_ruido` | procesos `wazuh-*`, `cwd=/var/ossec`, `rule_id=11 ∧ stats` | **vacío en B1.0** (decisión declarada; el catálogo absorbe el ruido de régimen) |
-| Predicado `OPERADOR` | `5715` por `srcip` + `19004/sca` | **no implementado** (el `srcip` de 4624/4635 no está en el detalle normalizado; no es demostrable) |
+| `auto_ruido` | procesos `wazuh-*`, `cwd=/var/ossec`, `rule_id=11 ∧ stats` | **solo la imagen del servicio del canal** (`sshd.exe`) → `auto_ruido:canal-ssh`; nunca sus hijos (§9.6) |
+| Predicado `OPERADOR` | `5715` por `srcip` + `19004/sca` | **`OPERADOR_WIN`** por `rule_id` + usuario/logon (§9.6); la IP del `4624` de SSH **no existe** en este laboratorio (declarado) |
 
 ### 9.2 Ancla H4-W
 
@@ -341,8 +341,13 @@ Lo que casa la imagen y falla el ancla/evento → **`dudosa`** (`motivo=sin_ancl
 La carpeta `C:\lab-attack\ATA<NNN>\` es la prueba demostrable. Se comprueba en `win_cwd`,
 `win_command_line`, `win_target` y `syscheck_path` (normalizados a `\` y minúsculas). Una fila
 del ataque que no case una detección declarada cae en **`artefacto_ataque`** (`motivo=del_ataque`),
-**nunca** en `ruido_conocido`. El guardarraíl de plegado (`veredicto=ruido` prohibido sobre una
-fila del ataque) se mantiene idéntico.
+**nunca** en `ruido_conocido` **ni** `auto_ruido`. El guardarraíl de plegado (`veredicto=ruido`
+prohibido sobre una fila del ataque) se mantiene idéntico.
+
+> **Candado (G-SSH.1, B1.0-SSH.1).** La pertenencia se evalúa **antes** que `auto_ruido` y que
+> `OPERADOR_WIN`: una fila con evidencia de ataque **nunca** puede caer en `auto_ruido` ni en
+> `ruido_conocido` (o casa una detección declarada, o es `artefacto_ataque`; lo dudoso sigue
+> yendo a `dudosa`). Para las filas **sin** evidencia de ataque se mantiene el orden Linux.
 
 ### 9.4 Salida y determinismo
 
@@ -363,7 +368,47 @@ fila del ataque) se mantiene idéntico.
 
 Mezclar el catálogo de una ventana con la otra **no** es prueba válida.
 
-### 9.6 Puntos ciegos declarados (C0 Windows, B1.0)
+### 9.6 Predicado `OPERADOR_WIN` y `auto_ruido` de canal (B1.0-SSH.1)
+
+> **Evidencia:** `Soporte/Ataques/c0/windows/canal_ssh.csv` (45 filas del dry run SSH del
+> 2026-11-08) y `Soporte/Laboratorio/windows/ataques/B1.0-SSH.md`. Se **ratifica con la
+> evidencia**, no se supone: el `4624` de SSH **no trae `ipAddress`** (`Source Network
+> Address: -`), así que la atribución es por **usuario + regla + `logon_type`**.
+
+- **`auto_ruido` del canal**: solo `win_image` con **nombre base `sshd.exe`** →
+  `auto_ruido:canal-ssh`. **Nunca** sus hijos (`cmd.exe`, `powershell.exe`…): el ataque corre
+  dentro de esa sesión y se atribuye por `C:\lab-attack\ATA<NNN>`.
+- **`OPERADOR_WIN`** (paso 1.5, después de `auto_ruido` y de la detección, antes de `dudosa`):
+
+| `rule_id` | `event_id` | Condición | Motivo | Fundamento |
+|---|---|---|---|---|
+| `60106` | 4624 | `win_target_user = angel` **∧** `logon_type = 3` | `operador:60106` | logon de **red** de la sesión SSH |
+| `60137` | 4634 | `win_target_user = angel` **∧** `logon_type = 3` | `operador:60137` | logoff de la sesión SSH |
+| `67024` | 4624 | `win_user ~ ^sshd_\d+$` | `operador:67024` | logon de **servicio** (cuenta virtual de sshd) |
+| `67023` | 4634 | `win_user ~ ^sshd_\d+$` | `operador:67023` | logoff de la cuenta virtual |
+| `67028` | 4672 | `win_user = angel` **∨** `win_user ~ ^sshd_\d+$` | `operador:67028` | privilegios especiales |
+| `67022` | 4624 | `srcip = 192.168.65.1` | `operador:67022` | regla del plan; **no demuestra nada** (en SSH y en `vmrun` el `srcip` está vacío) |
+| `67023` | 4634 | `srcip = 192.168.65.1` | `operador:67023` | ídem |
+
+- **Lado seguro:** si falta el campo que demuestra la condición (`logon_type`, usuario, IP)
+  → **no se excluye** (cae a `deteccion`/`dudosa`).
+- **`win_user` vs `win_target_user`:** en `4624/4634/4688` el `win_user` normalizado es la
+  cuenta *subject* (equipo/SYSTEM); el usuario efectivo es `targetUserName`
+  (columna aditiva `win_target_user`). El predicado usa el **efectivo**.
+- **Anti-frágil:** una señal `deteccion` que declare una regla del predicado emite
+  `CONFLICTO` y **prevalece la detección** (la detección va antes).
+- **Sensibilidad obligatoria (`--sin-operador`):** desactiva **solo** `OPERADOR_WIN` (no
+  `auto_ruido`). En el canal medido: **0 `deteccion` con predicado** vs **30 sin él**.
+- **El catálogo v1 no cambia** (4 reglas); el canal es una capa aparte.
+
+> **Fallback `vmrun`: NO está listo (limitación declarada).** El `4624/4634` real de
+> `vmrun` es **tipo 4 y con `srcip` vacío** (`c0_detalle.csv`: **147 + 147** filas), así que
+> `67022/67023` por `srcip=192.168.65.1` **no exime ninguna fila**; además **`vmtoolsd.exe`
+> no está en `auto_ruido`**. Si hubiera que usar `vmrun`, habría que **implementar y medir**
+> su predicado (por usuario/regla) **antes** de medir ataques. **No se presenta como fallback
+> listo**; la vía canónica es SSH.
+
+### 9.7 Puntos ciegos declarados (C0 Windows, B1.0)
 
 - **Sysmon 3** (conexión de red): el evento se genera, pero la regla base es nivel 0 y no
   alerta para conexiones genéricas (solo reglas específicas). Se declara punto ciego.
@@ -373,13 +418,11 @@ Mezclar el catálogo de una ventana con la otra **no** es prueba válida.
 - **4698/106** (tarea programada creada): **no se generan** con la política de auditoría
   actual; el caso T1029 se apoya en `4688`/Sysmon 1 (`schtasks.exe`).
 - **FIM de registro**: no es realtime; requiere `agent_control -r -u 002` (barrido forzado).
-- **Huella del canal `runProgramInGuest`**: cada invocación genera eventos de logon
-  (`4624/4634/4672`) que el manager alerta como `67022/67023/67028` (nivel 3). **No están en
-  el catálogo baseline v1** y, con `auto_ruido` vacío, contarían como `novel` en B1.1. Se
-  declara riesgo abierto para el gate G-B1.0; la mitigación (catálogo de canal o `auto_ruido`
-  con evidencia) se decide antes de B1.1.
+- **Huella del canal**: la del `vmrun` (`67022/67023/67028`, tipo 4) **no** es la de SSH;
+  la de SSH es `60106/60137/67024/67023/67028` (tipo 3/5) y está resuelta en §9.6.
+  **El `4624` de SSH no trae IP** (declarado; el predicado no depende de ella).
 
-### 9.7 Referencias
+### 9.8 Referencias
 
 - Código: `_artefactos/scripts/filtrar_ruido_windows.py`.
 - Plantilla v5 (H4-W): `Soporte/Ataques/plantilla_esperado.md` §7.

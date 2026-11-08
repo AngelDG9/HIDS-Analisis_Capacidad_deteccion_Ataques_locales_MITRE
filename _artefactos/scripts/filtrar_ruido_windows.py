@@ -12,12 +12,21 @@
   `C:\\lab-attack\\ATA<NNN>` y (iii) la fila es un evento de ejecución (`event_id` 1 o 4688).
   Lo que casa la imagen y falla el ancla/evento -> `dudosa` (`sin_ancla`), nunca `deteccion`
   ni `ruido_conocido`.
-- **`auto_ruido` vacío por decisión de B1.0** (declarado). El ruido de régimen de Windows son
-  pocas reglas estables y las absorbe el catálogo baseline. Si en B1.1 aparece
-  `wazuh-agent.exe` en los datos, se añadirá con evidencia.
-- **OPERADOR Windows no implementado** (declarado): el `srcip` de los 4624/4635 no está en el
-  detalle normalizado y la atribución al operador no es demostrable. No se auto-excluye nada
-  por usuario/IP; se revisa (`dudosa`) o se absorbe por catálogo.
+- **Candado de pertenencia (B1.0-SSH.1, G-SSH.1)**: si la fila tiene evidencia de ataque
+  (`C:\\lab-attack\\ATA<NNN>` en `win_cwd`/`win_command_line`/`win_target`/`syscheck_path`),
+  se evalúa **antes** que `auto_ruido`/`operador` y **nunca** cae en `auto_ruido` ni
+  `ruido_conocido`: o casa una detección declarada (`deteccion`) o es `artefacto_ataque`.
+  Para el resto de filas se mantiene el orden Linux.
+- **`auto_ruido` del canal (B1.0-SSH.1)**: solo la **imagen del servicio** `sshd.exe`
+  (`auto_ruido:canal-ssh`); **nunca** sus hijos (`cmd.exe`/`powershell.exe` del ataque se
+  atribuyen por carpeta como siempre). El resto del régimen lo absorbe el catálogo baseline.
+- **`OPERADOR_WIN` (B1.0-SSH.1)**: el logon del canal **no es ataque**. Se excluye con un
+  predicado **estrecho por `rule_id` + evidencia medida** (ver §9.6 de la política):
+  `60106`/`60137` (4624/4634 tipo 3) por `win_user=angel ∧ logon_type=3`; `67024`/`67023`
+  (4624/4634 tipo 5) por `win_user=sshd_<pid>`; `67028` (4672) por `win_user=angel` o
+  `sshd_<pid>`; `67022`/`67023` por `srcip=192.168.65.1` (regla del plan; en este
+  laboratorio el 4624 de SSH **no trae IP** y se declara). `--sin-operador` calcula la
+  **sensibilidad** (T2-W sin el predicado).
 - **Modo baseline** (`--modo baseline`): no exige señales; una novedad no cuenta como
   detección (se absorbe como `ruido_conocido`), igual que en Linux.
 - **Replay de la baseline Windows** (`--replay-baseline`): v1 (72) con catálogo v1 -> 0
@@ -38,6 +47,7 @@ import glob
 import hashlib
 import ntpath
 import os
+import re
 import sys
 
 # --------------------------------------------------------------------------
@@ -48,8 +58,22 @@ CATEGORIAS = ("deteccion", "ruido_conocido", "auto_ruido", "dudosa", "artefacto_
 #: Raíz de las carpetas de ataque en Windows. La carpeta se deriva de `--ata`.
 ATTACK_ROOT = "C:\\lab-attack\\"
 
-#: B1.0: vacío por decisión (declarado). No se inventan procesos del agente.
-WAZUH_PROCESOS: set[str] = set()
+#: B1.0-SSH.1: `auto_ruido` solo para la **imagen del servicio** del canal.
+CANAL_SSH_IMAGENES = {"sshd.exe"}
+
+#: Predicado `OPERADOR_WIN` (B1.0-SSH.1). Evidencia: `Soporte/Ataques/c0/windows/canal_ssh.csv`.
+OPERADOR_SRCIPS = {"192.168.65.1"}
+OPERADOR_REGLAS_IP = {"67022", "67023"}
+OPERADOR_REGLAS_ANGEL = {"60106", "60137"}      # 4624/4634 de red (logon_type=3)
+OPERADOR_REGLAS_PRIV = {"67028"}                # 4672 (sin logon_type)
+OPERADOR_REGLAS_SSHD = {"67024", "67023"}       # 4624/4634 del servicio (tipo 5)
+OPERADOR_USUARIO = "angel"
+OPERADOR_USUARIO_SSHD = re.compile(r"^sshd_\d+$", re.IGNORECASE)
+
+#: Todas las reglas que el predicado puede eximir (para el aviso `CONFLICTO`).
+OPERADOR_REGLAS = (
+    OPERADOR_REGLAS_IP | OPERADOR_REGLAS_ANGEL | OPERADOR_REGLAS_PRIV | OPERADOR_REGLAS_SSHD
+)
 
 #: Eventos de ejecución Windows (H4-W): Sysmon 1 y Seguridad 4688.
 WIN_EXEC_EVENT_IDS = {"1", "4688"}
@@ -216,14 +240,17 @@ def load_signals(path: str):
 
 
 # --------------------------------------------------------------------------
-# Auto-ruido (§3) — B1.0: vacío declarado
+# Auto-ruido (§3) — solo la imagen del servicio del canal
 # --------------------------------------------------------------------------
 def detectar_auto_ruido(row: dict):
-    """B1.0: `auto_ruido` vacío (decisión declarada). Devuelve siempre None.
+    """`auto_ruido` del canal SSH: **solo** `sshd.exe` (imagen del servicio).
 
-    El ruido de régimen Windows (7 reglas estables) lo absorbe el catálogo baseline.
-    Si en B1.1 aparece `wazuh-agent.exe` en los datos, se añadirá con evidencia.
+    Los hijos de `sshd.exe` (`cmd.exe`, `powershell.exe`…) **no** son canal: el ataque
+    corre dentro de esa sesión y se atribuye por carpeta. Devuelve `(evidencia, motivo)`.
     """
+    img = (row.get("win_image") or "").strip()
+    if img and basename_win(img).lower() in CANAL_SSH_IMAGENES:
+        return (f"win_image={img}", "canal-ssh")
     return None
 
 
@@ -257,17 +284,56 @@ def es_del_ataque(row: dict, ata_id: str) -> str:
 
 
 # --------------------------------------------------------------------------
-# Predicado OPERADOR (H3 §4.1) — Windows no implementado (declarado)
+# Predicado OPERADOR_WIN (B1.0-SSH.1, §9.6 de la política)
 # --------------------------------------------------------------------------
 def detectar_operador(row: dict):
-    """Windows B1.0: no implementado. El `srcip` de los 4624/4635 no está en el detalle
-    normalizado y la atribución al operador no es demostrable. No se auto-excluye nada."""
+    """Devuelve `(rule_id, evidencia)` si la fila es el **logon del canal**; si no, None.
+
+    Condiciones **estrechas** y con la evidencia medida en `canal_ssh.csv`:
+    - `60106`/`60137` (4624/4634 de **red**): `win_user=angel` **y** `logon_type=3`.
+    - `67024`/`67023` (4624/4634 del **servicio**): `win_user=sshd_<pid>`.
+    - `67028` (4672): `win_user=angel` **o** `sshd_<pid>` (4672 no trae `logon_type`).
+    - `67022`/`67023`: `srcip=192.168.65.1` (regla del plan; en este laboratorio el 4624
+      de SSH **no trae IP** — se declara en `B1.0-SSH.md`).
+
+    Si falta el campo que demuestra la condición, **no** se excluye (lado seguro).
+    """
+    rid = str(row.get("rule_id") or "").strip()
+    srcip = (row.get("srcip") or "").strip()
+    # `win_user` es la cuenta *subject* (equipo/SYSTEM) en 4624/4634/4688; el usuario
+    # efectivo del logon está en `win_target_user` (columna aditiva).
+    user = (row.get("win_target_user") or "").strip() or (row.get("win_user") or "").strip()
+    logon = str(row.get("logon_type") or "").strip()
+
+    if rid in OPERADOR_REGLAS_IP and srcip in OPERADOR_SRCIPS:
+        return (rid, f"srcip={srcip}")
+    if rid in OPERADOR_REGLAS_ANGEL and user.lower() == OPERADOR_USUARIO and logon == "3":
+        return (rid, f"win_user={user}|logon_type={logon}")
+    if rid == "67028" and (user.lower() == OPERADOR_USUARIO
+                           or OPERADOR_USUARIO_SSHD.match(user)):
+        return (rid, f"win_user={user}")
+    if rid in OPERADOR_REGLAS_SSHD and OPERADOR_USUARIO_SSHD.match(user):
+        return (rid, f"win_user={user}")
     return None
 
 
 def conflictos_operador(signals) -> list[str]:
-    """Windows B1.0: sin predicado OPERADOR -> no hay conflictos que avisar."""
-    return []
+    """`CONFLICTO` si una señal `deteccion` casa una regla del predicado (anti-frágil).
+
+    La detección va **antes** del predicado, así que prevalece; el aviso deja traza.
+    """
+    avisos = []
+    for s in signals:
+        if s["tipo"] != "deteccion" or s["campo"] != "rule_id":
+            continue
+        for rid in sorted(OPERADOR_REGLAS):
+            if glob_match(rid, s["patron"]):
+                avisos.append(
+                    f"la señal {s['senal_id']} (deteccion, rule_id={s['patron']}) casa una "
+                    f"regla del predicado OPERADOR_WIN ({rid}); prevalece la deteccion"
+                )
+                break
+    return avisos
 
 
 # --------------------------------------------------------------------------
@@ -429,7 +495,7 @@ def _atribucion(sig: dict) -> str:
 
 
 # --------------------------------------------------------------------------
-# Clasificación (§2) — mismo orden exacto que Linux
+# Clasificación (§2) — orden Linux + candado de pertenencia (Windows)
 # --------------------------------------------------------------------------
 def clasificar(
     row: dict,
@@ -438,6 +504,7 @@ def clasificar(
     modo_baseline: bool,
     conflictos: list,
     ata_id: str = "",
+    operador: bool = True,
 ):
     rid = str(row.get("rule_id") or "").strip()
     pertenencia = "" if modo_baseline else es_del_ataque(row, ata_id)
@@ -455,16 +522,63 @@ def clasificar(
     ev = None
     if not modo_baseline and signals:
         ev = evaluar_senales(row, signals)
-        if auto and ev["match_deteccion"] is not None:
-            s, _ = ev["match_deteccion"]
-            conflictos.append(
-                f"rule_id={rid} timestamp={row.get('timestamp_utc')}: la señal "
-                f"{s['senal_id']} (deteccion) apunta a un proceso de Wazuh "
-                f"({auto[1]}); prevalece auto_ruido (revisar la señal)"
-            )
 
-    # 1. auto_ruido (vacío en B1.0)
+    # ------------------------------------------------------------------
+    # CANDADO B1.0-SSH.1 (G-SSH.1): la pertenencia al ataque se evalúa ANTES
+    # que `auto_ruido` y que `operador`. Una fila con evidencia de ataque
+    # (`win_cwd`/`win_command_line`/`win_target`/`syscheck_path` bajo
+    # `C:\lab-attack\ATA<NNN>`) NUNCA puede caer en `auto_ruido` ni en
+    # `ruido_conocido`: o casa una detección declarada, o es `artefacto_ataque`.
+    # ------------------------------------------------------------------
+    if not modo_baseline and pertenencia:
+        if ev is not None and ev["match_deteccion"] is not None:
+            s, valor = ev["match_deteccion"]
+            out["categoria"] = "deteccion"
+            out["motivo"] = f"senal:{s['senal_id']}"
+            out["atribucion"] = _atribucion(s)
+            out["evidencia"] = f"{s['campo']}={valor}"
+            return out
+        # El resto del orden Linux se mantiene: lo dudoso se revisa, no se descarta.
+        if ev is not None:
+            if ev["match_ambigua"] is not None:
+                s, valor = ev["match_ambigua"]
+                out["categoria"] = "dudosa"
+                out["motivo"] = f"ambigua:{s['senal_id']}"
+                out["atribucion"] = _atribucion(s)
+                out["revision"] = "pendiente"
+                out["evidencia"] = f"{s['campo']}={valor}"
+                return out
+            if ev["sin_ancla"] is not None:
+                s, eviden = ev["sin_ancla"]
+                out["categoria"] = "dudosa"
+                out["motivo"] = f"sin_ancla:{s['senal_id']}"
+                out["atribucion"] = _atribucion(s)
+                out["revision"] = "pendiente"
+                out["evidencia"] = eviden
+                return out
+            if not ev["alguna_evaluable"]:
+                out["categoria"] = "dudosa"
+                out["motivo"] = "sin_campos"
+                out["revision"] = "pendiente"
+                out["evidencia"] = ""
+                return out
+        out["categoria"] = "artefacto_ataque"
+        out["motivo"] = "del_ataque"
+        out["evidencia"] = pertenencia
+        return out
+
+    # 1. auto_ruido (solo filas SIN evidencia de ataque)
     if auto:
+        if ev is not None and ev["match_deteccion"] is not None:
+            s, _ = ev["match_deteccion"]
+            # Una señal por `rule_id`/`rule_group` no "apunta a un proceso": casaría
+            # también las filas del servicio del canal y daría un CONFLICTO engañoso.
+            if s["campo"] not in ("rule_id", "rule_group"):
+                conflictos.append(
+                    f"rule_id={rid} timestamp={row.get('timestamp_utc')}: la señal "
+                    f"{s['senal_id']} (deteccion) apunta a un proceso de Wazuh "
+                    f"({auto[1]}); prevalece auto_ruido (revisar la señal)"
+                )
         out["categoria"] = "auto_ruido"
         out["motivo"] = f"auto_ruido:{auto[1]}"
         out["evidencia"] = auto[0]
@@ -479,7 +593,7 @@ def clasificar(
             out["atribucion"] = _atribucion(s)
             out["evidencia"] = f"{s['campo']}={valor}"
             return out
-        op = detectar_operador(row)
+        op = detectar_operador(row) if operador else None
         if op is not None:
             out["categoria"] = "ruido_conocido"
             out["motivo"] = f"operador:{op[0]}"
@@ -508,12 +622,8 @@ def clasificar(
             out["evidencia"] = ""
             return out
 
-    # 3.5. artefacto_ataque
-    if not modo_baseline and out["_pertenencia"]:
-        out["categoria"] = "artefacto_ataque"
-        out["motivo"] = "del_ataque"
-        out["evidencia"] = out["_pertenencia"]
-        return out
+    # 3.5. artefacto_ataque: ya resuelto por el CANDADO de arriba (una fila con
+    # evidencia de ataque retorna antes de `auto_ruido`/`operador`).
 
     # 4-5. catálogo
     if rid not in catalogo:
@@ -550,10 +660,11 @@ def write_csv(path: str, header: list[str], rows, comment: str | None = None) ->
             writer.writerow([r.get(c, "") for c in header])
 
 
-def construir_comentario(nombre, ata, it, modo, entradas, conteos) -> str:
+def construir_comentario(nombre, ata, it, modo, entradas, conteos, operador=True) -> str:
     parts = [
         f"{nombre} | TFG HIDS - B1.0 filtro Windows (H4-W) | ata={ata} iter={it}",
         f"modo={'baseline' if modo == 'baseline' else 'ataque'}",
+        f"operador={'on' if operador else 'off (sensibilidad --sin-operador)'}",
     ]
     for etiqueta, path, sha in entradas:
         parts.append(f"{etiqueta}={path} sha256={sha}")
@@ -631,6 +742,11 @@ def main(argv=None) -> int:
         action="store_true",
         help="ejecuta CA-B1-08 (v1 72 + catálogo v1; v2 87 + catálogo v1+v2) y sale",
     )
+    ap.add_argument(
+        "--sin-operador",
+        action="store_true",
+        help="sensibilidad: no aplica el predicado OPERADOR_WIN (el canal contaría como novel)",
+    )
     args = ap.parse_args(argv)
 
     if args.replay_baseline:
@@ -697,7 +813,8 @@ def main(argv=None) -> int:
 
     filas = []
     for r in alertas:
-        c = clasificar(r, catalogo, signals, modo_baseline, conflictos, ata)
+        c = clasificar(r, catalogo, signals, modo_baseline, conflictos, ata,
+                       operador=not args.sin_operador)
         fila = {
             "ata_id": ata,
             "iter": args.iter,
@@ -819,7 +936,8 @@ def main(argv=None) -> int:
         entradas.append(("revision", args.revision, sha256_file(args.revision)))
 
     comment = construir_comentario(
-        os.path.basename(out), ata, args.iter, args.modo, entradas, conteos
+        os.path.basename(out), ata, args.iter, args.modo, entradas, conteos,
+        operador=not args.sin_operador,
     )
     write_csv(out, OUT_HEADER, filas, comment=comment)
 
@@ -827,7 +945,8 @@ def main(argv=None) -> int:
     if dudosas:
         rev_rows = [dict(f, veredicto="", nota="", revisor="", fecha="") for f in dudosas]
         rev_comment = construir_comentario(
-            os.path.basename(rev_out), ata, args.iter, args.modo, entradas, conteos
+            os.path.basename(rev_out), ata, args.iter, args.modo, entradas, conteos,
+            operador=not args.sin_operador,
         )
         write_csv(rev_out, OUT_HEADER + REV_EXTRA, rev_rows, comment=rev_comment)
 

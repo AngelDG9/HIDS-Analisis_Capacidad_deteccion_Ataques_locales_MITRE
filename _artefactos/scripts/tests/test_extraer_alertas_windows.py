@@ -71,9 +71,12 @@ def test_columnas_actuales_mas_ancla_windows():
         "rule_groups", "rs_origen", "audit_exe", "audit_cwd", "audit_key", "audit_type",
         "audit_file", "audit_dir", "syscheck_path", "srcip", "srcuser", "dstuser",
     ]
-    assert X.DETAIL_HEADER[17:] == [
+    # B1.0-SSH.1: las 6 columnas del ancla no cambian; se AÑADEN 3 al final (D17).
+    assert X.DETAIL_HEADER[17:23] == [
         "agent_id", "win_image", "win_command_line", "win_cwd", "win_user", "event_id",
     ]
+    assert X.DETAIL_HEADER[23:] == ["win_target", "logon_type", "win_parent_image",
+                                    "win_target_user"]
     assert X.CSV_HEADER == ["rule_id", "rule_level", "rule_description", "groups",
                             "count", "first_seen", "last_seen", "rs_origen"]
 
@@ -91,7 +94,75 @@ def test_sysmon_mapea_el_ancla(tmp_path):
     assert fila["event_id"] == "1"
     assert fila["rs_origen"] == "RS1"
     assert meta["campos"] == {"win_image": 1, "win_command_line": 1, "win_cwd": 1,
-                              "win_user": 1, "event_id": 1}
+                              "win_user": 1, "event_id": 1, "win_target": 0,
+                              "logon_type": 0, "win_parent_image": 0,
+                              "win_target_user": 0}
+
+
+def test_win_target_desde_targetfilename(tmp_path):
+    alerta = {
+        "timestamp": _iso(INI),
+        "agent": {"id": "002", "name": "victima-windows"},
+        "rule": {"id": "92213", "level": 15, "description": "file", "groups": []},
+        "data": {"win": {"system": {"eventID": "11"},
+                         "eventdata": {"Image": r"C:\lab-attack\ATA061\a.exe",
+                                       "TargetFilename": r"C:\lab-attack\ATA061\nota.txt"}}},
+    }
+    p = _escribir(tmp_path / "a.json", [alerta])
+    det, _agg, _meta = X.extraer([p], INI, FIN)
+    fila = dict(zip(X.DETAIL_HEADER, det[0]))
+    assert fila["win_target"] == r"C:\lab-attack\ATA061\nota.txt"
+
+
+def test_win_target_desde_red_sysmon3(tmp_path):
+    alerta = {
+        "timestamp": _iso(INI),
+        "agent": {"id": "002", "name": "victima-windows"},
+        "rule": {"id": "185001", "level": 0, "description": "net", "groups": []},
+        "data": {"win": {"system": {"eventID": "3"},
+                         "eventdata": {"Image": r"C:\lab-attack\ATA074\curl.exe",
+                                       "DestinationIp": "192.168.65.1",
+                                       "DestinationPort": "9090"}}},
+    }
+    p = _escribir(tmp_path / "a.json", [alerta])
+    det, _agg, _meta = X.extraer([p], INI, FIN)
+    fila = dict(zip(X.DETAIL_HEADER, det[0]))
+    assert fila["win_target"] == "192.168.65.1:9090"
+
+
+def test_logon_type_parentimage_y_srcip(tmp_path):
+    alerta = {
+        "timestamp": _iso(INI),
+        "agent": {"id": "002", "name": "victima-windows"},
+        "rule": {"id": "60106", "level": 3, "description": "logon", "groups": []},
+        "data": {"win": {"system": {"eventID": "4624"},
+                         "eventdata": {"TargetUserName": "angel", "LogonType": "3",
+                                       "IpAddress": "192.168.65.1",
+                                       "ParentImage": r"C:\Windows\System32\OpenSSH\sshd.exe"}}},
+    }
+    p = _escribir(tmp_path / "a.json", [alerta])
+    det, _agg, meta = X.extraer([p], INI, FIN)
+    fila = dict(zip(X.DETAIL_HEADER, det[0]))
+    assert fila["srcip"] == "192.168.65.1"
+    assert fila["logon_type"] == "3"
+    assert fila["win_target_user"] == "angel"
+    assert fila["win_parent_image"].endswith("sshd.exe")
+    assert meta["campos"]["logon_type"] == 1 and meta["campos"]["win_parent_image"] == 1
+
+
+def test_srcip_guion_se_declara_vacio(tmp_path):
+    alerta = {
+        "timestamp": _iso(INI),
+        "agent": {"id": "002", "name": "victima-windows"},
+        "rule": {"id": "60106", "level": 3, "description": "logon", "groups": []},
+        "data": {"win": {"system": {"eventID": "4624"},
+                         "eventdata": {"TargetUserName": "angel", "LogonType": "3",
+                                       "IpAddress": "-"}}},
+    }
+    p = _escribir(tmp_path / "a.json", [alerta])
+    det, _agg, _meta = X.extraer([p], INI, FIN)
+    fila = dict(zip(X.DETAIL_HEADER, det[0]))
+    assert fila["srcip"] == ""
 
 
 def test_seguridad_4688_usa_los_alias_de_4688(tmp_path):

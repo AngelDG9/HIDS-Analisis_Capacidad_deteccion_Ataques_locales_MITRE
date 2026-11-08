@@ -133,7 +133,7 @@ T1486-A1,ambigua,syscheck_path,/home/angel/lab-attack/*,File Modification,T1486,
 | `win_image` | `Image` de Sysmon 1 / `NewProcessName` de 4688 | **detector** (proceso) |
 | `win_command_line` | `CommandLine` de Sysmon 1 / 4688 | **ancla** si hay `win_image`; detector si no lo hay |
 | `win_cwd` | `CurrentDirectory` (Sysmon 1; **puede faltar en 4688**) | **ancla** |
-| `win_target` | `TargetFilename` de Sysmon 11 / destino de red de Sysmon 3 | **ancla** (si el extractor lo emite) |
+| `win_target` | `TargetFilename` de Sysmon 11 / `destinationIp:destinationPort` de Sysmon 3 | **ancla** (evaluable desde B1.0-SSH.1) |
 | `syscheck_path` | ruta FIM | **ancla** y señal ambigua |
 | `rule_id` | `rule.id` de Wazuh | detector |
 | `rule_group` | grupo de la regla | detector |
@@ -161,7 +161,9 @@ Lo que casa la imagen y **falla** el ancla o el evento → **`dudosa`**
   (recuento ancho) y se mantiene el comportamiento legado.
 - La **pertenencia al ataque** es mecánica: `win_cwd`, `win_command_line`, `win_target` o
   `syscheck_path` bajo `C:\lab-attack\ATA<NNN>`. Una fila del ataque que no case una detección
-  declarada cae en **`artefacto_ataque`**, nunca en `ruido_conocido`.
+  declarada cae en **`artefacto_ataque`**, **nunca** en `ruido_conocido` **ni** `auto_ruido`
+  (candado G-SSH.1: la pertenencia se evalúa **antes** que el predicado del operador y el
+  `auto_ruido` del canal).
 
 ### 7.3 Ejemplo (T1041 / ATA074)
 
@@ -174,12 +176,12 @@ T1041-S4,deteccion,win_target,*ATA074*,Network Connection Creation,T1041,predicc
 T1041-A1,ambigua,syscheck_path,C:\lab-attack\ATA074\*,File Creation,T1041,artefacto del ataque
 ```
 
-> **Honestidad (B1.0).** `win_target` solo es evaluable si el extractor de Windows emite esa
-> columna; si no está, la señal **no es evaluable** (no se inventa). En B1.0 el extractor
-> (`extraer_alertas_windows.py`) emite `win_image`, `win_command_line`, `win_cwd`, `win_user` y
-> `event_id`; `win_target` queda como **campo declarado pendiente** de ampliación aditiva en
-> B1.1. Un `rule_id` solo se declara si está **probado**; si se predice, la columna `nota`
-> lleva **`prediccion`**.
+> **Estado (B1.0-SSH.1).** El extractor de Windows (`extraer_alertas_windows.py`, **27
+> columnas**) emite `win_image`, `win_command_line`, `win_cwd`, `win_user`, `event_id`,
+> **`win_target`** (`targetFilename` o `destinationIp:destinationPort`), `logon_type`,
+> `win_parent_image` y `win_target_user`; por tanto **`win_target` es evaluable** desde
+> B1.0-SSH.1. Un `rule_id` solo se declara si está **probado**; si se predice, la columna
+> `nota` lleva **`prediccion`**.
 
 ### 7.4 Reglas de oro (Windows)
 

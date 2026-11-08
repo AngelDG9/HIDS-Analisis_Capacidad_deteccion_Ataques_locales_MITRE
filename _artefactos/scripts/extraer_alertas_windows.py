@@ -13,6 +13,11 @@ línea), filtra por **agente** (`002` = `victima-windows` por defecto) y por ven
   `event_id`. Las columnas de Linux (`audit_*`, `syscheck_path`, `src*`) se conservan
   para que el filtro de ruido pueda reutilizarse; en Windows saldrán vacías salvo
   `syscheck_path` (FIM).
+- **Extensión aditiva B1.0-SSH.1 (plan §5.4, D17)**: al final se **añaden** `win_target`
+  (`targetFilename` o `destinationIp:destinationPort`), `logon_type`
+  (`data.win.eventdata.logonType`) y `win_parent_image` (`parentImage`); además `srcip`
+  (columna que ya existía) se **rellena** con `data.win.eventdata.ipAddress`. Las 23
+  columnas anteriores **no cambian** de orden ni de contenido.
 - **agregado** (`--out`): las mismas 8 columnas que el histórico
   (`ruleids_legitimos.csv`: `rule_id, rule_level, rule_description, groups, count,
   first_seen, last_seen, rs_origen`).
@@ -29,6 +34,11 @@ De dónde sale cada campo de Windows (nombres **observados** en Wazuh 4.14.7 con
 | `win_cwd` | `data.win.eventdata.currentDirectory`, `win.eventdata.…`, `data.win_cwd`, `win_cwd` |
 | `win_user` | `data.win.eventdata.user`, `…subjectUserName`, `…targetUserName`, `win.eventdata.…`, `data.win_user`, `win_user` |
 | `event_id` | `data.win.system.eventID`, `win.system.eventID`, `data.event_id`, `event_id` |
+| `win_target` | `data.win.eventdata.targetFilename` → si no hay, `destinationIp:destinationPort` |
+| `logon_type` | `data.win.eventdata.logonType` |
+| `win_parent_image` | `data.win.eventdata.parentImage` |
+| `win_target_user` | `data.win.eventdata.targetUserName` (usuario efectivo del logon) |
+| `srcip` | `data.win.eventdata.ipAddress` → `data.srcip` (`-` se declara vacío) |
 
 La búsqueda de claves es **insensible a mayúsculas** (Sysmon usa `Image`,
 `CommandLine`; el perfil normalizado del proyecto usa `image`, `commandline`). Si un
@@ -66,7 +76,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import contar_denominador as cd  # noqa: E402  (parse_ts / _open_lines: tambien .gz)
 import extraer_alertas as ea  # noqa: E402  (parse_ts / clasificacion RS / escritura CSV)
 
-#: Columnas del detalle: las 17 de Linux + el ancla de Windows (plan §7, W2).
+#: Columnas del detalle: las 17 de Linux + el ancla de Windows (plan §7, W2) +
+#: la extensión aditiva de B1.0-SSH.1 (plan §5.4, D17). Solo se **añaden** al final.
 DETAIL_HEADER = list(ea.DETAIL_HEADER) + [
     "agent_id",
     "win_image",
@@ -74,6 +85,12 @@ DETAIL_HEADER = list(ea.DETAIL_HEADER) + [
     "win_cwd",
     "win_user",
     "event_id",
+    "win_target",
+    "logon_type",
+    "win_parent_image",
+    # Extra justificada por la evidencia de B1.0-SSH.1: en 4624/4634/4688 `win_user`
+    # trae la cuenta *subject* (equipo/SYSTEM); el usuario efectivo es `targetUserName`.
+    "win_target_user",
 ]
 
 #: Agregado idéntico al histórico de Windows (`Dataset/Legitimo/windows/ruleids_legitimos.csv`).
@@ -179,11 +196,73 @@ CAMPOS_WINDOWS = {
         ("data", "event_id"),
         ("event_id",),
     ),
+    # --- extensión aditiva B1.0-SSH.1 (plan §5.4) ---
+    "win_target": (
+        ("data", "win", "eventdata", "targetFilename"),
+        ("win", "eventdata", "targetFilename"),
+        ("data", "win_target"),
+        ("win_target",),
+    ),
+    "logon_type": (
+        ("data", "win", "eventdata", "logonType"),
+        ("win", "eventdata", "logonType"),
+        ("data", "logon_type"),
+        ("logon_type",),
+    ),
+    "win_parent_image": (
+        ("data", "win", "eventdata", "parentImage"),
+        ("win", "eventdata", "parentImage"),
+        ("data", "win_parent_image"),
+        ("win_parent_image",),
+    ),
+    "win_target_user": (
+        ("data", "win", "eventdata", "targetUserName"),
+        ("win", "eventdata", "targetUserName"),
+        ("data", "win_target_user"),
+        ("win_target_user",),
+    ),
 }
+
+#: Red (Sysmon 3): `win_target` = `destinationIp:destinationPort` si no hay fichero.
+CAMPOS_RED = {
+    "destination_ip": (
+        ("data", "win", "eventdata", "destinationIp"),
+        ("win", "eventdata", "destinationIp"),
+    ),
+    "destination_port": (
+        ("data", "win", "eventdata", "destinationPort"),
+        ("win", "eventdata", "destinationPort"),
+    ),
+}
+
+#: `srcip` en Windows vive en `data.win.eventdata.ipAddress` (plan §5.4).
+CAMPOS_SRCIP = (
+    ("data", "win", "eventdata", "ipAddress"),
+    ("win", "eventdata", "ipAddress"),
+    ("data", "srcip"),
+    ("srcip",),
+)
+
+
+def _win_target_red(alert: dict) -> str:
+    ip = _primero(alert, CAMPOS_RED["destination_ip"])
+    port = _primero(alert, CAMPOS_RED["destination_port"])
+    if ip and port:
+        return f"{ip}:{port}"
+    return ip
+
+
+def srcip_de(alert: dict) -> str:
+    """IP de origen: `ipAddress` (Windows) o `data.srcip`; `-` se declara vacío."""
+    v = _primero(alert, CAMPOS_SRCIP).strip()
+    return "" if v in ("", "-") else v
 
 
 def campos_windows(alert: dict) -> dict:
-    return {k: _primero(alert, v) for k, v in CAMPOS_WINDOWS.items()}
+    campos = {k: _primero(alert, v) for k, v in CAMPOS_WINDOWS.items()}
+    if not campos["win_target"]:
+        campos["win_target"] = _win_target_red(alert)
+    return campos
 
 
 def agente_de(alert: dict):
@@ -287,7 +366,7 @@ def extraer(paths, desde, hasta, agent_id=AGENTE_ID_DEFECTO,
             (audit.get("file", {}) or {}).get("name", ""),
             (audit.get("directory", {}) or {}).get("name", ""),
             syscheck.get("path", ""),
-            str(data.get("srcip", "") or ""),
+            srcip_de(alert),
             str(data.get("srcuser", "") or ""),
             str(data.get("dstuser", "") or ""),
             agente_de(alert)[0],
@@ -296,6 +375,10 @@ def extraer(paths, desde, hasta, agent_id=AGENTE_ID_DEFECTO,
             win["win_cwd"],
             win["win_user"],
             win["event_id"],
+            win["win_target"],
+            win["logon_type"],
+            win["win_parent_image"],
+            win["win_target_user"],
         ])
 
         e = agg.get(rid)

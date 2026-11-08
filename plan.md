@@ -14,6 +14,13 @@ nota_gate: >-
   OPERADOR_WIN + sensibilidad sin predicado; (4) interactivos S1 (autologon + InteractiveToken),
   con S2 como fallback declarado; (5) extractor aditivo con doble regresión; (6) los 5 artefactos
   B-2/B-3 antes de B1.1. Corpus 32 sin cambios.
+ratificacion_g_ssh_1: >-
+  **G-SSH.1 RATIFICADO (2026-11-08).** El humano acepta: (1) SSH como canal del operador;
+  (2) predicado por usuario/regla (`60106/60137` por `angel`+tipo 3; `67028` por `angel`;
+  `sshd.exe` solo imagen del servicio) porque el `4624` de SSH no trae IP; (3) **candado**:
+  una fila con evidencia de `C:\lab-attack\ATA<NNN>` nunca se clasifica como operador/auto_ruido;
+  (4) `win_target_user` como columna aditiva; (5) la limitación de IP se declara en la memoria.
+  Corpus 32 sin cambios.
 aprobado_v2: f0b99c4
 b1_0: "PASA (2026-11-08): snapshot lab-listo-windows-ataques, C0 de clases, servicios del host y pre-staging verificados. Bloqueante del tester: huella del canal 67022/67023/67028."
 correccion: >-

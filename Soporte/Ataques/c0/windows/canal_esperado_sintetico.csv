@@ -1,0 +1,2 @@
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+S1,deteccion,rule_id,67027,Process Creation,T1059,esperado sintetico para probar el canal (D6b)

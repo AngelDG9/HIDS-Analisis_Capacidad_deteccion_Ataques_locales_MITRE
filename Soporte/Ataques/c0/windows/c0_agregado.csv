@@ -1,0 +1,37 @@
+rule_id,rule_level,rule_description,groups,count,first_seen,last_seen,rs_origen
+553,7,File deleted.,ossec|syscheck|syscheck_entry_deleted|syscheck_file,3,2026-11-08T16:15:28Z,2026-11-08T16:15:29Z,RS1
+554,5,File added to the system.,ossec|syscheck|syscheck_entry_added|syscheck_file,3,2026-11-08T16:15:28Z,2026-11-08T16:15:28Z,RS1
+594,5,Registry Key Integrity Checksum Changed,ossec|syscheck|syscheck_entry_modified|syscheck_registry,12,2026-11-08T16:19:44Z,2026-11-08T16:19:54Z,RS1
+598,5,Registry Key Entry Added to the System,ossec|syscheck|syscheck_entry_added|syscheck_registry,1,2026-11-08T16:19:53Z,2026-11-08T16:19:53Z,RS1
+750,5,Registry Value Integrity Checksum Changed,ossec|syscheck|syscheck_entry_modified|syscheck_registry,5,2026-11-08T16:19:44Z,2026-11-08T16:19:54Z,RS1
+752,5,Registry Value Entry Added to the System,ossec|syscheck|syscheck_entry_added|syscheck_registry,1,2026-11-08T16:19:54Z,2026-11-08T16:19:54Z,RS1
+60109,8,User account enabled or created,windows|windows_security|adduser|account_changed,2,2026-11-08T16:15:30Z,2026-11-08T16:15:30Z,RS1
+60110,8,User account changed,windows|windows_security|account_changed,1,2026-11-08T16:15:30Z,2026-11-08T16:15:30Z,RS1
+60111,8,User account disabled or deleted,windows|windows_security|adduser|account_changed,1,2026-11-08T16:15:30Z,2026-11-08T16:15:30Z,RS1
+60160,5,Domain Users Group Changed,windows|windows_security|group_changed|win_group_changed,2,2026-11-08T16:15:30Z,2026-11-08T16:15:30Z,RS1
+60170,5,Users Group Changed,windows|windows_security|group_changed|win_group_changed,2,2026-11-08T16:15:30Z,2026-11-08T16:15:30Z,RS1
+60602,9,Windows application error event.,windows|windows_application|system_error,1,2026-11-08T16:16:14Z,2026-11-08T16:16:14Z,RS1
+60798,3,The database engine attached a database.,windows|windows_application,1,2026-11-08T16:16:10Z,2026-11-08T16:16:10Z,RS1
+60805,3,The database engine is starting a new instance.,windows|windows_application,1,2026-11-08T16:16:09Z,2026-11-08T16:16:09Z,RS1
+60807,3,The database engine is initiating recovery steps.,windows|windows_application,1,2026-11-08T16:16:09Z,2026-11-08T16:16:09Z,RS1
+60808,3,The database engine is replaying log file C:\Winnt\system32\wins\j50.log.,windows|windows_application,2,2026-11-08T16:16:09Z,2026-11-08T16:16:09Z,RS1
+60809,3,The database engine has completed recovery steps.,windows|windows_application,1,2026-11-08T16:16:09Z,2026-11-08T16:16:09Z,RS1
+61102,5,Windows System error event,windows|windows_system|system_error,2,2026-11-08T16:15:49Z,2026-11-08T16:15:49Z,RS1
+61104,3,Service startup type was changed,windows|windows_system|policy_changed,4,2026-11-08T16:16:05Z,2026-11-08T16:16:47Z,RS1
+61138,5,New Windows Service Created,windows|windows_system,1,2026-11-08T16:15:47Z,2026-11-08T16:15:47Z,RS1
+67018,3,System shutdown initiated.,windows| WEF,1,2026-11-08T16:16:17Z,2026-11-08T16:16:17Z,RS1
+67022,3,Non network or service local logon.,windows| WEF,147,2026-11-08T16:15:04Z,2026-11-08T16:20:40Z,RS1
+67023,3,Non service account logged off.,windows| WEF,147,2026-11-08T16:15:04Z,2026-11-08T16:20:40Z,RS1
+67027,3,A process was created.,windows| WEF,229,2026-11-08T16:15:05Z,2026-11-08T16:21:25Z,RS1
+67028,3,Special privileges assigned to new logon.,windows| WEF,147,2026-11-08T16:15:04Z,2026-11-08T16:20:40Z,RS1
+91818,4,"Powershell script executed ""New-Service"" command",windows| powershell,1,2026-11-08T16:15:48Z,2026-11-08T16:15:48Z,RS1
+91844,12,Possible addition of new item to Windows startup registry,windows| powershell,1,2026-11-08T16:19:30Z,2026-11-08T16:19:30Z,RS1
+92004,4,Powershell process spawned Windows command shell instance,sysmon|sysmon_eid1_detections|windows,2,2026-11-08T16:15:27Z,2026-11-08T16:15:28Z,RS1
+92027,4,Powershell process spawned powershell instance,sysmon|sysmon_eid1_detections|windows,1,2026-11-08T16:15:28Z,2026-11-08T16:15:28Z,RS1
+92029,6,Powershell executed script from suspicious location,sysmon|sysmon_eid1_detections|windows,7,2026-11-08T16:15:27Z,2026-11-08T16:20:39Z,RS1
+92033,3,Discovery activity spawned via powershell execution,sysmon|sysmon_eid1_detections|windows,3,2026-11-08T16:15:05Z,2026-11-08T16:15:30Z,RS1
+92039,3,A net.exe account discovery command was initiated,sysmon|sysmon_eid1_detections|windows,3,2026-11-08T16:15:05Z,2026-11-08T16:15:30Z,RS1
+92052,4,Windows command prompt started by an abnormal process,sysmon|sysmon_eid1_detections|windows,2,2026-11-08T16:15:36Z,2026-11-08T16:15:49Z,RS1
+92200,6,Scripting file created under Windows Temp or User folder,sysmon|sysmon_eid11_detections|windows,7,2026-11-08T16:15:27Z,2026-11-08T16:20:39Z,RS1
+92213,15,Executable file dropped in folder commonly used by malware,sysmon|sysmon_eid11_detections|windows,13,2026-11-08T16:15:05Z,2026-11-08T16:20:39Z,RS1
+92307,3,"Evidence of new service creation found in registry under HKLM\\System\\CurrentControlSet\\Services\\TFG-C0-Svc\\ImagePath binary is: \""C:\\Windows\\System32\\cmd.exe\"" /c exit",sysmon|sysmon_eid13_detections|windows,1,2026-11-08T16:15:48Z,2026-11-08T16:15:48Z,RS1

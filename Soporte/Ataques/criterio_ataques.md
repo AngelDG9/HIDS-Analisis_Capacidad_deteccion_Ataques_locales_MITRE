@@ -165,6 +165,19 @@ Lo que cambia es **el reparto y los datos**, nunca el criterio.
 - **Línea base y filtro:** exige **baseline Windows** propio y adaptar el filtro al **perfil de
   plataforma** (`ATTACK_ROOT = C:\lab-attack\<ATA>`; procesos `wazuh-agent.exe`). La **métrica
   permanece congelada**.
+- **Canal del operador (B1.0-SSH.1):** se usa **SSH** (clave ed25519, `angel@192.168.65.130:22`,
+  firewall solo `192.168.65.0/24`), no `vmrun`, para no dejar la huella de logon del canal en
+  `deteccion`. **El `4624` de SSH no trae IP** en este Windows: el predicado `OPERADOR_WIN` es
+  por **`rule_id` + usuario + `logon_type`** (`60106/60137`, `67024/67023`, `67028`) y la
+  **sensibilidad** se publica con `--sin-operador`. Los casos interactivos (ATA071/072/073)
+  usan **S1** (autologon + tarea `InteractiveToken`, snapshot `-gui`).
+- **Red y nube local (no internet):** los sinks/web/WebDAV corren en el **host**
+  (`192.168.65.1`: 8080/9090/9091/9092) y están acotados a `/24`; el `sink.log` es **prueba de
+  efecto**, no capa de detección. NAT **off** durante la ventana.
+- **Puntos ciegos que condicionan el `esperado`:** `Sysmon 3` (nivel 0), `Sysmon 23` (no se
+  genera), `7036` (0 eventos), `4698/106` (no se generan) y **FIM de registro no realtime**
+  (barrido forzado `agent_control -r -u 002`). No se inventan capas: el caso se apoya en la
+  capa que el C0 demostró.
 
 > **Concreción y citas:** el diseño completo (**D1–D7**, telemetría, Defender, pre-staging con
 > URL + `sha256`, fases `fase-02b`/`fase-03b`) está en

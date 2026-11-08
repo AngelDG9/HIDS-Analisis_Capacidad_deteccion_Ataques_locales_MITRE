@@ -1,0 +1,46 @@
+timestamp_utc,agent_name,rule_id,rule_level,rule_description,rule_groups,rs_origen,audit_exe,audit_cwd,audit_key,audit_type,audit_file,audit_dir,syscheck_path,srcip,srcuser,dstuser,agent_id,win_image,win_command_line,win_cwd,win_user,event_id,win_target,logon_type,win_parent_image,win_target_user
+2026-11-08T17:26:52.369Z,victima-windows,67027,3,A process was created.,windows| WEF,UNKNOWN,,,,,,,,,,,002,C:\\Windows\\System32\\OpenSSH\\sshd.exe,"\""C:\\Windows\\System32\\OpenSSH\\sshd.exe\"" \""-R\""",,DESKTOP-BTMCFA5$,4688,,,,
+2026-11-08T17:26:52.424Z,victima-windows,67024,3,Service logon event registered from non standard service account.,windows| WEF,UNKNOWN,,,,,,,,,,,002,,,,DESKTOP-BTMCFA5$,4624,,5,,sshd_3696
+2026-11-08T17:26:52.439Z,victima-windows,67028,3,Special privileges assigned to new logon.,windows| WEF,UNKNOWN,,,,,,,,,,,002,,,,sshd_3696,4672,,,,
+2026-11-08T17:26:52.470Z,victima-windows,67027,3,A process was created.,windows| WEF,UNKNOWN,,,,,,,,,,,002,C:\\Windows\\System32\\OpenSSH\\sshd.exe,"\""C:\\Windows\\System32\\OpenSSH\\sshd.exe\"" \""-y\""",,DESKTOP-BTMCFA5$,4688,,,,sshd_3696
+2026-11-08T17:26:52.578Z,victima-windows,60106,3,Windows Logon Success,windows|windows_security|authentication_success,UNKNOWN,,,,,,,,,,,002,,,,DESKTOP-BTMCFA5$,4624,,3,,angel
+2026-11-08T17:26:52.593Z,victima-windows,67028,3,Special privileges assigned to new logon.,windows| WEF,UNKNOWN,,,,,,,,,,,002,,,,angel,4672,,,,
+2026-11-08T17:26:52.624Z,victima-windows,67027,3,A process was created.,windows| WEF,UNKNOWN,,,,,,,,,,,002,C:\\Windows\\System32\\OpenSSH\\sshd.exe,"\""C:\\Windows\\System32\\OpenSSH\\sshd.exe\"" \""-z\""",,DESKTOP-BTMCFA5$,4688,,,,angel
+2026-11-08T17:26:52.685Z,victima-windows,67023,3,Non service account logged off.,windows| WEF,UNKNOWN,,,,,,,,,,,002,,,,sshd_3696,4634,,5,,sshd_3696
+2026-11-08T17:26:52.702Z,victima-windows,60137,3,Windows User Logoff,windows|windows_security,UNKNOWN,,,,,,,,,,,002,,,,angel,4634,,3,,angel
+2026-11-08T17:27:32.672Z,victima-windows,67027,3,A process was created.,windows| WEF,UNKNOWN,,,,,,,,,,,002,C:\\Windows\\System32\\OpenSSH\\sshd.exe,"\""C:\\Windows\\System32\\OpenSSH\\sshd.exe\"" \""-R\""",,DESKTOP-BTMCFA5$,4688,,,,
+2026-11-08T17:27:32.782Z,victima-windows,67024,3,Service logon event registered from non standard service account.,windows| WEF,UNKNOWN,,,,,,,,,,,002,,,,DESKTOP-BTMCFA5$,4624,,5,,sshd_3480
+2026-11-08T17:27:32.815Z,victima-windows,67028,3,Special privileges assigned to new logon.,windows| WEF,UNKNOWN,,,,,,,,,,,002,,,,sshd_3480,4672,,,,
+2026-11-08T17:27:32.842Z,victima-windows,67027,3,A process was created.,windows| WEF,UNKNOWN,,,,,,,,,,,002,C:\\Windows\\System32\\OpenSSH\\sshd.exe,"\""C:\\Windows\\System32\\OpenSSH\\sshd.exe\"" \""-y\""",,DESKTOP-BTMCFA5$,4688,,,,sshd_3480
+2026-11-08T17:27:32.887Z,victima-windows,60106,3,Windows Logon Success,windows|windows_security|authentication_success,UNKNOWN,,,,,,,,,,,002,,,,DESKTOP-BTMCFA5$,4624,,3,,angel
+2026-11-08T17:27:32.902Z,victima-windows,67028,3,Special privileges assigned to new logon.,windows| WEF,UNKNOWN,,,,,,,,,,,002,,,,angel,4672,,,,
+2026-11-08T17:27:32.933Z,victima-windows,67027,3,A process was created.,windows| WEF,UNKNOWN,,,,,,,,,,,002,C:\\Windows\\System32\\OpenSSH\\sshd.exe,"\""C:\\Windows\\System32\\OpenSSH\\sshd.exe\"" \""-z\""",,DESKTOP-BTMCFA5$,4688,,,,angel
+2026-11-08T17:27:32.979Z,victima-windows,60137,3,Windows User Logoff,windows|windows_security,UNKNOWN,,,,,,,,,,,002,,,,angel,4634,,3,,angel
+2026-11-08T17:27:32.979Z,victima-windows,67023,3,Non service account logged off.,windows| WEF,UNKNOWN,,,,,,,,,,,002,,,,sshd_3480,4634,,5,,sshd_3480
+2026-11-08T17:28:12.956Z,victima-windows,67027,3,A process was created.,windows| WEF,UNKNOWN,,,,,,,,,,,002,C:\\Windows\\System32\\OpenSSH\\sshd.exe,"\""C:\\Windows\\System32\\OpenSSH\\sshd.exe\"" \""-R\""",,DESKTOP-BTMCFA5$,4688,,,,
+2026-11-08T17:28:13.138Z,victima-windows,67024,3,Service logon event registered from non standard service account.,windows| WEF,UNKNOWN,,,,,,,,,,,002,,,,DESKTOP-BTMCFA5$,4624,,5,,sshd_1460
+2026-11-08T17:28:13.169Z,victima-windows,67028,3,Special privileges assigned to new logon.,windows| WEF,UNKNOWN,,,,,,,,,,,002,,,,sshd_1460,4672,,,,
+2026-11-08T17:28:13.214Z,victima-windows,67027,3,A process was created.,windows| WEF,UNKNOWN,,,,,,,,,,,002,C:\\Windows\\System32\\OpenSSH\\sshd.exe,"\""C:\\Windows\\System32\\OpenSSH\\sshd.exe\"" \""-y\""",,DESKTOP-BTMCFA5$,4688,,,,sshd_1460
+2026-11-08T17:28:13.245Z,victima-windows,60106,3,Windows Logon Success,windows|windows_security|authentication_success,UNKNOWN,,,,,,,,,,,002,,,,DESKTOP-BTMCFA5$,4624,,3,,angel
+2026-11-08T17:28:13.260Z,victima-windows,67028,3,Special privileges assigned to new logon.,windows| WEF,UNKNOWN,,,,,,,,,,,002,,,,angel,4672,,,,
+2026-11-08T17:28:13.276Z,victima-windows,67027,3,A process was created.,windows| WEF,UNKNOWN,,,,,,,,,,,002,C:\\Windows\\System32\\OpenSSH\\sshd.exe,"\""C:\\Windows\\System32\\OpenSSH\\sshd.exe\"" \""-z\""",,DESKTOP-BTMCFA5$,4688,,,,angel
+2026-11-08T17:28:13.321Z,victima-windows,67023,3,Non service account logged off.,windows| WEF,UNKNOWN,,,,,,,,,,,002,,,,sshd_1460,4634,,5,,sshd_1460
+2026-11-08T17:28:13.337Z,victima-windows,60137,3,Windows User Logoff,windows|windows_security,UNKNOWN,,,,,,,,,,,002,,,,angel,4634,,3,,angel
+2026-11-08T17:28:20.546Z,victima-windows,67027,3,A process was created.,windows| WEF,UNKNOWN,,,,,,,,,,,002,C:\\Windows\\System32\\OpenSSH\\sshd.exe,"\""C:\\Windows\\System32\\OpenSSH\\sshd.exe\"" \""-R\""",,DESKTOP-BTMCFA5$,4688,,,,
+2026-11-08T17:28:20.682Z,victima-windows,67024,3,Service logon event registered from non standard service account.,windows| WEF,UNKNOWN,,,,,,,,,,,002,,,,DESKTOP-BTMCFA5$,4624,,5,,sshd_1356
+2026-11-08T17:28:20.697Z,victima-windows,67028,3,Special privileges assigned to new logon.,windows| WEF,UNKNOWN,,,,,,,,,,,002,,,,sshd_1356,4672,,,,
+2026-11-08T17:28:20.728Z,victima-windows,67027,3,A process was created.,windows| WEF,UNKNOWN,,,,,,,,,,,002,C:\\Windows\\System32\\OpenSSH\\sshd.exe,"\""C:\\Windows\\System32\\OpenSSH\\sshd.exe\"" \""-y\""",,DESKTOP-BTMCFA5$,4688,,,,sshd_1356
+2026-11-08T17:28:20.759Z,victima-windows,60106,3,Windows Logon Success,windows|windows_security|authentication_success,UNKNOWN,,,,,,,,,,,002,,,,DESKTOP-BTMCFA5$,4624,,3,,angel
+2026-11-08T17:28:20.774Z,victima-windows,67028,3,Special privileges assigned to new logon.,windows| WEF,UNKNOWN,,,,,,,,,,,002,,,,angel,4672,,,,
+2026-11-08T17:28:20.805Z,victima-windows,67027,3,A process was created.,windows| WEF,UNKNOWN,,,,,,,,,,,002,C:\\Windows\\System32\\OpenSSH\\sshd.exe,"\""C:\\Windows\\System32\\OpenSSH\\sshd.exe\"" \""-z\""",,DESKTOP-BTMCFA5$,4688,,,,angel
+2026-11-08T17:28:20.851Z,victima-windows,60137,3,Windows User Logoff,windows|windows_security,UNKNOWN,,,,,,,,,,,002,,,,angel,4634,,3,,angel
+2026-11-08T17:28:20.851Z,victima-windows,67023,3,Non service account logged off.,windows| WEF,UNKNOWN,,,,,,,,,,,002,,,,sshd_1356,4634,,5,,sshd_1356
+2026-11-08T17:28:25.018Z,victima-windows,67027,3,A process was created.,windows| WEF,UNKNOWN,,,,,,,,,,,002,C:\\Windows\\System32\\OpenSSH\\sshd.exe,"\""C:\\Windows\\System32\\OpenSSH\\sshd.exe\"" \""-R\""",,DESKTOP-BTMCFA5$,4688,,,,
+2026-11-08T17:28:25.124Z,victima-windows,67024,3,Service logon event registered from non standard service account.,windows| WEF,UNKNOWN,,,,,,,,,,,002,,,,DESKTOP-BTMCFA5$,4624,,5,,sshd_3492
+2026-11-08T17:28:25.139Z,victima-windows,67028,3,Special privileges assigned to new logon.,windows| WEF,UNKNOWN,,,,,,,,,,,002,,,,sshd_3492,4672,,,,
+2026-11-08T17:28:25.201Z,victima-windows,67027,3,A process was created.,windows| WEF,UNKNOWN,,,,,,,,,,,002,C:\\Windows\\System32\\OpenSSH\\sshd.exe,"\""C:\\Windows\\System32\\OpenSSH\\sshd.exe\"" \""-y\""",,DESKTOP-BTMCFA5$,4688,,,,sshd_3492
+2026-11-08T17:28:25.231Z,victima-windows,60106,3,Windows Logon Success,windows|windows_security|authentication_success,UNKNOWN,,,,,,,,,,,002,,,,DESKTOP-BTMCFA5$,4624,,3,,angel
+2026-11-08T17:28:25.247Z,victima-windows,67028,3,Special privileges assigned to new logon.,windows| WEF,UNKNOWN,,,,,,,,,,,002,,,,angel,4672,,,,
+2026-11-08T17:28:25.263Z,victima-windows,67027,3,A process was created.,windows| WEF,UNKNOWN,,,,,,,,,,,002,C:\\Windows\\System32\\OpenSSH\\sshd.exe,"\""C:\\Windows\\System32\\OpenSSH\\sshd.exe\"" \""-z\""",,DESKTOP-BTMCFA5$,4688,,,,angel
+2026-11-08T17:28:25.294Z,victima-windows,67023,3,Non service account logged off.,windows| WEF,UNKNOWN,,,,,,,,,,,002,,,,sshd_3492,4634,,5,,sshd_3492
+2026-11-08T17:28:25.310Z,victima-windows,60137,3,Windows User Logoff,windows|windows_security,UNKNOWN,,,,,,,,,,,002,,,,angel,4634,,3,,angel
