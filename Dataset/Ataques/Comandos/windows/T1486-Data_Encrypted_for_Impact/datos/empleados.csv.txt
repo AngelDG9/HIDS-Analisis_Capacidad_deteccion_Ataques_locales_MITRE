@@ -1,0 +1,4 @@
+empleado,dni,cuenta,saldo
+Ana Perez,11111111A,ES001,1500.00
+Luis Gomez,22222222B,ES002,2300.50
+Marta Ruiz,33333333C,ES003,980.75

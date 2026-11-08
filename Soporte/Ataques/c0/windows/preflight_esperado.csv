@@ -1,0 +1,8 @@
+# preflight_esperado.csv | B1.1 pre-flight del canal SSH (NO es el esperado de un ataque)
+# Objetivo: comprobar que un hijo de sshd.exe lanzado desde C:\lab-attack\ATA056 se atribuye
+# a la carpeta del ataque (deteccion/artefacto_ataque), nunca a operador/auto_ruido.
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+PF-S1,deteccion,win_image,cmd.exe,Process Creation,T1020,preflight: hijo cmd.exe
+PF-S2,deteccion,win_image,powershell.exe,Process Creation,T1020,preflight: hijo powershell.exe
+PF-S3,deteccion,win_command_line,*lab-attack*ATA056*,Process Creation,T1020,ancla H4-W por linea de comandos
+PF-S4,deteccion,syscheck_path,C:\lab-attack\ATA056\*,File Integrity Monitoring,T1020,ancla FIM de la carpeta

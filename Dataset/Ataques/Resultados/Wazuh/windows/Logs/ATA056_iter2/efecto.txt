@@ -1,0 +1,20 @@
+# ATA056 iter2 - prueba de efecto (NO es deteccion)
+
+2026-11-08T19:15:17Z t0=2026-11-08T19:15:17Z run=cmd /c C:\lab-attack\ATA056\run.cmd
+2026-11-08T19:15:18Z t1=2026-11-08T19:15:18Z
+
+evidencia_local: ata=ATA056
+  ata=ATA056
+  tecnica=T1020
+  fuente=ART
+  guid=9c780d3d-3a14-4278-8ee5-faaeb2ccfbe0
+  t0=2026-11-08T19:15:18Z
+  t1=2026-11-08T19:15:18Z
+  url=http://192.168.65.1:9090/upload/ATA056
+  file=C:\lab-attack\ATA056\T1020_exfilFile.txt
+  sha256=70c919c954bb6149648b26f7cfc831a32568693195f47a716de981af9608cec4
+  resultado=HTTP=200
+sink.log (HOST):
+  2026-11-08T19:15:18Z PUT /upload/ATA056 from=192.168.65.130 len=36 sha256=70c919c954bb6149648b26f7cfc831a32568693195f47a716de981af9608cec4 content_type=application/octet-stream
+
+VEREDICTO: EFECTO DEMOSTRADO (sha256 local 70c919c954bb6149... coincide con sink.log=True)

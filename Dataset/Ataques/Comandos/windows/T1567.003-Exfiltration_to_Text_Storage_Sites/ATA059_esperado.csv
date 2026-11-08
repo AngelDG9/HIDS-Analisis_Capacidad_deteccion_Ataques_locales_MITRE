@@ -1,0 +1,9 @@
+# ATA059_esperado.csv | ATA059 - T1567.003 Exfiltration to Text Storage Sites | Windows (B1.1)
+# Redactado el 2026-11-08 ANTES de t0 (pre-registro). Esquema v5, field-first, ancla H4-W.
+# Sin rule_id declarado (67027 es generica; casaria filas ajenas).
+# El efecto NO es deteccion: lo prueba sink.log (POST /paste con sha256 del cuerpo).
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1567.003-S1,deteccion,win_image,powershell.exe,Process Creation,T1567.003,ART adaptado c2e8ab6e (Invoke-RestMethod POST a paste local); hijo de sshd atribuido por carpeta
+T1567.003-S2,deteccion,win_image,cmd.exe,Process Creation,T1567.003,lanzador run.cmd (hijo de sshd)
+T1567.003-S3,deteccion,win_command_line,*lab-attack*ATA059*,Process Creation,T1567.003,ancla H4-W de la carpeta del ataque
+T1567.003-S4,deteccion,syscheck_path,C:\lab-attack\ATA059\*,File Integrity Monitoring,T1567.003,ancla FIM de la carpeta (clasifica escrituras como artefacto, no deteccion)

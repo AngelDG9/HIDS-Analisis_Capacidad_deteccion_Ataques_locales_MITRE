@@ -1,0 +1,4 @@
+usuario,rol,activo
+angel,admin,si
+operador,user,si
+invitado,guest,no

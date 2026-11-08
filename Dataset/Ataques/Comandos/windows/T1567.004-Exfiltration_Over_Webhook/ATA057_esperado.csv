@@ -1,0 +1,9 @@
+# ATA057_esperado.csv | ATA057 - T1567.004 Exfiltration Over Webhook | Windows (B1.1)
+# Redactado el 2026-11-08 ANTES de t0 (pre-registro). Esquema v5, field-first, ancla H4-W.
+# Sin rule_id declarado (67027 es generica; casaria filas ajenas).
+# El efecto NO es deteccion: lo prueba sink.log (POST /hook con sha256 del cuerpo JSON).
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1567.004-S1,deteccion,win_image,powershell.exe,Process Creation,T1567.004,ART f0057c81 (Invoke-RestMethod POST JSON); hijo de sshd atribuido por carpeta
+T1567.004-S2,deteccion,win_image,cmd.exe,Process Creation,T1567.004,lanzador run.cmd (hijo de sshd); ancla H4-W por linea de comandos
+T1567.004-S3,deteccion,win_command_line,*lab-attack*ATA057*,Process Creation,T1567.004,ancla H4-W de la carpeta del ataque
+T1567.004-S4,deteccion,syscheck_path,C:\lab-attack\ATA057\*,File Integrity Monitoring,T1567.004,ancla FIM de la carpeta (clasifica escrituras como artefacto, no deteccion)

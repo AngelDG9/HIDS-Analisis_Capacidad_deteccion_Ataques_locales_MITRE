@@ -1,0 +1,12 @@
+ata=ATA058
+tecnica=T1567.002
+fuente=ART_adaptado
+guid=8529ee44-279a-4a19-80bf-b846a40dda58
+t0=2026-11-08T19:36:41Z
+t1=2026-11-08T19:36:42Z
+remote=nube:ATA058/run_20261108T193641Z
+rclone_rc=0
+sha256_local_clientes.csv=cdec283f3a36b508989c68c737a7567f5504d02e94927199ce9ea1c77b0c5ace
+sha256_local_contratos.csv=ded9088b4be1044de045fe76d29c5b8fbf8737778495298e7b73a2e89ffc32e6
+sha256_local_facturas.csv=ac9a2a05625d5193aa4b4259fa06dfe478c34bb0da07107fb50982427ec8993a
+sha256_local_nominas.csv=377bfe414b652a745779f08b44a67146240dc1df12f2e9ea0f3fec37c751c752

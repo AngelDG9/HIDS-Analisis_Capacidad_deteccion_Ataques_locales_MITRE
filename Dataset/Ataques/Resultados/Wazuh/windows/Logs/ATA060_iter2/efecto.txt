@@ -1,0 +1,21 @@
+# ATA060 iter2 - prueba de efecto (NO es deteccion)
+
+2026-11-08T19:50:21Z t0=2026-11-08T19:50:21Z run=cmd /c C:\lab-attack\ATA060\run.cmd
+2026-11-08T19:50:53Z t1=2026-11-08T19:50:53Z
+
+contadores del invitado:
+  ata=ATA060
+  tecnica=T1496.001
+  fuente=propio
+  t0=2026-11-08T19:50:23Z
+  t1=2026-11-08T19:50:53Z
+  workers=4
+  duracion_objetivo_s=30
+  cpu_before_pct=11.99
+  cpu_during_samples=95.3033325748528,100,94.6028821670147
+  cpu_during_avg_pct=96.64
+  mem_before_available_mb=3003.6
+  mem_during_available_mb=2993.8
+  delta_cpu_pct=84.65
+
+VEREDICTO: EFECTO DEMOSTRADO (CPU 11.99% -> 96.64%; delta=84.65 pp; Available MBytes 3003.6 -> 2993.8)

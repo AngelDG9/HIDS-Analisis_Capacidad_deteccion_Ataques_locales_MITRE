@@ -1,0 +1,11 @@
+# ATA056_esperado.csv | ATA056 - T1020 Automated Exfiltration | Windows (B1.1)
+# Redactado el 2026-11-08 ANTES de t0 (pre-registro). Esquema v5, field-first, ancla H4-W.
+# No se declara rule_id: 67027/920xx estan probados como CLASE (C0 B1.0 + preflight B1.1)
+# pero 67027 es la regla generica de creacion de proceso y casaria filas ajenas.
+# Senales por win_image + ancla de carpeta (win_command_line) + evento de ejecucion.
+# El efecto NO es deteccion: lo prueba sink.log (PUT con sha256 del fichero).
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1020-S1,deteccion,win_image,powershell.exe,Process Creation,T1020,ART 9c780d3d (Invoke-WebRequest PUT); hijo de sshd atribuido por carpeta
+T1020-S2,deteccion,win_image,cmd.exe,Process Creation,T1020,lanzador run.cmd (hijo de sshd); ancla H4-W por linea de comandos
+T1020-S3,deteccion,win_command_line,*lab-attack*ATA056*,Process Creation,T1020,ancla H4-W de la carpeta del ataque
+T1020-S4,deteccion,syscheck_path,C:\lab-attack\ATA056\*,File Integrity Monitoring,T1020,ancla FIM de la carpeta (clasifica escrituras como artefacto, no deteccion)

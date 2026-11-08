@@ -1,0 +1,10 @@
+# ATA060_esperado.csv | ATA060 - T1496.001 Compute Hijacking | Windows (B1.1)
+# Redactado el 2026-11-08 ANTES de t0 (pre-registro). Esquema v5, field-first, ancla H4-W.
+# Sin rule_id declarado (67027 es generica; casaria filas ajenas).
+# Capa real: proceso (4688/Sysmon 1/4104). NO hay capa de recursos (R9, sin reglas de CPU).
+# El efecto (CPU) NO es deteccion: lo prueba efecto.txt con las muestras del contador.
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1496.001-S1,deteccion,win_image,powershell.exe,Process Creation,T1496.001,script del ataque (4 runspaces de computo); hijo de sshd atribuido por carpeta
+T1496.001-S2,deteccion,win_image,cmd.exe,Process Creation,T1496.001,lanzador run.cmd (hijo de sshd)
+T1496.001-S3,deteccion,win_command_line,*lab-attack*ATA060*,Process Creation,T1496.001,ancla H4-W de la carpeta del ataque
+T1496.001-S4,deteccion,syscheck_path,C:\lab-attack\ATA060\*,File Integrity Monitoring,T1496.001,ancla FIM de la carpeta (clasifica escrituras como artefacto, no deteccion)

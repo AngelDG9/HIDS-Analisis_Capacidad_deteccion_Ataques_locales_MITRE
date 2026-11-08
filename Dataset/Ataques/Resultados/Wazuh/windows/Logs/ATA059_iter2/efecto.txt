@@ -1,0 +1,20 @@
+# ATA059 iter2 - prueba de efecto (NO es deteccion)
+
+2026-11-08T19:43:19Z t0=2026-11-08T19:43:19Z run=cmd /c C:\lab-attack\ATA059\run.cmd
+2026-11-08T19:43:20Z t1=2026-11-08T19:43:20Z
+
+evidencia_local: ata=ATA059
+  ata=ATA059
+  tecnica=T1567.003
+  fuente=ART_adaptado
+  guid=c2e8ab6e-431e-460a-a2aa-3bc6a32022e3
+  t0=2026-11-08T19:43:20Z
+  t1=2026-11-08T19:43:20Z
+  url=http://192.168.65.1:9090/paste/ATA059
+  sha256_body=93f8f3b7f9745840b9fa36f7f6d830cd86faaae810e251de4d3681b28f21fd40
+  len_body=52
+  resultado=HTTP=200
+sink.log (HOST):
+  2026-11-08T19:43:20Z POST /paste/ATA059 from=192.168.65.130 len=52 sha256=93f8f3b7f9745840b9fa36f7f6d830cd86faaae810e251de4d3681b28f21fd40 content_type=text/plain
+
+VEREDICTO: EFECTO DEMOSTRADO (sha256 local 93f8f3b7f9745840... coincide con sink.log=True)

@@ -1,0 +1,4 @@
+proveedor,cif,nombre
+B11111111,ACME SL
+B22222222,Proveedor Dos SL
+B33333333,Tercero SA

@@ -1,0 +1,8 @@
+# ATA_index_windows_piloto.csv | subconjunto B1.1 (6 casos) del indice Windows de 32 | 2026-11-08
+ata_id,tactica,tecnica,descripcion,artefacto,estado,plataforma
+ATA056,Exfiltration,T1020,Automated Exfiltration,Dataset/Ataques/Comandos/windows/T1020-Automated_Exfiltration/,piloto-ok,windows
+ATA057,Exfiltration,T1567.004,Exfiltration Over Webhook,Dataset/Ataques/Comandos/windows/T1567.004-Exfiltration_Over_Webhook/,piloto-ok,windows
+ATA058,Exfiltration,T1567.002,Exfiltration to Cloud Storage,Dataset/Ataques/Comandos/windows/T1567.002-Exfiltration_to_Cloud_Storage/,piloto-ok,windows
+ATA059,Exfiltration,T1567.003,Exfiltration to Text Storage Sites,Dataset/Ataques/Comandos/windows/T1567.003-Exfiltration_to_Text_Storage_Sites/,piloto-ok,windows
+ATA060,Impact,T1496.001,Compute Hijacking,Dataset/Ataques/Comandos/windows/T1496.001-Compute_Hijacking/,piloto-ok,windows
+ATA061,Impact,T1486,Data Encrypted for Impact,Dataset/Ataques/Comandos/windows/T1486-Data_Encrypted_for_Impact/,piloto-ok,windows

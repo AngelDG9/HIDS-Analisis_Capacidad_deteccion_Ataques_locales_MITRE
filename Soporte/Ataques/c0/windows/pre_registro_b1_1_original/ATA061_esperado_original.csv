@@ -1,0 +1,11 @@
+# ATA061_esperado.csv | ATA061 - T1486 Data Encrypted for Impact | Windows (B1.1)
+# Redactado el 2026-11-08 ANTES de t0 (pre-registro). Esquema v5, field-first, ancla H4-W.
+# Sin rule_id declarado (67027/554 son genericas; casarian filas ajenas).
+# La capa FIM (554) es ancla/artefacto en el filtro congelado (H4-W): NO cuenta como
+# deteccion. La deteccion se declara por proceso (powershell.exe) + ancla de carpeta.
+# El efecto (sha256 antes != despues + roundtrip) NO es deteccion: lo prueba efecto.txt.
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1486-S1,deteccion,win_image,powershell.exe,Process Creation,T1486,script AES-256 .NET; hijo de sshd atribuido por carpeta
+T1486-S2,deteccion,win_image,cmd.exe,Process Creation,T1486,lanzador run.cmd (hijo de sshd)
+T1486-S3,deteccion,win_command_line,*C:\lab-attack\ATA061*,Process Creation,T1486,ancla H4-W de la carpeta del ataque
+T1486-S4,deteccion,syscheck_path,C:\lab-attack\ATA061\*,File Integrity Monitoring,T1486,ancla FIM de los ficheros cifrados (.enc); artefacto, no deteccion

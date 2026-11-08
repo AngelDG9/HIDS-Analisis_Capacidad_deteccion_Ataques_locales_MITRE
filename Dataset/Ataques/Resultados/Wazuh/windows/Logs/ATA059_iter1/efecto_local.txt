@@ -1,0 +1,10 @@
+ata=ATA059
+tecnica=T1567.003
+fuente=ART_adaptado
+guid=c2e8ab6e-431e-460a-a2aa-3bc6a32022e3
+t0=2026-11-08T19:40:00Z
+t1=2026-11-08T19:40:00Z
+url=http://192.168.65.1:9090/paste/ATA059
+sha256_body=93f8f3b7f9745840b9fa36f7f6d830cd86faaae810e251de4d3681b28f21fd40
+len_body=52
+resultado=HTTP=200

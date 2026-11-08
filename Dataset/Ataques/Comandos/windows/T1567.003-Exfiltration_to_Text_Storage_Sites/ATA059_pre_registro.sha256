@@ -1,0 +1,6 @@
+# pre_registro.sha256 - ATA059
+ata=ATA059
+esperado=ATA059_esperado.csv
+sha256=0dff602e402840466b4804c4dbcb73ee2818aef586f92bd372722f6d6e0ef3e9
+timestamp_utc=2026-11-08T20:22:18Z
+nota=pre-registro para la repeticion de B1.1 (CA-B1-02); NO modificar el esperado despues de este sello
