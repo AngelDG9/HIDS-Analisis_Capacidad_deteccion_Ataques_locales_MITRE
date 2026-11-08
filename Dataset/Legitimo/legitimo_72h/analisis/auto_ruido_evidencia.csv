@@ -1,0 +1,12 @@
+# auto_ruido_evidencia.csv | TFG HIDS - L2 evidencia del predicado auto_ruido (por campos) | metrica_version=1 | boveda_version=2 | predicado=filtrar_ruido.detectar_auto_ruido (audit_exe base en WAZUH_PROCESOS; audit_cwd=/var/ossec; audit_file/audit_dir/syscheck_path bajo /var/ossec/var/run/*; rule_id=11 + grupo stats) | unidades_auto=66285 | alertas_auto_incl_stats=66286 | unidades_con_alerta=294252 | declaracion=unidades_auto=66285; la alerta rule 11 (stats) tambien es auto_ruido pero NO tiene unidad en archives -> alertas_auto=66286 | declaracion=rule 1002 (nivel 2, 72 eventos) no emite alerta; no es FP ni auto_ruido | layout=largo(1 fila por regla x campo x valor de evidencia)
+rule_id,motivo,campo,valor,alertas,unidades
+80791,exe,audit_exe,/var/ossec/bin/wazuh-agentd,51806,51806
+80792,cwd,audit_cwd,/var/ossec,9752,9752
+80792,exe,audit_exe,/var/ossec/bin/wazuh-modulesd,3832,3832
+80780,exe,audit_exe,/var/ossec/bin/wazuh-modulesd,793,793
+80781,exe,audit_exe,/var/ossec/bin/wazuh-modulesd,72,72
+80780,exe,audit_exe,/var/ossec/bin/wazuh-agentd,14,14
+80780,exe,audit_exe,/var/ossec/bin/wazuh-syscheckd,6,6
+80791,cwd,audit_cwd,/var/ossec,6,6
+80781,exe,audit_exe,/var/ossec/bin/wazuh-agentd,2,2
+80782,exe,audit_exe,/var/ossec/bin/wazuh-agentd,2,2

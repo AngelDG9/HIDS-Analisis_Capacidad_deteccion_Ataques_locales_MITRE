@@ -1,0 +1,17 @@
+# catalogo_M1b.csv | TFG HIDS - L2 catalogo M1b (72 h union 4 reglas historicas del operador) | metrica_version=1 | boveda_version=2 | reglas=15 | origen_catalogo=72h|baseline_historico | declaracion=la ausencia en 72 h de 5402/5501/5502/5715 NO es evidencia de deteccion (ventana sin sesiones del operador); se mantienen como ruido historico declarado | layout=largo(1 fila por rule_id)
+rule_id,rule_level,rs_origen,groups,count_72h,origen_catalogo,justificacion
+11,4,UNKNOWN,stats,1,72h,observada en 72 h (1 alertas)
+554,5,RS1,ossec|syscheck|syscheck_entry_added|syscheck_file,3,72h,observada en 72 h (3 alertas)
+591,3,RS1,ossec,47,72h,observada en 72 h (47 alertas)
+5402,3,RS1,syslog|sudo,0,baseline_historico,"no ejercitada en 72 h (0 sesiones del operador en el endpoint, V4); baseline historico 2x4 h (6 alertas)"
+5501,3,RS1,pam|syslog|authentication_success,0,baseline_historico,"no ejercitada en 72 h (0 sesiones del operador en el endpoint, V4); baseline historico 2x4 h (30 alertas)"
+5502,3,RS1,pam|syslog,0,baseline_historico,"no ejercitada en 72 h (0 sesiones del operador en el endpoint, V4); baseline historico 2x4 h (27 alertas)"
+5715,3,RS1,syslog|sshd|authentication_success,0,baseline_historico,"no ejercitada en 72 h (0 sesiones del operador en el endpoint, V4); baseline historico 2x4 h (16 alertas)"
+80711,10,RS2,audit|audit_anom,2,72h,observada en 72 h (2 alertas)
+80730,3,RS2,audit|audit_selinux,72,72h,observada en 72 h (72 alertas)
+80780,3,RS2,audit|audit_watch_write,1871,72h,observada en 72 h (1871 alertas)
+80781,3,RS2,audit|audit_watch_write,93,72h,observada en 72 h (93 alertas)
+80782,3,RS2,audit|audit_watch_write,227,72h,observada en 72 h (227 alertas)
+80790,3,RS2,audit|audit_watch_create|audit_watch_write,11,72h,observada en 72 h (11 alertas)
+80791,3,RS2,audit|audit_watch_delete|audit_watch_write,55649,72h,observada en 72 h (55649 alertas)
+80792,3,RS2,audit|audit_command,236277,72h,observada en 72 h (236277 alertas)

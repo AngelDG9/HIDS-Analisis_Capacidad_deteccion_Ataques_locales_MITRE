@@ -120,8 +120,11 @@ def _bloque(rows, config_rs, umbral, m, meta):
         fp = len(unidades_fp)
         pct_fp = fp / m
         out["#Unidades_TN"] = m - fp
-        out["%Unidades_FP"] = M.fmt_pct(pct_fp)
-        out["%Unidades_TN"] = M.fmt_pct(1.0 - pct_fp)
+        # `%Unidades_*` se publica en **unidades de porcentaje** (×100) con 4 decimales
+        # (`metrica_hids.md:159-161`: "porcentajes 4 decimales (T3/T4)"). El ratio puro
+        # (6 decimales) es el `FPR` de T4. No cambia la fórmula: FPR = FP_uni / M.
+        out["%Unidades_FP"] = M.fmt_pct(100.0 * pct_fp)
+        out["%Unidades_TN"] = M.fmt_pct(100.0 * (1.0 - pct_fp))
     else:
         out["#Unidades_TN"] = ""
         out["%Unidades_FP"] = ""
@@ -134,7 +137,9 @@ def _bloque(rows, config_rs, umbral, m, meta):
     return out
 
 
-def _detalle(rows, config_rs, umbral, m):
+def _detalle(rows, config_rs, umbral, m, doble_uso=None):
+    """Detalle por `rule.id`. `veredicto` se deriva de la columna `categoria` del detalle
+    (no se hardcodea ninguna regla): una sola categoría -> esa; varias -> `mixto`."""
     por_rid = {}
     for r in rows:
         if r.get("rs_origen") not in config_rs:
@@ -143,14 +148,22 @@ def _detalle(rows, config_rs, umbral, m):
             continue
         rid = r.get("rule_id", "")
         d = por_rid.setdefault(rid, {"n": 0, "unidades": set(), "level": r.get("rule_level", ""),
-                                     "groups": r.get("rule_groups", ""), "rs": r.get("rs_origen", "")})
+                                     "groups": r.get("rule_groups", ""), "rs": r.get("rs_origen", ""),
+                                     "cats": {}})
         d["n"] += 1
+        cat = (r.get("categoria") or "").strip()
+        if cat:
+            d["cats"][cat] = d["cats"].get(cat, 0) + 1
         if r.get("unidad", ""):
             d["unidades"].add(r["unidad"])
     out = []
     for rid in sorted(por_rid, key=lambda s: (len(s), s)):
         d = por_rid[rid]
-        veredicto = M.CATEGORIA_AUTO_RUIDO if str(rid) in ("80791",) else ""
+        cats = sorted(d["cats"])
+        veredicto = cats[0] if len(cats) == 1 else ("mixto" if cats else "")
+        du = ""
+        if doble_uso is not None:
+            du = "SÍ" if str(doble_uso.get(str(rid), "")).strip() == "SÍ" else "NO"
         out.append(
             {
                 "rule.id": rid,
@@ -160,11 +173,19 @@ def _detalle(rows, config_rs, umbral, m):
                 "#alertas_legitimas": d["n"],
                 "#unidades_con_la_regla": len(d["unidades"]),
                 "#alertas_correlacionadas": len(d["unidades"]),
-                "es_TP_en_algun_ataque": "",
+                "es_TP_en_algun_ataque": du,
                 "veredicto": veredicto,
             }
         )
     return out
+
+
+def _leer_doble_uso(path):
+    """`rule_id -> doble_uso` desde `Hojas/T5_doble_uso.csv` (o `{}` si no hay fichero)."""
+    if not path or not os.path.isfile(path):
+        return None
+    _, rows = TC.read_csv_rows(path, required=["rule_id", "doble_uso"])
+    return {str(r["rule_id"]).strip(): (r.get("doble_uso") or "").strip() for r in rows}
 
 
 def main(argv=None) -> int:
@@ -185,6 +206,8 @@ def main(argv=None) -> int:
     ap.add_argument("--n-ips-o-entidades", default="")
     ap.add_argument("--config", nargs="+", default=list(M.CONFIGS_VIRGEN))
     ap.add_argument("--umbral", nargs="+", type=int, default=list(M.UMBRALES))
+    ap.add_argument("--doble-uso", default="",
+                    help="CSV de cruce T5_doble_uso.csv (rellena es_TP_en_algun_ataque)")
     ap.add_argument("--out", default=DEFAULT_OUT)
     args = ap.parse_args(argv)
 
@@ -208,6 +231,7 @@ def main(argv=None) -> int:
 
     filas = []
     estado = "sin_datos"
+    doble_uso = _leer_doble_uso(args.doble_uso)
     if args.detalle and os.path.isfile(args.detalle):
         _, rows = TC.read_csv_rows(args.detalle, required=["rule_id", "rs_origen"])
         estado = "calculado"
@@ -222,11 +246,25 @@ def main(argv=None) -> int:
                     elif c not in DETALLE_COLS:
                         fila[c] = ""
                 filas.append(fila)
-                for d in _detalle(rows, cfg_rs, u, m):
+                for d in _detalle(rows, cfg_rs, u, m, doble_uso):
                     fila = dict(meta, seccion="detalle_ruleid", config=cfg, umbral=u)
                     for c in DETALLE_COLS:
                         fila[c] = d.get(c, "")
                     filas.append(fila)
+
+    # Variante SIN `auto_ruido` del titular (C1 x N=0), publicada en la cabecera.
+    titular = next(
+        (f for f in filas if f.get("seccion") == "agregado" and f.get("config") == "C1"
+         and str(f.get("umbral")) == "0"),
+        None,
+    )
+    extra_sin_auto = []
+    if titular is not None and m:
+        sin_auto = _num(titular.get("#Alertas_FP_sin_auto_ruido"), 0.0)
+        extra_sin_auto = [
+            f"FP_uni_sin_auto_C1_N0={int(sin_auto)}",
+            f"FPR_sin_auto_C1_N0={M.fmt_ratio(M.fpr(sin_auto, m))}",
+        ]
 
     partes = [
         os.path.basename(args.out),
@@ -239,7 +277,13 @@ def main(argv=None) -> int:
         f"instrumentacion={'archives.json' if m else 'pendiente L0/L1'}",
         f"config={','.join(args.config)}",
         f"umbral={','.join(str(u) for u in args.umbral)}",
+        *extra_sin_auto,
         f"detalle={TC.rel(args.detalle) if args.detalle else '-'}",
+        f"sha256_detalle={TC.sha256_file(args.detalle) if (args.detalle and os.path.isfile(args.detalle)) else '-'}",
+        f"doble_uso={TC.rel(args.doble_uso) if args.doble_uso else '-'}",
+        "veredicto=desde_categoria(auto_ruido|ruido_conocido|mixto)",
+        "declaracion=C2/C3 vacias (RS3=RS4=0, L8): no se generan",
+        "declaracion=#Alertas_FP=A_FP y #Alertas_correlacionadas=#Unidades_FP (1 evento -> 1 alerta)",
         "layout=largo(seccion=agregado|detalle_ruleid)",
         "columnas=" + ",".join(HEADER),
     ]

@@ -1,0 +1,13 @@
+# catalogo_ruido_72h.csv | TFG HIDS - L2 catalogo de ruido autoritativo (72 h) | metrica_version=1 | boveda_version=2 | ventana=2026-11-02T00:00:00Z..2026-11-05T00:00:00Z | reglas=11 | suma_count=294253 | unidades_con_alerta=294252 | unidades_auto=66285 | declaracion=rule 11 (stats, UNKNOWN) NO tiene unidad en archives: 294253 alertas = 294252 eventos + 1 alerta interna; su alertas_auto=0 aqui y la cifra 66.286 (alertas) vs 66.285 (unidades) se declara en auto_ruido_evidencia.csv | declaracion=rule 1002 (nivel 2, 72 eventos) NO emite alerta: fuera del catalogo y de T3 | declaracion=auto_ruido es por CAMPOS (filtrar_ruido.detectar_auto_ruido), no por rule_id | layout=largo(1 fila por rule_id)
+rule_id,rule_level,rule_description,groups,rs_origen,count,first_seen,last_seen,alertas_auto,alertas_no_auto,pct_auto,origen_catalogo
+11,4,,stats,UNKNOWN,1,2026-11-02T00:48:11Z,2026-11-02T00:48:11Z,0,0,0.0000,72h
+554,5,File added to the system.,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,3,2026-11-02T11:15:40Z,2026-11-02T11:15:40Z,0,3,0.0000,72h
+591,3,Log file rotated.,ossec,RS1,47,2026-11-02T00:17:13Z,2026-11-04T23:16:19Z,0,47,0.0000,72h
+80711,10,Auditd: Process ended abnormally.,audit|audit_anom,RS2,2,2026-11-03T07:45:23Z,2026-11-04T07:45:07Z,0,2,0.0000,72h
+80730,3,Auditd: SELinux permission check.,audit|audit_selinux,RS2,72,2026-11-02T00:15:41Z,2026-11-04T23:29:00Z,0,72,0.0000,72h
+80780,3,Audit: Watch - Write access.,audit|audit_watch_write,RS2,1871,2026-11-02T00:05:02Z,2026-11-04T23:55:02Z,813,1058,43.4527,72h
+80781,3,Audit: Watch - Write access: /etc/.pwd.lock.,audit|audit_watch_write,RS2,93,2026-11-02T00:15:56Z,2026-11-04T23:29:08Z,74,19,79.5699,72h
+80782,3,Audit: Watch - Write access: /.,audit|audit_watch_write,RS2,227,2026-11-02T00:15:41Z,2026-11-04T23:29:00Z,2,225,0.8811,72h
+80790,3,Audit: Created: /home/angel/Documentos/informes/adjunto_1_2026-11-02.tar.gz.,audit|audit_watch_create|audit_watch_write,RS2,11,2026-11-02T08:46:54Z,2026-11-04T16:15:00Z,0,11,0.0000,72h
+80791,3,Audit: Deleted: var/run/.,audit|audit_watch_delete|audit_watch_write,RS2,55649,2026-11-02T00:00:08Z,2026-11-04T23:59:56Z,51812,3837,93.1050,72h
+80792,3,Audit: Command: /usr/bin/bash.,audit|audit_command,RS2,236277,2026-11-02T00:00:04Z,2026-11-04T23:59:37Z,13584,222693,5.7492,72h

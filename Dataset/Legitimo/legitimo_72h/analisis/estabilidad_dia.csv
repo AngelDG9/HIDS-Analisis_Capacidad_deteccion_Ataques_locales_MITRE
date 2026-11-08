@@ -1,0 +1,5 @@
+# estabilidad_dia.csv | TFG HIDS - L2 estabilidad diaria del legitimo | metrica_version=1 | boveda_version=2 | unidad=evento decodificado (linea de archives) | declaracion=M por dia se re-cuenta (frontera de rotacion diaria); el total es 342966 | columnas=dia,M,FP_uni_C0_N0,FP_uni_C1_N0,FP_uni_C1_N7,FPR_C0,FPR_C1_N0,FPR_C1_N7,A_FP,auto
+dia,M,FP_uni_C0_N0,FP_uni_C1_N0,FP_uni_C1_N7,FPR_C0,FPR_C1_N0,FPR_C1_N7,A_FP,auto
+2026-11-02,114118,19,98063,0,0.000166,0.859312,0.000000,98063,22116
+2026-11-03,114659,16,98254,1,0.000140,0.856924,0.000009,98254,22083
+2026-11-04,114189,15,97935,1,0.000131,0.857657,0.000009,97935,22086

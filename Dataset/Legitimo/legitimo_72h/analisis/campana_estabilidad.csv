@@ -1,0 +1,13 @@
+# campana_estabilidad.csv | TFG HIDS - L2 estabilidad de la campana declarada (B6) | metrica_version=1 | boveda_version=2 | atribucion=[ini-10s,fin+60s] | casos=11 | alertas_total=1793 | n_acciones_total=504 | declaracion=n_acciones por caso NO existe (BD GHOSTS parada); FP/accion de campana usa el total 63 acciones: 1793/63 = 28.4603 | declaracion=la campana esta DENTRO de M: no se fabrica un FPR alternativo | columnas=caso,ini,fin,duracion_s,alertas,rule_ids,nivel_max,esperado_cumplido
+caso,ini,fin,duracion_s,alertas,rule_ids,nivel_max,esperado_cumplido
+C-01,2026-11-02T17:06:00Z,2026-11-02T17:06:40Z,40,160,80780;80791;80792,3,SI
+C-02,2026-11-02T17:15:20Z,2026-11-02T17:15:49Z,29,127,80780;80791;80792,3,SI
+C-03,2026-11-02T17:24:40Z,2026-11-02T17:25:09Z,29,151,80780;80791;80792,3,SI
+C-05,2026-11-03T17:17:00Z,2026-11-03T17:17:45Z,45,158,80780;80791;80792,3,SI
+C-06,2026-11-03T17:25:30Z,2026-11-03T17:26:15Z,45,175,80780;80791;80792,3,SI
+C-07,2026-11-03T17:33:11Z,2026-11-03T17:33:40Z,29,134,80780;80791;80792,3,SI
+C-08,2026-11-03T17:41:21Z,2026-11-03T17:41:57Z,36,155,80780;80791;80792,3,SI
+C-09,2026-11-04T17:11:00Z,2026-11-04T17:11:42Z,42,159,80780;80791;80792,3,SI
+C-10,2026-11-04T17:19:32Z,2026-11-04T17:20:08Z,36,220,80780;80791;80792,3,SI
+C-11,2026-11-04T17:27:12Z,2026-11-04T17:27:49Z,37,241,80730;80780;80781;80782;80791;80792,3,SI
+C-12,2026-11-04T17:35:42Z,2026-11-04T17:36:01Z,19,113,80780;80791;80792,3,SI

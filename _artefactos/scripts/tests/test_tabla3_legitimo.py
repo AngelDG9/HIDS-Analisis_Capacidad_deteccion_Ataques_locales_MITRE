@@ -66,8 +66,8 @@ def test_bloque_con_M(tmp_path):
     assert r["#Alertas"] == "3"
     assert r["#Unidades_FP"] == "2"
     assert r["#Unidades_TN"] == "2"
-    assert r["%Unidades_FP"] == "0.5000"
-    assert r["%Unidades_TN"] == "0.5000"
+    assert r["%Unidades_FP"] == "50.0000"  # 2/4 en unidades de porcentaje (T3)
+    assert r["%Unidades_TN"] == "50.0000"
     assert r["#Alertas_FP_sin_auto_ruido"] == "2"  # sin el auto_ruido
     assert r["FP_por_accion"] == "0.3750"  # 3/8
     assert r["FP_por_hora"] == "1.5000"  # 3/2

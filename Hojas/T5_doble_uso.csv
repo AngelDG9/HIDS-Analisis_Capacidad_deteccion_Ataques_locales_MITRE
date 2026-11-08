@@ -1,0 +1,13 @@
+# T5_doble_uso.csv | TFG HIDS - T5 reglas de doble uso (catalogo de ruido 72 h x detecciones canonicas) | metrica_version=1 | boveda_version=2 | config=C1 | umbral=0 | unidad_legitimo=evento decodificado (linea de archives) | ventana_canonica=rev1_si_repeticiones_else_iter1 | reglas=11 | doble_uso=4 | declaracion=quitar una regla de doble uso redundante NO baja el TPR pero cambia la PRIMERA evidencia del caso (T5 mide rendimiento, no calidad de evidencia) | layout=largo(1 fila por rule_id)
+rule_id,rule_level,rs_origen,groups,legit_alertas,legit_unidades,legit_auto,pct_auto,attack_detecciones,attack_casos,attack_casos_lista,doble_uso,nota
+11,4,UNKNOWN,stats,1,0,0,,0,0,,NO,UNKNOWN (stats); sin unidad en archives: no entra en C1
+554,5,RS1,ossec|syscheck|syscheck_entry_added|syscheck_file,3,3,0,0.0000,0,0,,NO,solo legitimo (FP-only; nunca deteccion en ataque)
+591,3,RS1,ossec,47,47,0,0.0000,0,0,,NO,solo legitimo (FP-only; nunca deteccion en ataque)
+80711,10,RS2,audit|audit_anom,2,2,0,0.0000,0,0,,NO,solo legitimo (FP-only; nunca deteccion en ataque)
+80730,3,RS2,audit|audit_selinux,72,72,0,0.0000,0,0,,NO,solo legitimo (FP-only; nunca deteccion en ataque)
+80780,3,RS2,audit|audit_watch_write,1871,1871,813,43.4527,0,0,,NO,solo legitimo (FP-only; nunca deteccion en ataque)
+80781,3,RS2,audit|audit_watch_write,93,93,74,79.5699,1,1,ATA002,SÍ,redundante: 80792 ya cubre ATA002
+80782,3,RS2,audit|audit_watch_write,227,227,2,0.8811,0,0,,NO,solo legitimo (FP-only; nunca deteccion en ataque)
+80790,3,RS2,audit|audit_watch_create|audit_watch_write,11,11,0,0.0000,1,1,ATA002,SÍ,redundante: 80792 ya cubre ATA002
+80791,3,RS2,audit|audit_watch_delete|audit_watch_write,55649,55649,51812,93.1050,1,1,ATA008,SÍ,redundante: 80792 ya cubre ATA008
+80792,3,RS2,audit|audit_command,236277,236277,13584,5.7492,1988,53,ATA001;ATA002;ATA003;ATA004;ATA005;ATA006;ATA007;ATA008;ATA009;ATA010;ATA011;ATA012;ATA014;ATA015;ATA016;ATA017;ATA018;ATA019;ATA020;ATA021;ATA022;ATA023;ATA024;ATA025;ATA026;ATA027;ATA028;ATA029;ATA030;ATA031;ATA032;ATA033;ATA035;ATA036;ATA037;ATA038;ATA039;ATA040;ATA041;ATA042;ATA043;ATA044;ATA045;ATA046;ATA047;ATA048;ATA049;ATA050;ATA051;ATA052;ATA053;ATA054;ATA055,SÍ,principal: cubre 53/55 casos

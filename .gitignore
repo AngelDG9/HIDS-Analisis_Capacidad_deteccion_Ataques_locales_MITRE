@@ -38,6 +38,10 @@ Soporte/Ataques/atomic-red-team/
 # evidencias de pruebas de seguridad que NO se versionan.
 _artefactos/tmp/
 
+# Intermedio regenerable de L2 (bloque legitimo-analisis, plan §7.1): T3_detalle.csv
+# (~17 MB) se regenera desde el índice evento<->alerta; NO se versiona.
+Soporte/Laboratorio/legitimo_72h/analisis/
+
 # Secretos del laboratorio Wazuh (Fase 2, _fases/fase-02/plan.md §3.10)
 # Credenciales del dashboard/API e instalador: NUNCA a git.
 Soporte/Wazuh/Configuracion/*password*
