@@ -1,0 +1,8 @@
+ata=ATA064
+iter=2
+esperado=Dataset/Ataques/Comandos/windows/T1489-Service_Stop/ATA064_esperado.csv
+sha256_esperado=35187eb5f4dafb411a4cf7fe8049b3968c93ff985e1bb98350e94007530c2263
+sha256_sellado=35187eb5f4dafb411a4cf7fe8049b3968c93ff985e1bb98350e94007530c2263
+coincide=True
+timestamp_utc=2026-11-08T22:31:31Z
+nota=verificacion antes de t0 (CA-B1-02)

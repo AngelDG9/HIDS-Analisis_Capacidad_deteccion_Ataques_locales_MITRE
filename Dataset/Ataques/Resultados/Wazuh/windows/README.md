@@ -112,3 +112,43 @@ barras antes de comparar. Diff: **+10/−4**; `pytest` 389 OK. No se tocó ning�
    la cuenta y no la inventa.
 6. **Grupo mixto `ts+rule_id`**: en ATA058 iter1 conviven `WmiApSrv.exe` (baseline) y
    `rclone.exe` (detección) con el mismo `67027` y timestamp; verificado por `win_image`.
+
+
+## 8. B1.2 — ATA062–ATA067 (6 casos, 12 ventanas)
+
+> Ejecutado el **2026-11-08 (21:55–23:02Z)** con los `esperado` sellados en `7bce82d`.
+> **Token SSH High** (`S-1-16-12288`): no se necesitó tarea `Highest`; `win_user=angel` en todos.
+> `CA-B1-02`: 12/12 sellos verificados **antes** de `t0`; `-Audited.csv` y `-Detalle.csv` con el
+> `sha256` sellado.
+
+| ATA | Técnica | Efecto | Iter1 | Iter2 | Dudosas |
+|---|---|---|---|---|---|
+| ATA062 | T1485 | 5/5 sobrescritos + borrados | 5 | 5 | 0/0 |
+| ATA063 | T1490 | bcdedit `No`/`IgnoreAllFailures`; `reagentc` parcial | 5 | 5 | 0/0 |
+| ATA064 | T1489 | servicio juguete `Running→Stopped`, borrado | 6 | 6 | 0/0 |
+| ATA065 | T1531 | usuario juguete creado y borrado | 5 | 5 | 0/0 |
+| ATA066 | T1491.001 | `index.html` sobrescrito (`sha256`≠) | 5 | 5 | 0/0 |
+| ATA067 | T1529 | `boot_before < boot_after`; agente `Active` | 19 | 19 | 0/0 |
+
+- **0 filas del ataque en `ruido_conocido`/`auto_ruido`** (candado; las herramientas se ejecutan
+  desde copias dentro de `C:\lab-attack\ATA<NNN>\` para que la carpeta esté en la línea de comandos).
+- **ATA063**: `reagentc /disable` quedó **parcial** (la copia local no devolvió salida); el efecto
+  principal es `bcdedit` (`recoveryenabled No`, `bootstatuspolicy IgnoreAllFailures`). Declarado.
+- **ATA064**: `ToyService.exe` compilado en el caso; el `sc.exe`/binario del sistema no es
+  service-aware. Efecto real `Running→Stopped`.
+- **ATA067**: el reinicio genera ruido de arranque `92066`/`92031` (novel) que la regla congelada
+  cuenta como detección; **no cambia el TPR**, pero infla `#Alertas`/`#rule.id` de ATA067.
+
+### T2-W parcial (12 casos: 6 B1.1 + 6 B1.2)
+
+`Hojas/T2_ataques_windows.csv` — **120 filas**, `N_casos=12`, `corpus=32`, `CA-B1-02 PASA`.
+**`sha256 = f2a619597c9a05d16a1eb61e15e68defa2e7dbef390d87a320f915a4eada5cee`** (reproducible).
+
+| Config | `N=0` | `N=3` | `N=7` | `N=10` | `N=12` |
+|---|---|---|---|---|---|
+| **C0 = C1** | **12/12** | **12/12** | 0/12 | 0/12 | 0/12 |
+
+- `#Alertas` total: **76**; `#rule.id` distintos: 3 por caso, salvo ATA064=4 (`92307`) y ATA067=7.
+- T4-W: **`sha256 = 01c9ef83c7590e585eb8d511f8e110f2b91600946c1a4b40c580170a55e34fc3`**.
+- Sensibilidad `--sin-operador`: TPR idéntico (12/12, 12/12, 0/12); canal a `dudosa`.
+- Replay v1/v2: **0**; `pytest` **389**; regresión Linux semántica **875/875**.

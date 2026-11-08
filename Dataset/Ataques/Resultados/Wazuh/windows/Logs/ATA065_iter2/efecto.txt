@@ -1,0 +1,19 @@
+# ATA065 iter2 - prueba de efecto (NO es deteccion)
+
+2026-11-08T22:41:40Z t0=2026-11-08T22:41:40Z run=cmd /c C:\lab-attack\ATA065\run.cmd
+2026-11-08T22:41:45Z t1=2026-11-08T22:41:45Z
+
+evidencia_local:
+  ata=ATA065
+  tecnica=T1531
+  fuente=ART_adaptado
+  guid=f21a1d7d-a62f-442a-8c3a-2440d43b19e5
+  t0=2026-11-08T22:41:43Z
+  t1=2026-11-08T22:41:45Z
+  usuario=tfg_toy_1531
+  creado=True
+  existe_antes=True
+  existe_despues=False
+  error=
+
+VEREDICTO: EFECTO DEMOSTRADO (usuario creado, existe_antes=True, existe_despues=False)

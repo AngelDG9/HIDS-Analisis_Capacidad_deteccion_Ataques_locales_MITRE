@@ -1,0 +1,188 @@
+{
+  "ata_id": "ATA062",
+  "tecnica": "T1485",
+  "tactica": "Impact",
+  "sistema": "windows",
+  "bloque": "B1",
+  "tanda": "B1.2",
+  "estado": "piloto-ok",
+  "canal": "ssh",
+  "artefacto": "Dataset/Ataques/Comandos/windows/T1485-Data_Destruction/",
+  "atomic": {
+    "fuente": "ART_adaptado",
+    "guid": "476419b5-aebf-4366-a131-ae3e8dae5fc2",
+    "adaptacion": "SDelete -> sobrescritura nativa con PowerShell + borrado de 5 ficheros de juguete",
+    "fuente_norm": "ART_adaptado",
+    "motivo_codigo": "art_adaptado",
+    "motivo_detalle": "SDelete -> sobrescritura nativa con PowerShell + borrado de 5 ficheros de juguete"
+  },
+  "esperado_sha256": "5944d1292c921631be5131e37d28542fcc0730dc06084d61ccee1ce666948d73",
+  "ataque_sha256": "901f52a0685987110bb1324ac5030197322c34de7199da4819230df917e59ff7",
+  "validacion_humana_esperado": "pre-registrado y sellado en 7bce82d",
+  "c0": {
+    "documento": "Soporte/Ataques/c0/windows/ATA062_c0.md",
+    "sha256": "56f0d5c96cce6e5f38c9b03dd895ba5acc25d96b4bcbd7d32c486b526d0fa7c8",
+    "resultado": "PASA (clases de B1.0 + preflight B1.2); RS3=RS4=0"
+  },
+  "iteraciones": [
+    {
+      "iter": 1,
+      "t0": "2026-11-08T21:58:37Z",
+      "t1": "2026-11-08T21:58:41Z",
+      "duracion_s": 4,
+      "snapshot": "lab-listo-windows-ataques-ssh",
+      "canal": "ssh",
+      "diario": "/var/ossec/logs/alerts/2026/Nov/ossec-alerts-08.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/windows/CSV/ATA062_iter1-Detalle.csv",
+      "detalle_sha256": "84752f81a129844a67c81d13ddc06b7edc013cf33f2250e96a9a0320e55ab795",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA062_iter1-Audited.csv",
+      "audited_sha256": "6dfbba85d377ec10ad419e8c8aa97b61d660a6245ffeb079ebc17ca7faf9247f",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA062_iter1-Revision.csv",
+      "revision_sha256": "6674629d379fa269b1d75318a1c538bfc76c4d5f0f28424ed26e549306c64830",
+      "revision_pre": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA062_iter1-Revision_pre.csv",
+      "revision_pre_sha256": "dbb39a4bf07a2d93042193deecc6b10ce8762112500e349a09c3a4749cb16802",
+      "conteos": {
+        "deteccion": 5,
+        "auto_ruido": 3,
+        "ruido_conocido": 7,
+        "dudosa": 0,
+        "artefacto_ataque": 15
+      },
+      "rs": {
+        "RS1": 30,
+        "RS2": 0,
+        "RS3": 0,
+        "RS4": 0,
+        "UNKNOWN": 0
+      },
+      "detecciones": {
+        "alertas": 5,
+        "rule_id_distintos": [
+          "67027",
+          "92032",
+          "92052"
+        ],
+        "esperadas": 1,
+        "sorpresas": 0,
+        "evidencia": "procesos del ataque anclados por win_command_line a la carpeta"
+      },
+      "metrico_o1": "si",
+      "metrico_o2": "1/1",
+      "dudosas_resueltas": 15,
+      "efecto": {
+        "fichero": "Dataset/Ataques/Resultados/Wazuh/windows/Logs/ATA062_iter1/efecto.txt",
+        "sha256": "4a4c10719a3d21020115cfdd77af9bb4f7e58ea1c6eb7a58fc5cfd2d0f1405d1",
+        "resumen": "5/5 sobrescritos + 5/5 borrados"
+      }
+    },
+    {
+      "iter": 2,
+      "t0": "2026-11-08T22:02:39Z",
+      "t1": "2026-11-08T22:02:42Z",
+      "duracion_s": 3,
+      "snapshot": "lab-listo-windows-ataques-ssh",
+      "canal": "ssh",
+      "diario": "/var/ossec/logs/alerts/2026/Nov/ossec-alerts-08.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/windows/CSV/ATA062_iter2-Detalle.csv",
+      "detalle_sha256": "7966e17c4e3c3f567d9b768f6dfbddec453a783af21677922b725ae81e1fc4c8",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA062_iter2-Audited.csv",
+      "audited_sha256": "2136c28898a49af77464af6450d605a3763d3e6c11f51d6170f3fcd6f82cedad",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA062_iter2-Revision.csv",
+      "revision_sha256": "17451f6676ea34781a7786cf9d3baee638fffa2abb3a5545f57ee6b31b9eccbe",
+      "revision_pre": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA062_iter2-Revision_pre.csv",
+      "revision_pre_sha256": "40bccb3ae043f8076d7775ec7d2e7e9ecf35e142a1127914b1bd0039959ed33e",
+      "conteos": {
+        "deteccion": 5,
+        "auto_ruido": 3,
+        "ruido_conocido": 7,
+        "dudosa": 0,
+        "artefacto_ataque": 14
+      },
+      "rs": {
+        "RS1": 29,
+        "RS2": 0,
+        "RS3": 0,
+        "RS4": 0,
+        "UNKNOWN": 0
+      },
+      "detecciones": {
+        "alertas": 5,
+        "rule_id_distintos": [
+          "67027",
+          "92032",
+          "92052"
+        ],
+        "esperadas": 1,
+        "sorpresas": 0,
+        "evidencia": "procesos del ataque anclados por win_command_line a la carpeta"
+      },
+      "metrico_o1": "si",
+      "metrico_o2": "1/1",
+      "dudosas_resueltas": 14,
+      "efecto": {
+        "fichero": "Dataset/Ataques/Resultados/Wazuh/windows/Logs/ATA062_iter2/efecto.txt",
+        "sha256": "8027e845948baf3d9267a736cb74cbb8c40b248a419f68d198e59f8a1b7c4ebb",
+        "resumen": "5/5 sobrescritos + 5/5 borrados"
+      }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-11-08",
+    "veredicto": "artefacto/ruido/deteccion según fila",
+    "motivo": "FIM ambigua, servicio/cuenta/registro y ruido de arranque resueltos antes de T2",
+    "revisor": "executor B1.2"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": {
+    "criterio": "v2",
+    "mismo_conjunto_rule_id_deteccion": true,
+    "rule_ids_deteccion": [
+      "67027",
+      "92032",
+      "92052"
+    ],
+    "n1": 5,
+    "n2": 5,
+    "margen": 2,
+    "criterio_recuento_ok": true,
+    "sin_dudosas_sin_resolver": true
+  },
+  "extraccion": {
+    "extractor": "extraer_alertas_windows.py (27 columnas; RS desde el ruleset del manager)",
+    "fuente": "/var/ossec/logs/alerts/2026/Nov/ossec-alerts-08.json",
+    "aislamiento": "agent_id=002",
+    "ventana": "t0-3s .. t1+3s"
+  },
+  "prueba_de_efecto": "5/5 ficheros sobrescritos con ceros y borrados; existe_after=0",
+  "receptor": {
+    "script": "n/a (sin red)",
+    "parado_tras_t1": false
+  },
+  "eventos": [
+    {
+      "ts": "2026-11-08T21:58:37Z",
+      "tipo": "t0",
+      "detalle": "iter1 t0 (revert + Active + 90 s)"
+    },
+    {
+      "ts": "2026-11-08T21:58:41Z",
+      "tipo": "t1",
+      "detalle": "iter1 t1"
+    },
+    {
+      "ts": "2026-11-08T22:02:39Z",
+      "tipo": "t0",
+      "detalle": "iter2 t0 (revert + Active + 90 s)"
+    },
+    {
+      "ts": "2026-11-08T22:02:42Z",
+      "tipo": "t1",
+      "detalle": "iter2 t1"
+    },
+    {
+      "ts": "2026-11-08T23:10:00Z",
+      "tipo": "cierre",
+      "detalle": "doble iteracion v2: mismo conjunto de rule_id y recuento -> iguales"
+    }
+  ]
+}

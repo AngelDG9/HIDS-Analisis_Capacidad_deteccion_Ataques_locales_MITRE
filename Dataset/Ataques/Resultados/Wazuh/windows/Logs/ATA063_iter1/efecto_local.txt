@@ -1,0 +1,14 @@
+ata=ATA063
+tecnica=T1490
+fuente=ART_adaptado
+guid=43819286-91a9-4369-90ed-d31fb4da2c01+cf21060a-80b3-4238-a595-22525de4ab81
+t0=2026-11-08T22:11:09Z
+t1=2026-11-08T22:11:13Z
+bcdedit_recoveryenabled_no=
+True
+bcdedit_bootstatuspolicy_ignore=
+True
+reagentc_disabled=
+False
+vssadmin_list_antes_len=
+92

@@ -1,0 +1,17 @@
+# ATA067 iter1 - prueba de efecto (NO es deteccion)
+
+2026-11-08T22:55:53Z t0=2026-11-08T22:55:53Z run=cmd /c C:\lab-attack\ATA067\run.cmd
+2026-11-08T22:57:02Z t1=2026-11-08T22:57:02Z
+
+evidencia_local:
+  ata=ATA067
+  tecnica=T1529
+  fuente=ART_adaptado
+  guid=f4648f0d-bf78-483c-bafc-3ec99cd1c302
+  t0=2026-11-08T22:55:57Z
+  boot_before=2026-11-08T22:53:32Z
+  comando=shutdown /r /t 5 /f
+  nota=el efecto se cierra en el host con boot_after tras el reinicio
+boot_after=2026-11-08T22:56:10Z
+
+VEREDICTO: EFECTO DEMOSTRADO (boot_before=2026-11-08T22:53:32Z < boot_after=2026-11-08T22:56:10Z; agente Active)

@@ -1,0 +1,8 @@
+ata=ATA066
+iter=2
+esperado=Dataset/Ataques/Comandos/windows/T1491.001-Internal_Defacement/ATA066_esperado.csv
+sha256_esperado=de471b5ea64b62471af5181b58ced787cf6f81ddd5899433264e559175fcc6c1
+sha256_sellado=de471b5ea64b62471af5181b58ced787cf6f81ddd5899433264e559175fcc6c1
+coincide=True
+timestamp_utc=2026-11-08T22:45:30Z
+nota=verificacion antes de t0 (CA-B1-02)

@@ -1,0 +1,8 @@
+ata=ATA063
+iter=2
+esperado=Dataset/Ataques/Comandos/windows/T1490-Inhibit_System_Recovery/ATA063_esperado.csv
+sha256_esperado=b87cc83429885a851e8752b760c84cd411a35708c79a7b62c60bb11570ddce3e
+sha256_sellado=b87cc83429885a851e8752b760c84cd411a35708c79a7b62c60bb11570ddce3e
+coincide=True
+timestamp_utc=2026-11-08T22:12:04Z
+nota=verificacion antes de t0 (CA-B1-02)

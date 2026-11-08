@@ -1,0 +1,8 @@
+ata=ATA067
+iter=1
+esperado=Dataset/Ataques/Comandos/windows/T1529-System_Shutdown_Reboot/ATA067_esperado.csv
+sha256_esperado=49e4a5a841e6e8fb4c803b850bf9e5dd2d6f1282cb643aea4424b360b4d30549
+sha256_sellado=49e4a5a841e6e8fb4c803b850bf9e5dd2d6f1282cb643aea4424b360b4d30549
+coincide=True
+timestamp_utc=2026-11-08T22:53:20Z
+nota=verificacion antes de t0 (CA-B1-02)

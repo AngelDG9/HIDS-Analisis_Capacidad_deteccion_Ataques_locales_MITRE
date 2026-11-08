@@ -1,0 +1,8 @@
+ata=ATA065
+iter=2
+esperado=Dataset/Ataques/Comandos/windows/T1531-Account_Access_Removal/ATA065_esperado.csv
+sha256_esperado=a680722513689fb740f5d2e9261bffa1a23a9941935867b85d03ff14b0426ecc
+sha256_sellado=a680722513689fb740f5d2e9261bffa1a23a9941935867b85d03ff14b0426ecc
+coincide=True
+timestamp_utc=2026-11-08T22:38:43Z
+nota=verificacion antes de t0 (CA-B1-02)

@@ -1,0 +1,22 @@
+rule_id,rule_level,rule_description,groups,count,first_seen,last_seen,rs_origen
+503,3,Wazuh agent started.,ossec,1,2026-11-08T23:01:37Z,2026-11-08T23:01:37Z,RS1
+550,7,Integrity checksum changed.,ossec|syscheck|syscheck_entry_modified|syscheck_file,1,2026-11-08T23:00:56Z,2026-11-08T23:00:56Z,RS1
+554,5,File added to the system.,ossec|syscheck|syscheck_entry_added|syscheck_file,4,2026-11-08T23:00:52Z,2026-11-08T23:00:56Z,RS1
+60106,3,Windows Logon Success,windows|windows_security|authentication_success,3,2026-11-08T23:00:53Z,2026-11-08T23:01:59Z,RS1
+60137,3,Windows User Logoff,windows|windows_security,2,2026-11-08T23:00:57Z,2026-11-08T23:02:02Z,RS1
+60646,5,License activation (slui.exe) failed.,windows|windows_application,1,2026-11-08T23:01:41Z,2026-11-08T23:01:41Z,RS1
+67018,3,System shutdown initiated.,windows| WEF,1,2026-11-08T23:00:57Z,2026-11-08T23:00:57Z,RS1
+67023,3,Non service account logged off.,windows| WEF,3,2026-11-08T23:00:57Z,2026-11-08T23:02:02Z,RS1
+67024,3,Service logon event registered from non standard service account.,windows| WEF,3,2026-11-08T23:00:53Z,2026-11-08T23:01:59Z,RS1
+67027,3,A process was created.,windows| WEF,133,2026-11-08T23:00:53Z,2026-11-08T23:02:01Z,RS1
+67028,3,Special privileges assigned to new logon.,windows| WEF,6,2026-11-08T23:00:53Z,2026-11-08T23:01:59Z,RS1
+91816,4,Powershell script querying system environment variables,windows| powershell,8,2026-11-08T23:01:43Z,2026-11-08T23:01:54Z,RS1
+91826,4,"Powershell executed ""Copy-Item""",windows| powershell,1,2026-11-08T23:00:55Z,2026-11-08T23:00:55Z,RS1
+92021,3,Powershell was used to delete files or directories,sysmon|sysmon_eid1_detections|windows,8,2026-11-08T23:01:39Z,2026-11-08T23:01:53Z,RS1
+92031,3,Discovery activity executed,sysmon|sysmon_eid1_detections|windows,4,2026-11-08T23:01:55Z,2026-11-08T23:01:55Z,RS1
+92032,3,Suspicious Windows cmd shell execution,sysmon|sysmon_eid1_detections|windows,3,2026-11-08T23:00:53Z,2026-11-08T23:01:59Z,RS1
+92052,4,Windows command prompt started by an abnormal process,sysmon|sysmon_eid1_detections|windows,3,2026-11-08T23:00:53Z,2026-11-08T23:01:59Z,RS1
+92066,4,C:\\Windows\\SysWOW64\\SecEdit.exe binary in a suspicious location launched by C:\\Windows\\SysWOW64\\WindowsPowerShell\\v1.0\\powershell.exe,sysmon|sysmon_eid1_detections|windows,8,2026-11-08T23:01:43Z,2026-11-08T23:01:55Z,RS1
+92201,9,C:\\Windows\\SysWOW64\\WindowsPowerShell\\v1.0\\powershell.exe created a new scripting file under Windows Temp or User data folder,sysmon|sysmon_eid11_detections|windows,8,2026-11-08T23:01:42Z,2026-11-08T23:01:54Z,RS1
+92203,6,Executable file created by powershell: C:\\lab-attack\\ATA067\\shutdown.exe,sysmon|sysmon_eid11_detections|windows,1,2026-11-08T23:00:55Z,2026-11-08T23:00:55Z,RS1
+92213,15,Executable file dropped in folder commonly used by malware,sysmon|sysmon_eid11_detections|windows,2,2026-11-08T23:00:55Z,2026-11-08T23:01:59Z,RS1

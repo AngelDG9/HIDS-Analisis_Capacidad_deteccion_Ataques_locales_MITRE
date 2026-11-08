@@ -1,0 +1,8 @@
+ata=ATA062
+iter=1
+esperado=Dataset/Ataques/Comandos/windows/T1485-Data_Destruction/ATA062_esperado.csv
+sha256_esperado=5944d1292c921631be5131e37d28542fcc0730dc06084d61ccee1ce666948d73
+sha256_sellado=5944d1292c921631be5131e37d28542fcc0730dc06084d61ccee1ce666948d73
+coincide=True
+timestamp_utc=2026-11-08T21:55:43Z
+nota=verificacion antes de t0 (CA-B1-02)

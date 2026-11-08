@@ -1,0 +1,15 @@
+ata=ATA062
+tecnica=T1485
+fuente=ART_adaptado
+guid=476419b5-aebf-4366-a131-ae3e8dae5fc2
+t0=2026-11-08T22:02:41Z
+t1=2026-11-08T22:02:42Z
+ficheros=5
+sobrescritos=5
+borrados=5
+existe_after=0
+sha256_antes_toy_1.txt=2c932e9a8f578074adb6bc84ca0d6ebbc26707396c143c85d8099297c427f262
+sha256_antes_toy_2.txt=c209df8a4ca8541d3c8ad7944a2ac5f4fa2d8f79e716d82085b326fb032f2653
+sha256_antes_toy_3.txt=0966663c95f34302413b21a44f2359dbaa2309fcc240ea9be0fddb8b0aa72b1b
+sha256_antes_toy_4.txt=012bb124cdfbd01fb3388b138244a7825c27a70367d1ab0b0e4c40d13bc7a628
+sha256_antes_toy_5.txt=3604c34d7fd0d0b558c6146def3b73352be60cd09dae76c8c87c6da129a1af54

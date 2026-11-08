@@ -1,0 +1,16 @@
+rule_id,rule_level,rule_description,groups,count,first_seen,last_seen,rs_origen
+550,7,Integrity checksum changed.,ossec|syscheck|syscheck_entry_modified|syscheck_file,3,2026-11-08T22:31:07Z,2026-11-08T22:31:07Z,RS1
+553,7,File deleted.,ossec|syscheck|syscheck_entry_deleted|syscheck_file,1,2026-11-08T22:30:55Z,2026-11-08T22:30:55Z,RS1
+554,5,File added to the system.,ossec|syscheck|syscheck_entry_added|syscheck_file,4,2026-11-08T22:30:50Z,2026-11-08T22:31:07Z,RS1
+60106,3,Windows Logon Success,windows|windows_security|authentication_success,1,2026-11-08T22:30:51Z,2026-11-08T22:30:51Z,RS1
+61138,5,New Windows Service Created,windows|windows_system,1,2026-11-08T22:30:56Z,2026-11-08T22:30:56Z,RS1
+67023,3,Non service account logged off.,windows| WEF,1,2026-11-08T22:31:08Z,2026-11-08T22:31:08Z,RS1
+67024,3,Service logon event registered from non standard service account.,windows| WEF,1,2026-11-08T22:30:51Z,2026-11-08T22:30:51Z,RS1
+67027,3,A process was created.,windows| WEF,11,2026-11-08T22:30:51Z,2026-11-08T22:31:08Z,RS1
+67028,3,Special privileges assigned to new logon.,windows| WEF,2,2026-11-08T22:30:51Z,2026-11-08T22:30:51Z,RS1
+91818,4,"Powershell script executed ""New-Service"" command",windows| powershell,1,2026-11-08T22:30:54Z,2026-11-08T22:30:54Z,RS1
+92006,6,"Powershell script compiling code using CSC.exe, possible malware drop",sysmon|sysmon_eid1_detections|windows,1,2026-11-08T22:30:55Z,2026-11-08T22:30:55Z,RS1
+92032,3,Suspicious Windows cmd shell execution,sysmon|sysmon_eid1_detections|windows,1,2026-11-08T22:30:51Z,2026-11-08T22:30:51Z,RS1
+92052,4,Windows command prompt started by an abnormal process,sysmon|sysmon_eid1_detections|windows,1,2026-11-08T22:30:51Z,2026-11-08T22:30:51Z,RS1
+92213,15,Executable file dropped in folder commonly used by malware,sysmon|sysmon_eid11_detections|windows,2,2026-11-08T22:30:53Z,2026-11-08T22:30:55Z,RS1
+92307,3,"Evidence of new service creation found in registry under HKLM\\System\\CurrentControlSet\\Services\\TFG-Svc-1489\\ImagePath binary is: \""C:\\lab-attack\\ATA064\\ToyService.exe\""",sysmon|sysmon_eid13_detections|windows,1,2026-11-08T22:30:55Z,2026-11-08T22:30:55Z,RS1
