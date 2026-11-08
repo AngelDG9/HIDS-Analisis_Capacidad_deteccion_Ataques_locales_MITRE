@@ -1,0 +1,10 @@
+# ATA063_esperado.csv | ATA063 - T1490 Inhibit System Recovery | Windows (B1.2)
+# Redactado el 2026-11-08 ANTES de cualquier ataque (pre-registro). Esquema v5, field-first, ancla H4-W.
+# Sin rule_id: no se declara ninguna regla no probada. Las senales son win_image + ancla de carpeta.
+# syscheck_path va como tipo=ambigua (D-5), no como deteccion.
+# El efecto NO es deteccion: lo prueba efecto.txt (sink/CPU/hash/estado).
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1490-S1,deteccion,win_image,powershell.exe,Process Creation,T1490,script del ataque (ART adaptado 43819286+cf21060a)
+T1490-S2,deteccion,win_image,cmd.exe,Process Creation,T1490,lanzador run.cmd (hijo de sshd)
+T1490-S3,deteccion,win_command_line,*lab-attack*ATA063*,Process Creation,T1490,ancla H4-W de la carpeta del ataque
+T1490-S4,ambigua,syscheck_path,C:\lab-attack\ATA063\*,File Integrity Monitoring,T1490,D-5: FIM como ambigua, no deteccion

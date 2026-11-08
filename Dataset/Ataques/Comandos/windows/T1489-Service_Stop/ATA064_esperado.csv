@@ -1,0 +1,10 @@
+# ATA064_esperado.csv | ATA064 - T1489 Service Stop | Windows (B1.2)
+# Redactado el 2026-11-08 ANTES de cualquier ataque (pre-registro). Esquema v5, field-first, ancla H4-W.
+# Sin rule_id: no se declara ninguna regla no probada. Las senales son win_image + ancla de carpeta.
+# syscheck_path va como tipo=ambigua (D-5), no como deteccion.
+# El efecto NO es deteccion: lo prueba efecto.txt (sink/CPU/hash/estado).
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1489-S1,deteccion,win_image,powershell.exe,Process Creation,T1489,script del ataque (ART adaptado 21dfb440)
+T1489-S2,deteccion,win_image,cmd.exe,Process Creation,T1489,lanzador run.cmd (hijo de sshd)
+T1489-S3,deteccion,win_command_line,*lab-attack*ATA064*,Process Creation,T1489,ancla H4-W de la carpeta del ataque
+T1489-S4,ambigua,syscheck_path,C:\lab-attack\ATA064\*,File Integrity Monitoring,T1489,D-5: FIM como ambigua, no deteccion
