@@ -1,0 +1,383 @@
+# ATA073_iter1-Audited.csv | TFG HIDS - B1.0 filtro Windows (H4-W) | ata=ATA073 iter=1 | modo=ataque | operador=on | alerta=Dataset/Ataques/Resultados/Wazuh/windows/CSV/ATA073_iter1-Detalle.csv sha256=5d78f42e7cc2c1746802b24658e086d5698e3919d012653d5b337da212611925 | catalogo=C:\Users\angel\AppData\Local\Temp\opencode\ruleids_legitimos_sin67027.csv sha256=8df4c1018004161c78d151a9a8c00114884fde56e81acbd285fd970df700c362 | esperado=Dataset/Ataques/Comandos/windows/T1056.001-Keylogging/ATA073_esperado.csv sha256=2aebf1dffd10228f3e5204ac92b327a5249a8c76a2bbd0273ff49e88e07cc263 | revision=Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA073_iter1-Revision_in.csv sha256=5903dfa0a67a66ed22c63435eb7e2c29345cac76d9709b7e331bac66b55d1df6 | conteos: filas=381 deteccion=137 auto_ruido=75 ruido_conocido=158 dudosa=0 artefacto_ataque=11 | columnas: ata_id,iter,timestamp_utc,agent_name,rule_id,rule_level,rule_groups,rs_origen,rule_description,categoria,motivo,atribucion,revision,veredicto_humano,evidencia
+ata_id,iter,timestamp_utc,agent_name,rule_id,rule_level,rule_groups,rs_origen,rule_description,categoria,motivo,atribucion,revision,veredicto_humano,evidencia
+ATA073,1,2026-11-09T10:15:10.338Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:10.367Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:15:10.429Z,victima-windows,92052,4,sysmon|sysmon_eid1_detections|windows,RS1,Windows command prompt started by an abnormal process,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:10.461Z,victima-windows,92032,3,sysmon|sysmon_eid1_detections|windows,RS1,Suspicious Windows cmd shell execution,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:10.475Z,victima-windows,67024,3,windows| WEF,RS1,Service logon event registered from non standard service account.,ruido_conocido,operador:67024,,,,win_user=sshd_4188
+ATA073,1,2026-11-09T10:15:10.490Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=sshd_4188
+ATA073,1,2026-11-09T10:15:10.552Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:10.585Z,victima-windows,60106,3,windows|windows_security|authentication_success,RS1,Windows Logon Success,ruido_conocido,operador:60106,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:10.599Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=angel
+ATA073,1,2026-11-09T10:15:10.633Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:10.659Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:10.675Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:10.690Z,victima-windows,67023,3,windows| WEF,RS1,Non service account logged off.,ruido_conocido,operador:67023,,,,win_user=sshd_4188
+ATA073,1,2026-11-09T10:15:10.706Z,victima-windows,60137,3,windows|windows_security,RS1,Windows User Logoff,ruido_conocido,operador:60137,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:10.722Z,victima-windows,60642,3,windows|windows_application,RS1,Software protection service scheduled successfully.,ruido_conocido,sin_campos,,resuelta,ruido,revisor=executor B1.3;fecha=2026-11-09;nota=proceso/script de arranque o baseline sin evidencia de ataque
+ATA073,1,2026-11-09T10:15:12.584Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:12.595Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:15:12.750Z,victima-windows,92052,4,sysmon|sysmon_eid1_detections|windows,RS1,Windows command prompt started by an abnormal process,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:12.765Z,victima-windows,67024,3,windows| WEF,RS1,Service logon event registered from non standard service account.,ruido_conocido,operador:67024,,,,win_user=sshd_4300
+ATA073,1,2026-11-09T10:15:12.781Z,victima-windows,92032,3,sysmon|sysmon_eid1_detections|windows,RS1,Suspicious Windows cmd shell execution,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:12.795Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=sshd_4300
+ATA073,1,2026-11-09T10:15:12.841Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:12.874Z,victima-windows,60106,3,windows|windows_security|authentication_success,RS1,Windows Logon Success,ruido_conocido,operador:60106,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:12.901Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=angel
+ATA073,1,2026-11-09T10:15:12.917Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:12.932Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:12.947Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:12.963Z,victima-windows,67023,3,windows| WEF,RS1,Non service account logged off.,ruido_conocido,operador:67023,,,,win_user=sshd_4300
+ATA073,1,2026-11-09T10:15:12.979Z,victima-windows,60137,3,windows|windows_security,RS1,Windows User Logoff,ruido_conocido,operador:60137,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:14.821Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:14.868Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:15:14.883Z,victima-windows,92052,4,sysmon|sysmon_eid1_detections|windows,RS1,Windows command prompt started by an abnormal process,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:14.917Z,victima-windows,92032,3,sysmon|sysmon_eid1_detections|windows,RS1,Suspicious Windows cmd shell execution,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:14.931Z,victima-windows,67024,3,windows| WEF,RS1,Service logon event registered from non standard service account.,ruido_conocido,operador:67024,,,,win_user=sshd_1124
+ATA073,1,2026-11-09T10:15:14.945Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=sshd_1124
+ATA073,1,2026-11-09T10:15:14.978Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:15.036Z,victima-windows,60106,3,windows|windows_security|authentication_success,RS1,Windows Logon Success,ruido_conocido,operador:60106,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:15.051Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=angel
+ATA073,1,2026-11-09T10:15:15.084Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:15.084Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:15.114Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:15.145Z,victima-windows,60137,3,windows|windows_security,RS1,Windows User Logoff,ruido_conocido,operador:60137,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:15.145Z,victima-windows,67023,3,windows| WEF,RS1,Non service account logged off.,ruido_conocido,operador:67023,,,,win_user=sshd_1124
+ATA073,1,2026-11-09T10:15:17.049Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:17.065Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:15:17.111Z,victima-windows,92052,4,sysmon|sysmon_eid1_detections|windows,RS1,Windows command prompt started by an abnormal process,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:17.142Z,victima-windows,92032,3,sysmon|sysmon_eid1_detections|windows,RS1,Suspicious Windows cmd shell execution,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:17.157Z,victima-windows,67024,3,windows| WEF,RS1,Service logon event registered from non standard service account.,ruido_conocido,operador:67024,,,,win_user=sshd_4472
+ATA073,1,2026-11-09T10:15:17.173Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=sshd_4472
+ATA073,1,2026-11-09T10:15:17.234Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:17.266Z,victima-windows,60106,3,windows|windows_security|authentication_success,RS1,Windows Logon Success,ruido_conocido,operador:60106,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:17.297Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=angel
+ATA073,1,2026-11-09T10:15:17.329Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:17.359Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:17.375Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:17.391Z,victima-windows,67023,3,windows| WEF,RS1,Non service account logged off.,ruido_conocido,operador:67023,,,,win_user=sshd_4472
+ATA073,1,2026-11-09T10:15:17.420Z,victima-windows,60137,3,windows|windows_security,RS1,Windows User Logoff,ruido_conocido,operador:60137,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:18.803Z,victima-windows,92032,3,sysmon|sysmon_eid1_detections|windows,RS1,Suspicious Windows cmd shell execution,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:18.803Z,victima-windows,92052,4,sysmon|sysmon_eid1_detections|windows,RS1,Windows command prompt started by an abnormal process,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:19.236Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:19.250Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:15:19.309Z,victima-windows,67024,3,windows| WEF,RS1,Service logon event registered from non standard service account.,ruido_conocido,operador:67024,,,,win_user=sshd_2968
+ATA073,1,2026-11-09T10:15:19.325Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=sshd_2968
+ATA073,1,2026-11-09T10:15:19.355Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:19.386Z,victima-windows,60106,3,windows|windows_security|authentication_success,RS1,Windows Logon Success,ruido_conocido,operador:60106,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:19.401Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=angel
+ATA073,1,2026-11-09T10:15:19.417Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:19.432Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:19.448Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:19.463Z,victima-windows,67023,3,windows| WEF,RS1,Non service account logged off.,ruido_conocido,operador:67023,,,,win_user=sshd_2968
+ATA073,1,2026-11-09T10:15:19.479Z,victima-windows,60137,3,windows|windows_security,RS1,Windows User Logoff,ruido_conocido,operador:60137,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:21.475Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:15:21.475Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:21.579Z,victima-windows,67024,3,windows| WEF,RS1,Service logon event registered from non standard service account.,ruido_conocido,operador:67024,,,,win_user=sshd_6504
+ATA073,1,2026-11-09T10:15:21.579Z,victima-windows,92052,4,sysmon|sysmon_eid1_detections|windows,RS1,Windows command prompt started by an abnormal process,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:21.594Z,victima-windows,92032,3,sysmon|sysmon_eid1_detections|windows,RS1,Suspicious Windows cmd shell execution,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:21.625Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=sshd_6504
+ATA073,1,2026-11-09T10:15:21.644Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:21.675Z,victima-windows,60106,3,windows|windows_security|authentication_success,RS1,Windows Logon Success,ruido_conocido,operador:60106,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:21.690Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=angel
+ATA073,1,2026-11-09T10:15:21.722Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:21.722Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:21.738Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:21.772Z,victima-windows,60137,3,windows|windows_security,RS1,Windows User Logoff,ruido_conocido,operador:60137,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:21.772Z,victima-windows,67023,3,windows| WEF,RS1,Non service account logged off.,ruido_conocido,operador:67023,,,,win_user=sshd_6504
+ATA073,1,2026-11-09T10:15:23.692Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:23.718Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:15:23.795Z,victima-windows,92052,4,sysmon|sysmon_eid1_detections|windows,RS1,Windows command prompt started by an abnormal process,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:23.812Z,victima-windows,92032,3,sysmon|sysmon_eid1_detections|windows,RS1,Suspicious Windows cmd shell execution,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:23.828Z,victima-windows,67024,3,windows| WEF,RS1,Service logon event registered from non standard service account.,ruido_conocido,operador:67024,,,,win_user=sshd_6060
+ATA073,1,2026-11-09T10:15:23.843Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=sshd_6060
+ATA073,1,2026-11-09T10:15:23.875Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:23.906Z,victima-windows,60106,3,windows|windows_security|authentication_success,RS1,Windows Logon Success,ruido_conocido,operador:60106,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:23.922Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=angel
+ATA073,1,2026-11-09T10:15:23.938Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:23.953Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:23.969Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:23.984Z,victima-windows,67023,3,windows| WEF,RS1,Non service account logged off.,ruido_conocido,operador:67023,,,,win_user=sshd_6060
+ATA073,1,2026-11-09T10:15:24.000Z,victima-windows,60137,3,windows|windows_security,RS1,Windows User Logoff,ruido_conocido,operador:60137,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:25.931Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:25.961Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:15:25.992Z,victima-windows,67024,3,windows| WEF,RS1,Service logon event registered from non standard service account.,ruido_conocido,operador:67024,,,,win_user=sshd_1476
+ATA073,1,2026-11-09T10:15:26.008Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=sshd_1476
+ATA073,1,2026-11-09T10:15:26.042Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:26.071Z,victima-windows,60106,3,windows|windows_security|authentication_success,RS1,Windows Logon Success,ruido_conocido,operador:60106,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:26.086Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=angel
+ATA073,1,2026-11-09T10:15:26.117Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:26.118Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:26.132Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:26.163Z,victima-windows,60137,3,windows|windows_security,RS1,Windows User Logoff,ruido_conocido,operador:60137,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:26.163Z,victima-windows,67023,3,windows| WEF,RS1,Non service account logged off.,ruido_conocido,operador:67023,,,,win_user=sshd_1476
+ATA073,1,2026-11-09T10:15:26.210Z,victima-windows,92052,4,sysmon|sysmon_eid1_detections|windows,RS1,Windows command prompt started by an abnormal process,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:26.225Z,victima-windows,92032,3,sysmon|sysmon_eid1_detections|windows,RS1,Suspicious Windows cmd shell execution,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:28.154Z,victima-windows,92052,4,sysmon|sysmon_eid1_detections|windows,RS1,Windows command prompt started by an abnormal process,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:28.159Z,victima-windows,92032,3,sysmon|sysmon_eid1_detections|windows,RS1,Suspicious Windows cmd shell execution,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:28.174Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:28.190Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:15:28.238Z,victima-windows,67024,3,windows| WEF,RS1,Service logon event registered from non standard service account.,ruido_conocido,operador:67024,,,,win_user=sshd_1252
+ATA073,1,2026-11-09T10:15:28.252Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=sshd_1252
+ATA073,1,2026-11-09T10:15:28.298Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:28.361Z,victima-windows,60106,3,windows|windows_security|authentication_success,RS1,Windows Logon Success,ruido_conocido,operador:60106,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:28.391Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=angel
+ATA073,1,2026-11-09T10:15:28.422Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:28.453Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:28.468Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:28.499Z,victima-windows,67023,3,windows| WEF,RS1,Non service account logged off.,ruido_conocido,operador:67023,,,,win_user=sshd_1252
+ATA073,1,2026-11-09T10:15:28.513Z,victima-windows,60137,3,windows|windows_security,RS1,Windows User Logoff,ruido_conocido,operador:60137,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:30.330Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:30.355Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:15:30.386Z,victima-windows,67024,3,windows| WEF,RS1,Service logon event registered from non standard service account.,ruido_conocido,operador:67024,,,,win_user=sshd_3368
+ATA073,1,2026-11-09T10:15:30.402Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=sshd_3368
+ATA073,1,2026-11-09T10:15:30.434Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:30.478Z,victima-windows,60106,3,windows|windows_security|authentication_success,RS1,Windows Logon Success,ruido_conocido,operador:60106,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:30.493Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=angel
+ATA073,1,2026-11-09T10:15:30.526Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:30.526Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:30.541Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:30.573Z,victima-windows,60137,3,windows|windows_security,RS1,Windows User Logoff,ruido_conocido,operador:60137,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:30.573Z,victima-windows,67023,3,windows| WEF,RS1,Non service account logged off.,ruido_conocido,operador:67023,,,,win_user=sshd_3368
+ATA073,1,2026-11-09T10:15:30.632Z,victima-windows,92052,4,sysmon|sysmon_eid1_detections|windows,RS1,Windows command prompt started by an abnormal process,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:30.634Z,victima-windows,92032,3,sysmon|sysmon_eid1_detections|windows,RS1,Suspicious Windows cmd shell execution,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:32.088Z,victima-windows,92032,3,sysmon|sysmon_eid1_detections|windows,RS1,Suspicious Windows cmd shell execution,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:32.088Z,victima-windows,92052,4,sysmon|sysmon_eid1_detections|windows,RS1,Windows command prompt started by an abnormal process,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:32.607Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:32.615Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:15:32.646Z,victima-windows,67024,3,windows| WEF,RS1,Service logon event registered from non standard service account.,ruido_conocido,operador:67024,,,,win_user=sshd_6976
+ATA073,1,2026-11-09T10:15:32.662Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=sshd_6976
+ATA073,1,2026-11-09T10:15:32.693Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:32.726Z,victima-windows,60106,3,windows|windows_security|authentication_success,RS1,Windows Logon Success,ruido_conocido,operador:60106,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:32.740Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=angel
+ATA073,1,2026-11-09T10:15:32.773Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:32.773Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:32.785Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:32.815Z,victima-windows,60137,3,windows|windows_security,RS1,Windows User Logoff,ruido_conocido,operador:60137,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:32.815Z,victima-windows,67023,3,windows| WEF,RS1,Non service account logged off.,ruido_conocido,operador:67023,,,,win_user=sshd_6976
+ATA073,1,2026-11-09T10:15:34.185Z,victima-windows,92032,3,sysmon|sysmon_eid1_detections|windows,RS1,Suspicious Windows cmd shell execution,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:34.185Z,victima-windows,92052,4,sysmon|sysmon_eid1_detections|windows,RS1,Windows command prompt started by an abnormal process,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:34.785Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:34.813Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:15:34.860Z,victima-windows,67024,3,windows| WEF,RS1,Service logon event registered from non standard service account.,ruido_conocido,operador:67024,,,,win_user=sshd_3092
+ATA073,1,2026-11-09T10:15:34.891Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=sshd_3092
+ATA073,1,2026-11-09T10:15:34.923Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:34.969Z,victima-windows,60106,3,windows|windows_security|authentication_success,RS1,Windows Logon Success,ruido_conocido,operador:60106,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:34.999Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=angel
+ATA073,1,2026-11-09T10:15:35.031Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:35.031Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:35.043Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:35.074Z,victima-windows,60137,3,windows|windows_security,RS1,Windows User Logoff,ruido_conocido,operador:60137,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:35.074Z,victima-windows,67023,3,windows| WEF,RS1,Non service account logged off.,ruido_conocido,operador:67023,,,,win_user=sshd_3092
+ATA073,1,2026-11-09T10:15:37.032Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:37.060Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:15:37.103Z,victima-windows,92052,4,sysmon|sysmon_eid1_detections|windows,RS1,Windows command prompt started by an abnormal process,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:37.133Z,victima-windows,92032,3,sysmon|sysmon_eid1_detections|windows,RS1,Suspicious Windows cmd shell execution,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:37.149Z,victima-windows,67024,3,windows| WEF,RS1,Service logon event registered from non standard service account.,ruido_conocido,operador:67024,,,,win_user=sshd_3896
+ATA073,1,2026-11-09T10:15:37.164Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=sshd_3896
+ATA073,1,2026-11-09T10:15:37.226Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:37.258Z,victima-windows,60106,3,windows|windows_security|authentication_success,RS1,Windows Logon Success,ruido_conocido,operador:60106,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:37.272Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=angel
+ATA073,1,2026-11-09T10:15:37.287Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:37.302Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:37.317Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:37.348Z,victima-windows,67023,3,windows| WEF,RS1,Non service account logged off.,ruido_conocido,operador:67023,,,,win_user=sshd_3896
+ATA073,1,2026-11-09T10:15:37.363Z,victima-windows,60137,3,windows|windows_security,RS1,Windows User Logoff,ruido_conocido,operador:60137,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:38.175Z,victima-windows,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,artefacto_ataque,del_ataque,T1056.001|File Integrity Monitoring,resuelta,artefacto,syscheck_path=c:\lab-attack\ata073\evidencias\ejecucion.out;revisor=executor B1.3;fecha=2026-11-09;nota=evento del ataque no declarado como deteccion (FIM ambigua / 4104 / Sysmon 11)
+ATA073,1,2026-11-09T10:15:39.078Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:39.084Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:15:39.084Z,victima-windows,92052,4,sysmon|sysmon_eid1_detections|windows,RS1,Windows command prompt started by an abnormal process,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:39.131Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S1,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe
+ATA073,1,2026-11-09T10:15:39.146Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:15:39.177Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:15:39.234Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:39.234Z,victima-windows,92213,15,sysmon|sysmon_eid11_detections|windows,RS1,Executable file dropped in folder commonly used by malware,artefacto_ataque,del_ataque,T1056.001|Process Creation,resuelta,artefacto,win_image=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe;revisor=executor B1.3;fecha=2026-11-09;nota=evento del ataque no declarado como deteccion (FIM ambigua / 4104 / Sysmon 11)
+ATA073,1,2026-11-09T10:15:39.269Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:15:39.317Z,victima-windows,92052,4,sysmon|sysmon_eid1_detections|windows,RS1,Windows command prompt started by an abnormal process,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:39.348Z,victima-windows,92032,3,sysmon|sysmon_eid1_detections|windows,RS1,Suspicious Windows cmd shell execution,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:39.363Z,victima-windows,92213,15,sysmon|sysmon_eid11_detections|windows,RS1,Executable file dropped in folder commonly used by malware,artefacto_ataque,del_ataque,T1056.001|Process Creation,resuelta,artefacto,win_image=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe;revisor=executor B1.3;fecha=2026-11-09;nota=evento del ataque no declarado como deteccion (FIM ambigua / 4104 / Sysmon 11)
+ATA073,1,2026-11-09T10:15:39.378Z,victima-windows,67024,3,windows| WEF,RS1,Service logon event registered from non standard service account.,ruido_conocido,operador:67024,,,,win_user=sshd_5728
+ATA073,1,2026-11-09T10:15:39.393Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=sshd_5728
+ATA073,1,2026-11-09T10:15:39.409Z,victima-windows,92213,15,sysmon|sysmon_eid11_detections|windows,RS1,Executable file dropped in folder commonly used by malware,artefacto_ataque,del_ataque,T1056.001|Process Creation,resuelta,artefacto,win_image=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe;revisor=executor B1.3;fecha=2026-11-09;nota=evento del ataque no declarado como deteccion (FIM ambigua / 4104 / Sysmon 11)
+ATA073,1,2026-11-09T10:15:39.440Z,victima-windows,92006,6,sysmon|sysmon_eid1_detections|windows,RS1,"Powershell script compiling code using CSC.exe, possible malware drop",artefacto_ataque,del_ataque,,,,win_cwd=C:\lab-attack\ATA073\
+ATA073,1,2026-11-09T10:15:39.486Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:39.517Z,victima-windows,92213,15,sysmon|sysmon_eid11_detections|windows,RS1,Executable file dropped in folder commonly used by malware,deteccion,novel,,,,rule_id=92213
+ATA073,1,2026-11-09T10:15:39.561Z,victima-windows,92027,4,sysmon|sysmon_eid1_detections|windows,RS1,Powershell process spawned powershell instance,deteccion,senal:T1056.001-S1,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe
+ATA073,1,2026-11-09T10:15:39.576Z,victima-windows,92213,15,sysmon|sysmon_eid11_detections|windows,RS1,Executable file dropped in folder commonly used by malware,artefacto_ataque,del_ataque,T1056.001|Process Creation,resuelta,artefacto,win_image=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe;revisor=executor B1.3;fecha=2026-11-09;nota=evento del ataque no declarado como deteccion (FIM ambigua / 4104 / Sysmon 11)
+ATA073,1,2026-11-09T10:15:39.593Z,victima-windows,60106,3,windows|windows_security|authentication_success,RS1,Windows Logon Success,ruido_conocido,operador:60106,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:39.610Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=angel
+ATA073,1,2026-11-09T10:15:39.631Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:39.642Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:39.668Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:39.683Z,victima-windows,67023,3,windows| WEF,RS1,Non service account logged off.,ruido_conocido,operador:67023,,,,win_user=sshd_5728
+ATA073,1,2026-11-09T10:15:39.699Z,victima-windows,60137,3,windows|windows_security,RS1,Windows User Logoff,ruido_conocido,operador:60137,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:39.715Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:15:39.735Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:15:39.750Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,ruido_conocido,sin_ancla:T1056.001-S1,T1056.001|Process Creation,resuelta,ruido,win_image=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe;revisor=executor B1.3;fecha=2026-11-09;nota=proceso/script de arranque o baseline sin evidencia de ataque
+ATA073,1,2026-11-09T10:15:39.766Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:15:41.221Z,victima-windows,60137,3,windows|windows_security,RS1,Windows User Logoff,ruido_conocido,operador:60137,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:41.252Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:15:41.252Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:41.301Z,victima-windows,67024,3,windows| WEF,RS1,Service logon event registered from non standard service account.,ruido_conocido,operador:67024,,,,win_user=sshd_4684
+ATA073,1,2026-11-09T10:15:41.346Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=sshd_4684
+ATA073,1,2026-11-09T10:15:41.361Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:41.424Z,victima-windows,60106,3,windows|windows_security|authentication_success,RS1,Windows Logon Success,ruido_conocido,operador:60106,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:41.424Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=angel
+ATA073,1,2026-11-09T10:15:41.453Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:41.484Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:41.504Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:41.528Z,victima-windows,67023,3,windows| WEF,RS1,Non service account logged off.,ruido_conocido,operador:67023,,,,win_user=sshd_4684
+ATA073,1,2026-11-09T10:15:41.543Z,victima-windows,60137,3,windows|windows_security,RS1,Windows User Logoff,ruido_conocido,operador:60137,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:41.559Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:15:41.589Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:15:41.650Z,victima-windows,92052,4,sysmon|sysmon_eid1_detections|windows,RS1,Windows command prompt started by an abnormal process,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:41.666Z,victima-windows,92032,3,sysmon|sysmon_eid1_detections|windows,RS1,Suspicious Windows cmd shell execution,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:42.815Z,victima-windows,92213,15,sysmon|sysmon_eid11_detections|windows,RS1,Executable file dropped in folder commonly used by malware,artefacto_ataque,del_ataque,T1056.001|Process Creation,resuelta,artefacto,win_image=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe;revisor=executor B1.3;fecha=2026-11-09;nota=evento del ataque no declarado como deteccion (FIM ambigua / 4104 / Sysmon 11)
+ATA073,1,2026-11-09T10:15:42.828Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:15:42.828Z,victima-windows,92213,15,sysmon|sysmon_eid11_detections|windows,RS1,Executable file dropped in folder commonly used by malware,artefacto_ataque,del_ataque,T1056.001|Process Creation,resuelta,artefacto,win_image=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe;revisor=executor B1.3;fecha=2026-11-09;nota=evento del ataque no declarado como deteccion (FIM ambigua / 4104 / Sysmon 11)
+ATA073,1,2026-11-09T10:15:42.879Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:15:42.894Z,victima-windows,92213,15,sysmon|sysmon_eid11_detections|windows,RS1,Executable file dropped in folder commonly used by malware,deteccion,novel,,,,rule_id=92213
+ATA073,1,2026-11-09T10:15:42.925Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:42.941Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:15:43.048Z,victima-windows,67024,3,windows| WEF,RS1,Service logon event registered from non standard service account.,ruido_conocido,operador:67024,,,,win_user=sshd_6896
+ATA073,1,2026-11-09T10:15:43.064Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=sshd_6896
+ATA073,1,2026-11-09T10:15:43.096Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:43.155Z,victima-windows,60106,3,windows|windows_security|authentication_success,RS1,Windows Logon Success,ruido_conocido,operador:60106,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:43.171Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=angel
+ATA073,1,2026-11-09T10:15:43.186Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:43.834Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:43.846Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:43.846Z,victima-windows,92052,4,sysmon|sysmon_eid1_detections|windows,RS1,Windows command prompt started by an abnormal process,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:43.861Z,victima-windows,92032,3,sysmon|sysmon_eid1_detections|windows,RS1,Suspicious Windows cmd shell execution,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:43.892Z,victima-windows,60137,3,windows|windows_security,RS1,Windows User Logoff,ruido_conocido,operador:60137,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:43.892Z,victima-windows,67023,3,windows| WEF,RS1,Non service account logged off.,ruido_conocido,operador:67023,,,,win_user=sshd_6896
+ATA073,1,2026-11-09T10:15:44.189Z,victima-windows,60702,5,windows|windows_application,RS1,The VSS service is shutting down due to idle timeout.,ruido_conocido,sin_campos,,resuelta,ruido,revisor=executor B1.3;fecha=2026-11-09;nota=proceso/script de arranque o baseline sin evidencia de ataque
+ATA073,1,2026-11-09T10:15:45.351Z,victima-windows,92052,4,sysmon|sysmon_eid1_detections|windows,RS1,Windows command prompt started by an abnormal process,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:45.366Z,victima-windows,92032,3,sysmon|sysmon_eid1_detections|windows,RS1,Suspicious Windows cmd shell execution,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:45.925Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:45.931Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:15:45.981Z,victima-windows,67024,3,windows| WEF,RS1,Service logon event registered from non standard service account.,ruido_conocido,operador:67024,,,,win_user=sshd_3444
+ATA073,1,2026-11-09T10:15:45.996Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=sshd_3444
+ATA073,1,2026-11-09T10:15:46.028Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:46.076Z,victima-windows,60106,3,windows|windows_security|authentication_success,RS1,Windows Logon Success,ruido_conocido,operador:60106,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:46.088Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=angel
+ATA073,1,2026-11-09T10:15:46.104Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:46.119Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:46.136Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:46.151Z,victima-windows,67023,3,windows| WEF,RS1,Non service account logged off.,ruido_conocido,operador:67023,,,,win_user=sshd_3444
+ATA073,1,2026-11-09T10:15:46.166Z,victima-windows,60137,3,windows|windows_security,RS1,Windows User Logoff,ruido_conocido,operador:60137,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:48.183Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:48.208Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:15:48.303Z,victima-windows,92032,3,sysmon|sysmon_eid1_detections|windows,RS1,Suspicious Windows cmd shell execution,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:48.303Z,victima-windows,92052,4,sysmon|sysmon_eid1_detections|windows,RS1,Windows command prompt started by an abnormal process,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:48.318Z,victima-windows,67024,3,windows| WEF,RS1,Service logon event registered from non standard service account.,ruido_conocido,operador:67024,,,,win_user=sshd_4500
+ATA073,1,2026-11-09T10:15:48.332Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=sshd_4500
+ATA073,1,2026-11-09T10:15:48.364Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:48.394Z,victima-windows,60106,3,windows|windows_security|authentication_success,RS1,Windows Logon Success,ruido_conocido,operador:60106,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:48.409Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=angel
+ATA073,1,2026-11-09T10:15:48.438Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:48.438Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:48.455Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:48.487Z,victima-windows,60137,3,windows|windows_security,RS1,Windows User Logoff,ruido_conocido,operador:60137,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:48.487Z,victima-windows,67023,3,windows| WEF,RS1,Non service account logged off.,ruido_conocido,operador:67023,,,,win_user=sshd_4500
+ATA073,1,2026-11-09T10:15:50.369Z,victima-windows,92052,4,sysmon|sysmon_eid1_detections|windows,RS1,Windows command prompt started by an abnormal process,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:50.371Z,victima-windows,92032,3,sysmon|sysmon_eid1_detections|windows,RS1,Suspicious Windows cmd shell execution,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:50.421Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:50.422Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:15:50.465Z,victima-windows,67024,3,windows| WEF,RS1,Service logon event registered from non standard service account.,ruido_conocido,operador:67024,,,,win_user=sshd_744
+ATA073,1,2026-11-09T10:15:50.481Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=sshd_744
+ATA073,1,2026-11-09T10:15:50.512Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:50.545Z,victima-windows,60106,3,windows|windows_security|authentication_success,RS1,Windows Logon Success,ruido_conocido,operador:60106,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:50.560Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=angel
+ATA073,1,2026-11-09T10:15:50.576Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:50.591Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:50.607Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:50.622Z,victima-windows,67023,3,windows| WEF,RS1,Non service account logged off.,ruido_conocido,operador:67023,,,,win_user=sshd_744
+ATA073,1,2026-11-09T10:15:50.638Z,victima-windows,60137,3,windows|windows_security,RS1,Windows User Logoff,ruido_conocido,operador:60137,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:52.435Z,victima-windows,92052,4,sysmon|sysmon_eid1_detections|windows,RS1,Windows command prompt started by an abnormal process,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:52.450Z,victima-windows,92032,3,sysmon|sysmon_eid1_detections|windows,RS1,Suspicious Windows cmd shell execution,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:52.622Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:52.624Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:15:52.678Z,victima-windows,67024,3,windows| WEF,RS1,Service logon event registered from non standard service account.,ruido_conocido,operador:67024,,,,win_user=sshd_2076
+ATA073,1,2026-11-09T10:15:52.694Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=sshd_2076
+ATA073,1,2026-11-09T10:15:52.726Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:52.758Z,victima-windows,60106,3,windows|windows_security|authentication_success,RS1,Windows Logon Success,ruido_conocido,operador:60106,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:52.772Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=angel
+ATA073,1,2026-11-09T10:15:52.792Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:52.802Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:52.832Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:52.847Z,victima-windows,67023,3,windows| WEF,RS1,Non service account logged off.,ruido_conocido,operador:67023,,,,win_user=sshd_2076
+ATA073,1,2026-11-09T10:15:52.863Z,victima-windows,60137,3,windows|windows_security,RS1,Windows User Logoff,ruido_conocido,operador:60137,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:54.846Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:54.904Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:15:54.920Z,victima-windows,92052,4,sysmon|sysmon_eid1_detections|windows,RS1,Windows command prompt started by an abnormal process,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:54.952Z,victima-windows,92032,3,sysmon|sysmon_eid1_detections|windows,RS1,Suspicious Windows cmd shell execution,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:54.983Z,victima-windows,67024,3,windows| WEF,RS1,Service logon event registered from non standard service account.,ruido_conocido,operador:67024,,,,win_user=sshd_1092
+ATA073,1,2026-11-09T10:15:54.998Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=sshd_1092
+ATA073,1,2026-11-09T10:15:55.045Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:55.088Z,victima-windows,60106,3,windows|windows_security|authentication_success,RS1,Windows Logon Success,ruido_conocido,operador:60106,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:55.103Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=angel
+ATA073,1,2026-11-09T10:15:55.119Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:55.135Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:55.152Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:55.182Z,victima-windows,67023,3,windows| WEF,RS1,Non service account logged off.,ruido_conocido,operador:67023,,,,win_user=sshd_1092
+ATA073,1,2026-11-09T10:15:55.197Z,victima-windows,60137,3,windows|windows_security,RS1,Windows User Logoff,ruido_conocido,operador:60137,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:57.072Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:57.117Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:15:57.164Z,victima-windows,92052,4,sysmon|sysmon_eid1_detections|windows,RS1,Windows command prompt started by an abnormal process,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:57.196Z,victima-windows,92032,3,sysmon|sysmon_eid1_detections|windows,RS1,Suspicious Windows cmd shell execution,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:57.210Z,victima-windows,67024,3,windows| WEF,RS1,Service logon event registered from non standard service account.,ruido_conocido,operador:67024,,,,win_user=sshd_2332
+ATA073,1,2026-11-09T10:15:57.224Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=sshd_2332
+ATA073,1,2026-11-09T10:15:57.255Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:57.286Z,victima-windows,60106,3,windows|windows_security|authentication_success,RS1,Windows Logon Success,ruido_conocido,operador:60106,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:57.301Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=angel
+ATA073,1,2026-11-09T10:15:57.333Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:57.333Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:57.347Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:57.378Z,victima-windows,60137,3,windows|windows_security,RS1,Windows User Logoff,ruido_conocido,operador:60137,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:57.378Z,victima-windows,67023,3,windows| WEF,RS1,Non service account logged off.,ruido_conocido,operador:67023,,,,win_user=sshd_2332
+ATA073,1,2026-11-09T10:15:58.658Z,victima-windows,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,artefacto_ataque,del_ataque,T1056.001|File Integrity Monitoring,resuelta,artefacto,syscheck_path=c:\lab-attack\ata073\evidencias\efecto_local.txt;revisor=executor B1.3;fecha=2026-11-09;nota=evento del ataque no declarado como deteccion (FIM ambigua / 4104 / Sysmon 11)
+ATA073,1,2026-11-09T10:15:59.306Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:59.330Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:15:59.360Z,victima-windows,67024,3,windows| WEF,RS1,Service logon event registered from non standard service account.,ruido_conocido,operador:67024,,,,win_user=sshd_3536
+ATA073,1,2026-11-09T10:15:59.375Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=sshd_3536
+ATA073,1,2026-11-09T10:15:59.439Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:59.469Z,victima-windows,60106,3,windows|windows_security|authentication_success,RS1,Windows Logon Success,ruido_conocido,operador:60106,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:59.485Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=angel
+ATA073,1,2026-11-09T10:15:59.513Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:15:59.529Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:59.546Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:59.560Z,victima-windows,67023,3,windows| WEF,RS1,Non service account logged off.,ruido_conocido,operador:67023,,,,win_user=sshd_3536
+ATA073,1,2026-11-09T10:15:59.575Z,victima-windows,60137,3,windows|windows_security,RS1,Windows User Logoff,ruido_conocido,operador:60137,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:15:59.606Z,victima-windows,92052,4,sysmon|sysmon_eid1_detections|windows,RS1,Windows command prompt started by an abnormal process,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:15:59.625Z,victima-windows,92032,3,sysmon|sysmon_eid1_detections|windows,RS1,Suspicious Windows cmd shell execution,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:16:01.867Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:16:01.898Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:16:01.913Z,victima-windows,92052,4,sysmon|sysmon_eid1_detections|windows,RS1,Windows command prompt started by an abnormal process,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:16:01.944Z,victima-windows,92032,3,sysmon|sysmon_eid1_detections|windows,RS1,Suspicious Windows cmd shell execution,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:16:01.990Z,victima-windows,67024,3,windows| WEF,RS1,Service logon event registered from non standard service account.,ruido_conocido,operador:67024,,,,win_user=sshd_2112
+ATA073,1,2026-11-09T10:16:02.035Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=sshd_2112
+ATA073,1,2026-11-09T10:16:02.098Z,victima-windows,92052,4,sysmon|sysmon_eid1_detections|windows,RS1,Windows command prompt started by an abnormal process,ruido_conocido,sin_ancla:T1056.001-S2,T1056.001|Process Creation,resuelta,ruido,win_image=C:\\Windows\\System32\\cmd.exe;revisor=executor B1.3;fecha=2026-11-09;nota=proceso/script de arranque o baseline sin evidencia de ataque
+ATA073,1,2026-11-09T10:16:02.128Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:16:02.171Z,victima-windows,92021,3,sysmon|sysmon_eid1_detections|windows,RS1,Powershell was used to delete files or directories,ruido_conocido,sin_ancla:T1056.001-S1,T1056.001|Process Creation,resuelta,ruido,win_image=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe;revisor=executor B1.3;fecha=2026-11-09;nota=proceso/script de arranque o baseline sin evidencia de ataque
+ATA073,1,2026-11-09T10:16:02.219Z,victima-windows,92213,15,sysmon|sysmon_eid11_detections|windows,RS1,Executable file dropped in folder commonly used by malware,artefacto_ataque,del_ataque,T1056.001|Process Creation,resuelta,artefacto,win_image=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe;revisor=executor B1.3;fecha=2026-11-09;nota=evento del ataque no declarado como deteccion (FIM ambigua / 4104 / Sysmon 11)
+ATA073,1,2026-11-09T10:16:02.251Z,victima-windows,92213,15,sysmon|sysmon_eid11_detections|windows,RS1,Executable file dropped in folder commonly used by malware,artefacto_ataque,del_ataque,T1056.001|Process Creation,resuelta,artefacto,win_image=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe;revisor=executor B1.3;fecha=2026-11-09;nota=evento del ataque no declarado como deteccion (FIM ambigua / 4104 / Sysmon 11)
+ATA073,1,2026-11-09T10:16:02.264Z,victima-windows,60106,3,windows|windows_security|authentication_success,RS1,Windows Logon Success,ruido_conocido,operador:60106,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:16:02.294Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=angel
+ATA073,1,2026-11-09T10:16:02.310Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:16:02.325Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:16:02.341Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1056.001-S2,T1056.001|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA073,1,2026-11-09T10:16:02.357Z,victima-windows,67023,3,windows| WEF,RS1,Non service account logged off.,ruido_conocido,operador:67023,,,,win_user=sshd_2112
+ATA073,1,2026-11-09T10:16:02.373Z,victima-windows,60137,3,windows|windows_security,RS1,Windows User Logoff,ruido_conocido,operador:60137,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:16:02.389Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:16:02.406Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,novel,,,,rule_id=67027
+ATA073,1,2026-11-09T10:16:02.464Z,victima-windows,67024,3,windows| WEF,RS1,Service logon event registered from non standard service account.,ruido_conocido,operador:67024,,,,win_user=sshd_3172
+ATA073,1,2026-11-09T10:16:02.479Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=sshd_3172
+ATA073,1,2026-11-09T10:16:02.517Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:16:02.547Z,victima-windows,60106,3,windows|windows_security|authentication_success,RS1,Windows Logon Success,ruido_conocido,operador:60106,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:16:02.563Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,ruido_conocido,operador:67028,,,,win_user=angel
+ATA073,1,2026-11-09T10:16:02.578Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA073,1,2026-11-09T10:16:02.594Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,ruido_conocido,sin_ancla:T1056.001-S2,T1056.001|Process Creation,resuelta,ruido,win_image=C:\\Windows\\System32\\cmd.exe;revisor=executor B1.3;fecha=2026-11-09;nota=proceso/script de arranque o baseline sin evidencia de ataque
+ATA073,1,2026-11-09T10:16:02.610Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,ruido_conocido,sin_ancla:T1056.001-S1,T1056.001|Process Creation,resuelta,ruido,win_image=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe;revisor=executor B1.3;fecha=2026-11-09;nota=proceso/script de arranque o baseline sin evidencia de ataque
+ATA073,1,2026-11-09T10:16:02.641Z,victima-windows,60137,3,windows|windows_security,RS1,Windows User Logoff,ruido_conocido,operador:60137,,,,win_user=angel|logon_type=3
+ATA073,1,2026-11-09T10:16:02.641Z,victima-windows,67023,3,windows| WEF,RS1,Non service account logged off.,ruido_conocido,operador:67023,,,,win_user=sshd_3172

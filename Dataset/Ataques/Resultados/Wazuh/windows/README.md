@@ -352,3 +352,68 @@ llevan el `sha256` sellado. El `esperado` no se modifico.
 2. **ATA081** es `ART_adaptado` (Outlook -> perfil sintetico), no `ART` estricto.
 3. **ATA082-087** son manuales; el motivo esta en cada `README.md`.
 4. **H-B1-5***: deteccion por proceso; sin capa de red (Sysmon 3 ciego) ni de recursos.
+
+
+---
+
+# B1.6 - Cierre del bloque B1 (32 casos)
+
+> **Solo cierre**: sin VM, sin ataques, sin commits. Detalle completo en
+> `Soporte/Laboratorio/windows/ataques/B1.6_cierre.md`.
+
+## B1.6.1 - T2/T4 finales
+
+| Producto | Filas | `sha256` |
+|---|---|---|
+| `Hojas/T2_ataques_windows.csv` | 320 | `fb83d19d5eec915d00699ae6a2ecfe50e5ffa5e5c06e67a2b5435d1206167ec5` |
+| `Hojas/T4_rendimiento_windows.csv` | 19 metricas | `d7557837ef8623d9a92c165949e5706639bc376551dd2c01b74bc4cb50aa7177` |
+| `Hojas/ATA_index_windows_piloto_32.csv` | 32 | `71fa15124663557a2a6968b5f7a8fe625e06a0bb59201d6d39c58e3b417c68e4` |
+
+- `T2`: `N_casos=32`, `corpus=32`, `CA-B1-02 PASA`, rutas relativas, reproducible (2 ejecuciones).
+- `T4`: **`N = 32`** (corregido desde `N = 55`), TPR + `FP/hora`; `FPR/TNR/GM/Precision/F1/Usabilidad = n/a`;
+  `boveda_version_windows=3`; `sha256_entradas` = T2 final.
+
+| Config | `N=0` | `N=3` | `N=7` | `N=10` | `N=12` |
+|---|---|---|---|---|---|
+| **C0 = C1** | **32/32** | **32/32** | **1/32** | **1/32** | **1/32** |
+
+- `#Alertas` total (N=0): **539**; `#rule.id` por caso: 3 (salvo ATA064=4, ATA067=7,
+  ATA072=4, ATA073=5, ATA087=4).
+- El unico TP a `N>=7` es **ATA073** (`92213`, nivel 15), **artefacto de compilacion**
+  (`Add-Type`), no keylogging: el `1/32` es "deteccion por tooling".
+- **`review`**: ATA071 (C2') y ATA078 (10 vs 13 procesos `git`). **`efecto_parcial`: ninguno**.
+
+## B1.6.2 - Sensibilidades (NO CANONICAS)
+
+| Producto | TPR (`N=0/3/7/10/12`) | `#Alertas` N=0 | `sha256` |
+|---|---|---|---|
+| `T2_ataques_windows_sens_sin_operador.csv` | 32/32, 32/32, 1/32, 1/32, 1/32 | 536 | `7927564f0232697f5e33a9dd19f6b843e5e1043a1366fdd4ea43c437e0176fe7` |
+| `T2_ataques_windows_sens_catalogo_v2.csv` | 32/32, 32/32, 1/32, 1/32, 1/32 | 539 | `a4d4429429b8f10d87f67cacfbe9890e839a9a1c62fc9a541cadfe73f31b88c6` |
+| `T2_ataques_windows_sens_sin_67027.csv` | 32/32, 32/32, 1/32, 1/32, 1/32 | **847** | `25f4668e3bb95c132290b4ef8051fafc82823f396c0efa616cf435331bf50720` |
+
+- `sin_operador`: canal a `dudosa`, TPR identico.
+- `catalogo_v2` (`ruleids_legitimos_v2.csv`, 7 reglas): mismo conjunto de `rule_id`; TPR y
+  `#Alertas` identicos. **NO CANONICO.**
+- `sin_67027` (D6b): al quitar `67027` del catalogo, las filas baseline pasan a `novel` y
+  `#Alertas` sube a **847** (ATA067 125, ATA079 170, ATA087 27); el TPR no cambia. **NO CANONICO.**
+
+## B1.6.3 - T5 doble uso provisional
+
+`Hojas/T5_doble_uso_windows.csv` - **17 reglas**, **1 doble uso** (`67027`),
+`sha256 = be0015944290a24dbb4c41ec3efbe8181c561438e0318dc7c5965c0499d1c2b9`.
+`67027`: 132 alertas baseline v1+v2, **281 detecciones en ataque** (32/32 casos).
+Provisional: catalogo baseline Windows v1+v2; no consumir como T5 final.
+
+## B1.6.4 - Cadena y deudas
+
+- `auditar_cadena_huellas.py`: **citas verificadas=2214**, omitidas=78, **0 desincronias**.
+  Observacion no bloqueante: autocita `revision=` de ATA001 (Linux; linaje).
+- `sha256sums`: `Soporte/Laboratorio/windows/ataques/B1.6_sha256sums.txt`.
+- Deudas cerradas: **T4 `N=32`**; **ATA073 `92213`** artefacto de compilacion; **ATA071**
+  `review` + `s1_task_principal` vacio en iter1; **ATA078** `review` + pre-staging
+  `C:\tfg-tools`; **ATA079** intentos fallidos fuera de ventana; **ATA086** fix de
+  compromiso de paginas antes del `t0` valido (~527 MB); **ATA074/081** `ART_adaptado` con
+  commit ART `388942ad`; **ATA085/087** efecto real sin capa de red/recursos;
+  **`boveda_version` 2 (metrica) + 3 (boveda Windows)**; regresion Linux **875/875**
+  semantica (no byte a byte); `pytest` **389** en `_artefactos/scripts/tests` (raiz falla
+  por `atomic-red-team`/`pydantic`, preexistente).
