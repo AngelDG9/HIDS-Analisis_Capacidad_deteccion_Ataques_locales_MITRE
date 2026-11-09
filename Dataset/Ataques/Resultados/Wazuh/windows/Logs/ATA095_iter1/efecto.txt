@@ -1,0 +1,17 @@
+# ATA095 iter1 - prueba de efecto (NO es deteccion)
+
+2026-11-09T19:36:52Z t0=2026-11-09T19:36:52Z run=cmd /c C:\lab-attack\ATA095\run.cmd
+2026-11-09T19:36:57Z t1=2026-11-09T19:36:57Z
+
+evidencia_local:
+  ata=ATA095
+  tecnica=T1565.001
+  fuente=manual
+  t0=2026-11-09T19:36:56Z
+  t1=2026-11-09T19:36:56Z
+  libro=C:\lab-attack\ATA095\libro.csv
+  sha256_antes=7972e976ff8b9af3803d46a48c35516eefed4631bab790a758a04e3a9943941c
+  sha256_despues=28540b793aaad023d36f33c65661143e3bacf445bb6f02cd0c56364fb720f980
+  alterado=True
+
+VEREDICTO: EFECTO DEMOSTRADO (libro.csv alterado; 7972e976ff8b... != 28540b793aaa...)

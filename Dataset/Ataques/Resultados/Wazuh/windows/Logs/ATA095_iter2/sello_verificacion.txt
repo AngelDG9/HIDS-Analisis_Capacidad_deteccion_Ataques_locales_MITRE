@@ -1,0 +1,8 @@
+ata=ATA095
+iter=2
+esperado=Dataset/Ataques/Comandos/windows/T1565.001-Stored_Data_Manipulation/ATA095_esperado.csv
+sha256_esperado=daa794f3521404d1e706bc4ee516d5df80cb81c4c2c5bde18819506c8b495855
+sha256_sellado=daa794f3521404d1e706bc4ee516d5df80cb81c4c2c5bde18819506c8b495855
+coincide=True
+timestamp_utc=2026-11-09T19:37:49Z
+nota=verificacion antes de t0 (CA-B1-02)

@@ -1,0 +1,8 @@
+ata=ATA097
+iter=2
+esperado=Dataset/Ataques/Comandos/windows/T1565.003-Runtime_Data_Manipulation/ATA097_esperado.csv
+sha256_esperado=08c2b0db2141947c3f56e142ccd4dfefa844b418d8f26b857ba21faba2916c34
+sha256_sellado=08c2b0db2141947c3f56e142ccd4dfefa844b418d8f26b857ba21faba2916c34
+coincide=True
+timestamp_utc=2026-11-09T19:59:43Z
+nota=verificacion antes de t0 (CA-B1-02)

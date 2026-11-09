@@ -1,0 +1,25 @@
+# ATA097 iter1 - prueba de efecto (NO es deteccion)
+
+2026-11-09T19:58:40Z t0=2026-11-09T19:58:40Z run=cmd /c C:\lab-attack\ATA097\run.cmd
+2026-11-09T19:58:43Z t1=2026-11-09T19:58:43Z
+
+evidencia_local:
+  ata=ATA097
+  tecnica=T1565.003
+  fuente=manual
+  t0=2026-11-09T19:58:41Z
+  t1=2026-11-09T19:58:43Z
+  pid=4796
+  write_ok=True
+  original=TFG-ORIGINAL-STRING
+  manipulated=TFG-MANIPULATED-STRING
+  ultima_lectura=TFG-MANIPULATED-STRING
+  alterado=True
+
+toy_out.txt (ultimas lecturas del proceso de juguete):
+  TFG-MANIPULATED-STRING
+  TFG-MANIPULATED-STRING
+  TFG-MANIPULATED-STRING
+  TFG-MANIPULATED-STRING
+
+VEREDICTO: EFECTO DEMOSTRADO (WriteProcessMemory write_ok=True; ultima_lectura=TFG-MANIPULATED-STRING)

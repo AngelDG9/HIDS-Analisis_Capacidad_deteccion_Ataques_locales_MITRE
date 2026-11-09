@@ -478,3 +478,71 @@ llevan el `sha256` sellado. El `esperado` no se modifico.
 2. **ATA089/090/092** son loopback: deteccion de proceso; Sysmon 3 ciego para la red.
 3. **ATA088** requiere el sink del HOST 9091; los demas no.
 4. El **N=54 final** y las sensibilidades completas quedan para **B2.5**.
+
+
+---
+
+# B2.2 - Archivo y manipulacion de datos (ATA093-ATA097)
+
+> **Bloque B2**, tanda **B2.2**. Ejecutada el **2026-11-09** sobre `plan.md` v1
+> (`approved_by_human`). `esperado` **re-sellado en `a2eca10`**; `sha256` verificado antes
+> de cada `t0`. **Solo** `victima-windows` + manager. **Sin secretos.**
+
+## B2.2.0 - CA-B1-02 PASA (10/10)
+
+Los 10 pares `(sello, t0)` cumplen `sello < t0`; los 10 `-Audited.csv` y `-Detalle.csv`
+llevan el `sha256` sellado. El `esperado` no se modifico tras el sello.
+
+## B2.2.1 - Casos y resultados
+
+| ATA | Tecnica | Efecto (prueba) | Iter1 | Iter2 | `rule_id` | Dudosas |
+|---|---|---|---|---|---|---|
+| ATA093 | T1560.002 | `.zip` .NET, 20 entradas, `extraido_ok=True` | 5 | 5 | `67027,92032,92052` | 0/0 |
+| ATA094 | T1560.003 | `TFGARCH1`, 20 ficheros, `decodificado_ok=True` | 5 | 5 | `67027,92032,92052` | 0/0 |
+| ATA095 | T1565.001 | `libro.csv` alterado; `sha256_antes != despues` | 5 | 5 | `67027,92032,92052` | 0/0 |
+| ATA096 | T1565.002 | sink recibe `sha256` distinto del fichero; `proxy.log` | 6 | 6 | `67027,92027,92032,92052` | 0/0 |
+| ATA097 | T1565.003 | `WriteProcessMemory` `write_ok=True`; cadena alterada | 8 | 8 | `67027,92032,92052,92213` | 0/0 |
+
+- **0 filas del ataque en `ruido_conocido`/`auto_ruido`** (candado; 0 violaciones en las 10 ventanas).
+- **ATA093**: en iter1 disparo **`91846`** ("Powershell used .NET compression method"); **no
+  estaba en el `esperado`**, se clasifico `artefacto_ataque` y queda como **candidata a senal
+  del catalogo v2 / B2.5**.
+- **ATA096**: el proxy 9095 lee un solo `Read`; el body llego en un segmento posterior, asi que
+  `proxy.log` registra `orig=e3b0c442...` (body vacio) y reenvia solo `MANIPULADO-POR-PROXY`
+  (`len=21`). El efecto es valido (`sha256_original != sha256_modified`; `sink.log` con el sha
+  alterado), pero **no se reenvia el body original**. Mejora propuesta en B2.5: leer
+  `Content-Length` en bucle.
+- **ATA097**: el primer iter1 (19:52:42) fallo con `GUARDARRAIL: toy no arranco` porque
+  `[UIntPtr]256` no es convertible en PowerShell 5.1. Se corrigio `ATA097_toy.ps1` a
+  `[UIntPtr]::new(256)` (y `::new(0)` en `VirtualFree`); esa iteracion se archivo fuera del
+  repo. Las validas son **19:58:40** y **20:02:31**. El `esperado` no se toco.
+
+## B2.2.2 - T2-W parcial (42 casos: 32 B1 + 5 B2.1 + 5 B2.2)
+
+`Hojas/T2_ataques_windows_b2_piloto_42.csv` - **420 filas**, `N_casos=42`, `corpus=54`,
+`CA-B1-02 PASA`. **`sha256 = 3c4172d6e20db481a4ed7e33b3545cfac2758f6e870b9c5ab93ed7c9e1b64e5b`**.
+
+| Config | `N=0` | `N=3` | `N=7` | `N=10` | `N=12` |
+|---|---|---|---|---|---|
+| **C0 = C1** | **42/42** | **42/42** | **2/42** | **2/42** | **2/42** |
+
+- `#Alertas` total (N=0): **608**.
+- TP a `N>=7`: **ATA073** y **ATA097** (`92213`, nivel 15). El resto solo detecta a `N=0`/`N=3`.
+- T4-W: **`sha256 = 92be80a57a2ab5be074f768161d6bba34e881bdbd7f02679522e8eed121b2e87`**;
+  `N = 42`; `FPR/TNR/GM/Precision/F1/Usabilidad = n/a`; `FP/hora` descriptivo **19,875**
+  (159 alertas / 8 h baseline Windows).
+- Sensibilidad `--sin-operador`: `Hojas/T2_ataques_windows_b2_piloto_42_sens_sin_operador.csv`,
+  **`sha256 = edb01625ffe281b2061bd88c6920df3879616217ffe240a631996e2485eadfa3`**; TPR
+  **identico** (42/42, 42/42, 2/42, 2/42, 2/42); el canal pasa a `dudosa`.
+- Indice de 42: `Hojas/ATA_index_windows_b2_piloto_42.csv`
+  (`sha256 = 45c32b803033e67c8f810d7dc6c1471feb8dcc5b6d93c115fadcf20803355fc8`), **staged**.
+- Replay v1/v2: **0**; `pytest` **393 passed**; regresion Linux semantica **875/875**.
+
+## B2.2.3 - Limitaciones
+
+1. **ATA096**: el proxy no reenvia el body original (caveat declarado); el efecto de
+   manipulacion se prueba por el `sha256` distinto en el sink.
+2. **ATA093/094/095/097** son locales: deteccion de proceso; Sysmon 3 ciego para la red.
+3. **ATA097** depende de `OpenProcess`/`WriteProcessMemory` sobre el toy; en este laboratorio
+   funciono (`write_ok=True`), pero si el token no lo permite se declararia `efecto_parcial`.
+4. El **N=54 final** y las sensibilidades completas quedan para **B2.5**.

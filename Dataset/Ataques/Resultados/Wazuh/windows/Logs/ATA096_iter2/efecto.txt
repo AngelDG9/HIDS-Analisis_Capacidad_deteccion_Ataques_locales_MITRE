@@ -1,0 +1,24 @@
+# ATA096 iter2 - prueba de efecto (NO es deteccion)
+
+2026-11-09T19:48:53Z t0=2026-11-09T19:48:53Z run=cmd /c C:\lab-attack\ATA096\run.cmd
+2026-11-09T19:48:57Z t1=2026-11-09T19:48:57Z
+
+evidencia_local:
+  ata=ATA096
+  tecnica=T1565.002
+  fuente=manual
+  t0=2026-11-09T19:48:56Z
+  t1=2026-11-09T19:48:57Z
+  proxy=127.0.0.1:9095
+  sink=192.168.65.1:9090
+  sha256_original=2cb1215873ec94166552e21a700710cc14ddcb56ae1ceaf86a0c75dac5043520
+  sha256_modified=69f9652a1f013d9e9ad199ca330734a2403860ff50868c0127b487ca012bb01c
+  alterado=True
+
+sink.log (HOST):
+  2026-11-09T19:48:57Z POST /upload/ATA096 from=192.168.65.130 len=21 sha256=69f9652a1f013d9e9ad199ca330734a2403860ff50868c0127b487ca012bb01c content_type=text/plain
+
+proxy.log (invitado):
+  orig=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 mod=69f9652a1f013d9e9ad199ca330734a2403860ff50868c0127b487ca012bb01c
+
+VEREDICTO: EFECTO DEMOSTRADO (sink recibe sha256=69f9652a1f01... distinto del original 2cb1215873ec...)

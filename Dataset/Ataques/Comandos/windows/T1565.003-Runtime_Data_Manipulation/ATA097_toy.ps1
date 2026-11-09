@@ -1,4 +1,4 @@
-$ErrorActionPreference = "Continue"
+﻿$ErrorActionPreference = "Continue"
 Add-Type @'
 using System;
 using System.Runtime.InteropServices;
@@ -9,7 +9,7 @@ public class ToyMem {
     public static extern bool VirtualFree(IntPtr addr, UIntPtr size, uint freeType);
 }
 '@
-$addr = [ToyMem]::VirtualAlloc([IntPtr]::Zero, [UIntPtr]256, 0x3000, 0x04)
+$addr = [ToyMem]::VirtualAlloc([IntPtr]::Zero, [UIntPtr]::new(256), 0x3000, 0x04)
 $orig = [Text.Encoding]::ASCII.GetBytes("TFG-ORIGINAL-STRING")
 [Runtime.InteropServices.Marshal]::Copy($orig, 0, $addr, $orig.Length)
 Set-Content -Path "C:\lab-attack\ATA097\evidencias\toy_addr.txt" -Value $addr.ToInt64() -Encoding ascii
@@ -21,4 +21,4 @@ while ((Get-Date) -lt $end) {
     Add-Content -Path "C:\lab-attack\ATA097\evidencias\toy_out.txt" -Value $s -Encoding ascii
     Start-Sleep -Milliseconds 500
 }
-[ToyMem]::VirtualFree($addr, [UIntPtr]0, 0x8000)
+[ToyMem]::VirtualFree($addr, [UIntPtr]::new(0), 0x8000)

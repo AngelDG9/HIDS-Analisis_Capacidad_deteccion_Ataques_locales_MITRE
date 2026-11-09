@@ -1,0 +1,218 @@
+{
+  "ata_id": "ATA096",
+  "tecnica": "T1565.002",
+  "tactica": "Impact",
+  "sistema": "windows",
+  "bloque": "B2",
+  "tanda": "B2.2",
+  "estado": "piloto-ok",
+  "canal": "ssh",
+  "artefacto": "Dataset/Ataques/Comandos/windows/T1565.002-Transmitted_Data_Manipulation/",
+  "atomic": {
+    "fuente": "manual",
+    "guid": "",
+    "adaptacion": "proxy loopback 127.0.0.1:9095 reescribe el body; sink host 192.168.65.1:9090 recibe sha distinto",
+    "fuente_norm": "manual",
+    "motivo_codigo": "manual",
+    "motivo_detalle": "proxy loopback 127.0.0.1:9095 reescribe el body; sink host 192.168.65.1:9090 recibe sha distinto"
+  },
+  "esperado_sha256": "2ed0d8af52fcd84639348e4fb4806122e3622478b5f29c2c3b2d20c390617027",
+  "ataque_sha256": "222435721992425bfaaae216834a180f6f2e10eb114f901f0ea9d9ebe3725817",
+  "toy_sha256": "",
+  "validacion_humana_esperado": "pre-registrado y sellado en a2eca10",
+  "c0": {
+    "documento": "Soporte/Ataques/c0/windows/ATA096_c0.md",
+    "sha256": "",
+    "resultado": "PASA (clases de B1.0 + preflight B2.2); RS3=RS4=0"
+  },
+  "iteraciones": [
+    {
+      "iter": 1,
+      "t0": "2026-11-09T19:44:39Z",
+      "t1": "2026-11-09T19:44:46Z",
+      "duracion_s": 7,
+      "snapshot": "lab-listo-windows-ataques-ssh",
+      "canal": "ssh",
+      "diario": "/var/ossec/logs/alerts/2026/Nov/ossec-alerts-09.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/windows/CSV/ATA096_iter1-Detalle.csv",
+      "detalle_sha256": "4a9fd5fd7da048d11b948b4da795446a5577f618bf8e1a8b27a58c7131accf0e",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA096_iter1-Audited.csv",
+      "audited_sha256": "0481db46ea615217099446576ae299e7815014539876e3bce833378875dabc73",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA096_iter1-Revision.csv",
+      "revision_sha256": "bd14a4ac839bc2ef457d9e6c2ba42e482204ea0830c7b3be2ded3ba3b0edbd3d",
+      "revision_in": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA096_iter1-Revision_in.csv",
+      "revision_in_sha256": "3e7fc7750b984dd3477001bb16e3943a0dc8605c219639dfa54af5ee461aff18",
+      "conteos": {
+        "deteccion": 6,
+        "auto_ruido": 3,
+        "ruido_conocido": 8,
+        "dudosa": 0,
+        "artefacto_ataque": 6
+      },
+      "rs": {
+        "RS1": 23,
+        "RS2": 0,
+        "RS3": 0,
+        "RS4": 0,
+        "UNKNOWN": 0
+      },
+      "detecciones": {
+        "alertas": 6,
+        "rule_id_distintos": [
+          "67027",
+          "92027",
+          "92032",
+          "92052"
+        ],
+        "levels": [
+          "3",
+          "4"
+        ],
+        "primera_ts": "2026-11-09T19:44:40.968Z",
+        "primera_rule_id": "92052",
+        "esperadas": 2,
+        "sorpresas": 0,
+        "evidencia": "procesos del ataque anclados por win_image/win_command_line a la carpeta"
+      },
+      "metrico_o1": "si",
+      "metrico_o2": "1/1",
+      "dudosas_resueltas": 6,
+      "efecto": {
+        "fichero": "Dataset/Ataques/Resultados/Wazuh/windows/Logs/ATA096_iter1/efecto.txt",
+        "sha256": "0b4f56aafe99e4925961284f5f230695ede1da63a99c9af399c46b3b2b32158d",
+        "resumen": "EFECTO DEMOSTRADO (sink recibe sha256=69f9652a1f01... distinto del original 2cb1215873ec...)"
+      }
+    },
+    {
+      "iter": 2,
+      "t0": "2026-11-09T19:48:53Z",
+      "t1": "2026-11-09T19:48:57Z",
+      "duracion_s": 4,
+      "snapshot": "lab-listo-windows-ataques-ssh",
+      "canal": "ssh",
+      "diario": "/var/ossec/logs/alerts/2026/Nov/ossec-alerts-09.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/windows/CSV/ATA096_iter2-Detalle.csv",
+      "detalle_sha256": "a155b19e335c6fdf467109db4162d7a8a36c1633b4f453c39fe988286335c86e",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA096_iter2-Audited.csv",
+      "audited_sha256": "ff4e8ebf00fc4a40925226b16150e2eb8d0405e2041ebba1a70f174932afd159",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA096_iter2-Revision.csv",
+      "revision_sha256": "2e1a2f1e40db5fa07c9d49399d4637ade659b46344f81b589086dcd49674e5b2",
+      "revision_in": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA096_iter2-Revision_in.csv",
+      "revision_in_sha256": "a12604bdc0af6fdb1372faf794b1e6bff09c3741001e9d9728da3a08769053bb",
+      "conteos": {
+        "deteccion": 6,
+        "auto_ruido": 3,
+        "ruido_conocido": 7,
+        "dudosa": 0,
+        "artefacto_ataque": 6
+      },
+      "rs": {
+        "RS1": 22,
+        "RS2": 0,
+        "RS3": 0,
+        "RS4": 0,
+        "UNKNOWN": 0
+      },
+      "detecciones": {
+        "alertas": 6,
+        "rule_id_distintos": [
+          "67027",
+          "92027",
+          "92032",
+          "92052"
+        ],
+        "levels": [
+          "3",
+          "4"
+        ],
+        "primera_ts": "2026-11-09T19:48:55.080Z",
+        "primera_rule_id": "92032",
+        "esperadas": 2,
+        "sorpresas": 0,
+        "evidencia": "procesos del ataque anclados por win_image/win_command_line a la carpeta"
+      },
+      "metrico_o1": "si",
+      "metrico_o2": "1/1",
+      "dudosas_resueltas": 6,
+      "efecto": {
+        "fichero": "Dataset/Ataques/Resultados/Wazuh/windows/Logs/ATA096_iter2/efecto.txt",
+        "sha256": "30160b91bdeb61c592698d96c5b3fb57576d9b90b1b65a9cd95a25f0f67ffe17",
+        "resumen": "EFECTO DEMOSTRADO (sink recibe sha256=69f9652a1f01... distinto del original 2cb1215873ec...)"
+      }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-11-09",
+    "veredicto": "artefacto/ruido/deteccion segun fila",
+    "motivo": "FIM ambigua, servicio/cuenta/registro y ruido de arranque resueltos antes de T2",
+    "revisor": "executor B2.2"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": {
+    "criterio": "v2",
+    "mismo_conjunto_rule_id_deteccion": true,
+    "rule_ids_iter1": [
+      "67027",
+      "92027",
+      "92032",
+      "92052"
+    ],
+    "rule_ids_iter2": [
+      "67027",
+      "92027",
+      "92032",
+      "92052"
+    ],
+    "rule_ids_deteccion": [
+      "67027",
+      "92027",
+      "92032",
+      "92052"
+    ],
+    "n1": 6,
+    "n2": 6,
+    "margen": 2,
+    "criterio_recuento_ok": true,
+    "sin_dudosas_sin_resolver": true,
+    "veredicto": "iguales"
+  },
+  "extraccion": {
+    "extractor": "extraer_alertas_windows.py (27 columnas; RS desde el ruleset del manager)",
+    "fuente": "/var/ossec/logs/alerts/2026/Nov/ossec-alerts-09.json",
+    "aislamiento": "agent_id=002",
+    "ventana": "t0-3s .. t1+3s"
+  },
+  "prueba_de_efecto": "sink recibe sha256 distinto del fichero; proxy.log orig/mod; sink.log",
+  "receptor": {
+    "script": "sink_http.py 9090",
+    "parado_tras_t1": true
+  },
+  "limitacion": "proxy lee un solo Read; no reenvia el body original (orig=sha vacio); efecto de manipulacion valido",
+  "eventos": [
+    {
+      "ts": "2026-11-09T19:44:39Z",
+      "tipo": "t0",
+      "detalle": "iter1 t0"
+    },
+    {
+      "ts": "2026-11-09T19:48:53Z",
+      "tipo": "t0",
+      "detalle": "iter2 t0"
+    },
+    {
+      "ts": "2026-11-09T19:44:46Z",
+      "tipo": "t1",
+      "detalle": "iter1 t1"
+    },
+    {
+      "ts": "2026-11-09T19:48:57Z",
+      "tipo": "t1",
+      "detalle": "iter2 t1"
+    },
+    {
+      "ts": "2026-11-09T20:05:00Z",
+      "tipo": "cierre",
+      "detalle": "doble iteracion v2: iguales"
+    }
+  ]
+}

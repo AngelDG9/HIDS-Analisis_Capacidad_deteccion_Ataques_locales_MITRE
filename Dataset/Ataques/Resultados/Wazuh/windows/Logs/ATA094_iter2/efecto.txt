@@ -1,0 +1,18 @@
+# ATA094 iter2 - prueba de efecto (NO es deteccion)
+
+2026-11-09T19:32:48Z t0=2026-11-09T19:32:48Z run=cmd /c C:\lab-attack\ATA094\run.cmd
+2026-11-09T19:32:52Z t1=2026-11-09T19:32:52Z
+
+evidencia_local:
+  ata=ATA094
+  tecnica=T1560.003
+  fuente=manual
+  t0=2026-11-09T19:32:52Z
+  t1=2026-11-09T19:32:52Z
+  archivo=C:\lab-attack\ATA094\custom.tfg
+  magic=TFGARCH1
+  ficheros=20
+  custom_sha256=52a47564f3a94ec1fef3328feb9e0630f37ddc1823a4f2352abe7bf6adae5b3d
+  decodificado_ok=True
+
+VEREDICTO: EFECTO DEMOSTRADO (magic=TFGARCH1; ficheros=20; decodificado_ok=True; sha256=52a47564f3a94ec1fef3328feb9e0630f37ddc1823a4f2352abe7bf6adae5b3d)

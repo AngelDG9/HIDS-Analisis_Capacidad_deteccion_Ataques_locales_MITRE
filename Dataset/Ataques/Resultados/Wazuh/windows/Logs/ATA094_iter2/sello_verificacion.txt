@@ -1,0 +1,8 @@
+ata=ATA094
+iter=2
+esperado=Dataset/Ataques/Comandos/windows/T1560.003-Archive_via_Custom_Method/ATA094_esperado.csv
+sha256_esperado=eaca0d53ba5715047e25a9c72735f942f1dfac227868e6a5e206857c7bdfda08
+sha256_sellado=eaca0d53ba5715047e25a9c72735f942f1dfac227868e6a5e206857c7bdfda08
+coincide=True
+timestamp_utc=2026-11-09T19:30:04Z
+nota=verificacion antes de t0 (CA-B1-02)

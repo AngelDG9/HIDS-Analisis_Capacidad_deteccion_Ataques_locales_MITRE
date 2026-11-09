@@ -1,0 +1,10 @@
+ata=ATA094
+tecnica=T1560.003
+fuente=manual
+t0=2026-11-09T19:29:13Z
+t1=2026-11-09T19:29:13Z
+archivo=C:\lab-attack\ATA094\custom.tfg
+magic=TFGARCH1
+ficheros=20
+custom_sha256=52a47564f3a94ec1fef3328feb9e0630f37ddc1823a4f2352abe7bf6adae5b3d
+decodificado_ok=True

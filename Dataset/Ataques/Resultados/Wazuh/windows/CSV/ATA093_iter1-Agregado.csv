@@ -1,0 +1,13 @@
+rule_id,rule_level,rule_description,groups,count,first_seen,last_seen,rs_origen
+550,7,Integrity checksum changed.,ossec|syscheck|syscheck_entry_modified|syscheck_file,1,2026-11-09T19:21:24Z,2026-11-09T19:21:24Z,RS1
+554,5,File added to the system.,ossec|syscheck|syscheck_entry_added|syscheck_file,43,2026-11-09T19:21:22Z,2026-11-09T19:21:27Z,RS1
+60106,3,Windows Logon Success,windows|windows_security|authentication_success,1,2026-11-09T19:21:24Z,2026-11-09T19:21:24Z,RS1
+60137,3,Windows User Logoff,windows|windows_security,1,2026-11-09T19:21:26Z,2026-11-09T19:21:26Z,RS1
+67023,3,Non service account logged off.,windows| WEF,1,2026-11-09T19:21:26Z,2026-11-09T19:21:26Z,RS1
+67024,3,Service logon event registered from non standard service account.,windows| WEF,1,2026-11-09T19:21:23Z,2026-11-09T19:21:23Z,RS1
+67027,3,A process was created.,windows| WEF,7,2026-11-09T19:21:23Z,2026-11-09T19:21:24Z,RS1
+67028,3,Special privileges assigned to new logon.,windows| WEF,2,2026-11-09T19:21:23Z,2026-11-09T19:21:24Z,RS1
+91846,10,"Powershell used .NET compression method, possible data extraction operation",windows| powershell,1,2026-11-09T19:21:25Z,2026-11-09T19:21:25Z,RS1
+92032,3,Suspicious Windows cmd shell execution,sysmon|sysmon_eid1_detections|windows,1,2026-11-09T19:21:23Z,2026-11-09T19:21:23Z,RS1
+92052,4,Windows command prompt started by an abnormal process,sysmon|sysmon_eid1_detections|windows,1,2026-11-09T19:21:23Z,2026-11-09T19:21:23Z,RS1
+92213,15,Executable file dropped in folder commonly used by malware,sysmon|sysmon_eid11_detections|windows,1,2026-11-09T19:21:25Z,2026-11-09T19:21:25Z,RS1
