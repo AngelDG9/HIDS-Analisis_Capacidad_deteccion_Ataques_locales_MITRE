@@ -1,0 +1,8 @@
+ata=ATA108
+iter=2
+esperado=Dataset/Ataques/Comandos/windows/T1119-Automated_Collection/ATA108_esperado.csv
+sha256_esperado=93a07b43170987099e7d6c5892d3895bf1cd7d8e175110f6fb9f6940c6d6866e
+sha256_sellado=93a07b43170987099e7d6c5892d3895bf1cd7d8e175110f6fb9f6940c6d6866e
+coincide=True
+timestamp_utc=2026-11-09T22:54:16Z
+nota=verificacion antes de t0 (CA-B1-02)

@@ -1,0 +1,17 @@
+# ATA104 iter1 - prueba de efecto (NO es deteccion)
+
+2026-11-09T22:15:37Z t0=2026-11-09T22:15:37Z run=cmd /c C:\lab-attack\ATA104\run.cmd
+2026-11-09T22:16:16Z t1=2026-11-09T22:16:16Z
+
+evidencia_local:
+  ata=ATA104
+  tecnica=T1056.002
+  fuente=ART_adaptado
+  t0=2026-11-09T22:16:12Z
+  t1=2026-11-09T22:16:14Z
+  png=C:\lab-attack\ATA104\captura.png
+  png_bytes=137416
+  texto=TFG-GUI-TEXT
+  captura_ok=True
+
+VEREDICTO: EFECTO DEMOSTRADO (png_bytes=137416; texto=TFG-GUI-TEXT)

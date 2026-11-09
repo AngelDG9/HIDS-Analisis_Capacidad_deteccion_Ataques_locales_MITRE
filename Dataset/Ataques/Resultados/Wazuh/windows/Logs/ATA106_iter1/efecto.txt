@@ -1,0 +1,21 @@
+# ATA106 iter1 - prueba de efecto (NO es deteccion)
+
+2026-11-09T22:35:26Z t0=2026-11-09T22:35:26Z run=cmd /c C:\lab-attack\ATA106\run.cmd
+2026-11-09T22:35:50Z t1=2026-11-09T22:35:50Z
+
+evidencia_local:
+  ata=ATA106
+  tecnica=T1056.004
+  fuente=ART_adaptado
+  t0=2026-11-09T22:35:34Z
+  t1=2026-11-09T22:35:49Z
+  dll=C:\lab-attack\ATA106\T1056.004x64.dll
+  toy=C:\lab-attack\ATA106\ATA106_toy.ps1
+  inyectado=True
+  hook_log=False
+  efecto_parcial=True
+
+hook.log:
+  Ready To Roll Out!
+
+VEREDICTO: EFECTO PARCIAL (inyectado=True; hook_log=False; DLL cargada pero sin captura TLS)

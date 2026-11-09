@@ -1,0 +1,10 @@
+ata=ATA106
+tecnica=T1056.004
+fuente=ART_adaptado
+t0=2026-11-09T22:40:31Z
+t1=2026-11-09T22:40:45Z
+dll=C:\lab-attack\ATA106\T1056.004x64.dll
+toy=C:\lab-attack\ATA106\ATA106_toy.ps1
+inyectado=True
+hook_log=False
+efecto_parcial=True

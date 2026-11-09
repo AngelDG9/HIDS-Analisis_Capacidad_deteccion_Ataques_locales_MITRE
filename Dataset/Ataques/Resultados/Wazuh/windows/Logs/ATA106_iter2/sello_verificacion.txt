@@ -1,0 +1,8 @@
+ata=ATA106
+iter=2
+esperado=Dataset/Ataques/Comandos/windows/T1056.004-Credential_API_Hooking/ATA106_esperado.csv
+sha256_esperado=5f7280a7b04260a2cbc6233b2a687b683e2815259249ec190af040fe35f64ef1
+sha256_sellado=5f7280a7b04260a2cbc6233b2a687b683e2815259249ec190af040fe35f64ef1
+coincide=True
+timestamp_utc=2026-11-09T22:37:22Z
+nota=verificacion antes de t0 (CA-B1-02)

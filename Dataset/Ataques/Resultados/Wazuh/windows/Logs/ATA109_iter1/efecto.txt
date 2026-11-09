@@ -1,0 +1,18 @@
+# ATA109 iter1 - prueba de efecto (NO es deteccion)
+
+2026-11-09T23:01:07Z t0=2026-11-09T23:01:07Z run=cmd /c C:\lab-attack\ATA109\run.cmd
+2026-11-09T23:01:10Z t1=2026-11-09T23:01:10Z
+
+evidencia_local:
+  ata=ATA109
+  tecnica=T1114.003
+  fuente=manual
+  t0=2026-11-09T23:01:10Z
+  t1=2026-11-09T23:01:10Z
+  perfil=C:\lab-attack\ATA109\perfil
+  regla=C:\lab-attack\ATA109\perfil\regla_reenvio.json
+  destino=sink@tfg.local
+  eml_reenviado=True
+  eml_bytes=170
+
+VEREDICTO: EFECTO DEMOSTRADO (eml_reenviado=True; destino=sink@tfg.local; bytes=170)

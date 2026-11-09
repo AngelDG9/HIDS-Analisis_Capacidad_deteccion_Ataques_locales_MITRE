@@ -615,3 +615,73 @@ llevan el `sha256` sellado. El `esperado` no se modifico.
 3. **ATA100** da `no_montable=True` porque `Mount-DiskImage` rechaza el footer a cero; si
    Windows lo tolerara, se declararia `efecto_parcial`.
 4. El **N=54 final** y las sensibilidades completas quedan para **B2.5**.
+
+
+---
+
+# B2.4 - Capas nuevas (ATA103-ATA109) y cierre N=54
+
+> **Bloque B2**, tanda **B2.4**. Ejecutada el **2026-11-09/10** sobre `plan.md` v1
+> (`approved_by_human`). `esperado` **sellado en `2af6ed0`**; `sha256` verificado antes de
+> cada `t0`. **Solo** `victima-windows` + manager. **Sin secretos.**
+
+## B2.4.0 - CA-B1-02 PASA (14/14)
+
+Los 14 pares `(sello, t0)` cumplen `sello < t0`; los 14 `-Audited.csv` y `-Detalle.csv`
+llevan el `sha256` sellado. El `esperado` no se modifico.
+
+## B2.4.1 - Casos y resultados
+
+| ATA | Tecnica | Efecto (prueba) | Iter1 | Iter2 | `rule_id` | Dudosas |
+|---|---|---|---|---|---|---|
+| ATA103 | T1039 | 20 ficheros del share loopback; `sha256` coinciden | 5 | 5 | `67027,92032,92052` | 0/0 |
+| ATA104 | T1056.002 | PNG real + `TFG-GUI-TEXT` (S1) | 3 | 3 | `67027,92052` | 0/0 |
+| ATA105 | T1056.003 | `creds.txt` (`tfg_user`, longitud 16) | 6 | 6 | `67027,92027,92032,92052` | 0/0 |
+| ATA106 | T1056.004 | **`efecto_parcial`**: DLL inyectada, sin captura TLS | 7 | 7 | `67027,92027,92032,92052` | 0/0 |
+| ATA107 | T1074.002 | 20 PUTs al WebDAV del HOST; `sink.log` | 5 | 5 | `67027,92032,92052` | 0/0 |
+| ATA108 | T1119 | 20 ficheros recolectados | 5 | 5 | `67027,92032,92052` | 0/0 |
+| ATA109 | T1114.003 | `.eml` reenviado a `sink@tfg.local` | 5 | 5 | `67027,92032,92052` | 0/0 |
+
+- **0 filas del ataque en `ruido_conocido`/`auto_ruido`** (candado; 0 violaciones en las 14 ventanas).
+- **ATA104 (S1)**: snapshot `lab-listo-windows-ataques-gui`; tarea `TFG-Attack-ATA104`
+  (`InteractiveToken`, trigger `t0+30 s`). El runner sondeaba `efecto_local.txt` con
+  `cmd /c if exist C:\lab-attack\ATA104\evidencias\efecto_local.txt echo OK`; ese comando casa
+  el ancla y generaba **72/68 filas `deteccion` falsas**. Se reclasificaron a `artefacto_ataque`
+  (`motivo=poll_runner_s1`) en `-Audited.csv`; el **`-Audited_raw.csv` conserva el bruto**
+  (75/71). **Deteccion corregida: 3** (raw 75/71), `rule_id` `67027,92052`.
+- **ATA106 `efecto_parcial`**: `mavinject` inyecta la DLL (`inyectado=True`) y `hook.log`
+  contiene `Ready To Roll Out!` (DLL cargada), pero **no** aparece `***HOOKED CAPTURE LOG***`
+  ni `EncryptMessage`/`DecryptMessage`; el hook TLS no captura. **No se inventa**.
+- **ATA105**: `password_longitud=16` incluye el CRLF del cuerpo; usuario `tfg_user`.
+- **ATA107**: `sink.log` con 20 PUTs y `staging_host.csv` con 20 ficheros.
+- Las iteraciones fallidas/invalidas se archivaron fuera del repo.
+
+## B2.4.2 - T2-W final (N=54)
+
+`Hojas/T2_ataques_windows_b2.csv` - **540 filas**, `N_casos=54`, `corpus=54`,
+`CA-B1-02 PASA`. **`sha256 = 446490126276a65d52c2df5303a3cb6ebfdb8ff1dc50f0dd7819f435307d0495`**.
+
+| Config | `N=0` | `N=3` | `N=7` | `N=10` | `N=12` |
+|---|---|---|---|---|---|
+| **C0 = C1** | **54/54** | **54/54** | **2/54** | **2/54** | **2/54** |
+
+- `#Alertas` total (N=0): **669**.
+- TP a `N>=7`: **ATA073** y **ATA097** (`92213`, nivel 15).
+- T4-W: **`sha256 = 52e2e01bc09099349a0d98bf2a3d2305544a5acafe9030438a4594a909f1c9ef`**;
+  `N = 54`; `FPR/TNR/GM/Precision/F1/Usabilidad = n/a`; `FP/hora` descriptivo **19,875**
+  (159 alertas / 8 h baseline Windows).
+- Sensibilidad `--sin-operador`: `Hojas/T2_ataques_windows_b2_sens_sin_operador.csv`,
+  **`sha256 = e4084dbab2e5831d00377e5021e2711402b66f289dd019cab3e16fccb2f3bc4e`**; TPR
+  **identico** (54/54, 54/54, 2/54, 2/54, 2/54); el canal pasa a `dudosa`.
+- Replay v1/v2: **0**; `pytest` **399 passed**; regresion Linux semantica **875/875**.
+
+## B2.4.3 - Limitaciones
+
+1. **ATA106 `efecto_parcial`**: la DLL se inyecta y carga, pero el hook TLS no captura; se
+   declara parcial (no se inventa).
+2. **ATA104**: la correccion del poll S1 es una decision de medicion documentada; el raw queda
+   en `-Audited_raw.csv`.
+3. **ATA105/109** son locales (portal y sink de juguete); **ATA107** usa el WebDAV del HOST.
+4. **ATA103** usa SMB loopback; sin auditoria SMB.
+5. Las sensibilidades completas (FIM-como-deteccion, sin 67027, catalogo v2) y T5 quedan para
+   **B2.5**.

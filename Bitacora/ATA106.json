@@ -1,0 +1,225 @@
+{
+  "ata_id": "ATA106",
+  "tecnica": "T1056.004",
+  "tactica": "Collection",
+  "sistema": "windows",
+  "bloque": "B2",
+  "tanda": "B2.4",
+  "estado": "piloto-parcial",
+  "canal": "ssh",
+  "artefacto": "Dataset/Ataques/Comandos/windows/T1056.004-Credential_API_Hooking/",
+  "atomic": {
+    "fuente": "ART_adaptado",
+    "guid": "de1934ea-1fbf-425b-8795-65fb27dd7e33",
+    "adaptacion": "DLL T1056.004x64.dll inyectada con mavinject en PowerShell de juguete; TLS local 127.0.0.1:8443",
+    "fuente_norm": "ART_adaptado",
+    "motivo_codigo": "art_adaptado",
+    "motivo_detalle": "DLL T1056.004x64.dll inyectada con mavinject en PowerShell de juguete; TLS local 127.0.0.1:8443"
+  },
+  "esperado_sha256": "5f7280a7b04260a2cbc6233b2a687b683e2815259249ec190af040fe35f64ef1",
+  "ataque_sha256": "417837d7504f006af2c8c9f952e95bf5b24c7799e0243d12826b3ef7fdb1d469",
+  "validacion_humana_esperado": "pre-registrado y sellado en 2af6ed0",
+  "c0": {
+    "documento": "Soporte/Ataques/c0/windows/ATA106_c0.md",
+    "sha256": "",
+    "resultado": "PASA (clases de B1.0 + preflight B2.4); RS3=RS4=0"
+  },
+  "iteraciones": [
+    {
+      "iter": 1,
+      "t0": "2026-11-09T22:35:26Z",
+      "t1": "2026-11-09T22:35:50Z",
+      "duracion_s": 24,
+      "snapshot": "lab-listo-windows-ataques-ssh",
+      "canal": "ssh",
+      "diario": "/var/ossec/logs/alerts/2026/Nov/ossec-alerts-09.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/windows/CSV/ATA106_iter1-Detalle.csv",
+      "detalle_sha256": "646f3324bd7a3e322e4933b7a6e9531465102d0d0498dcb8526d66f2f51a0a5e",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA106_iter1-Audited.csv",
+      "audited_sha256": "2250cdd38f9fce43c6cacc743f7fbfea571fcf5ae5237bb5f0a9fd20fdef7d48",
+      "audited_raw": "",
+      "audited_raw_sha256": "",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA106_iter1-Revision.csv",
+      "revision_sha256": "7440cf8b064478284132be48261ff9bd74bf6814103504ccfa932836381d6b4e",
+      "revision_in": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA106_iter1-Revision_in.csv",
+      "revision_in_sha256": "d6b6fa12ea5021841db3d2e6d81550ed51c56861734d6e55290f62d5cd42e4de",
+      "conteos": {
+        "deteccion": 7,
+        "auto_ruido": 3,
+        "ruido_conocido": 16,
+        "dudosa": 0,
+        "artefacto_ataque": 13
+      },
+      "rs": {
+        "RS1": 39,
+        "RS2": 0,
+        "RS3": 0,
+        "RS4": 0,
+        "UNKNOWN": 0
+      },
+      "poll_runner_s1": 0,
+      "deteccion_raw": "",
+      "detecciones": {
+        "alertas": 7,
+        "rule_id_distintos": [
+          "67027",
+          "92027",
+          "92032",
+          "92052"
+        ],
+        "levels": [
+          "3",
+          "4"
+        ],
+        "primera_ts": "2026-11-09T22:35:27.645Z",
+        "primera_rule_id": "92052",
+        "esperadas": 2,
+        "sorpresas": 0,
+        "evidencia": "procesos del ataque anclados por win_image/win_command_line a la carpeta"
+      },
+      "metrico_o1": "si",
+      "metrico_o2": "1/1",
+      "dudosas_resueltas": 14,
+      "efecto": {
+        "fichero": "Dataset/Ataques/Resultados/Wazuh/windows/Logs/ATA106_iter1/efecto.txt",
+        "sha256": "2e2fe3995b7480b4bcb878f5ae98d6bc23a6ddf5f75ce64e740decbf99dfc26a",
+        "resumen": "EFECTO PARCIAL (inyectado=True; hook_log=False; DLL cargada pero sin captura TLS)"
+      }
+    },
+    {
+      "iter": 2,
+      "t0": "2026-11-09T22:40:20Z",
+      "t1": "2026-11-09T22:40:45Z",
+      "duracion_s": 25,
+      "snapshot": "lab-listo-windows-ataques-ssh",
+      "canal": "ssh",
+      "diario": "/var/ossec/logs/alerts/2026/Nov/ossec-alerts-09.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/windows/CSV/ATA106_iter2-Detalle.csv",
+      "detalle_sha256": "49c909584b2b3e863aa2cb64c1c4bdee0c9aecd066dce46e6c64daeb2e36e81a",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA106_iter2-Audited.csv",
+      "audited_sha256": "3bfb2ed00652d78a74bb10b37665e07b4617a602db542033bb64c66644647f78",
+      "audited_raw": "",
+      "audited_raw_sha256": "",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA106_iter2-Revision.csv",
+      "revision_sha256": "fb79e8c834ce2aa96bd3c8d16eed0703f9714128f00a0d083346709770eeac40",
+      "revision_in": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA106_iter2-Revision_in.csv",
+      "revision_in_sha256": "0dd5917b42c79c7a6fb5215aba68b7d3bc8d8607cdb12a3d28a257f63dcbb056",
+      "conteos": {
+        "deteccion": 7,
+        "auto_ruido": 3,
+        "ruido_conocido": 15,
+        "dudosa": 0,
+        "artefacto_ataque": 13
+      },
+      "rs": {
+        "RS1": 38,
+        "RS2": 0,
+        "RS3": 0,
+        "RS4": 0,
+        "UNKNOWN": 0
+      },
+      "poll_runner_s1": 0,
+      "deteccion_raw": "",
+      "detecciones": {
+        "alertas": 7,
+        "rule_id_distintos": [
+          "67027",
+          "92027",
+          "92032",
+          "92052"
+        ],
+        "levels": [
+          "3",
+          "4"
+        ],
+        "primera_ts": "2026-11-09T22:40:22.441Z",
+        "primera_rule_id": "67027",
+        "esperadas": 2,
+        "sorpresas": 0,
+        "evidencia": "procesos del ataque anclados por win_image/win_command_line a la carpeta"
+      },
+      "metrico_o1": "si",
+      "metrico_o2": "1/1",
+      "dudosas_resueltas": 14,
+      "efecto": {
+        "fichero": "Dataset/Ataques/Resultados/Wazuh/windows/Logs/ATA106_iter2/efecto.txt",
+        "sha256": "4e4045891af47b4f71914c421fe6652c9d1f5a2134f9cad8f6ea4bc57c0ca8de",
+        "resumen": "EFECTO PARCIAL (inyectado=True; hook_log=False; DLL cargada pero sin captura TLS)"
+      }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-11-09",
+    "veredicto": "artefacto/ruido/deteccion segun fila",
+    "motivo": "FIM ambigua, servicio/cuenta/registro y ruido de arranque resueltos antes de T2",
+    "revisor": "executor B2.4"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": {
+    "criterio": "v2",
+    "mismo_conjunto_rule_id_deteccion": true,
+    "rule_ids_iter1": [
+      "67027",
+      "92027",
+      "92032",
+      "92052"
+    ],
+    "rule_ids_iter2": [
+      "67027",
+      "92027",
+      "92032",
+      "92052"
+    ],
+    "rule_ids_deteccion": [
+      "67027",
+      "92027",
+      "92032",
+      "92052"
+    ],
+    "n1": 7,
+    "n2": 7,
+    "margen": 2,
+    "criterio_recuento_ok": true,
+    "sin_dudosas_sin_resolver": true,
+    "veredicto": "iguales"
+  },
+  "extraccion": {
+    "extractor": "extraer_alertas_windows.py (27 columnas; RS desde el ruleset del manager)",
+    "fuente": "/var/ossec/logs/alerts/2026/Nov/ossec-alerts-09.json",
+    "aislamiento": "agent_id=002",
+    "ventana": "t0-3s .. t1+3s"
+  },
+  "prueba_de_efecto": "DLL inyectada; hook.log sin captura -> efecto_parcial",
+  "receptor": {
+    "script": "n/a (local)",
+    "parado_tras_t1": true
+  },
+  "limitacion": "efecto_parcial: DLL cargada pero el hook TLS no captura",
+  "eventos": [
+    {
+      "ts": "2026-11-09T22:35:26Z",
+      "tipo": "t0",
+      "detalle": "iter1 t0"
+    },
+    {
+      "ts": "2026-11-09T22:40:20Z",
+      "tipo": "t0",
+      "detalle": "iter2 t0"
+    },
+    {
+      "ts": "2026-11-09T22:35:50Z",
+      "tipo": "t1",
+      "detalle": "iter1 t1"
+    },
+    {
+      "ts": "2026-11-09T22:40:45Z",
+      "tipo": "t1",
+      "detalle": "iter2 t1"
+    },
+    {
+      "ts": "2026-11-09T23:10:00Z",
+      "tipo": "cierre",
+      "detalle": "doble iteracion v2: iguales"
+    }
+  ]
+}

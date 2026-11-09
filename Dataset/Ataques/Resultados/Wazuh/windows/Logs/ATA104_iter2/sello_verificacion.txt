@@ -1,0 +1,8 @@
+ata=ATA104
+iter=2
+esperado=Dataset/Ataques/Comandos/windows/T1056.002-GUI_Input_Capture/ATA104_esperado.csv
+sha256_esperado=6874c4a274f02a2acb66c469223a96d84438a1799ec8c0604cf6e2aaf02a22b3
+sha256_sellado=6874c4a274f02a2acb66c469223a96d84438a1799ec8c0604cf6e2aaf02a22b3
+coincide=True
+timestamp_utc=2026-11-09T22:18:52Z
+nota=verificacion antes de t0 (CA-B1-02)

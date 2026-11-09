@@ -1,0 +1,8 @@
+ata=ATA105
+iter=2
+esperado=Dataset/Ataques/Comandos/windows/T1056.003-Web_Portal_Capture/ATA105_esperado.csv
+sha256_esperado=52e6fe1ef662af0d994b0bffb907ab06f2d94506a9880ce91cd4376ecf941979
+sha256_sellado=52e6fe1ef662af0d994b0bffb907ab06f2d94506a9880ce91cd4376ecf941979
+coincide=True
+timestamp_utc=2026-11-09T22:28:31Z
+nota=verificacion antes de t0 (CA-B1-02)

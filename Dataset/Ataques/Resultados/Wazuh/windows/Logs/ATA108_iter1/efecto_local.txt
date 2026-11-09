@@ -1,0 +1,9 @@
+ata=ATA108
+tecnica=T1119
+fuente=ART_adaptado
+t0=2026-11-09T22:53:22Z
+t1=2026-11-09T22:53:22Z
+fuentes=C:\lab-attack\ATA108\fuentes
+staging=C:\lab-attack\ATA108\staging
+ficheros_recolectados=20
+recoleccion_ok=True

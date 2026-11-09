@@ -1,0 +1,10 @@
+ata=ATA105
+tecnica=T1056.003
+fuente=manual
+t0=2026-11-09T22:31:38Z
+t1=2026-11-09T22:31:38Z
+portal=127.0.0.1:8081
+creds=C:\lab-attack\ATA105\creds.txt
+creds_capturadas=True
+usuario=tfg_user
+password_longitud=16

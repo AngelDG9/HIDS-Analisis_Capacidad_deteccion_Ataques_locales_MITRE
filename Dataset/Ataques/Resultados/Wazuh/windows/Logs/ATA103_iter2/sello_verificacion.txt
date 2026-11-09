@@ -1,0 +1,8 @@
+ata=ATA103
+iter=2
+esperado=Dataset/Ataques/Comandos/windows/T1039-Data_from_Network_Shared_Drive/ATA103_esperado.csv
+sha256_esperado=41896b26c94229e803738511967461361b0b95568ab24f35eefed5ad26e5a275
+sha256_sellado=41896b26c94229e803738511967461361b0b95568ab24f35eefed5ad26e5a275
+coincide=True
+timestamp_utc=2026-11-09T22:08:17Z
+nota=verificacion antes de t0 (CA-B1-02)

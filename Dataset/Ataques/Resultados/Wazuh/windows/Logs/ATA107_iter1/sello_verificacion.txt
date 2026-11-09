@@ -1,0 +1,8 @@
+ata=ATA107
+iter=1
+esperado=Dataset/Ataques/Comandos/windows/T1074.002-Remote_Data_Staging/ATA107_esperado.csv
+sha256_esperado=61a43d2df903c8710b74d7770cd1b7f6f2febf251fd91a58c195823974e4b8f9
+sha256_sellado=61a43d2df903c8710b74d7770cd1b7f6f2febf251fd91a58c195823974e4b8f9
+coincide=True
+timestamp_utc=2026-11-09T22:41:38Z
+nota=verificacion antes de t0 (CA-B1-02)

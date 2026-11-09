@@ -1,0 +1,8 @@
+ata=ATA109
+iter=2
+esperado=Dataset/Ataques/Comandos/windows/T1114.003-Email_Forwarding_Rule/ATA109_esperado.csv
+sha256_esperado=ceefc8ad362bc0c696202a85f759b61558ee27280036211415e6496e8d5444e2
+sha256_sellado=ceefc8ad362bc0c696202a85f759b61558ee27280036211415e6496e8d5444e2
+coincide=True
+timestamp_utc=2026-11-09T23:02:06Z
+nota=verificacion antes de t0 (CA-B1-02)
