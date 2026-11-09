@@ -1,0 +1,18 @@
+# ATA086 iter1 - prueba de efecto (NO es deteccion)
+
+2026-11-09T15:02:20Z t0=2026-11-09T15:02:20Z run=cmd /c C:\lab-attack\ATA086\run.cmd
+2026-11-09T15:02:39Z t1=2026-11-09T15:02:39Z
+
+evidencia_local:
+  ata=ATA086
+  tecnica=T1499.001
+  fuente=manual
+  t0=2026-11-09T15:02:24Z
+  t1=2026-11-09T15:02:39Z
+  bloques=8
+  bytes=536870912
+  available_before_mb=3031.7
+  available_during_mb=2504.9
+  available_after_mb=2944.2
+
+VEREDICTO: EFECTO DEMOSTRADO (Available MBytes 3031.7 -> 2504.9)

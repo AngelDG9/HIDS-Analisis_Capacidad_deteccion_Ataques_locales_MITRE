@@ -1,0 +1,8 @@
+ata=ATA081
+iter=2
+esperado=Dataset/Ataques/Comandos/windows/T1114.001-Local_Email_Collection/ATA081_esperado.csv
+sha256_esperado=1a69bcbfe451ef6505ac190d7ded0c6d4b97fa9d852f7e668b0ceeed63c830a4
+sha256_sellado=1a69bcbfe451ef6505ac190d7ded0c6d4b97fa9d852f7e668b0ceeed63c830a4
+coincide=True
+timestamp_utc=2026-11-09T14:20:22Z
+nota=verificacion antes de t0 (CA-B1-02)

@@ -1,17 +1,17 @@
-# T4_rendimiento_windows.csv | TFG HIDS - R2 T4 (metricas de rendimiento) | metrica_version=1 | boveda_version=2 | hids=wazuh | M=n/a (fallback L11: FPR/TNR/GM/Precision/F1/Usabilidad no publicables) | auditado=Dataset/Ataques/Resultados/Wazuh/windows/Auditado | t2=Hojas/T2_ataques_windows.csv | t3=Hojas/_no_existe_t3_windows.csv | sha256_entradas=3945d7b80b9e8012129fe729d9b669dc05fa7d2f19e0b2ad8ba634c4c3e86cf2,- | columnas=wazuh_C0_N0,wazuh_C0_N3,wazuh_C0_N7,wazuh_C0_N10,wazuh_C0_N12,wazuh_C1_N0,wazuh_C1_N3,wazuh_C1_N7,wazuh_C1_N10,wazuh_C1_N12 | formulas_literales=metrica_hids.py (§2.5) | layout=ancho(1 columna por HIDS x config x umbral; las filas de metrica pueden empezar por '#') | columnas_csv=metrica,excel_profesor,formula_literal,wazuh_C0_N0,wazuh_C0_N3,wazuh_C0_N7,wazuh_C0_N10,wazuh_C0_N12,wazuh_C1_N0,wazuh_C1_N3,wazuh_C1_N7,wazuh_C1_N10,wazuh_C1_N12 | T4 PARCIAL B1.4 (25 casos): TPR calculable; FPR/TNR/GM/Precision/F1/Usabilidad n/a (sin M); FP/hora descriptivo=19.875 (159 alertas / 8 h baseline Windows); boveda_version_windows=3; CA-B1-02 PASA; rutas relativas
+# T4_rendimiento_windows.csv | TFG HIDS - R2 T4 (metricas de rendimiento) | metrica_version=1 | boveda_version=2 | hids=wazuh | M=n/a (fallback L11: FPR/TNR/GM/Precision/F1/Usabilidad no publicables) | auditado=Dataset/Ataques/Resultados/Wazuh/windows/Auditado | t2=Hojas/T2_ataques_windows.csv | t3=Hojas/_no_existe_t3_windows.csv | sha256_entradas=06c4f0b57f67299f74baa9740649402e52ad7f386b98277253c7e933fd81dd10,- | columnas=wazuh_C0_N0,wazuh_C0_N3,wazuh_C0_N7,wazuh_C0_N10,wazuh_C0_N12,wazuh_C1_N0,wazuh_C1_N3,wazuh_C1_N7,wazuh_C1_N10,wazuh_C1_N12 | formulas_literales=metrica_hids.py (§2.5) | layout=ancho(1 columna por HIDS x config x umbral; las filas de metrica pueden empezar por '#') | columnas_csv=metrica,excel_profesor,formula_literal,wazuh_C0_N0,wazuh_C0_N3,wazuh_C0_N7,wazuh_C0_N10,wazuh_C0_N12,wazuh_C1_N0,wazuh_C1_N3,wazuh_C1_N7,wazuh_C1_N10,wazuh_C1_N12 | T4 PARCIAL B1.5 (32 casos): TPR calculable; FPR/TNR/GM/Precision/F1/Usabilidad n/a (sin M); FP/hora descriptivo=19.875 (159 alertas / 8 h baseline Windows); boveda_version_windows=3; CA-B1-02 PASA; rutas relativas
 metrica,excel_profesor,formula_literal,wazuh_C0_N0,wazuh_C0_N3,wazuh_C0_N7,wazuh_C0_N10,wazuh_C0_N12,wazuh_C1_N0,wazuh_C1_N3,wazuh_C1_N7,wazuh_C1_N10,wazuh_C1_N12
-#Casos,#Attack flows,N = 55,25,25,25,25,25,25,25,25,25,25
+#Casos,#Attack flows,N = 55,32,32,32,32,32,32,32,32,32,32
 #Unidades_legitimas (M),#Clear flows,denominador §2.2,,,,,,,,,,
 #Total,#Total Flows,#Casos + M,,,,,,,,,,
-#Casos_TP,#pcaps TP,§2.3,25,25,1,1,1,25,25,1,1,1
-#Casos_FN,#pcaps FN,N - #Casos_TP,0,0,24,24,24,0,0,24,24,24
-#Alertas_TP,#Alerts TP,A_TP,503,503,2,2,2,503,503,2,2,2
-#Alertas_correlacionadas_TP,#Flow-correlated Alerts TP,A_TP^c,83,83,1,1,1,83,83,1,1,1
+#Casos_TP,#pcaps TP,§2.3,32,32,1,1,1,32,32,1,1,1
+#Casos_FN,#pcaps FN,N - #Casos_TP,0,0,31,31,31,0,0,31,31,31
+#Alertas_TP,#Alerts TP,A_TP,539,539,2,2,2,539,539,2,2,2
+#Alertas_correlacionadas_TP,#Flow-correlated Alerts TP,A_TP^c,105,105,1,1,1,105,105,1,1,1
 #Unidades_FP,#Flows FP,FP_uni,,,,,,,,,,
 #Unidades_TN,#Flows TN,M - FP_uni,,,,,,,,,,
 #Alertas_FP,#Alerts FP,A_FP,,,,,,,,,,
 #Alertas_correlacionadas_FP,#Flow-correlated Alerts FP,A_FP^c,,,,,,,,,,
-TPR,TPR,TPR = #Casos_TP / #Casos  (Excel B14 = B6/'T2'!$D$79),1.000000,1.000000,0.040000,0.040000,0.040000,1.000000,1.000000,0.040000,0.040000,0.040000
+TPR,TPR,TPR = #Casos_TP / #Casos  (Excel B14 = B6/'T2'!$D$79),1.000000,1.000000,0.031250,0.031250,0.031250,1.000000,1.000000,0.031250,0.031250,0.031250
 FPR,FPR,FPR = #Unidades_FP / M  (Excel B15 = B10/$B$4),,,,,,,,,,
 TNR,(añadido),TNR = 1 - FPR  (Excel %Flows_TN = 1 - %Flows_FP),,,,,,,,,,
 Precisión,(bloque fórmulas),P = A_TP / (A_TP + A_FP)  (Excel P = TP/(TP+FP)),,,,,,,,,,

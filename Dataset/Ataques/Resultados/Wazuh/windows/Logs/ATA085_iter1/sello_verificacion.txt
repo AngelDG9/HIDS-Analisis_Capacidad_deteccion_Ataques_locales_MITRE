@@ -1,0 +1,8 @@
+ata=ATA085
+iter=1
+esperado=Dataset/Ataques/Comandos/windows/T1498.001-Direct_Network_Flood/ATA085_esperado.csv
+sha256_esperado=1b3f71d8efe50cd1d39035fd1100fba5ed27b66d5548eb5993313c1da639600a
+sha256_sellado=1b3f71d8efe50cd1d39035fd1100fba5ed27b66d5548eb5993313c1da639600a
+coincide=True
+timestamp_utc=2026-11-09T14:47:28Z
+nota=verificacion antes de t0 (CA-B1-02)

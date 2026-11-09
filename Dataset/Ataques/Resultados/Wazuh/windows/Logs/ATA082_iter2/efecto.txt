@@ -1,0 +1,17 @@
+# ATA082 iter2 - prueba de efecto (NO es deteccion)
+
+2026-11-09T14:31:09Z t0=2026-11-09T14:31:09Z run=cmd /c C:\lab-attack\ATA082\run.cmd
+2026-11-09T14:31:10Z t1=2026-11-09T14:31:10Z
+
+evidencia_local:
+  ata=ATA082
+  tecnica=T1185
+  fuente=manual
+  t0=2026-11-09T14:31:10Z
+  t1=2026-11-09T14:31:10Z
+  cookies=528
+  login=528
+  cabecera=SQLite format 3
+  cabecera_null=True
+
+VEREDICTO: EFECTO DEMOSTRADO (Cookies + Login Data; cabecera SQLite format 3)

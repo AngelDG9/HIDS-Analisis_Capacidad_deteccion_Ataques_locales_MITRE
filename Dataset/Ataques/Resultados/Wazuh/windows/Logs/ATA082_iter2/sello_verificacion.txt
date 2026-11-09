@@ -1,0 +1,8 @@
+ata=ATA082
+iter=2
+esperado=Dataset/Ataques/Comandos/windows/T1185-Browser_Session_Hijacking/ATA082_esperado.csv
+sha256_esperado=d528445d80dfc215b3255e2f6fbf68a2de46a0a30d83edbc1fc2d123dd44cd00
+sha256_sellado=d528445d80dfc215b3255e2f6fbf68a2de46a0a30d83edbc1fc2d123dd44cd00
+coincide=True
+timestamp_utc=2026-11-09T14:28:20Z
+nota=verificacion antes de t0 (CA-B1-02)

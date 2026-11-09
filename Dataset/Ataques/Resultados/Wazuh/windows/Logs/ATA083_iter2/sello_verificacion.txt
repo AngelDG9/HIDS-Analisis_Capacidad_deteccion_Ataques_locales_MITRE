@@ -1,0 +1,8 @@
+ata=ATA083
+iter=2
+esperado=Dataset/Ataques/Comandos/windows/T1667-Email_Bombing/ATA083_esperado.csv
+sha256_esperado=5f586049a427c89578f665786c5365a390a4e17c2303d18aa1ad05ba1a9f7212
+sha256_sellado=5f586049a427c89578f665786c5365a390a4e17c2303d18aa1ad05ba1a9f7212
+coincide=True
+timestamp_utc=2026-11-09T14:36:01Z
+nota=verificacion antes de t0 (CA-B1-02)

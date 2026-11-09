@@ -1,0 +1,10 @@
+ata=ATA086
+tecnica=T1499.001
+fuente=manual
+t0=2026-11-09T15:06:13Z
+t1=2026-11-09T15:06:29Z
+bloques=8
+bytes=536870912
+available_before_mb=3115.1
+available_during_mb=2592
+available_after_mb=3040.4

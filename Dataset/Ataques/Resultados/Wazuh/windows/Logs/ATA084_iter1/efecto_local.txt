@@ -1,0 +1,11 @@
+ata=ATA084
+tecnica=T1657
+fuente=manual
+t0=2026-11-09T14:42:47Z
+t1=2026-11-09T14:42:47Z
+libro=C:\lab-attack\ATA084\libro.csv
+libro_after=C:\lab-attack\ATA084\libro_after.csv
+importe=1500
+saldo_A=3500
+saldo_B=2500
+alterado=True

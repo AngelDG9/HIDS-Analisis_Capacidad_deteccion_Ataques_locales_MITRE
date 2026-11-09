@@ -1,0 +1,8 @@
+ata=ATA087
+iter=1
+esperado=Dataset/Ataques/Comandos/windows/T1499.002-Service_Exhaustion_Flood/ATA087_esperado.csv
+sha256_esperado=024a36f034b067089e0dc49a8c20ff2d9186eb24492be3d3cbdf876ad6225159
+sha256_sellado=024a36f034b067089e0dc49a8c20ff2d9186eb24492be3d3cbdf876ad6225159
+coincide=True
+timestamp_utc=2026-11-09T15:07:26Z
+nota=verificacion antes de t0 (CA-B1-02)

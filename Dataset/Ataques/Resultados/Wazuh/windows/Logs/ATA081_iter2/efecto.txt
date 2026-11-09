@@ -1,0 +1,18 @@
+# ATA081 iter2 - prueba de efecto (NO es deteccion)
+
+2026-11-09T14:23:11Z t0=2026-11-09T14:23:11Z run=cmd /c C:\lab-attack\ATA081\run.cmd
+2026-11-09T14:23:12Z t1=2026-11-09T14:23:12Z
+
+evidencia_local:
+  ata=ATA081
+  tecnica=T1114.001
+  fuente=ART_adaptado
+  guid=3f1b5096-0139-4736-9b78-19bcb02bb1cb
+  t0=2026-11-09T14:23:12Z
+  t1=2026-11-09T14:23:12Z
+  eml=20
+  pst=1
+  copiados=21
+  inventario=C:\lab-attack\ATA081\evidencias\mail.csv
+
+VEREDICTO: EFECTO DEMOSTRADO (21 ficheros: 20 .eml + 1 .pst; mail.csv)

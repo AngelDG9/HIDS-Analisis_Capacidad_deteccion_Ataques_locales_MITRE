@@ -1,0 +1,9 @@
+ata=ATA082
+tecnica=T1185
+fuente=manual
+t0=2026-11-09T14:26:59Z
+t1=2026-11-09T14:27:00Z
+cookies=528
+login=528
+cabecera=SQLite format 3
+cabecera_null=True

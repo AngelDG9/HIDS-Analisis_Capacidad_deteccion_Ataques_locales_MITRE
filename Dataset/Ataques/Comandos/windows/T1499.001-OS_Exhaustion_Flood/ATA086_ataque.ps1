@@ -1,4 +1,4 @@
-# ATA086 - T1499.001 OS Exhaustion Flood (Windows)
+﻿# ATA086 - T1499.001 OS Exhaustion Flood (Windows)
 # Manual: 8 bloques de 64 MiB = 512 MiB retenidos 15 s; efecto Available MBytes.
 # El HIDS no tiene capa de recursos: la deteccion esperada es de proceso.
 $ErrorActionPreference = 'Continue'
@@ -11,7 +11,11 @@ function Get-AvailMB { [math]::Round((Get-CimInstance Win32_OperatingSystem).Fre
 $before = Get-AvailMB
 $t0 = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
 $blocks = @()
-1..8 | ForEach-Object { $blocks += ,(New-Object byte[] (64 * 1024 * 1024)) }
+1..8 | ForEach-Object {
+    $b = New-Object byte[] (64 * 1024 * 1024)
+    for ($j = 0; $j -lt $b.Length; $j += 4096) { $b[$j] = 0x41 }
+    $blocks += ,$b
+}
 $during = Get-AvailMB
 Start-Sleep -Seconds 15
 $t1 = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')

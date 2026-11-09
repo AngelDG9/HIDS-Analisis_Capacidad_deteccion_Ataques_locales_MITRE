@@ -1,0 +1,8 @@
+ata=ATA086
+iter=1
+esperado=Dataset/Ataques/Comandos/windows/T1499.001-OS_Exhaustion_Flood/ATA086_esperado.csv
+sha256_esperado=484c190482eb3ef20b166d6fe43df5133a831e7663591a72fb7da3de24f21ef0
+sha256_sellado=484c190482eb3ef20b166d6fe43df5133a831e7663591a72fb7da3de24f21ef0
+coincide=True
+timestamp_utc=2026-11-09T14:59:30Z
+nota=verificacion antes de t0 (CA-B1-02)

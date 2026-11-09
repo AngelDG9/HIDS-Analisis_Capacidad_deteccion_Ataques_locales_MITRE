@@ -1,0 +1,9 @@
+ata=ATA085
+tecnica=T1498.001
+fuente=manual
+t0=2026-11-09T14:54:22Z
+t1=2026-11-09T14:54:22Z
+destino=192.168.65.1:9091
+conexiones=8
+bytes_conexion=8388608
+bytes_total=67108864

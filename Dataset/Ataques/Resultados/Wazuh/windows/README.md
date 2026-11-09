@@ -291,3 +291,64 @@ llevan el `sha256` sellado. El `esperado` no se modifico.
 2. **ATA079** (S1) infla `#Alertas` por ruido de sesion; el TPR no cambia.
 3. **ATA074** es `ART_adaptado` (executor `curl.exe`), no `ART` estricto.
 4. **H-B1-5***: deteccion por proceso; sin capa de red (Sysmon 3 ciego) ni de recursos.
+
+---
+
+# B1.5 - Windows-only + datos + recursos (ATA081-ATA087)
+
+> **Bloque B1**, tanda **B1.5**. Ejecutada el **2026-11-09** sobre `plan.md` v3
+> (`approved_by_human`). `esperado` **sellado en `4e41f38`**; `sha256` verificado antes de
+> cada `t0`. **Solo** `victima-windows` + manager; `victima-linux` apagada. **Sin secretos.**
+
+## B1.5.0 - CA-B1-02 PASA (14/14)
+
+Los 14 pares `(sello, t0)` cumplen `sello < t0`; los 14 `-Audited.csv` y `-Detalle.csv`
+llevan el `sha256` sellado. El `esperado` no se modifico.
+
+## B1.5.1 - Casos y resultados
+
+| ATA | Tecnica | Efecto (prueba) | Iter1 | Iter2 | `rule_id` | Dudosas |
+|---|---|---|---|---|---|---|
+| ATA081 | T1114.001 | 21 ficheros (20 .eml + 1 .pst) + `mail.csv` | 5 | 5 | `67027,92032,92052` | 0/0 |
+| ATA082 | T1185 | Cookies + Login Data; cabecera SQLite | 5 | 5 | `67027,92032,92052` | 0/0 |
+| ATA083 | T1667 | 25 `.eml` en mailbox local | 5 | 5 | `67027,92032,92052` | 0/0 |
+| ATA084 | T1657 | transferencia 1500; A=3500 / B=2500 | 5 | 5 | `67027,92032,92052` | 0/0 |
+| ATA085 | T1498.001 | `sink.log` 8 lineas TCP de 8 MiB (64 MiB) | 5 | 5 | `67027,92032,92052` | 0/0 |
+| ATA086 | T1499.001 | Available MBytes 3031.7 -> 2504.9 / 3115.1 -> 2592 | 5 | 5 | `67027,92032,92052` | 0/0 |
+| ATA087 | T1499.002 | 200 peticiones; `servicio_responde=False` | 6 | 6 | `67027,92027,92032,92052` | 0/0 |
+
+- **0 filas del ataque en `ruido_conocido`/`auto_ruido`** (candado; 0 violaciones en las 14 ventanas).
+- **ATA081** es `ART_adaptado` (Outlook -> perfil sintetico `.eml`/`.pst`).
+- **ATA082-087** son manuales (perfil/libro/mailbox sinteticos, flood TCP, presion de memoria,
+  servicio loopback desechable).
+- **ATA086**: el HIDS **no tiene capa de recursos**; el efecto es `Available MBytes` y la
+  deteccion esperada es solo de proceso.
+- **ATA087**: el servicio desechable se agota (`ok=10`, `fail=190`, `servicio_responde=False`)
+  y se para al final.
+
+## B1.5.2 - T2-W parcial (32 casos)
+
+`Hojas/T2_ataques_windows.csv` - **320 filas**, `N_casos=32`, `corpus=32`, `CA-B1-02 PASA`.
+**`sha256 = 06c4f0b57f67299f74baa9740649402e52ad7f386b98277253c7e933fd81dd10`**.
+
+| Config | `N=0` | `N=3` | `N=7` | `N=10` | `N=12` |
+|---|---|---|---|---|---|
+| **C0 = C1** | **32/32** | **32/32** | **1/32** | **1/32** | **1/32** |
+
+- `#Alertas` total (N=0): **539**; `#rule.id` por caso: 3 (salvo ATA064=4, ATA067=7,
+  ATA072=4, ATA073=5, ATA087=4).
+- El unico TP a `N>=7` sigue siendo **ATA073** (`92213`, nivel 15).
+- T4-W: **`sha256 = 90d4c7bf4ce37b59fb058d4b1a764ed32aa3ffa57a1142f65d19c245c3759101`**.
+- Sensibilidad `--sin-operador`: TPR **identico** (32/32, 32/32, 1/32, 1/32, 1/32); el canal
+  pasa a `dudosa`, no a `deteccion` (`Hojas/T2_ataques_windows_sens_sin_operador.csv`,
+  `sha256 = 7927564f0232697f5e33a9dd19f6b843e5e1043a1366fdd4ea43c437e0176fe7`).
+- Replay baseline v1/v2: **0**; `pytest` **389 passed**; regresion Linux semantica **875/875**.
+- Indice de 32 casos: `Hojas/ATA_index_windows_piloto_32.csv`
+  (`sha256 = 71fa15124663557a2a6968b5f7a8fe625e06a0bb59201d6d39c58e3b417c68e4`).
+
+## B1.5.3 - Limitaciones
+
+1. **ATA086** no tiene capa de recursos en el HIDS: solo se prueba el efecto (`Available MBytes`).
+2. **ATA081** es `ART_adaptado` (Outlook -> perfil sintetico), no `ART` estricto.
+3. **ATA082-087** son manuales; el motivo esta en cada `README.md`.
+4. **H-B1-5***: deteccion por proceso; sin capa de red (Sysmon 3 ciego) ni de recursos.

@@ -1,0 +1,10 @@
+ata=ATA081
+tecnica=T1114.001
+fuente=ART_adaptado
+guid=3f1b5096-0139-4736-9b78-19bcb02bb1cb
+t0=2026-11-09T14:19:22Z
+t1=2026-11-09T14:19:23Z
+eml=20
+pst=1
+copiados=21
+inventario=C:\lab-attack\ATA081\evidencias\mail.csv

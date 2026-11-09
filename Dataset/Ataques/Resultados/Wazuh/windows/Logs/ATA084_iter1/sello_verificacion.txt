@@ -1,0 +1,8 @@
+ata=ATA084
+iter=1
+esperado=Dataset/Ataques/Comandos/windows/T1657-Financial_Theft/ATA084_esperado.csv
+sha256_esperado=c4d3b34d7154e0a2fc8adf85bd45f16ce8a856a30b1ed3843894069b76087d6a
+sha256_sellado=c4d3b34d7154e0a2fc8adf85bd45f16ce8a856a30b1ed3843894069b76087d6a
+coincide=True
+timestamp_utc=2026-11-09T14:39:56Z
+nota=verificacion antes de t0 (CA-B1-02)

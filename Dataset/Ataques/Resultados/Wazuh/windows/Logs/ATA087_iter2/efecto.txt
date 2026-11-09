@@ -1,0 +1,18 @@
+# ATA087 iter2 - prueba de efecto (NO es deteccion)
+
+2026-11-09T15:14:53Z t0=2026-11-09T15:14:53Z run=cmd /c C:\lab-attack\ATA087\run.cmd
+2026-11-09T15:15:41Z t1=2026-11-09T15:15:41Z
+
+evidencia_local:
+  ata=ATA087
+  tecnica=T1499.002
+  fuente=manual
+  t0=2026-11-09T15:14:59Z
+  t1=2026-11-09T15:15:40Z
+  endpoint=127.0.0.1:9094
+  peticiones=200
+  ok=10
+  fail=190
+  servicio_responde=False
+
+VEREDICTO: EFECTO DEMOSTRADO (200 peticiones; servicio_responde=False)
