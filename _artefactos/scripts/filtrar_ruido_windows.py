@@ -79,6 +79,11 @@ OPERADOR_REGLAS = (
 WIN_EXEC_EVENT_IDS = {"1", "4688"}
 WIN_EXEC_GROUPS = {"sysmon_eid1", "sysmon_event1"}
 
+#: B2.0 (D4): reglas FIM de fichero que la sensibilidad `--fim-como-deteccion`
+#: puede reclasificar como `deteccion` si el path cae bajo `C:\lab-attack\ATA<NNN>`.
+#: Sin el flag, el comportamiento canónico (B1) no cambia.
+FIM_RULES = {"550", "553", "554"}
+
 SIGNAL_TIPOS = ("deteccion", "ambigua")
 SIGNAL_CAMPOS = (
     "rule_id",
@@ -511,6 +516,7 @@ def clasificar(
     conflictos: list,
     ata_id: str = "",
     operador: bool = True,
+    fim_como_deteccion: bool = False,
 ):
     rid = str(row.get("rule_id") or "").strip()
     pertenencia = "" if modo_baseline else es_del_ataque(row, ata_id)
@@ -537,6 +543,19 @@ def clasificar(
     # `ruido_conocido`: o casa una detección declarada, o es `artefacto_ataque`.
     # ------------------------------------------------------------------
     if not modo_baseline and pertenencia:
+        # B2.0 (D4, NO canónico): sensibilidad `--fim-como-deteccion`.
+        # Las reglas FIM de fichero (550/553/554) cuyo path/target cae bajo
+        # `C:\lab-attack\ATA<NNN>` pasan a `deteccion` (nivel alto) en la salida
+        # paralela `Auditado_fim/`. Sin el flag, el canónico B1 no cambia.
+        if (
+            fim_como_deteccion
+            and rid in FIM_RULES
+            and (pertenencia.startswith("syscheck_path=") or pertenencia.startswith("win_target="))
+        ):
+            out["categoria"] = "deteccion"
+            out["motivo"] = "fim_como_deteccion"
+            out["evidencia"] = pertenencia
+            return out
         if ev is not None and ev["match_deteccion"] is not None:
             s, valor = ev["match_deteccion"]
             out["categoria"] = "deteccion"
@@ -666,12 +685,14 @@ def write_csv(path: str, header: list[str], rows, comment: str | None = None) ->
             writer.writerow([r.get(c, "") for c in header])
 
 
-def construir_comentario(nombre, ata, it, modo, entradas, conteos, operador=True) -> str:
+def construir_comentario(nombre, ata, it, modo, entradas, conteos, operador=True, fim=False) -> str:
     parts = [
         f"{nombre} | TFG HIDS - B1.0 filtro Windows (H4-W) | ata={ata} iter={it}",
         f"modo={'baseline' if modo == 'baseline' else 'ataque'}",
         f"operador={'on' if operador else 'off (sensibilidad --sin-operador)'}",
     ]
+    if fim:
+        parts.append("fim_como_deteccion=on (sensibilidad NO canonica; Auditado_fim/)")
     for etiqueta, path, sha in entradas:
         parts.append(f"{etiqueta}={path} sha256={sha}")
     parts.append(
@@ -753,6 +774,11 @@ def main(argv=None) -> int:
         action="store_true",
         help="sensibilidad: no aplica el predicado OPERADOR_WIN (el canal contaría como novel)",
     )
+    ap.add_argument(
+        "--fim-como-deteccion",
+        action="store_true",
+        help="sensibilidad NO canonica (B2.0): reclasifica 550/553/554 bajo C:\\lab-attack\\ATA<NNN> como deteccion (salida paralela Auditado_fim/)",
+    )
     args = ap.parse_args(argv)
 
     if args.replay_baseline:
@@ -820,7 +846,8 @@ def main(argv=None) -> int:
     filas = []
     for r in alertas:
         c = clasificar(r, catalogo, signals, modo_baseline, conflictos, ata,
-                       operador=not args.sin_operador)
+                       operador=not args.sin_operador,
+                       fim_como_deteccion=args.fim_como_deteccion)
         fila = {
             "ata_id": ata,
             "iter": args.iter,
@@ -943,7 +970,7 @@ def main(argv=None) -> int:
 
     comment = construir_comentario(
         os.path.basename(out), ata, args.iter, args.modo, entradas, conteos,
-        operador=not args.sin_operador,
+        operador=not args.sin_operador, fim=args.fim_como_deteccion,
     )
     write_csv(out, OUT_HEADER, filas, comment=comment)
 
@@ -952,7 +979,7 @@ def main(argv=None) -> int:
         rev_rows = [dict(f, veredicto="", nota="", revisor="", fecha="") for f in dudosas]
         rev_comment = construir_comentario(
             os.path.basename(rev_out), ata, args.iter, args.modo, entradas, conteos,
-            operador=not args.sin_operador,
+            operador=not args.sin_operador, fim=args.fim_como_deteccion,
         )
         write_csv(rev_out, OUT_HEADER + REV_EXTRA, rev_rows, comment=rev_comment)
 

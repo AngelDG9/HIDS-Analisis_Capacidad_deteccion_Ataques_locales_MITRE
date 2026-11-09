@@ -1,0 +1,12 @@
+# B2.0 servicios locales - prueba benigna
+2026-11-09T17:21:03Z smb_create=OK
+2026-11-09T17:21:13Z smb_probe=OK items=1
+2026-11-09T17:21:15Z smtp_probe=OK resp=220 TFG-SMTP
+250 OK
+2026-11-09T17:21:15Z proxy_probe=OK resp=HTTP/1.1 200 OK
+2026-11-09T17:21:17Z app_probe=OK status=200 body=65 80 80 45 79 75
+2026-11-09T17:21:17Z udp5353_probe=OK sent=63 recv=252
+2026-11-09T17:21:17Z udp67_probe=OK recv=DHCP-OFFER-TFG
+2026-11-09T17:21:17Z portal_probe=OK status=200
+2026-11-09T17:21:18Z smb_delete=OK
+2026-11-09T17:21:18Z fin servicios_b2

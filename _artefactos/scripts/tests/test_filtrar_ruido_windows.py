@@ -331,3 +331,34 @@ def test_modo_baseline_absorbe_novedad(tmp_path):
     fila = _leer(out)[0]
     assert fila["categoria"] == "ruido_conocido"
     assert fila["motivo"] == "baseline"
+
+
+def test_fim_como_deteccion(tmp_path):
+    alerta = tmp_path / "alerta.csv"
+    _escribir(alerta, [{
+        "timestamp_utc": "2026-01-01T00:00:10Z",
+        "agent_name": "victima-windows",
+        "rule_id": "554",
+        "rule_level": "5",
+        "rule_groups": "ossec|syscheck|syscheck_entry_added|syscheck_file",
+        "rs_origen": "RS1",
+        "syscheck_path": r"C:\lab-attack\ATA056\evidencia.txt",
+    }])
+    esp = tmp_path / "ATA056_esperado.csv"
+    _esperado(esp, [
+        r"T1020-S4,ambigua,syscheck_path,C:\lab-attack\ATA056\*,File Integrity Monitoring,T1020,D-5",
+    ])
+    out = tmp_path / "sin.csv"
+    assert F.main(["--alerta", str(alerta), "--ata", "ATA056", "--esperado", str(esp),
+                   "--catalogo", str(ROOT / F.DEFAULT_CATALOGO), "--out", str(out)]) == 0
+    fila = _leer(out)[0]
+    assert fila["categoria"] == "dudosa"
+    assert fila["motivo"] == "ambigua:T1020-S4"
+    out2 = tmp_path / "fim.csv"
+    assert F.main(["--alerta", str(alerta), "--ata", "ATA056", "--esperado", str(esp),
+                   "--catalogo", str(ROOT / F.DEFAULT_CATALOGO), "--fim-como-deteccion",
+                   "--out", str(out2)]) == 0
+    fila2 = _leer(out2)[0]
+    assert fila2["categoria"] == "deteccion"
+    assert fila2["motivo"] == "fim_como_deteccion"
+    assert fila2["evidencia"].startswith("syscheck_path=")

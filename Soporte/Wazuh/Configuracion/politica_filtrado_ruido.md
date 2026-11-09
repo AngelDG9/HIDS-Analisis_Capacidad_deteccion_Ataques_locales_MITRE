@@ -422,6 +422,23 @@ Mezclar el catálogo de una ventana con la otra **no** es prueba válida.
   la de SSH es `60106/60137/67024/67023/67028` (tipo 3/5) y está resuelta en §9.6.
   **El `4624` de SSH no trae IP** (declarado; el predicado no depende de ella).
 
+### 9.7.1 Sensibilidad `--fim-como-deteccion` (B2.0, NO canónica)
+
+- **Qué hace**: con `--fim-como-deteccion`, las filas FIM de fichero (`550` modificado,
+  `553` borrado, `554` añadido) cuyo `syscheck_path`/`win_target` cae bajo
+  `C:\lab-attack\ATA<NNN>` pasan a `categoria=deteccion` (`motivo=fim_como_deteccion`) y se
+  escriben en `Auditado_fim/` (paralelo). **Sin el flag, la salida es byte a byte idéntica a
+  B1** (verificado con `ATA056_iter1-Audited.csv`).
+- **Por qué no es canónica**: contar la huella del propio ataque como detección infla el plano
+  de alerta; la categoría `artefacto_ataque` existe para no hacerlo. La canónica sigue siendo
+  **sin** FIM-como-detección.
+- **Implementación**: `FIM_RULES={550,553,554}`; el check se evalúa antes de las señales en el
+  bloque de pertenencia. Cabecera con `fim_como_deteccion=on` solo con el flag.
+- **Tests**: `test_filtrar_ruido_windows.py::test_fim_como_deteccion` (sin flag -> `dudosa`/
+  `ambigua`; con flag -> `deteccion`/`fim_como_deteccion`).
+- **Predicción H-B2-1**: a `N=7`, los casos con borrado (`553`, nivel 7) suben; los de
+  creación/modificación (`554`/`550`, nivel 5) no. Se mide en B2.5.
+
 ### 9.8 Referencias
 
 - Código: `_artefactos/scripts/filtrar_ruido_windows.py`.

@@ -1,0 +1,28 @@
+# clases_evento_b2.csv | TFG HIDS - B2.0 C0 de clases nuevas (dry run benigno, NO ataques) | 2026-11-09
+# ventana_ssh=2026-11-09T17:35:30Z..2026-11-09T17:36:05Z | snapshot=lab-listo-windows-ataques-ssh | agente=002
+# ventana_gui=2026-11-09T17:41:55Z..2026-11-09T17:42:10Z | snapshot=lab-listo-windows-ataques-gui | S1 TFG-C0-GUI
+# detalle=Soporte/Ataques/c0/windows/c0_b2_detalle.csv + c0_b2_gui_detalle.csv
+# Regla: `alerta=SI` si la clase produjo al menos una alerta observada; `NO` = punto ciego/pendiente.
+# API hooking no se ejecuto (DLL pre-staged; se mide en B2.4). GUI medido en S1 (91803 nivel 14).
+clase,event_id,rule_id,rule_level,alerta,evidencia,nota
+proceso,4688,67027,3,SI,win_image=powershell.exe,proceso del dry run (SMB/SMTP/UDP/proxy/portal); generico
+proceso,1,92027,4,SI,win_image=powershell.exe,PowerShell hijo (Start-Job)
+proceso,1,92052,4,SI,win_image=cmd.exe,cmd.exe del dry run (lectura de markers)
+proceso,1,92032,3,SI,win_image=cmd.exe,cmd.exe del dry run
+proceso,11,92213,15,SI,win_image=powershell.exe,artefacto PowerShell (policy/Add-Type); no es una clase
+SMB,554,554,5,SI,syscheck_path=c:\lab-attack\c0_b2\labshare\hola.txt,FIM fichero del share
+SMB,550,550,7,SI,syscheck_path=c:\lab-attack\c0_b2\labshare\hola.txt,FIM modificacion del fichero del share
+SMB,553,553,7,SI,syscheck_path=c:\lab-attack\c0_b2\labshare\hola.txt,FIM borrado del fichero del share
+SMB,5140,-,-,NO,-,SMB audit no habilitado (5140/5145): punto ciego de acceso al share
+SMTP,25,-,-,NO,-,SMTP audit no habilitado: punto ciego
+UDP,3,-,-,NO,-,Sysmon 3 ciego (red): punto ciego para 5353/67
+proxy,3,-,-,NO,-,Sysmon 3 ciego (red): punto ciego para 9095
+VHD,554,554,5,SI,syscheck_path=c:\lab-attack\ata098\labdisk100.vhd,FIM del VHD de 100 MB
+VHD,4688,67027,3,SI,win_image=diskpart.exe,proceso diskpart (creacion del VHD)
+VHD,4688,67027,3,SI,win_image=vds.exe,proceso VDS (servicio de discos virtuales)
+GUI,4104,91803,14,SI,-,Screen capture method invoked from PowerShell script (dry run benigno S1)
+GUI,4688,67027,3,SI,win_image=powershell.exe,proceso GUI (S1)
+GUI,1,92052,4,SI,win_image=cmd.exe,cmd.exe de la tarea S1
+GUI,11,92213,15,SI,win_image=powershell.exe,artefacto PowerShell (policy/Add-Type)
+portal,4104,91820,4,SI,-,script block PowerShell (posible portal/SMB); clase no aislada
+API hooking,4688,-,-,NO,-,DLL pre-staged; no cargada en C0; se mide en B2.4 (ATA106)
