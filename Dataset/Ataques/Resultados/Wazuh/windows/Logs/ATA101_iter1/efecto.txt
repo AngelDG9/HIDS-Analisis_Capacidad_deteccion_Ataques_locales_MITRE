@@ -1,0 +1,18 @@
+# ATA101 iter1 - prueba de efecto (NO es deteccion)
+
+2026-11-09T21:19:05Z t0=2026-11-09T21:19:05Z run=cmd /c C:\lab-attack\ATA101\run.cmd
+2026-11-09T21:19:26Z t1=2026-11-09T21:19:26Z
+
+evidencia_local:
+  ata=ATA101
+  tecnica=T1025
+  fuente=ART_adaptado
+  t0=2026-11-09T21:19:08Z
+  t1=2026-11-09T21:19:25Z
+  vhd=C:\lab-attack\ATA101\labdisk100.vhd
+  bytes=104858112
+  ficheros_copiados=20
+  sha256_coinciden=True
+  copiado_ok=True
+
+VEREDICTO: EFECTO DEMOSTRADO (ficheros_copiados=20; sha256_coinciden=True)

@@ -1,0 +1,8 @@
+ata=ATA100
+iter=1
+esperado=Dataset/Ataques/Comandos/windows/T1561.002-Disk_Structure_Wipe/ATA100_esperado.csv
+sha256_esperado=7a47905fb158d8858c100a59cef31384055a80fd37095b6790f80d5574a64394
+sha256_sellado=7a47905fb158d8858c100a59cef31384055a80fd37095b6790f80d5574a64394
+coincide=True
+timestamp_utc=2026-11-09T20:54:27Z
+nota=verificacion antes de t0 (CA-B1-02)

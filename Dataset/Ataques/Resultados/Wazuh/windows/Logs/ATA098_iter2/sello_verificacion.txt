@@ -1,0 +1,8 @@
+ata=ATA098
+iter=2
+esperado=Dataset/Ataques/Comandos/windows/T1561-Disk_Wipe/ATA098_esperado.csv
+sha256_esperado=caf34939cbc0a0ee276db42a45d1f36c591e3f527e778f092c76c60ae56ed680
+sha256_sellado=caf34939cbc0a0ee276db42a45d1f36c591e3f527e778f092c76c60ae56ed680
+coincide=True
+timestamp_utc=2026-11-09T20:42:31Z
+nota=verificacion antes de t0 (CA-B1-02)

@@ -21,10 +21,21 @@ function Test-VhdFooter([string]$path) {
     } finally { $fs.Close() }
 }
 
+function Open-VhdForWrite([string]$path) {
+    for ($i = 0; $i -lt 40; $i++) {
+        try {
+            return [IO.File]::Open($path, [IO.FileMode]::Open, [IO.FileAccess]::ReadWrite)
+        } catch {
+            Start-Sleep -Milliseconds 500
+        }
+    }
+    throw "no se pudo abrir el VHD para escritura: $path"
+}
+
 function Set-VhdPattern([string]$path, [byte]$value) {
     $chunk = New-Object byte[] (1048576)
     for ($i = 0; $i -lt $chunk.Length; $i++) { $chunk[$i] = $value }
-    $fs = [IO.File]::Open($path, [IO.FileMode]::Open, [IO.FileAccess]::ReadWrite)
+    $fs = Open-VhdForWrite $path
     try {
         $remaining = 104857600
         while ($remaining -gt 0) {
@@ -38,7 +49,7 @@ function Set-VhdPattern([string]$path, [byte]$value) {
 
 function Clear-VhdRange([string]$path, [long]$offset, [long]$count) {
     $chunk = New-Object byte[] (1048576)
-    $fs = [IO.File]::Open($path, [IO.FileMode]::Open, [IO.FileAccess]::ReadWrite)
+    $fs = Open-VhdForWrite $path
     try {
         $fs.Seek($offset, [IO.SeekOrigin]::Begin) | Out-Null
         $remaining = $count
@@ -56,7 +67,7 @@ if (-not (Test-VhdFooter $vhd)) {
     exit 2
 }
 Set-VhdPattern $vhd 0xAA
-$fs = [IO.File]::Open($vhd, [IO.FileMode]::Open, [IO.FileAccess]::ReadWrite)
+$fs = Open-VhdForWrite $vhd
 $fs.Seek(510, [IO.SeekOrigin]::Begin) | Out-Null
 $fs.Write([byte[]](0x55, 0xAA), 0, 2)
 $fs.Flush()

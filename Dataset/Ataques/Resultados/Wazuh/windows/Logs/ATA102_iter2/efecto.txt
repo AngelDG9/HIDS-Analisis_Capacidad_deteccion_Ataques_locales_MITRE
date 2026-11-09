@@ -1,0 +1,18 @@
+# ATA102 iter2 - prueba de efecto (NO es deteccion)
+
+2026-11-09T21:37:24Z t0=2026-11-09T21:37:24Z run=cmd /c C:\lab-attack\ATA102\run.cmd
+2026-11-09T21:38:01Z t1=2026-11-09T21:38:01Z
+
+evidencia_local:
+  ata=ATA102
+  tecnica=T1052.001
+  fuente=manual
+  t0=2026-11-09T21:37:28Z
+  t1=2026-11-09T21:38:00Z
+  vhd=C:\lab-attack\ATA102\labdisk100.vhd
+  bytes=104858112
+  ficheros_en_vhd=20
+  persistido=True
+  exfil_ok=True
+
+VEREDICTO: EFECTO DEMOSTRADO (ficheros_en_vhd=20; persistido=True)

@@ -1,0 +1,8 @@
+ata=ATA101
+iter=2
+esperado=Dataset/Ataques/Comandos/windows/T1025-Data_from_Removable_Media/ATA101_esperado.csv
+sha256_esperado=5dd2dd202dfacb1c5e964dab88f8c4631da1738c4adbd6c909d2d03ea6bbe6f3
+sha256_sellado=5dd2dd202dfacb1c5e964dab88f8c4631da1738c4adbd6c909d2d03ea6bbe6f3
+coincide=True
+timestamp_utc=2026-11-09T21:20:26Z
+nota=verificacion antes de t0 (CA-B1-02)

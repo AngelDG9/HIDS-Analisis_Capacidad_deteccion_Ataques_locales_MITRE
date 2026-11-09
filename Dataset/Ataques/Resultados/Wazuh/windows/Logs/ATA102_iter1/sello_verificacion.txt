@@ -1,0 +1,8 @@
+ata=ATA102
+iter=1
+esperado=Dataset/Ataques/Comandos/windows/T1052.001-Exfiltration_over_USB/ATA102_esperado.csv
+sha256_esperado=6603e264afe9e9abeb5f56f2c10fdffadf7a793347122d13039541367f448435
+sha256_sellado=6603e264afe9e9abeb5f56f2c10fdffadf7a793347122d13039541367f448435
+coincide=True
+timestamp_utc=2026-11-09T21:29:56Z
+nota=verificacion antes de t0 (CA-B1-02)

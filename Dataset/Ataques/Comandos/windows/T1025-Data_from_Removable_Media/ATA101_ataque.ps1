@@ -21,10 +21,21 @@ function Test-VhdFooter([string]$path) {
     } finally { $fs.Close() }
 }
 
+function Open-VhdForWrite([string]$path) {
+    for ($i = 0; $i -lt 40; $i++) {
+        try {
+            return [IO.File]::Open($path, [IO.FileMode]::Open, [IO.FileAccess]::ReadWrite)
+        } catch {
+            Start-Sleep -Milliseconds 500
+        }
+    }
+    throw "no se pudo abrir el VHD para escritura: $path"
+}
+
 function Set-VhdPattern([string]$path, [byte]$value) {
     $chunk = New-Object byte[] (1048576)
     for ($i = 0; $i -lt $chunk.Length; $i++) { $chunk[$i] = $value }
-    $fs = [IO.File]::Open($path, [IO.FileMode]::Open, [IO.FileAccess]::ReadWrite)
+    $fs = Open-VhdForWrite $path
     try {
         $remaining = 104857600
         while ($remaining -gt 0) {
@@ -38,7 +49,7 @@ function Set-VhdPattern([string]$path, [byte]$value) {
 
 function Clear-VhdRange([string]$path, [long]$offset, [long]$count) {
     $chunk = New-Object byte[] (1048576)
-    $fs = [IO.File]::Open($path, [IO.FileMode]::Open, [IO.FileAccess]::ReadWrite)
+    $fs = Open-VhdForWrite $path
     try {
         $fs.Seek($offset, [IO.SeekOrigin]::Begin) | Out-Null
         $remaining = $count
@@ -54,15 +65,23 @@ function Clear-VhdRange([string]$path, [long]$offset, [long]$count) {
 function Mount-LabVhd([string]$path) {
     $img = Get-DiskImage -ImagePath $path -ErrorAction SilentlyContinue
     if ($img -and $img.Attached) { Dismount-DiskImage -ImagePath $path -ErrorAction SilentlyContinue | Out-Null; Start-Sleep -Seconds 2 }
-    $img = Mount-DiskImage -ImagePath $path -PassThru -ErrorAction Stop
-    $disk = $img | Get-Disk
+    Mount-DiskImage -ImagePath $path -PassThru -ErrorAction Stop | Out-Null
+    Start-Sleep -Seconds 2
+    $disk = Get-Disk | Where-Object { $_.BusType -eq 'File Backed Virtual' -and $_.Location -eq $path } | Select-Object -First 1
+    if (-not $disk) { throw 'GUARDARRAIL: no se encontro el disco del VHD' }
     if ($disk.IsSystem -or $disk.IsBoot) { throw 'GUARDARRAIL: disco de sistema' }
     if ($disk.Size -ne 104857600) { throw 'GUARDARRAIL: tamano de disco inesperado' }
-    Set-Disk -Number $disk.Number -IsOffline $false -IsReadOnly $false -ErrorAction SilentlyContinue
+    Set-Disk -Number $disk.Number -IsOffline $false -ErrorAction SilentlyContinue
+    Set-Disk -Number $disk.Number -IsReadOnly $false -ErrorAction SilentlyContinue
     if ($disk.PartitionStyle -eq 'RAW') {
         Initialize-Disk -Number $disk.Number -PartitionStyle MBR -Confirm:$false -ErrorAction Stop
     }
-    $part = Get-Partition -DiskNumber $disk.Number -ErrorAction SilentlyContinue | Where-Object { $_.Type -eq 'Basic' } | Select-Object -First 1
+    $part = $null
+    for ($k = 0; $k -lt 20; $k++) {
+        $part = Get-Partition -DiskNumber $disk.Number -ErrorAction SilentlyContinue | Sort-Object Size -Descending | Select-Object -First 1
+        if ($part) { break }
+        Start-Sleep -Milliseconds 500
+    }
     if (-not $part) {
         $part = New-Partition -DiskNumber $disk.Number -UseMaximumSize -AssignDriveLetter -ErrorAction Stop
     }
@@ -71,12 +90,12 @@ function Mount-LabVhd([string]$path) {
         Start-Sleep -Seconds 1
         $part = Get-Partition -DiskNumber $disk.Number -PartitionNumber $part.PartitionNumber
     }
-    $vol = Get-Volume -Partition $part -ErrorAction SilentlyContinue
+    $vol = Get-Volume -DriveLetter $part.DriveLetter -ErrorAction SilentlyContinue
     if (-not $vol -or -not $vol.FileSystem) {
         Start-Sleep -Seconds 1
-        Format-Volume -Partition $part -FileSystem NTFS -NewFileSystemLabel 'TFGLAB' -Confirm:$false -ErrorAction Stop | Out-Null
+        Format-Volume -DriveLetter $part.DriveLetter -FileSystem NTFS -NewFileSystemLabel 'TFGLAB' -Confirm:$false -ErrorAction Stop | Out-Null
         Start-Sleep -Seconds 2
-        $vol = Get-Volume -Partition $part
+        $vol = Get-Volume -DriveLetter $part.DriveLetter
     }
     return [pscustomobject]@{ Disk = $disk; Partition = $part; Root = ($part.DriveLetter + ':\') }
 }

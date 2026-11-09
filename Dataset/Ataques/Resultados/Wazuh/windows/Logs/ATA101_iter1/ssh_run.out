@@ -1,0 +1,8 @@
+﻿C:\Program Files\Git\usr\bin\ssh.exe : ** WARNING: connection is not using a post-quantum key exchange algorithm.
+    + CategoryInfo          : NotSpecified: (** WARNING: con...ange algorithm.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+** This session may be vulnerable to "store now, decrypt later" attacks.
+** The server may need to be upgraded. See https://openssh.com/pq.html
+RC=
+

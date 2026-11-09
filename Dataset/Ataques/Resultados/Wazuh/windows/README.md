@@ -546,3 +546,72 @@ llevan el `sha256` sellado. El `esperado` no se modifico tras el sello.
 3. **ATA097** depende de `OpenProcess`/`WriteProcessMemory` sobre el toy; en este laboratorio
    funciono (`write_ok=True`), pero si el token no lo permite se declararia `efecto_parcial`.
 4. El **N=54 final** y las sensibilidades completas quedan para **B2.5**.
+
+
+---
+
+# B2.3 - Disco y medios (ATA098-ATA102)
+
+> **Bloque B2**, tanda **B2.3**. Ejecutada el **2026-11-09** sobre `plan.md` v1
+> (`approved_by_human`). `esperado` **sellado en `312d9fe`**; `sha256` verificado antes de
+> cada `t0`. **Solo** `victima-windows` + manager. **Sin secretos.**
+
+## B2.3.0 - CA-B1-02 PASA (10/10)
+
+Los 10 pares `(sello, t0)` cumplen `sello < t0`; los 10 `-Audited.csv` y `-Detalle.csv`
+llevan el `sha256` sellado. El `esperado` no se modifico.
+
+## B2.3.1 - Casos y resultados
+
+| ATA | Tecnica | Efecto (prueba) | Iter1 | Iter2 | `rule_id` | Dudosas |
+|---|---|---|---|---|---|---|
+| ATA098 | T1561 | VHD corrupto (`0xFF`; footer intacto) | 5 | 5 | `67027,92032,92052` | 0/0 |
+| ATA099 | T1561.001 | contenido a cero (footer intacto) | 5 | 5 | `67027,92032,92052` | 0/0 |
+| ATA100 | T1561.002 | no montable (footer destruido) | 5 | 5 | `67027,92032,92052` | 0/0 |
+| ATA101 | T1025 | 20 docs copiados; `sha256` coinciden | 5 | 5 | `67027,92032,92052` | 0/0 |
+| ATA102 | T1052.001 | 20 ficheros en el VHD; persistido | 5 | 5 | `67027,92032,92052` | 0/0 |
+
+- **0 filas del ataque en `ruido_conocido`/`auto_ruido`** (candado; 0 violaciones en las 10 ventanas).
+- **VHD**: solo `C:\lab-attack\ATA<NNN>\labdisk100.vhd` (100 MiB, `sha256=04c8899c…9f9aad`);
+  nunca `PhysicalDrive*`/`C:`/sistema. `Dismount-DiskImage` en `finally`.
+- **Hallazgo de ejecucion**: el agente FIM bloquea el VHD recien copiado por `scp`; el runner
+  copia localmente (`labdisk100_src.vhd` -> `labdisk100.vhd`) y el script reintenta la apertura.
+- **ATA101**: ART adaptado (`guid=0b29f7e3-a050-44b7-bf05-9fb86af1ec2e`,
+  `atomics/T1025/T1025.yaml`, commit `388942adbd9641f4dfdcf079d7efe9a75ec0ac43`). El primer
+  intento fallo por `Set-Disk` (param sets) y `Get-Disk`; corregido (disco por
+  `BusType=File Backed Virtual` + `Location`, `Set-Disk` en dos pasos, reintento de particion).
+- **ATA102**: el primer intento fallo al remontar ("Not enough available capacity") porque
+  `Get-Partition` no veia la particion a tiempo; corregido con reintento y orden por tamano.
+- Las iteraciones fallidas de ATA098/ATA101/ATA102 se archivaron **fuera del repo**.
+
+## B2.3.2 - T2-W parcial (47 casos: 32 B1 + 5 B2.1 + 5 B2.2 + 5 B2.3)
+
+`Hojas/T2_ataques_windows_b2_piloto_47.csv` - **470 filas**, `N_casos=47`, `corpus=54`,
+`CA-B1-02 PASA`. **`sha256 = a980cfc32a0c73efeb8dfd1b4da4c724a47ff9b7539fb61f99c8a11257636610`**.
+
+| Config | `N=0` | `N=3` | `N=7` | `N=10` | `N=12` |
+|---|---|---|---|---|---|
+| **C0 = C1** | **47/47** | **47/47** | **2/47** | **2/47** | **2/47** |
+
+- `#Alertas` total (N=0): **633**. Los 5 casos nuevos: 5 alertas y 3 `rule_id` cada uno.
+- TP a `N>=7`: **ATA073** y **ATA097** (`92213`, nivel 15).
+- T4-W: **`sha256 = f43404c120f90c37e9593094dbd0258970b50e789a969f591107ba0f9ba08cbb`**;
+  `N = 47`; `FPR/TNR/GM/Precision/F1/Usabilidad = n/a`; `FP/hora` descriptivo **19,875**
+  (159 alertas / 8 h baseline Windows).
+- Sensibilidad `--sin-operador`: `Hojas/T2_ataques_windows_b2_piloto_47_sens_sin_operador.csv`,
+  **`sha256 = 67a92ec3326d7b2b9a237b5e825b3e872348eecbebae0c7e7ea3e92d52106861`**; TPR
+  **identico** (47/47, 47/47, 2/47, 2/47, 2/47); el canal pasa a `dudosa`.
+- Indice de 47: `Hojas/ATA_index_windows_b2_piloto_47.csv`
+  (`sha256 = 0ec75d457ac7ee98e112676e23909053257cc8288040e2ccd08e633f28d7bee4`), **staged**.
+- Replay v1/v2: **0**; `pytest` **396 passed**; regresion Linux semantica **875/875**.
+
+## B2.3.3 - Limitaciones
+
+1. **VHD pre-staged vacio** (100 MiB, sin FS): ATA098/099/100 siembran `0xAA` antes de
+   borrar/corromper; ATA101/102 lo inicializan/formatean en la ventana. Es el escenario de
+   juguete declarado.
+2. **ATA101/102** dependen de `Mount-DiskImage`/`Initialize-Disk`/`Format-Volume`; si el
+   montaje falla en otra ejecucion, se declarara `efecto_parcial`.
+3. **ATA100** da `no_montable=True` porque `Mount-DiskImage` rechaza el footer a cero; si
+   Windows lo tolerara, se declararia `efecto_parcial`.
+4. El **N=54 final** y las sensibilidades completas quedan para **B2.5**.

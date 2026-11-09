@@ -1,0 +1,20 @@
+# ATA100 iter2 - prueba de efecto (NO es deteccion)
+
+2026-11-09T21:01:52Z t0=2026-11-09T21:01:52Z run=cmd /c C:\lab-attack\ATA100\run.cmd
+2026-11-09T21:02:04Z t1=2026-11-09T21:02:04Z
+
+evidencia_local:
+  ata=ATA100
+  tecnica=T1561.002
+  fuente=manual
+  t0=2026-11-09T21:01:57Z
+  t1=2026-11-09T21:01:58Z
+  vhd=C:\lab-attack\ATA100\labdisk100.vhd
+  bytes=104858112
+  sha256_antes=5ef856d1dfc2920832e5f53b2f587ae151482f223b3995f5a3af2f7b6b03646b
+  sha256_despues=314059ed40d150948baf1b322ff66880e7eb3257dfaabb1cb0dad0fc358b2e87
+  footer_conectix=False
+  montable=False
+  no_montable=True
+
+VEREDICTO: EFECTO DEMOSTRADO (no_montable=True; footer_conectix=False; montable=False)

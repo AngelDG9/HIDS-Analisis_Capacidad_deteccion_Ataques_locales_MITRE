@@ -1,0 +1,13 @@
+ata=ATA099
+tecnica=T1561.001
+fuente=manual
+t0=2026-11-09T20:49:25Z
+t1=2026-11-09T20:49:26Z
+vhd=C:\lab-attack\ATA099\labdisk100.vhd
+bytes=104858112
+sha256_antes=3e2191efd493894a43c67adcc1159f8f45da71c6fef26483fca727487be5a70c
+sha256_despues=04c8899c5c95aaab1455500a513c192cd6f1568700ef1d26b4faced8ce9f9aad
+primero_cero=True
+ultimo_cero=True
+footer_conectix=True
+contenido_borrado=True

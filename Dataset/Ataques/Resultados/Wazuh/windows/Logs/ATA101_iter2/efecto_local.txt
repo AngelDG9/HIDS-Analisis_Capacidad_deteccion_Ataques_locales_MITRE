@@ -1,0 +1,10 @@
+ata=ATA101
+tecnica=T1025
+fuente=ART_adaptado
+t0=2026-11-09T21:23:27Z
+t1=2026-11-09T21:23:45Z
+vhd=C:\lab-attack\ATA101\labdisk100.vhd
+bytes=104858112
+ficheros_copiados=20
+sha256_coinciden=True
+copiado_ok=True

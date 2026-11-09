@@ -1,0 +1,12 @@
+ata=ATA098
+tecnica=T1561
+fuente=manual
+t0=2026-11-09T20:45:31Z
+t1=2026-11-09T20:45:32Z
+vhd=C:\lab-attack\ATA098\labdisk100.vhd
+bytes=104858112
+sha256_antes=3e2191efd493894a43c67adcc1159f8f45da71c6fef26483fca727487be5a70c
+sha256_despues=4b1c0921a110d01d364a92e91eacb0b4a503595283714e91d9e62dd2721d3ce8
+cabecera_ff=True
+footer_conectix=True
+vhd_corrupto=True
