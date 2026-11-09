@@ -1,0 +1,62 @@
+# T5_pruning_windows_b2.csv | TFG HIDS - R2 T5 (pruning) | metrica_version=1 | boveda_version=2 | estado=parcial_sin_legitimo | variantes=No Pruning;Pruning 500;Pruning 1000;Conservative;Generalized Conservative;Aggressive (G-Mean) | N=500,1000 (escala NIDS; variante relativa declarada en formula_plantillas.md) | M=n/a | columnas_completadas=GM,#Alertas_FP,Usabilidad (T3/legitimo ya existe) | declaracion=#Alertas_TP es A_TP^c (suma por caso de rule.id distintos) -> Usabilidad correlacionada (no la bruta de T4) | declaracion=Aggressive (G-Mean) real: parte de Conservative, quita mixtas por impacto legitimo desc solo si GM mejora (empate -> conservar) | layout=largo(1 fila por variante x config x umbral) | t2=Hojas/T2_ataques_windows_b2.csv | t3=Hojas/_no_existe_t3_windows.csv | auditado=Dataset/Ataques/Resultados/Wazuh/windows/Auditado | sha256_entradas=446490126276a65d52c2df5303a3cb6ebfdb8ff1dc50f0dd7819f435307d0495,- | columnas=variante,config,umbral,GM,%Deteccion_casos,#reglas_quitadas,lista_rule.id_quitados,#Alertas_total,#Alertas_TP,#Alertas_FP,Usabilidad
+variante,config,umbral,GM,%Deteccion_casos,#reglas_quitadas,lista_rule.id_quitados,#Alertas_total,#Alertas_TP,#Alertas_FP,Usabilidad
+No Pruning,C0,0,,100.00,0,,179,179,0,0.0000
+Pruning 500,C0,0,,100.00,0,,179,179,0,0.0000
+Pruning 1000,C0,0,,100.00,0,,179,179,0,0.0000
+Conservative,C0,0,,100.00,0,,179,179,0,0.0000
+Generalized Conservative,C0,0,,100.00,0,,179,179,0,0.0000
+Aggressive (G-Mean),C0,0,,100.00,0,,179,179,0,0.0000
+No Pruning,C0,3,,100.00,0,,179,179,0,0.0000
+Pruning 500,C0,3,,100.00,0,,179,179,0,0.0000
+Pruning 1000,C0,3,,100.00,0,,179,179,0,0.0000
+Conservative,C0,3,,100.00,0,,179,179,0,0.0000
+Generalized Conservative,C0,3,,100.00,0,,179,179,0,0.0000
+Aggressive (G-Mean),C0,3,,100.00,0,,179,179,0,0.0000
+No Pruning,C0,7,,3.70,0,,2,2,0,0.0000
+Pruning 500,C0,7,,3.70,0,,2,2,0,0.0000
+Pruning 1000,C0,7,,3.70,0,,2,2,0,0.0000
+Conservative,C0,7,,3.70,0,,2,2,0,0.0000
+Generalized Conservative,C0,7,,3.70,0,,2,2,0,0.0000
+Aggressive (G-Mean),C0,7,,3.70,0,,2,2,0,0.0000
+No Pruning,C0,10,,3.70,0,,2,2,0,0.0000
+Pruning 500,C0,10,,3.70,0,,2,2,0,0.0000
+Pruning 1000,C0,10,,3.70,0,,2,2,0,0.0000
+Conservative,C0,10,,3.70,0,,2,2,0,0.0000
+Generalized Conservative,C0,10,,3.70,0,,2,2,0,0.0000
+Aggressive (G-Mean),C0,10,,3.70,0,,2,2,0,0.0000
+No Pruning,C0,12,,3.70,0,,2,2,0,0.0000
+Pruning 500,C0,12,,3.70,0,,2,2,0,0.0000
+Pruning 1000,C0,12,,3.70,0,,2,2,0,0.0000
+Conservative,C0,12,,3.70,0,,2,2,0,0.0000
+Generalized Conservative,C0,12,,3.70,0,,2,2,0,0.0000
+Aggressive (G-Mean),C0,12,,3.70,0,,2,2,0,0.0000
+No Pruning,C1,0,,100.00,0,,179,179,0,0.0000
+Pruning 500,C1,0,,100.00,0,,179,179,0,0.0000
+Pruning 1000,C1,0,,100.00,0,,179,179,0,0.0000
+Conservative,C1,0,,100.00,0,,179,179,0,0.0000
+Generalized Conservative,C1,0,,100.00,0,,179,179,0,0.0000
+Aggressive (G-Mean),C1,0,,100.00,0,,179,179,0,0.0000
+No Pruning,C1,3,,100.00,0,,179,179,0,0.0000
+Pruning 500,C1,3,,100.00,0,,179,179,0,0.0000
+Pruning 1000,C1,3,,100.00,0,,179,179,0,0.0000
+Conservative,C1,3,,100.00,0,,179,179,0,0.0000
+Generalized Conservative,C1,3,,100.00,0,,179,179,0,0.0000
+Aggressive (G-Mean),C1,3,,100.00,0,,179,179,0,0.0000
+No Pruning,C1,7,,3.70,0,,2,2,0,0.0000
+Pruning 500,C1,7,,3.70,0,,2,2,0,0.0000
+Pruning 1000,C1,7,,3.70,0,,2,2,0,0.0000
+Conservative,C1,7,,3.70,0,,2,2,0,0.0000
+Generalized Conservative,C1,7,,3.70,0,,2,2,0,0.0000
+Aggressive (G-Mean),C1,7,,3.70,0,,2,2,0,0.0000
+No Pruning,C1,10,,3.70,0,,2,2,0,0.0000
+Pruning 500,C1,10,,3.70,0,,2,2,0,0.0000
+Pruning 1000,C1,10,,3.70,0,,2,2,0,0.0000
+Conservative,C1,10,,3.70,0,,2,2,0,0.0000
+Generalized Conservative,C1,10,,3.70,0,,2,2,0,0.0000
+Aggressive (G-Mean),C1,10,,3.70,0,,2,2,0,0.0000
+No Pruning,C1,12,,3.70,0,,2,2,0,0.0000
+Pruning 500,C1,12,,3.70,0,,2,2,0,0.0000
+Pruning 1000,C1,12,,3.70,0,,2,2,0,0.0000
+Conservative,C1,12,,3.70,0,,2,2,0,0.0000
+Generalized Conservative,C1,12,,3.70,0,,2,2,0,0.0000
+Aggressive (G-Mean),C1,12,,3.70,0,,2,2,0,0.0000

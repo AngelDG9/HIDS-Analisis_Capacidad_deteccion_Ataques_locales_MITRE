@@ -30,7 +30,7 @@ Clasificación ──▶ Ataques ──▶ Análisis
 | Macro-fase | Bloques | Estado |
 |---|---|---|
 | **Clasificación** | R0 ✔ · **R1 (este)** · R2 | R0 cerrado; **R1 en curso** |
-| **Ataques** | M1a/M1b · L0/L1/L2 · V0/V1 · B1 | Linux Wazuh cerrado (M1a/M1b · L0/L1/L2 ✔); **Windows B1 cerrado (32 casos)**; faltan V0/V1 y la ventana legítima Windows (W3) |
+| **Ataques** | M1a/M1b · L0/L1/L2 · V0/V1 · B1 · B2 | Linux Wazuh cerrado (M1a/M1b · L0/L1/L2 ✔); **Windows B1+B2 cerrado (54 casos)**; faltan V0/V1 y la ventana legítima Windows (W3) |
 | **Análisis** | A1 · A2 | pendiente |
 
 **Resultado del trabajo:** **5 tablas (T1–T5) + Requisitos + Leyenda** + **memoria**.
@@ -80,7 +80,7 @@ Clasificación ──▶ Ataques ──▶ Análisis
 **Gate ¿reglas/artifacts propios? (contingente):** `W2 wazuh-propias` · `W3 wazuh-externas` ·
 `V2 velociraptor-propias`.
 
-**Windows (segunda plataforma):** `B1 fase-03b` **CERRADO (2026-11-09)**: 32 casos (ATA056–ATA087); **32/32 a N=0/3**, **1/32 a N≥7** (artefacto ATA073); T2/T4/T5-W; **FPR pendiente de W3**. **Antes de W3: ampliación de ataques (segunda oleada).**
+**Windows (segunda plataforma):** `B1` **CERRADO (2026-11-09)** y `B2` **CERRADO (2026-11-10)**: **54 casos** (ATA056–ATA109); **54/54 a N=0/3**, **2/54 a N≥7** (artefactos ATA073/ATA097); T2/T4/T5-W; **FIM-sensibilidad 35/54 a N≥7** (no canónica); **FPR pendiente de W3**.
 
 **Cierre:** `A1 analisis-final` (T5 + métricas + gráficas + comparativa VR↔Wazuh) · `A2 memoria`.
 

@@ -1,0 +1,38 @@
+# T5_doble_uso_windows_b2.csv | TFG HIDS - T5 FINAL Windows N=54 (reglas de deteccion en ataque x catalogo baseline v1+v2) | metrica_version=1 | boveda_version=3 | config=C1 | umbral=0 | catalogo=Dataset/Legitimo/windows/ruleids_legitimos.csv | auditado=Dataset/Ataques/Resultados/Wazuh/windows/Auditado | t2=n/a (T5 se recalcula de Auditado) | ventana_canonica=iter1 | reglas=36 | doble_uso=1 | declaracion=FINAL N=54: 67027 es el doble uso principal (54/54); FIM 550/553/554 y 92032/92052/92213/91846 son solo ataque (no estan en el catalogo baseline); 594/598/750/60642/60702/92201 son solo legitimo | layout=largo(1 fila por rule_id)
+rule_id,rule_level,rs_origen,groups,legit_alertas,legit_unidades,legit_auto,pct_auto,attack_detecciones,attack_casos,attack_casos_lista,attack_categoria,doble_uso,nota
+503,3,RS1,ossec,0,0,0,0.0000,1,1,ATA067,deteccion,NO,solo ataque (no esta en el catalogo baseline)
+550,7,RS1,ossec|syscheck|syscheck_entry_modified|syscheck_file,0,0,0,0.0000,0,0,,artefacto_ataque,NO,FIM/ambigua en ataque; no en baseline; deteccion solo en sensibilidad FIM (nivel 5)
+553,7,RS1,ossec|syscheck|syscheck_entry_deleted|syscheck_file,0,0,0,0.0000,0,0,,artefacto_ataque,NO,FIM/ambigua en ataque; no en baseline; deteccion solo en sensibilidad FIM (nivel 7)
+554,5,RS1,ossec|syscheck|syscheck_entry_added|syscheck_file,0,0,0,0.0000,0,0,,artefacto_ataque,NO,FIM/ambigua en ataque; no en baseline; deteccion solo en sensibilidad FIM (nivel 5)
+594,5,RS1,ossec|syscheck|syscheck_entry_modified|syscheck_registry,6,6,0,0.0000,0,0,,,NO,solo legitimo (FP-only; nunca deteccion en ataque)
+598,5,RS1,ossec|syscheck|syscheck_entry_added|syscheck_registry,4,4,0,0.0000,0,0,,,NO,solo legitimo (FP-only; nunca deteccion en ataque)
+750,5,RS1,ossec|syscheck|syscheck_entry_modified|syscheck_registry,10,10,0,0.0000,0,0,,,NO,solo legitimo (FP-only; nunca deteccion en ataque)
+60109,8,RS1,windows|windows_security|adduser|account_changed,0,0,0,0.0000,0,0,,artefacto_ataque,NO,
+60110,8,RS1,windows|windows_security|account_changed,0,0,0,0.0000,0,0,,artefacto_ataque,NO,
+60111,8,RS1,windows|windows_security|adduser|account_changed,0,0,0,0.0000,0,0,,artefacto_ataque,NO,
+60160,5,RS1,windows|windows_security|group_changed|win_group_changed,0,0,0,0.0000,0,0,,artefacto_ataque,NO,
+60642,3,RS1,windows|windows_application,3,3,0,0.0000,0,0,,ruido_conocido,NO,solo legitimo (FP-only; nunca deteccion en ataque)
+60702,5,RS1,windows|windows_application,2,2,0,0.0000,0,0,,ruido_conocido,NO,solo legitimo (FP-only; nunca deteccion en ataque)
+61138,5,RS1,windows|windows_system,0,0,0,0.0000,0,0,,artefacto_ataque,NO,
+67018,3,RS1,windows| WEF,0,0,0,0.0000,1,1,ATA067,deteccion,NO,solo ataque (no esta en el catalogo baseline)
+67027,3,RS1,windows| WEF,132,132,0,0.0000,348,54,ATA056;ATA057;ATA058;ATA059;ATA060;ATA061;ATA062;ATA063;ATA064;ATA065;ATA066;ATA067;ATA068;ATA069;ATA070;ATA071;ATA072;ATA073;ATA074;ATA075;ATA076;ATA077;ATA078;ATA079;ATA080;ATA081;ATA082;ATA083;ATA084;ATA085;ATA086;ATA087;ATA088;ATA089;ATA090;ATA091;ATA092;ATA093;ATA094;ATA095;ATA096;ATA097;ATA098;ATA099;ATA100;ATA101;ATA102;ATA103;ATA104;ATA105;ATA106;ATA107;ATA108;ATA109,mixta,SI,principal: deteccion en 54/54; proceso generico 4688/WEF; ancla de carpeta; doble uso principal (T5)
+91803,14,RS1,windows| powershell,0,0,0,0.0000,0,0,,artefacto_ataque,NO,
+91809,10,RS1,windows| powershell,0,0,0,0.0000,0,0,,artefacto_ataque,NO,
+91816,4,RS1,windows| powershell,0,0,0,0.0000,0,0,,mixta,NO,
+91818,4,RS1,windows| powershell,0,0,0,0.0000,0,0,,artefacto_ataque,NO,
+91819,4,RS1,windows| powershell,0,0,0,0.0000,0,0,,artefacto_ataque,NO,
+91820,4,RS1,windows| powershell,0,0,0,0.0000,0,0,,artefacto_ataque,NO,
+91824,4,RS1,windows| powershell,0,0,0,0.0000,1,1,ATA072,deteccion,NO,solo ataque (no esta en el catalogo baseline)
+91826,4,RS1,windows| powershell,0,0,0,0.0000,0,0,,artefacto_ataque,NO,
+91846,10,RS1,windows| powershell,0,0,0,0.0000,0,0,,artefacto_ataque,NO,4104 .NET compression (ATA093); artefacto; solo ataque
+92004,4,RS1,sysmon|sysmon_eid1_detections|windows,0,0,0,0.0000,1,1,ATA091,deteccion,NO,solo ataque (no esta en el catalogo baseline)
+92006,6,RS1,sysmon|sysmon_eid1_detections|windows,0,0,0,0.0000,0,0,,artefacto_ataque,NO,
+92027,4,RS1,sysmon|sysmon_eid1_detections|windows,0,0,0,0.0000,19,9,ATA073;ATA087;ATA089;ATA090;ATA091;ATA092;ATA096;ATA105;ATA106,deteccion,NO,solo ataque (no esta en el catalogo baseline)
+92031,3,RS1,sysmon|sysmon_eid1_detections|windows,0,0,0,0.0000,4,1,ATA067,deteccion,NO,solo ataque (no esta en el catalogo baseline)
+92032,3,RS1,sysmon|sysmon_eid1_detections|windows,0,0,0,0.0000,138,53,ATA056;ATA057;ATA058;ATA059;ATA060;ATA061;ATA062;ATA063;ATA064;ATA065;ATA066;ATA067;ATA068;ATA069;ATA070;ATA071;ATA072;ATA073;ATA074;ATA075;ATA076;ATA077;ATA078;ATA079;ATA080;ATA081;ATA082;ATA083;ATA084;ATA085;ATA086;ATA087;ATA088;ATA089;ATA090;ATA091;ATA092;ATA093;ATA094;ATA095;ATA096;ATA097;ATA098;ATA099;ATA100;ATA101;ATA102;ATA103;ATA105;ATA106;ATA107;ATA108;ATA109,mixta,NO,proceso/ancla; solo ataque; no en baseline
+92052,4,RS1,sysmon|sysmon_eid1_detections|windows,0,0,0,0.0000,143,54,ATA056;ATA057;ATA058;ATA059;ATA060;ATA061;ATA062;ATA063;ATA064;ATA065;ATA066;ATA067;ATA068;ATA069;ATA070;ATA071;ATA072;ATA073;ATA074;ATA075;ATA076;ATA077;ATA078;ATA079;ATA080;ATA081;ATA082;ATA083;ATA084;ATA085;ATA086;ATA087;ATA088;ATA089;ATA090;ATA091;ATA092;ATA093;ATA094;ATA095;ATA096;ATA097;ATA098;ATA099;ATA100;ATA101;ATA102;ATA103;ATA104;ATA105;ATA106;ATA107;ATA108;ATA109,mixta,NO,proceso/ancla; solo ataque; no en baseline
+92066,4,RS1,sysmon|sysmon_eid1_detections|windows,0,0,0,0.0000,8,1,ATA067,deteccion,NO,solo ataque (no esta en el catalogo baseline)
+92201,9,RS1,sysmon|sysmon_eid11_detections|windows,2,2,0,0.0000,0,0,,ruido_conocido,NO,solo legitimo (FP-only; nunca deteccion en ataque)
+92203,6,RS1,sysmon|sysmon_eid11_detections|windows,0,0,0,0.0000,0,0,,artefacto_ataque,NO,
+92213,15,RS1,sysmon|sysmon_eid11_detections|windows,0,0,0,0.0000,4,2,ATA073;ATA097,mixta,NO,artefacto 92213 en ATA073/ATA097; deteccion en 2; no en baseline
+92307,3,RS1,sysmon|sysmon_eid13_detections|windows,0,0,0,0.0000,1,1,ATA064,deteccion,NO,solo ataque (no esta en el catalogo baseline)

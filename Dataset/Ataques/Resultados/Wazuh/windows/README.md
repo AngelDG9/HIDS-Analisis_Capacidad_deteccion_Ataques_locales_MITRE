@@ -685,3 +685,82 @@ llevan el `sha256` sellado. El `esperado` no se modifico.
 4. **ATA103** usa SMB loopback; sin auditoria SMB.
 5. Las sensibilidades completas (FIM-como-deteccion, sin 67027, catalogo v2) y T5 quedan para
    **B2.5**.
+
+
+---
+
+# B2.5 - Cierre del bloque B2 (N=54)
+
+> **Cierre B2**. No se arranco ninguna VM ni se ejecutaron ataques en esta tanda.
+> Productos finales consolidados y auditados. **Sin secretos.** Defender activo.
+
+## B2.5.1 - T2/T4 finales
+
+- **N=54** (32 B1 + 22 B2); `corpus=54`; `C0 = C1`.
+- `Hojas/T2_ataques_windows_b2.csv`: **540 filas**, **`sha256 = 446490126276a65d52c2df5303a3cb6ebfdb8ff1dc50f0dd7819f435307d0495`**.
+- `Hojas/T4_rendimiento_windows_b2.csv`: **`sha256 = 52e2e01bc09099349a0d98bf2a3d2305544a5acafe9030438a4594a909f1c9ef`**.
+- **TPR**: **54/54** a `N=0/3`; **2/54** a `N>=7` (ATA073 y ATA097, `92213`, artefactos de
+  compilacion/script block). `#Alertas` total **669**.
+- **Reproducibilidad**: dos ejecuciones al mismo destino dan el mismo `sha256`.
+- **T4**: TPR `1,0 / 1,0 / 0,037037 / 0,037037 / 0,037037`; `FPR/TNR/GM/Precision/F1/Usabilidad = n/a`
+  (sin `M`); `FP/hora` descriptivo **19,875**; `boveda_version_windows=3`.
+
+## B2.5.2 - T5 y sensibilidades
+
+- **T5** `Hojas/T5_doble_uso_windows_b2.csv`: **36 reglas**, **`doble_uso=1`**
+  (**`67027`**, 132 legit / 348 detecciones / **54/54** casos);
+  **`sha256 = 7e1c7d6a59e8069bdcc8d38f25dbb2a89696e621429338d1a44f36fd1cd61fa2`**.
+  FIM `550/553/554` y `92032/92052/92213/91846` son **solo ataque**; `594/598/750/60642/60702/92201`
+  son **solo legitimo**.
+- **FIM como deteccion (NO CANONICA)**: `Hojas/T2_ataques_windows_b2_sens_fim.csv`,
+  **`sha256 = 982730d9809fd5861b4c3067a770a3c781ee44a035ab388bec33a68eded371be`**;
+  TPR `54/54` N0/3 y **35/54** N>=7 (solo `553`, nivel 7); `#Alertas` 1371.
+- **`sin_67027` (NO CANONICA)**: `Hojas/T2_ataques_windows_b2_sens_sin_67027.csv`,
+  **`sha256 = 771f2104264f4506451aa89bb9691785b15379a9b8e898633e04023d9e092a72`**;
+  TPR **54/54** N0/3 y 2/54 N>=7; `#Alertas` 1075 (sube porque `67027` deja de
+  suprimirse como ruido baseline; la deteccion anclada se mantiene).
+- **`sin_operador` (NO CANONICA)**: `Hojas/T2_ataques_windows_b2_sens_sin_operador.csv`,
+  **`sha256 = e4084dbab2e5831d00377e5021e2711402b66f289dd019cab3e16fccb2f3bc4e`**;
+  TPR identico; `#Alertas` 666.
+- **`catalogo_v2` (NO CANONICA)**: `Hojas/T2_ataques_windows_b2_sens_catalogo_v2.csv`,
+  **`sha256 = be98879b75042e6000705a2d74782d244b2beb92442c042d8007e7b2397b2fb8`**;
+  TPR identico; `#Alertas` 666.
+
+## B2.5.3 - Comparacion Linux <-> Windows
+
+`Hojas/comparacion_linux_windows_b2.csv` —
+**`sha256 = fad99ff96fd3c4fb382e7b9d839479a82612fd4e2eb4cb158e4a5ba309e02586`**.
+
+- **20/22** parejas B2 (ATA091 y ATA102 sin pareja).
+- Linux `Hojas/T2_ataques.csv` C1: **53/55**; regla principal **`80792`**.
+- Windows: **54/54**; regla principal **`67027`**.
+- **2 FN Linux**: ATA013 (T1560.002) y ATA034 (T1560.003); sus parejas Windows
+  **ATA093/ATA094** son **TP 5/5**.
+- **ATA106** `efecto_parcial` (DLL cargada, sin captura TLS); **ATA091** sin pareja y
+  `efecto_parcial`.
+- **`review`**: ATA071 y ATA078 (B1). **ATA073/ATA097 `92213`**: artefactos.
+- Comparacion **por tecnica y efecto**, no por comando ni `#Alertas`.
+
+## B2.5.4 - Deudas declaradas (lectura honesta)
+
+1. **ATA104**: poll S1 (72/68 filas) reclasificado a `artefacto_ataque`; bruto en
+   `-Audited_raw.csv` (75/71); deteccion corregida 3.
+2. **ATA096**: proxy de un solo `Read`; no reenvia el body original; el efecto de
+   manipulacion sigue siendo valido (`sha256` distinto en el sink).
+3. **ATA101**: fix de montaje posterior al `t0`; ventanas validas con el script
+   intermedio `97a5c709…`; trazabilidad corregida.
+4. **ATA073/ATA097 `92213`**: unicos TP a `N>=7`; artefactos, no deteccion de tecnica.
+5. **ATA105**: `creds.txt` de juguete (`TFG-DUMMY-PASS`); no es secreto real.
+6. **`boveda_version`**: T2/T4 `boveda_version=2` (version de metrica); boveda Windows
+   **v3.1/v3** (`boveda_version_windows=3` en la nota).
+7. **Linux semantico**: 875/875 identicas; `pytest` **399 passed**.
+8. **`M` pendiente (W3)**: `FPR/TNR/GM/Precision/F1/Usabilidad = n/a`.
+9. **T5**: `67027` es el doble uso principal; el TPR no depende de su presencia en el
+   catalogo, pero si del ancla de proceso.
+10. **Cadena**: `Soporte/Laboratorio/windows/ataques/B2_sha256sums.txt`;
+    `auditar_cadena_huellas.py` **2368 citas / 0 desincronias / 100 omitidas**
+    (incluye `ataque_sha256` de `.ps1`; verificados en el sums).
+
+**Lectura**: el TPR 54/54 a `N=0/3` es esperable por el ancla; el dato discriminante
+es **2/54 a `N>=7`** (artefactos) y **35/54 a `N>=7`** en FIM (553). Linux 53/55 vs
+Windows 54/54 **no es comparable 1:1** por implementacion/telemetria.
