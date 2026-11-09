@@ -1,0 +1,10 @@
+# ATA085_esperado.csv | ATA085 - T1498.001 | Windows (B1.5)
+# Redactado el 2026-11-09 ANTES de cualquier ataque (pre-registro). Esquema v5, field-first, ancla H4-W.
+# Sin rule_id: no se declara ninguna regla no probada. Las senales son win_image + ancla de carpeta.
+# syscheck_path va como tipo=ambigua (D-5), no como deteccion.
+# El efecto NO es deteccion: lo prueba efecto_local.txt / sink.log / Available MBytes.
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1498.001-S1,deteccion,win_image,powershell.exe,Process Creation,T1498.001,script del ataque (flood TCP)
+T1498.001-S2,deteccion,win_image,cmd.exe,Process Creation,T1498.001,lanzador run.cmd
+T1498.001-S3,deteccion,win_command_line,*lab-attack*ATA085*,Process Creation,T1498.001,ancla H4-W de la carpeta
+T1498.001-S4,ambigua,syscheck_path,C:\lab-attack\ATA085\*,File Integrity Monitoring,T1498.001,D-5: FIM ambigua no deteccion

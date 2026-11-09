@@ -1,0 +1,6 @@
+# pre_registro.sha256 - ATA087
+ata=ATA087
+esperado=ATA087_esperado.csv
+sha256=024a36f034b067089e0dc49a8c20ff2d9186eb24492be3d3cbdf876ad6225159
+timestamp_utc=2026-11-09T14:14:03Z
+nota=pre-registro B1.5; NO modificar el esperado despues de este sello
