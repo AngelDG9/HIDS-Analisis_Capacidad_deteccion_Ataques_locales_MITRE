@@ -1,0 +1,10 @@
+# ATA069_esperado.csv | ATA069 - T1560.001 Archive via Utility | Windows (B1.3)
+# Redactado el 2026-11-08 ANTES de cualquier ataque (pre-registro). Esquema v5, field-first, ancla H4-W.
+# Sin rule_id: no se declara ninguna regla no probada. Las senales son win_image + ancla de carpeta.
+# syscheck_path va como tipo=ambigua (D-5), no como deteccion.
+# El efecto NO es deteccion: lo prueba efecto.txt (PNG/clipboard/keylog/inventario/zip/robocopy).
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1560.001-S1,deteccion,win_image,powershell.exe,Process Creation,T1560.001,script del ataque (ART adaptado 02ea31cb)
+T1560.001-S2,deteccion,win_image,cmd.exe,Process Creation,T1560.001,lanzador run.cmd
+T1560.001-S3,deteccion,win_command_line,*lab-attack*ATA069*,Process Creation,T1560.001,ancla H4-W de la carpeta
+T1560.001-S4,ambigua,syscheck_path,C:\lab-attack\ATA069\*,File Integrity Monitoring,T1560.001,D-5: FIM ambigua, no deteccion
