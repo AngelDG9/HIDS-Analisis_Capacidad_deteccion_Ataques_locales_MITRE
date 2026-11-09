@@ -1,0 +1,8 @@
+ata=ATA090
+iter=1
+esperado=Dataset/Ataques/Comandos/windows/T1498.002-Reflection_Amplification/ATA090_esperado.csv
+sha256_esperado=839e8d2f5c8e5bd1c9bcdab3b6a8b77bd719cf7f85c6fc53233bc4fe1e2175a9
+sha256_sellado=839e8d2f5c8e5bd1c9bcdab3b6a8b77bd719cf7f85c6fc53233bc4fe1e2175a9
+coincide=True
+timestamp_utc=2026-11-09T18:19:58Z
+nota=verificacion antes de t0 (CA-B1-02)

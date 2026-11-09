@@ -1,0 +1,8 @@
+ata=ATA091
+iter=1
+esperado=Dataset/Ataques/Comandos/windows/T1557.001-LLMNR_NBT-NS_Poisoning/ATA091_esperado.csv
+sha256_esperado=98eaceffff0484ecbc252cb36709c7ccb1457849ddea183a78767389a8504c53
+sha256_sellado=98eaceffff0484ecbc252cb36709c7ccb1457849ddea183a78767389a8504c53
+coincide=True
+timestamp_utc=2026-11-09T18:32:37Z
+nota=verificacion antes de t0 (CA-B1-02)

@@ -1,0 +1,19 @@
+# ATA090 iter2 - prueba de efecto (NO es deteccion)
+
+2026-11-09T18:26:33Z t0=2026-11-09T18:26:33Z run=cmd /c C:\lab-attack\ATA090\run.cmd
+2026-11-09T18:26:37Z t1=2026-11-09T18:26:37Z
+
+evidencia_local:
+  ata=ATA090
+  tecnica=T1498.002
+  fuente=manual
+  t0=2026-11-09T18:26:37Z
+  t1=2026-11-09T18:26:37Z
+  amplificador=127.0.0.1:5353
+  victima=127.0.0.2:5354
+  consultas=100
+  sent_bytes=6400
+  recv_bytes=409600
+  ratio=64
+
+VEREDICTO: EFECTO DEMOSTRADO (sent=6400 recv=409600 ratio=64)

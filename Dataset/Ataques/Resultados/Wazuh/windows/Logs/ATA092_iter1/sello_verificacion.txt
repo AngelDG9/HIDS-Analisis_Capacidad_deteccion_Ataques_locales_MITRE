@@ -1,0 +1,8 @@
+ata=ATA092
+iter=1
+esperado=Dataset/Ataques/Comandos/windows/T1557.003-DHCP_Spoofing/ATA092_esperado.csv
+sha256_esperado=64231a6f6b56662b472d49cb3f9a91245f7a846076d06c49c86631959aa8dc3d
+sha256_sellado=64231a6f6b56662b472d49cb3f9a91245f7a846076d06c49c86631959aa8dc3d
+coincide=True
+timestamp_utc=2026-11-09T18:43:33Z
+nota=verificacion antes de t0 (CA-B1-02)

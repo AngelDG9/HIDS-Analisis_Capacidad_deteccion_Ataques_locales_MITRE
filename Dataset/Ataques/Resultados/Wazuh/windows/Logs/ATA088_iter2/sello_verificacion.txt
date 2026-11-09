@@ -1,0 +1,8 @@
+ata=ATA088
+iter=2
+esperado=Dataset/Ataques/Comandos/windows/T1496.002-Bandwidth_Hijacking/ATA088_esperado.csv
+sha256_esperado=7e473999d89e32236841970ea6fd4f02fcca15b2b6ee700c1662e6def70db691
+sha256_sellado=7e473999d89e32236841970ea6fd4f02fcca15b2b6ee700c1662e6def70db691
+coincide=True
+timestamp_utc=2026-11-09T18:05:36Z
+nota=verificacion antes de t0 (CA-B1-02)

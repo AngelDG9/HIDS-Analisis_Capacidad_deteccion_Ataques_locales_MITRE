@@ -1,0 +1,12 @@
+rule_id,rule_level,rule_description,groups,count,first_seen,last_seen,rs_origen
+554,5,File added to the system.,ossec|syscheck|syscheck_entry_added|syscheck_file,3,2026-11-09T18:50:15Z,2026-11-09T18:50:21Z,RS1
+60106,3,Windows Logon Success,windows|windows_security|authentication_success,1,2026-11-09T18:50:16Z,2026-11-09T18:50:16Z,RS1
+60137,3,Windows User Logoff,windows|windows_security,1,2026-11-09T18:50:22Z,2026-11-09T18:50:22Z,RS1
+67023,3,Non service account logged off.,windows| WEF,1,2026-11-09T18:50:22Z,2026-11-09T18:50:22Z,RS1
+67024,3,Service logon event registered from non standard service account.,windows| WEF,1,2026-11-09T18:50:15Z,2026-11-09T18:50:15Z,RS1
+67027,3,A process was created.,windows| WEF,9,2026-11-09T18:50:15Z,2026-11-09T18:50:19Z,RS1
+67028,3,Special privileges assigned to new logon.,windows| WEF,2,2026-11-09T18:50:16Z,2026-11-09T18:50:16Z,RS1
+92027,4,Powershell process spawned powershell instance,sysmon|sysmon_eid1_detections|windows,1,2026-11-09T18:50:19Z,2026-11-09T18:50:19Z,RS1
+92032,3,Suspicious Windows cmd shell execution,sysmon|sysmon_eid1_detections|windows,1,2026-11-09T18:50:15Z,2026-11-09T18:50:15Z,RS1
+92052,4,Windows command prompt started by an abnormal process,sysmon|sysmon_eid1_detections|windows,1,2026-11-09T18:50:15Z,2026-11-09T18:50:15Z,RS1
+92213,15,Executable file dropped in folder commonly used by malware,sysmon|sysmon_eid11_detections|windows,2,2026-11-09T18:50:17Z,2026-11-09T18:50:19Z,RS1

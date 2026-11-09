@@ -1,0 +1,17 @@
+# ATA091 iter2 - prueba de efecto (NO es deteccion)
+
+2026-11-09T18:42:25Z t0=2026-11-09T18:42:25Z run=cmd /c C:\lab-attack\ATA091\run.cmd
+2026-11-09T18:42:34Z t1=2026-11-09T18:42:34Z
+
+evidencia_local:
+  ata=ATA091
+  tecnica=T1557.001
+  fuente=ART_adaptado
+  guid=deecd55f-afe0-4a62-9fba-4d1ba2deb321
+  t0=2026-11-09T18:42:29Z
+  t1=2026-11-09T18:42:34Z
+  capturado=False
+  longitud=0
+  hash_guardado=False
+
+VEREDICTO: EFECTO PARCIAL (capturado=False; Inveigh co-locado sin captura de hash; hash no guardado)

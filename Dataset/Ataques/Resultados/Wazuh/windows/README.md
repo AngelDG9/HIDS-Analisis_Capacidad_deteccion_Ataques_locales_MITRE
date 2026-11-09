@@ -417,3 +417,64 @@ Provisional: catalogo baseline Windows v1+v2; no consumir como T5 final.
   **`boveda_version` 2 (metrica) + 3 (boveda Windows)**; regresion Linux **875/875**
   semantica (no byte a byte); `pytest` **389** en `_artefactos/scripts/tests` (raiz falla
   por `atomic-red-team`/`pydantic`, preexistente).
+
+
+---
+
+# B2.1 - Deudas de B1 (ATA088-ATA092)
+
+> **Bloque B2**, tanda **B2.1**. Ejecutada el **2026-11-09** sobre `plan.md` v1
+> (`approved_by_human`). `esperado` **sellado en `06c0694`**; `sha256` verificado antes de
+> cada `t0`. **Solo** `victima-windows` + manager. **Sin secretos.**
+
+## B2.1.0 - CA-B1-02 PASA (10/10)
+
+Los 10 pares `(sello, t0)` cumplen `sello < t0`; los 10 `-Audited.csv` y `-Detalle.csv`
+llevan el `sha256` sellado. El `esperado` no se modifico.
+
+## B2.1.1 - Casos y resultados
+
+| ATA | Tecnica | Efecto (prueba) | Iter1 | Iter2 | `rule_id` | Dudosas |
+|---|---|---|---|---|---|---|
+| ATA088 | T1496.002 | `sink.log` 1 linea TCP len=33554432 | 5 | 5 | `67027,92032,92052` | 0/0 |
+| ATA089 | T1499.003 | latencia 0.3 -> 5253 / 5049 ms; `exhausted=True` | 16 | 16 | `67027,92027,92032,92052` | 0/0 |
+| ATA090 | T1498.002 | `sent=6400 recv=409600 ratio=64` | 6 | 6 | `67027,92027,92032,92052` | 0/0 |
+| ATA091 | T1557.001 | **`efecto_parcial`**: `capturado=False`; hash no guardado | 7 | 7 | `67027,92004,92027,92032,92052` | 0/0 |
+| ATA092 | T1557.003 | `lease.txt` ip=192.168.65.200 gw/dns=192.168.65.1; `ack_ok=True` | 6 | 6 | `67027,92027,92032,92052` | 0/0 |
+
+- **0 filas del ataque en `ruido_conocido`/`auto_ruido`** (candado; 0 violaciones en las 10 ventanas).
+- **ATA091**: Inveigh arranca (elevado, LLMNR/NBNS/mDNS/SMB/HTTP enabled) pero **no captura**
+  el hash en el escenario **co-locado** (el servidor SMB/HTTP del sistema ocupa 445/80 y no hay
+  tercer host); `capturado=False`, `longitud=0`. **No se inventa**; el hash NTLM no se guarda.
+  La deteccion esperada sigue siendo de proceso.
+- **ATA089**: la app es de juguete en loopback 9093; se para al final; no se toca el host.
+- **ATA090**: 2.a direccion loopback `127.0.0.2`; sin spoofing; `ReuseAddress` por mDNS.
+
+## B2.1.2 - T2-W parcial (37 casos: 32 B1 + 5 B2.1)
+
+`Hojas/T2_ataques_windows_b2_piloto_37.csv` - **370 filas**, `N_casos=37`, `corpus=54`,
+`CA-B1-02 PASA`. **`sha256 = 38114d8abb1488f46e013f21482db371fdf189d733453a9ac2d0af92f942884c`**.
+
+| Config | `N=0` | `N=3` | `N=7` | `N=10` | `N=12` |
+|---|---|---|---|---|---|
+| **C0 = C1** | **37/37** | **37/37** | **1/37** | **1/37** | **1/37** |
+
+- `#Alertas` total (N=0): **579**; `#rule.id` por caso: 3 (salvo ATA064=4, ATA067=7,
+  ATA072=4, ATA073=5, ATA087=4, ATA089=4, ATA090=4, ATA091=5, ATA092=4).
+- El unico TP a `N>=7` sigue siendo **ATA073** (`92213`, nivel 15).
+- T4-W: **`sha256 = 5f1c1177ce7b6340ea2b662e94df6d7a7618e835fb696ff14ec7fe654ae596c4`**;
+  `N = 37`; `FPR/TNR/GM/Precision/F1/Usabilidad = n/a`; `FP/hora` descriptivo 19,875.
+- Sensibilidad `--sin-operador`: `Hojas/T2_ataques_windows_b2_piloto_37_sens_sin_operador.csv`,
+  **`sha256 = 362607c19e005b5f7ad017cb4e64b76ca1b7e3d384423922b682c973e97698df`**; TPR
+  **identico** (37/37, 37/37, 1/37, 1/37, 1/37); el canal pasa a `dudosa`.
+- Indice de 37: `Hojas/ATA_index_windows_b2_piloto_37.csv`
+  (`sha256 = f24346c2480d9cffe167f18fd6c60d13b906ea5eca962c9d62715b23a1e67e2f`), **staged**.
+- Replay v1/v2: **0**; `pytest` **390 passed**; regresion Linux semantica **875/875**.
+
+## B2.1.3 - Limitaciones
+
+1. **ATA091 `efecto_parcial`**: Inveigh co-locado no captura el hash (SMB/HTTP del sistema);
+   sin tercer host/relay. El hash no se guarda.
+2. **ATA089/090/092** son loopback: deteccion de proceso; Sysmon 3 ciego para la red.
+3. **ATA088** requiere el sink del HOST 9091; los demas no.
+4. El **N=54 final** y las sensibilidades completas quedan para **B2.5**.

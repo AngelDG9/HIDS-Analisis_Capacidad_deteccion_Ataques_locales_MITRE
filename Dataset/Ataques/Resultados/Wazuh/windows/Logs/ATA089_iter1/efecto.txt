@@ -1,0 +1,19 @@
+# ATA089 iter1 - prueba de efecto (NO es deteccion)
+
+2026-11-09T18:12:18Z t0=2026-11-09T18:12:18Z run=cmd /c C:\lab-attack\ATA089\run.cmd
+2026-11-09T18:13:37Z t1=2026-11-09T18:13:37Z
+
+evidencia_local:
+  ata=ATA089
+  tecnica=T1499.003
+  fuente=manual
+  t0=2026-11-09T18:12:24Z
+  t1=2026-11-09T18:13:32Z
+  endpoint=127.0.0.1:9093
+  peticiones=200
+  before_ms=0.3
+  during_ms=5253
+  after_ms=4997
+  exhausted=True
+
+VEREDICTO: EFECTO DEMOSTRADO (latencia 0.3 -> 5253 ms; exhausted=True)

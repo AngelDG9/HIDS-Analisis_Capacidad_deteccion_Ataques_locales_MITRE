@@ -1,0 +1,19 @@
+# ATA088 iter1 - prueba de efecto (NO es deteccion)
+
+2026-11-09T18:04:28Z t0=2026-11-09T18:04:28Z run=cmd /c C:\lab-attack\ATA088\run.cmd
+2026-11-09T18:04:33Z t1=2026-11-09T18:04:33Z
+
+evidencia_local:
+  ata=ATA088
+  tecnica=T1496.002
+  fuente=manual
+  t0=2026-11-09T18:04:32Z
+  t1=2026-11-09T18:04:33Z
+  destino=192.168.65.1:9091
+  conexiones=1
+  bytes=33554432
+
+sink.log (HOST):
+  2026-11-09T18:04:33Z TCP from=192.168.65.130 len=33554432 sha256=e43b5a04ffeda208998180887510ba7bf75135a1e31d29b86f16f65e731dbc7b
+
+VEREDICTO: EFECTO DEMOSTRADO (1 conexion TCP de 32 MiB; sink.log)

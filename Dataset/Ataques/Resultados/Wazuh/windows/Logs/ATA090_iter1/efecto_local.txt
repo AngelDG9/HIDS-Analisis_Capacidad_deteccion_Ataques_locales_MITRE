@@ -1,0 +1,11 @@
+ata=ATA090
+tecnica=T1498.002
+fuente=manual
+t0=2026-11-09T18:22:47Z
+t1=2026-11-09T18:22:48Z
+amplificador=127.0.0.1:5353
+victima=127.0.0.2:5354
+consultas=100
+sent_bytes=6400
+recv_bytes=409600
+ratio=64

@@ -1,0 +1,217 @@
+{
+  "ata_id": "ATA092",
+  "tecnica": "T1557.003",
+  "tactica": "Credential Access",
+  "sistema": "windows",
+  "bloque": "B2",
+  "tanda": "B2.1",
+  "estado": "piloto-ok",
+  "canal": "ssh",
+  "artefacto": "Dataset/Ataques/Comandos/windows/T1557.003-DHCP_Spoofing/",
+  "atomic": {
+    "fuente": "manual",
+    "guid": "",
+    "adaptacion": "servidor DHCP sintetico 127.0.0.1:67 + cliente sintetico; lease.txt",
+    "fuente_norm": "manual",
+    "motivo_codigo": "manual",
+    "motivo_detalle": "servidor DHCP sintetico 127.0.0.1:67 + cliente sintetico; lease.txt"
+  },
+  "esperado_sha256": "64231a6f6b56662b472d49cb3f9a91245f7a846076d06c49c86631959aa8dc3d",
+  "ataque_sha256": "f8145c8d204b857ff0058f192a387c202d5a856f10a67f275613d4c174137cb9",
+  "validacion_humana_esperado": "pre-registrado y sellado en 06c0694",
+  "c0": {
+    "documento": "Soporte/Ataques/c0/windows/ATA092_c0.md",
+    "sha256": "",
+    "resultado": "PASA (clases de B1.0 + preflight B2.1); RS3=RS4=0"
+  },
+  "iteraciones": [
+    {
+      "iter": 1,
+      "t0": "2026-11-09T18:46:22Z",
+      "t1": "2026-11-09T18:46:26Z",
+      "duracion_s": 4,
+      "snapshot": "lab-listo-windows-ataques-ssh",
+      "canal": "ssh",
+      "diario": "/var/ossec/logs/alerts/2026/Nov/ossec-alerts-09.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/windows/CSV/ATA092_iter1-Detalle.csv",
+      "detalle_sha256": "8b9caefc854a91e95ef184c5f7c17e3816d2762cb02750796c73a006e4f0d9c3",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA092_iter1-Audited.csv",
+      "audited_sha256": "66dfe71dae24d30498cb980d19c461462d2a554ecf9e858851ab48b5789c5a8f",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA092_iter1-Revision.csv",
+      "revision_sha256": "ccda22bd9ece541dbb8d1eedd40df07384221166b72309fc5359574437006360",
+      "revision_in": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA092_iter1-Revision_in.csv",
+      "revision_in_sha256": "00946a61a1af25931138abe88e502766115f97240a95b9f7a104e59404751c43",
+      "conteos": {
+        "deteccion": 6,
+        "auto_ruido": 3,
+        "ruido_conocido": 9,
+        "dudosa": 0,
+        "artefacto_ataque": 6
+      },
+      "rs": {
+        "RS1": 24,
+        "RS2": 0,
+        "RS3": 0,
+        "RS4": 0,
+        "UNKNOWN": 0
+      },
+      "detecciones": {
+        "alertas": 6,
+        "rule_id_distintos": [
+          "67027",
+          "92027",
+          "92032",
+          "92052"
+        ],
+        "levels": [
+          "3",
+          "4"
+        ],
+        "primera_ts": "2026-11-09T18:46:24.341Z",
+        "primera_rule_id": "92052",
+        "esperadas": 2,
+        "sorpresas": 0,
+        "evidencia": "procesos del ataque anclados por win_image/win_command_line a la carpeta"
+      },
+      "metrico_o1": "si",
+      "metrico_o2": "1/1",
+      "dudosas_resueltas": 6,
+      "efecto": {
+        "fichero": "Dataset/Ataques/Resultados/Wazuh/windows/Logs/ATA092_iter1/efecto.txt",
+        "sha256": "55f6570126834a536b9e4b0b7b452683fd134c207a8f06004622dbebab680638",
+        "resumen": "EFECTO DEMOSTRADO (lease ip=192.168.65.200 gw=192.168.65.1 dns=192.168.65.1; ack_ok=True)"
+      }
+    },
+    {
+      "iter": 2,
+      "t0": "2026-11-09T18:50:14Z",
+      "t1": "2026-11-09T18:50:21Z",
+      "duracion_s": 7,
+      "snapshot": "lab-listo-windows-ataques-ssh",
+      "canal": "ssh",
+      "diario": "/var/ossec/logs/alerts/2026/Nov/ossec-alerts-09.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/windows/CSV/ATA092_iter2-Detalle.csv",
+      "detalle_sha256": "93130abe50d30f0a9643e637248f3fda64ffa941e3760177d8569fbe8c425d7f",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA092_iter2-Audited.csv",
+      "audited_sha256": "e69bb46902c777a7c7d42725f7275c663f797cd65c470944bd3823a64dee9bb3",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA092_iter2-Revision.csv",
+      "revision_sha256": "c31db2f094cbe71c5b66e4d61c0297844fdf0b387f0c0d2234222fb317fdb406",
+      "revision_in": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA092_iter2-Revision_in.csv",
+      "revision_in_sha256": "a7664f60a8654a93d506d81c5ffb1bd3c1b4ef3f34b4e2a5616720cb8a60b7b0",
+      "conteos": {
+        "deteccion": 6,
+        "auto_ruido": 3,
+        "ruido_conocido": 8,
+        "dudosa": 0,
+        "artefacto_ataque": 6
+      },
+      "rs": {
+        "RS1": 23,
+        "RS2": 0,
+        "RS3": 0,
+        "RS4": 0,
+        "UNKNOWN": 0
+      },
+      "detecciones": {
+        "alertas": 6,
+        "rule_id_distintos": [
+          "67027",
+          "92027",
+          "92032",
+          "92052"
+        ],
+        "levels": [
+          "3",
+          "4"
+        ],
+        "primera_ts": "2026-11-09T18:50:15.956Z",
+        "primera_rule_id": "92052",
+        "esperadas": 2,
+        "sorpresas": 0,
+        "evidencia": "procesos del ataque anclados por win_image/win_command_line a la carpeta"
+      },
+      "metrico_o1": "si",
+      "metrico_o2": "1/1",
+      "dudosas_resueltas": 6,
+      "efecto": {
+        "fichero": "Dataset/Ataques/Resultados/Wazuh/windows/Logs/ATA092_iter2/efecto.txt",
+        "sha256": "4596a333f8119fa4999ba39de9a633d500a354333ebdd558e989f3d171507b3b",
+        "resumen": "EFECTO DEMOSTRADO (lease ip=192.168.65.200 gw=192.168.65.1 dns=192.168.65.1; ack_ok=True)"
+      }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-11-09",
+    "veredicto": "artefacto/ruido/deteccion segun fila",
+    "motivo": "FIM ambigua, servicio/cuenta/registro y ruido de arranque resueltos antes de T2",
+    "revisor": "executor B2.1"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": {
+    "criterio": "v2",
+    "mismo_conjunto_rule_id_deteccion": true,
+    "rule_ids_iter1": [
+      "67027",
+      "92027",
+      "92032",
+      "92052"
+    ],
+    "rule_ids_iter2": [
+      "67027",
+      "92027",
+      "92032",
+      "92052"
+    ],
+    "rule_ids_deteccion": [
+      "67027",
+      "92027",
+      "92032",
+      "92052"
+    ],
+    "n1": 6,
+    "n2": 6,
+    "margen": 2,
+    "criterio_recuento_ok": true,
+    "sin_dudosas_sin_resolver": true,
+    "veredicto": "iguales"
+  },
+  "extraccion": {
+    "extractor": "extraer_alertas_windows.py (27 columnas; RS desde el ruleset del manager)",
+    "fuente": "/var/ossec/logs/alerts/2026/Nov/ossec-alerts-09.json",
+    "aislamiento": "agent_id=002",
+    "ventana": "t0-3s .. t1+3s"
+  },
+  "prueba_de_efecto": "lease.txt con ip/gw/dns; ack_ok=True",
+  "receptor": {
+    "script": "n/a (loopback/local)",
+    "parado_tras_t1": true
+  },
+  "limitacion": "",
+  "eventos": [
+    {
+      "ts": "2026-11-09T18:46:22Z",
+      "tipo": "t0",
+      "detalle": "iter1 t0"
+    },
+    {
+      "ts": "2026-11-09T18:50:14Z",
+      "tipo": "t0",
+      "detalle": "iter2 t0"
+    },
+    {
+      "ts": "2026-11-09T18:46:26Z",
+      "tipo": "t1",
+      "detalle": "iter1 t1"
+    },
+    {
+      "ts": "2026-11-09T18:50:21Z",
+      "tipo": "t1",
+      "detalle": "iter2 t1"
+    },
+    {
+      "ts": "2026-11-09T19:00:00Z",
+      "tipo": "cierre",
+      "detalle": "doble iteracion v2: iguales"
+    }
+  ]
+}

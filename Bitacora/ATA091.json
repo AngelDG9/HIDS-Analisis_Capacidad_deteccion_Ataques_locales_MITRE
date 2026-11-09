@@ -1,0 +1,222 @@
+{
+  "ata_id": "ATA091",
+  "tecnica": "T1557.001",
+  "tactica": "Credential Access",
+  "sistema": "windows",
+  "bloque": "B2",
+  "tanda": "B2.1",
+  "estado": "piloto-ok",
+  "canal": "ssh",
+  "artefacto": "Dataset/Ataques/Comandos/windows/T1557.001-LLMNR_NBT-NS_Poisoning/",
+  "atomic": {
+    "fuente": "ART_adaptado",
+    "guid": "deecd55f-afe0-4a62-9fba-4d1ba2deb321",
+    "adaptacion": "Inveigh pre-staged + consulta local; sin relay; hash no guardado",
+    "fuente_norm": "ART_adaptado",
+    "motivo_codigo": "art_adaptado",
+    "motivo_detalle": "Inveigh pre-staged + consulta local; sin relay; hash no guardado"
+  },
+  "esperado_sha256": "98eaceffff0484ecbc252cb36709c7ccb1457849ddea183a78767389a8504c53",
+  "ataque_sha256": "1b6e25dd8fb86e969c48c7c34ee8d317ef8beda46b0225d4e5d01e50c00634b8",
+  "validacion_humana_esperado": "pre-registrado y sellado en 06c0694",
+  "c0": {
+    "documento": "Soporte/Ataques/c0/windows/ATA091_c0.md",
+    "sha256": "",
+    "resultado": "PASA (clases de B1.0 + preflight B2.1); RS3=RS4=0"
+  },
+  "iteraciones": [
+    {
+      "iter": 1,
+      "t0": "2026-11-09T18:35:47Z",
+      "t1": "2026-11-09T18:36:00Z",
+      "duracion_s": 13,
+      "snapshot": "lab-listo-windows-ataques-ssh",
+      "canal": "ssh",
+      "diario": "/var/ossec/logs/alerts/2026/Nov/ossec-alerts-09.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/windows/CSV/ATA091_iter1-Detalle.csv",
+      "detalle_sha256": "7fd9f4b75eb56f4827fd8ea171684e2ea59918cc516c4dc6ef03691a50ddc204",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA091_iter1-Audited.csv",
+      "audited_sha256": "c3e0c02f2197b0de11baa2f50d5d919d19061cf78c21a641c176f11f756acb2f",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA091_iter1-Revision.csv",
+      "revision_sha256": "811038fb4c678774d5432f4c546c23a7f37e1e1b3aef1217367e76e85655513f",
+      "revision_in": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA091_iter1-Revision_in.csv",
+      "revision_in_sha256": "cd1a00b8039db7994e88e0d78642ef88986c5db0279c229f34954f1227c03b46",
+      "conteos": {
+        "deteccion": 7,
+        "auto_ruido": 3,
+        "ruido_conocido": 10,
+        "dudosa": 0,
+        "artefacto_ataque": 15
+      },
+      "rs": {
+        "RS1": 35,
+        "RS2": 0,
+        "RS3": 0,
+        "RS4": 0,
+        "UNKNOWN": 0
+      },
+      "detecciones": {
+        "alertas": 7,
+        "rule_id_distintos": [
+          "67027",
+          "92004",
+          "92027",
+          "92032",
+          "92052"
+        ],
+        "levels": [
+          "3",
+          "4"
+        ],
+        "primera_ts": "2026-11-09T18:35:48.697Z",
+        "primera_rule_id": "92052",
+        "esperadas": 2,
+        "sorpresas": 0,
+        "evidencia": "procesos del ataque anclados por win_image/win_command_line a la carpeta"
+      },
+      "metrico_o1": "si",
+      "metrico_o2": "1/1",
+      "dudosas_resueltas": 16,
+      "efecto": {
+        "fichero": "Dataset/Ataques/Resultados/Wazuh/windows/Logs/ATA091_iter1/efecto.txt",
+        "sha256": "e7ccc6598b6dd2146e34f54f6cc0182a2c400cf8c0a4681b6d62c3ff9156c8f8",
+        "resumen": "EFECTO PARCIAL (capturado=False; Inveigh co-locado sin captura de hash; hash no guardado)"
+      }
+    },
+    {
+      "iter": 2,
+      "t0": "2026-11-09T18:42:25Z",
+      "t1": "2026-11-09T18:42:34Z",
+      "duracion_s": 9,
+      "snapshot": "lab-listo-windows-ataques-ssh",
+      "canal": "ssh",
+      "diario": "/var/ossec/logs/alerts/2026/Nov/ossec-alerts-09.json",
+      "detalle": "Dataset/Ataques/Resultados/Wazuh/windows/CSV/ATA091_iter2-Detalle.csv",
+      "detalle_sha256": "3f1a3f2f98a925605465e46c58f190f655e824e2c2c0e3d034b9bbb9dd49469a",
+      "audited": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA091_iter2-Audited.csv",
+      "audited_sha256": "38317b6623a7abeb29a6611278a20ad1eae8224b5b5c718cd1c8483462127d0b",
+      "revision": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA091_iter2-Revision.csv",
+      "revision_sha256": "2d0d476a241bdf76d2cde2af24058d28bc02f8b5fb46a278aa779fbebd6ab1c7",
+      "revision_in": "Dataset/Ataques/Resultados/Wazuh/windows/Auditado/ATA091_iter2-Revision_in.csv",
+      "revision_in_sha256": "ed6996dcd9dcecd0c93490cafc5d1b0bb3bd7e54c407d1b1782484ca302b23d8",
+      "conteos": {
+        "deteccion": 7,
+        "auto_ruido": 3,
+        "ruido_conocido": 10,
+        "dudosa": 0,
+        "artefacto_ataque": 16
+      },
+      "rs": {
+        "RS1": 36,
+        "RS2": 0,
+        "RS3": 0,
+        "RS4": 0,
+        "UNKNOWN": 0
+      },
+      "detecciones": {
+        "alertas": 7,
+        "rule_id_distintos": [
+          "67027",
+          "92004",
+          "92027",
+          "92032",
+          "92052"
+        ],
+        "levels": [
+          "3",
+          "4"
+        ],
+        "primera_ts": "2026-11-09T18:42:26.745Z",
+        "primera_rule_id": "67027",
+        "esperadas": 2,
+        "sorpresas": 0,
+        "evidencia": "procesos del ataque anclados por win_image/win_command_line a la carpeta"
+      },
+      "metrico_o1": "si",
+      "metrico_o2": "1/1",
+      "dudosas_resueltas": 17,
+      "efecto": {
+        "fichero": "Dataset/Ataques/Resultados/Wazuh/windows/Logs/ATA091_iter2/efecto.txt",
+        "sha256": "0f78cadfa8e3a5fa6886ff8e15e0fc415432b0ab94c19aba7f9b855cf747d103",
+        "resumen": "EFECTO PARCIAL (capturado=False; Inveigh co-locado sin captura de hash; hash no guardado)"
+      }
+    }
+  ],
+  "revision_global": {
+    "fecha": "2026-11-09",
+    "veredicto": "artefacto/ruido/deteccion segun fila",
+    "motivo": "FIM ambigua, servicio/cuenta/registro y ruido de arranque resueltos antes de T2",
+    "revisor": "executor B2.1"
+  },
+  "doble_iteracion": "iguales",
+  "doble_iteracion_detalle": {
+    "criterio": "v2",
+    "mismo_conjunto_rule_id_deteccion": true,
+    "rule_ids_iter1": [
+      "67027",
+      "92004",
+      "92027",
+      "92032",
+      "92052"
+    ],
+    "rule_ids_iter2": [
+      "67027",
+      "92004",
+      "92027",
+      "92032",
+      "92052"
+    ],
+    "rule_ids_deteccion": [
+      "67027",
+      "92004",
+      "92027",
+      "92032",
+      "92052"
+    ],
+    "n1": 7,
+    "n2": 7,
+    "margen": 2,
+    "criterio_recuento_ok": true,
+    "sin_dudosas_sin_resolver": true,
+    "veredicto": "iguales"
+  },
+  "extraccion": {
+    "extractor": "extraer_alertas_windows.py (27 columnas; RS desde el ruleset del manager)",
+    "fuente": "/var/ossec/logs/alerts/2026/Nov/ossec-alerts-09.json",
+    "aislamiento": "agent_id=002",
+    "ventana": "t0-3s .. t1+3s"
+  },
+  "prueba_de_efecto": "capturado=False (co-locado); efecto parcial",
+  "receptor": {
+    "script": "n/a (loopback/local)",
+    "parado_tras_t1": true
+  },
+  "limitacion": "efecto_parcial: Inveigh co-locado no captura hash (SMB/HTTP del sistema); sin relay real",
+  "eventos": [
+    {
+      "ts": "2026-11-09T18:35:47Z",
+      "tipo": "t0",
+      "detalle": "iter1 t0"
+    },
+    {
+      "ts": "2026-11-09T18:42:25Z",
+      "tipo": "t0",
+      "detalle": "iter2 t0"
+    },
+    {
+      "ts": "2026-11-09T18:36:00Z",
+      "tipo": "t1",
+      "detalle": "iter1 t1"
+    },
+    {
+      "ts": "2026-11-09T18:42:34Z",
+      "tipo": "t1",
+      "detalle": "iter2 t1"
+    },
+    {
+      "ts": "2026-11-09T19:00:00Z",
+      "tipo": "cierre",
+      "detalle": "doble iteracion v2: iguales"
+    }
+  ]
+}

