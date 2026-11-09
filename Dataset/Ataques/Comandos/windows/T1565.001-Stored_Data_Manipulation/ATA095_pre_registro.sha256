@@ -1,6 +1,6 @@
 # pre_registro.sha256 - ATA095
 ata=ATA095
 esperado=ATA095_esperado.csv
-sha256=d2515d89be77e15ad4780eb1f6568872820cf5231cce8c06179bea2a04195731
-timestamp_utc=2026-11-09T19:05:33Z
-nota=pre-registro B2.2; NO modificar el esperado despues de este sello
+sha256=daa794f3521404d1e706bc4ee516d5df80cb81c4c2c5bde18819506c8b495855
+timestamp_utc=2026-11-09T19:15:32Z
+nota=re-sello B2.2 (corrige ATAATA<NNN> en S3/S4); NO modificar el esperado despues de este sello

@@ -6,5 +6,5 @@
 senal_id,tipo,campo,patron,dato_componente,tecnica,nota
 T1560.003-S1,deteccion,win_image,powershell.exe,Process Creation,T1560.003,script del ataque (formato custom)
 T1560.003-S2,deteccion,win_image,cmd.exe,Process Creation,T1560.003,lanzador run.cmd
-T1560.003-S3,deteccion,win_command_line,*lab-attack*ATAATA094*,Process Creation,T1560.003,ancla H4-W de la carpeta
-T1560.003-S4,ambigua,syscheck_path,C:\lab-attack\ATAATA094\*,File Integrity Monitoring,T1560.003,D-5: FIM ambigua no deteccion
+T1560.003-S3,deteccion,win_command_line,*lab-attack*ATA094*,Process Creation,T1560.003,ancla H4-W de la carpeta
+T1560.003-S4,ambigua,syscheck_path,C:\lab-attack\ATA094\*,File Integrity Monitoring,T1560.003,D-5: FIM ambigua no deteccion
