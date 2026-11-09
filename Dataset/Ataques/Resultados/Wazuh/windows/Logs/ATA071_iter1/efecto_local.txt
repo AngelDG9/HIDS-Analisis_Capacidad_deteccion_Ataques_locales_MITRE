@@ -1,0 +1,10 @@
+ata=ATA071
+tecnica=T1113
+fuente=ART_adaptado
+guid=e9313014-985a-48ef-80d9-cde604ffc187
+t0=2026-11-09T09:43:28Z
+t1=2026-11-09T09:43:30Z
+png=C:\lab-attack\ATA071\evidencias\screen.png
+bytes=136813
+width=1024
+height=768

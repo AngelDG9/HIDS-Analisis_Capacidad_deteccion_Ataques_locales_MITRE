@@ -1,0 +1,17 @@
+# ATA070 iter1 - prueba de efecto (NO es deteccion)
+
+2026-11-09T09:25:17Z t0=2026-11-09T09:25:17Z run=cmd /c C:\lab-attack\ATA070\run.cmd
+2026-11-09T09:25:18Z t1=2026-11-09T09:25:18Z
+
+evidencia_local:
+  ata=ATA070
+  tecnica=T1074.001
+  fuente=ART_adaptado
+  guid=a57fbe4b-3440-452a-88a7-943531ac872a
+  t0=2026-11-09T09:25:18Z
+  t1=2026-11-09T09:25:18Z
+  staging=C:\lab-attack\ATA070\staging
+  ficheros=30
+  robocopy_rc=1
+
+VEREDICTO: EFECTO DEMOSTRADO (staging con 30 ficheros; robocopy_rc=1)

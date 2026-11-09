@@ -1,0 +1,16 @@
+# ATA068 iter2 - prueba de efecto (NO es deteccion)
+
+2026-11-09T09:13:42Z t0=2026-11-09T09:13:42Z run=cmd /c C:\lab-attack\ATA068\run.cmd
+2026-11-09T09:13:43Z t1=2026-11-09T09:13:43Z
+
+evidencia_local:
+  ata=ATA068
+  tecnica=T1005
+  fuente=ART_adaptado
+  guid=d3d9af44-b8ad-4375-8b0a-4bff4b7e419c
+  t0=2026-11-09T09:13:43Z
+  t1=2026-11-09T09:13:43Z
+  ficheros=20
+  inventario=C:\lab-attack\ATA068\evidencias\inventario.txt
+
+VEREDICTO: EFECTO DEMOSTRADO (inventario.txt con 20 ficheros)

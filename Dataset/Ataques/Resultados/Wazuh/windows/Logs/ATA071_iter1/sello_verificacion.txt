@@ -1,0 +1,8 @@
+ata=ATA071
+iter=1
+esperado=Dataset/Ataques/Comandos/windows/T1113-Screen_Capture/ATA071_esperado.csv
+sha256_esperado=16477dd3d73f6203fa99a3c6cf82f75265a0d0197e1b31fc3a07e1ee9b1bb47d
+sha256_sellado=16477dd3d73f6203fa99a3c6cf82f75265a0d0197e1b31fc3a07e1ee9b1bb47d
+coincide=True
+timestamp_utc=2026-11-09T09:39:37Z
+nota=verificacion antes de t0 (CA-B1-02)

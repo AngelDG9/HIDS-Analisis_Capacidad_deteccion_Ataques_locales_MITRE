@@ -1,0 +1,17 @@
+# ATA072 iter1 - prueba de efecto (NO es deteccion)
+
+2026-11-09T09:53:28Z t0=2026-11-09T09:53:28Z run=cmd /c C:\lab-attack\ATA072\run.cmd
+2026-11-09T09:53:59Z t1=2026-11-09T09:53:59Z
+
+evidencia_local:
+  ata=ATA072
+  tecnica=T1115
+  fuente=ART_adaptado
+  guid=d6dc21af-bec9-4152-be86-326b6babd416
+  t0=2026-11-09T09:53:57Z
+  t1=2026-11-09T09:53:58Z
+  seed=TFG-CLIP-2026-B1.3
+  leido=TFG-CLIP-2026-B1.3
+  coincide=True
+
+VEREDICTO: EFECTO DEMOSTRADO (clipboard leido == seed TFG-CLIP-2026-B1.3)

@@ -1,0 +1,8 @@
+ata=ATA070
+iter=2
+esperado=Dataset/Ataques/Comandos/windows/T1074.001-Local_Data_Staging/ATA070_esperado.csv
+sha256_esperado=ff97a9064d13852f2b0aaa74f177ee508b26e9bf5b231329c2c7e2792be5e212
+sha256_sellado=ff97a9064d13852f2b0aaa74f177ee508b26e9bf5b231329c2c7e2792be5e212
+coincide=True
+timestamp_utc=2026-11-09T09:26:34Z
+nota=verificacion antes de t0 (CA-B1-02)

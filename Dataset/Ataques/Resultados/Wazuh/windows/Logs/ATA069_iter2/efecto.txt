@@ -1,0 +1,17 @@
+# ATA069 iter2 - prueba de efecto (NO es deteccion)
+
+2026-11-09T09:21:30Z t0=2026-11-09T09:21:30Z run=cmd /c C:\lab-attack\ATA069\run.cmd
+2026-11-09T09:21:32Z t1=2026-11-09T09:21:32Z
+
+evidencia_local:
+  ata=ATA069
+  tecnica=T1560.001
+  fuente=ART_adaptado
+  guid=02ea31cb-3b4c-4a2d-9bf1-e4e70ebcf5d0
+  t0=2026-11-09T09:21:31Z
+  t1=2026-11-09T09:21:32Z
+  zip=C:\lab-attack\ATA069\evidencias\datos.zip
+  entradas=20
+  bytes=2275
+
+VEREDICTO: EFECTO DEMOSTRADO (datos.zip con 20 entradas, 2275 bytes)

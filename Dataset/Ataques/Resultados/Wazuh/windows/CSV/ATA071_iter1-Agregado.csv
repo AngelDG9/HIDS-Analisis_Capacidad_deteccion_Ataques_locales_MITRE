@@ -1,0 +1,16 @@
+rule_id,rule_level,rule_description,groups,count,first_seen,last_seen,rs_origen
+550,7,Integrity checksum changed.,ossec|syscheck|syscheck_entry_modified|syscheck_file,1,2026-11-09T09:43:31Z,2026-11-09T09:43:31Z,RS1
+554,5,File added to the system.,ossec|syscheck|syscheck_entry_added|syscheck_file,2,2026-11-09T09:43:27Z,2026-11-09T09:43:31Z,RS1
+60106,3,Windows Logon Success,windows|windows_security|authentication_success,19,2026-11-09T09:42:54Z,2026-11-09T09:43:33Z,RS1
+60137,3,Windows User Logoff,windows|windows_security,20,2026-11-09T09:42:54Z,2026-11-09T09:43:34Z,RS1
+60642,3,Software protection service scheduled successfully.,windows|windows_application,1,2026-11-09T09:42:52Z,2026-11-09T09:42:52Z,RS1
+60702,5,The VSS service is shutting down due to idle timeout.,windows|windows_application,1,2026-11-09T09:43:29Z,2026-11-09T09:43:29Z,RS1
+67023,3,Non service account logged off.,windows| WEF,19,2026-11-09T09:42:54Z,2026-11-09T09:43:34Z,RS1
+67024,3,Service logon event registered from non standard service account.,windows| WEF,19,2026-11-09T09:42:54Z,2026-11-09T09:43:33Z,RS1
+67027,3,A process was created.,windows| WEF,141,2026-11-09T09:42:54Z,2026-11-09T09:43:33Z,RS1
+67028,3,Special privileges assigned to new logon.,windows| WEF,38,2026-11-09T09:42:54Z,2026-11-09T09:43:33Z,RS1
+91803,14,Screen capture method invoked from PowerShell script.,windows| powershell,1,2026-11-09T09:43:29Z,2026-11-09T09:43:29Z,RS1
+92021,3,Powershell was used to delete files or directories,sysmon|sysmon_eid1_detections|windows,1,2026-11-09T09:43:33Z,2026-11-09T09:43:33Z,RS1
+92032,3,Suspicious Windows cmd shell execution,sysmon|sysmon_eid1_detections|windows,18,2026-11-09T09:42:54Z,2026-11-09T09:43:33Z,RS1
+92052,4,Windows command prompt started by an abnormal process,sysmon|sysmon_eid1_detections|windows,20,2026-11-09T09:42:54Z,2026-11-09T09:43:33Z,RS1
+92213,15,Executable file dropped in folder commonly used by malware,sysmon|sysmon_eid11_detections|windows,3,2026-11-09T09:43:28Z,2026-11-09T09:43:33Z,RS1

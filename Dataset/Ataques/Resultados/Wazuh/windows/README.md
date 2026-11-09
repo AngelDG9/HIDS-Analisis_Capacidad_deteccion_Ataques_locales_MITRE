@@ -152,3 +152,72 @@ barras antes de comparar. Diff: **+10/−4**; `pytest` 389 OK. No se tocó ning�
 - T4-W: **`sha256 = 01c9ef83c7590e585eb8d511f8e110f2b91600946c1a4b40c580170a55e34fc3`**.
 - Sensibilidad `--sin-operador`: TPR idéntico (12/12, 12/12, 0/12); canal a `dudosa`.
 - Replay v1/v2: **0**; `pytest` **389**; regresión Linux semántica **875/875**.
+
+---
+
+# B1.3 - Collection (ATA068-ATA073)
+
+> **Bloque B1**, tanda **B1.3**. Ejecutada el **2026-11-09** sobre `plan.md` v3
+> (`approved_by_human`). `esperado` **sellado en `c0c1058`**; `sha256` verificado antes de
+> cada `t0` en `Logs/ATA<NNN>_iter<N>/sello_verificacion.txt`. **Solo** `victima-windows`
+> + manager; `victima-linux` apagada. **Sin secretos.**
+
+## B1.3.0 - CA-B1-02 PASA (12/12)
+
+Los 12 pares `(sello, t0)` cumplen `sello < t0`; los 12 `-Audited.csv` y `-Detalle.csv`
+llevan el `sha256` sellado. El `esperado` no se modifico.
+
+## B1.3.1 - Canal
+
+- **ATA068/069/070**: snapshot `lab-listo-windows-ataques-ssh`; SSH; token **High**
+  (`S-1-16-12288`).
+- **ATA071/072/073**: snapshot `lab-listo-windows-ataques-gui`; autologon `angel`,
+  sesion 1 `console`; tarea **`TFG-Attack-<ATA>`** `InteractiveToken`, `UserId=angel`,
+  accion `cmd.exe /c C:\lab-attack\ATA<NNN>\run.cmd`, disparo `t0+30 s`, creada antes
+  de `t0` y borrada tras `t1`. Verificado `LogonType: Interactive`.
+
+## B1.3.2 - Casos y resultados
+
+| ATA | Tecnica | Canal | Efecto (prueba) | Iter1 | Iter2 | `rule_id` | Dudosas |
+|---|---|---|---|---|---|---|---|
+| ATA068 | T1005 | SSH | `inventario.txt` con 20 ficheros | 5 | 5 | `67027,92032,92052` | 0/0 |
+| ATA069 | T1560.001 | SSH | `datos.zip` 20 entradas, 2275 bytes | 5 | 5 | `67027,92032,92052` | 0/0 |
+| ATA070 | T1074.001 | SSH | `staging` 30 ficheros; `robocopy_rc=1` | 5 | 5 | `67027,92032,92052` | 0/0 |
+| ATA071 | T1113 | S1 | `screen.png` real 136813/152829 bytes, 1024x768 | 75 | 59 | `67027,92032,92052` | 0/0 |
+| ATA072 | T1115 | S1 | clipboard == `TFG-CLIP-2026-B1.3`; `91824` | 64 | 64 | `67027,91824,92032,92052` | 0/0 |
+| ATA073 | T1056.001 | S1 | `key.log` secuencia completa; `cadena_detectada=True` | 102 | 102 | `67027,92027,92032,92052,92213` | 0/0 |
+
+- **0 filas del ataque en `ruido_conocido`/`auto_ruido`** (candado; 0 violaciones en las 12 ventanas).
+- **ATA071**: doble iteracion **`review`** por recuento (`|59-75|=16 > max(2, 7.5)`); mismo
+  conjunto de `rule_id` y 0 `dudosas`. El ruido de arranque/sesion S1 infla `#Alertas`.
+- **ATA072**: `91824` (Powershell collected clipboard data, nivel 4) es deteccion directa no
+  declarada en el `esperado`; se registra como `deteccion` (no como ruido).
+- **ATA073**: `92213` (nivel 15, Sysmon 11) lo dispara el `Add-Type` del propio script
+  (compilacion C# en `%TEMP%`), no el canal; se registra como deteccion `novel`. Por eso
+  el TPR a `N>=7` es **1/18** (solo ATA073), no 0/18.
+- **ATA073**: el `SendKeys` original capturaba una secuencia parcial; se sustituyo por
+  `keybd_event` con hold de 150 ms (misma semantica de efecto). El `esperado` no se toco.
+
+## B1.3.3 - T2-W parcial (18 casos: 6 B1.1 + 6 B1.2 + 6 B1.3)
+
+`Hojas/T2_ataques_windows.csv` - **180 filas**, `N_casos=18`, `corpus=32`, `CA-B1-02 PASA`.
+**`sha256 = d6312d34fee5c221a5b2fd36302956c8bd253d00b5f3b30a12777cd5f922e405`**.
+
+| Config | `N=0` | `N=3` | `N=7` | `N=10` | `N=12` |
+|---|---|---|---|---|---|
+| **C0 = C1** | **18/18** | **18/18** | **1/18** | **1/18** | **1/18** |
+
+- `#Alertas` total (N=0): **332**; `#rule.id` distintos por caso: 3 (salvo ATA064=4,
+  ATA067=7, ATA072=4, ATA073=5).
+- T4-W: **`sha256 = fcc44f96936ccdee6ca8f3677c59a3cd2f4efbb1dee0891c1b854c9e38749a74`**.
+- Sensibilidad `--sin-operador`: TPR **identico** (18/18, 18/18, 1/18, 1/18, 1/18); el canal
+  pasa a `dudosa`, no a `deteccion` (`Hojas/T2_ataques_windows_sens_sin_operador.csv`).
+- Replay baseline v1/v2: **0**; `pytest` **389 passed**; regresion Linux semantica **875/875**.
+
+## B1.3.4 - Limitaciones
+
+1. **S1** (ATA071/072/073) genera ruido de proceso de arranque/sesion que infla
+   `#Alertas`; el TPR no cambia. ATA071 queda en `review` por recuento.
+2. **ATA073** tiene una deteccion de nivel 15 (`92213`) por el `Add-Type`; es real, pero
+   no estaba pre-declarada. Se documenta como `novel`.
+3. **H-B1-5***: deteccion por proceso; sin capa de red ni de recursos.

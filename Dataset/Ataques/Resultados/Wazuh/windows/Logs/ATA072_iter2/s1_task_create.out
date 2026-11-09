@@ -1,0 +1,11 @@
+﻿ssh.exe : ** WARNING: connection is not using a post-quantum key exchange algorithm.
+En C:\Users\angel\AppData\Local\Temp\opencode\run_window.ps1: 127 Carácter: 16
++ ...  $taskOut = & $ssh @sshOpts $guest "powershell -NoProfile -ExecutionP ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (** WARNING: con...ange algorithm.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+** This session may be vulnerable to "store now, decrypt later" attacks.
+** The server may need to be upgraded. See https://openssh.com/pq.html
+tarea=TFG-Attack-ATA072 trigger=2026-11-09T10:59:07
+

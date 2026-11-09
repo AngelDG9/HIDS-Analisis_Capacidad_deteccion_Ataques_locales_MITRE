@@ -1,0 +1,8 @@
+ata=ATA068
+iter=2
+esperado=Dataset/Ataques/Comandos/windows/T1005-Data_from_Local_System/ATA068_esperado.csv
+sha256_esperado=90ace9fe97f92f87b18f89c65271451cdebc7657375d4cd64243fc6ece23d2e6
+sha256_sellado=90ace9fe97f92f87b18f89c65271451cdebc7657375d4cd64243fc6ece23d2e6
+coincide=True
+timestamp_utc=2026-11-09T09:10:57Z
+nota=verificacion antes de t0 (CA-B1-02)

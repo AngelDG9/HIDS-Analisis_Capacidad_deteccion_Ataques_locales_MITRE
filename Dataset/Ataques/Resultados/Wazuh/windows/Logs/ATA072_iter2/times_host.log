@@ -1,0 +1,34 @@
+2026-11-09T09:55:29Z == ATA072 iter2 ==
+2026-11-09T09:56:29Z ssh_up=2026-11-09T09:56:09Z agent_active=2026-11-09T09:56:29Z
+2026-11-09T09:58:02Z caso copiado
+2026-11-09T09:58:20Z S1 task=TFG-Attack-ATA072 trigger=2026-11-09T10:59:07 info=ssh.exe : ** WARNING: connection is not using a post-quantum key exchange algorithm.
+En C:\Users\angel\AppData\Local\Temp\opencode\run_window.ps1: 132 Car?cter: 17
++ ... $taskInfo = & $ssh @sshOpts $guest "powershell -NoProfile -EncodedCom ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (** WARNING: con...ange algorithm.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+** This session may be vulnerable to "store now, decrypt later" attacks.
+** The server may need to be upgraded. See https://openssh.com/pq.html
+#< CLIXML
+
+
+LogonType : Interactive
+UserId    : angel
+
+
+
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN 
+RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR 
+N="Record"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil 
+/><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef 
+RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil 
+/><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="2"><TNRef 
+RefId="0" /><MS><I64 N="SourceId">2</I64><PR N="Record"><AV>Get-ScheduledTask -TaskName 'TFG-Attack-ATA072' | 
+Select-Object -ExpandProperty Principal | Format-List LogonType,UserId</AV><AI>2056419544</AI><Nil 
+/><PI>-1</PI><PC>100</PC><T>Completed</T><SR>0</SR><SD>1/1 completed</SD></PR></MS></Obj></Objs>
+2026-11-09T09:58:38Z t0=2026-11-09T09:58:38Z run=cmd /c C:\lab-attack\ATA072\run.cmd (S1)
+2026-11-09T09:59:09Z t1=2026-11-09T09:59:09Z
+2026-11-09T09:59:10Z S1 task=TFG-Attack-ATA072 borrada
+2026-11-09T09:59:20Z evidencias cosechadas
+2026-11-09T09:59:20Z fin ATA072 iter2

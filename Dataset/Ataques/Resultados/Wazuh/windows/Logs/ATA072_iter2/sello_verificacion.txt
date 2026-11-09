@@ -1,0 +1,8 @@
+ata=ATA072
+iter=2
+esperado=Dataset/Ataques/Comandos/windows/T1115-Clipboard_Data/ATA072_esperado.csv
+sha256_esperado=0081c78befeda0943be41a2316cef7fb44489b4cf87edbd2f8cda431e58a03f8
+sha256_sellado=0081c78befeda0943be41a2316cef7fb44489b4cf87edbd2f8cda431e58a03f8
+coincide=True
+timestamp_utc=2026-11-09T09:55:29Z
+nota=verificacion antes de t0 (CA-B1-02)

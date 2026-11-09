@@ -1,0 +1,17 @@
+﻿ssh.exe : ** WARNING: connection is not using a post-quantum key exchange algorithm.
+En C:\Users\angel\AppData\Local\Temp\opencode\run_window.ps1: 148 Carácter: 5
++     & $ssh @sshOpts $guest "powershell -NoProfile -Command \"Unregist ...
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (** WARNING: con...ange algorithm.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+** This session may be vulnerable to "store now, decrypt later" attacks.
+** The server may need to be upgraded. See https://openssh.com/pq.html
+Unregister-ScheduledTask : Cannot validate argument on parameter 'TaskName'. The argument is null. Provide a valid 
+value for the argument, and then try running the command again.
+At line:1 char:37
++  Unregister-ScheduledTask -TaskName $taskName -Confirm:\False\
++                                     ~~~~~~~~~
+    + CategoryInfo          : InvalidData: (:) [Unregister-ScheduledTask], ParameterBindingValidationException
+    + FullyQualifiedErrorId : ParameterArgumentValidationError,Unregister-ScheduledTask
+ 

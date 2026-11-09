@@ -1,0 +1,8 @@
+ata=ATA073
+iter=1
+esperado=Dataset/Ataques/Comandos/windows/T1056.001-Keylogging/ATA073_esperado.csv
+sha256_esperado=2aebf1dffd10228f3e5204ac92b327a5249a8c76a2bbd0273ff49e88e07cc263
+sha256_sellado=2aebf1dffd10228f3e5204ac92b327a5249a8c76a2bbd0273ff49e88e07cc263
+coincide=True
+timestamp_utc=2026-11-09T10:12:01Z
+nota=verificacion antes de t0 (CA-B1-02)

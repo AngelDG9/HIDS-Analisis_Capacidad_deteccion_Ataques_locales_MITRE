@@ -1,0 +1,18 @@
+# ATA071 iter2 - prueba de efecto (NO es deteccion)
+
+2026-11-09T09:48:40Z t0=2026-11-09T09:48:40Z run=cmd /c C:\lab-attack\ATA071\run.cmd
+2026-11-09T09:49:09Z t1=2026-11-09T09:49:09Z
+
+evidencia_local:
+  ata=ATA071
+  tecnica=T1113
+  fuente=ART_adaptado
+  guid=e9313014-985a-48ef-80d9-cde604ffc187
+  t0=2026-11-09T09:49:09Z
+  t1=2026-11-09T09:49:09Z
+  png=C:\lab-attack\ATA071\evidencias\screen.png
+  bytes=152829
+  width=1024
+  height=768
+
+VEREDICTO: EFECTO DEMOSTRADO (screen.png real 152829 bytes, 1024x768)

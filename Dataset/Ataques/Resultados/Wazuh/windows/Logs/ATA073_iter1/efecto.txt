@@ -1,0 +1,17 @@
+# ATA073 iter1 - prueba de efecto (NO es deteccion)
+
+2026-11-09T10:15:09Z t0=2026-11-09T10:15:09Z run=cmd /c C:\lab-attack\ATA073\run.cmd
+2026-11-09T10:16:00Z t1=2026-11-09T10:16:00Z
+
+evidencia_local:
+  ata=ATA073
+  tecnica=T1056.001
+  fuente=ART_adaptado
+  guid=d9b633ca-8efb-45e6-b838-70f595c6ae26
+  t0=2026-11-09T10:15:38Z
+  t1=2026-11-09T10:15:58Z
+  seed=tfg-key-2026
+  secuencia=54,46,47,BD,4B,45,59,BD,32,30,32,36
+  cadena_detectada=True
+
+VEREDICTO: EFECTO DEMOSTRADO (key.log con la secuencia completa; cadena_detectada=True)

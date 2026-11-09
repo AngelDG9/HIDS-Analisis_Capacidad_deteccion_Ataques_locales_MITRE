@@ -1,0 +1,8 @@
+ata=ATA069
+iter=1
+esperado=Dataset/Ataques/Comandos/windows/T1560.001-Archive_via_Utility/ATA069_esperado.csv
+sha256_esperado=6f3cbfa5673e5883037846b09cb21ce52cd4333e6c4bac3e5ac0654a73537c2b
+sha256_sellado=6f3cbfa5673e5883037846b09cb21ce52cd4333e6c4bac3e5ac0654a73537c2b
+coincide=True
+timestamp_utc=2026-11-09T09:14:41Z
+nota=verificacion antes de t0 (CA-B1-02)
