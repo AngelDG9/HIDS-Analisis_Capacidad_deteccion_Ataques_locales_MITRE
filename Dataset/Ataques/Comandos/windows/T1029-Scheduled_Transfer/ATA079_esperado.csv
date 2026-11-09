@@ -1,0 +1,12 @@
+# ATA079_esperado.csv | ATA079 - T1029 | Windows (B1.4)
+# Redactado el 2026-11-09 ANTES de cualquier ataque (pre-registro). Esquema v5, field-first, ancla H4-W.
+# Sin rule_id: no se declara ninguna regla no probada. Las senales son win_image + ancla de carpeta.
+# syscheck_path va como tipo=ambigua (D-5), no como deteccion.
+# El efecto NO es deteccion: lo prueba el sink.log / git log / dump.sql de la iteracion.
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1029-S1,deteccion,win_image,powershell.exe,Process Creation,T1029,script del ataque (wrapper PowerShell)
+T1029-S2,deteccion,win_image,schtasks.exe,Process Creation,T1029,creacion de la tarea programada
+T1029-S3,deteccion,win_image,curl.exe,Process Creation,T1029,POST de la tarea al sink
+T1029-S4,deteccion,win_image,cmd.exe,Process Creation,T1029,lanzador run.cmd y accion de la tarea
+T1029-S5,deteccion,win_command_line,*lab-attack*ATA079*,Process Creation,T1029,ancla H4-W de la carpeta
+T1029-S6,ambigua,syscheck_path,C:\lab-attack\ATA079\*,File Integrity Monitoring,T1029,D-5: FIM ambigua no deteccion

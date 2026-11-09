@@ -1,0 +1,11 @@
+# ATA074_esperado.csv | ATA074 - T1041 | Windows (B1.4)
+# Redactado el 2026-11-09 ANTES de cualquier ataque (pre-registro). Esquema v5, field-first, ancla H4-W.
+# Sin rule_id: no se declara ninguna regla no probada. Las senales son win_image + ancla de carpeta.
+# syscheck_path va como tipo=ambigua (D-5), no como deteccion.
+# El efecto NO es deteccion: lo prueba el sink.log / git log / dump.sql de la iteracion.
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1041-S1,deteccion,win_image,powershell.exe,Process Creation,T1041,script del ataque (wrapper PowerShell)
+T1041-S2,deteccion,win_image,curl.exe,Process Creation,T1041,cliente HTTP del ataque (ART d1253f6e; executor adaptado)
+T1041-S3,deteccion,win_image,cmd.exe,Process Creation,T1041,lanzador run.cmd
+T1041-S4,deteccion,win_command_line,*lab-attack*ATA074*,Process Creation,T1041,ancla H4-W de la carpeta
+T1041-S5,ambigua,syscheck_path,C:\lab-attack\ATA074\*,File Integrity Monitoring,T1041,D-5: FIM ambigua no deteccion
