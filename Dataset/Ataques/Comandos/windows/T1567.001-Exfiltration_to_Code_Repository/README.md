@@ -1,4 +1,4 @@
-# ATA078 - T1567.001 Exfiltration to Code Repository (Windows)
+﻿# ATA078 - T1567.001 Exfiltration to Code Repository (Windows)
 
 > **B1.4 - preparacion.** Caso **pre-registrado** y sellado; **no ejecutado** todavia.
 > Sin secretos.
@@ -16,7 +16,7 @@ Se implementa un `git push` a un repositorio **bare local** en `C:\lab-attack\AT
 4. Lee `git log --oneline -1` del repo bare y lo escribe en `efecto_local.txt`.
 
 **Guardarrail**: todo bajo `C:\lab-attack\ATA078\`. `PortableGit` debe estar pre-staged en
-`C:\lab-attack\PortableGit\bin\git.exe` (fuera del repo); si no existe, el script aborta.
+`C:\tfg-tools\PortableGit\bin\git.exe` (fuera del repo); si no existe, el script aborta.
 Sin red.
 
 ## 3. Prueba de efecto

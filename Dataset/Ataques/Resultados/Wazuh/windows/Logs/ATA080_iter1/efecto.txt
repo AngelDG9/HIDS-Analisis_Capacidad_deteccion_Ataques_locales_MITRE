@@ -1,0 +1,17 @@
+# ATA080 iter1 - prueba de efecto (NO es deteccion)
+
+2026-11-09T13:30:02Z t0=2026-11-09T13:30:02Z run=cmd /c C:\lab-attack\ATA080\run.cmd
+2026-11-09T13:30:04Z t1=2026-11-09T13:30:04Z
+
+evidencia_local:
+  ata=ATA080
+  tecnica=T1213.006
+  fuente=manual
+  t0=2026-11-09T13:30:04Z
+  t1=2026-11-09T13:30:04Z
+  db=C:\lab-attack\ATA080\datos.db
+  dump=C:\lab-attack\ATA080\dump.sql
+  filas=20
+  sha256=1b81096438fc40a2364d3e211b08c8ca64425d123a9123ae623227ec5088156c
+
+VEREDICTO: EFECTO DEMOSTRADO (dump.sql; 20 filas; sha256=1b81096438fc40a2364d3e211b08c8ca64425d123a9123ae623227ec5088156c)

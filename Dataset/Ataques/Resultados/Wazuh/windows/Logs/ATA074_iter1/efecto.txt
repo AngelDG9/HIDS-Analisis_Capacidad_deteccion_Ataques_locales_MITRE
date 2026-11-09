@@ -1,0 +1,22 @@
+# ATA074 iter1 - prueba de efecto (NO es deteccion)
+
+2026-11-09T11:58:17Z t0=2026-11-09T11:58:17Z run=cmd /c C:\lab-attack\ATA074\run.cmd
+2026-11-09T11:58:22Z t1=2026-11-09T11:58:22Z
+
+evidencia_local:
+  ata=ATA074
+  tecnica=T1041
+  fuente=ART_adaptado
+  guid=d1253f6e-c29b-49dc-b466-2147a6191932
+  t0=2026-11-09T11:58:21Z
+  t1=2026-11-09T11:58:21Z
+  url=http://192.168.65.1:9090/upload/ATA074
+  payload=C:\lab-attack\ATA074\payload.txt
+  bytes=1571
+  sha256=a676341a6be6711d9360160277713040be887ac0047006515d2482df0b39586b
+  resultado=curl_rc=0 out=OK
+
+sink.log (HOST):
+  2026-11-09T11:58:21Z POST /upload/ATA074 from=192.168.65.130 len=1571 sha256=a676341a6be6711d9360160277713040be887ac0047006515d2482df0b39586b content_type=application/x-www-form-urlencoded
+
+VEREDICTO: EFECTO DEMOSTRADO (POST /upload/ATA074; sha256 del payload en sink.log)

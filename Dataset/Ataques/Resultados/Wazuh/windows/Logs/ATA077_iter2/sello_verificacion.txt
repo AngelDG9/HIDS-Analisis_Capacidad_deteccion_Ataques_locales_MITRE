@@ -1,0 +1,8 @@
+ata=ATA077
+iter=2
+esperado=Dataset/Ataques/Comandos/windows/T1048.003-Exfiltration_Over_Unencrypted_Non-C2_Protocol/ATA077_esperado.csv
+sha256_esperado=06e91e99c966b1aecc07ac922244832fe1bc4365409591cce2bbc610b0c42856
+sha256_sellado=06e91e99c966b1aecc07ac922244832fe1bc4365409591cce2bbc610b0c42856
+coincide=True
+timestamp_utc=2026-11-09T12:23:23Z
+nota=verificacion antes de t0 (CA-B1-02)

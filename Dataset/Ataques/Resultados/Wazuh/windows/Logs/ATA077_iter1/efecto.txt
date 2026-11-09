@@ -1,0 +1,19 @@
+# ATA077 iter1 - prueba de efecto (NO es deteccion)
+
+2026-11-09T12:22:19Z t0=2026-11-09T12:22:19Z run=cmd /c C:\lab-attack\ATA077\run.cmd
+2026-11-09T12:22:20Z t1=2026-11-09T12:22:20Z
+
+evidencia_local:
+  ata=ATA077
+  tecnica=T1048.003
+  fuente=manual
+  t0=2026-11-09T12:22:20Z
+  t1=2026-11-09T12:22:20Z
+  destino=192.168.65.1:9091
+  bytes=1571
+  sha256_plano=9ae8d77ff86721f1df2fae5726450e15ed701b6eb590f2bde1b2e2f7f379d431
+
+sink.log (HOST):
+  2026-11-09T12:22:20Z TCP from=192.168.65.130 len=1571 sha256=9ae8d77ff86721f1df2fae5726450e15ed701b6eb590f2bde1b2e2f7f379d431
+
+VEREDICTO: EFECTO DEMOSTRADO (TCP 9091; 1571 bytes; sha256 del texto plano)

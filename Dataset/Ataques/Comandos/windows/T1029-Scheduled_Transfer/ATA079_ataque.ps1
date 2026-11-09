@@ -1,4 +1,4 @@
-# ATA079 - T1029 Scheduled Transfer (Windows)
+﻿# ATA079 - T1029 Scheduled Transfer (Windows)
 # Manual: el clon ART 388942ad no trae T1029. Se implementa schtasks + POST local.
 # Requiere que angel tenga sesion iniciada (snapshot GUI/autologon); la tarea usa /it.
 # La creacion de la tarea es el evento de proceso esperado (4698/106 es ciego).
@@ -29,7 +29,7 @@ for ($i = 0; $i -lt 45; $i++) {
     Start-Sleep -Seconds 2
     $q = & schtasks.exe /query /tn $task /fo LIST /v 2>&1 | Out-String
     if ($q -match 'Last Run Time:\s*(.+)') { $last = $Matches[1].Trim() }
-    if ($last -and $last -notmatch 'N/A|Not Yet') { break }
+    if ($last -and $last -notmatch 'N/A|Not Yet|1999') { break }
 }
 $t1 = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
 & schtasks.exe /delete /tn $task /f | Out-Null

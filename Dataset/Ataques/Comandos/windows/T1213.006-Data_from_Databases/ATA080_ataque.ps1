@@ -1,13 +1,13 @@
-# ATA080 - T1213.006 Data from Information Repositories: Databases (Windows)
+﻿# ATA080 - T1213.006 Data from Information Repositories: Databases (Windows)
 # Manual: el clon ART 388942ad no trae T1213.006. Se implementa sqlite3 .dump.
-# sqlite3.exe pre-staged fuera del repo en C:\lab-attack\sqlite3\sqlite3.exe.
+# sqlite3.exe pre-staged fuera del repo en C:\tfg-tools\sqlite3\sqlite3.exe.
 $ErrorActionPreference = 'Continue'
 $ProgressPreference = 'SilentlyContinue'
 $dir = Split-Path -Parent $MyInvocation.MyCommand.Path
 if ($dir -notlike 'C:\lab-attack\ATA080*') { Write-Error 'GUARDARRAIL: carpeta no permitida'; exit 2 }
 $ev = Join-Path $dir 'evidencias'
 New-Item -ItemType Directory -Force -Path $ev | Out-Null
-$sqlite = 'C:\lab-attack\sqlite3\sqlite3.exe'
+$sqlite = 'C:\tfg-tools\sqlite3\sqlite3.exe'
 if (-not (Test-Path $sqlite)) { 'GUARDARRAIL: sqlite3.exe no pre-staged' | Out-File (Join-Path $ev 'efecto_local.txt') -Encoding ascii; exit 2 }
 $db = Join-Path $dir 'datos.db'
 if (Test-Path $db) { Remove-Item $db -Force }

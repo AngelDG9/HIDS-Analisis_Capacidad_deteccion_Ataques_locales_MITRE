@@ -1,0 +1,19 @@
+# ATA078 iter2 - prueba de efecto (NO es deteccion)
+
+2026-11-09T12:50:54Z t0=2026-11-09T12:50:54Z run=cmd /c C:\lab-attack\ATA078\run.cmd
+2026-11-09T12:50:56Z t1=2026-11-09T12:50:56Z
+
+evidencia_local:
+  ata=ATA078
+  tecnica=T1567.001
+  fuente=manual
+  t0=2026-11-09T12:50:55Z
+  t1=2026-11-09T12:50:56Z
+  repo=C:\lab-attack\ATA078\repo.git
+  work=C:\lab-attack\ATA078\work
+  commit=e1228f9 TFG exfil ATA078
+  push=branch 'main' set up to track 'origin/main'.
+  + $pushOut=(& $git push -u origin main 2>&1 | Out-String).Trim()
+  commit_out=[master (root-commit) e1228f9] TFG exfil ATA078
+
+VEREDICTO: EFECTO DEMOSTRADO (git push; commit=e1228f9 TFG exfil ATA078)

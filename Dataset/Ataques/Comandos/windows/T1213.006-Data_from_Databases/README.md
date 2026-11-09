@@ -1,4 +1,4 @@
-# ATA080 - T1213.006 Data from Information Repositories: Databases (Windows)
+﻿# ATA080 - T1213.006 Data from Information Repositories: Databases (Windows)
 
 > **B1.4 - preparacion.** Caso **pre-registrado** y sellado; **no ejecutado** todavia.
 > Sin secretos.
@@ -15,7 +15,7 @@ local con `sqlite3 .dump` sobre una BD de juguete.
 3. Cuenta las filas y escribe `efecto_local.txt` (filas, sha256).
 
 **Guardarrail**: todo bajo `C:\lab-attack\ATA080\`. `sqlite3.exe` debe estar pre-staged en
-`C:\lab-attack\sqlite3\sqlite3.exe` (fuera del repo); si no existe, aborta. Sin red.
+`C:\tfg-tools\sqlite3\sqlite3.exe` (fuera del repo); si no existe, aborta. Sin red.
 
 ## 3. Prueba de efecto
 

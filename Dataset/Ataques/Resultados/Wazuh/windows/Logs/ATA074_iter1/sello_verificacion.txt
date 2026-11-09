@@ -1,0 +1,8 @@
+ata=ATA074
+iter=1
+esperado=Dataset/Ataques/Comandos/windows/T1041-Exfiltration_Over_C2_Channel/ATA074_esperado.csv
+sha256_esperado=7b6c1fb2f8306960282ae1fd691be398e4af327ab578141151e7b106f51d548b
+sha256_sellado=7b6c1fb2f8306960282ae1fd691be398e4af327ab578141151e7b106f51d548b
+coincide=True
+timestamp_utc=2026-11-09T11:53:23Z
+nota=verificacion antes de t0 (CA-B1-02)

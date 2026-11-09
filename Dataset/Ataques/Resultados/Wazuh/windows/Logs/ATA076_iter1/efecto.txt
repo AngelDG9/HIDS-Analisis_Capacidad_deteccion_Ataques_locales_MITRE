@@ -1,0 +1,21 @@
+# ATA076 iter1 - prueba de efecto (NO es deteccion)
+
+2026-11-09T12:14:26Z t0=2026-11-09T12:14:26Z run=cmd /c C:\lab-attack\ATA076\run.cmd
+2026-11-09T12:14:28Z t1=2026-11-09T12:14:28Z
+
+evidencia_local:
+  ata=ATA076
+  tecnica=T1048.002
+  fuente=manual
+  t0=2026-11-09T12:14:27Z
+  t1=2026-11-09T12:14:28Z
+  url=http://192.168.65.1:9090/upload/ATA076
+  bytes_cifrado=256
+  sha256_post=1613a546aaa6bcb7c9e6b2225fc45e4e6ba89639fed26caf2b84f699bfbdfeac
+  descifrado_ok=True
+  resultado=HTTP=200
+
+sink.log (HOST):
+  2026-11-09T12:14:28Z POST /upload/ATA076 from=192.168.65.130 len=344 sha256=1613a546aaa6bcb7c9e6b2225fc45e4e6ba89639fed26caf2b84f699bfbdfeac content_type=application/octet-stream
+
+VEREDICTO: EFECTO DEMOSTRADO (POST /upload/ATA076; sha256_post; descifrado_ok=True)

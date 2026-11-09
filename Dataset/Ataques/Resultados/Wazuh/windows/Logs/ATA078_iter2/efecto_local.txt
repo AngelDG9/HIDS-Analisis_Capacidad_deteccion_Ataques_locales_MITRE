@@ -1,0 +1,39 @@
+ata=ATA078
+tecnica=T1567.001
+fuente=manual
+t0=2026-11-09T12:50:55Z
+t1=2026-11-09T12:50:56Z
+repo=C:\lab-attack\ATA078\repo.git
+work=C:\lab-attack\ATA078\work
+commit=e1228f9 TFG exfil ATA078
+push=branch 'main' set up to track 'origin/main'.
+git.exe : To C:\lab-attack\ATA078\repo.git
+At C:\lab-attack\ATA078\ATA078_ataque.ps1:27 char:13
++ $pushOut = (& $git push -u origin main 2>&1 | Out-String).Trim()
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (To C:\lab-attack\ATA078\repo.git:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+ * [new branch]      main -> main
+commit_out=[master (root-commit) e1228f9] TFG exfil ATA078
+ 20 files changed, 20 insertions(+)
+ create mode 100644 datos/exfil_1.txt
+ create mode 100644 datos/exfil_10.txt
+ create mode 100644 datos/exfil_11.txt
+ create mode 100644 datos/exfil_12.txt
+ create mode 100644 datos/exfil_13.txt
+ create mode 100644 datos/exfil_14.txt
+ create mode 100644 datos/exfil_15.txt
+ create mode 100644 datos/exfil_16.txt
+ create mode 100644 datos/exfil_17.txt
+ create mode 100644 datos/exfil_18.txt
+ create mode 100644 datos/exfil_19.txt
+ create mode 100644 datos/exfil_2.txt
+ create mode 100644 datos/exfil_20.txt
+ create mode 100644 datos/exfil_3.txt
+ create mode 100644 datos/exfil_4.txt
+ create mode 100644 datos/exfil_5.txt
+ create mode 100644 datos/exfil_6.txt
+ create mode 100644 datos/exfil_7.txt
+ create mode 100644 datos/exfil_8.txt
+ create mode 100644 datos/exfil_9.txt

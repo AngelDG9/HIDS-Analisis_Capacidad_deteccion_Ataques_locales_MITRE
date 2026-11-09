@@ -1,0 +1,9 @@
+2026-11-09T12:07:36Z == ATA075 iter2 ==
+2026-11-09T12:08:38Z ssh_up=2026-11-09T12:08:17Z agent_active=2026-11-09T12:08:38Z
+2026-11-09T12:10:14Z servicios=on off_http=206030 off_webdav=161106
+2026-11-09T12:10:17Z caso copiado
+2026-11-09T12:10:32Z t0=2026-11-09T12:10:32Z run=cmd /c C:\lab-attack\ATA075\run.cmd
+2026-11-09T12:10:33Z t1=2026-11-09T12:10:33Z
+2026-11-09T12:10:43Z evidencias cosechadas
+2026-11-09T12:10:48Z servicios=off sink recortado
+2026-11-09T12:10:48Z fin ATA075 iter2

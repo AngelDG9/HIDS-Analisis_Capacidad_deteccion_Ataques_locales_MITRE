@@ -221,3 +221,73 @@ llevan el `sha256` sellado. El `esperado` no se modifico.
 2. **ATA073** tiene una deteccion de nivel 15 (`92213`) por el `Add-Type`; es real, pero
    no estaba pre-declarada. Se documenta como `novel`.
 3. **H-B1-5***: deteccion por proceso; sin capa de red ni de recursos.
+
+---
+
+# B1.4 - Exfiltracion local (ATA074-ATA080)
+
+> **Bloque B1**, tanda **B1.4**. Ejecutada el **2026-11-09** sobre `plan.md` v3
+> (`approved_by_human`). `esperado` **sellado en `7e3e872`**; `sha256` verificado antes de
+> cada `t0`. **Solo** `victima-windows` + manager; `victima-linux` apagada. **Sin secretos.**
+
+## B1.4.0 - CA-B1-02 PASA (14/14)
+
+Los 14 pares `(sello, t0)` cumplen `sello < t0`; los 14 `-Audited.csv` y `-Detalle.csv`
+llevan el `sha256` sellado. El `esperado` no se modifico.
+
+## B1.4.1 - Canal
+
+- **ATA074/075/076/077/078/080**: snapshot `lab-listo-windows-ataques-ssh`; SSH; token **High**.
+- **ATA079**: snapshot `lab-listo-windows-ataques-gui`; autologon `angel`, sesion 1;
+  tarea **`TFG-Attack-ATA079`** `InteractiveToken`, `UserId=angel`, accion
+  `cmd.exe /c C:\lab-attack\ATA079\run.cmd`, disparo `t0+30 s`, creada antes de `t0` y
+  borrada tras `t1`; la tarea de transferencia `TFG-ATA079` se crea dentro y se borra al final.
+- **Pre-staging ATA078/080**: PortableGit y `sqlite3.exe` se copian a **`C:\tfg-tools`**,
+  **fuera** del FIM `C:\lab-attack` (realtime). En `C:\lab-attack` la extraccion de
+  PortableGit generaba cientos de eventos `554` de FIM que contaminaban la ventana.
+
+## B1.4.2 - Casos y resultados
+
+| ATA | Tecnica | Canal | Efecto (prueba) | Iter1 | Iter2 | `rule_id` | Dudosas |
+|---|---|---|---|---|---|---|---|
+| ATA074 | T1041 | SSH | `sink.log` POST + `sha256` | 6 | 6 | `67027,92032,92052` | 0/0 |
+| ATA075 | T1048.001 | SSH | `sink.log` TCP + `sha256` | 5 | 5 | `67027,92032,92052` | 0/0 |
+| ATA076 | T1048.002 | SSH | `sink.log` POST + `sha256` + descifrado | 5 | 5 | `67027,92032,92052` | 0/0 |
+| ATA077 | T1048.003 | SSH | `sink.log` TCP + `sha256` | 5 | 5 | `67027,92032,92052` | 0/0 |
+| ATA078 | T1567.001 | SSH | `git log` repo bare + `push` | 10 | 13 | `67027,92032,92052` | 0/0 |
+| ATA079 | T1029 | S1 | `sink.log` POST + `Last Run Time` | 132 | 128 | `67027,92032,92052` | 0/0 |
+| ATA080 | T1213.006 | SSH | `dump.sql` 20 filas + `sha256` | 8 | 8 | `67027,92032,92052` | 0/0 |
+
+- **0 filas del ataque en `ruido_conocido`/`auto_ruido`** (candado; 0 violaciones en las 14 ventanas).
+- **ATA078**: doble iteracion **`review`** por recuento (`|13-10|=3 > max(2, 1)`); mismo
+  conjunto de `rule_id` y 0 `dudosas`. La diferencia es el numero de procesos `git` hijos.
+- **ATA079**: S1 infla `#Alertas` (132/128) por ruido de sesion/arranque; el TPR no cambia.
+- **ATA074** es `ART_adaptado`: se cita T1041 `d1253f6e` y se cambia el executor a `curl.exe`.
+
+## B1.4.3 - T2-W parcial (25 casos: 6 B1.1 + 6 B1.2 + 6 B1.3 + 7 B1.4)
+
+`Hojas/T2_ataques_windows.csv` - **250 filas**, `N_casos=25`, `corpus=32`, `CA-B1-02 PASA`.
+**`sha256 = 3945d7b80b9e8012129fe729d9b669dc05fa7d2f19e0b2ad8ba634c4c3e86cf2`**.
+
+| Config | `N=0` | `N=3` | `N=7` | `N=10` | `N=12` |
+|---|---|---|---|---|---|
+| **C0 = C1** | **25/25** | **25/25** | **1/25** | **1/25** | **1/25** |
+
+- `#Alertas` total (N=0): **503**; `#rule.id` distintos por caso: 3 (salvo ATA064=4,
+  ATA067=7, ATA072=4, ATA073=5).
+- El unico TP a `N>=7` sigue siendo **ATA073** (`92213`, nivel 15); los 7 casos B1.4 son
+  detecciones de nivel 3-4.
+- T4-W: **`sha256 = 5b9334df11a954d22266bd06b0e4aef761b69d6ba4ec8f142f1ed5f1009b9994`**.
+- Sensibilidad `--sin-operador`: TPR **identico** (25/25, 25/25, 1/25, 1/25, 1/25); el canal
+  pasa a `dudosa`, no a `deteccion` (`Hojas/T2_ataques_windows_sens_sin_operador.csv`,
+  `sha256 = b5eff998949c718ac3f6adecb1d8de3a9358629b1c59d21944606e82db49feb3`).
+- Replay baseline v1/v2: **0**; `pytest` **389 passed**; regresion Linux semantica **875/875**.
+- Indice de 25 casos: `Hojas/ATA_index_windows_piloto_25.csv`
+  (`sha256 = 39d35b913ef934296e04e25250f8f567c65015c021f72638cda068d53f85c414`).
+
+## B1.4.4 - Limitaciones
+
+1. **ATA078** queda en `review` por recuento de procesos `git` (10 vs 13), no por deteccion.
+2. **ATA079** (S1) infla `#Alertas` por ruido de sesion; el TPR no cambia.
+3. **ATA074** es `ART_adaptado` (executor `curl.exe`), no `ART` estricto.
+4. **H-B1-5***: deteccion por proceso; sin capa de red (Sysmon 3 ciego) ni de recursos.

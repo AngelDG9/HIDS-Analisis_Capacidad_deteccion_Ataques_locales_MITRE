@@ -1,0 +1,8 @@
+ata=ATA079
+iter=1
+esperado=Dataset/Ataques/Comandos/windows/T1029-Scheduled_Transfer/ATA079_esperado.csv
+sha256_esperado=e3ba78335ef4743d217dbee584444495f85782b08f37811ac7c5b76e78ddc05e
+sha256_sellado=e3ba78335ef4743d217dbee584444495f85782b08f37811ac7c5b76e78ddc05e
+coincide=True
+timestamp_utc=2026-11-09T13:14:34Z
+nota=verificacion antes de t0 (CA-B1-02)

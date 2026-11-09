@@ -1,4 +1,4 @@
-# ATA078 - T1567.001 Exfiltration to Code Repository (Windows)
+﻿# ATA078 - T1567.001 Exfiltration to Code Repository (Windows)
 # Manual: el clon ART 388942ad no trae T1567.001 (solo .002/.003/.004). Se implementa
 # git push a un repositorio bare local. PortableGit pre-staged fuera del repo.
 $ErrorActionPreference = 'Continue'
@@ -7,7 +7,7 @@ $dir = Split-Path -Parent $MyInvocation.MyCommand.Path
 if ($dir -notlike 'C:\lab-attack\ATA078*') { Write-Error 'GUARDARRAIL: carpeta no permitida'; exit 2 }
 $ev = Join-Path $dir 'evidencias'
 New-Item -ItemType Directory -Force -Path $ev | Out-Null
-$git = 'C:\lab-attack\PortableGit\bin\git.exe'
+$git = 'C:\tfg-tools\PortableGit\bin\git.exe'
 if (-not (Test-Path $git)) { 'GUARDARRAIL: git.exe no pre-staged' | Out-File (Join-Path $ev 'efecto_local.txt') -Encoding ascii; exit 2 }
 $repo = Join-Path $dir 'repo.git'
 $work = Join-Path $dir 'work'
@@ -26,7 +26,7 @@ $commitOut = (& $git commit -m 'TFG exfil ATA078' 2>&1 | Out-String).Trim()
 & $git branch -M main
 $pushOut = (& $git push -u origin main 2>&1 | Out-String).Trim()
 Pop-Location
-$log = (& $git -C $repo log --oneline -1 2>&1 | Out-String).Trim()
+$log = (& $git -C $repo log --oneline -1 main 2>&1 | Out-String).Trim()
 $t1 = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
 @(
     "ata=ATA078", "tecnica=T1567.001", "fuente=manual",

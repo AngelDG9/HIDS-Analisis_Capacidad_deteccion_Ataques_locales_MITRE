@@ -1,0 +1,20 @@
+# ATA075 iter2 - prueba de efecto (NO es deteccion)
+
+2026-11-09T12:10:32Z t0=2026-11-09T12:10:32Z run=cmd /c C:\lab-attack\ATA075\run.cmd
+2026-11-09T12:10:33Z t1=2026-11-09T12:10:33Z
+
+evidencia_local:
+  ata=ATA075
+  tecnica=T1048.001
+  fuente=manual
+  t0=2026-11-09T12:10:33Z
+  t1=2026-11-09T12:10:33Z
+  destino=192.168.65.1:9091
+  bytes=1536
+  sha256_cifrado=b4d6fcd7eaf0972122084e4d1a52d733483cb9286ad2b90a1decfd6ba6c59d2a
+  aes=256
+
+sink.log (HOST):
+  2026-11-09T12:10:33Z TCP from=192.168.65.130 len=1536 sha256=b4d6fcd7eaf0972122084e4d1a52d733483cb9286ad2b90a1decfd6ba6c59d2a
+
+VEREDICTO: EFECTO DEMOSTRADO (TCP 9091; 1536 bytes; sha256 del criptograma)

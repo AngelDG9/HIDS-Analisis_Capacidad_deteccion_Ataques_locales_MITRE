@@ -1,0 +1,8 @@
+ata=ATA078
+iter=2
+esperado=Dataset/Ataques/Comandos/windows/T1567.001-Exfiltration_to_Code_Repository/ATA078_esperado.csv
+sha256_esperado=35c894453b20a0d6fdb30bc3a01c844ad089f710393040dbc2a9f82beb25b9d9
+sha256_sellado=35c894453b20a0d6fdb30bc3a01c844ad089f710393040dbc2a9f82beb25b9d9
+coincide=True
+timestamp_utc=2026-11-09T12:46:28Z
+nota=verificacion antes de t0 (CA-B1-02)

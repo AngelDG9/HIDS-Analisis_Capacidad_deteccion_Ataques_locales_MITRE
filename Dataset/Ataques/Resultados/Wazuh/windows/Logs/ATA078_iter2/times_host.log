@@ -1,0 +1,8 @@
+2026-11-09T12:46:28Z == ATA078 iter2 ==
+2026-11-09T12:47:29Z ssh_up=2026-11-09T12:47:12Z agent_active=2026-11-09T12:47:29Z
+2026-11-09T12:49:02Z caso copiado
+2026-11-09T12:49:24Z PortableGit pre-staged en C:\tfg-tools (fuera del FIM C:\lab-attack)
+2026-11-09T12:50:54Z t0=2026-11-09T12:50:54Z run=cmd /c C:\lab-attack\ATA078\run.cmd
+2026-11-09T12:50:56Z t1=2026-11-09T12:50:56Z
+2026-11-09T12:51:06Z evidencias cosechadas
+2026-11-09T12:51:06Z fin ATA078 iter2

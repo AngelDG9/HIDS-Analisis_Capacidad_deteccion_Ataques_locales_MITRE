@@ -1,0 +1,8 @@
+2026-11-09T13:31:04Z == ATA080 iter2 ==
+2026-11-09T13:32:05Z ssh_up=2026-11-09T13:31:45Z agent_active=2026-11-09T13:32:05Z
+2026-11-09T13:33:38Z caso copiado
+2026-11-09T13:33:39Z sqlite3 pre-staged en C:\tfg-tools (fuera del FIM C:\lab-attack)
+2026-11-09T13:35:09Z t0=2026-11-09T13:35:09Z run=cmd /c C:\lab-attack\ATA080\run.cmd
+2026-11-09T13:35:10Z t1=2026-11-09T13:35:10Z
+2026-11-09T13:35:20Z evidencias cosechadas
+2026-11-09T13:35:20Z fin ATA080 iter2

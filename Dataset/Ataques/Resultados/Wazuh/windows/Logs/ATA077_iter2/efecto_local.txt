@@ -1,0 +1,8 @@
+ata=ATA077
+tecnica=T1048.003
+fuente=manual
+t0=2026-11-09T12:26:19Z
+t1=2026-11-09T12:26:19Z
+destino=192.168.65.1:9091
+bytes=1571
+sha256_plano=9ae8d77ff86721f1df2fae5726450e15ed701b6eb590f2bde1b2e2f7f379d431
