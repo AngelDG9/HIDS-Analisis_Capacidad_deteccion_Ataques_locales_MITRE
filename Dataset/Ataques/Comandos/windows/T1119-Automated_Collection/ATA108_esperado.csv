@@ -1,0 +1,10 @@
+# ATA108_esperado.csv | ATA108 - T1119 | Windows (B2.4)
+# Redactado el 2026-11-09 ANTES de cualquier ataque (pre-registro). Esquema v5, field-first, ancla H4-W.
+# Sin rule_id: no se declara ninguna regla no probada. Las senales son win_image + ancla de carpeta.
+# syscheck_path va como tipo=ambigua (D-5), no como deteccion.
+# El efecto NO es deteccion: lo prueba efecto_local.txt.
+senal_id,tipo,campo,patron,dato_componente,tecnica,nota
+T1119-S1,deteccion,win_image,powershell.exe,Process Creation,T1119,script del ataque (Automated Collection)
+T1119-S2,deteccion,win_image,cmd.exe,Process Creation,T1119,lanzador run.cmd
+T1119-S3,deteccion,win_command_line,*lab-attack*ATA108*,Process Creation,T1119,ancla H4-W de la carpeta
+T1119-S4,ambigua,syscheck_path,C:\lab-attack\ATA108\*,File Integrity Monitoring,T1119,D-5: FIM ambigua no deteccion
