@@ -5,6 +5,20 @@
 
 ---
 
+## REGLA DURA — CRUDO
+
+> **SE DEBE GUARDAR EL CRUDO DE ATAQUES Y VENTANAS.** El `archives`/`alerts` **completo**
+> (no solo `-Detalle`/`-Audited`) es la base del `+propias`/`+externas`; sin él, hay que
+> **re-ejecutar**. Guardar en `D:\TFG-VMs` + `sha256`; nunca en el repo si hay secretos
+> (no los hay).
+>
+> **Estado 2026-11-10**: recuperado a `D:\TFG-VMs\crudo-ataques\` (37 ficheros, 98,6 MB,
+> `MANIFEST.tsv`). `logall=no` / `logall_json=no` → **`archives` solo hasta 2026-11-05**.
+> Hay `alerts` de todos los días (incluidos B1 y B2), pero **no** `archives` de los ataques.
+> Detalle: `Soporte/Laboratorio/crudo/estado_crudo.md`. **W3: activar `logall_json=yes` antes.**
+
+---
+
 ## Estado actual
 
 - **✅ BLOQUE `B2` CERRADO (2026-11-10) — ampliación Windows (22 casos, ATA088–ATA109; N=54).** **54/54 a `N=0/3`**; **2/54 a `N≥7`** (ATA073/ATA097 `92213`, artefactos de compilación, **no** detección de la técnica: la real a `N≥7` es **0/54**). **0 dudosas**; `#Alertas` 669. **T2** `sha256=44649012…`; **T4** `52e2e01b…` (`N=54`, `FPR` n/a); **T5** `7e1c7d6a…` (36 reglas, **`67027`** doble uso: 132 baseline / **348 detecciones en 54/54**). **Sensibilidades NO canónicas**: **FIM-como-detección 35/54 a `N≥7`** (solo `553`), `#Alertas=1371`, `982730d9…`; `sin_67027` TPR intacto, `#Alertas=1075`, `771f2104…`; `sin_operador`/`catalogo_v2` 666. **Comparación Linux↔Windows 20/22**: Linux 53/55 (`80792`), Windows 54/54 (`67027`); ATA013/ATA034 FN Linux vs ATA093/094 TP Windows; ATA106/ATA091 `efecto_parcial`; `review` ATA071/078. **399 tests**; Linux intacto (875/875 semántico); 0 secretos; lab cerrado. Artefactos: `_fases/fase-03b-b2/{plan,change-doc}.md` · `Hojas/T2/T4/T5*_b2.csv` · `Hojas/comparacion_linux_windows_b2.csv`. **Siguiente: W3 (ventana legítima Windows) + M1b-W; Velociraptor V0/V1; A1/A2.**

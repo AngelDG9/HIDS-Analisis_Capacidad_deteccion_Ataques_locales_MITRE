@@ -143,6 +143,7 @@ Clasificación ──▶ Ataques ──▶ Análisis
 | **Windows (2ª plataforma)** | Fase propia; nunca Linux y Windows a la vez (RAM). |
 | **CRLF / cadena de huellas** | Deuda declarada; **no** `checkout`/`stash` sobre `esperado`/`Audited`. |
 | **Fuga de secreto** | Regla dura: la contraseña del laboratorio **nunca** en ficheros del repo. |
+| **CRUDO no guardado** | **Regla dura: guardar `archives`/`alerts` completos de ataques y ventanas** en `D:\TFG-VMs` + `sha256`; sin ello, el `+propias`/`+externas` exige re-ejecutar. |
 
 ---
 
