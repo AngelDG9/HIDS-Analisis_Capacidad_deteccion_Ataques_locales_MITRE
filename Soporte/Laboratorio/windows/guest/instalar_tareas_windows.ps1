@@ -8,7 +8,12 @@
 #                             disparadores (la arranca `arm` o el keepalive con
 #                             `schtasks /run`). WorkingDirectory = C:\Users\angel
 #                             (D4 / CA-W5). Accion: cmd /c "<cliente> >> client.out 2>&1".
-#   TFG-WinLegit-Keepalive  : SYSTEM, cada 5 minutos, ejecuta tfg_keepalive_windows.ps1.
+#   TFG-WinLegit-Keepalive  : SYSTEM, AL ARRANCAR, ejecuta tfg_keepalive_windows.ps1 -Loop
+#                             (1 proceso persistente). MultipleInstances=IgnoreNew,
+#                             ExecutionTimeLimit=0 (sin limite), RestartCount=3 y
+#                             RestartInterval=1 min. El propio script toma el mutex
+#                             global `Global\TFG-WinLegit-Keepalive`: un duplicado sale
+#                             con `segunda_instancia`.
 #
 # IDEMPOTENTE: re-registra con -Force; el resultado (definicion normalizada) es el mismo.
 # SIN SECRETOS: la tarea NO guarda contrasena (modo Interactive). No hay nada que ocultar.
@@ -35,6 +40,7 @@ $Keepalive = Join-Path $ClienteDir 'tfg_keepalive_windows.ps1'
 $ExePs    = 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe'
 
 function Huella-Tarea($t) {
+  $trig = @($t.Triggers | ForEach-Object { $_.CimClass.CimClassName }) -join ','
   $o = [ordered]@{
     nombre   = $t.TaskName
     exe      = $t.Actions[0].Execute
@@ -45,6 +51,9 @@ function Huella-Tarea($t) {
     runlevel = $t.Principal.RunLevel
     multi    = $t.Settings.MultipleInstances
     limite   = [string]$t.Settings.ExecutionTimeLimit
+    reinicios = [string]$t.Settings.RestartCount
+    reinicio_intervalo = [string]$t.Settings.RestartInterval
+    trigger  = $trig
   }
   $txt = ($o.GetEnumerator() | ForEach-Object { "$($_.Key)=$($_.Value)" }) -join '|'
   $sha = [System.BitConverter]::ToString(
@@ -97,14 +106,14 @@ $setAct = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoing
   -StartWhenAvailable -MultipleInstances IgnoreNew -ExecutionTimeLimit (New-TimeSpan -Seconds 0)
 Register-ScheduledTask -TaskName $TareaAct -Action $accAct -Principal $priAct -Settings $setAct -Force | Out-Null
 
-# --- 2) TFG-WinLegit-Keepalive (SYSTEM, cada 5 min) -------------------------
-$argKa = '-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "' + $Keepalive + '"'
+# --- 2) TFG-WinLegit-Keepalive (SYSTEM, AL ARRANCAR, 1 proceso persistente) --
+$argKa = '-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "' + $Keepalive + '" -Loop'
 $accKa = New-ScheduledTaskAction -Execute $ExePs -Argument $argKa -WorkingDirectory $ClienteDir
 $priKa = New-ScheduledTaskPrincipal -UserId 'SYSTEM' -LogonType ServiceAccount -RunLevel Highest
 $setKa = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries `
-  -StartWhenAvailable -MultipleInstances IgnoreNew -ExecutionTimeLimit (New-TimeSpan -Minutes 10)
-$trKa = New-ScheduledTaskTrigger -Once -At ((Get-Date).AddMinutes(2)) `
-  -RepetitionInterval (New-TimeSpan -Minutes 5) -RepetitionDuration (New-TimeSpan -Days 3650)
+  -StartWhenAvailable -MultipleInstances IgnoreNew -ExecutionTimeLimit (New-TimeSpan -Seconds 0) `
+  -RestartCount 3 -RestartInterval (New-TimeSpan -Minutes 1)
+$trKa = New-ScheduledTaskTrigger -AtStartup
 Register-ScheduledTask -TaskName $TareaKa -Action $accKa -Principal $priKa -Settings $setKa `
   -Trigger $trKa -Force | Out-Null
 
