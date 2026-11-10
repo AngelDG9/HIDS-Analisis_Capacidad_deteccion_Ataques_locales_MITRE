@@ -1,0 +1,11 @@
+﻿=== DRYTEST 2026-11-10T12:55:31Z host=DESKTOP-OIOLOPO vm_windows=on fases=watch ===
+DRYTEST FASE=watch
+  G-W5 SKIP servicios_invitado=True; manager=SKIP (sin TFG_MANAGER_PW (D6: el fallback a TFG_GUEST_PW no sirve para el manager))
+  G-W7 SKIP sin TFG_MANAGER_PW (D6: el fallback a TFG_GUEST_PW no sirve para el manager)
+  G-W8 OK hijos_vmtoolsd=0 (0 = sin acceso del operador)
+  G-W9 OK powercfg 3/3 = True
+  G-W10 OK disco_invitado_mb=21303 min=4096 (keepalive exige 500)
+  G-W11 FALLO procesos_ghosts=0 vivo=False win_user= dueno_angel=False
+  G-W12 OK ram_libre_mb=5802 min=1500 wu=Stopped/Manual
+DRYTEST watch FAIL (ok=4 fallos=1 skip=2)
+DRYTEST_RESULT=FAIL

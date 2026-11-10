@@ -1,0 +1,6 @@
+﻿2026-11-10T11:54:18Z	keepalive	wu wuauserv_parado
+2026-11-10T11:54:18Z	keepalive	wu wuauserv_startup_disabled (antes=Manual)
+2026-11-10T11:54:20Z	keepalive	latido armado=False dia_k=0 disco_mb=21309 wu=Stopped/1 tarea=Ready user=angel vivo=False pid=0 win_user= out_mb=0
+2026-11-10T11:55:48Z	keepalive	latido armado=False dia_k=0 disco_mb=21304 wu=Stopped/1 tarea=Ready user=angel vivo=False pid=0 win_user= out_mb=0
+2026-11-10T12:00:46Z	keepalive	latido armado=False dia_k=0 disco_mb=21305 wu=Stopped/1 tarea=Ready user=angel vivo=False pid=0 win_user= out_mb=0
+2026-11-10T12:05:46Z	keepalive	latido armado=False dia_k=0 disco_mb=21305 wu=Stopped/1 tarea=Ready user=angel vivo=False pid=0 win_user= out_mb=0

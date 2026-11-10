@@ -1,0 +1,8 @@
+# test_il.ps1 — salida literal (2026-11-10)
+# Invitado revertido a `lab-listo-windows-legit`, sin ventana ni campaña.
+# Comando (la clave va por STDIN, nunca en el fichero ni en la línea de comandos):
+#   <clave> | powershell -NoProfile -ExecutionPolicy Bypass -File C:\Windows\Temp\test_il.ps1 -ClaveDesdeStdin
+TFG-IL-Interactive REGISTRO=OK
+TFG-IL-Interactive IL=Mandatory Label\Medium Mandatory Level Label S-1-16-8192
+TFG-IL-Password REGISTRO=OK
+TFG-IL-Password IL=Mandatory Label\High Mandatory Level Label S-1-16-12288

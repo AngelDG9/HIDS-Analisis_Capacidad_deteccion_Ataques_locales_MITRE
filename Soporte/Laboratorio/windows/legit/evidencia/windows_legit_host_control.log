@@ -1,0 +1,12 @@
+﻿[2026-11-10T12:59:04Z] [arm] arm: fijando mapa de dias con --t0 2026-11-10
+[2026-11-10T13:00:34Z] [arm] arm: logall_json ON verificado (manager_active=True daemons=2)
+[2026-11-10T13:00:34Z] [arm] arm OK
+[2026-11-10T13:02:37Z] [cleanup] cleanup: GHOSTS/PostgreSQL parados (api_procesos=0 postgres_parado=True)
+[2026-11-10T13:03:07Z] [cleanup] cleanup: logall_json=no verificado
+[2026-11-10T13:03:07Z] [cleanup] cleanup: CONFIG_IDENTICA
+[2026-11-10T13:03:09Z] [cleanup] cleanup: guardarrailes fallos=0 vms_cero=False
+[2026-11-10T13:03:09Z] [cleanup] cleanup FALLO: quedan VMs encendidas
+[2026-11-10T13:05:52Z] [cleanup] cleanup: GHOSTS/PostgreSQL parados (api_procesos=0 postgres_parado=True)
+[2026-11-10T13:06:23Z] [cleanup] cleanup: logall_json=no verificado
+[2026-11-10T13:06:23Z] [cleanup] cleanup: CONFIG_IDENTICA
+[2026-11-10T13:06:25Z] [cleanup] cleanup: guardarrailes fallos=0 victima_windows_off=True victima_linux_off=True manager_on=True

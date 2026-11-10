@@ -16,6 +16,10 @@ venv/
 # Excepción R-13 (fase-03-piloto): la evidencia de las ventanas de ataque
 # (times.log, sink.log) SÍ se versiona.
 !Dataset/Ataques/Resultados/**/Logs/**
+# Excepción W3 (bloque windows-legit-prep): la evidencia de la ventana legítima de
+# Windows (control, vigilancia y drytest) SÍ se versiona. No desactiva `*.log`.
+!Soporte/Laboratorio/windows/legit/evidencia/
+!Soporte/Laboratorio/windows/legit/evidencia/*.log
 
 # STIX MITRE ATT&CK (fichero grande ~53 MB; se regenera con
 # _artefactos/scripts/extraer_tecnicas_host.py). Se versionan la URL y el
