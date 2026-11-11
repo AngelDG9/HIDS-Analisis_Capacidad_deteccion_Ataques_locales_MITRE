@@ -6,6 +6,10 @@
 #   prep    : G-W1..G-W12 -> revert a `lab-listo-windows-legit` + arranque + deploy
 #             idempotente + verificacion del invitado + SINK 9095 arriba y POST de
 #             prueba (si no, exit 48) + manifiesto si esta sellado (si DIFIERE, exit 46).
+#             C8: ANTES de tocar nada ejecuta `verificar_sellos_windows.py`; si el
+#             sello no cuadra o no cubre lo critico -> exit 56.
+#             C4: crea la regla de firewall `TFG-hb-9095` (TCP 9095 desde
+#             192.168.65.0/24) solo si no existe; si no puede -> exit 57.
 #             Puerta G-1: `DEFENDER_OFF=1` y `SESION_ANGEL=1` o exit 47. Lista negra
 #             7.3 completa (G-2): si hay residuos, exit 46. NO arma.
 #             F-1.2: al empezar ventana nueva ARCHIVA `heartbeat.jsonl` (host) y
@@ -20,11 +24,15 @@
 #             host (chivato por red). G-W13 (nuevo): frescura <= 12 min, `seq` monotono
 #             y `ka_instancias=1`. G-W5/G-W8/G-W9/G-W10/G-W11 salen del latido.
 #   crudo   : copia `archives` + `alerts` del manager a
-#             `D:\TFG-VMs\legitimo-windows-<fecha>\crudo\`, sella sha256 + MANIFEST.tsv,
-#             calcula `M` de la copia y escribe `crudo.done`.
+#             `D:\TFG-VMs\legitimo-windows-<fecha>\crudo\`, por **dias UTC D..D+2**
+#             (como Linux `exportar_denominador.sh:57-74`), incluyendo `.gz`, su
+#             `.sum`, el plano diario y los vivos `archives.json`/`alerts.json`;
+#             sella sha256 + MANIFEST.tsv, calcula `M` de la copia y escribe
+#             `crudo.done` (con TZ y lista de dias).
 #   stop    : parada suave: crea `stop.flag`, espera a que el bucle salga, borra el flag,
 #             para el sink. SOLO si existe `cosecha.done` (orden critico).
 #   cleanup : BLOQUEADO sin `crudo.done` (exit 84). Despues: stop.flag + bucle + sink,
+#             retira la regla `TFG-hb-9095` y verifica que no queda (si no, exit 86),
 #             desregistra tareas, para la VM, `logall_json off` + CONFIG_IDENTICA,
 #             para GHOSTS; deja 0 VMs de medida.
 #   status  : imprime el estado (incluye HB_EDAD_MIN, KA_PID, CLIENTE_*, DEFENDER_*,
@@ -57,6 +65,10 @@
 #   `watch`/`crudo`/`cleanup` aceptan `-Heartbeat` (ruta del JSONL del chivato).
 #   `prep -SoloListaNegra` y `prep -SimularVerificador <fichero>` son SOLO PRUEBAS
 #   (lista negra read-only / puerta G-1 sin tocar la VM).
+#   `prep -SoloSellos` es SOLO PRUEBA (gate C8 read-only: sello Windows completo y
+#   coherente; sale 0/56 sin tocar la VM).
+#   `prep -SoloParidad` es SOLO GATE (bloque 2 de paridad con `--gate-prep`: sin
+#   M/crudo es FALLO; sale 0/58). No se usa en el prep normal de una ventana nueva.
 # ============================================================================
 [CmdletBinding()]
 param(
@@ -77,6 +89,14 @@ param(
   # sin revertir ni desplegar. Es la prueba negativa reproducible: alterar un fichero
   # del invitado => `MANIFIESTO_SNAPSHOT=DIFIERE` + exit 46.
   [switch]$SoloManifiesto,
+  # C8: `prep -SoloSellos` ejecuta SOLO el gate del sello Windows (read-only) y sale
+  # con 0 (PASS) o 56 (FAIL), sin revertir, sin arrancar la VM y sin tocar el sink.
+  [switch]$SoloSellos,
+  # C5-bis: `prep -SoloParidad` ejecuta el bloque 2 de `verificar_paridad_windows.py`
+  # en modo gate (`--gate-prep`: sin M/crudo es FALLO, no SKIP). Read-only. Se usa
+  # cuando ya existe una captura (re-prep/cierre); el prep normal de una ventana
+  # nueva NO puede exigir M/crudo porque todavía no existen.
+  [switch]$SoloParidad,
   # SOLO PRUEBAS (T2b-1b): inyecta la salida de `verificar_windows.ps1` desde un fichero
   # en lugar de pedirla por SSH. Sirve para probar la puerta `exit 47` (G-1) sin tocar
   # Defender ni la VM. En operacion normal NO se usa (vacio).
@@ -118,6 +138,13 @@ $VentanaFile = Join-Path $Evid 'ventana_actual.json'
 $ManEsp      = Join-Path $Evid 'manifiesto_esperado.json'
 $SinkCtl     = Join-Path $Win 'legit\heartbeat_sink_ctl.ps1'
 $SinkUrl     = "http://${SinkBind}:${SinkPort}"
+# C4: regla de firewall del sink (entrada TCP 9095 solo desde la red de VMware).
+$FwName      = 'TFG-hb-9095'
+$FwRemote    = '192.168.65.0/24'
+# Windows normaliza la máscara: `Get-NetFirewallAddressFilter` devuelve
+# `192.168.65.0/255.255.255.0` aunque se cree con `/24`.
+$FwRemoteAlt = '192.168.65.0/255.255.255.0'
+$FwDesc      = 'TFG HIDS - latido del invitado Windows (C4)'
 
 # `watch` lee el latido en LOCAL; este flag hace que G-W5/G-W8/G-W9/G-W10/G-W11 no
 # abran NINGUNA sesion SSH contra el invitado. `$script:SshInvitado` cuenta las que
@@ -294,6 +321,18 @@ function Get-Heartbeat {
   return @{ ok = $true; last = $last; seq_ok = $seqOk; edad_min = $edad; n = $objs.Count; parcial = $parcial; motivo = '' }
 }
 
+function Test-SellosWindows {
+  # C8: gate de sellos Windows. Delega en `verificar_sellos_windows.py` (equivalente
+  # a `sha256sum -c` sobre las rutas Windows + cobertura de lo critico). READ-ONLY.
+  $gatePy = Join-Path $Repo '_artefactos\scripts\verificar_sellos_windows.py'
+  if (-not (Test-Path $gatePy)) {
+    return @{ ok = $false; rc = 2; out = "FALTA $gatePy" }
+  }
+  $out = & $Py $gatePy 2>&1 | Out-String
+  $rc = $LASTEXITCODE
+  return @{ ok = ($rc -eq 0); rc = $rc; out = $out }
+}
+
 function Test-ManifiestoEsperado {
   # CA-W3b-17: compara el manifiesto del invitado con el sello del HOST
   # (`manifiesto_esperado.json`). READ-ONLY: no escribe en la VM. Si no hay sello,
@@ -392,6 +431,69 @@ function Test-PuertoSink {
     $c.EndConnect($iar)
     return $true
   } catch { return $false } finally { $c.Close() }
+}
+
+function Test-ReglaFirewallHb {
+  # C4: comprueba la regla `TFG-hb-9095` (nombre, direccion, accion, TCP/9095 y
+  # origen 192.168.65.0/24). No crea ni borra nada.
+  $rs = @(Get-NetFirewallRule -DisplayName $FwName -ErrorAction SilentlyContinue)
+  if ($rs.Count -eq 0) { return @{ ok = $false; presente = $false; detalle = 'ausente' } }
+  $r = $rs[0]
+  $pf = @($r | Get-NetFirewallPortFilter)
+  $af = @($r | Get-NetFirewallAddressFilter)
+  $puerto = @($pf | ForEach-Object { [string]$_.LocalPort })
+  $proto  = @($pf | ForEach-Object { [string]$_.Protocol })
+  $remoto = @($af | ForEach-Object { [string]$_.RemoteAddress })
+  $ok = ([string]$r.Enabled -eq 'True') -and
+        ([string]$r.Direction -eq 'Inbound') -and
+        ([string]$r.Action -eq 'Allow') -and
+        ($puerto -contains [string]$SinkPort) -and
+        (($remoto -contains $FwRemote) -or ($remoto -contains $FwRemoteAlt)) -and
+        ($proto -contains 'TCP')
+  $det = "enabled=$($r.Enabled) dir=$($r.Direction) action=$($r.Action) " +
+         "proto=$($proto -join ',') puerto=$($puerto -join ',') remoto=$($remoto -join ',')"
+  return @{ ok = $ok; presente = $true; detalle = $det }
+}
+
+function Ensure-ReglaFirewallHb {
+  # C4: crea la regla SOLO si no existe; si ya existe, exige que cuadre. Si no puede
+  # crearla o no cuadra, devuelve $false (el llamador decide el `exit`).
+  $t = Test-ReglaFirewallHb
+  if ($t.presente) {
+    if ($t.ok) { Log "firewall: $FwName ya existe y cuadra ($($t.detalle))"; return $true }
+    Log "firewall FALLO: $FwName existe pero no cuadra ($($t.detalle))"; return $false
+  }
+  try {
+    New-NetFirewallRule -DisplayName $FwName -Direction Inbound -Action Allow `
+      -Protocol TCP -LocalPort $SinkPort -RemoteAddress $FwRemote -Profile Any `
+      -Enabled True -Description $FwDesc -ErrorAction Stop | Out-Null
+  } catch {
+    Log "firewall FALLO: no se pudo crear $FwName ($($_.Exception.Message))"; return $false
+  }
+  $t = Test-ReglaFirewallHb
+  if (-not $t.ok) {
+    Log "firewall FALLO: $FwName creada pero no verifica ($($t.detalle))"; return $false
+  }
+  Log "firewall: $FwName creada y verificada ($($t.detalle))"
+  return $true
+}
+
+function Remove-ReglaFirewallHb {
+  # C4: retira la regla y verifica que NO queda. Idempotente (ausente => OK).
+  $t = Test-ReglaFirewallHb
+  if (-not $t.presente) { Log "firewall: $FwName ya ausente"; return $true }
+  try {
+    Get-NetFirewallRule -DisplayName $FwName -ErrorAction Stop |
+      Remove-NetFirewallRule -ErrorAction Stop
+  } catch {
+    Log "firewall FALLO: no se pudo retirar $FwName ($($_.Exception.Message))"; return $false
+  }
+  $t = Test-ReglaFirewallHb
+  if ($t.presente) {
+    Log "firewall FALLO: $FwName sigue presente tras retirarla ($($t.detalle))"; return $false
+  }
+  Log "firewall: $FwName retirada y verificada ausente"
+  return $true
 }
 
 function Start-Sink {
@@ -846,6 +948,40 @@ switch ($Phase) {
   }
 
   'prep' {
+    # --- C8: gate del sello Windows (siempre, ANTES de tocar la VM) -----------
+    # Certifica que el codigo que va a medir la ventana es el que esta sellado y que
+    # el sello cubre todo lo critico. Si falla, `prep` NO sigue (exit 56).
+    if ($SoloSellos) {
+      $s = Test-SellosWindows
+      Write-Output $s.out
+      if (-not $s.ok) {
+        Log "prep -SoloSellos FALLO: sello Windows (rc=$($s.rc)) -> exit 56"
+        exit 56
+      }
+      Log 'prep -SoloSellos OK: sello Windows completo y coherente'
+      exit 0
+    }
+    $sello = Test-SellosWindows
+    if (-not $sello.ok) {
+      Write-Output $sello.out
+      Log "prep FALLO: gate de sellos Windows (C8, rc=$($sello.rc)) -> exit 56"
+      exit 56
+    }
+    Log 'prep: gate de sellos Windows OK (C8)'
+
+    # --- C5-bis: gate de datos (M/crudo) cuando ya existe una captura ----------
+    if ($SoloParidad) {
+      $paridad = Join-Path $Repo '_artefactos\scripts\verificar_paridad_windows.py'
+      $out = & $Py $paridad --bloque 2 --gate-prep 2>&1 | Out-String
+      Write-Output $out
+      if ($LASTEXITCODE -ne 0) {
+        Log "prep -SoloParidad FALLO: M/crudo ausente o sello incoherente (rc=$LASTEXITCODE) -> exit 58"
+        exit 58
+      }
+      Log 'prep -SoloParidad OK: M/crudo presentes y sellos coherentes'
+      exit 0
+    }
+
     # --- G-2 read-only: `prep -SoloListaNegra` (prueba negativa reproducible) ---
     if ($SoloManifiesto) {
       $m = Test-ManifiestoEsperado
@@ -891,6 +1027,11 @@ switch ($Phase) {
       }
       Stop-Sink
       if (Test-PuertoSink) { Log 'prep FALLO: no se pudo parar el sink -> exit 48'; exit 48 }
+    }
+    # --- C4: regla de firewall del sink (crear solo si no existe; verificar) ---
+    if (-not (Ensure-ReglaFirewallHb)) {
+      Log "prep FALLO: regla de firewall $FwName no disponible -> exit 57"
+      exit 57
     }
     # F-1.2: ventana nueva => archivar latido anterior y re-sembrar el sink.
     Reset-Heartbeat
@@ -1063,13 +1204,65 @@ switch ($Phase) {
     New-Item -ItemType Directory -Force -Path $dirA, $dirL | Out-Null
     Log "crudo: copiando archives+alerts del manager a $dest"
 
-    # 1) lista de ficheros (actuales + rotaciones dentro de la ventana)
-    $desde = if ($vent.t0) { ([datetime]$vent.t0).ToUniversalTime().ToString('yyyy-MM-dd HH:mm:ss') } else { '' }
-    $filtro = if ($desde) { "-newermt '$desde'" } else { '' }
-    $listaCmd = "sudo -S -p '' find /var/ossec/logs/archives /var/ossec/logs/alerts -type f \( -name 'archives.json' -o -name 'alerts.json' -o -name 'ossec-archive-*.json.gz' -o -name 'ossec-alert-*.json.gz' \) $filtro 2>/dev/null"
-    $lista = Invoke-Manager $listaCmd
+    # 1) lista de ficheros por **dia UTC D..D+2** (espejo de Linux
+    # `exportar_denominador.sh:57-74`). NO se selecciona por mtime con hora local:
+    # si el manager no esta en UTC, `M` perderia/incluiria horas. El script bash se
+    # envia en base64 para no pelear con las comillas de PowerShell/SSH.
+    $t0Utc = if ($vent.t0) {
+      ([datetime]$vent.t0).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
+    } else {
+      ([datetime]$vent.fecha).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
+    }
+    # <CRUDO_UTC_BASH>
+    $crudoSh = @'
+set -u
+ARCHDIR="${TFG_ARCHDIR:-/var/ossec/logs/archives}"
+ALERTDIR="${TFG_ALERTDIR:-/var/ossec/logs/alerts}"
+T0="__T0__"
+d0=$(date -u -d "$T0" +%Y-%m-%d) || { echo "AVISO=date_invalida:$T0"; exit 1; }
+echo "TZ=$(date +%Z)"
+echo "UTC=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+for k in 0 1 2; do
+  dia=$(date -u -d "$d0 +$k day" +%Y-%m-%d)
+  anio=$(date -u -d "$dia" +%Y); mes=$(date -u -d "$dia" +%b); dd=$(date -u -d "$dia" +%d)
+  echo "DIA=$dia"
+  for par in "archives|$ARCHDIR|ossec-archive" "alerts|$ALERTDIR|ossec-alert"; do
+    sub=${par%%|*}; resto=${par#*|}; dir=${resto%%|*}; base=${resto##*|}
+    gz="$dir/$anio/$mes/$base-$dd.json.gz"
+    if [ -f "$gz" ]; then
+      echo "$gz"
+      if [ -f "$gz.sum" ]; then echo "$gz.sum"; else echo "AVISO=sin_sum:$gz"; fi
+    else
+      echo "AVISO=sin_gz:$dia:$sub"
+    fi
+    plano="$dir/$anio/$mes/$base-$dd.json"
+    if [ -f "$plano" ]; then echo "$plano"; fi
+  done
+done
+[ -f "$ARCHDIR/archives.json" ] && echo "$ARCHDIR/archives.json"
+[ -f "$ALERTDIR/alerts.json" ] && echo "$ALERTDIR/alerts.json"
+exit 0
+'@
+    # </CRUDO_UTC_BASH>
+    $crudoSh = $crudoSh.Replace('__T0__', $t0Utc)
+    $b64 = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($crudoSh))
+    $lista = Invoke-Manager "echo $b64 | base64 -d | bash"
     if (-not $lista) { Log 'crudo FALLO: el manager no devolvio ficheros (inaccesible o sin sudo)'; exit 85 }
-    $archivos = @(($lista -split "`r?`n") | Where-Object { $_.Trim() } | ForEach-Object { $_.Trim() })
+    $lineasLista = @(($lista -split "`r?`n") | ForEach-Object { $_.Trim() } |
+                     Where-Object { $_ })
+    $archivos = @($lineasLista | Where-Object { $_ -match '^/var/ossec/logs/(archives|alerts)/' })
+    $tz = (($lineasLista | Where-Object { $_ -match '^TZ=' } | Select-Object -First 1) -replace '^TZ=', '')
+    if (-not $tz) { $tz = 'desconocida' }
+    $dias = @($lineasLista | Where-Object { $_ -match '^DIA=' } |
+              ForEach-Object { $_ -replace '^DIA=', '' })
+    $avisos = @($lineasLista | Where-Object { $_ -match '^AVISO=' })
+    if ($archivos.Count -eq 0) {
+      Log "crudo FALLO: no hay ficheros para dias $($dias -join ',') TZ=$tz"
+      exit 85
+    }
+    Log ("crudo: criterio=utc_dias_D_D+2 tz=" + $tz + " dias=" + ($dias -join ',') +
+         " ficheros=" + $archivos.Count +
+         $(if ($avisos.Count -gt 0) { " avisos=" + (($avisos -join ';')) } else { '' }))
 
     # 2) staging legible por `angel` y scp (binario-safe; no se re-codifica por stdout)
     # OJO: cada `sudo` va en SU PROPIA sesion SSH. Con `sudo1 && sudo2` el segundo
@@ -1081,7 +1274,7 @@ switch ($Phase) {
     $stOk = Invoke-Manager "test -d $stage/archives && test -d $stage/alerts && echo STAGE_OK"
     if (-not $stOk -or $stOk -notmatch 'STAGE_OK') { Log "crudo FALLO: no se pudo crear el staging $stage"; exit 85 }
     foreach ($p in $archivos) {
-      $sub = if ($p -like '*/archives/*') { 'archives' } else { 'alerts' }
+      $sub = if ($p -match '/archives/') { 'archives' } else { 'alerts' }
       Invoke-Manager "sudo -S -p '' cp '$p' '$stage/$sub/'" | Out-Null
     }
     Invoke-Manager "sudo -S -p '' chmod -R a+rX $stage" | Out-Null
@@ -1108,8 +1301,14 @@ switch ($Phase) {
     $lineas | Set-Content -Path $man -Encoding utf8
     $shaMan = (Get-FileHash -LiteralPath $man -Algorithm SHA256).Hash.ToLower()
 
-    # 4) `M` de la COPIA (unidad = linea de `archives`, agente 002; CA-W3b-23)
-    $archLocales = @(Get-ChildItem -Path $dirA -File | ForEach-Object { $_.FullName })
+    # 4) `M` de la COPIA (unidad = linea de `archives`, agente 002; CA-W3b-23).
+    # OJO: solo `archives.json` y `ossec-archive-*.json.gz`. Los `.sum` y los planos
+    # `.json` que ahora se copian NO entran en `M` (el plano duplica el .gz y
+    # `--estricto` lo rechazaria por solape).
+    $archLocales = @(Get-ChildItem -Path $dirA -File |
+      Where-Object { $_.Name -eq 'archives.json' -or $_.Name -like 'ossec-archive-*.json.gz' } |
+      ForEach-Object { $_.FullName })
+    if ($archLocales.Count -eq 0) { Log 'crudo FALLO: no hay archives para calcular M'; exit 85 }
     $mCsv = Join-Path $dest 'denominador_M.csv'
     $mMan = Join-Path $dest 'denominador_manifest.tsv'
     $argsM = @($archLocales) + @('--agent-id', '002', '--agent-name', 'victima-windows', '--boveda-version', '3', '--estricto', '--out', $mCsv, '--manifest', $mMan)
@@ -1121,17 +1320,24 @@ switch ($Phase) {
 
     # 5) crudo.done (es la puerta de `cleanup`)
     $done = Join-Path $dest 'crudo.done'
+    $planos = @($archivos | Where-Object { $_ -match '\.json$' })
+    $sums = @($archivos | Where-Object { $_ -match '\.sum$' })
     @(
       "crudo_utc=$(Ts)",
+      "criterio=utc_dias_D_D+2",
+      "tz=$tz",
+      "dias=$($dias -join ',')",
       "fecha=$($vent.fecha)",
       "t0=$($vent.t0)",
       "t1=$($vent.t1)",
       "ficheros=$($archivos.Count)",
+      "sums=$($sums.Count)",
+      "planos=$($planos.Count)",
       "manifest_sha256=$shaMan",
       "M_rc=$rcM",
       "M_csv=$mCsv"
     ) | Set-Content -Path $done -Encoding utf8
-    Log "crudo OK: $dest (ficheros=$($archivos.Count) manifest=$shaMan M_rc=$rcM)"
+    Log "crudo OK: $dest (criterio=utc_dias_D_D+2 tz=$tz dias=$($dias -join ',') ficheros=$($archivos.Count) sums=$($sums.Count) planos=$($planos.Count) manifest=$shaMan M_rc=$rcM)"
   }
 
   'stop' {
@@ -1183,6 +1389,11 @@ switch ($Phase) {
     Invoke-Remote 'schtasks /delete /tn TFG-WinLegit-Actividad /f' -PermitirFallo | Out-Null
     Invoke-Remote 'schtasks /delete /tn TFG-WinLegit-Keepalive /f' -PermitirFallo | Out-Null
     if (Get-VmEnMarcha $Vmx) { & $Vmrun -T ws stop $Vmx soft | Out-Null }
+    # C4: retirar la regla del sink y verificar que NO queda (residuo = fallo de cierre).
+    if (-not (Remove-ReglaFirewallHb)) {
+      Log "cleanup FALLO: la regla $FwName sigue presente -> exit 86"
+      exit 86
+    }
     # D5: parar GHOSTS API + PostgreSQL del host (espejo del cleanup Linux). No borra datos.
     $stopGhosts = Join-Path $Ghosts 'stop_ghosts.ps1'
     if (Test-Path $stopGhosts) {

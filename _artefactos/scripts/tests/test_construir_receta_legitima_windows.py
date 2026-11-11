@@ -392,3 +392,49 @@ def test_validar_detecta_un_binario_no_declarado(generado, tmp_path):
     p.write_text(json.dumps(tl, indent=1, ensure_ascii=False), encoding="utf-8")
     res = W.validar(str(copia), verbose=False)
     assert any("binario no permitido" in f for f in res["fallos"]), res["fallos"]
+
+
+# --------------------------------------------------------------------------
+# 8 · comillas solo donde se declaran (C5-bis) y binarios anidados
+# --------------------------------------------------------------------------
+def test_comillas_compensadas_pero_no_declaradas_fallan():
+    """Dos comillas (par) no bastan: si no son de una plantilla declarada, fallan."""
+    cmd = r'cd /d C:\Users\angel && echo "x"'
+    assert cmd.count('"') % 2 == 0
+    fallos = W.validar_comando(cmd)
+    assert any("comillas fuera de plantilla declarada" in f for f in fallos), fallos
+
+
+@pytest.mark.parametrize("cmd", [
+    r'cd /d C:\Users\angel && curl.exe -sS -A "TFG-Legit/1.0" http://intranet.local:8080/',
+    r'cd /d C:\Users\angel && curl.exe -sS -H "Accept: text/html" http://x/',
+    r'cd /d C:\Users\angel && curl.exe -sS -w "%{http_code}" http://x/',
+    r'cd /d C:\Users\angel\Documentos\informes && find /c /v "" '
+    r'C:\Users\angel\Documentos\informes\informe.txt',
+    r'cd /d C:\Users\angel\Documentos\informes && find /c "informe" '
+    r'C:\Users\angel\Documentos\informes\informe.txt',
+    r'cd /d C:\Users\angel && findstr /c:"192.168.65." C:\Users\angel\x.txt',
+    r'cd /d C:\Users\angel && powershell -NoProfile -Command "Write-Output x"',
+    r'cd /d C:\Users\angel && eventcreate /T INFORMATION /ID 100 /L APPLICATION '
+    r'/SO x /D "nota"',
+])
+def test_comillas_declaradas_pasan(cmd):
+    fallos = W.validar_comando(cmd)
+    assert not any("comillas" in f for f in fallos), fallos
+
+
+def test_powershell_con_cmdlets_no_inventa_binarios():
+    cmd = (r'cd /d C:\Users\angel && powershell -NoProfile -Command "$c = '
+           r'(Get-Content -LiteralPath \'C:\Users\angel\a.csv\') -replace \';\',\',\'; '
+           r'Set-Content -LiteralPath \'C:\Users\angel\a.csv\' -Value $c"')
+    assert not any("binario no permitido" in f for f in W.validar_comando(cmd))
+
+
+@pytest.mark.parametrize("cmd", [
+    r'cd /d C:\Users\angel && start /b whoami2.exe',
+    r'cd /d C:\Users\angel && powershell -NoProfile -Command "whoami2.exe"',
+])
+def test_binario_anidado_sigue_siendo_un_binario(cmd):
+    """C5-bis: `start` y `powershell -Command` no son una carta blanca."""
+    fallos = W.validar_comando(cmd)
+    assert any("binario no permitido 'whoami2'" in f for f in fallos), fallos

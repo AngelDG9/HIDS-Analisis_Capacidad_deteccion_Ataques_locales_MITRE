@@ -67,6 +67,13 @@ RE_IF = re.compile(r"^if\s+(?:not\s+)?(?:errorlevel\s+\d+|\S+\s*==\s*\S+|exist\s
                    re.I)
 #: `for /L %i in (…) do <cuerpo>` (y `/f`, `/d`, `/r`).
 RE_FOR = re.compile(r"^for\s+/[a-z]\s+%{1,2}[A-Za-z]\s+in\s*\(.*?\)\s*do\s+(.*)$", re.I | re.S)
+#: `start [/opciones] ["titulo"] <comando>`: el comando anidado sí se ejecuta.
+RE_START = re.compile(r"^@?start(?:\.exe)?\s+(.*)$", re.I | re.S)
+#: `powershell [-opciones] -Command "<script>"`.
+RE_PS = re.compile(r"^@?(?:powershell|pwsh)(?:\.exe)?\b(.*)$", re.I | re.S)
+RE_PS_CMD = re.compile(r"-command\s+(.*)$", re.I | re.S)
+#: Un cmdlet (`Get-Content`, `Set-Content`…) no es una herramienta externa.
+RE_PS_CMDLET = re.compile(r"^[A-Za-z]+-[A-Za-z][\w-]*$")
 
 
 def _segmentos(cmd: str):
@@ -121,6 +128,59 @@ def _tokens(cmd: str):
     return out
 
 
+def _tokens_powershell(script: str):
+    """Herramientas externas dentro de un `-Command` de PowerShell.
+
+    No es un parser de PowerShell: enmascara las cadenas de comillas simples,
+    parte por `;`/`|` y extrae el primer token de cada sentencia que **no** sea
+    cmdlet `Verbo-Sustantivo`, variable, tipo, palabra clave o expresión. Además
+    recoge cualquier `*.exe` mencionado. Así `powershell -Command "whoami2.exe"`
+    deja de pasar como si solo ejecutara `powershell`.
+    """
+    sin_citas = re.sub(r"'[^']*'", "''", script)
+    out = set()
+    for stmt in re.split(r";|\|", sin_citas):
+        s = stmt.strip().lstrip("(").strip()
+        if not s:
+            continue
+        if re.match(r"^\$[\w:]+\s*=", s):          # asignación: mirar el lado derecho
+            s = s.split("=", 1)[1].strip().lstrip("(").strip()
+        tok = s.split()[0].strip('"\'()') if s.split() else ""
+        if not tok:
+            continue
+        if tok.lower() in _PS_KEYWORDS:
+            continue
+        if RE_PS_CMDLET.match(tok):                 # Get-Content, Set-Content…
+            continue
+        if tok.startswith(("$", "[", "{", "}", "&", "%", "(", ")")):
+            continue
+        if any(c in tok for c in "(){}=,;\"'"):
+            continue
+        base = tok.replace("/", "\\").split("\\")[-1].lower()
+        if base.endswith(".exe"):
+            base = base[:-4]
+        if not base or base in BUILTINS or base in SHELLS:
+            continue
+        if "\\" in tok or "/" in tok or ":" in tok:  # rutas/valores, no un binario
+            continue
+        out.add(base)
+    for m in re.finditer(r"(?<![\w.-])([A-Za-z0-9_.-]+\.exe)\b", sin_citas, re.I):
+        base = m.group(1).lower()
+        if base.endswith(".exe"):
+            base = base[:-4]
+        if base and base not in BUILTINS and base not in SHELLS:
+            out.add(base)
+    return out
+
+
+#: Palabras clave de PowerShell que no ejecutan una herramienta externa.
+_PS_KEYWORDS = frozenset({
+    "for", "foreach", "while", "if", "else", "elseif", "try", "catch", "finally",
+    "function", "param", "return", "throw", "switch", "do", "until", "begin",
+    "process", "end", "in", "not", "and", "or", "break", "continue",
+})
+
+
 def _tokens_seg(seg: str):
     seg = RE_REDIR.sub(" ", seg).strip().lstrip("@").strip()
     if not seg:
@@ -140,6 +200,40 @@ def _tokens_seg(seg: str):
     m = re.match(r"^@?cmd(?:\.exe)?\s+/[ck]\s+(.*)$", seg, re.I | re.S)
     if m:
         return _tokens(m.group(1))
+    # C5-bis: `start` es un builtin, pero su comando anidado SÍ se ejecuta.
+    m = RE_START.match(seg)
+    if m:
+        resto = m.group(1).strip()
+
+        def _quitar_opciones(texto):
+            while texto.startswith("/"):
+                partes = texto.split(None, 1)
+                texto = partes[1].strip() if len(partes) > 1 else ""
+            return texto
+
+        resto = _quitar_opciones(resto)
+        if resto.startswith('"'):
+            fin = resto.find('"', 1)
+            if fin != -1:
+                tras = resto[fin + 1:].strip()
+                if tras:                     # era el título; el comando va detrás
+                    resto = _quitar_opciones(tras)
+                else:                        # el único token era el comando
+                    resto = resto[1:fin]
+        if resto.startswith('"') and resto.endswith('"') and resto.count('"') == 2:
+            resto = resto[1:-1]
+        return _tokens(resto) if resto else set()
+    # C5-bis: `powershell -Command "<script>"` puede lanzar un binario anidado.
+    m = RE_PS.match(seg)
+    if m:
+        out = {"powershell"}
+        mc = RE_PS_CMD.search(m.group(1))
+        if mc:
+            script = mc.group(1).strip()
+            if script.startswith('"') and script.endswith('"'):
+                script = script[1:-1]
+            out |= _tokens_powershell(script)
+        return out
     limpio = RE_IF.sub("", seg).strip()
     if limpio != seg:
         return _tokens(limpio) if limpio else set()

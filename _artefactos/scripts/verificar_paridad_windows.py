@@ -29,6 +29,7 @@ Uso:
     python _artefactos/scripts/verificar_paridad_windows.py
     python _artefactos/scripts/verificar_paridad_windows.py --bloque 1
     python _artefactos/scripts/verificar_paridad_windows.py --bloque 2 --m RUTA_M.csv
+    python _artefactos/scripts/verificar_paridad_windows.py --bloque 2 --gate-prep
     python _artefactos/scripts/verificar_paridad_windows.py --bloque 3 --canary-out DIR
     python _artefactos/scripts/verificar_paridad_windows.py --sin-escribir
 
@@ -56,6 +57,7 @@ import campana                         # noqa: E402  (validador de la campaña L
 import campana_windows as CW          # noqa: E402  (campaña Windows)
 import construir_receta_legitima as L  # noqa: E402
 import construir_receta_legitima_windows as W  # noqa: E402
+from verificar_sellos_windows import RUTAS_CRITICAS as RUTAS_SELLO_OBLIGATORIAS  # noqa: E402
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 DIR_LX = os.path.join(RAIZ, "Soporte", "Laboratorio", "legitimo_72h", "recetas")
@@ -68,42 +70,9 @@ BUILD = os.path.join(RAIZ, "Soporte", "Laboratorio", "windows", "legit", "BUILD.
 CANARY_DIR = os.path.join(EVID, "canary_windows")
 
 #: Ficheros que el sello **debe** cubrir (D-08). Es la lista blanca del plan §5.1;
-#: no incluye evidencias ni logs (crecen y no son código).
-RUTAS_SELLO_OBLIGATORIAS = (
-    "Soporte/Laboratorio/windows/recetas/w1.json",
-    "Soporte/Laboratorio/windows/recetas/w2.json",
-    "Soporte/Laboratorio/windows/recetas/w3.json",
-    "Soporte/Laboratorio/windows/recetas/calendario_windows.json",
-    "Soporte/Laboratorio/windows/recetas/bloques_windows.env",
-    "Soporte/Laboratorio/windows/recetas/receta_windows_resumen.md",
-    "Soporte/Laboratorio/windows/campana/campana_windows.csv",
-    "Soporte/Laboratorio/windows/campana/casos_windows.md",
-    "Soporte/Laboratorio/windows/windows_legit_host_control.ps1",
-    "Soporte/Laboratorio/windows/deploy_windows.ps1",
-    "Soporte/Laboratorio/windows/guest/instalar_tareas_windows.ps1",
-    "Soporte/Laboratorio/windows/guest/preparar_invitado_windows.ps1",
-    "Soporte/Laboratorio/windows/guest/tfg_keepalive_windows.ps1",
-    "Soporte/Laboratorio/windows/guest/verificar_windows.ps1",
-    "Soporte/Laboratorio/windows/manifiesto_snapshot.ps1",
-    "Soporte/Laboratorio/windows/legit/heartbeat_sink.py",
-    "Soporte/Laboratorio/windows/legit/BUILD.md",
-    "_artefactos/scripts/construir_receta_legitima_windows.py",
-    "_artefactos/scripts/campana_windows.py",
-    "_artefactos/scripts/extraer_alertas_windows.py",
-    "_artefactos/scripts/extraer_campana_windows.py",
-    "_artefactos/scripts/cobertura_herramientas_windows.py",
-    "_artefactos/scripts/verificar_espejo.py",
-    "_artefactos/scripts/verificar_paridad_windows.py",
-    "_artefactos/scripts/etiquetar_operador_legit.py",
-    "_artefactos/scripts/tests/test_construir_receta_legitima_windows.py",
-    "_artefactos/scripts/tests/test_verificar_paridad_windows.py",
-    "_artefactos/scripts/tests/test_campana_windows.py",
-    "_artefactos/scripts/tests/test_verificar_espejo.py",
-    "_artefactos/scripts/tests/test_extraer_alertas_windows.py",
-    "_artefactos/scripts/tests/test_extraer_campana_windows.py",
-    "_artefactos/scripts/tests/test_cobertura_herramientas_windows.py",
-    "_artefactos/scripts/tests/test_ejecucion_windows.py",
-)
+#: no incluye evidencias ni logs (crecen y no son código). Fuente única: el gate
+#: `verificar_sellos_windows.py`, para que cobertura y `sha256sum -c` no discrepen.
+#: (Se importa como `RUTAS_SELLO_OBLIGATORIAS`.)
 
 #: Divergencias **deliberadas** (plan §5.2). Cada una exige las tres piezas:
 #: (1) motivo, (2) prueba de que es segura, (3) test que la protege.
@@ -128,7 +97,8 @@ DIVERGENCIAS_DECLARADAS = {
                   "PowerShell, `curl.exe -A/-H/-w`, `findstr /c:\"…\"` y `eventcreate /D \"…\"`.",
         "prueba": "0 comillas dobles en d1/d2/d3.json; en Windows son obligatorias por la "
                   "sintaxis de `cmd` y están limitadas a las plantillas declaradas.",
-        "test": "tests/test_construir_receta_legitima_windows.py::test_comillas_compensadas",
+        "test": "tests/test_construir_receta_legitima_windows.py::"
+                "test_comillas_compensadas_pero_no_declaradas_fallan",
     },
 }
 
@@ -468,9 +438,11 @@ def _kv(path: str):
     return out
 
 
-def comprobar_m(path: str):
+def comprobar_m(path: str, estricto: bool = False):
     if not path or not os.path.isfile(path):
-        return [_estado("M-01", False, f"no existe el M: {path}", warn=True)]
+        # C5-bis: en el gate de `prep` la ausencia del M es FALLO, no SKIP. En una
+        # consulta suelta sigue siendo SKIP (aún no hay ventana).
+        return [_estado("M-01", False, f"no existe el M: {path}", warn=not estricto)]
     out = []
     with open(path, encoding="utf-8-sig", errors="replace") as fh:
         lineas = [l.rstrip("\n") for l in fh if l.strip()]
@@ -598,9 +570,11 @@ def comprobar_manifiesto(path: str = MANIFIESTO):
     return out
 
 
-def comprobar_crudo(crudo_dir: str | None):
+def comprobar_crudo(crudo_dir: str | None, estricto: bool = False):
     if not crudo_dir:
-        return [_estado("CRUDO-01", False, "no hay crudo de Windows: se omite", warn=True)]
+        # C5-bis: en el gate de `prep` la ausencia del crudo es FALLO, no SKIP.
+        return [_estado("CRUDO-01", False, "no hay crudo de Windows: se omite",
+                        warn=not estricto)]
     done = os.path.join(crudo_dir, "crudo.done")
     if not os.path.isfile(done):
         return [_estado("CRUDO-01", False, f"no existe {done}")]
@@ -641,14 +615,14 @@ def comprobar_crudo(crudo_dir: str | None):
     return out
 
 
-def ejecutar_bloque2(m_path=None, crudo_dir=None):
+def ejecutar_bloque2(m_path=None, crudo_dir=None, gate_prep=False):
     entradas = []
     crudo = crudo_dir if crudo_dir is not None else _crudo_auto()
     done = os.path.join(crudo, "crudo.done") if crudo else None
     kv = _kv(done) if done and os.path.isfile(done) else {}
     m = m_path or kv.get("M_csv")
-    entradas += comprobar_m(m)
-    entradas += comprobar_crudo(crudo)
+    entradas += comprobar_m(m, estricto=gate_prep)
+    entradas += comprobar_crudo(crudo, estricto=gate_prep)
     entradas += comprobar_manifiesto()
     entradas += comprobar_sellos()
     fallos = [e for e in entradas if e["estado"] == "FALLO"]
@@ -810,8 +784,10 @@ def verificar_canary(enviados, history_path: str):
         else:
             faltan.append(p)
     sobran = list(restantes.elements())
+    # El docstring promete `history_timeline == enviados`: un sobrante también rompe
+    # la igualdad (no solo un faltante). Fallo cerrado en ambos sentidos.
     return {
-        "ok": not faltan and not fallo,
+        "ok": not faltan and not sobran and not fallo,
         "enviados": len(pl), "reportados": len(hist),
         "faltan": faltan, "sobran": sobran, "error": fallo,
     }
@@ -907,6 +883,8 @@ def main(argv=None):
     ap.add_argument("--m", default=None, help="denominador_M.csv de Windows")
     ap.add_argument("--crudo", default=None,
                     help="carpeta del crudo de Windows (contiene crudo.done)")
+    ap.add_argument("--gate-prep", action="store_true",
+                    help="modo gate: la ausencia de M o de crudo es FALLO, no SKIP")
     ap.add_argument("--sellos", default=SELLOS, help="sha256sums.txt global")
     ap.add_argument("--canary-out", default=CANARY_DIR,
                     help="carpeta de salida del canary")
@@ -920,7 +898,7 @@ def main(argv=None):
         _imprimir_bloque1(filas, fallos, div)
         resultados["BLOQUE1"] = not fallos
     if args.bloque in ("2", "todos"):
-        entradas, fallos = ejecutar_bloque2(args.m, args.crudo)
+        entradas, fallos = ejecutar_bloque2(args.m, args.crudo, gate_prep=args.gate_prep)
         _imprimir_bloque(entradas, "BLOQUE 2 — SELLOS Y METADATOS", fallos)
         resultados["BLOQUE2"] = not fallos
     if args.bloque in ("3", "todos"):

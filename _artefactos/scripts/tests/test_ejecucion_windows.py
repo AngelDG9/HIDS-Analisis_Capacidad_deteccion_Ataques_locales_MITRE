@@ -278,3 +278,101 @@ def test_bash_sha256sum_redirigido_se_lee(tmp_path):
     sha = tmp_path / "copias" / "copia.tar.gz.sha256"
     assert sha.is_file(), "la huella no se escribió en su fichero"
     assert len(p.stdout.split()) >= 1 and p.stdout.split()[0] in sha.read_text(encoding="utf-8")
+
+
+# --------------------------------------------------------------------------
+# C3 · `crudo` por días UTC D..D+2 + `.sum` + plano; C4 firewall; C8 sello
+# --------------------------------------------------------------------------
+PS = Path(W.RAIZ) / "Soporte" / "Laboratorio" / "windows" / \
+    "windows_legit_host_control.ps1"
+
+
+def _ps() -> str:
+    return PS.read_text(encoding="utf-8")
+
+
+def _snippet_crudo() -> str:
+    texto = _ps()
+    m = re.search(
+        r"# <CRUDO_UTC_BASH>\s*\$crudoSh = @'\r?\n(.*?)\r?\n'@\s*"
+        r"# </CRUDO_UTC_BASH>", texto, re.S)
+    assert m, "no se encontró el bloque CRUDO_UTC_BASH"
+    return m.group(1).replace("\r", "")
+
+
+def test_crudo_usa_dias_utc_y_no_mtime_local():
+    texto = _ps()
+    assert "-newermt" not in texto, "crudo sigue usando mtime local"
+    assert "date -u -d" in texto
+    assert "for k in 0 1 2" in texto
+    assert "criterio=utc_dias_D_D+2" in texto
+
+
+def test_crudo_copia_sum_y_plano_de_archives_y_alerts():
+    texto = _ps()
+    assert 'for par in "archives|$ARCHDIR|ossec-archive" "alerts|$ALERTDIR|ossec-alert"' in texto
+    assert '[ -f "$gz.sum" ]' in texto
+    assert 'plano="$dir/$anio/$mes/$base-$dd.json"' in texto
+    assert '"sums=$($sums.Count)"' in texto and '"planos=$($planos.Count)"' in texto
+
+
+def test_crudo_m_solo_usa_archives_json_y_gz():
+    texto = _ps()
+    assert "$_.Name -eq 'archives.json' -or $_.Name -like 'ossec-archive-*.json.gz'" in texto
+    assert "no hay archives para calcular M" in texto
+
+
+def _fake_crudo(tmp_path: Path):
+    for sub, base in (("archives", "ossec-archive"), ("alerts", "ossec-alert")):
+        d = tmp_path / sub / "2026" / "Nov"
+        d.mkdir(parents=True)
+        for dia in (11, 12, 13, 14):          # D+3 (14) NO debe seleccionarse
+            gz = d / f"{base}-{dia:02d}.json.gz"
+            gz.write_bytes(b"gz")
+            (d / f"{base}-{dia:02d}.json.gz.sum").write_bytes(b"sum")
+            (d / f"{base}-{dia:02d}.json").write_bytes(b"plano")
+        (tmp_path / sub / f"{sub}.json").write_bytes(b"vivo")
+    return tmp_path / "archives", tmp_path / "alerts"
+
+
+@pytest.mark.skipif(_bash() is None, reason="sin bash en este equipo")
+def test_bash_selecciona_dias_utc_y_suma_plano(tmp_path):
+    arch, alert = _fake_crudo(tmp_path)
+    script = _snippet_crudo().replace("__T0__", "2026-11-11T00:00:00Z")
+    env = os.environ.copy()
+    env["PATH"] = r"C:\Program Files\Git\usr\bin;" + env.get("PATH", "")
+    env["TFG_ARCHDIR"] = arch.as_posix()
+    env["TFG_ALERTDIR"] = alert.as_posix()
+    p = subprocess.run([_bash(), "-c", script], env=env,
+                       capture_output=True, text=True, timeout=120)
+    assert p.returncode == 0, p.stderr
+    lineas = [l.strip() for l in p.stdout.splitlines() if l.strip()]
+    assert any(l.startswith("TZ=") for l in lineas)
+    assert {"DIA=2026-11-11", "DIA=2026-11-12", "DIA=2026-11-13"} <= set(lineas)
+    for base in ("ossec-archive", "ossec-alert"):
+        for dia in (11, 12, 13):
+            assert any(l.endswith(f"{base}-{dia:02d}.json.gz") for l in lineas), (base, dia)
+            assert any(l.endswith(f"{base}-{dia:02d}.json.gz.sum") for l in lineas)
+            assert any(l.endswith(f"{base}-{dia:02d}.json") for l in lineas)
+        assert not any(f"{base}-14" in l for l in lineas), "se coló D+3"
+    assert any(l.endswith("archives.json") for l in lineas)
+    assert any(l.endswith("alerts.json") for l in lineas)
+
+
+def test_prep_crea_regla_firewall_y_cleanup_la_retira():
+    texto = _ps()
+    assert "New-NetFirewallRule" in texto
+    assert "-DisplayName $FwName" in texto
+    assert "-LocalPort $SinkPort -RemoteAddress $FwRemote" in texto
+    assert "Remove-NetFirewallRule" in texto
+    assert "exit 57" in texto and "exit 86" in texto
+    # la retirada está en cleanup, no en prep
+    assert texto.index("if (-not (Remove-ReglaFirewallHb))") > texto.index("'cleanup' {")
+
+
+def test_prep_ejecuta_el_gate_de_sellos_antes_de_tocar_la_vm():
+    texto = _ps()
+    assert "verificar_sellos_windows.py" in texto
+    assert "exit 56" in texto
+    assert texto.index("Test-SellosWindows") < texto.index("revertToSnapshot")
+    assert "-SoloSellos" in texto

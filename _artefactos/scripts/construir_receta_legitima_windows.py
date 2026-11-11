@@ -1458,6 +1458,41 @@ def validar(outdir: str, mapa_esperado=None, verbose=True):
     return resumen
 
 
+#: Comillas dobles: solo se admiten en las **plantillas declaradas** (C5-bis). El
+#: token anterior a la comilla identifica la plantilla y el binario que debe estar
+#: presente. Cualquier otra comilla es un fallo (aunque esté compensada).
+COMILLAS_PERMITIDAS = {
+    "-A": ("curl.exe",),       # curl -A "user-agent"
+    "-H": ("curl.exe",),       # curl -H "Accept: ..."
+    "-w": ("curl.exe",),       # curl -w "%{http_code}"
+    "/v": ("find ",),          # find /c /v ""
+    "/c": ("find ",),          # find /c "texto"
+    "/c:": ("findstr",),       # findstr /c:"texto"
+    "-Command": ("powershell",),  # powershell -Command "…"
+    "/D": ("eventcreate",),    # eventcreate … /D "texto"
+}
+
+
+def comillas_no_declaradas(cmd: str):
+    """Comillas dobles que no pertenecen a una plantilla declarada.
+
+    `cmd.count('"')` par solo garantiza que están compensadas; no que sean legítimas.
+    Aquí cada par debe ir precedido por uno de los tokens de `COMILLAS_PERMITIDAS`
+    **y** el comando debe contener el binario de esa plantilla.
+    """
+    if cmd.count('"') % 2:
+        return []                       # la compensación ya se reporta aparte
+    fallos = []
+    for m in re.finditer(r'"[^"]*"', cmd):
+        pre = cmd[:m.start()]
+        toks = pre.split()
+        tok = toks[-1] if toks else ""
+        req = COMILLAS_PERMITIDAS.get(tok)
+        if not req or not any(x in cmd for x in req):
+            fallos.append(f"comillas fuera de plantilla declarada ('{tok}'): {cmd[:80]}")
+    return fallos
+
+
 def validar_comando(cmd):
     """Invariantes de una acción Windows (CA-W1/CA-W3) y unidad de proceso."""
     fallos = []
@@ -1469,6 +1504,7 @@ def validar_comando(cmd):
         fallos.append(f"`cmd /c` de primer nivel (doble envoltorio): {cmd[:80]}")
     if cmd.count('"') % 2:
         fallos.append(f"comillas descompensadas: {cmd[:80]}")
+    fallos += comillas_no_declaradas(cmd)
     if "%RANDOM%" in cmd or "Get-Random" in cmd:
         fallos.append(f"aleatoriedad prohibida: {cmd[:80]}")
     if "-EncodedCommand" in cmd or "-WindowStyle" in cmd or "-ExecutionPolicy" in cmd:

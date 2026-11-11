@@ -122,3 +122,30 @@ def test_cobertura_real_3_de_50():
     assert inf["cubiertos"] == ["curl", "find", "tar"], inf
     assert inf["cobertura"] == 3, inf
     assert inf["campana"] == 15, inf
+
+
+# --------------------------------------------------------------------------
+# 4) Binarios anidados (C5-bis): `start` y `powershell -Command`
+# --------------------------------------------------------------------------
+@pytest.mark.parametrize("cmd,esperado", [
+    (r"cd /d C:\x && start /b whoami2.exe", {"whoami2"}),
+    (r'cd /d C:\x && start /min "titulo" /b whoami2.exe', {"whoami2"}),
+    (r'cd /d C:\x && powershell -NoProfile -Command "whoami2.exe"',
+     {"powershell", "whoami2"}),
+    (r'cd /d C:\x && powershell -NoProfile -Command "$p = Get-Item x; '
+     r'whoami2.exe"', {"powershell", "whoami2"}),
+])
+def test_binario_anidado_se_ve(cmd, esperado):
+    assert C._tokens(cmd) == esperado
+
+
+@pytest.mark.parametrize("cmd,esperado", [
+    (r"cd /d C:\x && start /b cmd /c echo x", set()),
+    (r'cd /d C:\x && start "" /b cmd /c echo x', set()),
+    (r'cd /d C:\x && powershell -NoProfile -Command "Write-Output x"',
+     {"powershell"}),
+    (r'cd /d C:\x && powershell -NoProfile -Command "$c = (Get-Content a.csv) '
+     r'-replace \';\',\',\'; Set-Content b.csv -Value $c"', {"powershell"}),
+])
+def test_los_builtins_anidados_no_inflan(cmd, esperado):
+    assert C._tokens(cmd) == esperado

@@ -244,3 +244,41 @@ def test_canary_lee_la_tabla_de_psql_de_we02(tmp_path):
         f" 7249 | 2026-11-11 17:57:35 | Command | {cmd}\n"
         "(1 fila)\n", encoding="utf-8")
     assert V.leer_history_timeline(str(p)) == [cmd]
+
+
+def test_canary_falla_tambien_con_sobrantes(tmp_path):
+    """C5-bis: el docstring dice `history_timeline == enviados`; sobrar también falla."""
+    hist = V.escribir_history_simulado(str(tmp_path / "hist.tsv"))
+    with open(hist, "a", encoding="utf-8") as fh:
+        fh.write("extra\t2026-11-11T00:01:00Z\tCommand\techo sobrante\n")
+    res = V.verificar_canary(None, hist)
+    assert res["ok"] is False
+    assert res["faltan"] == []
+    assert res["sobran"] == ["echo sobrante"]
+
+
+# --------------------------------------------------------------------------
+# Bloque 2 — modo gate de `prep` (C5-bis): sin M/crudo es FALLO, no SKIP
+# --------------------------------------------------------------------------
+def test_bloque2_sin_m_ni_crudo_es_skip_por_defecto(tmp_path, monkeypatch):
+    monkeypatch.setattr(V, "_crudo_auto", lambda: None)
+    monkeypatch.setattr(V, "comprobar_manifiesto",
+                        lambda *a, **k: [V._estado("MANIF-01", True, "ok")])
+    monkeypatch.setattr(V, "comprobar_sellos",
+                        lambda *a, **k: [V._estado("SELLO-01", True, "ok")])
+    entradas, fallos = V.ejecutar_bloque2(None, None, gate_prep=False)
+    est = {e["id"]: e["estado"] for e in entradas}
+    assert est["M-01"] == "SKIP" and est["CRUDO-01"] == "SKIP"
+    assert fallos == []
+
+
+def test_bloque2_en_gate_prep_sin_m_ni_crudo_es_fallo(tmp_path, monkeypatch):
+    monkeypatch.setattr(V, "_crudo_auto", lambda: None)
+    monkeypatch.setattr(V, "comprobar_manifiesto",
+                        lambda *a, **k: [V._estado("MANIF-01", True, "ok")])
+    monkeypatch.setattr(V, "comprobar_sellos",
+                        lambda *a, **k: [V._estado("SELLO-01", True, "ok")])
+    entradas, fallos = V.ejecutar_bloque2(None, None, gate_prep=True)
+    est = {e["id"]: e["estado"] for e in entradas}
+    assert est["M-01"] == "FALLO" and est["CRUDO-01"] == "FALLO"
+    assert len(fallos) == 2

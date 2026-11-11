@@ -856,6 +856,9 @@ def validar_comando(cmd: str):
         fallos.append(f"`cmd /c` de primer nivel (doble envoltorio): {cmd[:80]}")
     if cmd.count('"') % 2:
         fallos.append(f"comillas descompensadas: {cmd[:80]}")
+    # C5-bis: comillas solo donde se declaran (misma regla que la receta).
+    from construir_receta_legitima_windows import comillas_no_declaradas
+    fallos += comillas_no_declaradas(cmd)
     if "%RANDOM%" in cmd or "Get-Random" in cmd:
         fallos.append(f"aleatoriedad prohibida: {cmd[:80]}")
     if "-EncodedCommand" in cmd or "-WindowStyle" in cmd or "-ExecutionPolicy" in cmd:
