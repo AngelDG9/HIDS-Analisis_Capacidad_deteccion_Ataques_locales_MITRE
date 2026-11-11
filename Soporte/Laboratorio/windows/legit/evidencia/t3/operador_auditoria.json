@@ -1,0 +1,1550 @@
+{
+  "alerta_diseno": true,
+  "bloque": "windows-legit-prep",
+  "entrada": "alertas_detalle.csv",
+  "filas": 1433,
+  "marcadas": [
+    {
+      "agent_id": "002",
+      "evidencia": "win_parent_image=C:\\\\Program Files\\\\VMware\\\\VMware Tools\\\\vmtoolsd.exe",
+      "motivo": "vmware_tools",
+      "rule_id": "92052",
+      "timestamp_utc": "2026-11-11T15:05:52.847Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60106;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60106",
+      "timestamp_utc": "2026-11-11T15:05:52.909Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67023;win_user=sshd_4028;contexto=win_target_user=sshd_4028",
+      "motivo": "logon_operador",
+      "rule_id": "67023",
+      "timestamp_utc": "2026-11-11T15:05:53.030Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60137;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60137",
+      "timestamp_utc": "2026-11-11T15:05:53.062Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=\\\"C:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\\\" -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File \\\"C:\\\\Users\\\\angel\\\\ghosts-client\\\\tfg_keepalive_windows.ps1\\\"",
+      "motivo": "keepalive",
+      "rule_id": "92029",
+      "timestamp_utc": "2026-11-11T15:05:53.391Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67024;win_user=sshd_5184;contexto=win_target_user=sshd_5184",
+      "motivo": "logon_operador",
+      "rule_id": "67024",
+      "timestamp_utc": "2026-11-11T15:06:15.457Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67028;win_user=sshd_5184;contexto=win_user=sshd_5184",
+      "motivo": "logon_operador",
+      "rule_id": "67028",
+      "timestamp_utc": "2026-11-11T15:06:15.486Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60106;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60106",
+      "timestamp_utc": "2026-11-11T15:06:15.550Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=\\\"c:\\\\windows\\\\system32\\\\cmd.exe\\\" /c \\\"powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -Manifiesto\\\"",
+      "motivo": "watch",
+      "rule_id": "67027",
+      "timestamp_utc": "2026-11-11T15:06:15.612Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=powershell  -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -Manifiesto",
+      "motivo": "watch",
+      "rule_id": "67027",
+      "timestamp_utc": "2026-11-11T15:06:15.643Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=\\\"c:\\\\windows\\\\system32\\\\cmd.exe\\\" /c \\\"powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -Manifiesto\\\"",
+      "motivo": "watch",
+      "rule_id": "92052",
+      "timestamp_utc": "2026-11-11T15:06:15.722Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67023;win_user=sshd_5184;contexto=win_target_user=sshd_5184",
+      "motivo": "logon_operador",
+      "rule_id": "67023",
+      "timestamp_utc": "2026-11-11T15:07:15.887Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60137;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60137",
+      "timestamp_utc": "2026-11-11T15:07:15.904Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67024;win_user=sshd_6540;contexto=win_target_user=sshd_6540",
+      "motivo": "logon_operador",
+      "rule_id": "67024",
+      "timestamp_utc": "2026-11-11T15:07:15.997Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67028;win_user=sshd_6540;contexto=win_user=sshd_6540",
+      "motivo": "logon_operador",
+      "rule_id": "67028",
+      "timestamp_utc": "2026-11-11T15:07:16.012Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60106;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60106",
+      "timestamp_utc": "2026-11-11T15:07:16.090Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=taskhostw.exe \\\"C:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\\\" -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File \\\"C:\\\\Users\\\\angel\\\\ghosts-client\\\\tfg_keepalive_windows.ps1\\\"",
+      "motivo": "keepalive",
+      "rule_id": "67027",
+      "timestamp_utc": "2026-11-11T15:07:16.213Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67023;win_user=sshd_6540;contexto=win_target_user=sshd_6540",
+      "motivo": "logon_operador",
+      "rule_id": "67023",
+      "timestamp_utc": "2026-11-11T15:07:16.228Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60137;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60137",
+      "timestamp_utc": "2026-11-11T15:07:16.284Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67024;win_user=sshd_4072;contexto=win_target_user=sshd_4072",
+      "motivo": "logon_operador",
+      "rule_id": "67024",
+      "timestamp_utc": "2026-11-11T15:07:16.356Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67028;win_user=sshd_4072;contexto=win_user=sshd_4072",
+      "motivo": "logon_operador",
+      "rule_id": "67028",
+      "timestamp_utc": "2026-11-11T15:07:16.371Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60106;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60106",
+      "timestamp_utc": "2026-11-11T15:07:16.434Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67023;win_user=sshd_4072;contexto=win_target_user=sshd_4072",
+      "motivo": "logon_operador",
+      "rule_id": "67023",
+      "timestamp_utc": "2026-11-11T15:07:16.515Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60137;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60137",
+      "timestamp_utc": "2026-11-11T15:07:16.553Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67024;win_user=sshd_4740;contexto=win_target_user=sshd_4740",
+      "motivo": "logon_operador",
+      "rule_id": "67024",
+      "timestamp_utc": "2026-11-11T15:07:16.673Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67028;win_user=sshd_4740;contexto=win_user=sshd_4740",
+      "motivo": "logon_operador",
+      "rule_id": "67028",
+      "timestamp_utc": "2026-11-11T15:07:16.689Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60106;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60106",
+      "timestamp_utc": "2026-11-11T15:07:17.624Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67023;win_user=sshd_4740;contexto=win_target_user=sshd_4740",
+      "motivo": "logon_operador",
+      "rule_id": "67023",
+      "timestamp_utc": "2026-11-11T15:07:17.728Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60137;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60137",
+      "timestamp_utc": "2026-11-11T15:07:17.734Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67024;win_user=sshd_6632;contexto=win_target_user=sshd_6632",
+      "motivo": "logon_operador",
+      "rule_id": "67024",
+      "timestamp_utc": "2026-11-11T15:07:18.763Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67028;win_user=sshd_6632;contexto=win_user=sshd_6632",
+      "motivo": "logon_operador",
+      "rule_id": "67028",
+      "timestamp_utc": "2026-11-11T15:07:18.778Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60106;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60106",
+      "timestamp_utc": "2026-11-11T15:07:19.593Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67023;win_user=sshd_6632;contexto=win_target_user=sshd_6632",
+      "motivo": "logon_operador",
+      "rule_id": "67023",
+      "timestamp_utc": "2026-11-11T15:07:22.045Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60137;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60137",
+      "timestamp_utc": "2026-11-11T15:07:22.060Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67024;win_user=sshd_6680;contexto=win_target_user=sshd_6680",
+      "motivo": "logon_operador",
+      "rule_id": "67024",
+      "timestamp_utc": "2026-11-11T15:07:22.123Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67028;win_user=sshd_6680;contexto=win_user=sshd_6680",
+      "motivo": "logon_operador",
+      "rule_id": "67028",
+      "timestamp_utc": "2026-11-11T15:07:22.138Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60106;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60106",
+      "timestamp_utc": "2026-11-11T15:07:22.201Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60137;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60137",
+      "timestamp_utc": "2026-11-11T15:07:22.295Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67023;win_user=sshd_6680;contexto=win_target_user=sshd_6680",
+      "motivo": "logon_operador",
+      "rule_id": "67023",
+      "timestamp_utc": "2026-11-11T15:07:22.295Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67024;win_user=sshd_6516;contexto=win_target_user=sshd_6516",
+      "motivo": "logon_operador",
+      "rule_id": "67024",
+      "timestamp_utc": "2026-11-11T15:07:22.389Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67028;win_user=sshd_6516;contexto=win_user=sshd_6516",
+      "motivo": "logon_operador",
+      "rule_id": "67028",
+      "timestamp_utc": "2026-11-11T15:07:22.404Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60106;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60106",
+      "timestamp_utc": "2026-11-11T15:07:22.467Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67023;win_user=sshd_6516;contexto=win_target_user=sshd_6516",
+      "motivo": "logon_operador",
+      "rule_id": "67023",
+      "timestamp_utc": "2026-11-11T15:07:26.546Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60137;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60137",
+      "timestamp_utc": "2026-11-11T15:07:26.577Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67024;win_user=sshd_4476;contexto=win_target_user=sshd_4476",
+      "motivo": "logon_operador",
+      "rule_id": "67024",
+      "timestamp_utc": "2026-11-11T15:07:26.765Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67028;win_user=sshd_4476;contexto=win_user=sshd_4476",
+      "motivo": "logon_operador",
+      "rule_id": "67028",
+      "timestamp_utc": "2026-11-11T15:07:26.780Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60106;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60106",
+      "timestamp_utc": "2026-11-11T15:07:26.861Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67023;win_user=sshd_4476;contexto=win_target_user=sshd_4476",
+      "motivo": "logon_operador",
+      "rule_id": "67023",
+      "timestamp_utc": "2026-11-11T15:07:40.023Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60137;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60137",
+      "timestamp_utc": "2026-11-11T15:07:40.049Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67024;win_user=sshd_1424;contexto=win_target_user=sshd_1424",
+      "motivo": "logon_operador",
+      "rule_id": "67024",
+      "timestamp_utc": "2026-11-11T15:07:40.111Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67028;win_user=sshd_1424;contexto=win_user=sshd_1424",
+      "motivo": "logon_operador",
+      "rule_id": "67028",
+      "timestamp_utc": "2026-11-11T15:07:40.127Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60106;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60106",
+      "timestamp_utc": "2026-11-11T15:07:40.195Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67023;win_user=sshd_1424;contexto=win_target_user=sshd_1424",
+      "motivo": "logon_operador",
+      "rule_id": "67023",
+      "timestamp_utc": "2026-11-11T15:07:42.993Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67024;win_user=sshd_3092;contexto=win_target_user=sshd_3092",
+      "motivo": "logon_operador",
+      "rule_id": "67024",
+      "timestamp_utc": "2026-11-11T15:07:43.123Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67028;win_user=sshd_3092;contexto=win_user=sshd_3092",
+      "motivo": "logon_operador",
+      "rule_id": "67028",
+      "timestamp_utc": "2026-11-11T15:07:43.138Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60106;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60106",
+      "timestamp_utc": "2026-11-11T15:07:43.215Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67023;win_user=sshd_3092;contexto=win_target_user=sshd_3092",
+      "motivo": "logon_operador",
+      "rule_id": "67023",
+      "timestamp_utc": "2026-11-11T15:07:43.299Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60137;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60137",
+      "timestamp_utc": "2026-11-11T15:07:43.323Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67024;win_user=sshd_2336;contexto=win_target_user=sshd_2336",
+      "motivo": "logon_operador",
+      "rule_id": "67024",
+      "timestamp_utc": "2026-11-11T15:07:45.159Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67028;win_user=sshd_2336;contexto=win_user=sshd_2336",
+      "motivo": "logon_operador",
+      "rule_id": "67028",
+      "timestamp_utc": "2026-11-11T15:07:45.176Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60106;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60106",
+      "timestamp_utc": "2026-11-11T15:07:45.252Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=\\\"C:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\\\" -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File \\\"C:\\\\Users\\\\angel\\\\ghosts-client\\\\tfg_keepalive_windows.ps1\\\" -Loop",
+      "motivo": "keepalive",
+      "rule_id": "67027",
+      "timestamp_utc": "2026-11-11T15:07:45.352Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67023;win_user=sshd_2336;contexto=win_target_user=sshd_2336",
+      "motivo": "logon_operador",
+      "rule_id": "67023",
+      "timestamp_utc": "2026-11-11T15:07:45.382Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60137;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60137",
+      "timestamp_utc": "2026-11-11T15:07:45.411Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=\\\"C:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\\\" -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File \\\"C:\\\\Users\\\\angel\\\\ghosts-client\\\\tfg_keepalive_windows.ps1\\\" -Loop",
+      "motivo": "keepalive",
+      "rule_id": "92029",
+      "timestamp_utc": "2026-11-11T15:07:45.779Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=\\\"c:\\\\windows\\\\system32\\\\cmd.exe\\\" /c \\\"powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana\\\"",
+      "motivo": "watch",
+      "rule_id": "92052",
+      "timestamp_utc": "2026-11-11T15:07:52.051Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67024;win_user=sshd_3628;contexto=win_target_user=sshd_3628",
+      "motivo": "logon_operador",
+      "rule_id": "67024",
+      "timestamp_utc": "2026-11-11T15:07:52.505Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67028;win_user=sshd_3628;contexto=win_user=sshd_3628",
+      "motivo": "logon_operador",
+      "rule_id": "67028",
+      "timestamp_utc": "2026-11-11T15:07:52.551Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60106;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60106",
+      "timestamp_utc": "2026-11-11T15:07:52.683Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67023;win_user=sshd_3628;contexto=win_target_user=sshd_3628",
+      "motivo": "logon_operador",
+      "rule_id": "67023",
+      "timestamp_utc": "2026-11-11T15:07:52.769Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60137;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60137",
+      "timestamp_utc": "2026-11-11T15:07:52.821Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67024;win_user=sshd_4904;contexto=win_target_user=sshd_4904",
+      "motivo": "logon_operador",
+      "rule_id": "67024",
+      "timestamp_utc": "2026-11-11T15:07:52.910Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67028;win_user=sshd_4904;contexto=win_user=sshd_4904",
+      "motivo": "logon_operador",
+      "rule_id": "67028",
+      "timestamp_utc": "2026-11-11T15:07:52.926Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60106;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60106",
+      "timestamp_utc": "2026-11-11T15:07:52.990Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=\\\"c:\\\\windows\\\\system32\\\\cmd.exe\\\" /c \\\"powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana\\\"",
+      "motivo": "watch",
+      "rule_id": "67027",
+      "timestamp_utc": "2026-11-11T15:07:53.051Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=powershell  -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana",
+      "motivo": "watch",
+      "rule_id": "67027",
+      "timestamp_utc": "2026-11-11T15:07:53.066Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67023;win_user=sshd_4904;contexto=win_target_user=sshd_4904",
+      "motivo": "logon_operador",
+      "rule_id": "67023",
+      "timestamp_utc": "2026-11-11T15:07:55.849Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60137;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60137",
+      "timestamp_utc": "2026-11-11T15:07:55.864Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67024;win_user=sshd_3924;contexto=win_target_user=sshd_3924",
+      "motivo": "logon_operador",
+      "rule_id": "67024",
+      "timestamp_utc": "2026-11-11T15:07:55.943Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67028;win_user=sshd_3924;contexto=win_user=sshd_3924",
+      "motivo": "logon_operador",
+      "rule_id": "67028",
+      "timestamp_utc": "2026-11-11T15:07:55.963Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60106;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60106",
+      "timestamp_utc": "2026-11-11T15:07:56.053Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=\\\"c:\\\\windows\\\\system32\\\\cmd.exe\\\" /c \\\"powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -Manifiesto\\\"",
+      "motivo": "watch",
+      "rule_id": "67027",
+      "timestamp_utc": "2026-11-11T15:07:56.099Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=powershell  -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -Manifiesto",
+      "motivo": "watch",
+      "rule_id": "67027",
+      "timestamp_utc": "2026-11-11T15:07:56.117Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=\\\"c:\\\\windows\\\\system32\\\\cmd.exe\\\" /c \\\"powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -Manifiesto\\\"",
+      "motivo": "watch",
+      "rule_id": "92052",
+      "timestamp_utc": "2026-11-11T15:07:56.178Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67023;win_user=sshd_3924;contexto=win_target_user=sshd_3924",
+      "motivo": "logon_operador",
+      "rule_id": "67023",
+      "timestamp_utc": "2026-11-11T15:07:58.742Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60137;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60137",
+      "timestamp_utc": "2026-11-11T15:07:58.773Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67024;win_user=sshd_2228;contexto=win_target_user=sshd_2228",
+      "motivo": "logon_operador",
+      "rule_id": "67024",
+      "timestamp_utc": "2026-11-11T15:07:58.835Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67028;win_user=sshd_2228;contexto=win_user=sshd_2228",
+      "motivo": "logon_operador",
+      "rule_id": "67028",
+      "timestamp_utc": "2026-11-11T15:07:58.850Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60106;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60106",
+      "timestamp_utc": "2026-11-11T15:07:58.942Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67023;win_user=sshd_2228;contexto=win_target_user=sshd_2228",
+      "motivo": "logon_operador",
+      "rule_id": "67023",
+      "timestamp_utc": "2026-11-11T15:07:59.019Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60137;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60137",
+      "timestamp_utc": "2026-11-11T15:07:59.060Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=\\\"c:\\\\windows\\\\system32\\\\cmd.exe\\\" /c \\\"powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana\\\"",
+      "motivo": "watch",
+      "rule_id": "92052",
+      "timestamp_utc": "2026-11-11T15:08:00.380Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67024;win_user=sshd_1740;contexto=win_target_user=sshd_1740",
+      "motivo": "logon_operador",
+      "rule_id": "67024",
+      "timestamp_utc": "2026-11-11T15:08:00.680Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67028;win_user=sshd_1740;contexto=win_user=sshd_1740",
+      "motivo": "logon_operador",
+      "rule_id": "67028",
+      "timestamp_utc": "2026-11-11T15:08:00.711Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60106;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60106",
+      "timestamp_utc": "2026-11-11T15:08:00.818Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=\\\"c:\\\\windows\\\\system32\\\\cmd.exe\\\" /c \\\"powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana\\\"",
+      "motivo": "watch",
+      "rule_id": "67027",
+      "timestamp_utc": "2026-11-11T15:08:00.880Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=powershell  -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana",
+      "motivo": "watch",
+      "rule_id": "67027",
+      "timestamp_utc": "2026-11-11T15:08:00.896Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67023;win_user=sshd_1740;contexto=win_target_user=sshd_1740",
+      "motivo": "logon_operador",
+      "rule_id": "67023",
+      "timestamp_utc": "2026-11-11T15:08:02.309Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60137;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60137",
+      "timestamp_utc": "2026-11-11T15:08:02.325Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=\\\"c:\\\\windows\\\\system32\\\\cmd.exe\\\" /c \\\"powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana\\\"",
+      "motivo": "watch",
+      "rule_id": "92052",
+      "timestamp_utc": "2026-11-11T15:08:04.610Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67024;win_user=sshd_6652;contexto=win_target_user=sshd_6652",
+      "motivo": "logon_operador",
+      "rule_id": "67024",
+      "timestamp_utc": "2026-11-11T15:08:04.710Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67028;win_user=sshd_6652;contexto=win_user=sshd_6652",
+      "motivo": "logon_operador",
+      "rule_id": "67028",
+      "timestamp_utc": "2026-11-11T15:08:04.727Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60106;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60106",
+      "timestamp_utc": "2026-11-11T15:08:04.804Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=\\\"c:\\\\windows\\\\system32\\\\cmd.exe\\\" /c \\\"powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana\\\"",
+      "motivo": "watch",
+      "rule_id": "67027",
+      "timestamp_utc": "2026-11-11T15:08:04.851Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=powershell  -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana",
+      "motivo": "watch",
+      "rule_id": "67027",
+      "timestamp_utc": "2026-11-11T15:08:04.882Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67023;win_user=sshd_6652;contexto=win_target_user=sshd_6652",
+      "motivo": "logon_operador",
+      "rule_id": "67023",
+      "timestamp_utc": "2026-11-11T15:08:06.320Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60137;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60137",
+      "timestamp_utc": "2026-11-11T15:08:06.335Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67024;win_user=sshd_6472;contexto=win_target_user=sshd_6472",
+      "motivo": "logon_operador",
+      "rule_id": "67024",
+      "timestamp_utc": "2026-11-11T15:08:06.429Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67028;win_user=sshd_6472;contexto=win_user=sshd_6472",
+      "motivo": "logon_operador",
+      "rule_id": "67028",
+      "timestamp_utc": "2026-11-11T15:08:06.451Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60106;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60106",
+      "timestamp_utc": "2026-11-11T15:08:06.507Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67023;win_user=sshd_6472;contexto=win_target_user=sshd_6472",
+      "motivo": "logon_operador",
+      "rule_id": "67023",
+      "timestamp_utc": "2026-11-11T15:08:07.865Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60137;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60137",
+      "timestamp_utc": "2026-11-11T15:08:07.868Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67024;win_user=sshd_3940;contexto=win_target_user=sshd_3940",
+      "motivo": "logon_operador",
+      "rule_id": "67024",
+      "timestamp_utc": "2026-11-11T15:08:07.946Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67028;win_user=sshd_3940;contexto=win_user=sshd_3940",
+      "motivo": "logon_operador",
+      "rule_id": "67028",
+      "timestamp_utc": "2026-11-11T15:08:07.965Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=\\\"c:\\\\windows\\\\system32\\\\cmd.exe\\\" /c \\\"powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana\\\"",
+      "motivo": "watch",
+      "rule_id": "92052",
+      "timestamp_utc": "2026-11-11T15:08:09.184Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60106;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60106",
+      "timestamp_utc": "2026-11-11T15:08:09.400Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=\\\"c:\\\\windows\\\\system32\\\\cmd.exe\\\" /c \\\"powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana\\\"",
+      "motivo": "watch",
+      "rule_id": "67027",
+      "timestamp_utc": "2026-11-11T15:08:09.461Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=powershell  -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana",
+      "motivo": "watch",
+      "rule_id": "67027",
+      "timestamp_utc": "2026-11-11T15:08:09.477Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67023;win_user=sshd_3940;contexto=win_target_user=sshd_3940",
+      "motivo": "logon_operador",
+      "rule_id": "67023",
+      "timestamp_utc": "2026-11-11T15:08:10.742Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60137;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60137",
+      "timestamp_utc": "2026-11-11T15:08:10.768Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=\\\"c:\\\\windows\\\\system32\\\\cmd.exe\\\" /c \\\"powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana\\\"",
+      "motivo": "watch",
+      "rule_id": "92052",
+      "timestamp_utc": "2026-11-11T15:08:11.977Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67024;win_user=sshd_4740;contexto=win_target_user=sshd_4740",
+      "motivo": "logon_operador",
+      "rule_id": "67024",
+      "timestamp_utc": "2026-11-11T15:08:12.102Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67028;win_user=sshd_4740;contexto=win_user=sshd_4740",
+      "motivo": "logon_operador",
+      "rule_id": "67028",
+      "timestamp_utc": "2026-11-11T15:08:12.121Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60106;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60106",
+      "timestamp_utc": "2026-11-11T15:08:12.198Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=\\\"c:\\\\windows\\\\system32\\\\cmd.exe\\\" /c \\\"powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana\\\"",
+      "motivo": "watch",
+      "rule_id": "67027",
+      "timestamp_utc": "2026-11-11T15:08:12.259Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=powershell  -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana",
+      "motivo": "watch",
+      "rule_id": "67027",
+      "timestamp_utc": "2026-11-11T15:08:12.289Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67023;win_user=sshd_4740;contexto=win_target_user=sshd_4740",
+      "motivo": "logon_operador",
+      "rule_id": "67023",
+      "timestamp_utc": "2026-11-11T15:08:13.992Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60137;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60137",
+      "timestamp_utc": "2026-11-11T15:08:14.008Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67024;win_user=sshd_4492;contexto=win_target_user=sshd_4492",
+      "motivo": "logon_operador",
+      "rule_id": "67024",
+      "timestamp_utc": "2026-11-11T15:08:14.105Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67028;win_user=sshd_4492;contexto=win_user=sshd_4492",
+      "motivo": "logon_operador",
+      "rule_id": "67028",
+      "timestamp_utc": "2026-11-11T15:08:14.149Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60106;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60106",
+      "timestamp_utc": "2026-11-11T15:08:14.211Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=\\\"c:\\\\windows\\\\system32\\\\cmd.exe\\\" /c \\\"powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana\\\"",
+      "motivo": "watch",
+      "rule_id": "67027",
+      "timestamp_utc": "2026-11-11T15:08:14.263Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=powershell  -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana",
+      "motivo": "watch",
+      "rule_id": "67027",
+      "timestamp_utc": "2026-11-11T15:08:14.274Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=\\\"c:\\\\windows\\\\system32\\\\cmd.exe\\\" /c \\\"powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana\\\"",
+      "motivo": "watch",
+      "rule_id": "92052",
+      "timestamp_utc": "2026-11-11T15:08:14.915Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67023;win_user=sshd_4492;contexto=win_target_user=sshd_4492",
+      "motivo": "logon_operador",
+      "rule_id": "67023",
+      "timestamp_utc": "2026-11-11T15:08:16.264Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60137;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60137",
+      "timestamp_utc": "2026-11-11T15:08:16.290Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67024;win_user=sshd_2380;contexto=win_target_user=sshd_2380",
+      "motivo": "logon_operador",
+      "rule_id": "67024",
+      "timestamp_utc": "2026-11-11T15:08:16.368Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67028;win_user=sshd_2380;contexto=win_user=sshd_2380",
+      "motivo": "logon_operador",
+      "rule_id": "67028",
+      "timestamp_utc": "2026-11-11T15:08:16.385Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60106;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60106",
+      "timestamp_utc": "2026-11-11T15:08:16.477Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=\\\"c:\\\\windows\\\\system32\\\\cmd.exe\\\" /c \\\"powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -Manifiesto\\\"",
+      "motivo": "watch",
+      "rule_id": "67027",
+      "timestamp_utc": "2026-11-11T15:08:16.525Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=powershell  -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -Manifiesto",
+      "motivo": "watch",
+      "rule_id": "67027",
+      "timestamp_utc": "2026-11-11T15:08:16.540Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=\\\"c:\\\\windows\\\\system32\\\\cmd.exe\\\" /c \\\"powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -Manifiesto\\\"",
+      "motivo": "watch",
+      "rule_id": "92052",
+      "timestamp_utc": "2026-11-11T15:08:17.213Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67023;win_user=sshd_2380;contexto=win_target_user=sshd_2380",
+      "motivo": "logon_operador",
+      "rule_id": "67023",
+      "timestamp_utc": "2026-11-11T15:08:19.701Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60137;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60137",
+      "timestamp_utc": "2026-11-11T15:08:19.702Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60137;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60137",
+      "timestamp_utc": "2026-11-11T15:08:51.684Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=\\\"c:\\\\windows\\\\system32\\\\cmd.exe\\\" /c \\\"powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana\\\"",
+      "motivo": "watch",
+      "rule_id": "92052",
+      "timestamp_utc": "2026-11-11T15:09:27.044Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67024;win_user=sshd_5200;contexto=win_target_user=sshd_5200",
+      "motivo": "logon_operador",
+      "rule_id": "67024",
+      "timestamp_utc": "2026-11-11T15:09:27.180Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67028;win_user=sshd_5200;contexto=win_user=sshd_5200",
+      "motivo": "logon_operador",
+      "rule_id": "67028",
+      "timestamp_utc": "2026-11-11T15:09:27.196Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60106;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60106",
+      "timestamp_utc": "2026-11-11T15:09:27.274Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=\\\"c:\\\\windows\\\\system32\\\\cmd.exe\\\" /c \\\"powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana\\\"",
+      "motivo": "watch",
+      "rule_id": "67027",
+      "timestamp_utc": "2026-11-11T15:09:27.321Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=powershell  -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana",
+      "motivo": "watch",
+      "rule_id": "67027",
+      "timestamp_utc": "2026-11-11T15:09:27.336Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67023;win_user=sshd_5200;contexto=win_target_user=sshd_5200",
+      "motivo": "logon_operador",
+      "rule_id": "67023",
+      "timestamp_utc": "2026-11-11T15:09:29.259Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=\\\"c:\\\\windows\\\\system32\\\\cmd.exe\\\" /c \\\"powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana\\\"",
+      "motivo": "watch",
+      "rule_id": "92052",
+      "timestamp_utc": "2026-11-11T15:09:31.040Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67024;win_user=sshd_1140;contexto=win_target_user=sshd_1140",
+      "motivo": "logon_operador",
+      "rule_id": "67024",
+      "timestamp_utc": "2026-11-11T15:09:31.122Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67028;win_user=sshd_1140;contexto=win_user=sshd_1140",
+      "motivo": "logon_operador",
+      "rule_id": "67028",
+      "timestamp_utc": "2026-11-11T15:09:31.167Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60106;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60106",
+      "timestamp_utc": "2026-11-11T15:09:31.259Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=\\\"c:\\\\windows\\\\system32\\\\cmd.exe\\\" /c \\\"powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana\\\"",
+      "motivo": "watch",
+      "rule_id": "67027",
+      "timestamp_utc": "2026-11-11T15:09:31.306Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=powershell  -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana",
+      "motivo": "watch",
+      "rule_id": "67027",
+      "timestamp_utc": "2026-11-11T15:09:31.323Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67023;win_user=sshd_1140;contexto=win_target_user=sshd_1140",
+      "motivo": "logon_operador",
+      "rule_id": "67023",
+      "timestamp_utc": "2026-11-11T15:09:32.858Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60137;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60137",
+      "timestamp_utc": "2026-11-11T15:09:32.884Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67024;win_user=sshd_628;contexto=win_target_user=sshd_628",
+      "motivo": "logon_operador",
+      "rule_id": "67024",
+      "timestamp_utc": "2026-11-11T15:09:32.997Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67028;win_user=sshd_628;contexto=win_user=sshd_628",
+      "motivo": "logon_operador",
+      "rule_id": "67028",
+      "timestamp_utc": "2026-11-11T15:09:33.008Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60106;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60106",
+      "timestamp_utc": "2026-11-11T15:09:33.071Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67023;win_user=sshd_628;contexto=win_target_user=sshd_628",
+      "motivo": "logon_operador",
+      "rule_id": "67023",
+      "timestamp_utc": "2026-11-11T15:09:34.352Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60137;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60137",
+      "timestamp_utc": "2026-11-11T15:09:34.387Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67024;win_user=sshd_3100;contexto=win_target_user=sshd_3100",
+      "motivo": "logon_operador",
+      "rule_id": "67024",
+      "timestamp_utc": "2026-11-11T15:09:34.446Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67028;win_user=sshd_3100;contexto=win_user=sshd_3100",
+      "motivo": "logon_operador",
+      "rule_id": "67028",
+      "timestamp_utc": "2026-11-11T15:09:34.461Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=\\\"c:\\\\windows\\\\system32\\\\cmd.exe\\\" /c \\\"powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana\\\"",
+      "motivo": "watch",
+      "rule_id": "92052",
+      "timestamp_utc": "2026-11-11T15:09:35.556Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60106;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60106",
+      "timestamp_utc": "2026-11-11T15:09:35.822Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=\\\"c:\\\\windows\\\\system32\\\\cmd.exe\\\" /c \\\"powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana\\\"",
+      "motivo": "watch",
+      "rule_id": "67027",
+      "timestamp_utc": "2026-11-11T15:09:35.884Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=powershell  -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana",
+      "motivo": "watch",
+      "rule_id": "67027",
+      "timestamp_utc": "2026-11-11T15:09:35.903Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67023;win_user=sshd_3100;contexto=win_target_user=sshd_3100",
+      "motivo": "logon_operador",
+      "rule_id": "67023",
+      "timestamp_utc": "2026-11-11T15:09:37.102Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60137;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60137",
+      "timestamp_utc": "2026-11-11T15:09:37.118Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67024;win_user=sshd_2380;contexto=win_target_user=sshd_2380",
+      "motivo": "logon_operador",
+      "rule_id": "67024",
+      "timestamp_utc": "2026-11-11T15:09:38.338Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67028;win_user=sshd_2380;contexto=win_user=sshd_2380",
+      "motivo": "logon_operador",
+      "rule_id": "67028",
+      "timestamp_utc": "2026-11-11T15:09:38.354Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60106;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60106",
+      "timestamp_utc": "2026-11-11T15:09:38.448Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=\\\"c:\\\\windows\\\\system32\\\\cmd.exe\\\" /c \\\"powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana\\\"",
+      "motivo": "watch",
+      "rule_id": "67027",
+      "timestamp_utc": "2026-11-11T15:09:38.510Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=powershell  -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana",
+      "motivo": "watch",
+      "rule_id": "67027",
+      "timestamp_utc": "2026-11-11T15:09:38.540Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=\\\"c:\\\\windows\\\\system32\\\\cmd.exe\\\" /c \\\"powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana\\\"",
+      "motivo": "watch",
+      "rule_id": "92052",
+      "timestamp_utc": "2026-11-11T15:09:38.575Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67023;win_user=sshd_2380;contexto=win_target_user=sshd_2380",
+      "motivo": "logon_operador",
+      "rule_id": "67023",
+      "timestamp_utc": "2026-11-11T15:09:40.205Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60137;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60137",
+      "timestamp_utc": "2026-11-11T15:09:40.206Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67024;win_user=sshd_4548;contexto=win_target_user=sshd_4548",
+      "motivo": "logon_operador",
+      "rule_id": "67024",
+      "timestamp_utc": "2026-11-11T15:09:41.103Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67028;win_user=sshd_4548;contexto=win_user=sshd_4548",
+      "motivo": "logon_operador",
+      "rule_id": "67028",
+      "timestamp_utc": "2026-11-11T15:09:41.119Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60106;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60106",
+      "timestamp_utc": "2026-11-11T15:09:41.185Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=powershell  -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana",
+      "motivo": "watch",
+      "rule_id": "67027",
+      "timestamp_utc": "2026-11-11T15:09:41.275Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=\\\"c:\\\\windows\\\\system32\\\\cmd.exe\\\" /c \\\"powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana\\\"",
+      "motivo": "watch",
+      "rule_id": "67027",
+      "timestamp_utc": "2026-11-11T15:09:41.275Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=\\\"c:\\\\windows\\\\system32\\\\cmd.exe\\\" /c \\\"powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana\\\"",
+      "motivo": "watch",
+      "rule_id": "92052",
+      "timestamp_utc": "2026-11-11T15:09:41.393Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67023;win_user=sshd_4548;contexto=win_target_user=sshd_4548",
+      "motivo": "logon_operador",
+      "rule_id": "67023",
+      "timestamp_utc": "2026-11-11T15:09:42.884Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60137;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60137",
+      "timestamp_utc": "2026-11-11T15:09:42.925Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=\\\"c:\\\\windows\\\\system32\\\\cmd.exe\\\" /c \\\"powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana\\\"",
+      "motivo": "watch",
+      "rule_id": "92052",
+      "timestamp_utc": "2026-11-11T15:09:43.306Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67024;win_user=sshd_5236;contexto=win_target_user=sshd_5236",
+      "motivo": "logon_operador",
+      "rule_id": "67024",
+      "timestamp_utc": "2026-11-11T15:09:44.354Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67028;win_user=sshd_5236;contexto=win_user=sshd_5236",
+      "motivo": "logon_operador",
+      "rule_id": "67028",
+      "timestamp_utc": "2026-11-11T15:09:44.385Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60106;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60106",
+      "timestamp_utc": "2026-11-11T15:09:44.448Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=\\\"c:\\\\windows\\\\system32\\\\cmd.exe\\\" /c \\\"powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana\\\"",
+      "motivo": "watch",
+      "rule_id": "67027",
+      "timestamp_utc": "2026-11-11T15:09:44.510Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "win_command_line=powershell  -NoProfile -ExecutionPolicy Bypass -File C:/Users/angel/ghosts-client/verificar_windows.ps1 -SinCampana",
+      "motivo": "watch",
+      "rule_id": "67027",
+      "timestamp_utc": "2026-11-11T15:09:44.526Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67023;win_user=sshd_5236;contexto=win_target_user=sshd_5236",
+      "motivo": "logon_operador",
+      "rule_id": "67023",
+      "timestamp_utc": "2026-11-11T15:09:45.953Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60137;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60137",
+      "timestamp_utc": "2026-11-11T15:09:45.969Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67024;win_user=sshd_2184;contexto=win_target_user=sshd_2184",
+      "motivo": "logon_operador",
+      "rule_id": "67024",
+      "timestamp_utc": "2026-11-11T15:09:46.057Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67028;win_user=sshd_2184;contexto=win_user=sshd_2184",
+      "motivo": "logon_operador",
+      "rule_id": "67028",
+      "timestamp_utc": "2026-11-11T15:09:46.072Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60106;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60106",
+      "timestamp_utc": "2026-11-11T15:09:46.135Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67023;win_user=sshd_2184;contexto=win_target_user=sshd_2184",
+      "motivo": "logon_operador",
+      "rule_id": "67023",
+      "timestamp_utc": "2026-11-11T15:09:46.200Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60137;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60137",
+      "timestamp_utc": "2026-11-11T15:09:46.215Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67024;win_user=sshd_4736;contexto=win_target_user=sshd_4736",
+      "motivo": "logon_operador",
+      "rule_id": "67024",
+      "timestamp_utc": "2026-11-11T15:09:54.295Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67028;win_user=sshd_4736;contexto=win_user=sshd_4736",
+      "motivo": "logon_operador",
+      "rule_id": "67028",
+      "timestamp_utc": "2026-11-11T15:09:54.310Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60106;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60106",
+      "timestamp_utc": "2026-11-11T15:09:54.373Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67023;win_user=sshd_4736;contexto=win_target_user=sshd_4736",
+      "motivo": "logon_operador",
+      "rule_id": "67023",
+      "timestamp_utc": "2026-11-11T15:09:54.524Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60137;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60137",
+      "timestamp_utc": "2026-11-11T15:09:54.544Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67024;win_user=sshd_5616;contexto=win_target_user=sshd_5616",
+      "motivo": "logon_operador",
+      "rule_id": "67024",
+      "timestamp_utc": "2026-11-11T15:10:06.671Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67028;win_user=sshd_5616;contexto=win_user=sshd_5616",
+      "motivo": "logon_operador",
+      "rule_id": "67028",
+      "timestamp_utc": "2026-11-11T15:10:06.701Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60106;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60106",
+      "timestamp_utc": "2026-11-11T15:10:06.763Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=67023;win_user=sshd_5616;contexto=win_target_user=sshd_5616",
+      "motivo": "logon_operador",
+      "rule_id": "67023",
+      "timestamp_utc": "2026-11-11T15:10:06.870Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60137;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60137",
+      "timestamp_utc": "2026-11-11T15:10:06.901Z"
+    },
+    {
+      "agent_id": "002",
+      "evidencia": "rule_id=60137;win_user=angel|logon_type=3;contexto=logon_type=3",
+      "motivo": "logon_operador",
+      "rule_id": "60137",
+      "timestamp_utc": "2026-11-11T15:10:51.666Z"
+    }
+  ],
+  "operador_legit": 213,
+  "por_motivo": {
+    "keepalive": 4,
+    "logon_operador": 163,
+    "vmware_tools": 1,
+    "watch": 45
+  },
+  "reglas": {
+    "horario": {
+      "activo": false,
+      "intervalos": [],
+      "reglas_horarias": []
+    },
+    "no_marca": "win_user=angel a secas (incluido 67028/4672 sin contexto de red o SSH); powershell.exe/cmd.exe genéricos; rutas del usuario",
+    "proceso": {
+      "deploy": [
+        "deploy_windows.ps1",
+        "manifiesto_snapshot.ps1"
+      ],
+      "keepalive": [
+        "tfg_keepalive_windows.ps1"
+      ],
+      "latido": "192.168.65.1:9095",
+      "logon_operador": "filtrar_ruido_windows.detectar_operador (OPERADOR_WIN) + contexto de red/SSH propio (logon_type=3 | srcip=192.168.65.1 | sshd_<pid>)",
+      "logs_operador": [
+        "\\ghosts-client\\logs\\",
+        "estado.json",
+        "keepalive.log",
+        "recovery.log",
+        "heartbeat.seq"
+      ],
+      "vmware_tools": "vmtoolsd.exe",
+      "watch": [
+        "windows_legit_host_control",
+        "verificar_windows.ps1"
+      ]
+    }
+  },
+  "salida": "alertas_detalle_operador.csv",
+  "sha256_entrada": "01e33556770a5136962adfe6d4ee5f949dcc493fa9abdea22c68ec9ffaf40789",
+  "sha256_salida": "b0aa210675654b887f8ae847e0bb33decebb7a8c6ef7a4bded6d0613922b2879",
+  "sin_operador": 1220,
+  "tanda": "T3",
+  "unidad": {
+    "alertas": 213,
+    "claves": 213,
+    "unidad": "alerta_provisional",
+    "unidades": null
+  },
+  "version": 1,
+  "watch": 45
+}

@@ -1,0 +1,4 @@
+fase,chequeo_utc,ok,fallos,skip,hb_edad_min,seq,ka_pid,ka_instancias,ssh_invitado,franja_utc,alertas_totales_franja,alertas_operador_franja,nota
+setup,2026-11-11T15:10:18Z,8,0,1,0.3,2,1456,1,0,15:09:18Z..15:12:18Z,190,78,la franja incluye la sesion SSH del operador que arranca la actividad (setup); no la abre el watch
+medida,2026-11-11T15:28:15Z,8,0,1,3.2,5,1456,1,0,15:27:15Z..15:30:15Z,2,0,
+medida,2026-11-11T15:51:31Z,8,0,1,1.5,10,1456,1,0,15:50:31Z..15:53:31Z,0,0,

@@ -1,0 +1,35 @@
+rule_id,rule_level,rule_description,groups,count,first_seen,last_seen,rs_origen
+503,3,Wazuh agent started.,ossec,1,2026-11-11T15:05:48Z,2026-11-11T15:05:48Z,UNKNOWN
+60106,3,Windows Logon Success,windows|windows_security|authentication_success,33,2026-11-11T15:05:52Z,2026-11-11T15:10:06Z,UNKNOWN
+60118,3,Windows Workstation Logon Success,windows|windows_security|authentication_success,2,2026-11-11T15:06:02Z,2026-11-11T15:06:02Z,UNKNOWN
+60137,3,Windows User Logoff,windows|windows_security,33,2026-11-11T15:05:53Z,2026-11-11T15:10:51Z,UNKNOWN
+60642,3,Software protection service scheduled successfully.,windows|windows_application,4,2026-11-11T15:07:27Z,2026-11-11T15:24:30Z,UNKNOWN
+60646,5,License activation (slui.exe) failed.,windows|windows_application,3,2026-11-11T15:06:43Z,2026-11-11T15:06:43Z,UNKNOWN
+60668,3,The Windows search service started.,windows|windows_application,1,2026-11-11T15:06:37Z,2026-11-11T15:06:37Z,UNKNOWN
+60702,5,The VSS service is shutting down due to idle timeout.,windows|windows_application,2,2026-11-11T15:08:50Z,2026-11-11T15:34:33Z,UNKNOWN
+60775,5,SessionEnv was unavailable to handle a notification event.,windows|windows_application,1,2026-11-11T15:06:02Z,2026-11-11T15:06:02Z,UNKNOWN
+60776,7,SessionEnv was unavailable to handle a critical notification event.,windows|windows_application,1,2026-11-11T15:06:01Z,2026-11-11T15:06:01Z,UNKNOWN
+60798,3,The database engine attached a database.,windows|windows_application,2,2026-11-11T15:06:35Z,2026-11-11T15:16:28Z,UNKNOWN
+60805,3,The database engine is starting a new instance.,windows|windows_application,2,2026-11-11T15:06:35Z,2026-11-11T15:16:28Z,UNKNOWN
+60807,3,The database engine is initiating recovery steps.,windows|windows_application,1,2026-11-11T15:16:28Z,2026-11-11T15:16:28Z,UNKNOWN
+60808,3,The database engine is replaying log file C:\Winnt\system32\wins\j50.log.,windows|windows_application,1,2026-11-11T15:16:28Z,2026-11-11T15:16:28Z,UNKNOWN
+60809,3,The database engine has completed recovery steps.,windows|windows_application,1,2026-11-11T15:16:28Z,2026-11-11T15:16:28Z,UNKNOWN
+61104,3,Service startup type was changed,windows|windows_system|policy_changed,6,2026-11-11T15:06:02Z,2026-11-11T15:25:01Z,UNKNOWN
+67023,3,Non service account logged off.,windows| WEF,33,2026-11-11T15:05:53Z,2026-11-11T15:10:06Z,UNKNOWN
+67024,3,Service logon event registered from non standard service account.,windows| WEF,32,2026-11-11T15:06:15Z,2026-11-11T15:10:06Z,UNKNOWN
+67027,3,A process was created.,windows| WEF,741,2026-11-11T15:05:51Z,2026-11-11T15:50:02Z,UNKNOWN
+67028,3,Special privileges assigned to new logon.,windows| WEF,66,2026-11-11T15:05:52Z,2026-11-11T15:10:06Z,UNKNOWN
+91816,4,Powershell script querying system environment variables,windows| powershell,8,2026-11-11T15:06:23Z,2026-11-11T15:07:53Z,UNKNOWN
+91820,4,Powershell script recursively collected files from a filesystem search,windows| powershell,2,2026-11-11T15:16:36Z,2026-11-11T15:16:36Z,UNKNOWN
+91823,14,"Powershell script used ""Invoke-command"" cmdlet to execute code on remote computer",windows| powershell,2,2026-11-11T15:16:34Z,2026-11-11T15:16:36Z,UNKNOWN
+92021,3,Powershell was used to delete files or directories,sysmon|sysmon_eid1_detections|windows,9,2026-11-11T15:05:53Z,2026-11-11T15:44:03Z,UNKNOWN
+92029,6,Powershell executed script from suspicious location,sysmon|sysmon_eid1_detections|windows,2,2026-11-11T15:05:53Z,2026-11-11T15:07:45Z,UNKNOWN
+92031,3,Discovery activity executed,sysmon|sysmon_eid1_detections|windows,4,2026-11-11T15:06:43Z,2026-11-11T15:06:45Z,UNKNOWN
+92032,3,Suspicious Windows cmd shell execution,sysmon|sysmon_eid1_detections|windows,21,2026-11-11T15:05:53Z,2026-11-11T15:46:48Z,UNKNOWN
+92052,4,Windows command prompt started by an abnormal process,sysmon|sysmon_eid1_detections|windows,51,2026-11-11T15:05:52Z,2026-11-11T15:46:48Z,UNKNOWN
+92066,4,C:\\Windows\\SysWOW64\\SecEdit.exe binary in a suspicious location launched by C:\\Windows\\SysWOW64\\WindowsPowerShell\\v1.0\\powershell.exe,sysmon|sysmon_eid1_detections|windows,7,2026-11-11T15:06:24Z,2026-11-11T15:06:39Z,UNKNOWN
+92200,6,Scripting file created under Windows Temp or User folder,sysmon|sysmon_eid11_detections|windows,33,2026-11-11T15:07:22Z,2026-11-11T15:16:28Z,UNKNOWN
+92201,9,C:\\Windows\\SysWOW64\\WindowsPowerShell\\v1.0\\powershell.exe created a new scripting file under Windows Temp or User data folder,sysmon|sysmon_eid11_detections|windows,12,2026-11-11T15:06:13Z,2026-11-11T15:24:43Z,UNKNOWN
+92213,15,Executable file dropped in folder commonly used by malware,sysmon|sysmon_eid11_detections|windows,65,2026-11-11T15:06:48Z,2026-11-11T15:44:03Z,UNKNOWN
+92217,6,Executable dropped in Windows root folder,sysmon|sysmon_eid11_detections|windows,232,2026-11-11T15:07:27Z,2026-11-11T15:16:27Z,UNKNOWN
+92307,3,Evidence of new service creation found in registry under HKLM\\System\\CurrentControlSet\\Services\\AarSvc_7cd81\\ImagePath binary is: C:\\Windows\\system32\\svchost.exe -k AarSvcGroup -p,sysmon|sysmon_eid13_detections|windows,19,2026-11-11T15:06:03Z,2026-11-11T15:06:04Z,UNKNOWN
