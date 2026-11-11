@@ -19,7 +19,9 @@
 #      y lo deja Disabled (el servicio se auto-repara: control efectivo = politica + red).
 #   3) actividad: si `armado.flag` y no hay `ghosts.exe`, recupera con
 #      `schtasks /run /tn TFG-WinLegit-Actividad` (NUNCA lanza el cliente como SYSTEM).
-#   4) rotacion de receta d1->d2->d3 SOLO con `TFG_MAPA_DIAS` (lo fija `arm`).
+#   4) rotacion de receta d1->d2->d3 SOLO con `TFG_MAPA_DIAS` (lo fija `arm`) y SOLO
+#      cuando CAMBIA el dia (`dia_aplicado.txt`); nunca por comparar `timeline.json`,
+#      que GHOSTS reescribe al ejecutar (T2b-1b: antes reiniciaba el cliente cada 5 min).
 #   5) latido: una linea TSV en `keepalive.log` + POST JSON al sink + `estado.json`
 #      cada 60 min (no cada 5: evita recreaciones de fichero).
 #
@@ -78,6 +80,7 @@ $Log        = Join-Path $Dir 'keepalive.log'
 $RecLog     = Join-Path $Dir 'recovery.log'
 $Estado     = Join-Path $Dir 'estado.json'
 $SeqFile    = Join-Path $Dir 'heartbeat.seq'
+$DiaFile    = Join-Path $Dir 'dia_aplicado.txt'
 $FlagArmado = Join-Path $Dir 'armado.flag'
 $StopFlag   = Join-Path $Dir 'stop.flag'
 $ClientOut  = Join-Path $Dir 'client.out'
@@ -317,6 +320,11 @@ function Invoke-Ciclo {
   }
 
   # --- 5) rotacion de receta (solo con mapa de dias) ------------------------
+  # T2b-1b (defecto medido): se rotaba comparando el sha256 de `timeline.dK.json`
+  # con el de `timeline.json`. Como GHOSTS REESCRIBE `timeline.json` al ejecutar
+  # (por eso esta excluido del manifiesto), la comparacion fallaba en CADA ciclo y el
+  # bucle reiniciaba el cliente cada 5 min (288 muertes/dia) y volvia a copiar d1.
+  # Ahora se rota SOLO cuando cambia el dia del mapa (`dia_aplicado.txt`).
   $mapa = ''
   if (Test-Path $Bloques) {
     $linea = Select-String -Path $Bloques -Pattern '^TFG_MAPA_DIAS=' -ErrorAction SilentlyContinue | Select-Object -First 1
@@ -331,26 +339,50 @@ function Invoke-Ciclo {
     }
   }
   if ($diaK -ge 1 -and $diaK -le 3) {
-    $origen = Join-Path $Dir "config\timeline.d$diaK.json"
-    $activo = Join-Path $Dir 'config\timeline.json'
-    if ((Test-Path $origen) -and (Test-Path $activo)) {
-      $h1 = (Get-FileHash $origen -Algorithm SHA256).Hash
-      $h2 = (Get-FileHash $activo -Algorithm SHA256).Hash
-      if ($h1 -ne $h2) {
+    $diaAplic = 0
+    if (Test-Path $DiaFile) { try { $diaAplic = [int]((Get-Content -LiteralPath $DiaFile -Raw).Trim()) } catch { $diaAplic = 0 } }
+    if ($diaK -ne $diaAplic) {
+      $origen = Join-Path $Dir "config\timeline.d$diaK.json"
+      $activo = Join-Path $Dir 'config\timeline.json'
+      $rotar = $true
+      if ((Test-Path $origen) -and (Test-Path $activo)) {
+        $h1 = (Get-FileHash $origen -Algorithm SHA256).Hash
+        $h2 = (Get-FileHash $activo -Algorithm SHA256).Hash
+        $rotar = ($h1 -ne $h2)
+      }
+      # T2b-1c: `dia_aplicado.txt` SOLO se escribe si la copia se aplico de verdad.
+      # Si `Copy-Item` falla, no se marca el dia: el siguiente ciclo lo reintenta.
+      $rotacionOk = $false
+      if ($rotar) {
         $t = $null
         try { $t = Get-ScheduledTask -TaskName $TareaAct -ErrorAction SilentlyContinue } catch { }
         if ($t -and $t.State -eq 'Running') {
           & schtasks /end /tn $TareaAct 2>&1 | Out-Null
           Start-Sleep -Seconds 2
         }
-        Copy-Item -LiteralPath $origen -Destination $activo -Force
-        RLog 'rotacion_dia' "dia=$diaK origen=timeline.d$diaK.json"
+        try {
+          Copy-Item -LiteralPath $origen -Destination $activo -Force -ErrorAction Stop
+          $rotacionOk = $true
+        } catch {
+          RLog 'alarma_rotacion' "dia=$diaK copia_fallida=$($_.Exception.Message)"
+        }
+        if ($rotacionOk) {
+          RLog 'rotacion_dia' "dia=$diaK origen=timeline.d$diaK.json"
+        } else {
+          KLog "rotacion_dia dia=$diaK PENDIENTE (copia fallida; dia_aplicado.txt no se escribe)"
+        }
         if ($armado -and $userOk -and $puedeArrancar) {
           & schtasks /run /tn $TareaAct 2>&1 | Out-Null
           Start-Sleep -Seconds 6
           $proc = @(Get-Process -Name ghosts -ErrorAction SilentlyContinue)
           if ($proc.Count -gt 0) { $pid1 = $proc[0].Id; $dueno = Get-DuenoProceso 'ghosts.exe' }
         }
+      } else {
+        $rotacionOk = $true
+        KLog "rotacion_dia dia=$diaK ya_aplicado (sin reiniciar el cliente)"
+      }
+      if ($rotacionOk) {
+        try { Set-Content -Path $DiaFile -Value ([string]$diaK) -Encoding ascii } catch { }
       }
     }
   }

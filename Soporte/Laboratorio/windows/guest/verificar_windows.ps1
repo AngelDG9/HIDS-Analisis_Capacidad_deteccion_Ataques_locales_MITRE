@@ -15,7 +15,8 @@
 #   7) residuos: procesos ghosts, marcas de campana y `stop.flag` (lista negra)
 #
 # `-Manifiesto` excluye lo volatil (logs, `heartbeat.seq`, `stop.flag`, `armado.flag`,
-# `estado.json`, `client.out*`, `instance\`): dos `apply` seguidos dan el MISMO sha256.
+# `estado.json`, `dia_aplicado.txt`, `client.out*`, `instance\`): dos `apply` seguidos dan
+# el MISMO sha256.
 #
 # Salida: lineas `CLAVE=valor` + `RESULT=PASS|FAIL` (y `FALLOS=...` si falla).
 # Uso: powershell -NoProfile -ExecutionPolicy Bypass -File verificar_windows.ps1 [-SinCampana]
@@ -40,7 +41,7 @@ if ($Manifiesto) {
   # `config\timeline.json` ACTIVO: GHOSTS lo reescribe al ejecutar (el original es
   # `timeline.dK.json`, que SI entra en la huella). Sin esta exclusion, un 2.o `arm`
   # con el cliente vivo nunca coincidia (G-8). Dos `apply` seguidos dan el MISMO sha256.
-  $excl = '\\logs\\|\\instance\\|client\.out|keepalive\.log|recovery\.log|estado\.json|armado\.flag|heartbeat\.seq|stop\.flag|\\config\\timeline\.json$'
+  $excl = '\\logs\\|\\instance\\|client\.out|keepalive\.log|recovery\.log|estado\.json|armado\.flag|heartbeat\.seq|stop\.flag|dia_aplicado\.txt|\\config\\timeline\.json$'
   $files = @()
   if (Test-Path $ClienteDir) {
     $files += Get-ChildItem -Path $ClienteDir -Recurse -File -ErrorAction SilentlyContinue |
@@ -242,14 +243,23 @@ if (Test-Path $inst) {
 }
 $bl['instance_vacio'] = ($nInst -eq 0)
 
-# 6) logs\*.log sin contenido (sin rastro de campana)
+# 6) logs\*.log SIN CONTENIDO DE CAMPANA (G-2, T2b-1b)
+# Los logs del OPERADOR (`keepalive.log`, `recovery.log`) son instrumentacion declarada
+# (plan §16.1, fuera del FIM) y NO son residuo. Es residuo lo que escribe el CLIENTE al
+# ejecutar la receta: `app.log`, `clientupdates.log` o cualquier log con marcas de campana.
 $logsDir = Join-Path $ClienteDir 'logs'
-$logsCon = @()
+$logsCamp = @()
 if (Test-Path $logsDir) {
-  $logsCon = @(Get-ChildItem -LiteralPath $logsDir -Filter '*.log' -File -Force -ErrorAction SilentlyContinue |
-    Where-Object { $_.Length -gt 0 })
+  foreach ($lf in @(Get-ChildItem -LiteralPath $logsDir -Filter '*.log' -File -Force -ErrorAction SilentlyContinue)) {
+    $nom = $lf.Name.ToLower()
+    if ($nom -in @('keepalive.log', 'recovery.log')) { continue }
+    if ($lf.Length -le 0) { continue }
+    $txt = ''
+    try { $txt = (Get-Content -LiteralPath $lf.FullName -Raw -ErrorAction Stop) } catch { $txt = '' }
+    if ($nom -in @('app.log', 'clientupdates.log') -or $txt -match '(?i)timeline|ghost') { $logsCamp += $lf.Name }
+  }
 }
-$bl['logs_vacios'] = ($logsCon.Count -eq 0)
+$bl['logs_sin_campana'] = ($logsCamp.Count -eq 0)
 
 # 7) HKCU\...\Run\ghosts ausente
 $runGhosts = $false
@@ -276,6 +286,12 @@ $b10 = @()
 $b10 += @(Get-ChildItem -LiteralPath 'C:\Users\angel' -Filter 'b10_*' -Force -ErrorAction SilentlyContinue)
 $b10 += @(Get-ChildItem -LiteralPath 'C:\Windows\Temp' -Filter 'b10_*' -Force -ErrorAction SilentlyContinue)
 $bl['b10'] = ($b10.Count -eq 0)
+
+# 11) marcas de campana `inicio`/`fin`/`hecho` ausentes (plan 7.3 / T2b-1c)
+# Es residuo cualquier marca de campana en el snapshot: `prep` no arma. Se evalua
+# SIEMPRE (tambien con -SinCampana); `campana_marcas` (>= 22) sigue siendo la
+# comprobacion de la ventana en curso y no sustituye a este item.
+$bl['marcas_campana'] = ($marcas -eq 0)
 
 $blOk = $true
 $blMalos = @()

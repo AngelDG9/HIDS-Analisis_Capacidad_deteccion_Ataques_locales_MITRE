@@ -1,0 +1,10 @@
+# T2b-1b · PRUEBA de la puerta G-1 (`exit 47`) SIN tocar la VM ni Defender.
+# Fichero inyectado con `prep -SimularVerificador <este fichero>`: es la salida
+# SIMULADA de `verificar_windows.ps1`. Defender se declara ON (DEFENDER_OFF=0) y la
+# sesion de `angel` OK: `prep` debe abortar con exit 47 antes de tocar la VM.
+CHECK defender_off           FALLO RTP=True Behavior=True Tamper=False WinDefend=Running politica_off=False
+DEFENDER_OFF=0
+DEFENDER_RTP=True DEFENDER_BEHAVIOR=True DEFENDER_TAMPER=False DEFENDER_SVC=Running DEFENDER_POLITICA_OFF=False
+CHECK sesion_angel           OK explorer_sesion=1 (1=consola) dueno=VICTIMA-WINDOWS\angel
+SESION_ANGEL=1
+SESION_EXPLORER=1 IL=Medium

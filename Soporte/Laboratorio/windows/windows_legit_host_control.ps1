@@ -47,13 +47,16 @@
 #   G-W11 un solo cliente vivo (1 `ghosts.exe`, 1 machineid)              (CA-W6)
 #   G-W12 host: RAM libre >= 1500 MB y Windows Update pausado             (R-W4)
 #   G-W13 latido fresco (<= 12 min) + `seq` monotono + `ka_instancias=1`   (CA-W3b-12b)
+#   G-W14 campo `defender` del latido en `off` (si `on` => ALARMA; R4)      (T2b-1b)
 #
 # Sin secretos. Uso (HOST):
 #   powershell -NoProfile -ExecutionPolicy Bypass -File windows_legit_host_control.ps1 -Phase drytest
 #   ... -Phase prep | arm -T0 2026-11-16T00:00:00Z -T1 2026-11-19T00:00:00Z | watch | crudo | stop | cleanup | status
 #   `G-W7` decide por la ventana: con `-T0/-T1` exige `yes` dentro y `no` fuera; sin
-#   ellos sale SKIP declarado. `watch`/`status` deben recibir ambos para evaluarlo.
+#   ellos usa `ventana_actual.json` (lo escribe `arm`); si tampoco existe, SKIP declarado.
 #   `watch`/`crudo`/`cleanup` aceptan `-Heartbeat` (ruta del JSONL del chivato).
+#   `prep -SoloListaNegra` y `prep -SimularVerificador <fichero>` son SOLO PRUEBAS
+#   (lista negra read-only / puerta G-1 sin tocar la VM).
 # ============================================================================
 [CmdletBinding()]
 param(
@@ -67,9 +70,13 @@ param(
   [string]$DryPhase = '',
   # drytest: log alternativo (la prueba negativa de G-W11 no ensucia `drytest.log`).
   [string]$DryLogPath = '',
-  # `prep -SoloListaNegra`: comprobacion READ-ONLY de la lista negra 7.37.3 (G-2) sin
+  # `prep -SoloListaNegra`: comprobacion READ-ONLY de la lista negra 7.3 (G-2) sin
   # revertir ni desplegar. Sirve para la prueba negativa reproducible (exit 46).
   [switch]$SoloListaNegra,
+  # SOLO PRUEBAS (T2b-1b): inyecta la salida de `verificar_windows.ps1` desde un fichero
+  # en lugar de pedirla por SSH. Sirve para probar la puerta `exit 47` (G-1) sin tocar
+  # Defender ni la VM. En operacion normal NO se usa (vacio).
+  [string]$SimularVerificador = '',
   # Chivato por red: JSONL que escribe `heartbeat_sink.py` en el HOST.
   [string]$Heartbeat = '',
   [int]$HbMaxMin = 12,
@@ -284,17 +291,23 @@ function Get-Heartbeat {
 }
 
 function Get-Ventana {
-  # t0/t1/fecha: manda `ventana_actual.json` (lo escribe `arm`); si no, `-T0/-T1`.
-  $r = @{ fecha = ''; t0 = ''; t1 = ''; fuente = 'parametros' }
+  # G-3 (T2b-1b): `-T0/-T1` MANDAN si llegan; si no, se lee `ventana_actual.json`
+  # (lo escribe `arm`). Antes el fichero pisaba a los parametros y un `watch` con
+  # `-T0/-T1` nuevos seguia evaluando la ventana vieja.
+  $r = @{ fecha = ''; t0 = ''; t1 = ''; fuente = 'sin ventana' }
   if (Test-Path $VentanaFile) {
     try {
       $j = Get-Content -Raw $VentanaFile | ConvertFrom-Json
-      $r.fecha = [string]$j.fecha; $r.t0 = [string]$j.t0; $r.t1 = [string]$j.t1; $r.fuente = 'ventana_actual.json'
+      $r.fecha = [string]$j.fecha; $r.t0 = [string]$j.t0; $r.t1 = [string]$j.t1
+      $r.fuente = 'ventana_actual.json'
     } catch { }
   }
-  if (-not $r.fecha -and $T0) { $r.fecha = ([datetime]$T0).ToUniversalTime().ToString('yyyy-MM-dd') }
-  if (-not $r.t0 -and $T0) { $r.t0 = $T0 }
-  if (-not $r.t1 -and $T1) { $r.t1 = $T1 }
+  if ($T0) {
+    $r.t0 = $T0
+    $r.fecha = ([datetime]$T0).ToUniversalTime().ToString('yyyy-MM-dd')
+    $r.fuente = if ($r.fuente -eq 'ventana_actual.json') { 'parametros + ventana_actual.json' } else { 'parametros' }
+  }
+  if ($T1) { $r.t1 = $T1 }
   return $r
 }
 
@@ -394,10 +407,13 @@ function Reset-Heartbeat {
   # F-1.2: una ventana nueva NO puede heredar el `seq` de la anterior (una bajada
   # legitima de `seq` se veria como `ROTA_SEQ`). Se archiva el JSONL del host y el
   # `heartbeat.seq` del invitado; el sink se reinicia para re-sembrar la cadena.
+  # T2b-1b: tambien se archiva `ventana_actual.json` de la ventana ANTERIOR. Si no, el
+  # `G-W7` de este `prep` se evaluaria contra una ventana caducada (y `arm` la reescribe
+  # de inmediato). `crudo`/`stop`/`cleanup` sin ventana se declaran (no se inventan).
+  $hist = Join-Path (Split-Path -Parent $Heartbeat) 'historico'
+  New-Item -ItemType Directory -Force -Path $hist | Out-Null
+  $stamp = (Get-Date).ToUniversalTime().ToString('yyyyMMddTHHmmssZ')
   if (Test-Path $Heartbeat) {
-    $hist = Join-Path (Split-Path -Parent $Heartbeat) 'historico'
-    New-Item -ItemType Directory -Force -Path $hist | Out-Null
-    $stamp = (Get-Date).ToUniversalTime().ToString('yyyyMMddTHHmmssZ')
     $dst = Join-Path $hist ("heartbeat_" + $stamp + ".jsonl")
     try {
       Move-Item -LiteralPath $Heartbeat -Destination $dst -Force
@@ -405,10 +421,14 @@ function Reset-Heartbeat {
     } catch { Log "prep AVISO: no se pudo archivar $Heartbeat ($($_.Exception.Message))" }
   }
   if (Test-Path ($Heartbeat + '.1')) {
-    $hist = Join-Path (Split-Path -Parent $Heartbeat) 'historico'
-    New-Item -ItemType Directory -Force -Path $hist | Out-Null
-    $stamp = (Get-Date).ToUniversalTime().ToString('yyyyMMddTHHmmssZ')
     Move-Item -LiteralPath ($Heartbeat + '.1') -Destination (Join-Path $hist ("heartbeat_" + $stamp + ".1.jsonl")) -Force -ErrorAction SilentlyContinue
+  }
+  if (Test-Path $VentanaFile) {
+    $dstV = Join-Path $hist ("ventana_actual_" + $stamp + ".json")
+    try {
+      Move-Item -LiteralPath $VentanaFile -Destination $dstV -Force
+      Log "prep: ventana_actual.json anterior archivado -> $dstV"
+    } catch { Log "prep AVISO: no se pudo archivar $VentanaFile ($($_.Exception.Message))" }
   }
 }
 
@@ -708,6 +728,20 @@ function Test-GW13 {
   return @{ ok = $ok; detalle = "HB_EDAD_MIN=$edad max=$HbMaxMin seq_monotono=$($hb.seq_ok) ka_instancias=$inst seq=$($hb.last.seq) ka_pid=$($hb.last.ka_pid) parcial=$($hb.parcial)" }
 }
 
+function Test-GW14 {
+  # NUEVO (T2b-1b): el `watch` MIRA el campo `defender` del latido y ALARMA si esta ON.
+  # Solo lee el JSONL del host: no entra en la VM. `off` = control ambiental OK,
+  # `on` = FALLO (Defender reactivado, R4), `?` = no evaluable (SKIP declarado).
+  $hb = Get-Heartbeat
+  if (-not $hb.ok) { return @{ ok = $false; skip = $true; detalle = "sin latido ($($hb.motivo))" } }
+  $def = ([string]$hb.last.defender).Trim().ToLower()
+  if ($def -eq 'on') {
+    return @{ ok = $false; detalle = 'DEFENDER=ON en el latido (control ambiental roto: R4)' }
+  }
+  if ($def -eq 'off') { return @{ ok = $true; detalle = 'defender=off (latido)' } }
+  return @{ ok = $true; skip = $true; detalle = "defender='$def' no evaluable (latido)" }
+}
+
 $Guardarrailes = [ordered]@{
   'G-W1'  = 'Test-GW1'
   'G-W2'  = 'Test-GW2'
@@ -722,6 +756,7 @@ $Guardarrailes = [ordered]@{
   'G-W11' = 'Test-GW11'
   'G-W12' = 'Test-GW12'
   'G-W13' = 'Test-GW13'
+  'G-W14' = 'Test-GW14'
 }
 
 # Que guardarrailes aplican a cada fase (los demas no se evaluan en esa fase).
@@ -732,10 +767,10 @@ $Guardarrailes = [ordered]@{
 $Aplican = @{
   prep    = @('G-W1', 'G-W2', 'G-W3', 'G-W4', 'G-W5', 'G-W6', 'G-W7', 'G-W9', 'G-W10', 'G-W12')
   arm     = @('G-W1', 'G-W2', 'G-W4', 'G-W5', 'G-W6', 'G-W9', 'G-W10', 'G-W11', 'G-W12')
-  watch   = @('G-W5', 'G-W7', 'G-W8', 'G-W9', 'G-W10', 'G-W11', 'G-W12', 'G-W13')
+  watch   = @('G-W5', 'G-W7', 'G-W8', 'G-W9', 'G-W10', 'G-W11', 'G-W12', 'G-W13', 'G-W14')
   stop    = @('G-W5', 'G-W10')
   cleanup = @('G-W1', 'G-W2', 'G-W3', 'G-W7', 'G-W12')
-  status  = @('G-W1', 'G-W2', 'G-W3', 'G-W4', 'G-W5', 'G-W6', 'G-W7', 'G-W8', 'G-W9', 'G-W10', 'G-W11', 'G-W12', 'G-W13')
+  status  = @('G-W1', 'G-W2', 'G-W3', 'G-W4', 'G-W5', 'G-W6', 'G-W7', 'G-W8', 'G-W9', 'G-W10', 'G-W11', 'G-W12', 'G-W13', 'G-W14')
 }
 
 function Invoke-Guardarrailes([string]$Fase) {
@@ -808,13 +843,20 @@ switch ($Phase) {
     # --- G-1 (entrada): si la VM ya esta encendida, Defender y sesion se exigen YA ---
     # Permite abortar ANTES del revert (y hace testeable la puerta forzando Defender ON
     # o cerrando la sesion de `angel` en la VM viva).
-    if (Get-VmEnMarcha $Vmx) {
+    # T2b-1b: `-SimularVerificador <fichero>` inyecta la salida sin tocar la VM (solo
+    # pruebas de la puerta `exit 47`; nunca se activa Defender para probar).
+    $vEnt = ''
+    if ($SimularVerificador) {
+      if (Test-Path $SimularVerificador) { $vEnt = (Get-Content -Raw -LiteralPath $SimularVerificador) }
+      if (-not $vEnt) { Log "prep FALLO: -SimularVerificador ilegible ($SimularVerificador)"; exit 49 }
+      Log "prep: verificador SIMULADO desde $SimularVerificador (prueba G-1; NO se toca la VM)"
+    } elseif (Get-VmEnMarcha $Vmx) {
       $vEnt = Invoke-Remote "powershell -NoProfile -ExecutionPolicy Bypass -File `"$RVerif`" -SinCampana" -PermitirFallo
-      $gateEnt = Test-GateDefensorSesion $vEnt 'entrada'
-      if ($gateEnt -and -not $gateEnt.ok) {
-        Log "prep FALLO: gate Defender/sesion en entrada (DEFENDER_OFF=$($gateEnt.def) SESION_ANGEL=$($gateEnt.ses)) -> exit 47"
-        exit 47
-      }
+    }
+    $gateEnt = Test-GateDefensorSesion $vEnt 'entrada'
+    if ($gateEnt -and -not $gateEnt.ok) {
+      Log "prep FALLO: gate Defender/sesion en entrada (DEFENDER_OFF=$($gateEnt.def) SESION_ANGEL=$($gateEnt.ses)) -> exit 47"
+      exit 47
     }
     # --- sink 9095: si esta ocupado por un proceso ajeno, exit 48 (sin fallback) ---
     if (Test-PuertoSink) {
@@ -902,6 +944,16 @@ switch ($Phase) {
     Write-Output $dep
     if ($LASTEXITCODE -ne 0) { Log 'arm FALLO: re-deploy con mapa'; exit 53 }
     $deploySkip = ($dep -match 'DEPLOY_SKIP=1')
+    if ($deploySkip) {
+      # F-1/G-8: mismo payload y mismo `MANIFEST_SHA256` => NO se ha re-subido el
+      # payload ni se han re-registrado tareas. Solo se asegura de que el bucle vive.
+      Log 'arm: G-8 deploy SKIP (payload y MANIFEST_SHA256 ya coinciden; no se re-sube ni se re-registran tareas)'
+      $kaQ = Invoke-Remote 'schtasks /query /tn TFG-WinLegit-Keepalive /fo LIST' -PermitirFallo
+      if ($kaQ -notmatch '(?i)Status:\s*Running') {
+        Invoke-Remote 'schtasks /run /tn TFG-WinLegit-Keepalive' -PermitirFallo | Out-Null
+        Log 'arm: bucle keepalive no estaba Running -> relanzado (sin re-desplegar)'
+      }
+    }
     Invoke-Remote 'type nul > C:\Users\angel\ghosts-client\armado.flag' | Out-Null
     if ($deploySkip) {
       # 2.o `arm`: no se relanza el cliente si ya esta vivo (no se duplica actividad).

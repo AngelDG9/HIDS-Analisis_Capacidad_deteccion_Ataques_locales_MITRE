@@ -174,7 +174,14 @@ function Build-Payload {
   }
 
   if (Test-Path $Zip) { Remove-Item -LiteralPath $Zip -Force }
-  Compress-Archive -Path (Join-Path $Payload '*') -DestinationPath $Zip -CompressionLevel Optimal
+  # T2b-1b: `Compress-Archive` falló una vez con "no se pudo encontrar el archivo"
+  # (fichero bloqueado un instante por el escaneo del host) y abortó `prep`. Se usa
+  # `ZipFile::CreateFromDirectory`, que recorre el árbol de forma secuencial y no
+  # depende del pipeline de cmdlets. Mismo layout (items en la raiz del zip).
+  Add-Type -AssemblyName System.IO.Compression.FileSystem
+  [System.IO.Compression.ZipFile]::CreateFromDirectory($Payload, $Zip,
+    [System.IO.Compression.CompressionLevel]::Optimal, $false)
+  if (-not (Test-Path $Zip)) { throw "no se genero $Zip" }
   $mb = [math]::Round((Get-Item $Zip).Length / 1MB, 1)
   Log "payload construido: $Zip ($mb MB)"
 }
@@ -204,12 +211,19 @@ function Clear-ResiduosGuest {
   # instance\ y logs\ (los recrea el cliente/keepalive). `heartbeat.seq` NO se borra
   # aqui: si el deploy ocurre en `arm`, el bucle debe continuar su `seq` (si no, el
   # sink veria una bajada legitima como `ROTA_SEQ`). `prep` lo archiva antes.
-  $cmd = 'del /f /q "C:\Users\angel\ghosts-client\client.out" "C:\Users\angel\ghosts-client\client.out.1" ' +
-         '"C:\Users\angel\ghosts-client\armado.flag" "C:\Users\angel\ghosts-client\stop.flag" 2>nul & ' +
-         'if exist "C:\Users\angel\ghosts-client\instance" rd /s /q "C:\Users\angel\ghosts-client\instance" & ' +
-         'if exist "C:\Users\angel\ghosts-client\logs" rd /s /q "C:\Users\angel\ghosts-client\logs" & ' +
-         'echo LIMPIEZA_OK'
-  $out = Invoke-Remote $cmd -PermitirFallo
+  # T2b-1b: se manda por STDIN (no como linea de comandos del host), que es lo que
+  # exige la regla del incidente de Defender. OJO: `powershell -Command -` ejecuta
+  # sentencia a sentencia; NO admite bloques `foreach { ... }` multilinea (se quedaba
+  # en silencio sin hacer nada). Por eso son tres sentencias completas.
+  $script = @'
+$b = 'C:\Users\angel\ghosts-client'
+Remove-Item -LiteralPath @((Join-Path $b 'client.out'), (Join-Path $b 'client.out.1'), (Join-Path $b 'armado.flag'), (Join-Path $b 'stop.flag')) -Force -ErrorAction SilentlyContinue
+Remove-Item -LiteralPath @((Join-Path $b 'instance'), (Join-Path $b 'logs')) -Recurse -Force -ErrorAction SilentlyContinue
+Write-Output 'LIMPIEZA_OK'
+'@
+  $out = ''
+  try { $out = Invoke-RemoteStdin 'powershell -NoProfile -ExecutionPolicy Bypass -Command -' $script }
+  catch { $out = "ERROR $($_.Exception.Message)" }
   Log ("residuos invitado: " + (($out -replace '\s+', ' ').Trim()))
 }
 
