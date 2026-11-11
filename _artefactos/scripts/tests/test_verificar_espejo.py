@@ -94,11 +94,29 @@ def test_detecta_doble_envoltorio_cmd(copia):
     assert any("cmd /c" in f for f in res["fallos"])
 
 
-def test_detecta_un_pipe_fuera_de_powershell(copia):
+def test_detecta_un_pipe_en_cualquier_sitio(copia):
     _romper(copia, 3, lambda tl: tl["TimeLineHandlers"][0]["TimeLineEvents"][0].__setitem__(
         "Command", tl["TimeLineHandlers"][0]["TimeLineEvents"][0]["Command"] + " | more"))
     res = _comparar(copia)
     assert any("|" in f for f in res["fallos"])
+
+
+def test_detecta_un_pipe_dentro_de_powershell(copia):
+    """El pipe que WE0-2 desmintió: dentro de `-Command` también pierde el reporte."""
+    for day in (1, 2, 3):
+        tl = json.loads((copia / f"w{day}.json").read_text(encoding="utf-8"))
+        for hi, h in enumerate(tl["TimeLineHandlers"]):
+            for ei, e in enumerate(h["TimeLineEvents"]):
+                if 'powershell -NoProfile -Command "' not in e["Command"]:
+                    continue
+                cmd = e["Command"].replace('-Command "', '-Command "echo x | ', 1)
+                _romper(copia, day, lambda t, hi=hi, ei=ei, cmd=cmd:
+                        t["TimeLineHandlers"][hi]["TimeLineEvents"][ei].__setitem__(
+                            "Command", cmd))
+                res = _comparar(copia)
+                assert any("|" in f for f in res["fallos"])
+                return
+    raise AssertionError("no hay ningún comando PowerShell en la receta")
 
 
 def test_detecta_un_bucle_nuevo_sin_pareja_en_linux(copia):

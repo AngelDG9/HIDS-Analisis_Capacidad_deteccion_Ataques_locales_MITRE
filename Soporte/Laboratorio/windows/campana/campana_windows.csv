@@ -1,4 +1,4 @@
-# campana_windows.csv · campana B6-W (bloque windows-legit-prep, W2) · 11 casos · 22 marcas · 63 acciones · sha256_casos_md=7ed97cae16a3a56511403ec1c589a23489a670a555110536e5884387e61458dc · fuente=casos_windows.md · plataforma=windows · boveda_version=3 · corpus_windows=NO_EXISTE (prediccion) · plan=5.2
+# campana_windows.csv · campana B6-W (bloque windows-legit-prep, W2) · 11 casos · 22 marcas · 63 acciones · sha256_casos_md=6937c40f4d8e160f271fef2940fb47fa72d75dce229a77100149e92f5a5efb01 · fuente=casos_windows.md · plataforma=windows · boveda_version=3 · corpus_windows=NO_EXISTE (prediccion) · plan=5.2
 caso,nombre,dia,hora_inicio,mecanismo,muta,binarios,tecnica,ata_linux,rule_ids,esperado_n7,esperado_n3,efecto_declarado,evidencia,coste,por_que,tipos,comandos
 W-01,El equipo va lento: miro memoria y servicios,1,17:06:00,C-01,No,systeminfo;sc;tasklist,T1057;T1082;T1007,ATA004;ATA045;ATA038,67027,0,67027 L3 >=6 (1 cmd.exe por acción; predicción),,"hecho.txt con «RESULTADO=OK», el recuento de servicios.txt (> 10), free.txt (>= 3) y fallidos.txt",3 min · <1 MB,"Cualquier empleado mira el estado del equipo y sus servicios cuando el portátil va lento, antes de abrir una incidencia. Solo lectura: `systeminfo`, `sc query` y `tasklist` no cambian nada.","inicio
 comando
@@ -64,14 +64,14 @@ cd /d C:\lab-legit\campana\W-06 && (if not exist C:\lab-legit\campana\W-06\orige
 cd /d C:\lab-legit\campana\W-06 && robocopy C:\lab-legit\campana\W-06\origen\ C:\lab-legit\campana\W-06\destino\ /MIR /NFL /NDL /NJH /NJS /NP
 cd /d C:\lab-legit\campana\W-06 && > C:\lab-legit\campana\W-06\hecho.txt echo RESULTADO=OK && dir /s C:\lab-legit\campana\W-06\origen C:\lab-legit\campana\W-06\destino >> C:\lab-legit\campana\W-06\hecho.txt && dir C:\lab-legit\campana\W-06\destino >> C:\lab-legit\campana\W-06\hecho.txt
 cd /d C:\lab-legit\campana\W-06 && rd /s /q C:\lab-legit\campana\W-06\origen 2>nul & rd /s /q C:\lab-legit\campana\W-06\destino 2>nul & > C:\lab-legit\campana\W-06\fin.txt echo %DATE%_%TIME%"
-W-07,Normalizo el CSV del informe,2,17:41:20,C-08,No,powershell,T1565.001,ATA006;ATA032;ATA026;ATA017,67027;91801-91846,0,67027 L3 >=6 (1 cmd.exe por acción; predicción),,hecho.txt con el CSV normalizado (more) y el recuento de `;`,2 min · <1 MB,Cambiar el separador de un export para abrirlo en Excel es una tarea de oficina diaria. El único fichero que se reescribe es el del caso; el pipe vive **dentro** de `powershell -Command` (§4.5).,"inicio
+W-07,Normalizo el CSV del informe,2,17:41:20,C-08,No,powershell,T1565.001,ATA006;ATA032;ATA026;ATA017,67027;91801-91846,0,67027 L3 >=6 (1 cmd.exe por acción; predicción),,hecho.txt con el CSV normalizado (more) y el recuento de `;`,2 min · <1 MB,"Cambiar el separador de un export para abrirlo en Excel es una tarea de oficina diaria. El único fichero que se reescribe es el del caso; se hace con variable intermedia, sin pipe (D-01).","inicio
 comando
 comando
 comando
 evidencia
 fin","cd /d C:\lab-legit\campana && (if not exist C:\lab-legit\campana\W-07 md C:\lab-legit\campana\W-07) & > C:\lab-legit\campana\W-07\inicio.txt echo %DATE%_%TIME%
 cd /d C:\lab-legit\campana\W-07 && > C:\lab-legit\campana\W-07\export.csv echo referencia;area;importe && >> C:\lab-legit\campana\W-07\export.csv echo A-01;compras;1200 && >> C:\lab-legit\campana\W-07\export.csv echo A-02;ventas;980
-cd /d C:\lab-legit\campana\W-07 && powershell -NoProfile -Command ""(Get-Content -LiteralPath 'C:\lab-legit\campana\W-07\export.csv') -replace ';',',' | Set-Content -LiteralPath 'C:\lab-legit\campana\W-07\export.csv'""
+cd /d C:\lab-legit\campana\W-07 && powershell -NoProfile -Command ""$c = (Get-Content -LiteralPath 'C:\lab-legit\campana\W-07\export.csv') -replace ';',','; Set-Content -LiteralPath 'C:\lab-legit\campana\W-07\export.csv' -Value $c""
 cd /d C:\lab-legit\campana\W-07 && more +0 C:\lab-legit\campana\W-07\export.csv > C:\lab-legit\campana\W-07\export_normalizado.txt
 cd /d C:\lab-legit\campana\W-07 && > C:\lab-legit\campana\W-07\hecho.txt echo RESULTADO=OK && more +0 C:\lab-legit\campana\W-07\export.csv >> C:\lab-legit\campana\W-07\hecho.txt && find /c "";"" C:\lab-legit\campana\W-07\export.csv >> C:\lab-legit\campana\W-07\hecho.txt
 cd /d C:\lab-legit\campana\W-07 && del /f /q C:\lab-legit\campana\W-07\export.csv 2>nul & del /f /q C:\lab-legit\campana\W-07\export_normalizado.txt 2>nul & > C:\lab-legit\campana\W-07\fin.txt echo %DATE%_%TIME%"

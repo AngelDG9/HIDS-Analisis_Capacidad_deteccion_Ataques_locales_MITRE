@@ -51,8 +51,8 @@ RAIZ = Path(__file__).resolve().parents[3]
     ("sc query state= all > C:\\x\\s.txt", {"sc"}),
     ("eventcreate /T INFORMATION /ID 100 /L APPLICATION /SO ofimatica /D \"nota; con ;\"",
      {"eventcreate"}),
-    ("powershell -NoProfile -Command \"(Get-Content a.csv) -replace ';',',' | "
-     "Set-Content b.csv\"", {"powershell"}),
+    ("powershell -NoProfile -Command \"$c = (Get-Content a.csv) -replace ';',','; "
+     "Set-Content b.csv -Value $c\"", {"powershell"}),
 ])
 def test_parser_cmd(cmd, esperado):
     assert C._tokens(cmd) == esperado

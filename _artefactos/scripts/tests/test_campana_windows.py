@@ -7,7 +7,8 @@ Fijan lo que el plan §5 y §13 (CA-W3, CA-W14, CA-W18) exige **antes** de `t0`:
    **d1 17:06 · d2 17:17 · d3 17:11**, idénticos a Linux.
 2. **0 mutación**: ni `schtasks /create`, ni `reg add`, ni `sc create/config`, ni
    `net user`, ni `msiexec`/instalación, ni escritura fuera de `…\\campana\\W-XX\\`.
-3. **0 pipes** fuera de `powershell -Command`; 0 `%RANDOM%`/`Get-Random`; 0 evasión.
+3. **0 pipes en todo el texto** (también dentro de `powershell -Command`); 0
+   `%RANDOM%`/`Get-Random`; 0 evasión.
 4. **22 marcas** y evidencia `hecho.txt` con `RESULTADO=OK`; esperado **por umbral**
    (`N ≥ 7` = 0; `N ≥ 3` cita `67027`).
 5. **Comandos = los de `w{1,2,3}.json`** (misma orden, misma hora) y **mismas horas que
@@ -100,14 +101,12 @@ def test_auditoria_de_no_mutacion_pasa():
     assert res["efectos"] == {"descargas_http": 4, "registro_eventos": 1}
 
 
-def test_ningun_pipe_fuera_de_powershell():
+def test_cero_pipes_en_toda_la_campana():
     casos, _ = C.cargar()
     for cid, c in casos.items():
         for a in c["acciones"]:
             cmd = a["comando"]
-            assert "|" not in C._sin_ps(cmd), f"{cid}: pipe fuera de PowerShell"
-            if "|" in cmd:
-                assert "powershell" in cmd and "-Command" in cmd, f"{cid}: pipe suelto"
+            assert "|" not in cmd, f"{cid}: pipe en {cmd[:80]}"
 
 
 def test_patrones_mutantes_cero_por_caso():
@@ -235,7 +234,12 @@ def test_validador_detecta_mutacion_si_se_cuela():
     assert any("mutante" in f for f in fallos), fallos
     fallos = C.validar_comando(
         r'cd /d C:\lab-legit\campana\W-01 && dir C:\Windows\System32 | findstr x')
-    assert any("PowerShell" in f for f in fallos), fallos
+    assert any("|" in f and "prohibido" in f for f in fallos), fallos
+    # El pipe **dentro** de `powershell -Command` también falla (D-01).
+    fallos = C.validar_comando(
+        r'cd /d C:\lab-legit\campana\W-01 && powershell -NoProfile -Command '
+        r'"Get-Content a.csv | Set-Content b.csv"')
+    assert any("|" in f and "prohibido" in f for f in fallos), fallos
     fallos = C.validar_comando(
         r'cd /d C:\lab-legit\campana\W-01 && dir C:\Users\otro\secreto.txt')
     assert any("fuera de la carpeta" in f for f in fallos), fallos

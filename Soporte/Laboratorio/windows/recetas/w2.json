@@ -756,7 +756,7 @@
      "DelayAfter": 8000
     },
     {
-     "Command": "cd /d C:\\lab-legit\\campana\\W-07 && powershell -NoProfile -Command \"(Get-Content -LiteralPath 'C:\\lab-legit\\campana\\W-07\\export.csv') -replace ';',',' | Set-Content -LiteralPath 'C:\\lab-legit\\campana\\W-07\\export.csv'\"",
+     "Command": "cd /d C:\\lab-legit\\campana\\W-07 && powershell -NoProfile -Command \"$c = (Get-Content -LiteralPath 'C:\\lab-legit\\campana\\W-07\\export.csv') -replace ';',','; Set-Content -LiteralPath 'C:\\lab-legit\\campana\\W-07\\export.csv' -Value $c\"",
      "DelayAfter": 6000
     },
     {

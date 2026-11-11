@@ -1,0 +1,47 @@
+﻿CHECK cliente_exe            OK C:\Users\angel\ghosts-client\ghosts.exe
+CHECK cliente_config         OK C:\Users\angel\ghosts-client\config\application.json
+CHECK cliente_recetas        OK d1/d2/d3 + bloques + keepalive
+CHECK campana_docs           OK C:\lab-legit\campana
+CHECK errores_log            OK C:\Users\angel\Documentos\errores.log
+CHECK tarea_actividad        OK estado=Ready user=angel logon=Interactive runlevel=Limited
+CHECK tarea_keepalive        OK estado=Running user=SYSTEM logon=ServiceAccount
+CHECK tarea_user_angel       OK angel
+CHECK tarea_runlevel         OK Limited
+TAREA_ACT_CWD=C:\Users\angel
+TAREA_ACT_ARGS=/c ""C:\Users\angel\ghosts-client\ghosts.exe" >> "C:\Users\angel\ghosts-client\client.out" 2>&1"
+TAREA_KA_ARGS=-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "C:\Users\angel\ghosts-client\tfg_keepalive_windows.ps1" -Loop
+CHECK svc_Sysmon64           OK Running/Automatic
+CHECK svc_WazuhSvc           OK Running/Automatic
+CHECK defender_off           OK RTP= Behavior= Tamper= WinDefend=Stopped politica_off=True
+DEFENDER_OFF=1
+DEFENDER_RTP= DEFENDER_BEHAVIOR= DEFENDER_TAMPER= DEFENDER_SVC=Stopped DEFENDER_POLITICA_OFF=True
+CHECK sesion_angel           OK explorer_sesion=1 (1=consola) dueno=DESKTOP-BTMCFA5\angel
+SESION_ANGEL=1
+SESION_EXPLORER=1 IL=Medium
+CHECK powercfg_STANDBYIDLE   OK AC=0x00000000
+CHECK powercfg_HIBERNATEIDLE OK AC=0x00000000
+CHECK powercfg_HYBRIDSLEEP   OK AC=0x00000000
+CHECK disco_libre_mb         OK 21287 MB
+CHECK hosts_intranet         OK intranet.local -> 192.168.65.1
+CHECK wu_politica            OK NoAutoUpdate=1
+CHECK wu_servicio            FALLO Running/Manual
+CLIENTE_VIVO=False PID=0 WIN_USER=
+HIJOS_VMTOOLSD=0
+CAMPANA_MARCAS=0
+CHECK residuo_stop_flag      OK ausente
+BLACKLIST_STOP_FLAG=1
+BLACKLIST_lab_attack_vacio=1
+BLACKLIST_tareas_ataque=1
+BLACKLIST_armado_flag=1
+BLACKLIST_client_out=1
+BLACKLIST_instance_vacio=1
+BLACKLIST_logs_sin_campana=1
+BLACKLIST_run_ghosts=1
+BLACKLIST_wintemp_tfg=1
+BLACKLIST_temp_opencode=1
+BLACKLIST_b10=1
+BLACKLIST_marcas_campana=1
+CHECK lista_negra            OK 0 residuos
+LISTA_NEGRA_OK=1
+FALLOS=wu_servicio
+RESULT=FAIL

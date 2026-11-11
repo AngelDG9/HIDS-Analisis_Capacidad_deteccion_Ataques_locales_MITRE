@@ -265,3 +265,17 @@
 [2026-11-11T15:08:15Z] [prep] prep: lista negra 7.3 OK (0 residuos)
 [2026-11-11T15:08:18Z] [prep] prep: manifiesto OK (62b73b16ffdb0d12fe424f759201e8a81134e335215a6723b8a2adf41a253d65)
 [2026-11-11T15:08:18Z] [prep] prep OK (NO armado)
+[2026-11-11T17:32:24Z] [prep] prep: gate Defender/sesion NO EVALUABLE en entrada (sin salida de verificar_windows.ps1)
+[2026-11-11T17:32:25Z] [prep] prep: heartbeat.jsonl anterior archivado -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\windows\legit\evidencia\historico\heartbeat_20261111T173225Z.jsonl
+[2026-11-11T17:32:27Z] [prep] test-sink: inicio
+[2026-11-11T17:32:27Z] [prep] test-sink: conectado
+[2026-11-11T17:32:27Z] [prep] test-sink: escrito
+[2026-11-11T17:32:27Z] [prep] test-sink: leido len=206
+[2026-11-11T17:32:27Z] [prep] prep: sink OK (POST /test ok len=51)
+[2026-11-11T17:32:31Z] [prep] prep: revert a snapshot y arranque
+[2026-11-11T17:33:16Z] [prep] prep: heartbeat.seq SEQ_AUSENTE
+[2026-11-11T17:33:16Z] [prep] prep: deploy idempotente
+[2026-11-11T17:35:44Z] [prep] prep: gate Defender/sesion OK (DEFENDER_OFF=1 SESION_ANGEL=1)
+[2026-11-11T17:35:44Z] [prep] prep: lista negra 7.3 OK (0 residuos)
+[2026-11-11T17:35:47Z] [prep] prep: manifiesto OK (62b73b16ffdb0d12fe424f759201e8a81134e335215a6723b8a2adf41a253d65)
+[2026-11-11T17:35:47Z] [prep] prep OK (NO armado)

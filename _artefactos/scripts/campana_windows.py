@@ -18,7 +18,8 @@ Qué se valida (`--check`):
 2. **22 marcas** (`inicio`/`fin` en cada caso) y **63 acciones** (idénticas a Linux).
 3. **0 mutación**: ni `schtasks /create`, ni `reg add`, ni `sc create/config`, ni
    `net user`, ni `msiexec`, ni instalación; **0 escrituras** fuera de la carpeta del caso.
-4. **0 pipes** fuera de `powershell -Command` (regla H-1 del bloque Linux).
+4. **0 pipes** en todo el texto, también dentro de `powershell -Command` (regla H-1
+   del bloque Linux; auditoría D-01).
 5. **Esperado por umbral**: `N ≥ 7` = 0 en todos; `N ≥ 3` cita `67027` (predicción).
 6. **Evidencia** de efecto (`hecho.txt` con `RESULTADO=OK`) y efectos declarados.
 7. **Coherencia con `w*.json`**: mismo comando, mismo orden, misma hora que el CSV; y
@@ -203,7 +204,7 @@ META = {
         "coste": "2 min · <1 MB",
         "por_que": "Cambiar el separador de un export para abrirlo en Excel es una "
                    "tarea de oficina diaria. El único fichero que se reescribe es el del "
-                   "caso; el pipe vive **dentro** de `powershell -Command` (§4.5).",
+                   "caso; se hace con variable intermedia, sin pipe (D-01).",
     },
     "W-08": {
         "nombre": "La intranet no responde: acoto el tiempo y reintento",
@@ -311,7 +312,8 @@ EQUIVALENCIA = [
      "comparable": "sí (mismo fan-in/fan-out local)"},
     {"linux": "C-08", "win": "W-07",
      "mecanismo": "normalizar un CSV (`sed -i 's/;/ /g'`)",
-     "cambia": "`powershell -Command … -replace ';',',' \\| Set-Content` (4104 real)",
+     "cambia": "`powershell -Command` con variable intermedia (`$c = …; Set-Content`) y "
+               "sin pipe (4104 real)",
      "comparable": "sí (mismo fichero reescrito; Windows añade telemetría 4104)"},
     {"linux": "C-09", "win": "W-08",
      "mecanismo": "intranet que no responde: acotar tiempo y reintentar (`curl`+`timeout`)",
@@ -763,7 +765,8 @@ def render_md(casos) -> str:
         "el fallo nunca se registraba. `type` del mismo temporal sí falla (rc=1); el "
         "reintento correcto sigue siendo `del /f /q` |",
         "",
-        "> Ninguna desviación añade mutación, ni elevación, ni `|` fuera de PowerShell, ni",
+        "> Ninguna desviación añade mutación, ni elevación, ni **ningún `|`** (tampoco "
+        "dentro de PowerShell, D-01), ni",
         "> red fuera de la intranet local.",
         "",
         "## Qué es predicción y qué queda para WE0",
@@ -830,12 +833,6 @@ def escribir_docs(raiz=None, verbose=True):
 # --------------------------------------------------------------------------
 # Validación estática de comandos (no mutación, H-1, rutas)
 # --------------------------------------------------------------------------
-def _sin_ps(cmd: str) -> str:
-    """Quita el argumento de `powershell -Command "…"` (los pipes internos valen)."""
-    return re.sub(r'powershell(?:\.exe)?\s+-NoProfile\s+-Command\s+"[^"]*"', "",
-                  cmd, flags=re.S)
-
-
 def destinos_escritura(cmd: str):
     return [m.group(1) for m in re.finditer(r">>?\s*([^\s&|>]+)", cmd)]
 
@@ -870,9 +867,9 @@ def validar_comando(cmd: str):
     for pat in REGLAS_MUTACION.values():
         if re.search(pat, cmd, re.I):
             fallos.append(f"comando mutante ({pat}): {cmd[:80]}")
-    # H-1: ningún `|` fuera de un argumento `powershell -Command "…"`.
-    if "|" in _sin_ps(cmd):
-        fallos.append(f"`|` fuera de PowerShell (GHOSTS pierde el reporte): {cmd[:80]}")
+    # H-1/D-01: ningún `|`, tampoco dentro de `powershell -Command "…"`.
+    if "|" in cmd:
+        fallos.append(f"`|` prohibido (GHOSTS pierde el reporte, D-01): {cmd[:80]}")
     if "%{" in cmd and ("%DATE%" in cmd or "%TIME%" in cmd):
         fallos.append(f"`%{{...}}` junto a `%VAR%` (expansión): {cmd[:80]}")
     m = re.match(r"^cd /d (\S+) && \S", cmd)
@@ -1182,8 +1179,8 @@ def _validar_contra_recetas(raiz, casos):
 # --------------------------------------------------------------------------
 # Auditoría de no mutación (salida literal)
 # --------------------------------------------------------------------------
-def _pipes_fuera_ps(cmd: str) -> int:
-    return _sin_ps(cmd).count("|")
+def _pipes(cmd: str) -> int:
+    return cmd.count("|")
 
 
 def auditar_no_mutacion(raiz=None):
@@ -1191,7 +1188,7 @@ def auditar_no_mutacion(raiz=None):
     cmds = [a["comando"] for c in casos.values() for a in c["acciones"]]
     texto = "\n".join(cmds)
     counts = {k: len(re.findall(p, texto, re.I)) for k, p in REGLAS_MUTACION.items()}
-    counts["pipes fuera de powershell -Command"] = sum(_pipes_fuera_ps(c) for c in cmds)
+    counts["pipes"] = sum(_pipes(c) for c in cmds)
     fuera = []
     for cmd in cmds:
         for dest in destinos_escritura(cmd):

@@ -1,0 +1,20 @@
+{
+  "Status": "Run",
+  "TimeLineHandlers": [
+    {
+      "HandlerType": "Command",
+      "Initial": "",
+      "UtcTimeOn": "00:00:00",
+      "UtcTimeOff": "23:59:59",
+      "Loop": false,
+      "HandlerArgs": {},
+      "TimeLineEvents": [
+        { "Command": "cd /d C:\\Users\\angel && dir C:\\Users\\angel\\Documentos > C:\\Users\\angel\\Documentos\\we02_1.txt", "DelayAfter": 3000 },
+        { "Command": "cd /d C:\\Users\\angel && echo we02_accion_2 >> C:\\Users\\angel\\Documentos\\we02_2.txt", "DelayAfter": 3000 },
+        { "Command": "powershell -NoProfile -Command \"Get-ChildItem C:\\Users\\angel\\Documentos | Select-Object -First 3 | Out-File -Encoding ascii C:\\Users\\angel\\Documentos\\we02_pipe.txt\"", "DelayAfter": 3000 },
+        { "Command": "cd /d C:\\Users\\angel\\Documentos && type we02_2.txt", "DelayAfter": 3000 },
+        { "Command": "cd /d C:\\Users\\angel && where curl.exe > C:\\Users\\angel\\Documentos\\we02_5.txt", "DelayAfter": 2000 }
+      ]
+    }
+  ]
+}

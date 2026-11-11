@@ -100,7 +100,7 @@ PowerShell **solo** sustituye a lo que no existe en `cmd`: el cifrado, el borrad
 | **W-04** (`C-05`, cifrar) | AES-256-CBC con clave/IV fijos (`[byte[]](0..31)` y `(0..15)`), `TransformFinalBlock` y `WriteAllBytes` | 1 `powershell.exe` | **4104** (ScriptBlockLogging, reglas `91801-91846`) con el script en claro + Sysmon 1 (`powershell.exe` con `-Command`); Linux no tiene canal equivalente |
 | **W-04** (`C-05`, descifrar) | el mismo AES en modo descifrado → `informe.txt.rec` | 1 `powershell.exe` | **4104** + `certutil -hashfile` posterior, que prueba que el descifrado devuelve el original |
 | **W-05** (`C-06`, borrado seguro) | sobrescribe con ceros, luego con un patrón determinista `(i*37)%251`, y **borra** | 1 `powershell.exe` | **4104** + Sysmon 11 (FileWrite) antes del borrado; `shred` no deja rastro equivalente en Windows |
-| W-07 (`C-08`, CSV) | `(Get-Content) -replace ';',',' \| Set-Content` (`|` **dentro** de `-Command`, permitido por §4.5) | 1 `powershell.exe` | **4104** (previsto en el plan §5.2) |
+| W-07 (`C-08`, CSV) | `$c = (Get-Content) -replace ';',','; Set-Content -Value $c` (**sin pipe**, D-01) | 1 `powershell.exe` | **4104** (previsto en el plan §5.2) |
 
 > Clave/IV son **constantes de laboratorio** (no un secreto): el caso tiene que ser reproducible y determinista, como `-pass pass:demo-c05` en Linux.
 

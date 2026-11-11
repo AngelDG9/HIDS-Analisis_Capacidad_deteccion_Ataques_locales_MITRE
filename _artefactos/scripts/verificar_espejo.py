@@ -12,7 +12,7 @@ difiere**. Comprueba, por día y por handler:
 3. **Conteo**: mismo número de eventos por bloque y por día.
 4. **Ritmo**: la secuencia de `DelayAfter` es **idéntica**, elemento a elemento.
 5. **Unidad**: cada acción Windows es **un** `cmd.exe` — el `Command` no lleva `cmd /c`
-   (lo añade el handler), no hay `start`, no hay `|` fuera de `powershell -Command` y los
+   (lo añade el handler), no hay `start`, **no hay `|` en ninguna parte** (D-01) y los
    bucles (`for /L`, `for /f`) aparecen **exactamente** donde Linux tenía su fan-out
    (`xargs`), con el mismo abanico (12).
 
@@ -204,8 +204,8 @@ def comparar(dir_linux: str, dir_win: str, verbose=True):
                     fallos.append(f"{etq}: `cmd /c` de primer nivel (doble envoltorio)")
                 if re.search(r"(?:^|& )\s*start\s", cmd, re.I):
                     fallos.append(f"{etq}: `start` (proceso desacoplado)")
-                if "|" in cmd and "powershell" not in cmd:
-                    fallos.append(f"{etq}: `|` fuera de PowerShell")
+                if "|" in cmd:
+                    fallos.append(f"{etq}: `|` prohibido (D-01)")
                 if cmd.count('"') % 2:
                     fallos.append(f"{etq}: comillas descompensadas")
                 h = hijos(cmd)

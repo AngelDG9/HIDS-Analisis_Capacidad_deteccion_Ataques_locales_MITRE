@@ -25,9 +25,10 @@ Decisiones de traducción (todas declaradas en `receta_windows_resumen.md`):
    el proceso que sustituye al `cp` de Linux (12 hijos, espejo del `xargs`+`cp`).
 2. **`cwd` realista**: toda acción empieza por `cd /d C:\\Users\\angel… && ` (misma regla
    que el `cd <carpeta> && ` de Linux). La campaña vive en `C:\\lab-legit\\campana\\W-XX`.
-3. **Sin `|`** en la cadena de `cmd` (lección H-1, `state.md:10`). Los `|` **dentro** de un
-   `powershell -NoProfile -Command "…"` sí se permiten (plan §4.5) y solo aparecen en un
-   caso declarado.
+3. **Sin `|` en ninguna parte** (lección H-1, `state.md:10`; auditoría D-01): el servidor
+   GHOSTS parte la línea de resultado por `|` (`QueueSyncService.cs:178`) y pierde el
+   reporte. La regla es **0 pipes en todo el texto**, también dentro de
+   `powershell -NoProfile -Command "…"` (nota de corrección C7, anula el W0 §4.5).
 4. **Errores** con `if errorlevel` (nunca `%ERRORLEVEL%`, que se expande al analizar la
    línea) y registro TSV de **5 campos** en `C:\\Users\\angel\\Documentos\\errores.log`.
 5. **PowerShell solo donde no hay nativo**: cifrado (W-04/C-05) y borrado seguro
@@ -607,10 +608,14 @@ def _c_c06_evid(m):
 
 @_regla_c("caso_c08_csv", r"^sed -i 's/;/,/g' (\S*campana_fp\S*)$")
 def _c_sed_i(m):
-    """Normalización de CSV en PowerShell (plan §5.2, W-07: `|` dentro de `-Command`)."""
+    """Normalización de CSV en PowerShell (plan §5.2, W-07): **sin `|`** (D-01).
+
+    La variable intermedia sustituye al pipe: `cmd` no expande `$`, PowerShell sí; el
+    efecto y el número de procesos (1 `powershell.exe`) son los mismos.
+    """
     return ("powershell -NoProfile -Command \""
-            "(Get-Content -LiteralPath '%s') -replace ';',',' | "
-            "Set-Content -LiteralPath '%s'\"" % (_p(m.group(1)), _p(m.group(1))))
+            "$c = (Get-Content -LiteralPath '%s') -replace ';',','; "
+            "Set-Content -LiteralPath '%s' -Value $c\"" % (_p(m.group(1)), _p(m.group(1))))
 
 
 @_regla_c("caso_c09_fallo",
@@ -1068,8 +1073,8 @@ def escribir_resumen(outdir, timelines):
         "| **W-05** (`C-06`, borrado seguro) | sobrescribe con ceros, luego con un patrón "
         "determinista `(i*37)%251`, y **borra** | 1 `powershell.exe` | **4104** + Sysmon 11 "
         "(FileWrite) antes del borrado; `shred` no deja rastro equivalente en Windows |",
-        "| W-07 (`C-08`, CSV) | `(Get-Content) -replace ';',',' \\| Set-Content` (`|` **dentro** "
-        "de `-Command`, permitido por §4.5) | 1 `powershell.exe` | **4104** (previsto en el "
+        "| W-07 (`C-08`, CSV) | `$c = (Get-Content) -replace ';',','; Set-Content -Value $c` "
+        "(**sin pipe**, D-01) | 1 `powershell.exe` | **4104** (previsto en el "
         "plan §5.2) |",
         "",
         "> Clave/IV son **constantes de laboratorio** (no un secreto): el caso tiene que ser "
@@ -1417,8 +1422,8 @@ def validar_comando(cmd):
     for pat in MUTANTES:
         if re.search(pat, cmd, re.I):
             fallos.append(f"comando mutante ({pat}): {cmd[:80]}")
-    if "|" in cmd and "powershell" not in cmd:
-        fallos.append(f"`|` fuera de PowerShell (GHOSTS pierde el reporte): {cmd[:80]}")
+    if "|" in cmd:
+        fallos.append(f"`|` prohibido (GHOSTS pierde el reporte, D-01): {cmd[:80]}")
     if "%{" in cmd and ("%DATE%" in cmd or "%TIME%" in cmd):
         fallos.append(f"`%{{...}}` junto a `%VAR%` (expansión): {cmd[:80]}")
     m = re.match(r"^cd /d (\S+) && \S", cmd)

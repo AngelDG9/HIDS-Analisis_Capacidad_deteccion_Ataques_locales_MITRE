@@ -50,7 +50,7 @@ La comprobación literal está en `campana_windows.py --no-mutacion`.
 | `C-05` | `W-04` | cifrar un informe antes de enviarlo (`openssl enc -pass`) | AES en PowerShell con clave fija + `certutil -hashfile` | **parcial**: se pierde el cifrado con contraseña (T1486 legítimo) |
 | `C-06` | `W-05` | borrar temporales y destruir un borrador (`rm -rf` + `shred`) | `rd /s /q` + sobrescritura y borrado en PowerShell (sin `cipher /w:`) | **parcial**: se pierde el borrado seguro de espacio libre (T1561) |
 | `C-07` | `W-06` | sincronizar informes con la carpeta de copias (`rsync --delete`) | `robocopy … /MIR` | sí (mismo fan-in/fan-out local) |
-| `C-08` | `W-07` | normalizar un CSV (`sed -i 's/;/ /g'`) | `powershell -Command … -replace ';',',' \| Set-Content` (4104 real) | sí (mismo fichero reescrito; Windows añade telemetría 4104) |
+| `C-08` | `W-07` | normalizar un CSV (`sed -i 's/;/ /g'`) | `powershell -Command` con variable intermedia (`$c = …; Set-Content`) y sin pipe (4104 real) | sí (mismo fichero reescrito; Windows añade telemetría 4104) |
 | `C-09` | `W-08` | intranet que no responde: acotar tiempo y reintentar (`curl`+`timeout`) | `curl.exe --max-time` ×3 (8080, 8081, 8080) sin `timeout` | sí (mismas peticiones y mismo reintento) |
 | `C-10` | `W-09` | abanico de 12 copias de una plantilla (`seq`+`xargs`+`cp`) | `for /L %i in (1,1,12) do @cmd /c copy` | sí (mismo fan-out de 12; cambia el shell, no la forma) |
 | `C-11` | `W-10` | dejar constancia en el registro del sistema (`logger` + `tee`) | `eventcreate /T INFORMATION /L APPLICATION` + `type >>` | **parcial**: `eventcreate` puede exigir elevación (WE0-7); si falla se degrada a lectura y se declara |
@@ -273,13 +273,13 @@ La comprobación literal está en `campana_windows.py --no-mutacion`.
 | Efecto declarado | ninguno fuera de su carpeta |
 | Evidencia de efecto | hecho.txt con el CSV normalizado (more) y el recuento de `;` |
 | Coste · disco | 2 min · <1 MB |
-| Por qué es legítimo | Cambiar el separador de un export para abrirlo en Excel es una tarea de oficina diaria. El único fichero que se reescribe es el del caso; el pipe vive **dentro** de `powershell -Command` (§4.5). |
+| Por qué es legítimo | Cambiar el separador de un export para abrirlo en Excel es una tarea de oficina diaria. El único fichero que se reescribe es el del caso; se hace con variable intermedia, sin pipe (D-01). |
 
 **Comandos literales** (los del `w*.json`; las marcas van **primero** y **última**):
 
 1. `inicio` — `cd /d C:\lab-legit\campana && (if not exist C:\lab-legit\campana\W-07 md C:\lab-legit\campana\W-07) & > C:\lab-legit\campana\W-07\inicio.txt echo %DATE%_%TIME%`
 2. `comando` — `cd /d C:\lab-legit\campana\W-07 && > C:\lab-legit\campana\W-07\export.csv echo referencia;area;importe && >> C:\lab-legit\campana\W-07\export.csv echo A-01;compras;1200 && >> C:\lab-legit\campana\W-07\export.csv echo A-02;ventas;980`
-3. `comando` — `cd /d C:\lab-legit\campana\W-07 && powershell -NoProfile -Command "(Get-Content -LiteralPath 'C:\lab-legit\campana\W-07\export.csv') -replace ';',',' | Set-Content -LiteralPath 'C:\lab-legit\campana\W-07\export.csv'"`
+3. `comando` — `cd /d C:\lab-legit\campana\W-07 && powershell -NoProfile -Command "$c = (Get-Content -LiteralPath 'C:\lab-legit\campana\W-07\export.csv') -replace ';',','; Set-Content -LiteralPath 'C:\lab-legit\campana\W-07\export.csv' -Value $c"`
 4. `comando` — `cd /d C:\lab-legit\campana\W-07 && more +0 C:\lab-legit\campana\W-07\export.csv > C:\lab-legit\campana\W-07\export_normalizado.txt`
 5. `evidencia` — `cd /d C:\lab-legit\campana\W-07 && > C:\lab-legit\campana\W-07\hecho.txt echo RESULTADO=OK && more +0 C:\lab-legit\campana\W-07\export.csv >> C:\lab-legit\campana\W-07\hecho.txt && find /c ";" C:\lab-legit\campana\W-07\export.csv >> C:\lab-legit\campana\W-07\hecho.txt`
 6. `fin` — `cd /d C:\lab-legit\campana\W-07 && del /f /q C:\lab-legit\campana\W-07\export.csv 2>nul & del /f /q C:\lab-legit\campana\W-07\export_normalizado.txt 2>nul & > C:\lab-legit\campana\W-07\fin.txt echo %DATE%_%TIME%`
@@ -446,7 +446,7 @@ La comprobación literal está en `campana_windows.py --no-mutacion`.
 | D-W6 | `campana_windows.md` | **`casos_windows.md`** | el nombre del artefacto sigue el del espejo de Linux (`casos.md`); el CSV mantiene `campana_windows` |
 | D-W7 | familia de error `rm_inexistente` con `del` | **`type` del temporal + `del` de reintento** | en Windows `del` de un fichero ausente devuelve **rc=0**: el fallo nunca se registraba. `type` del mismo temporal sí falla (rc=1); el reintento correcto sigue siendo `del /f /q` |
 
-> Ninguna desviación añade mutación, ni elevación, ni `|` fuera de PowerShell, ni
+> Ninguna desviación añade mutación, ni elevación, ni **ningún `|`** (tampoco dentro de PowerShell, D-01), ni
 > red fuera de la intranet local.
 
 ## Qué es predicción y qué queda para WE0

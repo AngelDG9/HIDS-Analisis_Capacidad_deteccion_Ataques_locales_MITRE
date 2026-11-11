@@ -1,0 +1,10 @@
+﻿  id  |     createdutc      | handler |                                                        command                                                        
+------+---------------------+---------+-----------------------------------------------------------------------------------------------------------------------
+ 7249 | 2026-11-11 17:57:35 | Command | cd /d C:\Users\angel && dir C:\Users\angel\Documentos > C:\Users\angel\Documentos\we02_1.txt
+ 7250 | 2026-11-11 17:57:39 | Command | cd /d C:\Users\angel && echo we02_accion_2 >> C:\Users\angel\Documentos\we02_2.txt
+ 7251 | 2026-11-11 17:57:47 | Command | cd /d C:\Users\angel\Documentos && type we02_2.txt
+ 7252 | 2026-11-11 17:57:51 | Command | cd /d C:\Users\angel && where curl.exe > C:\Users\angel\Documentos\we02_5.txt
+ 7253 | 2026-11-11 18:04:02 | Command | powershell -NoProfile -Command "Get-ChildItem C:\Users\angel\Documentos > C:\Users\angel\Documentos\we02b_nopipe.txt"
+ 7254 | 2026-11-11 18:04:10 | Command | cd /d C:\Users\angel && echo we02b_final > C:\Users\angel\Documentos\we02b_final.txt
+(6 filas)
+

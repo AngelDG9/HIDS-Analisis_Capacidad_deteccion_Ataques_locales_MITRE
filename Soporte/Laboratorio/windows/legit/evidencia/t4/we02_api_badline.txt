@@ -1,0 +1,2 @@
+﻿2026-11-11 18:58:01.7229|TRACE|ghosts.api.Infrastructure.Services.QueueSyncService|Bad line: Newtonsoft.Json.JsonReaderException: Unterminated string. Expected delimiter: ". Path 'Command', line 1, position 108.
+2026-11-11 19:04:23.9751|TRACE|ghosts.api.Infrastructure.Services.QueueSyncService|Bad line: Newtonsoft.Json.JsonReaderException: Unterminated string. Expected delimiter: ". Path 'Command', line 1, position 91.

@@ -1,0 +1,10 @@
+﻿11/11/2026 17:57:33 PM|Ghosts.Client.Handlers.Cmd.Ex|Command line: cd /d C:\Users\angel && dir C:\Users\angel\Documentos > C:\Users\angel\Documentos\we02_1.txt with delay after of 3000
+11/11/2026 17:57:33 PM|Ghosts.Client.Handlers.Cmd.Command|Spawning cmd.exe with command cd /d C:\Users\angel && dir C:\Users\angel\Documentos > C:\Users\angel\Documentos\we02_1.txt
+11/11/2026 17:57:38 PM|Ghosts.Client.Handlers.Cmd.Ex|Command line: cd /d C:\Users\angel && echo we02_accion_2 >> C:\Users\angel\Documentos\we02_2.txt with delay after of 3000
+11/11/2026 17:57:38 PM|Ghosts.Client.Handlers.Cmd.Command|Spawning cmd.exe with command cd /d C:\Users\angel && echo we02_accion_2 >> C:\Users\angel\Documentos\we02_2.txt
+11/11/2026 17:57:42 PM|Ghosts.Client.Handlers.Cmd.Ex|Command line: powershell -NoProfile -Command "Get-ChildItem C:\Users\angel\Documentos | Select-Object -First 3 | Out-File -Encoding ascii C:\Users\angel\Documentos\we02_pipe.txt" with delay after of 3000
+11/11/2026 17:57:42 PM|Ghosts.Client.Handlers.Cmd.Command|Spawning cmd.exe with command powershell -NoProfile -Command "Get-ChildItem C:\Users\angel\Documentos | Select-Object -First 3 | Out-File -Encoding ascii C:\Users\angel\Documentos\we02_pipe.txt"
+11/11/2026 17:57:46 PM|Ghosts.Client.Handlers.Cmd.Ex|Command line: cd /d C:\Users\angel\Documentos && type we02_2.txt with delay after of 3000
+11/11/2026 17:57:46 PM|Ghosts.Client.Handlers.Cmd.Command|Spawning cmd.exe with command cd /d C:\Users\angel\Documentos && type we02_2.txt
+11/11/2026 17:57:50 PM|Ghosts.Client.Handlers.Cmd.Ex|Command line: cd /d C:\Users\angel && where curl.exe > C:\Users\angel\Documentos\we02_5.txt with delay after of 2000
+11/11/2026 17:57:50 PM|Ghosts.Client.Handlers.Cmd.Command|Spawning cmd.exe with command cd /d C:\Users\angel && where curl.exe > C:\Users\angel\Documentos\we02_5.txt

@@ -6,8 +6,9 @@ Fijan lo que el plan §D2 y los CA-W1/CA-W2/CA-W3 exigen:
 1. **Determinismo**: dos generaciones dejan los mismos bytes.
 2. **Conteos**: 147/153/141 de jornada + 16/25/22 de campaña, y 5 + B6 handlers.
 3. **Ritmo**: `DelayAfter` y ventanas idénticas a la receta Linux, elemento a elemento.
-4. **Unidad**: una entrada = un `cmd.exe` (sin `cmd /c` dentro del `Command`), sin `|` fuera
-   de `powershell -Command`, sin aleatoriedad y sin comandos mutantes.
+4. **Unidad**: una entrada = un `cmd.exe` (sin `cmd /c` dentro del `Command`) y **cero
+   pipes en cualquier comando** (también dentro de `powershell -Command`), sin aleatoriedad
+   y sin comandos mutantes.
 5. **Errores**: 10 pares (fallo + reintento) por día, registro TSV de 5 campos y
    `if errorlevel` (nunca `%ERRORLEVEL%`).
 6. **PowerShell**: solo el cifrado, el borrado seguro y el CSV de la campaña.
@@ -121,11 +122,10 @@ def test_una_accion_es_un_cmd_sin_doble_envoltorio(generado):
             assert re.match(r"^cd /d [A-Z]:\\", cmd), cmd
 
 
-def test_sin_pipes_fuera_de_powershell(generado):
+def test_sin_pipes_en_toda_la_receta(generado):
     for day in (1, 2, 3):
         for cmd in _comandos(generado / f"w{day}.json"):
-            if "|" in cmd:
-                assert "powershell -NoProfile -Command" in cmd, cmd
+            assert "|" not in cmd, cmd
 
 
 def test_sin_aleatoriedad_ni_mutantes_ni_evasion(generado):

@@ -101,6 +101,15 @@ FPR_sin_operador = (FP_uni - operador_uni) / M
   **propio HIDS**) y **no** `sin_operador`. Reproduce las cifras publicadas ⇒ **la unidad
   es la misma** en las dos plataformas.
 
+## Firma (CA-W3b-19)
+
+> **Aprobado por el humano el 2026-11-11**, **antes de `t0`**. Con ello se aceptan:
+> (1) unidad de `FP_uni` = **línea de `archives`**; (2) **catálogo autoritativo de 72 h**
+> por plataforma; (3) **0 ruido de operador** (medido en Windows: 0/365; invisible en Linux);
+> (4) **receta espejo** de 504 acciones; (5) las **diferencias declaradas** (7 vs 9 señales,
+> cliente compilado del mismo commit, tarea `Interactive`, `M` de Windows pendiente de WE0-9).
+> Las dos cifras se publicarán con el **mismo `M`**: `FPR_canonico` y `FPR_sin_operador`.
+
 ## Condiciones de comparabilidad (a mantener)
 
 1. **Misma unidad**: `FP_uni` = **línea de `archives`**, en las dos plataformas.

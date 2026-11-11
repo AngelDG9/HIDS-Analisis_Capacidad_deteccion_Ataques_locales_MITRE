@@ -1112,7 +1112,7 @@ switch ($Phase) {
     $archLocales = @(Get-ChildItem -Path $dirA -File | ForEach-Object { $_.FullName })
     $mCsv = Join-Path $dest 'denominador_M.csv'
     $mMan = Join-Path $dest 'denominador_manifest.tsv'
-    $argsM = @($archLocales) + @('--agent-id', '002', '--agent-name', 'victima-windows', '--estricto', '--out', $mCsv, '--manifest', $mMan)
+    $argsM = @($archLocales) + @('--agent-id', '002', '--agent-name', 'victima-windows', '--boveda-version', '3', '--estricto', '--out', $mCsv, '--manifest', $mMan)
     if ($vent.t0) { $argsM += @('--desde', ([datetime]$vent.t0).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')) }
     if ($vent.t1) { $argsM += @('--hasta', ([datetime]$vent.t1).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')) }
     & $Py (Join-Path $Repo '_artefactos\scripts\contar_denominador.py') @argsM | Out-Null

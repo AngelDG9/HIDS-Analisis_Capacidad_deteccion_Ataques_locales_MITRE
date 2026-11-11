@@ -1,0 +1,18 @@
+{
+  "Status": "Run",
+  "TimeLineHandlers": [
+    {
+      "HandlerType": "Command",
+      "Initial": "",
+      "UtcTimeOn": "00:00:00",
+      "UtcTimeOff": "23:59:59",
+      "Loop": false,
+      "HandlerArgs": {},
+      "TimeLineEvents": [
+        { "Command": "powershell -NoProfile -Command \"Get-ChildItem C:\\Users\\angel\\Documentos > C:\\Users\\angel\\Documentos\\we02b_nopipe.txt\"", "DelayAfter": 3000 },
+        { "Command": "cd /d C:\\Users\\angel && dir C:\\Users\\angel\\Documentos | findstr we02b > C:\\Users\\angel\\Documentos\\we02b_cmdpipe.txt", "DelayAfter": 3000 },
+        { "Command": "cd /d C:\\Users\\angel && echo we02b_final > C:\\Users\\angel\\Documentos\\we02b_final.txt", "DelayAfter": 2000 }
+      ]
+    }
+  ]
+}
