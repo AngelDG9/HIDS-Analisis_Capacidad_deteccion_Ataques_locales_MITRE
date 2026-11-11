@@ -1,0 +1,20 @@
+﻿# agente 002 victima-windows - ossec.conf (syscheck) @ 2026-11-11T13:00:30Z
+<disabled>no</disabled>
+<frequency>43200</frequency>
+<directories realtime="yes" check_all="yes">C:\lab-attack</directories>
+<directories recursion_level="0" restrict="regedit.exe$|system.ini$|win.ini$">%WINDIR%</directories>
+<directories recursion_level="0" restrict="at.exe$|attrib.exe$|cacls.exe$|cmd.exe$|eventcreate.exe$|ftp.exe$|lsass.exe$|net.exe$|net1.exe$|netsh.exe$|reg.exe$|regedt32.exe|regsvr32.exe|runas.exe|sc.exe|schtasks.exe|sethc.exe|subst.exe$">%WINDIR%\SysNative</directories>
+<directories recursion_level="0">%WINDIR%\SysNative\drivers\etc</directories>
+<directories recursion_level="0" restrict="WMIC.exe$">%WINDIR%\SysNative\wbem</directories>
+<directories recursion_level="0" restrict="powershell.exe$">%WINDIR%\SysNative\WindowsPowerShell\v1.0</directories>
+<directories recursion_level="0" restrict="winrm.vbs$">%WINDIR%\SysNative</directories>
+<directories recursion_level="0" restrict="at.exe$|attrib.exe$|cacls.exe$|cmd.exe$|eventcreate.exe$|ftp.exe$|lsass.exe$|net.exe$|net1.exe$|netsh.exe$|reg.exe$|regedit.exe$|regedt32.exe$|regsvr32.exe$|runas.exe$|sc.exe$|schtasks.exe$|sethc.exe$|subst.exe$">%WINDIR%\System32</directories>
+<directories recursion_level="0">%WINDIR%\System32\drivers\etc</directories>
+<directories recursion_level="0" restrict="WMIC.exe$">%WINDIR%\System32\wbem</directories>
+<directories recursion_level="0" restrict="powershell.exe$">%WINDIR%\System32\WindowsPowerShell\v1.0</directories>
+<directories recursion_level="0" restrict="winrm.vbs$">%WINDIR%\System32</directories>
+<directories realtime="yes">%PROGRAMDATA%\Microsoft\Windows\Start Menu\Programs\Startup</directories>
+<ignore>%PROGRAMDATA%\Microsoft\Windows\Start Menu\Programs\Startup\desktop.ini</ignore>
+<ignore type="sregex">.log$|.htm$|.jpg$|.png$|.chm$|.pnf$|.evtx$</ignore>
+</syscheck>
+GHOSTS_CLIENT_VIGILADO=0 (ninguna <directories> cubre C:\Users\angel\ghosts-client)

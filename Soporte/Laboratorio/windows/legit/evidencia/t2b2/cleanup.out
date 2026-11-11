@@ -1,0 +1,6 @@
+[2026-11-11T14:06:39Z] [cleanup] cleanup: crudo.done presente (D:\TFG-VMs\legitimo-windows-2026-11-11\crudo\crudo.done)
+[2026-11-11T14:06:39Z] [cleanup] sink: (ver heartbeat_sink_ctl.log)
+[2026-11-11T14:08:31Z] [cleanup] cleanup: GHOSTS/PostgreSQL parados (api_procesos=0 postgres_parado=True)
+[2026-11-11T14:08:59Z] [cleanup] cleanup: logall_json=no verificado
+[2026-11-11T14:08:59Z] [cleanup] cleanup: CONFIG_IDENTICA
+[2026-11-11T14:09:02Z] [cleanup] cleanup: guardarrailes fallos=1 victima_windows_off=True victima_linux_off=True manager_on=True

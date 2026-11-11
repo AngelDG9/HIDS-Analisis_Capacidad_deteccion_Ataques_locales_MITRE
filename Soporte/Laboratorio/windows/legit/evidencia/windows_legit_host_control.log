@@ -180,3 +180,74 @@
 [2026-11-11T10:32:12Z] [prep] prep -SoloListaNegra OK: lista negra 7.3 sin residuos
 [2026-11-11T12:19:53Z] [prep] prep -SoloListaNegra OK: lista negra 7.3 sin residuos
 [2026-11-11T12:20:13Z] [prep] prep -SoloListaNegra FALLO: lista negra 7.3 con residuos (PRESENTES: marcas_campana) -> exit 46
+[2026-11-11T13:00:01Z] [prep] prep -SoloManifiesto OK (62b73b16ffdb0d12fe424f759201e8a81134e335215a6723b8a2adf41a253d65)
+[2026-11-11T13:00:13Z] [prep] prep -SoloManifiesto FALLO: manifiesto DIFIERE (esperado=62b73b16ffdb0d12fe424f759201e8a81134e335215a6723b8a2adf41a253d65 actual=5f742cfc9340e093fe56880729b475b0d338b002f4b90610523ce01550fa6905) -> exit 46
+[2026-11-11T13:00:22Z] [prep] prep -SoloManifiesto OK (62b73b16ffdb0d12fe424f759201e8a81134e335215a6723b8a2adf41a253d65)
+[2026-11-11T13:00:51Z] [prep] prep: heartbeat.jsonl anterior archivado -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\windows\legit\evidencia\historico\heartbeat_20261111T130051Z.jsonl
+[2026-11-11T13:00:51Z] [prep] prep: ventana_actual.json anterior archivado -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\windows\legit\evidencia\historico\ventana_actual_20261111T130051Z.json
+[2026-11-11T13:00:53Z] [prep] test-sink: inicio
+[2026-11-11T13:00:53Z] [prep] test-sink: conectado
+[2026-11-11T13:00:53Z] [prep] test-sink: escrito
+[2026-11-11T13:00:53Z] [prep] test-sink: leido len=206
+[2026-11-11T13:00:53Z] [prep] prep: sink OK (POST /test ok len=51)
+[2026-11-11T13:01:10Z] [prep] prep: revert a snapshot y arranque
+[2026-11-11T13:01:41Z] [prep] prep: heartbeat.seq SEQ_AUSENTE
+[2026-11-11T13:01:41Z] [prep] prep: deploy idempotente
+[2026-11-11T13:03:00Z] [prep] prep: gate Defender/sesion OK (DEFENDER_OFF=1 SESION_ANGEL=1)
+[2026-11-11T13:03:00Z] [prep] prep: lista negra 7.3 OK (0 residuos)
+[2026-11-11T13:03:03Z] [prep] prep: manifiesto OK (62b73b16ffdb0d12fe424f759201e8a81134e335215a6723b8a2adf41a253d65)
+[2026-11-11T13:03:03Z] [prep] prep OK (NO armado)
+[2026-11-11T13:26:28Z] [prep] test-sink: inicio
+[2026-11-11T13:26:28Z] [prep] test-sink: conectado
+[2026-11-11T13:26:28Z] [prep] test-sink: escrito
+[2026-11-11T13:26:28Z] [prep] test-sink: leido len=206
+[2026-11-11T13:26:30Z] [prep] sink: (ver heartbeat_sink_ctl.log)
+[2026-11-11T13:26:31Z] [prep] prep: heartbeat.jsonl anterior archivado -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\windows\legit\evidencia\historico\heartbeat_20261111T132631Z.jsonl
+[2026-11-11T13:26:33Z] [prep] test-sink: inicio
+[2026-11-11T13:26:33Z] [prep] test-sink: conectado
+[2026-11-11T13:26:33Z] [prep] test-sink: escrito
+[2026-11-11T13:26:33Z] [prep] test-sink: leido len=206
+[2026-11-11T13:26:33Z] [prep] prep: sink OK (POST /test ok len=51)
+[2026-11-11T13:26:49Z] [prep] prep ABORTADO por guardarrailes: G-W12
+[2026-11-11T13:52:21Z] [prep] test-sink: inicio
+[2026-11-11T13:52:21Z] [prep] test-sink: conectado
+[2026-11-11T13:52:21Z] [prep] test-sink: escrito
+[2026-11-11T13:52:21Z] [prep] test-sink: leido len=206
+[2026-11-11T13:52:23Z] [prep] sink: (ver heartbeat_sink_ctl.log)
+[2026-11-11T13:52:24Z] [prep] prep: heartbeat.jsonl anterior archivado -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\windows\legit\evidencia\historico\heartbeat_20261111T135224Z.jsonl
+[2026-11-11T13:52:26Z] [prep] test-sink: inicio
+[2026-11-11T13:52:26Z] [prep] test-sink: conectado
+[2026-11-11T13:52:26Z] [prep] test-sink: escrito
+[2026-11-11T13:52:26Z] [prep] test-sink: leido len=206
+[2026-11-11T13:52:26Z] [prep] prep: sink OK (POST /test ok len=51)
+[2026-11-11T13:52:43Z] [prep] prep: revert a snapshot y arranque
+[2026-11-11T13:53:29Z] [prep] prep: heartbeat.seq SEQ_AUSENTE
+[2026-11-11T13:53:29Z] [prep] prep: deploy idempotente
+[2026-11-11T13:55:49Z] [prep] prep: gate Defender/sesion OK (DEFENDER_OFF=1 SESION_ANGEL=1)
+[2026-11-11T13:55:49Z] [prep] prep: lista negra 7.3 OK (0 residuos)
+[2026-11-11T13:55:52Z] [prep] prep: manifiesto OK (62b73b16ffdb0d12fe424f759201e8a81134e335215a6723b8a2adf41a253d65)
+[2026-11-11T13:55:52Z] [prep] prep OK (NO armado)
+[2026-11-11T13:57:05Z] [crudo] crudo: copiando archives+alerts del manager a D:\TFG-VMs\legitimo-windows-2026-11-11\crudo
+[2026-11-11T13:57:10Z] [crudo] crudo FALLO: scp rc=1/1
+[2026-11-11T13:59:11Z] [crudo] crudo: copiando archives+alerts del manager a D:\TFG-VMs\legitimo-windows-2026-11-11\crudo
+[2026-11-11T13:59:16Z] [crudo] crudo FALLO: scp rc=1/1 :: scp.exe : /usr/bin/scp: /tmp/tfg-crudo-2026-11-11/archives: No such file or directory En D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\windows\windows_legit_host_contro l.ps1: 1084 Carácter: 17 + ... $scpLog += (& $Scp -i (Get-ManagerKey) -o BatchMode=yes -o ConnectTim ... + ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ + CategoryInfo : NotSpecified: (/usr/bin/scp: /...le or directory:String) [], RemoteException + FullyQualifiedErrorId : NativeCommandError scp.exe : /usr/bin/scp: /tmp/tfg-crudo-2026-11-11/alerts: No such file or directory En D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\windows\windows_legit_host_contro l.ps1: 1086 Carácter: 17 + ... $scpLog += (& $Scp -i (Get-ManagerKey) -o BatchMode=yes -o ConnectTim ... + ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ + CategoryInfo : NotSpecified: (/usr/bin/scp: /...le or directory:String) [], RemoteException + FullyQualifiedErrorId : NativeCommandError (stage=/tmp/tfg-crudo-2026-11-11)
+[2026-11-11T14:00:08Z] [crudo] crudo: copiando archives+alerts del manager a D:\TFG-VMs\legitimo-windows-2026-11-11\crudo
+[2026-11-11T14:00:53Z] [crudo] crudo OK: D:\TFG-VMs\legitimo-windows-2026-11-11\crudo (ficheros=2 manifest=0a0da079ab563aeefd64003538faed285b0d51455c1782a9ed07c2bfa39856c4 M_rc=0)
+[2026-11-11T14:01:50Z] [stop] stop: crudo=crudo.done
+[2026-11-11T14:01:50Z] [stop] stop: creando stop.flag
+[2026-11-11T14:05:14Z] [stop] stop: bucle_salio=True (espera <= 6 min)
+[2026-11-11T14:05:16Z] [stop] sink: (ver heartbeat_sink_ctl.log)
+[2026-11-11T14:05:28Z] [stop] stop OK (vmrun rc=0)
+[2026-11-11T14:05:46Z] [cleanup] cleanup BLOQUEADO: no existe crudo.done (D:\TFG-VMs\legitimo-windows-2026-11-11\crudo\crudo.done) -> exit 84 (no se apaga logall_json sin copia)
+[2026-11-11T14:06:39Z] [cleanup] cleanup: crudo.done presente (D:\TFG-VMs\legitimo-windows-2026-11-11\crudo\crudo.done)
+[2026-11-11T14:06:39Z] [cleanup] sink: (ver heartbeat_sink_ctl.log)
+[2026-11-11T14:08:31Z] [cleanup] cleanup: GHOSTS/PostgreSQL parados (api_procesos=0 postgres_parado=True)
+[2026-11-11T14:08:59Z] [cleanup] cleanup: logall_json=no verificado
+[2026-11-11T14:08:59Z] [cleanup] cleanup: CONFIG_IDENTICA
+[2026-11-11T14:09:02Z] [cleanup] cleanup: guardarrailes fallos=1 victima_windows_off=True victima_linux_off=True manager_on=True
+[2026-11-11T14:10:13Z] [cleanup] cleanup: crudo.done presente (D:\TFG-VMs\legitimo-windows-2026-11-11\crudo\crudo.done)
+[2026-11-11T14:10:13Z] [cleanup] sink: (ver heartbeat_sink_ctl.log)
+[2026-11-11T14:12:04Z] [cleanup] cleanup: GHOSTS/PostgreSQL parados (api_procesos=0 postgres_parado=True)
+[2026-11-11T14:12:34Z] [cleanup] cleanup: logall_json=no verificado
+[2026-11-11T14:12:35Z] [cleanup] cleanup: CONFIG_IDENTICA
+[2026-11-11T14:12:37Z] [cleanup] cleanup: guardarrailes fallos=0 victima_windows_off=True victima_linux_off=True manager_on=True

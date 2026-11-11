@@ -1,0 +1,6 @@
+﻿PREFIJO_CHECK @ 2026-11-11T14:06Z
+manager_size=335125787
+prefijo_bytes=329013480
+prefijo_sha256=1091e8ef3af1878e7aa4c2d743dc53e3bb31e39759deb6705cf66c503547ccb9
+crudo_sha256=1091e8ef3af1878e7aa4c2d743dc53e3bb31e39759deb6705cf66c503547ccb9
+RESULT=PREFIJO_IDENTICO (el crudo es prefijo exacto del archives vivo antes de off)

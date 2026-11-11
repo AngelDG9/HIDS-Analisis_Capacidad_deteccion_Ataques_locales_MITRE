@@ -34,7 +34,11 @@ param(
   [ValidateSet('apply', 'revert', 'status', 'verify', 'hash')]
   [string]$Phase = 'status',
   # Deja el staging (ZIP) en el host para inspeccion.
-  [switch]$MantenerStaging
+  [switch]$MantenerStaging,
+  # Directorio del cliente Windows en el HOST. T2b-2 fija como DEFECTO el build 8.3.1
+  # (el cliente final de la ventana); el ZIP publicado 8.0.0 sigue disponible pasando
+  # `-ClienteDir` de forma explícita.
+  [string]$ClienteDir = 'D:\TFG-VMs\material-ghosts\client-windows\build-v8.3.1\client'
 )
 
 $ErrorActionPreference = 'Stop'
@@ -45,7 +49,7 @@ $Cfg     = Join-Path $Win 'client_config'
 $Recetas = Join-Path $Win 'recetas'
 $Campana = Join-Path $Win 'campana'
 $Guest   = Join-Path $Win 'guest'
-$ClienteHost = 'D:\TFG-VMs\material-ghosts\client-windows\extract\ghosts-client-x64-v8.0.0'
+$ClienteHost = $ClienteDir
 
 $Ssh = 'C:\Program Files\Git\usr\bin\ssh.exe'
 $Scp = 'C:\Program Files\Git\usr\bin\scp.exe'
@@ -122,6 +126,15 @@ function Detener-Actividad {
 
 function Build-Payload {
   if (-not (Test-Path (Join-Path $ClienteHost 'ghosts.exe'))) { throw "falta el cliente Windows en $ClienteHost" }
+  $exeI = Get-Item (Join-Path $ClienteHost 'ghosts.exe')
+  $domI = Get-Item (Join-Path $ClienteHost 'ghosts.domain.dll') -ErrorAction SilentlyContinue
+  $verExe = [string]$exeI.VersionInfo.FileVersion
+  $verDom = if ($domI) { [string]$domI.VersionInfo.FileVersion } else { 'AUSENTE' }
+  $shaExe = (Get-FileHash -LiteralPath $exeI.FullName -Algorithm SHA256).Hash.ToLower()
+  $shaDom = if ($domI) { (Get-FileHash -LiteralPath $domI.FullName -Algorithm SHA256).Hash.ToLower() } else { 'AUSENTE' }
+  Log "cliente_origen=$ClienteHost"
+  Log "CLIENTE_HOST ghosts_exe=$verExe sha256=$shaExe"
+  Log "CLIENTE_HOST ghosts_domain=$verDom sha256=$shaDom"
   foreach ($f in @('application.json', 'nlog.config')) {
     if (-not (Test-Path (Join-Path $Cfg $f))) { throw "falta client_config\$f" }
   }

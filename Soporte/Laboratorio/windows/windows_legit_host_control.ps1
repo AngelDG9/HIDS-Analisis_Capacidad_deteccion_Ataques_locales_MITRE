@@ -73,6 +73,10 @@ param(
   # `prep -SoloListaNegra`: comprobacion READ-ONLY de la lista negra 7.3 (G-2) sin
   # revertir ni desplegar. Sirve para la prueba negativa reproducible (exit 46).
   [switch]$SoloListaNegra,
+  # `prep -SoloManifiesto`: comprobacion READ-ONLY del manifiesto sellado (CA-W3b-17)
+  # sin revertir ni desplegar. Es la prueba negativa reproducible: alterar un fichero
+  # del invitado => `MANIFIESTO_SNAPSHOT=DIFIERE` + exit 46.
+  [switch]$SoloManifiesto,
   # SOLO PRUEBAS (T2b-1b): inyecta la salida de `verificar_windows.ps1` desde un fichero
   # en lugar de pedirla por SSH. Sirve para probar la puerta `exit 47` (G-1) sin tocar
   # Defender ni la VM. En operacion normal NO se usa (vacio).
@@ -288,6 +292,19 @@ function Get-Heartbeat {
     $edad = [math]::Round(((Get-Date).ToUniversalTime() - $t).TotalMinutes, 1)
   } catch { }
   return @{ ok = $true; last = $last; seq_ok = $seqOk; edad_min = $edad; n = $objs.Count; parcial = $parcial; motivo = '' }
+}
+
+function Test-ManifiestoEsperado {
+  # CA-W3b-17: compara el manifiesto del invitado con el sello del HOST
+  # (`manifiesto_esperado.json`). READ-ONLY: no escribe en la VM. Si no hay sello,
+  # devuelve SKIP declarado (no se inventa una huella).
+  if (-not (Test-Path $ManEsp)) { return @{ ok = $true; skip = $true; esp = ''; act = ''; detalle = "sin $ManEsp" } }
+  $esp = ''
+  try { $esp = [string](Get-Content -Raw -LiteralPath $ManEsp | ConvertFrom-Json).MANIFEST_SHA256 } catch { }
+  $man = Invoke-Remote "powershell -NoProfile -ExecutionPolicy Bypass -File `"$RVerif`" -Manifiesto" -PermitirFallo
+  $act = if ($man -match 'MANIFEST_SHA256=([0-9a-f]{64})') { $Matches[1] } else { '' }
+  $ok = ([bool]$esp -and $act -eq $esp)
+  return @{ ok = $ok; skip = $false; esp = $esp; act = $act; detalle = "esperado=$esp actual=$act" }
 }
 
 function Get-Ventana {
@@ -830,6 +847,13 @@ switch ($Phase) {
 
   'prep' {
     # --- G-2 read-only: `prep -SoloListaNegra` (prueba negativa reproducible) ---
+    if ($SoloManifiesto) {
+      $m = Test-ManifiestoEsperado
+      if ($m.skip) { Write-Output 'MANIFIESTO_SNAPSHOT=SKIP'; Log "prep -SoloManifiesto SKIP: $($m.detalle)"; exit 0 }
+      if ($m.ok) { Write-Output 'MANIFIESTO_SNAPSHOT=OK'; Log "prep -SoloManifiesto OK ($($m.act))"; exit 0 }
+      Write-Output 'MANIFIESTO_SNAPSHOT=DIFIERE'
+      Log "prep -SoloManifiesto FALLO: manifiesto DIFIERE ($($m.detalle)) -> exit 46"; exit 46
+    }
     if ($SoloListaNegra) {
       $verBl = Invoke-Remote "powershell -NoProfile -ExecutionPolicy Bypass -File `"$RVerif`" -SinCampana" -PermitirFallo
       Write-Output $verBl
@@ -912,18 +936,18 @@ switch ($Phase) {
       Log "prep FALLO: lista negra 7.3 con residuos ($malos) -> exit 46"; exit 46
     }
     Log 'prep: lista negra 7.3 OK (0 residuos)'
-    # Manifiesto esperado: T2b-2 lo sella con el deploy 8.3.1 (`manifiesto_esperado.json`).
-    # Si existe, `prep` aborta con 46 cuando DIFIERE; si no, se declara SKIP (no se inventa).
-    if (Test-Path $ManEsp) {
-      $esp = (Get-Content -Raw $ManEsp | ConvertFrom-Json).MANIFEST_SHA256
-      $man = Invoke-Remote "powershell -NoProfile -ExecutionPolicy Bypass -File `"$RVerif`" -Manifiesto" -PermitirFallo
-      $act = if ($man -match 'MANIFEST_SHA256=([0-9a-f]+)') { $Matches[1] } else { '' }
-      if (-not $esp -or $act -ne $esp) {
-        Log "prep FALLO: manifiesto DIFIERE (esperado=$esp actual=$act) -> exit 46"; exit 46
-      }
-      Log "prep: manifiesto OK ($act)"
+    # Manifiesto esperado (T2b-2): el sello `manifiesto_esperado.json` lo genera
+    # `manifiesto_snapshot.ps1` con el deploy 8.3.1 ya aplicado. Si existe y DIFIERE,
+    # `prep` aborta con 46 (no se arma). Si no existe, SKIP declarado (no se inventa).
+    $mEsp = Test-ManifiestoEsperado
+    if ($mEsp.skip) {
+      Log "prep: manifiesto SKIP ($($mEsp.detalle))"
+    } elseif (-not $mEsp.ok) {
+      Write-Output 'MANIFIESTO_SNAPSHOT=DIFIERE'
+      Log "prep FALLO: manifiesto DIFIERE ($($mEsp.detalle)) -> exit 46"; exit 46
     } else {
-      Log "prep: manifiesto SKIP (sin $ManEsp; se sella en T2b-2 con el deploy 8.3.1)"
+      Write-Output 'MANIFIESTO_SNAPSHOT=OK'
+      Log "prep: manifiesto OK ($($mEsp.act))"
     }
     Log 'prep OK (NO armado)'
   }
@@ -1048,21 +1072,31 @@ switch ($Phase) {
     $archivos = @(($lista -split "`r?`n") | Where-Object { $_.Trim() } | ForEach-Object { $_.Trim() })
 
     # 2) staging legible por `angel` y scp (binario-safe; no se re-codifica por stdout)
+    # OJO: cada `sudo` va en SU PROPIA sesion SSH. Con `sudo1 && sudo2` el segundo
+    # `sudo` no hereda credenciales (tty distinto) y falla con "no password was
+    # provided" en silencio (medido en T2b-2: stage inexistente -> scp rc=1).
     $stage = "/tmp/tfg-crudo-" + $vent.fecha
-    Invoke-Manager "sudo -S -p '' rm -rf $stage && sudo -S -p '' mkdir -p $stage/archives $stage/alerts" | Out-Null
+    Invoke-Manager "sudo -S -p '' rm -rf $stage" | Out-Null
+    Invoke-Manager "sudo -S -p '' mkdir -p $stage/archives $stage/alerts" | Out-Null
+    $stOk = Invoke-Manager "test -d $stage/archives && test -d $stage/alerts && echo STAGE_OK"
+    if (-not $stOk -or $stOk -notmatch 'STAGE_OK') { Log "crudo FALLO: no se pudo crear el staging $stage"; exit 85 }
     foreach ($p in $archivos) {
       $sub = if ($p -like '*/archives/*') { 'archives' } else { 'alerts' }
       Invoke-Manager "sudo -S -p '' cp '$p' '$stage/$sub/'" | Out-Null
     }
     Invoke-Manager "sudo -S -p '' chmod -R a+rX $stage" | Out-Null
     $eap = $ErrorActionPreference; $ErrorActionPreference = 'Continue'
-    & $Scp -i (Get-ManagerKey) -o BatchMode=yes -o ConnectTimeout=10 -o StrictHostKeyChecking=accept-new -o LogLevel=ERROR -r "angel@192.168.65.128:$stage/archives" $dest 2>&1 | Out-Null
+    $scpLog = @()
+    $scpLog += (& $Scp -i (Get-ManagerKey) -o BatchMode=yes -o ConnectTimeout=10 -o StrictHostKeyChecking=accept-new -o LogLevel=ERROR -r "angel@192.168.65.128:$stage/archives" $dest 2>&1 | Out-String)
     $rc1 = $LASTEXITCODE
-    & $Scp -i (Get-ManagerKey) -o BatchMode=yes -o ConnectTimeout=10 -o StrictHostKeyChecking=accept-new -o LogLevel=ERROR -r "angel@192.168.65.128:$stage/alerts" $dest 2>&1 | Out-Null
+    $scpLog += (& $Scp -i (Get-ManagerKey) -o BatchMode=yes -o ConnectTimeout=10 -o StrictHostKeyChecking=accept-new -o LogLevel=ERROR -r "angel@192.168.65.128:$stage/alerts" $dest 2>&1 | Out-String)
     $rc2 = $LASTEXITCODE
     $ErrorActionPreference = $eap
     Invoke-Manager "sudo -S -p '' rm -rf $stage" | Out-Null
-    if ($rc1 -ne 0 -or $rc2 -ne 0) { Log "crudo FALLO: scp rc=$rc1/$rc2"; exit 85 }
+    if ($rc1 -ne 0 -or $rc2 -ne 0) {
+      Log ("crudo FALLO: scp rc=$rc1/$rc2 :: " + (($scpLog -join ' ') -replace '\s+', ' ').Trim() + " (stage=$stage)")
+      exit 85
+    }
 
     # 3) sha256 + MANIFEST.tsv de la COPIA
     $man = Join-Path $dest 'MANIFEST.tsv'

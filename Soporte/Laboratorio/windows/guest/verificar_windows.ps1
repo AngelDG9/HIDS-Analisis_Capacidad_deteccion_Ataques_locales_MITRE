@@ -29,29 +29,63 @@ param(
   # En `prep` la campana aun no ha corrido: no se exigen marcas.
   [switch]$SinCampana,
   # Solo huella del despliegue (idempotencia del deploy): no comprueba el resto.
-  [switch]$Manifiesto
+  [switch]$Manifiesto,
+  # Con `-Manifiesto`, emite una linea `MFILE` por entrada (ruta, sha256, bytes, tipo).
+  # Lo usa `manifiesto_snapshot.ps1` para sellar `manifiesto_esperado.json`.
+  [switch]$Detalle
 )
 
 $ErrorActionPreference = 'Continue'
 $fallos = New-Object System.Collections.Generic.List[string]
 
 if ($Manifiesto) {
-  # Huella del PAYLOAD desplegado. Excluye lo volatil (logs, instance, client.out*,
-  # keepalive/recovery/estado, el flag de armado, `heartbeat.seq` y `stop.flag`) y el
-  # `config\timeline.json` ACTIVO: GHOSTS lo reescribe al ejecutar (el original es
-  # `timeline.dK.json`, que SI entra en la huella). Sin esta exclusion, un 2.o `arm`
-  # con el cliente vivo nunca coincidia (G-8). Dos `apply` seguidos dan el MISMO sha256.
+  # Huella del estado que DEBE haber (CA-W3b-17). Excluye lo volatil (logs, instance,
+  # client.out*, keepalive/recovery/estado, el flag de armado, `heartbeat.seq`,
+  # `stop.flag` y `dia_aplicado.txt`) y el `config\timeline.json` ACTIVO: GHOSTS lo
+  # reescribe al ejecutar (el original es `timeline.dK.json`, que SI entra en la
+  # huella). Dos `apply` seguidos dan el MISMO sha256.
+  #
+  # T2b-2: la huella cubre payload+recetas (arbol del cliente), campana, `C:\lab-legit\tools`,
+  # el fichero `hosts` y las 2 tareas (descriptor canonico). El sello vive en el HOST
+  # (`manifiesto_esperado.json`); aqui solo se calcula, nunca se escribe.
   $excl = '\\logs\\|\\instance\\|client\.out|keepalive\.log|recovery\.log|estado\.json|armado\.flag|heartbeat\.seq|stop\.flag|dia_aplicado\.txt|\\config\\timeline\.json$'
-  $files = @()
+  $entradas = @()
   if (Test-Path $ClienteDir) {
-    $files += Get-ChildItem -Path $ClienteDir -Recurse -File -ErrorAction SilentlyContinue |
-      Where-Object { $_.FullName -notmatch $excl }
+    foreach ($f in @(Get-ChildItem -Path $ClienteDir -Recurse -File -ErrorAction SilentlyContinue |
+        Where-Object { $_.FullName -notmatch $excl })) {
+      $entradas += @{ ruta = $f.FullName; sha = (Get-FileHash -LiteralPath $f.FullName -Algorithm SHA256).Hash.ToLower(); bytes = [int64]$f.Length; tipo = 'payload' }
+    }
   }
   if (Test-Path $CampanaDir) {
-    $files += Get-ChildItem -Path $CampanaDir -File -ErrorAction SilentlyContinue
+    foreach ($f in @(Get-ChildItem -Path $CampanaDir -File -ErrorAction SilentlyContinue)) {
+      $entradas += @{ ruta = $f.FullName; sha = (Get-FileHash -LiteralPath $f.FullName -Algorithm SHA256).Hash.ToLower(); bytes = [int64]$f.Length; tipo = 'campana' }
+    }
   }
-  $lineas = @($files | Sort-Object FullName | ForEach-Object {
-      "$($_.FullName.ToLower())`t$((Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLower())"
+  $toolsDir = 'C:\lab-legit\tools'
+  if (Test-Path $toolsDir) {
+    foreach ($f in @(Get-ChildItem -Path $toolsDir -Recurse -File -ErrorAction SilentlyContinue)) {
+      $entradas += @{ ruta = $f.FullName; sha = (Get-FileHash -LiteralPath $f.FullName -Algorithm SHA256).Hash.ToLower(); bytes = [int64]$f.Length; tipo = 'tools' }
+    }
+  }
+  $hostsF = Join-Path $env:SystemRoot 'System32\drivers\etc\hosts'
+  if (Test-Path $hostsF) {
+    $hf = Get-Item -LiteralPath $hostsF
+    $entradas += @{ ruta = $hf.FullName; sha = (Get-FileHash -LiteralPath $hf.FullName -Algorithm SHA256).Hash.ToLower(); bytes = [int64]$hf.Length; tipo = 'hosts' }
+  }
+  foreach ($tn in @('TFG-WinLegit-Actividad', 'TFG-WinLegit-Keepalive')) {
+    $t = Get-ScheduledTask -TaskName $tn -ErrorAction SilentlyContinue
+    if ($t) {
+      $desc = "$tn|$($t.Principal.UserId)|$($t.Principal.LogonType)|$($t.Principal.RunLevel)|$($t.Actions[0].Execute)|$($t.Actions[0].Arguments)|$($t.Actions[0].WorkingDirectory)"
+      $shaT = [System.BitConverter]::ToString(
+        [System.Security.Cryptography.SHA256]::Create().ComputeHash(
+          [System.Text.Encoding]::UTF8.GetBytes($desc))).Replace('-', '').ToLower()
+      $entradas += @{ ruta = "[task]$tn"; sha = $shaT; bytes = [int64]0; tipo = 'tarea' }
+    } else {
+      $entradas += @{ ruta = "[task]$tn"; sha = 'AUSENTE'; bytes = [int64]0; tipo = 'tarea' }
+    }
+  }
+  $lineas = @($entradas | Sort-Object { $_.ruta.ToLower() } | ForEach-Object {
+      "$($_.ruta.ToLower())`t$($_.sha)"
     })
   $txt = ($lineas -join "`n")
   $sha = [System.BitConverter]::ToString(
@@ -59,6 +93,24 @@ if ($Manifiesto) {
       [System.Text.Encoding]::UTF8.GetBytes($txt))).Replace('-', '').ToLower()
   Write-Output "MANIFEST_FILES=$($lineas.Count)"
   Write-Output "MANIFEST_SHA256=$sha"
+  # Versiones del cliente desplegado (T2b-2): se comprueban aqui, en el invitado.
+  foreach ($nf in @(@('ghosts_exe', 'ghosts.exe'), @('ghosts_domain', 'ghosts.domain.dll'))) {
+    $p = Join-Path $ClienteDir $nf[1]
+    if (Test-Path $p) {
+      $it = Get-Item -LiteralPath $p
+      $h = (Get-FileHash -LiteralPath $p -Algorithm SHA256).Hash.ToLower()
+      Write-Output ("CLIENTE_" + $nf[0].ToUpper() + "_FILEVERSION=" + [string]$it.VersionInfo.FileVersion)
+      Write-Output ("CLIENTE_" + $nf[0].ToUpper() + "_PRODUCTVERSION=" + [string]$it.VersionInfo.ProductVersion)
+      Write-Output ("CLIENTE_" + $nf[0].ToUpper() + "_SHA256=" + $h)
+    } else {
+      Write-Output ("CLIENTE_" + $nf[0].ToUpper() + "_FILEVERSION=AUSENTE")
+    }
+  }
+  if ($Detalle) {
+    foreach ($e in @($entradas | Sort-Object { $_.ruta.ToLower() })) {
+      Write-Output ("MFILE`t{0}`t{1}`t{2}`t{3}" -f $e.ruta, $e.sha, $e.bytes, $e.tipo)
+    }
+  }
   exit 0
 }
 

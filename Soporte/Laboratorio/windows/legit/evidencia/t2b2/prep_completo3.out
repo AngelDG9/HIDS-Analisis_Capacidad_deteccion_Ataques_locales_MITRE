@@ -1,0 +1,136 @@
+[2026-11-11T13:52:23Z] [prep] sink: (ver heartbeat_sink_ctl.log)
+[2026-11-11T13:52:24Z] [prep] prep: heartbeat.jsonl anterior archivado -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\windows\legit\evidencia\historico\heartbeat_20261111T135224Z.jsonl
+[2026-11-11T13:52:26Z] [prep] prep: sink OK (POST /test ok len=51)
+[2026-11-11T13:52:43Z] [prep] prep: revert a snapshot y arranque
+[2026-11-11T13:53:29Z] [prep] prep: heartbeat.seq SEQ_AUSENTE
+[2026-11-11T13:53:29Z] [prep] prep: deploy idempotente
+[2026-11-11T13:53:30Z] SSH OK (desktop-btmcfa5\angel)
+[2026-11-11T13:53:30Z] apply: construyendo payload (huella)
+[2026-11-11T13:53:30Z] cliente_origen=D:\TFG-VMs\material-ghosts\client-windows\build-v8.3.1\client
+[2026-11-11T13:53:30Z] CLIENTE_HOST ghosts_exe=8.2.2.0 sha256=b0c5d33b9a20f8ee77a962f40f3dcd89c59f3dec33f6927249c9d18cefe44dec
+[2026-11-11T13:53:30Z] CLIENTE_HOST ghosts_domain=8.2.7.90 sha256=e305cf2069e2ef9a16a2b9f10fab05a70ac6f0fef8042766cd52b15cf2eaa312
+[2026-11-11T13:54:00Z] payload construido: C:\Users\angel\AppData\Local\Temp\opencode\tfg-win-legit\payload.zip (51.9 MB)
+[2026-11-11T13:54:42Z] apply: parando actividad/keepalive previos
+[2026-11-11T13:54:48Z] residuos invitado: LIMPIEZA_OK
+[2026-11-11T13:54:48Z] apply: subiendo payload
+[2026-11-11T13:54:54Z] apply: preparando el invitado (carpetas, campana, errores.log, hosts, payload)
+COPIADO client -> C:\Users\angel\ghosts-client (robocopy rc=3)
+
+COPIADO campana -> C:\lab-legit\campana (robocopy rc=1)
+CONSERVADO C:\Users\angel\Documentos\errores.log (bytes=0)
+CAMPANA_LIMPIADA dirs_borrados=0
+HOSTS_OK intranet.local
+RESULT=PASS
+[2026-11-11T13:55:02Z] apply: registrando tareas (actividad=angel/Interactive/Medium; keepalive=SYSTEM)
+TAREAS_FINGERPRINT=85af5338094dfe14358c8dc533ab72ffdcb2ff74163e7e798969bde2beead398
+[2026-11-11T13:55:11Z] apply: arrancando el bucle keepalive (unico emisor del latido)
+SUCCESS: Attempted to run the scheduled task "TFG-WinLegit-Keepalive".
+KEEPALIVE_ESTADO=Folder: \ HostName: DESKTOP-BTMCFA5 TaskName: \TFG-WinLegit-Keepalive Next Run Time: N/A Status: Running Logon Mode: Interactive/Background
+[2026-11-11T13:55:21Z] apply: verificando el invitado
+CHECK cliente_exe            OK C:\Users\angel\ghosts-client\ghosts.exe
+CHECK cliente_config         OK C:\Users\angel\ghosts-client\config\application.json
+CHECK cliente_recetas        OK d1/d2/d3 + bloques + keepalive
+CHECK campana_docs           OK C:\lab-legit\campana
+CHECK errores_log            OK C:\Users\angel\Documentos\errores.log
+CHECK tarea_actividad        OK estado=Ready user=angel logon=Interactive runlevel=Limited
+CHECK tarea_keepalive        OK estado=Running user=SYSTEM logon=ServiceAccount
+CHECK tarea_user_angel       OK angel
+CHECK tarea_runlevel         OK Limited
+TAREA_ACT_CWD=C:\Users\angel
+TAREA_ACT_ARGS=/c ""C:\Users\angel\ghosts-client\ghosts.exe" >> "C:\Users\angel\ghosts-client\client.out" 2>&1"
+TAREA_KA_ARGS=-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "C:\Users\angel\ghosts-client\tfg_keepalive_windows.ps1" -Loop
+CHECK svc_Sysmon64           OK Running/Automatic
+CHECK svc_WazuhSvc           OK Running/Automatic
+CHECK defender_off           OK RTP= Behavior= Tamper= WinDefend=Stopped politica_off=True
+DEFENDER_OFF=1
+DEFENDER_RTP= DEFENDER_BEHAVIOR= DEFENDER_TAMPER= DEFENDER_SVC=Stopped DEFENDER_POLITICA_OFF=True
+CHECK sesion_angel           OK explorer_sesion=1 (1=consola) dueno=DESKTOP-BTMCFA5\angel
+SESION_ANGEL=1
+SESION_EXPLORER=1 IL=Medium
+CHECK powercfg_STANDBYIDLE   OK AC=0x00000000
+CHECK powercfg_HIBERNATEIDLE OK AC=0x00000000
+CHECK powercfg_HYBRIDSLEEP   OK AC=0x00000000
+CHECK disco_libre_mb         OK 21262 MB
+CHECK hosts_intranet         OK intranet.local -> 192.168.65.1
+CHECK wu_politica            OK NoAutoUpdate=1
+CHECK wu_servicio            OK Stopped/Disabled
+CLIENTE_VIVO=False PID=0 WIN_USER=
+HIJOS_VMTOOLSD=0
+CAMPANA_MARCAS=0
+CHECK residuo_stop_flag      OK ausente
+BLACKLIST_STOP_FLAG=1
+BLACKLIST_lab_attack_vacio=1
+BLACKLIST_tareas_ataque=1
+BLACKLIST_armado_flag=1
+BLACKLIST_client_out=1
+BLACKLIST_instance_vacio=1
+BLACKLIST_logs_sin_campana=1
+BLACKLIST_run_ghosts=1
+BLACKLIST_wintemp_tfg=1
+BLACKLIST_temp_opencode=1
+BLACKLIST_b10=1
+BLACKLIST_marcas_campana=1
+CHECK lista_negra            OK 0 residuos
+LISTA_NEGRA_OK=1
+RESULT=PASS
+MANIFEST_FILES=304
+MANIFEST_SHA256=62b73b16ffdb0d12fe424f759201e8a81134e335215a6723b8a2adf41a253d65
+CLIENTE_GHOSTS_EXE_FILEVERSION=8.2.2.0
+CLIENTE_GHOSTS_EXE_PRODUCTVERSION=8.0.0.0
+CLIENTE_GHOSTS_EXE_SHA256=b0c5d33b9a20f8ee77a962f40f3dcd89c59f3dec33f6927249c9d18cefe44dec
+CLIENTE_GHOSTS_DOMAIN_FILEVERSION=8.2.7.90
+CLIENTE_GHOSTS_DOMAIN_PRODUCTVERSION=1.0.0+4d2e160860f508f699f935472b5515358f534844
+CLIENTE_GHOSTS_DOMAIN_SHA256=e305cf2069e2ef9a16a2b9f10fab05a70ac6f0fef8042766cd52b15cf2eaa312
+[2026-11-11T13:55:28Z] apply: estado de despliegue guardado (payload=375d545fe85b484a4b3c7cde25dad96ff0bb83a630d2855475cd10435473271b manifest=62b73b16ffdb0d12fe424f759201e8a81134e335215a6723b8a2adf41a253d65)
+[2026-11-11T13:55:28Z] apply: FIN
+CHECK cliente_exe            OK C:\Users\angel\ghosts-client\ghosts.exe
+CHECK cliente_config         OK C:\Users\angel\ghosts-client\config\application.json
+CHECK cliente_recetas        OK d1/d2/d3 + bloques + keepalive
+CHECK campana_docs           OK C:\lab-legit\campana
+CHECK errores_log            OK C:\Users\angel\Documentos\errores.log
+CHECK tarea_actividad        OK estado=Ready user=angel logon=Interactive runlevel=Limited
+CHECK tarea_keepalive        OK estado=Running user=SYSTEM logon=ServiceAccount
+CHECK tarea_user_angel       OK angel
+CHECK tarea_runlevel         OK Limited
+TAREA_ACT_CWD=C:\Users\angel
+TAREA_ACT_ARGS=/c ""C:\Users\angel\ghosts-client\ghosts.exe" >> "C:\Users\angel\ghosts-client\client.out" 2>&1"
+TAREA_KA_ARGS=-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "C:\Users\angel\ghosts-client\tfg_keepalive_windows.ps1" -Loop
+CHECK svc_Sysmon64           OK Running/Automatic
+CHECK svc_WazuhSvc           OK Running/Automatic
+CHECK defender_off           OK RTP= Behavior= Tamper= WinDefend=Stopped politica_off=True
+DEFENDER_OFF=1
+DEFENDER_RTP= DEFENDER_BEHAVIOR= DEFENDER_TAMPER= DEFENDER_SVC=Stopped DEFENDER_POLITICA_OFF=True
+CHECK sesion_angel           OK explorer_sesion=1 (1=consola) dueno=DESKTOP-BTMCFA5\angel
+SESION_ANGEL=1
+SESION_EXPLORER=1 IL=Medium
+CHECK powercfg_STANDBYIDLE   OK AC=0x00000000
+CHECK powercfg_HIBERNATEIDLE OK AC=0x00000000
+CHECK powercfg_HYBRIDSLEEP   OK AC=0x00000000
+CHECK disco_libre_mb         OK 21262 MB
+CHECK hosts_intranet         OK intranet.local -> 192.168.65.1
+CHECK wu_politica            OK NoAutoUpdate=1
+CHECK wu_servicio            OK Stopped/Disabled
+CLIENTE_VIVO=False PID=0 WIN_USER=
+HIJOS_VMTOOLSD=0
+CAMPANA_MARCAS=0
+CHECK residuo_stop_flag      OK ausente
+BLACKLIST_STOP_FLAG=1
+BLACKLIST_lab_attack_vacio=1
+BLACKLIST_tareas_ataque=1
+BLACKLIST_armado_flag=1
+BLACKLIST_client_out=1
+BLACKLIST_instance_vacio=1
+BLACKLIST_logs_sin_campana=1
+BLACKLIST_run_ghosts=1
+BLACKLIST_wintemp_tfg=1
+BLACKLIST_temp_opencode=1
+BLACKLIST_b10=1
+BLACKLIST_marcas_campana=1
+CHECK lista_negra            OK 0 residuos
+LISTA_NEGRA_OK=1
+RESULT=PASS
+[2026-11-11T13:55:49Z] [prep] prep: gate Defender/sesion OK (DEFENDER_OFF=1 SESION_ANGEL=1)
+[2026-11-11T13:55:49Z] [prep] prep: lista negra 7.3 OK (0 residuos)
+MANIFIESTO_SNAPSHOT=OK
+[2026-11-11T13:55:52Z] [prep] prep: manifiesto OK (62b73b16ffdb0d12fe424f759201e8a81134e335215a6723b8a2adf41a253d65)
+[2026-11-11T13:55:52Z] [prep] prep OK (NO armado)

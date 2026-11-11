@@ -1,0 +1,5 @@
+[2026-11-11T14:01:50Z] [stop] stop: crudo=crudo.done
+[2026-11-11T14:01:50Z] [stop] stop: creando stop.flag
+[2026-11-11T14:05:14Z] [stop] stop: bucle_salio=True (espera <= 6 min)
+[2026-11-11T14:05:16Z] [stop] sink: (ver heartbeat_sink_ctl.log)
+[2026-11-11T14:05:28Z] [stop] stop OK (vmrun rc=0)
