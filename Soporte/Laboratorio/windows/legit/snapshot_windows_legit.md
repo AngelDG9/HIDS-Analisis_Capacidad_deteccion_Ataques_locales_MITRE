@@ -18,6 +18,15 @@
 > **Nota de ruta (declarada).** El plan §16.1 situaba este documento en
 > `Soporte/Laboratorio/windows/`; la orden de la tanda W3 lo pide en
 > `Soporte/Laboratorio/windows/legit/`. Manda la orden: está aquí y **no** se duplica.
+>
+> **§16.1 corregida (T2b-1, 2026-11-10).** El plan §16.1 situaba `keepalive.log` y
+> `recovery.log` en `C:\Users\angel\ghosts-client\logs\`. La ruta **real** es la **raíz**
+> `C:\Users\angel\ghosts-client\` (junto a `estado.json`, `heartbeat.seq`,
+> `heartbeat.jsonl` y `stop.flag`); `logs\` es del cliente GHOSTS (`app.log`), no del
+> keepalive. El `syscheck` del agente `002` **no vigila** `C:\Users\angel\ghosts-client`
+> (solo `C:\lab-attack` en realtime y directorios de sistema), así que **no hay que
+> excluir nada**; T2b-2 solo comprueba que siga así. `heartbeat.seq` y `stop.flag`
+> quedan fuera de la huella del manifiesto y en la lista negra.
 
 ---
 
@@ -169,7 +178,7 @@ applyG2  2026-11-10T11:28:44Z → MANIFEST_FILES=296  MANIFEST_SHA256=2615e9c3�
 > la etiqueta correcta es la del **par final** (`applyG1/applyG2`), que es el que quedó
 > dentro del snapshot.
 La huella **excluye** lo volátil (`logs\`, `instance\`, `client.out*`, `keepalive.log`,
-`recovery.log`, `estado.json`, `armado.flag`). Dos aplicaciones seguidas también dejan
+`recovery.log`, `estado.json`, `armado.flag`, `heartbeat.seq`, `stop.flag`). Dos aplicaciones seguidas también dejan
 **el mismo** `RESULT=PASS` en `verificar_windows.ps1`.
 
 ### 5.2 Revert limpio (0 residuos)

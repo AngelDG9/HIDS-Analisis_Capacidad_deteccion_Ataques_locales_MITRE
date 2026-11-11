@@ -9,7 +9,8 @@ en `heartbeat.jsonl` (append) y una línea en el log del sink (append).
 Campos que **añade** el sink a cada línea (además de los que manda el invitado):
 
     recv_utc      hora UTC de recepción (reloj del host)
-    delta_s       recv_utc - ts_utc  (chequeo continuo de reloj, W-V9 / R7)
+    delta_s       recv_utc - ts_envio (o ts_utc si el emisor es antiguo)
+    delta_ref     campo usado para `delta_s` (`ts_envio` en el contrato v4)
     body_sha256   sha256 del cuerpo CRUDO recibido
     cadena        OK | INICIO | REINICIO_BUCLE | ROTA | ROTA_SEQ
     seq_ok        true/false (seq > último seq visto)
@@ -22,6 +23,10 @@ JSONL rompe el `sha256_prev` de la siguiente ⇒ `ROTA`.
 
 **Puerto ocupado ⇒ `exit 48`** (sin fallback silencioso). Para que Windows no permita
 dos binds al mismo puerto se desactiva `SO_REUSEADDR` (`allow_reuse_address = False`).
+
+`POST /test` valida el contrato (JSON <= 1 KB) y responde `{"ok":true,"test":true}`
+**sin escribir** en `heartbeat.jsonl`: es el POST de prueba de `prep` y no rompe ni
+`seq` ni la cadena `sha256_prev`.
 
 Solo biblioteca estándar. **Sin secretos.**
 
@@ -132,7 +137,13 @@ class Estado:
             if not seq_ok:
                 cadena = "ROTA_SEQ"
 
-            t0 = parse_ts(body.get("ts_utc"))
+            t0 = None
+            delta_ref = None
+            for campo in ("ts_envio", "ts_utc"):
+                t0 = parse_ts(body.get(campo))
+                if t0 is not None:
+                    delta_ref = campo
+                    break
             delta = None
             if t0 is not None:
                 delta = round((datetime.now(timezone.utc) - t0).total_seconds(), 3)
@@ -140,6 +151,7 @@ class Estado:
             linea = dict(body)  # conserva el orden del invitado
             linea["recv_utc"] = recv
             linea["delta_s"] = delta
+            linea["delta_ref"] = delta_ref
             linea["body_sha256"] = sha
             linea["cadena"] = cadena
             linea["seq_ok"] = seq_ok
@@ -176,7 +188,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
         self.wfile.write(data)
 
     def do_POST(self) -> None:  # noqa: N802
-        if self.path.split("?")[0] != "/heartbeat":
+        ruta = self.path.split("?")[0]
+        if ruta not in ("/heartbeat", "/test"):
             self._json(404, {"ok": False, "error": "ruta"})
             return
         length = self.headers.get("Content-Length")
@@ -198,6 +211,14 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 f"{utc_now()} RECHAZO from={self.client_address[0]} len={len(raw)} motivo=json"
             )
             self._json(400, {"ok": False, "error": "JSON inválido"})
+            return
+        if ruta == "/test":
+            # POST de prueba de `prep`: valida el contrato (JSON <= 1 KB) SIN escribir
+            # en `heartbeat.jsonl` (no rompe `seq` ni la cadena `sha256_prev`).
+            self._estado().log(
+                f"{utc_now()} TEST from={self.client_address[0]} len={len(raw)} ok"
+            )
+            self._json(200, {"ok": True, "test": True, "len": len(raw)})
             return
         res = self._estado().registrar(body, raw, self.client_address[0])
         self._json(200, res)

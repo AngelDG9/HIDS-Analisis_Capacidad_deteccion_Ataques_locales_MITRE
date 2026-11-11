@@ -49,3 +49,19 @@ Evidencia: `evidencia.txt` y `evidencia2.txt` en la carpeta de copia.
 1. Activar `logall_json=yes` en el manager para W3 y para cualquier re-ejecución de ataques.
 2. Al cerrar cada ventana o campaña, copiar `archives` + `alerts` a `D:\TFG-VMs` con `sha256`.
 3. No meter el crudo en el repo (tamaño); solo el manifiesto y esta ficha.
+
+## 6. Crudo de la ventana legítima Windows (W3-bis) — ruta implementada
+
+> **G-5 (T2b-1b):** la ruta del `crudo` queda **alineada con el plan** (`plan_w3bis.md`
+> §7.2 C-4). La implementación **no** usa `D:\TFG-VMs\ventana-windows-<fecha>\`: usa
+> **`D:\TFG-VMs\legitimo-windows-<fecha>\crudo\`** (hermano de `keepalive_2h\` de §6.2).
+
+| Elemento | Ruta |
+|---|---|
+| `crudo` (archives + alerts + `MANIFEST.tsv` + `denominador_M.csv`) | `D:\TFG-VMs\legitimo-windows-<fecha>\crudo\` |
+| Puerta de `cleanup` | `D:\TFG-VMs\legitimo-windows-<fecha>\crudo\crudo.done` |
+| Evidencia de 2 h (§6.2) | `D:\TFG-VMs\legitimo-windows-<fecha>\keepalive_2h\` |
+
+`<fecha>` = `t0` en UTC (`yyyy-MM-dd`), tomado de `ventana_actual.json`. Si cambia la
+fecha de la ventana, cambia el directorio (no se mezclan ventanas).
+

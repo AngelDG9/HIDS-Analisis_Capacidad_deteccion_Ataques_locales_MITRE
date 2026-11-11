@@ -7,8 +7,11 @@
 #                       ALINEADO al reloj, try/catch POR ciclo, `stop.flag` para
 #                       parada ordenada, `estado.json` cada 60 min, log append y
 #                       latido POST al sink del host (http://192.168.65.1:9095/heartbeat).
-#   -Once (pruebas)   : un solo ciclo y exit 0 (comportamiento historico de W3; lo
-#                       usa `deploy_windows.ps1`). Sin bucle y sin mutex.
+#   -Once (diagnostico): un solo ciclo y exit 0. **NO emite latido, NO toca
+#                       `heartbeat.seq` y NO recrea `estado.json`** (F-1, T2b-1b):
+#                       el UNICO emisor del latido es `-Loop`. Un `-Once` lanzado por
+#                       `deploy`/`arm` no puede inyectar un segundo escritor en el
+#                       JSONL (era la causa de `ROTA_SEQ`). Sin bucle y sin mutex.
 #
 # Lo que hace CADA ciclo:
 #   1) disco C: (guardas 500/300 MB) y topes de `client.out`/logs (rotacion).
@@ -27,9 +30,12 @@
 #   - `schtasks` solo se invoca en una recuperacion (0-2 veces en 72 h).
 #
 # LATIDO (JSON <= 1 KB, lo firma el sink):
-#   ts_utc, seq, ka_pid, ka_instancias, n_ghosts, cliente_pid, win_user, il, sesion,
-#   disco_mb, sysmon, wazuh, wu, defender, powercfg_ok, ruta_defecto, hosts_ok,
-#   armado, dia_k, client_out_mb, sha256_prev
+#   ts_ciclo, ts_utc, ts_envio, seq, ka_pid, ka_instancias, n_ghosts, cliente_pid,
+#   win_user, il, sesion, disco_mb, sysmon, wazuh, wu, defender, powercfg_ok,
+#   ruta_defecto, hosts_ok, armado, dia_k, client_out_mb, hijos_vmtoolsd, sha256_prev
+#   `ts_ciclo`/`ts_utc` = inicio del ciclo (alineacion a :00/:05). `ts_envio` se sella
+#   JUSTO antes del POST: el sink calcula `delta_s` con el (CA-W3b-21) y no con el
+#   inicio del ciclo (que incluye el trabajo del ciclo).
 #   `seq` es monotono (persiste en `heartbeat.seq`). `sha256_prev` = sha256 del cuerpo
 #   del latido ANTERIOR aceptado por el sink; un proceso nuevo manda cadena vacia y el
 #   sink lo registra como `REINICIO_BUCLE` (declarado, no manipulacion).
@@ -81,6 +87,8 @@ $TareaAct   = 'TFG-WinLegit-Actividad'
 $script:Seq        = 0
 $script:ShaPrev    = ''
 $script:PowercfgOk = $false
+# F-1: SOLO el bucle persistente es emisor del latido. `-Once` es diagnostico.
+$script:EmiteLatido = ($Modo -eq 'Loop')
 $script:UltimoEstado = [datetime]::MinValue
 $script:Sha256     = [System.Security.Cryptography.SHA256]::Create()
 
@@ -401,55 +409,83 @@ function Invoke-Ciclo {
       Where-Object { $_.ParentProcessId -eq $PID }).Count
   } catch { }
 
-  # --- 7) latido POST -------------------------------------------------------
-  $script:Seq++
-  try { Set-Content -Path $SeqFile -Value ([string]$script:Seq) -Encoding ascii } catch { }
+  # Hijos de `vmtoolsd.exe` (senal W-V4 / G-W8): viaja en el latido para que el
+  # `watch` del host NO tenga que entrar por SSH en el invitado.
+  $hijosVt = 0
+  try {
+    $vt = Get-CimInstance Win32_Process -Filter "Name='vmtoolsd.exe'" -ErrorAction SilentlyContinue |
+      Select-Object -First 1
+    if ($vt) {
+      $hijosVt = @(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue |
+        Where-Object { $_.ParentProcessId -eq $vt.ProcessId }).Count
+    }
+  } catch { $hijosVt = -1 }
 
-  $hb = [ordered]@{
-    ts_utc        = $ts
-    seq           = $script:Seq
-    ka_pid        = $PID
-    ka_instancias = $kaInst
-    n_ghosts      = $nGhosts
-    cliente_pid   = $clientePid
-    win_user      = $winUser
-    il            = $il
-    sesion        = $sesionAngel
-    disco_mb      = $freeMb
-    sysmon        = $sysmon
-    wazuh         = $wazuh
-    wu            = "$wuSvc/NoAutoUpdate=$wuPol"
-    defender      = $defender
-    powercfg_ok   = [bool]$script:PowercfgOk
-    ruta_defecto  = $rutaDef
-    hosts_ok      = [bool]$hostsOk
-    armado        = [bool]$armado
-    dia_k         = $diaK
-    client_out_mb = $outMb
-    sha256_prev   = $script:ShaPrev
-  }
-
-  $hbEstado = 'FAIL'
+  # --- 7) latido POST (SOLO -Loop; F-1) ------------------------------------
+  $hbEstado = 'SKIP'
   $hbMotivo = ''
   $body = ''
-  try {
-    $body = ($hb | ConvertTo-Json -Compress -Depth 3)
-    if ($body.Length -gt 1024) { throw "latido de $($body.Length) bytes (> 1 KB)" }
-    Invoke-RestMethod -Uri $SinkUrl -Method Post -ContentType 'application/json' -Body $body -TimeoutSec 3 | Out-Null
-    $hbEstado = 'OK'
-    $script:ShaPrev = [System.BitConverter]::ToString(
-      $script:Sha256.ComputeHash([System.Text.Encoding]::UTF8.GetBytes($body))).Replace('-', '').ToLower()
-  } catch {
-    $hbMotivo = $_.Exception.Message
+  if ($script:EmiteLatido) {
+    $script:Seq++
+    try { Set-Content -Path $SeqFile -Value ([string]$script:Seq) -Encoding ascii } catch { }
+
+    $hb = [ordered]@{
+      ts_ciclo      = $ts
+      ts_utc        = $ts
+      seq           = $script:Seq
+      ka_pid        = $PID
+      ka_instancias = $kaInst
+      n_ghosts      = $nGhosts
+      cliente_pid   = $clientePid
+      win_user      = $winUser
+      il            = $il
+      sesion        = $sesionAngel
+      disco_mb      = $freeMb
+      sysmon        = $sysmon
+      wazuh         = $wazuh
+      wu            = "$wuSvc/NoAutoUpdate=$wuPol"
+      defender      = $defender
+      powercfg_ok   = [bool]$script:PowercfgOk
+      ruta_defecto  = $rutaDef
+      hosts_ok      = [bool]$hostsOk
+      armado        = [bool]$armado
+      dia_k         = $diaK
+      client_out_mb = $outMb
+      hijos_vmtoolsd = $hijosVt
+      sha256_prev   = $script:ShaPrev
+    }
+
+    $hbEstado = 'FAIL'
+    try {
+      # `ts_envio` JUSTO antes del POST (correccion T2b-1 / CA-W3b-21).
+      $hb['ts_envio'] = (TsUtc)
+      $body = ($hb | ConvertTo-Json -Compress -Depth 3)
+      if ($body.Length -gt 1024) { throw "latido de $($body.Length) bytes (> 1 KB)" }
+      Invoke-RestMethod -Uri $SinkUrl -Method Post -ContentType 'application/json' -Body $body -TimeoutSec 3 | Out-Null
+      $hbEstado = 'OK'
+      $script:ShaPrev = [System.BitConverter]::ToString(
+        $script:Sha256.ComputeHash([System.Text.Encoding]::UTF8.GetBytes($body))).Replace('-', '').ToLower()
+    } catch {
+      $hbMotivo = $_.Exception.Message
+    }
   }
 
-  KLog ("latido seq=$($script:Seq) hb=$hbEstado ka_inst=$kaInst n_ghosts=$nGhosts pid=$clientePid " +
-    "user=$winUser il=$il ses=$sesionAngel disco_mb=$freeMb sysmon=$sysmon wazuh=$wazuh wu=$wuSvc " +
-    "def=$defender pc=$($script:PowercfgOk) rd=$rutaDef hosts=$hostsOk armado=$armado dia=$diaK " +
-    "out_mb=$outMb hijos=$hijos" + $(if ($hbMotivo) { " motivo=$hbMotivo" } else { '' }))
+  if ($script:EmiteLatido) {
+    KLog ("latido seq=$($script:Seq) hb=$hbEstado ka_inst=$kaInst n_ghosts=$nGhosts pid=$clientePid " +
+      "user=$winUser il=$il ses=$sesionAngel disco_mb=$freeMb sysmon=$sysmon wazuh=$wazuh wu=$wuSvc " +
+      "def=$defender pc=$($script:PowercfgOk) rd=$rutaDef hosts=$hostsOk armado=$armado dia=$diaK " +
+      "out_mb=$outMb hijos=$hijos" + $(if ($hbMotivo) { " motivo=$hbMotivo" } else { '' }))
+  } else {
+    KLog ("diagnostico modo=Once sin_latido sin_seq sin_estado n_ghosts=$nGhosts pid=$clientePid " +
+      "user=$winUser ses=$sesionAngel disco_mb=$freeMb sysmon=$sysmon wazuh=$wazuh def=$defender " +
+      "armado=$armado dia=$diaK out_mb=$outMb")
+  }
 
-  # --- 8) estado.json cada N minutos ---------------------------------------
-  $escribir = ((Get-Date) - $script:UltimoEstado).TotalMinutes -ge $EstadoCadaMin
+  # --- 8) estado.json cada N minutos (SOLO -Loop; F-1) ---------------------
+  $escribir = $false
+  if ($script:EmiteLatido) {
+    $escribir = ((Get-Date) - $script:UltimoEstado).TotalMinutes -ge $EstadoCadaMin
+  }
   if ($escribir) {
     $est = [ordered]@{
       ts_utc          = $ts
@@ -498,6 +534,52 @@ if (-not (Test-Path $Log)) { New-Item -ItemType File -Force -Path $Log | Out-Nul
 if (-not (Test-Path $RecLog)) { New-Item -ItemType File -Force -Path $RecLog | Out-Null }
 try { Set-Location $CwdBase } catch { Set-Location $Dir }
 
+# ---------------------------------------------------------------------------
+# -Loop: MUTEX ANTES DE TODO (correccion T2b-1)
+# La 2.a instancia debe salir SIN rotar logs, SIN ejecutar `powercfg` y SIN escribir
+# la linea `arranque`: solo `segunda_instancia` + exit 0. (Antes el bloque de mutex
+# estaba despues del arranque y el duplicado gastaba un `powercfg.exe` por nada.)
+# ---------------------------------------------------------------------------
+$mutex = $null
+if ($Modo -eq 'Loop') {
+  $tengoMutex = $false
+  $mutexDenegado = $false
+  try {
+    # ACL explicita: `Everyone` puede ABRIR el mutex. Sin esto, el mutex creado por
+    # SYSTEM en `Global\` da ACCESS_DENIED a un duplicado lanzado como `angel`, y ese
+    # duplicado arrancaria (bug medido en T2a). Con la ACL, WaitOne(0)=false y sale.
+    $sec = $null
+    try {
+      $sec = New-Object System.Security.AccessControl.MutexSecurity
+      $everyone = New-Object System.Security.Principal.SecurityIdentifier('S-1-1-0')
+      $regla = New-Object System.Security.AccessControl.MutexAccessRule($everyone,
+        [System.Security.AccessControl.MutexRights]::FullControl,
+        [System.Security.AccessControl.AccessControlType]::Allow)
+      $sec.AddAccessRule($regla)
+    } catch { $sec = $null }
+
+    if ($sec) {
+      $creado = $false
+      $mutex = [System.Threading.Mutex]::new($false, 'Global\TFG-WinLegit-Keepalive', [ref]$creado, $sec)
+    } else {
+      $mutex = [System.Threading.Mutex]::new($false, 'Global\TFG-WinLegit-Keepalive')
+    }
+    try { $tengoMutex = $mutex.WaitOne(0) }
+    catch [System.Threading.AbandonedMutexException] { $tengoMutex = $true }
+  } catch [System.UnauthorizedAccessException] {
+    $mutexDenegado = $true
+  } catch {
+    KLog "mutex_error $($_.Exception.Message)"
+    $mutexDenegado = $true
+  }
+  if ($mutexDenegado -or -not $tengoMutex) {
+    # Cualquier fallo del mutex se trata como "ya hay instancia": NUNCA se arranca un
+    # segundo bucle (conservador; el plan exige que el duplicado no haga nada).
+    KLog "segunda_instancia pid=$PID (mutex Global\TFG-WinLegit-Keepalive ocupado o inaccesible; no se hace nada)"
+    exit 0
+  }
+}
+
 $rotKa = Rotar $Log $LogMaxMb
 $rotRec = Rotar $RecLog $LogMaxMb
 if ($rotKa -or $rotRec) { KLog "rotacion_logs ka=$rotKa rec=$rotRec" }
@@ -521,47 +603,6 @@ if ($Modo -eq 'Once') {
   exit 0
 }
 
-# ---------------------------------------------------------------------------
-# -Loop: mutex global + bucle alineado + try/catch por ciclo
-# ---------------------------------------------------------------------------
-$mutex = $null
-$tengoMutex = $false
-$mutexDenegado = $false
-try {
-  # ACL explicita: `Everyone` puede ABRIR el mutex. Sin esto, el mutex creado por
-  # SYSTEM en `Global\` da ACCESS_DENIED a un duplicado lanzado como `angel`, y ese
-  # duplicado arrancaria (bug medido en T2a). Con la ACL, WaitOne(0)=false y sale.
-  $sec = $null
-  try {
-    $sec = New-Object System.Security.AccessControl.MutexSecurity
-    $everyone = New-Object System.Security.Principal.SecurityIdentifier('S-1-1-0')
-    $regla = New-Object System.Security.AccessControl.MutexAccessRule($everyone,
-      [System.Security.AccessControl.MutexRights]::FullControl,
-      [System.Security.AccessControl.AccessControlType]::Allow)
-    $sec.AddAccessRule($regla)
-  } catch { $sec = $null }
-
-  if ($sec) {
-    $creado = $false
-    $mutex = [System.Threading.Mutex]::new($false, 'Global\TFG-WinLegit-Keepalive', [ref]$creado, $sec)
-  } else {
-    $mutex = [System.Threading.Mutex]::new($false, 'Global\TFG-WinLegit-Keepalive')
-  }
-  try { $tengoMutex = $mutex.WaitOne(0) }
-  catch [System.Threading.AbandonedMutexException] { $tengoMutex = $true }
-} catch [System.UnauthorizedAccessException] {
-  $mutexDenegado = $true
-} catch {
-  KLog "mutex_error $($_.Exception.Message)"
-  $mutexDenegado = $true
-}
-if ($mutexDenegado -or -not $tengoMutex) {
-  # Cualquier fallo del mutex se trata como "ya hay instancia": NUNCA se arranca un
-  # segundo bucle (conservador; el plan exige que el duplicado no haga nada).
-  KLog "segunda_instancia pid=$PID (mutex Global\TFG-WinLegit-Keepalive ocupado o inaccesible; no se hace nada)"
-  exit 0
-}
-
 $script:UltimoEstado = [datetime]::MinValue
 while ($true) {
   if (Test-Path $StopFlag) {
@@ -581,5 +622,8 @@ while ($true) {
   try { Start-Sleep -Milliseconds $ms } catch { Start-Sleep -Seconds 30 }
 }
 
+# Parada ordenada: se retira el `stop.flag` para que un reinicio del proceso (o el
+# arranque del snapshot) no salga inmediatamente. Tambien lo borra el controlador.
+try { if (Test-Path $StopFlag) { Remove-Item -LiteralPath $StopFlag -Force -ErrorAction SilentlyContinue } } catch { }
 try { if ($mutex) { $mutex.ReleaseMutex(); $mutex.Dispose() } } catch { }
 exit 0

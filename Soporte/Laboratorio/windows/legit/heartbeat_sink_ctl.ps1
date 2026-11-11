@@ -2,8 +2,8 @@
 # heartbeat_sink_ctl.ps1 - arranca / para el sink del latido desde el HOST
 # Bloque `windows-legit-prep` (W3-bis, T2a). NO va en la VM.
 # ----------------------------------------------------------------------------
-#   start  : comprueba que 192.168.65.1:9095 está libre, arranca
-#            `heartbeat_sink.py` y deja constancia (pid + log). Si el puerto está
+#   start  : comprueba que 192.168.65.1:9095 esta libre, arranca
+#            `heartbeat_sink.py` y deja constancia (pid + log). Si el puerto esta
 #            ocupado NO hace fallback: sale con 48.
 #   stop   : para el proceso del pid registrado y lo deja en el log.
 #   status : dice si el puerto responde (GET /health) y si el pid vive.
@@ -27,7 +27,9 @@ $ErrorActionPreference = 'Continue'
 $Win  = Split-Path -Parent $PSScriptRoot  # ...\windows
 $Legit = $PSScriptRoot                     # ...\windows\legit
 $Sink = Join-Path $Legit 'heartbeat_sink.py'
-if (-not $OutDir) { $OutDir = Join-Path $Legit 'evidencia\t2a' }
+# G-4 (T2b-1b): MISMO `OutDir` por defecto que `windows_legit_host_control.ps1`
+# (`legit/evidencia`). Antes era `evidencia/t2a` y el `watch` leia otro fichero.
+if (-not $OutDir) { $OutDir = Join-Path $Legit 'evidencia' }
 New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
 
 $Out  = Join-Path $OutDir 'heartbeat.jsonl'
@@ -36,6 +38,7 @@ $Ctl  = Join-Path $OutDir 'heartbeat_sink_ctl.log'
 $PidF = Join-Path $OutDir 'heartbeat_sink.pid'
 $StdO = Join-Path $OutDir 'heartbeat_sink.stdout.log'
 $StdE = Join-Path $OutDir 'heartbeat_sink.stderr.log'
+$StdI = Join-Path $OutDir 'heartbeat_sink.stdin.log'
 
 function Ts { (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ') }
 function CLog([string]$m) {
@@ -67,8 +70,12 @@ switch ($Action) {
       exit 48
     }
     if (-not (Test-Path $Sink)) { CLog "FALTA $Sink"; exit 2 }
+    # stdin a un fichero vacio: si el ctl se invoca dentro de una tuberia, el hijo NO
+    # debe heredar el pipe (colgaria al padre esperando EOF). T2b-1b.
+    if (-not (Test-Path $StdI)) { New-Item -ItemType File -Force -Path $StdI | Out-Null }
     $arg = @($Sink, '--bind', $Bind, '--port', [string]$Port, '--out', $Out, '--log', $Log)
     $p = Start-Process -FilePath $Python -ArgumentList $arg -PassThru -WindowStyle Hidden `
+      -RedirectStandardInput $StdI `
       -RedirectStandardOutput $StdO -RedirectStandardError $StdE
     Set-Content -Path $PidF -Value ([string]$p.Id) -Encoding ascii
     Start-Sleep -Milliseconds 1200

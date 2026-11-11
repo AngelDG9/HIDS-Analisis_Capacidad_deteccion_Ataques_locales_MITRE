@@ -1,1 +1,5 @@
 ﻿[2026-11-10T13:01:28Z] chequeo ok=7 fallos=0 skip=0
+[2026-11-10T20:23:54Z] ALARMA chequeo ok=3 fallos=2 skip=3 :: G-W12=ram_libre_mb=1287 min=1500 wu=Stopped/Manual | G-W13=HB_EDAD_MIN=0.6 max=12 seq_monotono=False ka_instancias=1 seq=2 ka_pid=2824 parcial=False :: HB_EDAD_MIN=0.6 SEQ=2 KA_PID=2824 KA_INSTANCIAS=1 SSH_INVITADO=0
+[2026-11-10T20:26:16Z] chequeo ok=5 fallos=0 skip=3 :: HB_EDAD_MIN=1.2 SEQ=3 KA_PID=2824 KA_INSTANCIAS=1 SSH_INVITADO=0
+[2026-11-10T20:26:26Z] ALARMA chequeo ok=4 fallos=1 skip=3 :: G-W13=HB_EDAD_MIN=14.4 max=12 seq_monotono=True ka_instancias=1 seq=3 ka_pid=2824 parcial=False :: HB_EDAD_MIN=14.4 SEQ=3 KA_PID=2824 KA_INSTANCIAS=1 SSH_INVITADO=0
+[2026-11-10T22:10:55Z] chequeo ok=8 fallos=0 skip=0 :: HB_EDAD_MIN=0.8 SEQ=7 KA_PID=5772 KA_INSTANCIAS=1 SSH_INVITADO=0

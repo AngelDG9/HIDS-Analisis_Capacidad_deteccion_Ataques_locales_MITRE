@@ -56,3 +56,11 @@ wazuh-install-files/
 *.key
 id_rsa*
 id_ed25519*
+
+# Sink heartbeat: artefactos volatiles (no versionar)
+Soporte/Laboratorio/windows/legit/evidencia/heartbeat_sink.pid
+Soporte/Laboratorio/windows/legit/evidencia/heartbeat_sink.log
+Soporte/Laboratorio/windows/legit/evidencia/heartbeat_sink.stdout.log
+Soporte/Laboratorio/windows/legit/evidencia/heartbeat_sink.stderr.log
+Soporte/Laboratorio/windows/legit/evidencia/heartbeat_sink.stdin.log
+Soporte/Laboratorio/windows/legit/evidencia/heartbeat_sink_ctl.log

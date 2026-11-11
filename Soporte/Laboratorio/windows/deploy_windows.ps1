@@ -69,6 +69,10 @@ $TareaKa  = 'TFG-WinLegit-Keepalive'
 $Stage   = Join-Path $env:TEMP 'opencode\tfg-win-legit'
 $Payload = Join-Path $Stage 'payload'
 $Zip     = Join-Path $Stage 'payload.zip'
+# G-8: registro del ultimo despliegue aplicado (huella del payload + manifiesto +
+# huella de tareas). Un 2.o `apply` con el MISMO payload y el MISMO manifiesto NO
+# re-sube ni re-registra nada (solo aplica lo que falte).
+$DeployState = Join-Path $Win 'legit\evidencia\despliegue_actual.json'
 
 function Ts { (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ') }
 function Log([string]$m) { Write-Output "[$(Ts)] $m" }
@@ -179,41 +183,131 @@ function Get-Manifiesto {
   return (Invoke-Remote "powershell -NoProfile -ExecutionPolicy Bypass -File `"$RVerif`" -Manifiesto")
 }
 
+function Get-PayloadFingerprint {
+  # Huella del payload LOCAL (rutas relativas + sha256 de cada fichero). Sirve para
+  # decidir si un 2.o `apply` tiene algo nuevo que subir (G-8).
+  $items = @(Get-ChildItem -LiteralPath $Payload -Recurse -File -Force | Sort-Object FullName)
+  $lineas = @($items | ForEach-Object {
+      $rel = $_.FullName.Substring($Payload.Length).TrimStart('\', '/').ToLower()
+      $h = (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLower()
+      "$rel`t$h"
+    })
+  $txt = ($lineas -join "`n")
+  return [System.BitConverter]::ToString(
+    [System.Security.Cryptography.SHA256]::Create().ComputeHash(
+      [System.Text.Encoding]::UTF8.GetBytes($txt))).Replace('-', '').ToLower()
+}
+
+function Clear-ResiduosGuest {
+  # G-2: el snapshot/prep debe quedar sin residuos de campana. Solo se borran
+  # ficheros VOLATILES (fuera del manifiesto): client.out*, armado/stop.flag,
+  # instance\ y logs\ (los recrea el cliente/keepalive). `heartbeat.seq` NO se borra
+  # aqui: si el deploy ocurre en `arm`, el bucle debe continuar su `seq` (si no, el
+  # sink veria una bajada legitima como `ROTA_SEQ`). `prep` lo archiva antes.
+  $cmd = 'del /f /q "C:\Users\angel\ghosts-client\client.out" "C:\Users\angel\ghosts-client\client.out.1" ' +
+         '"C:\Users\angel\ghosts-client\armado.flag" "C:\Users\angel\ghosts-client\stop.flag" 2>nul & ' +
+         'if exist "C:\Users\angel\ghosts-client\instance" rd /s /q "C:\Users\angel\ghosts-client\instance" & ' +
+         'if exist "C:\Users\angel\ghosts-client\logs" rd /s /q "C:\Users\angel\ghosts-client\logs" & ' +
+         'echo LIMPIEZA_OK'
+  $out = Invoke-Remote $cmd -PermitirFallo
+  Log ("residuos invitado: " + (($out -replace '\s+', ' ').Trim()))
+}
+
 # --- fases -----------------------------------------------------------------
 Assert-Ssh
 
 switch ($Phase) {
 
   'apply' {
-    Log 'apply: parando actividad previa (si la hubiera)'
-    Detener-Actividad
-
+    # G-8: primero se construye el payload (sin tocar el invitado) para calcular su
+    # huella. Si coincide con la del ultimo despliegue Y el manifiesto del invitado
+    # es el mismo, no hay nada que hacer: NO se sube el payload ni se re-registran
+    # tareas (un 2.o `arm` es inocuo).
+    Log 'apply: construyendo payload (huella)'
     Build-Payload
-    Log 'apply: subiendo payload'
-    Copy-ToGuest (Join-Path $Guest 'preparar_invitado_windows.ps1') $RPrep
-    Copy-ToGuest $Zip $RZip
+    $fp = Get-PayloadFingerprint
+    $skip = $false
+    if (Test-Path $DeployState) {
+      try {
+        $st = Get-Content -Raw $DeployState | ConvertFrom-Json
+        if ($st.payload_sha256 -eq $fp -and $st.manifest_sha256) {
+          $manAct = Get-Manifiesto
+          $act = if ($manAct -match 'MANIFEST_SHA256=([0-9a-f]+)') { $Matches[1] } else { '' }
+          if ($act -and $act -eq $st.manifest_sha256) {
+            $skip = $true
+            Write-Output "DEPLOY_SKIP=1 payload_sha256=$fp manifest_sha256=$act"
+            Log 'apply: SKIP (payload y manifiesto ya desplegados; no se sube ni se re-registran tareas)'
+          }
+        }
+      } catch {
+        Log "apply: estado de despliegue ilegible ($($_.Exception.Message)); se despliega completo"
+      }
+    }
 
-    Log 'apply: preparando el invitado (carpetas, campana, errores.log, hosts, payload)'
-    $prep = Invoke-Remote "powershell -NoProfile -ExecutionPolicy Bypass -File `"$RPrep`" -PayloadZip `"$RZip`" -LimpiarCampana"
-    Write-Output $prep
-    if ($prep -notmatch 'RESULT=PASS') { throw 'preparar_invitado_windows.ps1 no devolvio RESULT=PASS' }
+    if (-not $skip) {
+      Log 'apply: parando actividad/keepalive previos'
+      Invoke-Remote "schtasks /end /tn $TareaKa" -PermitirFallo | Out-Null
+      Detener-Actividad
+      Clear-ResiduosGuest
 
-    Log 'apply: registrando tareas (actividad=angel/Interactive/Medium; keepalive=SYSTEM)'
-    $tareas = Invoke-Remote "powershell -NoProfile -ExecutionPolicy Bypass -File `"$RTareas`""
-    Write-Output $tareas
-    if ($tareas -notmatch 'TAREAS_FINGERPRINT=') { throw 'instalar_tareas_windows.ps1 no devolvio huella' }
+      Log 'apply: subiendo payload'
+      Copy-ToGuest (Join-Path $Guest 'preparar_invitado_windows.ps1') $RPrep
+      Copy-ToGuest $Zip $RZip
 
-    Log 'apply: primer ciclo del keepalive (guarda de WU y latido)'
-    $ka = Invoke-Remote "powershell -NoProfile -ExecutionPolicy Bypass -File `"$RKa`"" -PermitirFallo
-    Write-Output $ka
+      Log 'apply: preparando el invitado (carpetas, campana, errores.log, hosts, payload)'
+      $prep = Invoke-Remote "powershell -NoProfile -ExecutionPolicy Bypass -File `"$RPrep`" -PayloadZip `"$RZip`" -LimpiarCampana"
+      Write-Output $prep
+      if ($prep -notmatch 'RESULT=PASS') { throw 'preparar_invitado_windows.ps1 no devolvio RESULT=PASS' }
 
-    Log 'apply: verificando el invitado'
-    $ver = Invoke-Remote "powershell -NoProfile -ExecutionPolicy Bypass -File `"$RVerif`" -SinCampana" -PermitirFallo
-    Write-Output $ver
+      Log 'apply: registrando tareas (actividad=angel/Interactive/Medium; keepalive=SYSTEM)'
+      $tareas = Invoke-Remote "powershell -NoProfile -ExecutionPolicy Bypass -File `"$RTareas`""
+      Write-Output $tareas
+      if ($tareas -notmatch 'TAREAS_FINGERPRINT=') { throw 'instalar_tareas_windows.ps1 no devolvio huella' }
 
-    $man = Get-Manifiesto
-    Write-Output $man
-    Invoke-Remote 'del /f /q C:\Windows\Temp\preparar_invitado_windows.ps1' -PermitirFallo | Out-Null
+      # F-1: el UNICO emisor del latido es el bucle `-Loop`. `-Once` ya no emite
+      # (era el segundo escritor que rompia `seq`). Aqui se arranca la tarea del bucle.
+      # T2b-1b: puede quedar una instancia `-Once` de la tarea VIEJA (disparador de 5 min)
+      # que, con `MultipleInstances=IgnoreNew`, impide arrancar el `-Loop` ("currently
+      # running"). Se mata la instancia y se arranca el bucle; se verifica `Running`.
+      Log 'apply: arrancando el bucle keepalive (unico emisor del latido)'
+      Invoke-Remote "schtasks /end /tn $TareaKa" -PermitirFallo | Out-Null
+      Start-Sleep -Seconds 2
+      $ka = Invoke-Remote "schtasks /run /tn $TareaKa" -PermitirFallo
+      Start-Sleep -Seconds 6
+      $kaEstado = Invoke-Remote "schtasks /query /tn $TareaKa /fo LIST" -PermitirFallo
+      if ($kaEstado -notmatch '(?i)Status:\s*Running') {
+        Log 'apply: keepalive NO Running tras run; segundo intento'
+        Invoke-Remote "schtasks /end /tn $TareaKa" -PermitirFallo | Out-Null
+        Start-Sleep -Seconds 2
+        $ka = Invoke-Remote "schtasks /run /tn $TareaKa" -PermitirFallo
+        Start-Sleep -Seconds 6
+        $kaEstado = Invoke-Remote "schtasks /query /tn $TareaKa /fo LIST" -PermitirFallo
+      }
+      Write-Output $ka
+      Write-Output ("KEEPALIVE_ESTADO=" + (($kaEstado -replace '\s+', ' ').Trim()))
+
+      Log 'apply: verificando el invitado'
+      $ver = Invoke-Remote "powershell -NoProfile -ExecutionPolicy Bypass -File `"$RVerif`" -SinCampana" -PermitirFallo
+      Write-Output $ver
+
+      $man = Get-Manifiesto
+      Write-Output $man
+      Invoke-Remote 'del /f /q C:\Windows\Temp\preparar_invitado_windows.ps1' -PermitirFallo | Out-Null
+
+      $shaMan = if ($man -match 'MANIFEST_SHA256=([0-9a-f]+)') { $Matches[1] } else { '' }
+      $fpTar = if ($tareas -match 'TAREAS_FINGERPRINT=([0-9a-f]+)') { $Matches[1] } else { '' }
+      if ($shaMan) {
+        [ordered]@{
+          payload_sha256      = $fp
+          manifest_sha256     = $shaMan
+          tareas_fingerprint  = $fpTar
+          aplicado_utc        = (Ts)
+        } | ConvertTo-Json | Set-Content -Path $DeployState -Encoding utf8
+        Log "apply: estado de despliegue guardado (payload=$fp manifest=$shaMan)"
+      } else {
+        Log 'apply AVISO: el invitado no devolvio MANIFEST_SHA256; no se guarda el estado (2.o apply no podra saltar)'
+      }
+    }
 
     if (-not $MantenerStaging) { Remove-Item -LiteralPath $Stage -Recurse -Force -ErrorAction SilentlyContinue }
     Log 'apply: FIN'

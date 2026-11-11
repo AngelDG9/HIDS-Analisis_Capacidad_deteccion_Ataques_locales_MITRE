@@ -118,3 +118,218 @@ DRYTEST FASE=status
   G-W12 OK ram_libre_mb=11112 min=1500 wu=Stopped/Manual
 DRYTEST status PASS_CON_SKIP (ok=5 fallos=0 skip=7)
 DRYTEST_RESULT=PASS
+=== DRYTEST 2026-11-10T20:17:43Z host=DESKTOP-OIOLOPO vm_windows=off fases=prep,arm,watch,stop,cleanup,status ===
+DRYTEST FASE=prep
+  G-W1 OK TFG-Baseline-* activas=0 (total=0)
+  G-W2 OK snapshots=7 (incluye lab-listo-windows-legit)
+  G-W3 OK D_libre_gb=673.4 min=60
+  G-W4 OK check=True espejo=True sha=05dbf6b001c4/bc65250f0206/8ed8fa16ccb9
+  G-W5 SKIP VM apagada (no evaluable)
+  G-W6 SKIP VM apagada (no evaluable)
+  G-W7 SKIP sin TFG_MANAGER_PW (D6: el fallback a TFG_GUEST_PW no sirve para el manager)
+  G-W9 SKIP VM apagada (no evaluable)
+  G-W10 SKIP VM apagada (no evaluable)
+  G-W12 OK ram_libre_mb=9403 min=1500 wu=Stopped/Manual
+DRYTEST prep PASS_CON_SKIP (ok=5 fallos=0 skip=5)
+DRYTEST FASE=arm
+  G-W1 OK TFG-Baseline-* activas=0 (total=0)
+  G-W2 OK snapshots=7 (incluye lab-listo-windows-legit)
+  G-W4 OK check=True espejo=True sha=05dbf6b001c4/bc65250f0206/8ed8fa16ccb9
+  G-W5 SKIP VM apagada (no evaluable)
+  G-W6 SKIP VM apagada (no evaluable)
+  G-W7 SKIP sin TFG_MANAGER_PW (D6: el fallback a TFG_GUEST_PW no sirve para el manager)
+  G-W9 SKIP VM apagada (no evaluable)
+  G-W10 SKIP VM apagada (no evaluable)
+  G-W11 SKIP VM apagada (no evaluable)
+  G-W12 OK ram_libre_mb=9403 min=1500 wu=Stopped/Manual
+DRYTEST arm PASS_CON_SKIP (ok=4 fallos=0 skip=6)
+DRYTEST FASE=watch
+  G-W5 SKIP latido: sin D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\windows\legit\evidencia\heartbeat.jsonl
+  G-W7 SKIP sin TFG_MANAGER_PW (D6: el fallback a TFG_GUEST_PW no sirve para el manager)
+  G-W8 SKIP latido: sin D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\windows\legit\evidencia\heartbeat.jsonl
+  G-W9 SKIP latido: sin D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\windows\legit\evidencia\heartbeat.jsonl
+  G-W10 SKIP latido: sin D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\windows\legit\evidencia\heartbeat.jsonl
+  G-W11 SKIP latido: sin D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\windows\legit\evidencia\heartbeat.jsonl
+  G-W12 OK ram_libre_mb=9425 min=1500 wu=Stopped/Manual
+  G-W13 SKIP VM apagada (no evaluable)
+  SSH_INVITADO=0
+DRYTEST watch PASS_CON_SKIP (ok=1 fallos=0 skip=7)
+DRYTEST FASE=stop
+  G-W5 SKIP VM apagada (no evaluable)
+  G-W10 SKIP VM apagada (no evaluable)
+DRYTEST stop PASS_CON_SKIP (ok=0 fallos=0 skip=2)
+DRYTEST FASE=cleanup
+  G-W1 OK TFG-Baseline-* activas=0 (total=0)
+  G-W2 OK snapshots=7 (incluye lab-listo-windows-legit)
+  G-W3 OK D_libre_gb=673.4 min=60
+  G-W7 SKIP sin TFG_MANAGER_PW (D6: el fallback a TFG_GUEST_PW no sirve para el manager)
+  G-W12 OK ram_libre_mb=9416 min=1500 wu=Stopped/Manual
+DRYTEST cleanup PASS_CON_SKIP (ok=4 fallos=0 skip=1)
+DRYTEST FASE=status
+  G-W1 OK TFG-Baseline-* activas=0 (total=0)
+  G-W2 OK snapshots=7 (incluye lab-listo-windows-legit)
+  G-W3 OK D_libre_gb=673.4 min=60
+  G-W4 OK check=True espejo=True sha=05dbf6b001c4/bc65250f0206/8ed8fa16ccb9
+  G-W5 SKIP VM apagada (no evaluable)
+  G-W6 SKIP VM apagada (no evaluable)
+  G-W7 SKIP sin TFG_MANAGER_PW (D6: el fallback a TFG_GUEST_PW no sirve para el manager)
+  G-W8 SKIP VM apagada (no evaluable)
+  G-W9 SKIP VM apagada (no evaluable)
+  G-W10 SKIP VM apagada (no evaluable)
+  G-W11 SKIP VM apagada (no evaluable)
+  G-W12 OK ram_libre_mb=9408 min=1500 wu=Stopped/Manual
+  G-W13 SKIP VM apagada (no evaluable)
+DRYTEST status PASS_CON_SKIP (ok=5 fallos=0 skip=8)
+DRYTEST_RESULT=PASS
+=== DRYTEST 2026-11-10T20:26:31Z host=DESKTOP-OIOLOPO vm_windows=on fases=prep,arm,watch,stop,cleanup,status ===
+DRYTEST FASE=prep
+  G-W1 OK TFG-Baseline-* activas=0 (total=0)
+  G-W2 OK snapshots=7 (incluye lab-listo-windows-legit)
+  G-W3 OK D_libre_gb=669.6 min=60
+  G-W4 OK check=True espejo=True sha=05dbf6b001c4/bc65250f0206/8ed8fa16ccb9
+  G-W5 SKIP servicios_invitado=True; manager=SKIP (sin TFG_MANAGER_PW (D6: el fallback a TFG_GUEST_PW no sirve para el manager))
+  G-W6 OK hosts=True sin_ruta_defecto=True (Get-NetRoute=0) victima_linux_off=True
+  G-W7 SKIP sin TFG_MANAGER_PW (D6: el fallback a TFG_GUEST_PW no sirve para el manager)
+  G-W9 OK powercfg 3/3 = True
+  G-W10 OK disco_invitado_mb=21304 min=4096 (keepalive exige 500)
+  G-W12 OK ram_libre_mb=5284 min=1500 wu=Stopped/Manual
+DRYTEST prep PASS_CON_SKIP (ok=8 fallos=0 skip=2)
+DRYTEST FASE=arm
+  G-W1 OK TFG-Baseline-* activas=0 (total=0)
+  G-W2 OK snapshots=7 (incluye lab-listo-windows-legit)
+  G-W4 OK check=True espejo=True sha=05dbf6b001c4/bc65250f0206/8ed8fa16ccb9
+  G-W5 SKIP servicios_invitado=True; manager=SKIP (sin TFG_MANAGER_PW (D6: el fallback a TFG_GUEST_PW no sirve para el manager))
+  G-W6 OK hosts=True sin_ruta_defecto=True (Get-NetRoute=0) victima_linux_off=True
+  G-W7 SKIP sin TFG_MANAGER_PW (D6: el fallback a TFG_GUEST_PW no sirve para el manager)
+  G-W9 OK powercfg 3/3 = True
+  G-W10 OK disco_invitado_mb=21303 min=4096 (keepalive exige 500)
+  G-W11 SKIP sin armado.flag (fuera de ventana)
+  G-W12 OK ram_libre_mb=5163 min=1500 wu=Stopped/Manual
+DRYTEST arm PASS_CON_SKIP (ok=7 fallos=0 skip=3)
+DRYTEST FASE=watch
+  G-W5 SKIP servicios_latido=True; manager=SKIP (sin TFG_MANAGER_PW (D6: el fallback a TFG_GUEST_PW no sirve para el manager))
+  G-W7 SKIP sin TFG_MANAGER_PW (D6: el fallback a TFG_GUEST_PW no sirve para el manager)
+  G-W8 OK hijos_vmtoolsd=0 (latido)
+  G-W9 OK powercfg_ok=True (latido)
+  G-W10 OK disco_invitado_mb=21304 min=4096 (latido; keepalive exige 500)
+  G-W11 SKIP sin armado (latido)
+  G-W12 OK ram_libre_mb=5161 min=1500 wu=Stopped/Manual
+  G-W13 OK HB_EDAD_MIN=1.9 max=12 seq_monotono=True ka_instancias=1 seq=3 ka_pid=2824 parcial=False
+  SSH_INVITADO=0
+DRYTEST watch PASS_CON_SKIP (ok=5 fallos=0 skip=3)
+DRYTEST FASE=stop
+  G-W5 SKIP servicios_invitado=True; manager=SKIP (sin TFG_MANAGER_PW (D6: el fallback a TFG_GUEST_PW no sirve para el manager))
+  G-W10 OK disco_invitado_mb=21303 min=4096 (keepalive exige 500)
+DRYTEST stop PASS_CON_SKIP (ok=1 fallos=0 skip=1)
+DRYTEST FASE=cleanup
+  G-W1 OK TFG-Baseline-* activas=0 (total=0)
+  G-W2 OK snapshots=7 (incluye lab-listo-windows-legit)
+  G-W3 OK D_libre_gb=669.6 min=60
+  G-W7 SKIP sin TFG_MANAGER_PW (D6: el fallback a TFG_GUEST_PW no sirve para el manager)
+  G-W12 OK ram_libre_mb=5235 min=1500 wu=Stopped/Manual
+DRYTEST cleanup PASS_CON_SKIP (ok=4 fallos=0 skip=1)
+DRYTEST FASE=status
+  G-W1 OK TFG-Baseline-* activas=0 (total=0)
+  G-W2 OK snapshots=7 (incluye lab-listo-windows-legit)
+  G-W3 OK D_libre_gb=669.6 min=60
+  G-W4 OK check=True espejo=True sha=05dbf6b001c4/bc65250f0206/8ed8fa16ccb9
+  G-W5 SKIP servicios_invitado=True; manager=SKIP (sin TFG_MANAGER_PW (D6: el fallback a TFG_GUEST_PW no sirve para el manager))
+  G-W6 OK hosts=True sin_ruta_defecto=True (Get-NetRoute=0) victima_linux_off=True
+  G-W7 SKIP sin TFG_MANAGER_PW (D6: el fallback a TFG_GUEST_PW no sirve para el manager)
+  G-W8 OK hijos_vmtoolsd=0 (0 = sin acceso del operador)
+  G-W9 OK powercfg 3/3 = True
+  G-W10 OK disco_invitado_mb=21303 min=4096 (keepalive exige 500)
+  G-W11 SKIP sin armado.flag (fuera de ventana)
+  G-W12 OK ram_libre_mb=5237 min=1500 wu=Stopped/Manual
+  G-W13 OK HB_EDAD_MIN=2.3 max=12 seq_monotono=True ka_instancias=1 seq=3 ka_pid=2824 parcial=False
+DRYTEST status PASS_CON_SKIP (ok=10 fallos=0 skip=3)
+DRYTEST_RESULT=PASS
+=== DRYTEST 2026-11-10T20:51:44Z host=DESKTOP-OIOLOPO vm_windows=off fases=prep,arm,watch,stop,cleanup,status ===
+DRYTEST FASE=prep
+  G-W1 OK TFG-Baseline-* activas=0 (total=0)
+  G-W2 OK snapshots=7 (incluye lab-listo-windows-legit)
+  G-W3 OK D_libre_gb=673.9 min=60
+  G-W4 OK check=True espejo=True sha=05dbf6b001c4/bc65250f0206/8ed8fa16ccb9
+  G-W5 SKIP VM apagada (no evaluable)
+  G-W6 SKIP VM apagada (no evaluable)
+  G-W7 SKIP sin TFG_MANAGER_PW (D6: el fallback a TFG_GUEST_PW no sirve para el manager)
+  G-W9 SKIP VM apagada (no evaluable)
+  G-W10 SKIP VM apagada (no evaluable)
+  G-W12 OK ram_libre_mb=10812 min=1500 wu=Stopped/Manual
+DRYTEST prep PASS_CON_SKIP (ok=5 fallos=0 skip=5)
+DRYTEST FASE=arm
+  G-W1 OK TFG-Baseline-* activas=0 (total=0)
+  G-W2 OK snapshots=7 (incluye lab-listo-windows-legit)
+  G-W4 OK check=True espejo=True sha=05dbf6b001c4/bc65250f0206/8ed8fa16ccb9
+  G-W5 SKIP VM apagada (no evaluable)
+  G-W6 SKIP VM apagada (no evaluable)
+  G-W9 SKIP VM apagada (no evaluable)
+  G-W10 SKIP VM apagada (no evaluable)
+  G-W11 SKIP VM apagada (no evaluable)
+  G-W12 OK ram_libre_mb=10802 min=1500 wu=Stopped/Manual
+DRYTEST arm PASS_CON_SKIP (ok=4 fallos=0 skip=5)
+DRYTEST FASE=watch
+  G-W5 SKIP latido: sin D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\windows\legit\evidencia\heartbeat.jsonl
+  G-W7 SKIP sin TFG_MANAGER_PW (D6: el fallback a TFG_GUEST_PW no sirve para el manager)
+  G-W8 SKIP latido: sin D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\windows\legit\evidencia\heartbeat.jsonl
+  G-W9 SKIP latido: sin D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\windows\legit\evidencia\heartbeat.jsonl
+  G-W10 SKIP latido: sin D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\windows\legit\evidencia\heartbeat.jsonl
+  G-W11 SKIP latido: sin D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\windows\legit\evidencia\heartbeat.jsonl
+  G-W12 OK ram_libre_mb=10807 min=1500 wu=Stopped/Manual
+  G-W13 SKIP VM apagada (no evaluable)
+  SSH_INVITADO=0
+DRYTEST watch PASS_CON_SKIP (ok=1 fallos=0 skip=7)
+DRYTEST FASE=stop
+  G-W5 SKIP VM apagada (no evaluable)
+  G-W10 SKIP VM apagada (no evaluable)
+DRYTEST stop PASS_CON_SKIP (ok=0 fallos=0 skip=2)
+DRYTEST FASE=cleanup
+  G-W1 OK TFG-Baseline-* activas=0 (total=0)
+  G-W2 OK snapshots=7 (incluye lab-listo-windows-legit)
+  G-W3 OK D_libre_gb=673.9 min=60
+  G-W7 SKIP sin TFG_MANAGER_PW (D6: el fallback a TFG_GUEST_PW no sirve para el manager)
+  G-W12 OK ram_libre_mb=10810 min=1500 wu=Stopped/Manual
+DRYTEST cleanup PASS_CON_SKIP (ok=4 fallos=0 skip=1)
+DRYTEST FASE=status
+  G-W1 OK TFG-Baseline-* activas=0 (total=0)
+  G-W2 OK snapshots=7 (incluye lab-listo-windows-legit)
+  G-W3 OK D_libre_gb=673.9 min=60
+  G-W4 OK check=True espejo=True sha=05dbf6b001c4/bc65250f0206/8ed8fa16ccb9
+  G-W5 SKIP VM apagada (no evaluable)
+  G-W6 SKIP VM apagada (no evaluable)
+  G-W7 SKIP sin TFG_MANAGER_PW (D6: el fallback a TFG_GUEST_PW no sirve para el manager)
+  G-W8 SKIP VM apagada (no evaluable)
+  G-W9 SKIP VM apagada (no evaluable)
+  G-W10 SKIP VM apagada (no evaluable)
+  G-W11 SKIP VM apagada (no evaluable)
+  G-W12 OK ram_libre_mb=10817 min=1500 wu=Stopped/Manual
+  G-W13 SKIP VM apagada (no evaluable)
+DRYTEST status PASS_CON_SKIP (ok=5 fallos=0 skip=8)
+DRYTEST_RESULT=PASS
+=== DRYTEST 2026-11-10T21:52:26Z host=DESKTOP-OIOLOPO vm_windows=on fases=prep ===
+DRYTEST FASE=prep
+  G-W1 OK TFG-Baseline-* activas=0 (total=0)
+  G-W2 OK snapshots=7 (incluye lab-listo-windows-legit)
+  G-W3 OK D_libre_gb=663.4 min=60
+  G-W4 OK check=True espejo=True sha=05dbf6b001c4/bc65250f0206/8ed8fa16ccb9
+  G-W5 OK servicios_invitado=True manager_active=True daemons=2 agente_002=Active
+  G-W6 OK hosts=True sin_ruta_defecto=True (Get-NetRoute=0) victima_linux_off=True
+  G-W7 SKIP sin -T0/-T1 ni ventana_actual.json (no evaluable); logall_json=no
+  G-W9 OK powercfg 3/3 = True
+  G-W10 OK disco_invitado_mb=21266 min=4096 (keepalive exige 500)
+  G-W12 OK ram_libre_mb=1829 min=1500 wu=Stopped/Manual
+DRYTEST prep PASS_CON_SKIP (ok=9 fallos=0 skip=1)
+DRYTEST_RESULT=PASS
+=== DRYTEST 2026-11-10T22:11:01Z host=DESKTOP-OIOLOPO vm_windows=on fases=watch ===
+DRYTEST FASE=watch
+  G-W5 OK servicios_latido=True manager_active=True daemons=2 agente_002=Active
+  G-W7 OK logall_json=yes (now dentro de [t0,t1] exige yes; fuente=ventana_actual.json)
+  G-W8 OK hijos_vmtoolsd=0 (latido)
+  G-W9 OK powercfg_ok=True (latido)
+  G-W10 OK disco_invitado_mb=21265 min=4096 (latido; keepalive exige 500)
+  G-W11 OK n_ghosts=1 (latido) win_user=DESKTOP-BTMCFA5\angel dueno_angel=True
+  G-W12 OK ram_libre_mb=1272 min=1000 wu=Stopped/Manual
+  G-W13 OK HB_EDAD_MIN=0.9 max=12 seq_monotono=True ka_instancias=1 seq=7 ka_pid=5772 parcial=False
+  SSH_INVITADO=0
+DRYTEST watch PASS (ok=8 fallos=0 skip=0)
+DRYTEST_RESULT=PASS
