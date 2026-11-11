@@ -1,0 +1,6 @@
+# canary de reportabilidad (C5, en seco — sin VM)
+timeline=D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\windows\legit\evidencia\canary_windows\timeline_canary.json
+plantillas=22
+positivo: enviados=22 reportados=22 faltan=0 RESULT=PASS
+negativo (sin powershell): enviados=22 reportados=21 faltan=1 RESULT=FAIL
+  FALTA powershell: cd /d C:\lab-legit\canary && powershell -NoProfile -Command "Write-Output CANARY-07"

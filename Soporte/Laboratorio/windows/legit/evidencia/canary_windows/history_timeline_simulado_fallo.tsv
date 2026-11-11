@@ -1,0 +1,22 @@
+id	createdutc	handler	command
+cmd_simple	2026-11-11T00:00:00Z	Command	cd /d C:\lab-legit\canary && cmd /c echo CANARY-01
+redir_out	2026-11-11T00:00:01Z	Command	cd /d C:\lab-legit\canary && echo CANARY-02 > C:\lab-legit\canary\canary_02.txt
+redir_append	2026-11-11T00:00:02Z	Command	cd /d C:\lab-legit\canary && echo CANARY-03 >> C:\lab-legit\canary\canary_02.txt
+and_and	2026-11-11T00:00:03Z	Command	cd /d C:\lab-legit\canary && echo CANARY-04 && echo CANARY-04b
+if_errorlevel	2026-11-11T00:00:04Z	Command	cd /d C:\lab-legit\canary && dir C:\lab-legit\canary\noexiste >nul 2>&1 & if errorlevel 1 (>> C:\lab-legit\canary\errores.log echo CANARY-05)
+for_L	2026-11-11T00:00:05Z	Command	cd /d C:\lab-legit\canary && for /L %i in (1,1,3) do @echo CANARY-06-%i
+powershell_var	2026-11-11T00:00:06Z	Command	cd /d C:\lab-legit\canary && powershell -NoProfile -Command "$c = Get-Content -LiteralPath 'C:\lab-legit\canary\canary_02.txt'; Set-Content -LiteralPath 'C:\lab-legit\canary\canary_08.txt' -Value $c"
+eventcreate	2026-11-11T00:00:07Z	Command	cd /d C:\lab-legit\canary && eventcreate /T INFORMATION /ID 100 /L APPLICATION /SO canary /D "canary 09"
+robocopy	2026-11-11T00:00:08Z	Command	cd /d C:\lab-legit\canary && robocopy . copia canary_02.txt /NJH /NJS /NP
+curl	2026-11-11T00:00:09Z	Command	cd /d C:\lab-legit\canary && curl.exe -sS --max-time 5 --version > C:\lab-legit\canary\canary_10.txt
+certutil	2026-11-11T00:00:10Z	Command	cd /d C:\lab-legit\canary && certutil -hashfile C:\lab-legit\canary\canary_02.txt SHA256 > C:\lab-legit\canary\canary_11.sha256 2>&1
+type	2026-11-11T00:00:11Z	Command	cd /d C:\lab-legit\canary && type C:\lab-legit\canary\canary_11.sha256
+copy	2026-11-11T00:00:12Z	Command	cd /d C:\lab-legit\canary && copy /y C:\lab-legit\canary\canary_02.txt C:\lab-legit\canary\canary_13.txt
+del	2026-11-11T00:00:13Z	Command	cd /d C:\lab-legit\canary && del /f /q C:\lab-legit\canary\canary_13.txt
+md	2026-11-11T00:00:14Z	Command	cd /d C:\lab-legit\canary && md C:\lab-legit\canary\canary_dir
+rd	2026-11-11T00:00:15Z	Command	cd /d C:\lab-legit\canary && rd /s /q C:\lab-legit\canary\canary_dir
+start	2026-11-11T00:00:16Z	Command	cd /d C:\lab-legit\canary && start /b cmd /c echo CANARY-18
+find	2026-11-11T00:00:17Z	Command	cd /d C:\lab-legit\canary && find /c "CANARY" C:\lab-legit\canary\canary_02.txt
+findstr	2026-11-11T00:00:18Z	Command	cd /d C:\lab-legit\canary && findstr /c:"CANARY" C:\lab-legit\canary\canary_02.txt
+more	2026-11-11T00:00:19Z	Command	cd /d C:\lab-legit\canary && more +0 C:\lab-legit\canary\canary_02.txt
+tar	2026-11-11T00:00:20Z	Command	cd /d C:\lab-legit\canary && tar -czf C:\lab-legit\canary\canary_22.tar.gz -C C:\lab-legit\canary canary_02.txt

@@ -1,0 +1,112 @@
+[
+ {
+  "id": "cmd_simple",
+  "forma": "cmd /c",
+  "comando": "cd /d C:\\lab-legit\\canary && cmd /c echo CANARY-01"
+ },
+ {
+  "id": "redir_out",
+  "forma": "redirección >",
+  "comando": "cd /d C:\\lab-legit\\canary && echo CANARY-02 > C:\\lab-legit\\canary\\canary_02.txt"
+ },
+ {
+  "id": "redir_append",
+  "forma": "redirección >>",
+  "comando": "cd /d C:\\lab-legit\\canary && echo CANARY-03 >> C:\\lab-legit\\canary\\canary_02.txt"
+ },
+ {
+  "id": "and_and",
+  "forma": "encadenado &&",
+  "comando": "cd /d C:\\lab-legit\\canary && echo CANARY-04 && echo CANARY-04b"
+ },
+ {
+  "id": "if_errorlevel",
+  "forma": "if errorlevel",
+  "comando": "cd /d C:\\lab-legit\\canary && dir C:\\lab-legit\\canary\\noexiste >nul 2>&1 & if errorlevel 1 (>> C:\\lab-legit\\canary\\errores.log echo CANARY-05)"
+ },
+ {
+  "id": "for_L",
+  "forma": "for /L",
+  "comando": "cd /d C:\\lab-legit\\canary && for /L %i in (1,1,3) do @echo CANARY-06-%i"
+ },
+ {
+  "id": "powershell",
+  "forma": "PowerShell simple",
+  "comando": "cd /d C:\\lab-legit\\canary && powershell -NoProfile -Command \"Write-Output CANARY-07\""
+ },
+ {
+  "id": "powershell_var",
+  "forma": "PowerShell con variable y comillas",
+  "comando": "cd /d C:\\lab-legit\\canary && powershell -NoProfile -Command \"$c = Get-Content -LiteralPath 'C:\\lab-legit\\canary\\canary_02.txt'; Set-Content -LiteralPath 'C:\\lab-legit\\canary\\canary_08.txt' -Value $c\""
+ },
+ {
+  "id": "eventcreate",
+  "forma": "eventcreate",
+  "comando": "cd /d C:\\lab-legit\\canary && eventcreate /T INFORMATION /ID 100 /L APPLICATION /SO canary /D \"canary 09\""
+ },
+ {
+  "id": "robocopy",
+  "forma": "robocopy",
+  "comando": "cd /d C:\\lab-legit\\canary && robocopy . copia canary_02.txt /NJH /NJS /NP"
+ },
+ {
+  "id": "curl",
+  "forma": "curl.exe",
+  "comando": "cd /d C:\\lab-legit\\canary && curl.exe -sS --max-time 5 --version > C:\\lab-legit\\canary\\canary_10.txt"
+ },
+ {
+  "id": "certutil",
+  "forma": "certutil > huella",
+  "comando": "cd /d C:\\lab-legit\\canary && certutil -hashfile C:\\lab-legit\\canary\\canary_02.txt SHA256 > C:\\lab-legit\\canary\\canary_11.sha256 2>&1"
+ },
+ {
+  "id": "type",
+  "forma": "type de huella",
+  "comando": "cd /d C:\\lab-legit\\canary && type C:\\lab-legit\\canary\\canary_11.sha256"
+ },
+ {
+  "id": "copy",
+  "forma": "copy",
+  "comando": "cd /d C:\\lab-legit\\canary && copy /y C:\\lab-legit\\canary\\canary_02.txt C:\\lab-legit\\canary\\canary_13.txt"
+ },
+ {
+  "id": "del",
+  "forma": "del",
+  "comando": "cd /d C:\\lab-legit\\canary && del /f /q C:\\lab-legit\\canary\\canary_13.txt"
+ },
+ {
+  "id": "md",
+  "forma": "md",
+  "comando": "cd /d C:\\lab-legit\\canary && md C:\\lab-legit\\canary\\canary_dir"
+ },
+ {
+  "id": "rd",
+  "forma": "rd",
+  "comando": "cd /d C:\\lab-legit\\canary && rd /s /q C:\\lab-legit\\canary\\canary_dir"
+ },
+ {
+  "id": "start",
+  "forma": "start",
+  "comando": "cd /d C:\\lab-legit\\canary && start /b cmd /c echo CANARY-18"
+ },
+ {
+  "id": "find",
+  "forma": "find /c",
+  "comando": "cd /d C:\\lab-legit\\canary && find /c \"CANARY\" C:\\lab-legit\\canary\\canary_02.txt"
+ },
+ {
+  "id": "findstr",
+  "forma": "findstr",
+  "comando": "cd /d C:\\lab-legit\\canary && findstr /c:\"CANARY\" C:\\lab-legit\\canary\\canary_02.txt"
+ },
+ {
+  "id": "more",
+  "forma": "more",
+  "comando": "cd /d C:\\lab-legit\\canary && more +0 C:\\lab-legit\\canary\\canary_02.txt"
+ },
+ {
+  "id": "tar",
+  "forma": "tar",
+  "comando": "cd /d C:\\lab-legit\\canary && tar -czf C:\\lab-legit\\canary\\canary_22.tar.gz -C C:\\lab-legit\\canary canary_02.txt"
+ }
+]

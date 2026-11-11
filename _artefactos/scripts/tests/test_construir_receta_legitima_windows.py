@@ -18,6 +18,7 @@ Los tests no escriben en el repositorio: generan en `tmp_path`.
 
 import json
 import re
+import shutil
 import sys
 from pathlib import Path
 
@@ -138,6 +139,17 @@ def test_sin_aleatoriedad_ni_mutantes_ni_evasion(generado):
             assert "^" not in cmd
             for pat in W.MUTANTES:
                 assert not re.search(pat, cmd, re.I), (pat, cmd)
+
+
+def test_comillas_compensadas(generado):
+    """Divergencia declarada: Windows **necesita** comillas (PowerShell/curl/findstr)."""
+    con_comillas = 0
+    for day in (1, 2, 3):
+        for cmd in _comandos(generado / f"w{day}.json"):
+            assert cmd.count('"') % 2 == 0, cmd
+            if '"' in cmd:
+                con_comillas += 1
+    assert con_comillas > 0, "Windows debería usar comillas en las plantillas declaradas"
 
 
 def test_cwd_realista_y_sin_rutas_linux(generado):
@@ -297,3 +309,86 @@ def test_mapa_de_dias_con_t0(tmp_path):
     assert res["fallos"] == []
     cal = json.loads((out / "calendario_windows.json").read_text(encoding="utf-8"))
     assert cal["mapa_dias"] == {"2026-11-09": 1, "2026-11-10": 2, "2026-11-11": 3}
+
+
+# --------------------------------------------------------------------------
+# 7 · L-1 en Windows (D-09) y lista blanca de binarios (D-10)
+# --------------------------------------------------------------------------
+def _copia(generado, tmp_path, nombre):
+    copia = tmp_path / nombre
+    copia.mkdir()
+    for p in generado.iterdir():
+        (copia / p.name).write_bytes(p.read_bytes())
+    return copia
+
+
+def test_l1_detecta_un_type_sin_certutil_previo(generado, tmp_path):
+    """Quitar el `>` de la huella deja un `type` que lee un fichero que nadie escribe."""
+    copia = _copia(generado, tmp_path, "sin_huella")
+    p = copia / "w1.json"
+    tl = json.loads(p.read_text(encoding="utf-8"))
+    mutado = False
+    for h in tl["TimeLineHandlers"]:
+        for ev in h["TimeLineEvents"]:
+            cmd = ev["Command"]
+            if "certutil" in cmd and ".sha256" in cmd and " > " in cmd:
+                ev["Command"] = re.sub(
+                    r"\s*>\s*\S+\.sha256(?:\s+2>&1)?", "", cmd)
+                mutado = True
+                break
+        if mutado:
+            break
+    assert mutado, "no se encontró una huella escrita con `>`"
+    p.write_text(json.dumps(tl, indent=1, ensure_ascii=False), encoding="utf-8")
+    res = W.validar(str(copia), verbose=False)
+    assert any("L-1" in f for f in res["fallos"]), res["fallos"]
+
+
+def _timeline_l1(eventos):
+    hs = []
+    for i, b in enumerate(L.BLOQUES_TRABAJO):
+        hs.append({"HandlerType": "Command", "Initial": "",
+                   "UtcTimeOn": b["on"], "UtcTimeOff": b["off"], "Loop": True,
+                   "HandlerArgs": {}, "TimeLineEvents": eventos if i == 0 else []})
+    hs.append({"HandlerType": "Command", "Initial": "", "UtcTimeOn": "17:05:00",
+               "UtcTimeOff": "17:50:00", "Loop": True, "HandlerArgs": {},
+               "TimeLineEvents": []})
+    return {"Status": "Run", "TimeLineHandlers": hs}
+
+
+def test_l1_auditor_exige_orden_escritura_lectura():
+    # Primero se lee y **después** se escribe: es una violación de L-1.
+    eventos = [
+        {"Command": r"cd /d C:\Users\angel && type C:\Users\angel\x.sha256",
+         "DelayAfter": 1000},
+        {"Command": r"cd /d C:\Users\angel && certutil -hashfile "
+                    r"C:\Users\angel\x.txt SHA256 > C:\Users\angel\x.sha256 2>&1",
+         "DelayAfter": 1000},
+    ]
+    fallos = W.auditar_huellas_escritas({1: _timeline_l1(eventos)})
+    assert any("L-1" in f for f in fallos), fallos
+    # En el orden correcto no hay fallo.
+    assert W.auditar_huellas_escritas({1: _timeline_l1(list(reversed(eventos)))}) == []
+
+
+def test_binario_no_declarado_falla():
+    fallos = W.validar_comando(r"cd /d C:\Users\angel && whoami2.exe")
+    assert any("binario no permitido" in f for f in fallos), fallos
+
+
+def test_todos_los_binarios_de_la_receta_estan_en_la_lista_blanca(generado):
+    import cobertura_herramientas_windows as CH
+    for day in (1, 2, 3):
+        for cmd in _comandos(generado / f"w{day}.json"):
+            assert set(CH.binarios_de(cmd)) <= W.BINARIOS_W, cmd
+
+
+def test_validar_detecta_un_binario_no_declarado(generado, tmp_path):
+    copia = _copia(generado, tmp_path, "binario")
+    p = copia / "w1.json"
+    tl = json.loads(p.read_text(encoding="utf-8"))
+    ev = tl["TimeLineHandlers"][0]["TimeLineEvents"][0]
+    ev["Command"] = re.sub(r"^(cd /d [^&]+ && )", r"\1whoami2.exe && ", ev["Command"])
+    p.write_text(json.dumps(tl, indent=1, ensure_ascii=False), encoding="utf-8")
+    res = W.validar(str(copia), verbose=False)
+    assert any("binario no permitido" in f for f in res["fallos"]), res["fallos"]

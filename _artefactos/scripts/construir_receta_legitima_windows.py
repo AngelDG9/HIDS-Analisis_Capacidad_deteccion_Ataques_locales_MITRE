@@ -107,6 +107,29 @@ RE_ERRLOG = re.compile(
     r">> (?P<log>\S*errores\.log) echo (?P<ts>%DATE%_%TIME%)"
     r"\t(?P<tipo>error|reintento)\t(?P<fam>[a-z_]+)\t(?P<cmd>.+?)\t(?P<rc>rc=[a-z0-9]+)")
 
+#: L-1 en Windows (D-09, espejo de `construir_receta_legitima.py:1201-1205`):
+#: una huella **se escribe** con `>`/`>>` en su fichero…
+_RE_HUELLA_W = (rf"(?:{re.escape(HOME_W)}|{re.escape(BASE_CAMP_W)})"
+                rf"[^\s;&|]+\.(?:sha256|md5|sha1)")
+RE_ESCRITURA_HUELLA_W = re.compile(rf">>?\s*({_RE_HUELLA_W})(?=\s|$)", re.I)
+#: …y solo entonces se puede **leer** con `type`.
+RE_LECTURA_HUELLA_W = re.compile(rf"\btype\s+({_RE_HUELLA_W})(?=\s|$|;)", re.I)
+
+#: Lista blanca de **herramientas externas** de Windows (D-10), espejo de
+#: `construir_receta_legitima.BINARIOS_OK`. Es la **unión** de las que ejecutan la
+#: receta y la campaña, extraída con `cobertura_herramientas_windows.binarios_de`
+#: (mismo parser que el contador de cobertura, para que no discrepen). No incluye
+#: builtins de `cmd` (`dir`, `type`, `copy`, `del`, `md`, `rd`, `echo`, `for`, `if`…)
+#: ni el propio shell `cmd` (el handler ya lo pone). Una herramienta nueva debe
+#: declararse aquí antes de usarse: `--check` falla si no está.
+BINARIOS_W = {
+    # jornada
+    "certutil", "curl", "find", "more", "powershell", "systeminfo", "tar",
+    # campaña (B6)
+    "eventcreate", "findstr", "ipconfig", "reg", "robocopy", "route", "sc",
+    "schtasks", "tasklist",
+}
+
 #: Verbos de mutación de sistema prohibidos en toda la receta (CA-W3 / plan §D2).
 MUTANTES = (
     r"\bschtasks\s+/(create|delete|change)\b",
@@ -1219,6 +1242,38 @@ def generar(outdir: str, raiz: str = ".", mapa=None, verbose=True):
 
 
 # --------------------------------------------------------------------------
+# L-1 en Windows (D-09): toda huella que se lee se ha escrito antes
+# --------------------------------------------------------------------------
+def auditar_huellas_escritas(datos):
+    """L-1: ningún `type X.sha256` puede leer una huella que nadie ha escrito.
+
+    Espejo de `construir_receta_legitima.auditar_huellas_escritas`: se recorre cada día
+    en orden y se exige que todo `type <f>.sha256` tenga un
+    `certutil -hashfile <f> SHA256 > <f>.sha256` **anterior** en la misma jornada.
+    En Windows el fallo equivalente al `sha256sum` sin `>` de Linux es perder la
+    redirección de `certutil`: la acción se ejecuta y el `type` posterior falla todos
+    los días sin que `--check` lo vea.
+    """
+    fallos = []
+    for day in sorted(datos):
+        tl = datos[day]
+        if len(tl.get("TimeLineHandlers", [])) != len(L.BLOQUES_TRABAJO) + 1:
+            continue
+        escritas = set()
+        for h, b in zip(tl["TimeLineHandlers"], L.BLOQUES_TRABAJO):
+            for ev in h["TimeLineEvents"]:
+                cmd = ev["Command"]
+                for m in RE_ESCRITURA_HUELLA_W.finditer(cmd):
+                    escritas.add(m.group(1).lower())
+                for m in RE_LECTURA_HUELLA_W.finditer(cmd):
+                    if m.group(1).lower() not in escritas:
+                        fallos.append(
+                            f"w{day}/{b['id']}: `type` de una huella que nadie escribe con "
+                            f"`>` (L-1): {m.group(1)}")
+    return fallos
+
+
+# --------------------------------------------------------------------------
 # Validador
 # --------------------------------------------------------------------------
 def validar(outdir: str, mapa_esperado=None, verbose=True):
@@ -1312,6 +1367,9 @@ def validar(outdir: str, mapa_esperado=None, verbose=True):
             fallos.append(f"w{day}: {n_err} errores (se exigen 10/día)")
         if n_reint != n_err:
             fallos.append(f"w{day}: {n_reint} reintentos != {n_err} errores")
+
+    # (d-bis) L-1: nada se lee de un fichero de huella que nadie ha escrito con `>`.
+    fallos += auditar_huellas_escritas(datos)
 
     # PowerShell: en la campaña (cifrado/borrado/CSV) y, en la jornada, **solo** el
     # borrado seguro (`shred`, mecanismo M4: no hay equivalente nativo).
@@ -1424,6 +1482,13 @@ def validar_comando(cmd):
             fallos.append(f"comando mutante ({pat}): {cmd[:80]}")
     if "|" in cmd:
         fallos.append(f"`|` prohibido (GHOSTS pierde el reporte, D-01): {cmd[:80]}")
+    # D-10: lista blanca de herramientas externas, espejo de Linux (`:1335-1337`).
+    # Se usa el parser de `cobertura_herramientas_windows` para que el validador y el
+    # contador de cobertura no discrepen (builtins y `cmd` quedan fuera).
+    from cobertura_herramientas_windows import binarios_de as _binarios_de
+    for tok in _binarios_de(cmd):
+        if tok not in BINARIOS_W:
+            fallos.append(f"binario no permitido '{tok}' (D-10): {cmd[:80]}")
     if "%{" in cmd and ("%DATE%" in cmd or "%TIME%" in cmd):
         fallos.append(f"`%{{...}}` junto a `%VAR%` (expansión): {cmd[:80]}")
     m = re.match(r"^cd /d (\S+) && \S", cmd)

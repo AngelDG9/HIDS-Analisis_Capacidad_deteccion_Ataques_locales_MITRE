@@ -336,5 +336,52 @@ def test_produccion_completa(tmp_path):
     assert fila["alertas"] == "1" and fila["esperado_cumplido"] == "SI"
 
 
+# --------------------------------------------------------------------------
+# 5) D-11: n_acciones reportadas vs pre-registradas
+# --------------------------------------------------------------------------
+def test_acciones_esperadas_salen_del_csv():
+    esp = X.acciones_esperadas()
+    assert set(esp) == set(C.IDS)
+    assert esp["W-07"] == 6
+    assert sum(esp.values()) == 63
+
+
+def test_n_acciones_menor_que_esperadas_es_reporte_incompleto(tmp_path):
+    ev = _cosecha(tmp_path)
+    vent, _ = X.leer_marcas(str(ev))
+    cid = "W-07"          # el caso que perdió 1 de 5 reportes por el pipe (D-01/D-11)
+    esp = X.acciones_esperadas()
+    nacc = dict(esp)
+    nacc[cid] -= 1
+    al = {cid: {"alertas": 1, "rules": {"67027"}, "levels": [3]}}
+    filas = X.construir_tabla(vent, nacc, None, al, evidencia=str(ev),
+                              esperadas=esp)
+    fila = next(f for f in filas if f["caso"] == cid)
+    assert fila["esperado_cumplido"] == "REPORTE_INCOMPLETO", fila
+    assert f"{nacc[cid]} < {esp[cid]}" in fila["motivo"], fila
+    assert fila["n_acciones"] == str(nacc[cid])
+
+
+def test_n_acciones_iguales_no_cambia_el_estado(tmp_path):
+    ev = _cosecha(tmp_path)
+    vent, _ = X.leer_marcas(str(ev))
+    cid, _dia, _ini, _fin = _casos_reales()[0]
+    esp = X.acciones_esperadas()
+    al = {cid: {"alertas": 1, "rules": {"67027"}, "levels": [3]}}
+    filas = X.construir_tabla(vent, dict(esp), None, al, evidencia=str(ev),
+                              esperadas=esp)
+    fila = next(f for f in filas if f["caso"] == cid)
+    assert fila["esperado_cumplido"] == "SI", fila
+
+
+def test_sin_marcas_no_se_convierte_en_reporte_incompleto(tmp_path):
+    ev = tmp_path / "vacia"
+    ev.mkdir()
+    vent, _ = X.leer_marcas(str(ev))
+    filas = X.construir_tabla(vent, None, None, None, evidencia=str(ev),
+                              esperadas=X.acciones_esperadas())
+    assert all(f["esperado_cumplido"] == "NO_EJECUTADO" for f in filas)
+
+
 def test_autotest_del_modulo():
     assert X._autotest() == 0

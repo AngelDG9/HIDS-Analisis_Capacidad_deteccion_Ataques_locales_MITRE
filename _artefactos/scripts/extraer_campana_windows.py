@@ -17,7 +17,7 @@ caso · ini · fin · n_acciones · n_eventos · alertas · rule_id · level · 
 | `n_eventos` | copia de los `archives` de Wazuh, **agente `002`** | `[ini, fin]` |
 | `alertas` | CSV de alertas (`extraer_alertas_windows.py`) | `[ini − 10 s, fin + 60 s]` |
 | `rule_id` / `level` | del mismo cruce de alertas | idem |
-| `esperado_cumplido` | `SI` si `67027` aparece y `level < 7`; `NO` si no; `NO_EJECUTADO` **solo** si no hay ninguna marca; `NO_EVALUABLE` con motivo si hay marcas que no se pueden leer/convertir (p. ej. locales sin `--desfase-local`), si faltan marcas o `hecho.txt`, o si no se pasan alertas | — |
+| `esperado_cumplido` | `SI` si `67027` aparece y `level < 7`; `NO` si no; `NO_EJECUTADO` **solo** si no hay ninguna marca; `NO_EVALUABLE` con motivo si hay marcas que no se pueden leer/convertir (p. ej. locales sin `--desfase-local`), si faltan marcas o `hecho.txt`, o si no se pasan alertas. **`REPORTE_INCOMPLETO`** si el caso se ejecutó pero `n_acciones` es menor que las acciones pre-registradas en `campana_windows.csv` (D-11: el caso W-07 perdió 1 de 5 reportes por el pipe; no puede darse por `SI`) | — |
 
 **Marcas de Windows.** La receta sella `echo %DATE%_%TIME%`: es **hora local del
 invitado** (`dd/mm/aaaa_hh:mm:ss.cc`), no ISO/UTC. El extractor **no adivina**:
@@ -574,8 +574,15 @@ def _evidencia_ok(evidencia, cid):
     return False
 
 
+def acciones_esperadas(raiz=None):
+    """Acciones pre-registradas por caso en `campana_windows.csv` (D-11)."""
+    casos, _filas = cw.cargar(raiz)
+    return {cid: len(c["acciones"]) for cid, c in casos.items()}
+
+
 def construir_tabla(ventanas, acciones=None, eventos=None, alertas=None,
-                    evidencia=None, umbral_n7=cw.UMBRAL_N7, rule_exec=cw.RULE_EXEC):
+                    evidencia=None, umbral_n7=cw.UMBRAL_N7, rule_exec=cw.RULE_EXEC,
+                    esperadas=None):
     filas = []
     for cid, r in ventanas.items():
         ini, fin = r["ini"], r["fin"]
@@ -604,11 +611,19 @@ def construir_tabla(ventanas, acciones=None, eventos=None, alertas=None,
             estado = "SI"
         else:
             estado = "NO"
+        # D-11: un caso ejecutado que reporta menos acciones de las pre-registradas no
+        # se da por bueno. `NO_EJECUTADO`/`NO_EVALUABLE` conservan su motivo: ahí no
+        # hay una medida que comparar.
+        n_acc = None if acciones is None else acciones.get(cid, 0)
+        if (esperadas is not None and n_acc is not None and cid in esperadas
+                and estado in ("SI", "NO") and n_acc < esperadas[cid]):
+            estado = "REPORTE_INCOMPLETO"
+            motivo = f"n_acciones {n_acc} < {esperadas[cid]} pre-registradas"
         filas.append({
             "caso": cid,
             "ini": fmt_ts(ini) if ini else "",
             "fin": fmt_ts(fin) if fin else "",
-            "n_acciones": "" if acciones is None else str(acciones.get(cid, 0)),
+            "n_acciones": "" if n_acc is None else str(n_acc),
             "n_eventos": "" if eventos is None else str(eventos.get(cid, 0)),
             # Sin fichero de alertas no se escribe un 0: no hay dato (`NO_EVALUABLE`).
             "alertas": "" if alertas is None else str(al["alertas"]),
@@ -617,7 +632,7 @@ def construir_tabla(ventanas, acciones=None, eventos=None, alertas=None,
             "esperado_cumplido": estado,
             # El motivo NO se añade a las 9 columnas (paridad con Linux): va al TSV y al
             # comentario `#` del CSV.
-            "motivo": motivo if estado == "NO_EVALUABLE" else "",
+            "motivo": motivo if estado in ("NO_EVALUABLE", "REPORTE_INCOMPLETO") else "",
         })
     return filas
 
@@ -739,6 +754,11 @@ def _autotest():
         filas = construir_tabla(vent, nacc, evc, res, evidencia=ev)
         assert filas[0]["esperado_cumplido"] == "SI", filas[0]
         assert filas[1]["esperado_cumplido"] == "NO", filas[1]
+        # D-11: 1 reporte de 2 pre-registrados ⇒ REPORTE_INCOMPLETO (no SI).
+        filas_inc = construir_tabla(vent, {"W-01": 1, "W-02": 1}, evc, res,
+                                    evidencia=ev, esperadas={"W-01": 2, "W-02": 1})
+        assert filas_inc[0]["esperado_cumplido"] == "REPORTE_INCOMPLETO", filas_inc[0]
+        assert "1 < 2" in filas_inc[0]["motivo"], filas_inc[0]
         filas_sin = construir_tabla(vent, None, None, None, evidencia=ev)
         assert filas_sin[0]["esperado_cumplido"] == "NO_EVALUABLE", filas_sin[0]
         assert filas_sin[0]["n_acciones"] == "" and filas_sin[0]["n_eventos"] == ""
@@ -831,7 +851,9 @@ def main(argv=None):
         print("alertas por caso: " + ", ".join(
             f"{c}={v['alertas']}" for c, v in alertas.items()))
 
-    filas = construir_tabla(ventanas, acciones, eventos, alertas, args.evidencia)
+    esperadas = acciones_esperadas()
+    filas = construir_tabla(ventanas, acciones, eventos, alertas, args.evidencia,
+                            esperadas=esperadas)
     out = args.out or os.path.join(cw.dir_campana(), "campana_fp_windows.csv")
     md = cw.ruta_md()
     escribir_csv(filas, out, {
@@ -843,16 +865,21 @@ def main(argv=None):
     no_ejec = [f["caso"] for f in filas if f["esperado_cumplido"] == "NO_EJECUTADO"]
     no_eval = [f["caso"] for f in filas if f["esperado_cumplido"] == "NO_EVALUABLE"]
     no_cumpl = [f["caso"] for f in filas if f["esperado_cumplido"] == "NO"]
+    inc = [f["caso"] for f in filas if f["esperado_cumplido"] == "REPORTE_INCOMPLETO"]
     motivos = defaultdict(int)
     for f in filas:
-        if f["esperado_cumplido"] == "NO_EVALUABLE" and f.get("motivo"):
+        if f.get("motivo"):
             motivos[f["motivo"]] += 1
     print(f"casos={len(filas)} · NO_EJECUTADO={len(no_ejec)} {no_ejec} · "
           f"NO_EVALUABLE={len(no_eval)} {no_eval} · "
+          f"REPORTE_INCOMPLETO={len(inc)} {inc} · "
           f"esperado_no={len(no_cumpl)} {no_cumpl}")
     for m, n in sorted(motivos.items()):
-        print(f"  motivo NO_EVALUABLE ({n}x): {m}")
-    print("RESULT=PASS")
+        print(f"  motivo ({n}x): {m}")
+    if inc:
+        print(f"RESULT=REVIEW ({len(inc)} REPORTE_INCOMPLETO: {inc})")
+    else:
+        print("RESULT=PASS")
     return 0
 
 

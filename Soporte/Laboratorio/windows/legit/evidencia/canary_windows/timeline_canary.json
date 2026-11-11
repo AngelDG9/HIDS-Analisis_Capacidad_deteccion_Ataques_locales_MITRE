@@ -1,0 +1,103 @@
+{
+ "Status": "Run",
+ "TimeLineHandlers": [
+  {
+   "HandlerType": "Command",
+   "Initial": "",
+   "UtcTimeOn": "00:00:00",
+   "UtcTimeOff": "23:59:59",
+   "Loop": false,
+   "HandlerArgs": {},
+   "TimeLineEvents": [
+    {
+     "Command": "cd /d C:\\lab-legit\\canary && cmd /c echo CANARY-01",
+     "DelayAfter": 2000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\canary && echo CANARY-02 > C:\\lab-legit\\canary\\canary_02.txt",
+     "DelayAfter": 2000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\canary && echo CANARY-03 >> C:\\lab-legit\\canary\\canary_02.txt",
+     "DelayAfter": 2000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\canary && echo CANARY-04 && echo CANARY-04b",
+     "DelayAfter": 2000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\canary && dir C:\\lab-legit\\canary\\noexiste >nul 2>&1 & if errorlevel 1 (>> C:\\lab-legit\\canary\\errores.log echo CANARY-05)",
+     "DelayAfter": 2000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\canary && for /L %i in (1,1,3) do @echo CANARY-06-%i",
+     "DelayAfter": 2000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\canary && powershell -NoProfile -Command \"Write-Output CANARY-07\"",
+     "DelayAfter": 2000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\canary && powershell -NoProfile -Command \"$c = Get-Content -LiteralPath 'C:\\lab-legit\\canary\\canary_02.txt'; Set-Content -LiteralPath 'C:\\lab-legit\\canary\\canary_08.txt' -Value $c\"",
+     "DelayAfter": 2000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\canary && eventcreate /T INFORMATION /ID 100 /L APPLICATION /SO canary /D \"canary 09\"",
+     "DelayAfter": 2000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\canary && robocopy . copia canary_02.txt /NJH /NJS /NP",
+     "DelayAfter": 2000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\canary && curl.exe -sS --max-time 5 --version > C:\\lab-legit\\canary\\canary_10.txt",
+     "DelayAfter": 2000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\canary && certutil -hashfile C:\\lab-legit\\canary\\canary_02.txt SHA256 > C:\\lab-legit\\canary\\canary_11.sha256 2>&1",
+     "DelayAfter": 2000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\canary && type C:\\lab-legit\\canary\\canary_11.sha256",
+     "DelayAfter": 2000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\canary && copy /y C:\\lab-legit\\canary\\canary_02.txt C:\\lab-legit\\canary\\canary_13.txt",
+     "DelayAfter": 2000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\canary && del /f /q C:\\lab-legit\\canary\\canary_13.txt",
+     "DelayAfter": 2000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\canary && md C:\\lab-legit\\canary\\canary_dir",
+     "DelayAfter": 2000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\canary && rd /s /q C:\\lab-legit\\canary\\canary_dir",
+     "DelayAfter": 2000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\canary && start /b cmd /c echo CANARY-18",
+     "DelayAfter": 2000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\canary && find /c \"CANARY\" C:\\lab-legit\\canary\\canary_02.txt",
+     "DelayAfter": 2000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\canary && findstr /c:\"CANARY\" C:\\lab-legit\\canary\\canary_02.txt",
+     "DelayAfter": 2000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\canary && more +0 C:\\lab-legit\\canary\\canary_02.txt",
+     "DelayAfter": 2000
+    },
+    {
+     "Command": "cd /d C:\\lab-legit\\canary && tar -czf C:\\lab-legit\\canary\\canary_22.tar.gz -C C:\\lab-legit\\canary canary_02.txt",
+     "DelayAfter": 2000
+    }
+   ]
+  }
+ ]
+}
