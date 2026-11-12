@@ -1,0 +1,13 @@
+rule_id,rule_level,rule_description,groups,count,first_seen,last_seen,rs_origen
+60798,3,The database engine attached a database.,windows|windows_application,1,2026-11-12T10:07:21Z,2026-11-12T10:07:21Z,UNKNOWN
+60805,3,The database engine is starting a new instance.,windows|windows_application,1,2026-11-12T10:07:20Z,2026-11-12T10:07:20Z,UNKNOWN
+60807,3,The database engine is initiating recovery steps.,windows|windows_application,1,2026-11-12T10:07:20Z,2026-11-12T10:07:20Z,UNKNOWN
+60808,3,The database engine is replaying log file C:\Winnt\system32\wins\j50.log.,windows|windows_application,1,2026-11-12T10:07:21Z,2026-11-12T10:07:21Z,UNKNOWN
+60809,3,The database engine has completed recovery steps.,windows|windows_application,1,2026-11-12T10:07:21Z,2026-11-12T10:07:21Z,UNKNOWN
+67027,3,A process was created.,windows| WEF,62,2026-11-12T10:05:47Z,2026-11-12T10:07:29Z,UNKNOWN
+91823,14,"Powershell script used ""Invoke-command"" cmdlet to execute code on remote computer",windows| powershell,1,2026-11-12T10:07:29Z,2026-11-12T10:07:29Z,UNKNOWN
+92032,3,Suspicious Windows cmd shell execution,sysmon|sysmon_eid1_detections|windows,4,2026-11-12T10:06:02Z,2026-11-12T10:06:20Z,UNKNOWN
+92052,4,Windows command prompt started by an abnormal process,sysmon|sysmon_eid1_detections|windows,6,2026-11-12T10:05:47Z,2026-11-12T10:06:28Z,UNKNOWN
+92200,6,Scripting file created under Windows Temp or User folder,sysmon|sysmon_eid11_detections|windows,9,2026-11-12T10:07:28Z,2026-11-12T10:07:28Z,UNKNOWN
+92213,15,Executable file dropped in folder commonly used by malware,sysmon|sysmon_eid11_detections|windows,2,2026-11-12T10:06:02Z,2026-11-12T10:07:29Z,UNKNOWN
+92217,6,Executable dropped in Windows root folder,sysmon|sysmon_eid11_detections|windows,1,2026-11-12T10:07:28Z,2026-11-12T10:07:28Z,UNKNOWN

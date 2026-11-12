@@ -1,0 +1,19 @@
+# Extracción W-07 reproducible (corrección T4b, 2026-11-12T14:07:41Z)
+# comando=C:\Users\angel\AppData\Local\Programs\Python\Python313\python.exe D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\_artefactos\scripts\extraer_campana_windows.py --ventanas D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\windows\legit\evidencia\t4b\w07_ventanas.tsv --alertas D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\windows\legit\evidencia\t4b\w07_alertas_bruto.csv --acciones D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\windows\legit\evidencia\t4b\w07_acciones.csv --evidencia D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\windows\legit\evidencia\t4b\cosecha --agente victima-windows --agente-id 002 --out D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\windows\legit\evidencia\t4b\w07_campana_bruto.csv
+# salida_literal:
+AVISO: W-01: marcas incompletas (NO_EVALUABLE)
+AVISO: W-02: marcas incompletas (NO_EVALUABLE)
+AVISO: W-03: marcas incompletas (NO_EVALUABLE)
+AVISO: W-04: marcas incompletas (NO_EVALUABLE)
+AVISO: W-05: marcas incompletas (NO_EVALUABLE)
+AVISO: W-06: marcas incompletas (NO_EVALUABLE)
+AVISO: W-08: marcas incompletas (NO_EVALUABLE)
+AVISO: W-09: marcas incompletas (NO_EVALUABLE)
+AVISO: W-10: marcas incompletas (NO_EVALUABLE)
+AVISO: W-11: marcas incompletas (NO_EVALUABLE)
+acciones: columna 'createdutc' � {'W-01': 0, 'W-02': 0, 'W-03': 0, 'W-04': 0, 'W-05': 0, 'W-06': 0, 'W-07': 6, 'W-08': 0, 'W-09': 0, 'W-10': 0, 'W-11': 0} (sin_timestamp=0)
+alertas: 1 ficheros �nicos � 90 filas � otros_agentes=0 � campos_win={'win_image': 84, 'win_command_line': 72, 'win_cwd': 10, 'win_user': 84, 'event_id': 90}
+alertas por caso: W-01=0, W-02=0, W-03=0, W-04=0, W-05=0, W-06=0, W-07=90, W-08=0, W-09=0, W-10=0, W-11=0
+-> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\windows\legit\evidencia\t4b\w07_campana_bruto.csv (11 filas)
+casos=11 � NO_EJECUTADO=10 ['W-01', 'W-02', 'W-03', 'W-04', 'W-05', 'W-06', 'W-08', 'W-09', 'W-10', 'W-11'] � NO_EVALUABLE=0 [] � REPORTE_INCOMPLETO=0 [] � esperado_no=1 ['W-07']
+RESULT=PASS

@@ -647,4 +647,27 @@ campaña regeneradas tienen **0 pipes** en los **504** comandos (y en los **63**
 **504 = 504**, `DelayAfter` y ventanas intactos; `construir_receta_legitima_windows.py --check`,
 `campana_windows.py --check`, `--no-mutacion` y `verificar_espejo.py` **PASAN**. El `M` calculado
 con `contar_denominador.py --boveda-version 3` sobre el crudo de prueba sella
-`boveda_version=3`. **C3–C6 y C8 siguen pendientes** (tandas siguientes).
+`boveda_version=3`. **C3—C6 y C8 siguen pendientes** (tandas siguientes).
+
+---
+
+## 11. Anexo T4 (2026-11-12) — C6/T4 ejecutados
+
+> **No cambia el veredicto de la auditoría**; cierra los hallazgos que la motivaron y deja
+> constancia de la ejecución real. Ficha completa:
+> `Soporte/Laboratorio/windows/legit/snapshot_windows_legit_v2.md`.
+
+| Hallazgo / tarea | Resultado de T4 |
+|---|---|
+| **D-01 / C6 (WE0-2)** | **5/5** acciones reportadas, incluida `powershell` **sin pipe** (`id 7257`). El canary real da **22/22, 0 faltan, 0 sobran**. |
+| **D-11 (`n_acciones`)** | W-07 real: **6/6** reportadas. Resultado **canónico bruto `6/90/NO`** (nivel 15); `sin_ajenas` (67) **23/15/NO**; `sin_artefactos_ps` (3) **87/6/SI**; `sin_ambas` **20/4/SI**. **1 de las 70 exclusiones está dentro de `[t0,t1]`** (`92213`, 10:06:02.285Z, policy test de la acción 3) y es **`artefacto_ataque`** (precedente ATA073/ATA097), **no** detección. El `SI` se sostiene al excluir el artefacto; el canónico literal sigue `NO`. Declarado en la ficha §5 y en `evidencia/t4b/w07_LEEME.md` / `w07_variantes.csv`. |
+| **D-08 (sellos)** | `sha256sums.txt` **195** entradas (incluye `clasificar_w07_windows.py` y su test); `sha256sum -c` **0 fallos**; `prep -SoloSellos` **PASS**. |
+| **Manifiesto / D-13** | v2 sobre `-ataques-gui`: **294** ficheros, `MANIFEST_SHA256=4621046f…`; `prep -SoloManifiesto` y `-SoloParidad` **PASS**. |
+| **C3 (`crudo`)** | `criterio=utc_dias_D_D+2`, `tz=CET`, `dias=2026-11-12..14`, `MANIFEST.tsv` sellado, `M` **881/2.440** con `boveda_version=3`; `sums=0` declarado (día sin `.gz`). |
+| **C4 (firewall)** | `TFG-hb-9095` **presente** tras `prep` y **ausente** tras `cleanup` (transcripción en `evidencia/t4b/`). |
+| **C8 / cierre** | `stop` con `bucle_salio=True` (4m20s); `cleanup` retira las **2 tareas** del invitado, verifica `armado.flag` y deja `logall_json=no` + `CONFIG_IDENTICA`. |
+| **Chivato / keepalive** | 2 h: **24/24** latidos emitidos, **23/24** recibidos (1 ciclo de sink caído), `ka_instancias=1`, **1** recuperación en **1 ciclo** y duplicado rechazado. |
+| **Snapshot v2** | **8** snapshots; v1 y los 6 previos intactos; revert+arranque **6/6** (tarea actividad Ready, 0 `ghosts.exe`, servicios Running, `powercfg=0`, sin residuos, 0 `TFG-Attack-*`). |
+
+**Estado:** **W3-bis cerrado** y **listo para W4** (ventana real de 72 h), que sigue pendiente
+de fecha humana y de `TFG_MANAGER_PW` en el entorno de ejecución.

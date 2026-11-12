@@ -1,0 +1,57 @@
+﻿[2026-11-12T11:00:24Z] watch t0 inicio
+[2026-11-12T11:00:26Z] watch t0 :: chequeo ok=9 fallos=0 skip=0 :: HB_EDAD_MIN=0.4 SEQ=3 KA_PID=256 KA_INSTANCIAS=1 SSH_INVITADO=0
+[2026-11-12T11:00:26Z] watch t0 :: SSH_INVITADO=0
+[2026-11-12T11:00:26Z] watch t0 fin rc=0
+[2026-11-12T11:10:02Z] duplicado: schtasks /run TFG-WinLegit-Keepalive
+[2026-11-12T11:10:02Z] duplicado schtasks: INFO: scheduled task "TFG-WinLegit-Keepalive" is currently running. SUCCESS: Attempted to run the scheduled task "TFG-WinLegit-Keepalive".
+[2026-11-12T11:10:11Z] KA_INSTANCIAS_POST_DUP=2026-11-12T10:51:08Z	keepalive	arranque modo=Loop pid=256 intervalo_min=5 sink=http://192.168.65.1:9095/heartbeat 
+powercfg_ok=True seq=0
+2026-11-12T10:51:08Z	keepalive	wu wuauserv_startup_disabled (antes=Manual)
+2026-11-12T10:51:09Z	keepalive	rotacion_dia dia=1 ya_aplicado (sin reiniciar el cliente)
+2026-11-12T10:51:10Z	keepalive	latido seq=1 hb=OK ka_inst=1 n_ghosts=0 pid=0 user= il=Medium ses=1 disco_mb=21275 
+sysmon=Running wazuh=Running wu=Stopped def=off pc=True rd=0 hosts=True armado=False dia=1 out_mb=0 hijos=1
+2026-11-12T10:55:01Z	keepalive	latido seq=2 hb=OK ka_inst=1 n_ghosts=1 pid=5264 user=DESKTOP-BTMCFA5\angel il=Medium 
+ses=1 disco_mb=21275 sysmon=Running wazuh=Running wu=Stopped def=off pc=True rd=0 hosts=True armado=True dia=1 
+out_mb=0 hijos=1
+2026-11-12T11:00:01Z	keepalive	wu wuauserv_parado
+2026-11-12T11:00:01Z	keepalive	wu wuauserv_startup_disabled (antes=Manual)
+2026-11-12T11:00:02Z	keepalive	latido seq=3 hb=OK ka_inst=1 n_ghosts=1 pid=5264 user=DESKTOP-BTMCFA5\angel il=Medium 
+ses=1 disco_mb=21273 sysmon=Running wazuh=Running wu=Stopped def=off pc=True rd=0 hosts=True armado=True dia=1 
+out_mb=0 hijos=1
+2026-11-12T11:05:01Z	keepalive	latido seq=4 hb=OK ka_inst=1 n_ghosts=1 pid=5264 user=DESKTOP-BTMCFA5\angel il=Medium 
+ses=1 disco_mb=21273 sysmon=Running wazuh=Running wu=Stopped def=off pc=True rd=0 hosts=True armado=True dia=1 
+out_mb=0 hijos=1
+2026-11-12T11:10:01Z	keepalive	latido seq=5 hb=OK ka_inst=1 n_ghosts=1 pid=5264 user=DESKTOP-BTMCFA5\angel il=Medium 
+ses=1 disco_mb=21273 sysmon=Running wazuh=Running wu=Stopped def=off pc=True rd=0 hosts=True armado=True dia=1 
+out_mb=0 hijos=1
+[2026-11-12T11:20:01Z] muerte del cliente: taskkill /f /im ghosts.exe
+[2026-11-12T11:20:02Z] kill: SUCCESS: The process "ghosts.exe" with PID 5264 has been terminated.
+[2026-11-12T11:20:07Z] procesos_ghosts_post_kill: 
+[2026-11-12T11:30:23Z] watch t0+30 inicio
+[2026-11-12T11:30:25Z] watch t0+30 :: chequeo ok=9 fallos=0 skip=0 :: HB_EDAD_MIN=0.4 SEQ=9 KA_PID=256 KA_INSTANCIAS=1 SSH_INVITADO=0
+[2026-11-12T11:30:25Z] watch t0+30 :: SSH_INVITADO=0
+[2026-11-12T11:30:25Z] watch t0+30 fin rc=0
+[2026-11-12T11:40:01Z] sink down
+[2026-11-12T11:40:03Z] sink stop: [2026-11-12T11:40:03Z] [stop] SINK_PARADO pid=10632
+[2026-11-12T11:47:03Z] sink start lanzado pid=2164
+[2026-11-12T11:47:12Z] sink status: [2026-11-12T11:47:12Z] [status] SINK_PID=1676 VIVO=True RESPONDE=True
+[2026-11-12T12:00:23Z] watch t0+60 inicio
+[2026-11-12T12:00:25Z] watch t0+60 :: chequeo ok=9 fallos=0 skip=0 :: HB_EDAD_MIN=0.4 SEQ=15 KA_PID=256 KA_INSTANCIAS=1 SSH_INVITADO=0
+[2026-11-12T12:00:25Z] watch t0+60 :: SSH_INVITADO=0
+[2026-11-12T12:00:25Z] watch t0+60 fin rc=0
+[2026-11-12T12:30:22Z] watch t0+90 inicio
+[2026-11-12T12:30:34Z] watch t0+90 :: chequeo ok=9 fallos=0 skip=0 :: HB_EDAD_MIN=0.6 SEQ=21 KA_PID=256 KA_INSTANCIAS=1 SSH_INVITADO=0
+[2026-11-12T12:30:34Z] watch t0+90 :: SSH_INVITADO=0
+[2026-11-12T12:30:34Z] watch t0+90 fin rc=0
+[2026-11-12T12:59:32Z] watch t1-1 inicio
+[2026-11-12T12:59:34Z] watch t1-1 :: chequeo ok=9 fallos=0 skip=0 :: HB_EDAD_MIN=4.6 SEQ=26 KA_PID=256 KA_INSTANCIAS=1 SSH_INVITADO=0
+[2026-11-12T12:59:34Z] watch t1-1 :: SSH_INVITADO=0
+[2026-11-12T12:59:34Z] watch t1-1 fin rc=0
+[2026-11-12T13:00:34Z] copiando logs del invitado a guest_2h
+[2026-11-12T13:00:34Z] scp keepalive.log rc=0 
+[2026-11-12T13:00:34Z] scp recovery.log rc=0 
+[2026-11-12T13:00:35Z] scp estado.json rc=0 
+[2026-11-12T13:00:35Z] scp heartbeat.seq rc=0 
+[2026-11-12T13:00:35Z] scp keepalive.log.prev rc=0 
+[2026-11-12T13:00:35Z] scp recovery.log.prev rc=0 
+[2026-11-12T13:00:35Z] monitor fin

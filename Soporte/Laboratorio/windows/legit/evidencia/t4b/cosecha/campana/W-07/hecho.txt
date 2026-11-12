@@ -1,0 +1,6 @@
+RESULTADO=OK 
+referencia,area,importe 
+A-01,compras,1200 
+A-02,ventas,980
+
+---------- C:\LAB-LEGIT\CAMPANA\W-07\EXPORT.CSV: 0

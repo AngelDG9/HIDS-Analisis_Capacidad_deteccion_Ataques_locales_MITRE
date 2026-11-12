@@ -122,6 +122,26 @@ FPR_sin_operador = (FP_uni - operador_uni) / M
 6. **Diferencias declaradas**: 7 señales de vigilancia (Windows) vs 9 (Linux); cliente
    compilado del mismo commit; tarea `Interactive` vs servicio; `M` de Windows hasta WE0-9.
 
+## T4 (2026-11-12) — prueba real de 2 h
+
+La tabla anterior se **confirma** con la prueba de 2 h (11:00–13:00Z, `lab-listo-windows-ataques-gui`
++ cliente 8.3.1), **sin** cambiar la métrica:
+
+| Dato medido | Valor |
+|---|---|
+| `watch` real | **5/5** chequeos `ok=9 fallos=0 skip=0`; **`SSH_INVITADO=0`**; `G-W7` **sin SKIP** |
+| Latidos | **24/24 emitidos**, **23/24 recibidos** (1 ciclo de sink caído declarado); `seq` 3→26 |
+| Keepalive | **1** `ka_pid` (256), **1** instancia, **0** procesos por ciclo |
+| Recuperación del cliente | **1 ciclo** (5 min 6 s): 11:20:02Z → 11:25:08Z, `win_user=angel` |
+| Duplicado | rechazado (`segunda_instancia`; `ka_instancias=1`) |
+| Ruido del operador en la ventana | el `watch` **no entra**; el keepalive no crea procesos salvo la recuperación |
+
+**Consecuencia para la comparabilidad:** se mantienen (1) unidad `FP_uni` = línea de `archives`
+(`M` de la copia con `boveda_version=3`), (2) patrón de keepalive persistente, (3) `watch` cada
+30 min (Windows por push; Linux por SSH, diferencia de canal declarada), (4) etiqueta
+`sin_operador` y (5) unidad `FP/acción`/`FP/hora`. **No** se comparan `M` absoluto ni FPR crudo.
+El `M` de la ventana de 72 h sigue pendiente de W4/WE0-9.
+
 ## Pendiente para T4 / W4
 
 - **Ventana real** de 72 h (fecha la fija el humano): `M`, `FP_uni` y `operador_uni`

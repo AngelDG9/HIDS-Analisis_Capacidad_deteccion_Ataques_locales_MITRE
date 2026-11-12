@@ -912,7 +912,8 @@ function Write-Guardarrailes($r) {
 function Stop-Actividad {
   Invoke-Remote 'schtasks /end /tn TFG-WinLegit-Actividad' -PermitirFallo | Out-Null
   Invoke-Remote 'taskkill /f /im ghosts.exe' -PermitirFallo | Out-Null
-  Invoke-Remote 'del /f /q C:\Users\angel\ghosts-client\armado.flag' -PermitirFallo | Out-Null
+  $flg = Invoke-Remote 'if exist C:\Users\angel\ghosts-client\armado.flag (del /f /q C:\Users\angel\ghosts-client\armado.flag & echo FLAG_RETIRADO) else (echo FLAG_AUSENTE)' -PermitirFallo
+  Log ("actividad: armado.flag " + (($flg -replace '\s+', ' ').Trim()))
 }
 
 # --- fases -----------------------------------------------------------------
@@ -1246,7 +1247,10 @@ exit 0
     # </CRUDO_UTC_BASH>
     $crudoSh = $crudoSh.Replace('__T0__', $t0Utc)
     $b64 = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($crudoSh))
-    $lista = Invoke-Manager "echo $b64 | base64 -d | bash"
+    # El listado vive en `/var/ossec/logs` (wazuh:wazuh 750): `angel` no puede leerlo.
+    # El script va en el argumento de `bash -c` y el `sudo -S` consume la contrasena del
+    # stdin de `Invoke-Manager` (no se mezcla con el base64). Corregido en T4.
+    $lista = Invoke-Manager "sudo -S -p '' bash -c 'echo $b64 | base64 -d | bash'"
     if (-not $lista) { Log 'crudo FALLO: el manager no devolvio ficheros (inaccesible o sin sudo)'; exit 85 }
     $lineasLista = @(($lista -split "`r?`n") | ForEach-Object { $_.Trim() } |
                      Where-Object { $_ })
@@ -1386,8 +1390,9 @@ exit 0
     }
     Stop-Sink
     Stop-Actividad
-    Invoke-Remote 'schtasks /delete /tn TFG-WinLegit-Actividad /f' -PermitirFallo | Out-Null
-    Invoke-Remote 'schtasks /delete /tn TFG-WinLegit-Keepalive /f' -PermitirFallo | Out-Null
+    $delAct = Invoke-Remote 'schtasks /delete /tn TFG-WinLegit-Actividad /f' -PermitirFallo
+    $delKa  = Invoke-Remote 'schtasks /delete /tn TFG-WinLegit-Keepalive /f' -PermitirFallo
+    Log ("cleanup: tareas invitado retiradas [actividad=" + (($delAct -replace '\s+', ' ').Trim()) + " keepalive=" + (($delKa -replace '\s+', ' ').Trim()) + "]")
     if (Get-VmEnMarcha $Vmx) { & $Vmrun -T ws stop $Vmx soft | Out-Null }
     # C4: retirar la regla del sink y verificar que NO queda (residuo = fallo de cierre).
     if (-not (Remove-ReglaFirewallHb)) {

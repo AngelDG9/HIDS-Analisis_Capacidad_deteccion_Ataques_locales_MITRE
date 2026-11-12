@@ -1,0 +1,24 @@
+# Cierre T4b — verificación de laboratorio (2026-11-12, 2026-11-12T14:13:34Z)
+# Comandos ejecutados en el host; salida literal. Sin secretos.
+
+## VMs en marcha (vmrun list)
+$ C:\Program Files\VMware\VMware Workstation\vmrun.exe list
+Total running VMs: 0
+
+## Tareas TFG-*
+$ powershell -NoProfile -Command $t=@(Get-ScheduledTask -ErrorAction SilentlyContinue | Where-Object { $_.TaskName -like 'TFG-*' }); 'tareas=' + $t.Count; $t | Select-Object TaskPath,TaskName,State | Format-Table -AutoSize | Out-String -Width 200
+tareas=0
+
+## Reglas de firewall TFG*
+$ powershell -NoProfile -Command $r=@(Get-NetFirewallRule -ErrorAction SilentlyContinue | Where-Object { $_.DisplayName -like '*TFG*' }); 'reglas=' + $r.Count; $r | Select-Object DisplayName,Enabled,Direction,Action | Format-Table -AutoSize | Out-String -Width 200
+reglas=0
+
+## Procesos ghosts/sink/postgres/dotnet
+$ powershell -NoProfile -Command $p=@(Get-Process -ErrorAction SilentlyContinue | Where-Object { $_.ProcessName -match '^(ghosts|heartbeat_sink|postgres|pg_ctl|dotnet)$' }); 'procesos=' + $p.Count; $p | Select-Object ProcessName,Id | Format-Table -AutoSize | Out-String -Width 200
+procesos=0
+
+## Variables de entorno
+$ powershell -NoProfile -Command 'TFG_GUEST_PW=' + [bool](Test-Path Env:TFG_GUEST_PW); 'TFG_MANAGER_PW=' + [bool](Test-Path Env:TFG_MANAGER_PW)
+TFG_GUEST_PW=False
+TFG_MANAGER_PW=False
+

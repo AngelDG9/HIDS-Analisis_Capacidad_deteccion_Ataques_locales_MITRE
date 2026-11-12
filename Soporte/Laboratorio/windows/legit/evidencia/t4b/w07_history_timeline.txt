@@ -1,0 +1,11 @@
+﻿  id  |     createdutc      | handler |                                                                                                                                   command                                                                                                                                    
+------+---------------------+---------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 7282 | 2026-11-12 10:05:47 | Command | cd /d C:\lab-legit\campana && (if not exist C:\lab-legit\campana\W-07 md C:\lab-legit\campana\W-07) & > C:\lab-legit\campana\W-07\inicio.txt echo %DATE%_%TIME%
+ 7283 | 2026-11-12 10:05:53 | Command | cd /d C:\lab-legit\campana\W-07 && > C:\lab-legit\campana\W-07\export.csv echo referencia;area;importe && >> C:\lab-legit\campana\W-07\export.csv echo A-01;compras;1200 && >> C:\lab-legit\campana\W-07\export.csv echo A-02;ventas;980
+ 7284 | 2026-11-12 10:06:02 | Command | cd /d C:\lab-legit\campana\W-07 && powershell -NoProfile -Command "$c = (Get-Content -LiteralPath 'C:\lab-legit\campana\W-07\export.csv') -replace ';',','; Set-Content -LiteralPath 'C:\lab-legit\campana\W-07\export.csv' -Value $c"
+ 7285 | 2026-11-12 10:06:09 | Command | cd /d C:\lab-legit\campana\W-07 && more +0 C:\lab-legit\campana\W-07\export.csv > C:\lab-legit\campana\W-07\export_normalizado.txt
+ 7286 | 2026-11-12 10:06:20 | Command | cd /d C:\lab-legit\campana\W-07 && > C:\lab-legit\campana\W-07\hecho.txt echo RESULTADO=OK && more +0 C:\lab-legit\campana\W-07\export.csv >> C:\lab-legit\campana\W-07\hecho.txt && find /c ";" C:\lab-legit\campana\W-07\export.csv >> C:\lab-legit\campana\W-07\hecho.txt
+ 7287 | 2026-11-12 10:06:28 | Command | cd /d C:\lab-legit\campana\W-07 && del /f /q C:\lab-legit\campana\W-07\export.csv 2>nul & del /f /q C:\lab-legit\campana\W-07\export_normalizado.txt 2>nul & > C:\lab-legit\campana\W-07\fin.txt echo %DATE%_%TIME%
+(6 filas)
+
+

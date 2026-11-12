@@ -1,0 +1,40 @@
+﻿== 2026-11-12T11:53:24.4679564+01:00 ==
+
+
+DisplayName : TFG-hb-9095
+Enabled     : True
+Direction   : Inbound
+Action      : Allow
+Profile     : Any
+
+
+
+
+
+Protocol  : TCP
+LocalPort : 9095
+
+
+
+
+
+RemoteAddress : 192.168.65.0/255.255.255.0
+
+
+
+
+Nombre de regla:                      TFG-hb-9095
+----------------------------------------------------------------------
+Habilitada:                           Sí
+Dirección:                            Dentro
+Perfiles:                             Dominio,Privada,Pública
+Agrupamiento:                         
+LocalIP:                              Cualquiera
+RemoteIP:                             192.168.65.0/24
+Protocolo:                            TCP
+LocalPort:                            9095
+RemotePort:                           Cualquiera
+Cruce seguro del perímetro:          No
+Acción:                               Permitir
+Aceptar
+

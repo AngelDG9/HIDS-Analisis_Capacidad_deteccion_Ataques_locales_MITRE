@@ -20,6 +20,13 @@ venv/
 # Windows (control, vigilancia y drytest) SÍ se versiona. No desactiva `*.log`.
 !Soporte/Laboratorio/windows/legit/evidencia/
 !Soporte/Laboratorio/windows/legit/evidencia/*.log
+# Excepción T4b (2026-11-12): los logs sellados de `t4b/` y `keepalive_2h/` están
+# referenciados por su `MANIFEST.tsv`; si se ignoran, `sha256sum -c` fallaría en un
+# clon. Se incluyen los de subcarpetas (`cosecha/`, `guest_2h/`).
+!Soporte/Laboratorio/windows/legit/evidencia/t4b/*.log
+!Soporte/Laboratorio/windows/legit/evidencia/t4b/**/*.log
+!Soporte/Laboratorio/windows/legit/evidencia/keepalive_2h/*.log
+!Soporte/Laboratorio/windows/legit/evidencia/keepalive_2h/**/*.log
 
 # STIX MITRE ATT&CK (fichero grande ~53 MB; se regenera con
 # _artefactos/scripts/extraer_tecnicas_host.py). Se versionan la URL y el

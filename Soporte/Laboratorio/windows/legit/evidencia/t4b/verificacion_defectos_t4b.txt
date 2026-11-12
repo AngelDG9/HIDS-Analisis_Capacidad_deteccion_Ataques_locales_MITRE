@@ -1,0 +1,96 @@
+# Verificación de los defectos de evidencia de la tanda 4 (T4b, 2026-11-12)
+# Solo lectura + documentación/scripts. Sin ventana, sin ataques, sin snapshot nuevo,
+# sin commits. Sin secretos.
+
+## 1. W-07 — declaración honesta y cuatro cifras
+
+Cifras literales de `w07_variantes.csv` (regla de detección: `67027` y `level < 7`):
+
+```text
+variante,excluidas,alertas,rule_id,level,esperado_cumplido,nota
+canonico,0,90,60798;60805;60807;60808;60809;67027;91823;92032;92052;92200;92213;92217,15,NO,sin exclusiones (bruto)
+sin_ajenas,67,23,67027;91823;92032;92052;92213,15,NO,excluye mantenimiento_windows_fuera_de_accion (67)
+sin_artefactos_ps,3,87,60798;60805;60807;60808;60809;67027;92032;92052;92200;92217,6,SI,excluye artefacto_powershell_policytest (3)
+sin_ambas,70,20,67027;92032;92052,4,SI,excluye ambos grupos (sensibilidad)
+```
+
+Declaración: el `92213` de **10:06:02.285Z** (`__PSScriptPolicyTest_cmewlqsn.k2p.ps1`,
+`powershell.exe`, level 15) está **dentro** de `[t0,t1]` y es un **`artefacto_ataque`**
+generado por la **acción 3** (policy test de PowerShell); **no** es una detección. El
+corpus ya clasificó `92213` como artefacto en ATA073/ATA097. Las otras 69 exclusiones
+(2 policy test de 10:07:29Z + 67 mantenimiento de 10:07:19–29Z) están **fuera** de
+`[t0,t1]`.
+
+Lectura: el canónico literal es `90/15/NO`; `sin_ajenas` (67) sigue `NO` (23/15), luego
+las 67 ajenas **no** son la causa del `NO`; `sin_artefactos_ps` (3) da `87/6/SI`, luego el
+`SI` **se sostiene** al excluir el artefacto de ataque. `sin_ambas` (20/4/SI) es la tabla
+filtrada del caso. **No se maquilla el canónico: sigue `NO`.**
+
+Nota de la cifra `level` de `sin_artefactos_ps`: es **6**, no 4, porque esa variante
+conserva las 10 alertas de mantenimiento de nivel 6 (`92200`/`92217`); el nivel 4 solo
+aparece en `sin_ambas` (20 alertas). Se declara la cifra real; no se ajusta a la esperada.
+
+## 2. `.gitignore` — logs sellados versionables
+
+Excepciones añadidas:
+
+```text
+!Soporte/Laboratorio/windows/legit/evidencia/t4b/*.log
+!Soporte/Laboratorio/windows/legit/evidencia/t4b/**/*.log
+!Soporte/Laboratorio/windows/legit/evidencia/keepalive_2h/*.log
+!Soporte/Laboratorio/windows/legit/evidencia/keepalive_2h/**/*.log
+```
+
+Comprobación: todos los ficheros del `MANIFEST.tsv` de `t4b/` (**95**) y de
+`keepalive_2h/` (**9**) aparecen en `git ls-files --others --exclude-standard` (no
+ignorados): `total_manifest=104 no_versionables=0`. `git add --dry-run` los incluye
+(`t4b`: 97 entradas = 95 del manifiesto + `MANIFEST.tsv` + `MANIFEST.sha256`;
+`keepalive_2h`: 12 = 9 + los 2 manifiestos + `vigilancia_windows.log`).
+
+## 3. WE0-2 — constancia del TSV anterior
+
+El primer `we02_history_timeline.txt` sellado contenía **3 filas** (7255–7257) y **se
+sobrescribió** al re-exportar; **no se conserva copia** del fichero de 3 filas. El actual
+(**5 filas**, `sha256=0616320fb1cc726f7eea6260c26d8ba153b6c018f85bc5707bf28dbd82474f30`)
+es la **salida literal de la BD** (`we02_reexport.log`), **sin edición manual**. Las 5
+filas (7255–7259) existen en `ghosts.history_timeline`.
+
+## 4. Sello
+
+`sha256sums.txt`: **195** entradas (incluye `clasificar_w07_windows.py` y
+`test_clasificar_w07_windows.py`). `sha256sum -c` ⇒ **0 fallos**. `verificar_sellos_windows.py`
+⇒ `RESULT=PASS` (SELLO-01…05 OK). `sha256` del sello:
+`9f70af77bb7da26c4a730732df120eee2ad5d87da6367091848c965511bda4d2`.
+
+## 5. pytest
+
+```text
+487 passed
+```
+
+## 6. Cierre
+
+```text
+Total running VMs: 0
+tareas=0
+firewall_reglas=0
+procesos=0
+TFG_GUEST_PW=False
+TFG_MANAGER_PW=False
+```
+
+## 7. Copia limpia y `sha256sum -c`
+
+Copia a `%TEMP%` y verificación con `sha256sum -c`:
+
+```text
+t4b: checksums filas=95 rc=0 stderr=''
+t4b: MANIFEST.sha256 rc=0 out='MANIFEST.tsv: OK' err=''
+keepalive_2h: checksums filas=9 rc=0 stderr=''
+keepalive_2h: MANIFEST.sha256 rc=0 out='MANIFEST.tsv: OK' err=''
+t4b: git-add-dry-run add=97 manifest=95 faltan=0
+keepalive_2h: git-add-dry-run add=12 manifest=9 faltan=0
+RESULT=PASS
+```
+
+RESULT=PASS

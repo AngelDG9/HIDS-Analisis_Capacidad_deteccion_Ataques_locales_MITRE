@@ -1,0 +1,41 @@
+{
+  "lineas_recibidas_ventana": 23,
+  "primer_recv": "2026-11-12T11:00:02Z",
+  "ultimo_recv": "2026-11-12T12:55:01Z",
+  "seq_min": 3,
+  "seq_max": 26,
+  "seq_estrictamente_creciente": true,
+  "seq_faltantes": [
+    12
+  ],
+  "ka_pid": [
+    256
+  ],
+  "ka_instancias": [
+    1
+  ],
+  "ka_instancias_1_en_todos": true,
+  "n_ghosts_0": 0,
+  "n_ghosts_1": 23,
+  "delta_max_s": 0.61,
+  "delta_le2": 23,
+  "delta_gt5": 0,
+  "cadenas": [
+    "OK"
+  ],
+  "lineas_totales_jsonl": 26,
+  "latidos_emitidos_ventana": 24,
+  "latidos_ok": 23,
+  "latidos_fail": 1,
+  "segunda_instancia_lineas": 1,
+  "recovery_log": [
+    "﻿2026-11-12T10:51:08Z\twu\twuauserv_startup_disabled (antes=Manual)",
+    "2026-11-12T11:00:01Z\twu\twuauserv_parado",
+    "2026-11-12T11:00:01Z\twu\twuauserv_startup_disabled (antes=Manual)",
+    "2026-11-12T11:25:08Z\trecuperacion\tpid=6496 user=DESKTOP-BTMCFA5\\angel rc_run=0",
+    "2026-11-12T12:00:01Z\twu\twuauserv_parado",
+    "2026-11-12T12:00:01Z\twu\twuauserv_startup_disabled (antes=Manual)",
+    "2026-11-12T13:00:01Z\twu\twuauserv_parado",
+    "2026-11-12T13:00:01Z\twu\twuauserv_startup_disabled (antes=Manual)"
+  ]
+}

@@ -65,3 +65,29 @@ Evidencia: `evidencia.txt` y `evidencia2.txt` en la carpeta de copia.
 `<fecha>` = `t0` en UTC (`yyyy-MM-dd`), tomado de `ventana_actual.json`. Si cambia la
 fecha de la ventana, cambia el directorio (no se mezclan ventanas).
 
+
+## 7. Crudo real de la prueba de 2 h de Windows (T4, 2026-11-12)
+
+| Dato | Valor |
+|---|---|
+| Ventana | `2026-11-12T11:00:00Z` → `13:00:00Z` |
+| Destino | `D:\TFG-VMs\legitimo-windows-2026-11-12\crudo\` |
+| `criterio` / `tz` / `dias` | `utc_dias_D_D+2` / `CET` / `2026-11-12,2026-11-13,2026-11-14` |
+| Ficheros / `.sum` / planos | 3 / **0** / 3 |
+| `MANIFEST.tsv` sha256 | `821111058096046151e604108937d9202bfd98d2f2f1d6d6b0e18a59933beb1a` |
+| `M` endpoint / total | **881 / 2.440** (`boveda_version=3`, `contar_denominador.py --agent-id 002 --estricto`) |
+| `crudo.done` | escrito; `M_rc=0`; `sums=0`; `planos=3` |
+| `archives.json` / `alerts.json` | `a1a3129e…` (6.386.345 B) / `8b03521d…` (10.675.298 B) |
+| **Intentos** | **13:02:42Z FALLO** (listado vacío por permisos de `/var/ossec/logs`); **13:03:33Z OK** con `sudo -S -p ''` |
+
+> **Reintento declarado:** el primer `crudo` (13:02:42Z) falló con
+> `crudo FALLO: no hay ficheros para dias 2026-11-12,2026-11-13,2026-11-14 TZ=CET`
+> porque el listado se ejecutaba como `angel` y `/var/ossec/logs` es `wazuh:wazuh 750`.
+> El fix `sudo -S -p '' bash -c '...'` está en el diff de
+> `Soporte/Laboratorio/windows/windows_legit_host_control.ps1` (**sin commit**). El
+> segundo intento (13:03:33Z) terminó `crudo OK` a las 13:03:37Z y escribió `crudo.done`.
+
+> **Declaración:** el día en curso no tenía `.gz` ni `.sum` (Wazuh rota a las 00:00). Se
+> copiaron los planos vivos `archives.json`, `alerts.json` y `ossec-archive-12.json`.
+> No se inventó ningún `.sum`; el campo `sums=0` queda escrito en `crudo.done`.
+> La copia precede a `logall_json=no` y `M` se calcula **de la copia** con `--estricto`.

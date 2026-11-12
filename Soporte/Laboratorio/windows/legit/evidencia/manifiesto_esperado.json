@@ -1,5 +1,5 @@
 ﻿{
-    "generado_utc":  "2026-11-11T12:59:41Z",
+    "generado_utc":  "2026-11-12T13:18:50Z",
     "cliente_dir":  "C:\\Users\\angel\\ghosts-client",
     "cliente":  {
                     "ghosts_exe_fileversion":  "8.2.2.0",
@@ -22,8 +22,8 @@
                       "dia_aplicado.txt",
                       "config\\timeline.json"
                   ],
-    "MANIFEST_FILES":  304,
-    "MANIFEST_SHA256":  "62b73b16ffdb0d12fe424f759201e8a81134e335215a6723b8a2adf41a253d65",
+    "MANIFEST_FILES":  294,
+    "MANIFEST_SHA256":  "4621046f028cb37ad8bbc6a1e9c5adae29bc8c238f774471b6d579011afdf3f0",
     "ficheros":  [
                      {
                          "ruta":  "[task]TFG-WinLegit-Actividad",
@@ -39,14 +39,14 @@
                      },
                      {
                          "ruta":  "C:\\lab-legit\\campana\\campana_windows.csv",
-                         "sha256":  "0453604456a964d035ba930c01a1d18bfa8841d7d774691e23f046a7e35f0491",
-                         "bytes":  19283,
+                         "sha256":  "f26f441786b18c990c99a701962bde825d6fdbd57cbffd54bf5393a25a292cf3",
+                         "bytes":  19291,
                          "tipo":  "campana"
                      },
                      {
                          "ruta":  "C:\\lab-legit\\campana\\casos_windows.md",
-                         "sha256":  "7ed97cae16a3a56511403ec1c589a23489a670a555110536e5884387e61458dc",
-                         "bytes":  43203,
+                         "sha256":  "6937c40f4d8e160f271fef2940fb47fa72d75dce229a77100149e92f5a5efb01",
+                         "bytes":  43263,
                          "tipo":  "campana"
                      },
                      {
@@ -201,8 +201,8 @@
                      },
                      {
                          "ruta":  "C:\\Users\\angel\\ghosts-client\\config\\timeline.d2.json",
-                         "sha256":  "bc65250f0206d0996c537b257ba65e5f59ef1e1f73efc6a0c07dd3115b5fac22",
-                         "bytes":  47540,
+                         "sha256":  "054bc34511ce42c08230f60e83f862d644b6e633d58f85c62da518b887712d0e",
+                         "bytes":  47554,
                          "tipo":  "payload"
                      },
                      {
@@ -308,13 +308,13 @@
                          "tipo":  "payload"
                      },
                      {
-                         "ruta":  "C:\\Users\\angel\\ghosts-client\\Ghosts.Domain.dll",
+                         "ruta":  "C:\\Users\\angel\\ghosts-client\\ghosts.domain.dll",
                          "sha256":  "e305cf2069e2ef9a16a2b9f10fab05a70ac6f0fef8042766cd52b15cf2eaa312",
                          "bytes":  77824,
                          "tipo":  "payload"
                      },
                      {
-                         "ruta":  "C:\\Users\\angel\\ghosts-client\\Ghosts.Domain.pdb",
+                         "ruta":  "C:\\Users\\angel\\ghosts-client\\ghosts.domain.pdb",
                          "sha256":  "9c07dd40ea9d39b90b84adafb276dd428aecc8771797cba357fc0f9f5984b38c",
                          "bytes":  35880,
                          "tipo":  "payload"
@@ -362,21 +362,9 @@
                          "tipo":  "payload"
                      },
                      {
-                         "ruta":  "C:\\Users\\angel\\ghosts-client\\HtmlAgilityPack.pdb",
-                         "sha256":  "1d6b2838f23393f38eff5f7c27e2812cd3328490a4b8a5e0e0ecf52a118a6002",
-                         "bytes":  325120,
-                         "tipo":  "payload"
-                     },
-                     {
                          "ruta":  "C:\\Users\\angel\\ghosts-client\\ICSharpCode.SharpZipLib.dll",
                          "sha256":  "cb9c05b5a1e1db26ff43490ee26f2e02abae3f321d2dd5ddd43a68da48eab83d",
                          "bytes":  253952,
-                         "tipo":  "payload"
-                     },
-                     {
-                         "ruta":  "C:\\Users\\angel\\ghosts-client\\ICSharpCode.SharpZipLib.pdb",
-                         "sha256":  "d14d75b91138cfda95c8396752c4935fbe8afdad12e026c0845899b460bf555e",
-                         "bytes":  121652,
                          "tipo":  "payload"
                      },
                      {
@@ -818,24 +806,6 @@
                          "tipo":  "payload"
                      },
                      {
-                         "ruta":  "C:\\Users\\angel\\ghosts-client\\microsoft.management.infrastructure.dll",
-                         "sha256":  "da87f33f8e7c4752e90e5f6cee3453fa282f89bc1042557ffcbfdb4fe3eb30aa",
-                         "bytes":  128544,
-                         "tipo":  "payload"
-                     },
-                     {
-                         "ruta":  "C:\\Users\\angel\\ghosts-client\\microsoft.management.infrastructure.native.dll",
-                         "sha256":  "be08fe270a76c547df989e79dca6f7e196486cadea99ea063425b1a66a55e7f3",
-                         "bytes":  221216,
-                         "tipo":  "payload"
-                     },
-                     {
-                         "ruta":  "C:\\Users\\angel\\ghosts-client\\microsoft.management.infrastructure.native.unmanaged.dll",
-                         "sha256":  "9bee4e35576355156f00e2e47ef57aa2c8ca64390c112f083a772f2219026293",
-                         "bytes":  28192,
-                         "tipo":  "payload"
-                     },
-                     {
                          "ruta":  "C:\\Users\\angel\\ghosts-client\\Microsoft.Net.Http.Headers.dll",
                          "sha256":  "3fae9fb43ad7c1ce9ac8d0fcb98cc893408f432d468cd6403c7c7d44c862dd5e",
                          "bytes":  74616,
@@ -869,12 +839,6 @@
                          "ruta":  "C:\\Users\\angel\\ghosts-client\\Microsoft.OpenApi.dll",
                          "sha256":  "ad82d79c47a27e210349d021d0dd0115a0ee9efa2239541ace93afba7414810f",
                          "bytes":  173960,
-                         "tipo":  "payload"
-                     },
-                     {
-                         "ruta":  "C:\\Users\\angel\\ghosts-client\\Microsoft.OpenApi.pdb",
-                         "sha256":  "f58f4cff8851050d499a5d0705112d405b71b6886765700e05117293dd80223b",
-                         "bytes":  64500,
                          "tipo":  "payload"
                      },
                      {
@@ -975,14 +939,14 @@
                      },
                      {
                          "ruta":  "C:\\Users\\angel\\ghosts-client\\recetas\\bloques_windows.env",
-                         "sha256":  "9a10ae358b853d8c2eda3520307ef26a102ce4992f06a375750c039a98264a27",
-                         "bytes":  1135,
+                         "sha256":  "1a008ae35d5108db670342a3132402d8a83ff8793401cbce6e0373eeb3cf3810",
+                         "bytes":  1105,
                          "tipo":  "payload"
                      },
                      {
                          "ruta":  "C:\\Users\\angel\\ghosts-client\\recetas\\calendario_windows.json",
-                         "sha256":  "fbc692e3882ad6781939c25cbb785f6d26b7bcb4f3f40f0de7d79f5b93ce5425",
-                         "bytes":  4593,
+                         "sha256":  "f306c2a90822fd6e8a1b058e8c4d93ce5b331a0c328a7f6bfb914abd3d1374e2",
+                         "bytes":  4388,
                          "tipo":  "payload"
                      },
                      {
@@ -1046,33 +1010,15 @@
                          "tipo":  "payload"
                      },
                      {
-                         "ruta":  "C:\\Users\\angel\\ghosts-client\\Swashbuckle.AspNetCore.Swagger.pdb",
-                         "sha256":  "f4335c60175d0a0561c5a0fb395b3f90719db5454f4d28be2e22a91b5bcf36c3",
-                         "bytes":  11864,
-                         "tipo":  "payload"
-                     },
-                     {
                          "ruta":  "C:\\Users\\angel\\ghosts-client\\Swashbuckle.AspNetCore.SwaggerGen.dll",
                          "sha256":  "47a341ff7abd2e854aad151e7ab8f1a9269ccea0d3555603b35770a54022160f",
                          "bytes":  92160,
                          "tipo":  "payload"
                      },
                      {
-                         "ruta":  "C:\\Users\\angel\\ghosts-client\\Swashbuckle.AspNetCore.SwaggerGen.pdb",
-                         "sha256":  "515ddf51e912902675c181c9154a7ff934b8ab2e808acbc168a33e1d25f1c437",
-                         "bytes":  38556,
-                         "tipo":  "payload"
-                     },
-                     {
                          "ruta":  "C:\\Users\\angel\\ghosts-client\\Swashbuckle.AspNetCore.SwaggerUI.dll",
                          "sha256":  "f0bafee2c7b469e4b9f0db7e046fa7e4c2fad500f9e2add9eeff03de177fb845",
                          "bytes":  3252736,
-                         "tipo":  "payload"
-                     },
-                     {
-                         "ruta":  "C:\\Users\\angel\\ghosts-client\\Swashbuckle.AspNetCore.SwaggerUI.pdb",
-                         "sha256":  "6af619b99bd95b1bb2797cc745e3350a086f5ab43f3861168d8ae902ce37d258",
-                         "bytes":  15404,
                          "tipo":  "payload"
                      },
                      {
@@ -1229,12 +1175,6 @@
                          "ruta":  "C:\\Users\\angel\\ghosts-client\\System.Drawing.Common.dll",
                          "sha256":  "03129fbc878bd22dfd0b0de73909e884396b6c746422963757aec4d1d47e8540",
                          "bytes":  49928,
-                         "tipo":  "payload"
-                     },
-                     {
-                         "ruta":  "C:\\Users\\angel\\ghosts-client\\System.Drawing.Common.pdb",
-                         "sha256":  "caad91b93fc62d9ddcde829e56cb47a1d196ee574df9148b0f71b724d4a02d64",
-                         "bytes":  11656,
                          "tipo":  "payload"
                      },
                      {

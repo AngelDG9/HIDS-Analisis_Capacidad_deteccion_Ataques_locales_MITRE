@@ -1,0 +1,12 @@
+﻿2026-11-12T09:58:10Z	keepalive	arranque modo=Loop pid=4852 intervalo_min=5 sink=http://192.168.65.1:9095/heartbeat powercfg_ok=True seq=0
+2026-11-12T09:58:12Z	keepalive	wu wuauserv_parado
+2026-11-12T09:58:12Z	keepalive	wu wuauserv_startup_disabled (antes=Manual)
+2026-11-12T09:58:20Z	keepalive	latido seq=1 hb=OK ka_inst=1 n_ghosts=0 pid=0 user= il=Medium ses=1 disco_mb=21284 sysmon=Running wazuh=Running wu=Stopped def=off pc=True rd=0 hosts=True armado=False dia=0 out_mb=0 hijos=1
+2026-11-12T10:00:00Z	keepalive	desarmado_pero_vivo pid=1412 user=DESKTOP-BTMCFA5\angel
+2026-11-12T10:00:01Z	keepalive	latido seq=2 hb=OK ka_inst=1 n_ghosts=1 pid=1412 user=DESKTOP-BTMCFA5\angel il=Medium ses=1 disco_mb=21281 sysmon=Running wazuh=Running wu=Stopped def=off pc=True rd=0 hosts=True armado=False dia=0 out_mb=0 hijos=1
+2026-11-12T10:05:00Z	keepalive	wu wuauserv_parado
+2026-11-12T10:05:00Z	keepalive	wu wuauserv_startup_disabled (antes=Manual)
+2026-11-12T10:05:00Z	keepalive	desarmado_pero_vivo pid=1412 user=DESKTOP-BTMCFA5\angel
+2026-11-12T10:05:01Z	keepalive	latido seq=3 hb=OK ka_inst=1 n_ghosts=1 pid=1412 user=DESKTOP-BTMCFA5\angel il=Medium ses=1 disco_mb=21278 sysmon=Running wazuh=Running wu=Stopped def=off pc=True rd=0 hosts=True armado=False dia=0 out_mb=0 hijos=1
+2026-11-12T10:10:00Z	keepalive	desarmado_pero_vivo pid=1412 user=DESKTOP-BTMCFA5\angel
+2026-11-12T10:10:01Z	keepalive	latido seq=4 hb=OK ka_inst=1 n_ghosts=1 pid=1412 user=DESKTOP-BTMCFA5\angel il=Medium ses=1 disco_mb=21276 sysmon=Running wazuh=Running wu=Stopped def=off pc=True rd=0 hosts=True armado=False dia=0 out_mb=0 hijos=1

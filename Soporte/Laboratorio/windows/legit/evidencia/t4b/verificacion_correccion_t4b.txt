@@ -1,0 +1,17 @@
+# Verificación de la corrección T4b (2026-11-12)
+
+PASS   WE0-2 filas 7255-7259 en el fichero sellado  [5 filas]
+PASS   W-07 bruto 6/90/NO  [{'caso': 'W-07', 'ini': '2026-11-12T10:05:46Z', 'fin': '2026-11-12T10:06:30Z', 'n_acciones': '6', 'n_eventos': '', 'alertas': '90', 'rule_id': '60798;60805;60807;60808;60809;67027;91823;92032;92052;92200;92213;92217', 'level': '15', 'esperado_cumplido': 'NO'}]
+PASS   W-07 filtrada 6/20/SI  [{'caso': 'W-07', 'ini': '2026-11-12T10:05:46Z', 'fin': '2026-11-12T10:06:30Z', 'n_acciones': '6', 'n_eventos': '', 'alertas': '20', 'rule_id': '67027;92032;92052', 'level': '4', 'esperado_cumplido': 'SI'}]
+PASS   W-07 exclusiones 70 (3 policy + 67 mantenimiento)  [{'artefacto_powershell_policytest': 3, 'mantenimiento_windows_fuera_de_accion': 67}]
+PASS   W-07 detalle caso 20  [20 filas]
+PASS   log bruto declara W-07=90 y esperado_no
+PASS   log filtrado declara W-07=20 y esperado_no=0
+PASS   sink cierre con stops 13:10:13 y 13:12:54
+PASS   drytest.log retirado
+PASS   drytest_2026-11-10_fuera_tanda4.log presente
+PASS   pytest >= 486  [487 passed]
+PASS   sha256sums.txt 193 entradas  [193 entradas]
+PASS   cierre 0 VMs / 0 tareas / 0 reglas / 0 procesos / variables False
+
+RESULT=PASS

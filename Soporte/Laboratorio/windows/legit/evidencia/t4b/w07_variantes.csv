@@ -1,0 +1,6 @@
+# W-07 - VARIANTES | total=90 | regla de deteccion: rule_id=67027 y level<7 | sin_ajenas=67 mantenimiento (10:07:19-10:07:29Z, fuera de [ini,fin]); sin_artefactos_ps=3 policy test (1 dentro de [ini,fin], accion 3; 2 a las 10:07:29Z)
+variante,excluidas,alertas,rule_id,level,esperado_cumplido,nota
+canonico,0,90,60798;60805;60807;60808;60809;67027;91823;92032;92052;92200;92213;92217,15,NO,sin exclusiones (bruto)
+sin_ajenas,67,23,67027;91823;92032;92052;92213,15,NO,excluye mantenimiento_windows_fuera_de_accion (67)
+sin_artefactos_ps,3,87,60798;60805;60807;60808;60809;67027;92032;92052;92200;92217,6,SI,excluye artefacto_powershell_policytest (3)
+sin_ambas,70,20,67027;92032;92052,4,SI,excluye ambos grupos (sensibilidad)

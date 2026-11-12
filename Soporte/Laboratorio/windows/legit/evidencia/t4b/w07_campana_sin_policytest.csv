@@ -1,0 +1,13 @@
+# campana_fp_windows.csv | campaña B6-W (windows-legit-prep, W2) | 11 casos | atribucion=[ini-10s,fin+60s] | eventos=[ini,fin] | agente=002/victima-windows | plataforma=windows | boveda_version=3 | acciones=w07_acciones.csv | eventos_fuente=— | sha256_casos_md=6937c40f4d8e160f271fef2940fb47fa72d75dce229a77100149e92f5a5efb01
+caso,ini,fin,n_acciones,n_eventos,alertas,rule_id,level,esperado_cumplido
+W-01,,,0,,0,,0,NO_EJECUTADO
+W-02,,,0,,0,,0,NO_EJECUTADO
+W-03,,,0,,0,,0,NO_EJECUTADO
+W-04,,,0,,0,,0,NO_EJECUTADO
+W-05,,,0,,0,,0,NO_EJECUTADO
+W-06,,,0,,0,,0,NO_EJECUTADO
+W-07,2026-11-12T10:05:46Z,2026-11-12T10:06:30Z,6,,20,67027;92032;92052,4,SI
+W-08,,,0,,0,,0,NO_EJECUTADO
+W-09,,,0,,0,,0,NO_EJECUTADO
+W-10,,,0,,0,,0,NO_EJECUTADO
+W-11,,,0,,0,,0,NO_EJECUTADO

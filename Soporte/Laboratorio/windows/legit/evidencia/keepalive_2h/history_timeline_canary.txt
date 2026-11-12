@@ -1,0 +1,27 @@
+﻿  id  |     createdutc      | handler |                                                                                                 command                                                                                                 
+------+---------------------+---------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 7260 | 2026-11-12 10:02:43 | Command | cd /d C:\lab-legit\canary && cmd /c echo CANARY-01
+ 7261 | 2026-11-12 10:02:46 | Command | cd /d C:\lab-legit\canary && echo CANARY-02 > C:\lab-legit\canary\canary_02.txt
+ 7262 | 2026-11-12 10:02:49 | Command | cd /d C:\lab-legit\canary && echo CANARY-03 >> C:\lab-legit\canary\canary_02.txt
+ 7263 | 2026-11-12 10:02:52 | Command | cd /d C:\lab-legit\canary && echo CANARY-04 && echo CANARY-04b
+ 7264 | 2026-11-12 10:02:55 | Command | cd /d C:\lab-legit\canary && dir C:\lab-legit\canary\noexiste >nul 2>&1 & if errorlevel 1 (>> C:\lab-legit\canary\errores.log echo CANARY-05)
+ 7265 | 2026-11-12 10:02:58 | Command | cd /d C:\lab-legit\canary && for /L %i in (1,1,3) do @echo CANARY-06-%i
+ 7266 | 2026-11-12 10:03:01 | Command | cd /d C:\lab-legit\canary && powershell -NoProfile -Command "Write-Output CANARY-07"
+ 7267 | 2026-11-12 10:03:05 | Command | cd /d C:\lab-legit\canary && powershell -NoProfile -Command "$c = Get-Content -LiteralPath 'C:\lab-legit\canary\canary_02.txt'; Set-Content -LiteralPath 'C:\lab-legit\canary\canary_08.txt' -Value $c"
+ 7268 | 2026-11-12 10:03:08 | Command | cd /d C:\lab-legit\canary && eventcreate /T INFORMATION /ID 100 /L APPLICATION /SO canary /D "canary 09"
+ 7269 | 2026-11-12 10:03:11 | Command | cd /d C:\lab-legit\canary && robocopy . copia canary_02.txt /NJH /NJS /NP
+ 7270 | 2026-11-12 10:03:14 | Command | cd /d C:\lab-legit\canary && curl.exe -sS --max-time 5 --version > C:\lab-legit\canary\canary_10.txt
+ 7271 | 2026-11-12 10:03:17 | Command | cd /d C:\lab-legit\canary && certutil -hashfile C:\lab-legit\canary\canary_02.txt SHA256 > C:\lab-legit\canary\canary_11.sha256 2>&1
+ 7272 | 2026-11-12 10:03:20 | Command | cd /d C:\lab-legit\canary && type C:\lab-legit\canary\canary_11.sha256
+ 7273 | 2026-11-12 10:03:23 | Command | cd /d C:\lab-legit\canary && copy /y C:\lab-legit\canary\canary_02.txt C:\lab-legit\canary\canary_13.txt
+ 7274 | 2026-11-12 10:03:26 | Command | cd /d C:\lab-legit\canary && del /f /q C:\lab-legit\canary\canary_13.txt
+ 7275 | 2026-11-12 10:03:29 | Command | cd /d C:\lab-legit\canary && md C:\lab-legit\canary\canary_dir
+ 7276 | 2026-11-12 10:03:32 | Command | cd /d C:\lab-legit\canary && rd /s /q C:\lab-legit\canary\canary_dir
+ 7277 | 2026-11-12 10:03:35 | Command | cd /d C:\lab-legit\canary && start /b cmd /c echo CANARY-18
+ 7278 | 2026-11-12 10:03:39 | Command | cd /d C:\lab-legit\canary && find /c "CANARY" C:\lab-legit\canary\canary_02.txt
+ 7279 | 2026-11-12 10:03:42 | Command | cd /d C:\lab-legit\canary && findstr /c:"CANARY" C:\lab-legit\canary\canary_02.txt
+ 7280 | 2026-11-12 10:03:45 | Command | cd /d C:\lab-legit\canary && more +0 C:\lab-legit\canary\canary_02.txt
+ 7281 | 2026-11-12 10:03:48 | Command | cd /d C:\lab-legit\canary && tar -czf C:\lab-legit\canary\canary_22.tar.gz -C C:\lab-legit\canary canary_02.txt
+(22 filas)
+
+

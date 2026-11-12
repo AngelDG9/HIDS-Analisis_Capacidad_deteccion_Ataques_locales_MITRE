@@ -1,5 +1,9 @@
 # snapshot_windows_legit.md — snapshot `lab-listo-windows-legit` (W3)
 
+> **⚠ Superado por `lab-listo-windows-legit-v2` (2026-11-12, T4/C6).** Se conserva como
+> evidencia histórica y **no se borra**. Ficha nueva:
+> `Soporte/Laboratorio/windows/legit/snapshot_windows_legit_v2.md`.
+>
 > **Bloque:** `windows-legit-prep` (W0), tanda **W3** — despliegue, controlador y snapshot.
 > **Plan:** `_fases/windows-legit-prep/plan.md` v2 `approved_by_human` (§7 W3, §16.1).
 > **Ejecutado:** 2026-11-10, por `tfg-executor`. **Sin ventana, sin campaña, sin ataques.**

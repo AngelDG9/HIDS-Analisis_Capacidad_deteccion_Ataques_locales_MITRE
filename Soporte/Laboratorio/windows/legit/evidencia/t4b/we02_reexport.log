@@ -1,0 +1,14 @@
+# WE0-2 — re-export reproducible de history_timeline (corrección T4b, 2026-11-12T14:05:46Z)
+# fuente=ghosts.history_timeline (PostgreSQL 127.0.0.1:5432, db=ghosts, user=ghosts)
+# consulta=we02_reexport_query.sql (ids 7255-7259, machine=desktop-btmcfa5)
+# comando=D:\TFG-VMs\material-ghosts\pgsql\bin\psql.exe -h 127.0.0.1 -p 5432 -U ghosts -d ghosts -P pager=off -f Soporte\Laboratorio\windows\legit\evidencia\t4b\we02_reexport_query.sql
+# salida_literal:
+  id  |     createdutc      | handler |                                                     command                                                     
+------+---------------------+---------+-----------------------------------------------------------------------------------------------------------------
+ 7255 | 2026-11-12 10:01:02 | Command | cd /d C:\Users\angel && dir C:\Users\angel\Documentos > C:\Users\angel\Documentos\we02_1.txt
+ 7256 | 2026-11-12 10:01:06 | Command | cd /d C:\Users\angel && echo we02_accion_2 > C:\Users\angel\Documentos\we02_2.txt
+ 7257 | 2026-11-12 10:01:10 | Command | powershell -NoProfile -Command "Get-ChildItem C:\Users\angel\Documentos > C:\Users\angel\Documentos\we02_3.txt"
+ 7258 | 2026-11-12 10:01:14 | Command | cd /d C:\Users\angel\Documentos && type we02_2.txt
+ 7259 | 2026-11-12 10:01:18 | Command | cd /d C:\Users\angel && where curl.exe > C:\Users\angel\Documentos\we02_5.txt
+(5 filas)
+

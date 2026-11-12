@@ -1,0 +1,39 @@
+{
+  "Status": "Run",
+  "TimeLineHandlers": [
+    {
+      "HandlerType": "Command",
+      "Initial": "",
+      "UtcTimeOn": "00:00:00",
+      "UtcTimeOff": "23:59:59",
+      "Loop": false,
+      "HandlerArgs": {},
+      "TimeLineEvents": [
+        {
+          "Command": "cd /d C:\\lab-legit\\campana && (if not exist C:\\lab-legit\\campana\\W-07 md C:\\lab-legit\\campana\\W-07) & > C:\\lab-legit\\campana\\W-07\\inicio.txt echo %DATE%_%TIME%",
+          "DelayAfter": 5000
+        },
+        {
+          "Command": "cd /d C:\\lab-legit\\campana\\W-07 && > C:\\lab-legit\\campana\\W-07\\export.csv echo referencia;area;importe && >> C:\\lab-legit\\campana\\W-07\\export.csv echo A-01;compras;1200 && >> C:\\lab-legit\\campana\\W-07\\export.csv echo A-02;ventas;980",
+          "DelayAfter": 8000
+        },
+        {
+          "Command": "cd /d C:\\lab-legit\\campana\\W-07 && powershell -NoProfile -Command \"$c = (Get-Content -LiteralPath 'C:\\lab-legit\\campana\\W-07\\export.csv') -replace ';',','; Set-Content -LiteralPath 'C:\\lab-legit\\campana\\W-07\\export.csv' -Value $c\"",
+          "DelayAfter": 6000
+        },
+        {
+          "Command": "cd /d C:\\lab-legit\\campana\\W-07 && more +0 C:\\lab-legit\\campana\\W-07\\export.csv > C:\\lab-legit\\campana\\W-07\\export_normalizado.txt",
+          "DelayAfter": 10000
+        },
+        {
+          "Command": "cd /d C:\\lab-legit\\campana\\W-07 && > C:\\lab-legit\\campana\\W-07\\hecho.txt echo RESULTADO=OK && more +0 C:\\lab-legit\\campana\\W-07\\export.csv >> C:\\lab-legit\\campana\\W-07\\hecho.txt && find /c \";\" C:\\lab-legit\\campana\\W-07\\export.csv >> C:\\lab-legit\\campana\\W-07\\hecho.txt",
+          "DelayAfter": 7000
+        },
+        {
+          "Command": "cd /d C:\\lab-legit\\campana\\W-07 && del /f /q C:\\lab-legit\\campana\\W-07\\export.csv 2>nul & del /f /q C:\\lab-legit\\campana\\W-07\\export_normalizado.txt 2>nul & > C:\\lab-legit\\campana\\W-07\\fin.txt echo %DATE%_%TIME%",
+          "DelayAfter": 544000
+        }
+      ]
+    }
+  ]
+}

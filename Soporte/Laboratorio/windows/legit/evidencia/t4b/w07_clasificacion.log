@@ -1,0 +1,19 @@
+# W-07 — clasificación reproducible (T4b)
+# fecha_utc=2026-11-12T14:56:06Z
+# detalle=Soporte\Laboratorio\windows\legit\evidencia\t4b\w07_alertas_detalle.csv
+# ventanas=Soporte\Laboratorio\windows\legit\evidencia\t4b\w07_ventanas.tsv
+# acciones=[2026-11-12T10:05:46Z,2026-11-12T10:06:30Z] atribucion=[ini-10s,fin+60s]
+# criterio: 92213 con __PSScriptPolicyTest y 91823 con Invoke-command => policy_test; ts>2026-11-12T10:06:30Z => mantenimiento; resto dentro de acciones => caso_w07
+total=90
+caso_w07: 20 (67027=10, 92052=6, 92032=4)
+artefacto_powershell_policytest: 3 (92213=2, 91823=1)
+mantenimiento_windows_fuera_de_accion: 67 (67027=52, 92200=9, 60798=1, 60805=1, 60807=1, 60808=1, 60809=1, 92217=1)
+
+# variantes (misma regla de deteccion: rule_id=67027 y level<7)
+canonico: excluidas=0 alertas=90 level=15 esperado=NO
+sin_ajenas: excluidas=67 alertas=23 level=15 esperado=NO
+sin_artefactos_ps: excluidas=3 alertas=87 level=6 esperado=SI
+sin_ambas: excluidas=70 alertas=20 level=4 esperado=SI
+caso_w07=20
+excluidas=70
+cuadre=OK

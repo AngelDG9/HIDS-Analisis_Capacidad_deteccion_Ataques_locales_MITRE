@@ -1,0 +1,13 @@
+# campana_ventanas_windows.tsv | 2 marcas | fuente=evidencia/campana/W-*/{inicio,fin}.txt | casos=11 | plataforma=windows | agente=002/victima-windows
+caso	ini	fin	motivo
+W-01			
+W-02			
+W-03			
+W-04			
+W-05			
+W-06			
+W-07	2026-11-12T10:05:46Z	2026-11-12T10:06:30Z	
+W-08			
+W-09			
+W-10			
+W-11			
