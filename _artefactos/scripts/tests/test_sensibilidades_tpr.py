@@ -129,3 +129,50 @@ def test_salida_determinista_y_cabecera(mundo, tmp_path):
     assert txt[0].startswith("# T2_sensibilidades_comparadas.csv") and "doble_uso_linux=80792" in txt[0]
     assert txt[1] == "plataforma,variante,umbral_N,casos_detectados,casos_total,TPR"
     assert len(txt) == 2 + 2 * len(S.VARIANTES) * len(S.UMBRALES)
+
+
+def test_la_ventana_canonica_es_rev1_si_hay_repeticion(mundo, tmp_path):
+    """Igual que `tabla2_ataques`: `rev1` para los casos de `repeticiones.csv`, `iter1` para el resto."""
+    lin, win, al, tp = mundo
+    # ATA001 repetido: su iter1 detecta (80792) pero su rev1 (la canonica) detecta con una regla propia de nivel 8
+    _caso(lin, "ATA001", [("2026-09-28T10:00:00.000Z", "80792", 3, "deteccion")])
+    p = lin / "ATA001_rev1-Audited.csv"
+    with open(p, "w", encoding="utf-8", newline="") as fh:
+        w = csv.writer(fh, lineterminator="\n")
+        w.writerow(COLS)
+        w.writerow(["ATA001", 1, "2026-09-28T10:00:00.000Z", "x", "5902", 8, "g", "RS1", "d", "deteccion", "", "", "", "", ""])
+    rep = tp / "rep.csv"
+    rep.write_text("ata_id,tecnica\nATA001,T1\n", encoding="utf-8")
+    sin, _ = S.calcular("linux", str(lin), str(tp / "t5_lin.csv"))
+    con, _ = S.calcular("linux", str(lin), str(tp / "t5_lin.csv"), None, S.leer_repeticiones(str(rep)))
+    assert _tpr(sin, "linux", "sin_doble_uso", 3) == 1      # con iter1: ATA001 solo tenia 80792 (doble uso)
+    assert _tpr(con, "linux", "sin_doble_uso", 3) == 2      # con rev1 (canonica): ATA001 detecta por 5902
+
+
+def test_falta_la_ventana_canonica_es_un_error_no_un_silencio(mundo, tmp_path):
+    lin, win, al, tp = mundo
+    (tp / "rep.csv").write_text("ata_id\nATA002\n", encoding="utf-8")
+    with pytest.raises(SystemExit):
+        S.calcular("linux", str(lin), str(tp / "t5_lin.csv"), None, S.leer_repeticiones(str(tp / "rep.csv")))
+
+
+T4_REPO = Path(__file__).resolve().parents[3] / "Hojas"
+
+
+@pytest.mark.skipif(not (T4_REPO / "T4_rendimiento.csv").is_file(), reason="sin Hojas/ (clon parcial)")
+def test_el_canonico_reproduce_la_tabla_T4_oficial():
+    """Si esto falla, la herramienta no esta midiendo lo mismo que la tabla del TFG."""
+    raiz = T4_REPO.parent
+
+    def t4(nombre):
+        filas = S._leer(str(T4_REPO / nombre))
+        tpr = [f for f in filas if f["metrica"] == "TPR"][0]
+        return {n: float(tpr[f"wazuh_C1_N{n}"]) for n in S.UMBRALES}
+
+    rep = S.leer_repeticiones(str(raiz / "Hojas" / "repeticiones.csv"))
+    lin, _ = S.calcular("linux", str(raiz / S.DEF_LINUX_AUDITED), str(raiz / S.DEF_T5_LINUX), None, rep)
+    win, _ = S.calcular("windows", str(raiz / S.DEF_WIN_AUDITED), str(raiz / S.DEF_T5_WIN), None, rep)
+    for plat, filas, ref in (("linux", lin, t4("T4_rendimiento.csv")), ("windows", win, t4("T4_rendimiento_windows_b2.csv"))):
+        for n in S.UMBRALES:
+            f = [x for x in filas if x["variante"] == "canonico" and x["umbral_N"] == n][0]
+            assert round(f["TPR"], 6) == round(ref[n], 6), (plat, n, f["TPR"], ref[n])

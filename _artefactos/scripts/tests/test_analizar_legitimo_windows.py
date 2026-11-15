@@ -191,3 +191,24 @@ def test_integracion_con_tabla3_la_misma_herramienta_que_linux(crudo, tmp_path):
     filas = list(csv.DictReader(io.StringIO("\n".join(txt))))
     agr = [f for f in filas if f.get("seccion") == "agregado" and f["config"] == "C1" and f["umbral"] == "0"]
     assert agr and agr[0]["#Unidades_FP"] == "17" and agr[0]["#Unidades"] == str(res["M_endpoint"])
+
+
+def test_ficheros_solapados_son_un_error_como_estricto(crudo, tmp_path):
+    """Dos ficheros con rangos que se pisan duplicarian eventos en `M`: debe parar, no sumar."""
+    otro = tmp_path / "archives2"
+    otro.mkdir()
+    (otro / "ossec-archive-23.json.gz").write_bytes(b"")
+    gz = otro / "ossec-archive-23.json.gz"
+    with gzip.open(gz, "wt", encoding="utf-8") as fh:
+        fh.write(_ev(T0 + timedelta(minutes=30), rule="67027", image="C:\a.exe") + "\n")   # dentro del rango de archives.json
+    with pytest.raises(SystemExit) as e:
+        A.analizar([str(crudo / "archives.json"), str(gz)], T0, T1, str(tmp_path / "o"))
+    assert "solapados" in str(e.value)
+
+
+def test_un_fichero_duplicado_byte_a_byte_no_cuenta_dos_veces(crudo, tmp_path):
+    copia = tmp_path / "copia.json"
+    copia.write_bytes((crudo / "archives.json").read_bytes())
+    res, _, _ = A.analizar([str(crudo / "archives.json"), str(copia)], T0, T1, str(tmp_path / "o"))
+    ref, _ = cd.contar([str(crudo / "archives.json")], T0, T1, "002", "victima-windows")
+    assert res["M_endpoint"] == ref["endpoint"]["eventos"] and res["duplicados_descartados"] == 1

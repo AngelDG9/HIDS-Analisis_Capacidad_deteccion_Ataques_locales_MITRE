@@ -13,8 +13,7 @@ un efecto de cómo se lanzó el ataque?» con **cuatro variantes iguales en las 
 | `sin_entrega_ni_doble_uso` | las dos cosas a la vez |
 
 Un caso cuenta como detectado a nivel `N` si tiene ≥1 alerta de categoría `deteccion` con
-`rule.level ≥ N` que **no** esté descontada por la variante. Se usa la iteración 1 de cada caso
-(la que da 53/55 en Linux y 54/54 en Windows en `T4`). Salida: CSV largo, determinista.
+`rule.level ≥ N` que **no** esté descontada por la variante. Se usa la ventana **canónica** de cada caso, la misma que usa `tabla2_ataques.py`: `rev1` si el caso está en `Hojas/repeticiones.csv` (9 casos de Linux) y `iter1` si no. Con ella se reproduce `T4` (Linux 53/55 a N≥3 y 2/55 a N≥7; Windows 54/54 y 2/54). Salida: CSV largo, determinista.
 
 Lo importante (se imprime al final): **el resultado principal es `canonico`**; el resto son
 sensibilidades para el anexo. Si un descuento hunde el TPR, se ve aquí por qué.
@@ -37,6 +36,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
+import metrica_hids as M  # noqa: E402
 import tabla_comun as TC  # noqa: E402
 
 csv.field_size_limit(10**9)
@@ -48,6 +48,7 @@ HEADER = ["plataforma", "variante", "umbral_N", "casos_detectados", "casos_total
 DEF_LINUX_AUDITED = "Dataset/Ataques/Resultados/Wazuh/linux/Auditado"
 DEF_WIN_AUDITED = "Dataset/Ataques/Resultados/Wazuh/windows/Auditado"
 DEF_T5_LINUX = "Hojas/T5_doble_uso.csv"
+DEF_REPETICIONES = "Hojas/repeticiones.csv"
 DEF_T5_WIN = "Hojas/T5_doble_uso_windows_b2.csv"
 DEF_ALERTAS_WIN = r"D:\TFG-VMs\crudo-ataques\alerts_ataques"
 
@@ -94,14 +95,25 @@ def mapa_padres(alertas_dir, reglas=REGLAS_ENTREGA_WIN, agent_id="002"):
     return padres
 
 
-def _casos(audited_dir):
-    """`ATA -> filas` de la iteración 1."""
+def leer_repeticiones(path):
+    """ATA que tienen repetición (`rev1` es su ventana canónica). Sin fichero: ninguno."""
+    if not path or not os.path.isfile(path):
+        return set()
+    return {r["ata_id"].strip() for r in _leer(path) if r.get("ata_id")}
+
+
+def _casos(audited_dir, repeticiones=frozenset()):
+    """`ATA -> filas` de la ventana CANÓNICA (`rev1` si hay repetición; si no, `iter1`)."""
     out = {}
     for f in sorted(glob.glob(os.path.join(audited_dir, "*_iter1-Audited.csv"))):
         ata = os.path.basename(f)[:6]
         if ata.startswith("EJEMPL"):
             continue
-        out[ata] = _leer(f)
+        win = M.ventana_canonica(ata, repeticiones)
+        cand = os.path.join(audited_dir, f"{ata}_{win}-Audited.csv")
+        if not os.path.isfile(cand):
+            raise SystemExit(f"{ata}: falta la ventana canonica {cand}")
+        out[ata] = _leer(cand)
     return out
 
 
@@ -117,8 +129,8 @@ def _descontada(fila, variante, doble_uso, padres, plataforma):
     return False
 
 
-def calcular(plataforma, audited_dir, t5_path, alertas_dir=None):
-    casos = _casos(audited_dir)
+def calcular(plataforma, audited_dir, t5_path, alertas_dir=None, repeticiones=frozenset()):
+    casos = _casos(audited_dir, repeticiones)
     doble = reglas_doble_uso(t5_path)
     padres = mapa_padres(alertas_dir) if plataforma == "windows" else None
     filas = []
@@ -154,16 +166,18 @@ def main(argv=None) -> int:
     ap.add_argument("--t5-linux", default=DEF_T5_LINUX)
     ap.add_argument("--t5-windows", default=DEF_T5_WIN)
     ap.add_argument("--alertas-windows", default=DEF_ALERTAS_WIN)
+    ap.add_argument("--repeticiones", default=DEF_REPETICIONES)
     ap.add_argument("--out", default="Hojas/T2_sensibilidades_comparadas.csv")
     a = ap.parse_args(argv)
     try:
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     except Exception:  # noqa: BLE001
         pass
-    fl, du_l = calcular("linux", a.linux_audited, a.t5_linux)
-    fw, du_w = calcular("windows", a.windows_audited, a.t5_windows, a.alertas_windows)
+    rep = leer_repeticiones(a.repeticiones)
+    fl, du_l = calcular("linux", a.linux_audited, a.t5_linux, None, rep)
+    fw, du_w = calcular("windows", a.windows_audited, a.t5_windows, a.alertas_windows, rep)
     cab = ("# T2_sensibilidades_comparadas.csv | TFG HIDS - TPR comparado Linux/Windows con variantes iguales | "
-           f"doble_uso_linux={';'.join(du_l)} | doble_uso_windows={';'.join(du_w)} | iteracion=1 | "
+           f"doble_uso_linux={';'.join(du_l)} | doble_uso_windows={';'.join(du_w)} | ventana_canonica=rev1_si_repeticiones_else_iter1 | repeticiones=" + str(len(rep)) + " | T5-windows=provisional (legitimo = baseline de 8 h; recalcular con la ventana de 72 h) | "
            "sin_entrega(linux)=canonico (el envoltorio dash ya es ruido_conocido) | "
            "sin_entrega(windows)=92052 padre sshd.exe y 92032 padre cmd.exe (plan M-23)")
     TC.write_csv(a.out, HEADER, fl + fw, comment=cab)

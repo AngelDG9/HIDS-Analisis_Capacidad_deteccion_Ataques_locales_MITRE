@@ -300,9 +300,14 @@ def analizar(archives, t0, t1, out_dir, n_acciones=504, agent_id=AGENT_ID, agent
     paths = _listar_archives(archives) if isinstance(archives, str) else list(archives)
     if not paths:
         raise SystemExit("no hay ficheros de archives en " + str(archives))
+    paths, duplicados = cd.deduplicar(paths)          # `archives.json` puede ser hardlink del dia (H-D)
     res, per_file = cd.contar(paths, t0, t1, agent_id, agent_name)
     m_ref = res["endpoint"]["eventos"]
-    dup = cd.solapes(per_file) if hasattr(cd, "solapes") else []
+    dup = cd.solapes(per_file)
+    if dup:                                            # igual que `contar_denominador --estricto`
+        a, b = dup[0]
+        raise SystemExit("--estricto: ficheros de archives con rangos solapados: "
+                         f"{os.path.basename(a['path'])} y {os.path.basename(b['path'])}")
     filas, m = leer_indice(paths, t0, t1, agent_id, agent_name)
     if m != m_ref:
         raise SystemExit(f"incoherencia: indice cuenta M={m} y contar_denominador M={m_ref}")
@@ -342,7 +347,7 @@ def analizar(archives, t0, t1, out_dir, n_acciones=504, agent_id=AGENT_ID, agent
         "FPR_canonico_N0": n0["FPR_canonico"], "FPR_sin_operador_N0": n0["FPR_sin_operador"],
         "auto_ruido_uni": sum(f["auto_ruido"] for f in filas),
         "reglas_distintas": len(cat), "n_acciones": n_acciones,
-        "ficheros": [os.path.basename(p) for p in paths], "solapes": len(dup) if dup else 0,
+        "ficheros": [os.path.basename(p) for p in paths], "duplicados_descartados": len(duplicados), "solapes": 0,
         "declaraciones": [
             "M se re-cuenta aqui con contar_denominador; coincide con el indice (comprobado)",
             "FPR_sin_operador no cambia el denominador",

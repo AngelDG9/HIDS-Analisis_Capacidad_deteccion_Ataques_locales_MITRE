@@ -1,23 +1,23 @@
-# T2_sensibilidades_comparadas.csv | TFG HIDS - TPR comparado Linux/Windows con variantes iguales | doble_uso_linux=80781;80790;80791;80792 | doble_uso_windows=67027 | iteracion=1 | sin_entrega(linux)=canonico (el envoltorio dash ya es ruido_conocido) | sin_entrega(windows)=92052 padre sshd.exe y 92032 padre cmd.exe (plan M-23)
+# T2_sensibilidades_comparadas.csv | TFG HIDS - TPR comparado Linux/Windows con variantes iguales | doble_uso_linux=80781;80790;80791;80792 | doble_uso_windows=67027 | ventana_canonica=rev1_si_repeticiones_else_iter1 | repeticiones=9 | T5-windows=provisional (legitimo = baseline de 8 h; recalcular con la ventana de 72 h) | sin_entrega(linux)=canonico (el envoltorio dash ya es ruido_conocido) | sin_entrega(windows)=92052 padre sshd.exe y 92032 padre cmd.exe (plan M-23)
 plataforma,variante,umbral_N,casos_detectados,casos_total,TPR
 linux,canonico,0,53,55,0.963636
 linux,canonico,3,53,55,0.963636
-linux,canonico,7,1,55,0.018182
+linux,canonico,7,2,55,0.036364
 linux,canonico,10,0,55,0.0
 linux,canonico,12,0,55,0.0
 linux,sin_entrega,0,53,55,0.963636
 linux,sin_entrega,3,53,55,0.963636
-linux,sin_entrega,7,1,55,0.018182
+linux,sin_entrega,7,2,55,0.036364
 linux,sin_entrega,10,0,55,0.0
 linux,sin_entrega,12,0,55,0.0
 linux,sin_doble_uso,0,2,55,0.036364
 linux,sin_doble_uso,3,2,55,0.036364
-linux,sin_doble_uso,7,1,55,0.018182
+linux,sin_doble_uso,7,2,55,0.036364
 linux,sin_doble_uso,10,0,55,0.0
 linux,sin_doble_uso,12,0,55,0.0
 linux,sin_entrega_ni_doble_uso,0,2,55,0.036364
 linux,sin_entrega_ni_doble_uso,3,2,55,0.036364
-linux,sin_entrega_ni_doble_uso,7,1,55,0.018182
+linux,sin_entrega_ni_doble_uso,7,2,55,0.036364
 linux,sin_entrega_ni_doble_uso,10,0,55,0.0
 linux,sin_entrega_ni_doble_uso,12,0,55,0.0
 windows,canonico,0,54,54,1.0
