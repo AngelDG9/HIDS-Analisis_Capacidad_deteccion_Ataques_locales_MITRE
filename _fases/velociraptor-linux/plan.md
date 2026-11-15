@@ -182,9 +182,9 @@ un artifact público cuenta como «de detección» si su definición (descripci�
 
 | # | Pregunta | Recomendación |
 |---|---|---|
-| **Q1** | ¿Servidor en el PC (D1) o en una VM? | **En el PC** |
-| **Q2** | **¿Cómo se lanzan los ataques** en las repeticiones (Wazuh con `logall` y Velociraptor)? Una sola forma para todos | Una orden local en la víctima disparada por `systemd-run` (el SSH solo la inicia), para que el «padre» sea el mismo en todos los HIDS |
-| **Q3** | ¿Ventanas legítimas separadas (Wazuh / VR) o **una sola con ambos**? | **Separadas** (ya decidido); preguntar al tutor si bastaría una |
+| **Q1** | ¿Servidor en el PC (D1) o en una VM? | **En el PC** — **DECIDIDO por el humano (15-nov)** |
+| **Q2** *(abierta; NO invalida nada de lo ya medido: solo afecta a los ataques NUEVOS. Lo antiguo se conserva como «versión 1 (por SSH)» y sirve de experimento: cuánto cambia el resultado según cómo se lanza)* | **¿Cómo se lanzan los ataques** en las repeticiones (Wazuh con `logall` y Velociraptor)? Una sola forma para todos | Una orden local en la víctima disparada por `systemd-run` (el SSH solo la inicia), para que el «padre» sea el mismo en todos los HIDS |
+| **Q3** | ¿Ventanas legítimas separadas (Wazuh / VR) o **una sola con ambos**? | **Separadas** — **DECIDIDO por el humano (15-nov)**; preguntar al tutor si bastaría una |
 | **Q4** | ¿Se aprueba medir **tres niveles** (visibilidad / detección / FP)? | **Sí** |
 | **Q5** | ¿Se aprueba la versión **más reciente** (0.77.x) en vez de la del hermano? | **Sí** (seguridad) |
 
