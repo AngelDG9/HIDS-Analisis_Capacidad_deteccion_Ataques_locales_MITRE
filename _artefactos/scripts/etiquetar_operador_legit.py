@@ -19,6 +19,8 @@ El operador de la ventana legítima Windows v2 es **mínimo por diseño**:
 | `deploy` | `win_command_line` contiene `deploy_windows.ps1` o `manifiesto_snapshot.ps1` (solo `prep`) |
 | `logs_operador` | `syscheck_path`/`win_target` bajo `\\ghosts-client\\logs\\` o con nombre `estado.json`, `keepalive.log`, `recovery.log`, `heartbeat.seq` |
 | `vmware_tools` | `win_parent_image` = `vmtoolsd.exe` (acceso del operador por VMware Tools) |
+| `ssh_operador` | `win_image` o `win_parent_image` = `sshd.exe` (el demonio OpenSSH crea un proceso por sesión y lanza el `cmd.exe /c` de cada orden del operador). **Añadido tras medir en el crudo de 2 h que el etiquetador dejaba escapar ~39 de 352 alertas** |
+| `tareas_operador` | `win_command_line` contiene `tfg-winlegit-` (`schtasks /run`, `/query` o `/delete` sobre `TFG-WinLegit-*`: recuperaciones y limpieza del operador) |
 | `logon_operador` | predicado canónico `OPERADOR_WIN` de `filtrar_ruido_windows.detectar_operador` (logon SSH/red del operador) **+** contexto de red/SSH propio de la fila: `logon_type=3`, `srcip=192.168.65.1` o cuenta `sshd_<pid>` |
 | `horario` | **opcional** (`--intervalos` + `--reglas-horarias`): fila dentro de un intervalo declarado **y** con `rule_id` de la lista. Desactivado por defecto |
 
@@ -47,7 +49,8 @@ columnas aditivas al final:
     operador_legit   0/1
     sin_operador     1 - operador_legit      (la sensibilidad que se compara con Linux)
     motivo_operador  keepalive | latido | watch | deploy | logs_operador |
-                     vmware_tools | logon_operador | horario | ""
+                     vmware_tools | ssh_operador | tareas_operador |
+                     logon_operador | horario | ""
     evidencia_operador  campo=valor que demuestra la etiqueta
 
 Se conservan las líneas de comentario `#` de la entrada y se **añade** una cabecera
@@ -115,6 +118,8 @@ MOTIVOS = (
     "deploy",
     "logs_operador",
     "vmware_tools",
+    "ssh_operador",
+    "tareas_operador",
     "logon_operador",
     "horario",
 )
@@ -137,6 +142,16 @@ FICHEROS_OPERADOR = ("estado.json", "keepalive.log", "recovery.log", "heartbeat.
 
 #: Nombre de la imagen del hypervisor que delata acceso del operador (G-W8).
 VMTOOLS = "vmtoolsd.exe"
+
+#: Demonio OpenSSH: un `sshd.exe` por sesión y de él cuelga cada `cmd.exe /c` del operador.
+SSHD = "sshd.exe"
+
+#: Tareas programadas del laboratorio (recuperación/limpieza por el operador).
+CMD_TAREAS = ("tfg-winlegit-",)
+
+#: Ficheros del operador referenciados en una LÍNEA DE COMANDOS (`type ...keepalive.log`,
+#: `type nul > ...armado.flag`). Solo cuentan dentro de `ghosts-client`.
+CMD_FICHEROS_OPERADOR = FICHEROS_OPERADOR + ("stop.flag", "armado.flag", "dia_aplicado.txt")
 
 #: Contexto de red/SSH exigido a **cualquier** `logon_*` (T3b). `67028` (4672) no
 #: trae `logon_type`: sin esta evidencia no se marca (el 4672 de `angel` en consola
@@ -222,6 +237,17 @@ def _es_logs_operador(row: dict) -> str:
     return ""
 
 
+def _cmd_toca_ficheros_operador(row: dict) -> str:
+    """Línea de comandos que lee/escribe un fichero del operador en `ghosts-client`."""
+    cmd = _norm(row.get("win_command_line") or "")
+    if "ghosts-client" not in cmd:
+        return ""
+    for f in CMD_FICHEROS_OPERADOR:
+        if f in cmd:
+            return (row.get("win_command_line") or "").strip()
+    return ""
+
+
 def contexto_red_logon(row: dict) -> str:
     """Evidencia de red/SSH de un `logon_*`; `""` si la fila no la trae.
 
@@ -261,6 +287,10 @@ def motivo_operador(row: dict, intervalos=None, reglas_horarias=()):
     if cmd:
         return ("deploy", f"win_command_line={cmd}")
 
+    cmd = _en_cmd(row, CMD_TAREAS)
+    if cmd:
+        return ("tareas_operador", f"win_command_line={cmd}")
+
     sink = _es_sink_9095(row)
     if sink:
         return ("latido", f"win_target={sink}")
@@ -269,8 +299,16 @@ def motivo_operador(row: dict, intervalos=None, reglas_horarias=()):
     if logs:
         return ("logs_operador", logs)
 
+    cmd = _cmd_toca_ficheros_operador(row)
+    if cmd:
+        return ("logs_operador", f"win_command_line={cmd}")
+
     if _base(row.get("win_parent_image") or "") == VMTOOLS:
         return ("vmware_tools", f"win_parent_image={row.get('win_parent_image')}")
+
+    for campo in ("win_parent_image", "win_image"):
+        if _base(row.get(campo) or "") == SSHD:
+            return ("ssh_operador", f"{campo}={row.get(campo)}")
 
     try:
         op = FR.detectar_operador(row)
@@ -550,19 +588,36 @@ def _autotest() -> int:
         # 10) 4672 con contexto de red (logon_type=3) -> sí
         {"timestamp_utc": "2026-11-11T15:00:02.000Z", "rule_id": "67028",
          "win_user": "angel", "event_id": "4672", "logon_type": "3"},
+        # 11) sshd.exe creado por el demonio OpenSSH (sesión del operador) -> sí
+        {"timestamp_utc": "2026-11-12T11:10:00.000Z", "rule_id": "67027",
+         "win_image": r"C:\Windows\System32\OpenSSH\sshd.exe"},
+        # 12) cmd.exe hijo de sshd.exe -> sí
+        {"timestamp_utc": "2026-11-12T11:10:01.000Z", "rule_id": "92052",
+         "win_image": r"C:\Windows\System32\cmd.exe",
+         "win_parent_image": r"C:\Windows\System32\OpenSSH\sshd.exe"},
+        # 13) recuperación por schtasks sobre una tarea del laboratorio -> sí
+        {"timestamp_utc": "2026-11-12T11:20:00.000Z", "rule_id": "67027",
+         "win_command_line": "schtasks  /run /tn TFG-WinLegit-Keepalive"},
+        # 14) lectura de un log del operador desde cmd -> sí
+        {"timestamp_utc": "2026-11-12T11:21:00.000Z", "rule_id": "67027",
+         "win_command_line": r'"c:\windows\system32\cmd.exe" /c "type C:\Users\angel\ghosts-client\keepalive.log"'},
+        # 15) `type` de un informe del usuario (no es del operador) -> NO
+        {"timestamp_utc": "2026-11-12T11:22:00.000Z", "rule_id": "67027",
+         "win_command_line": r"cmd /c type C:\Users\angel\Documentos\informes\informe.txt"},
     ]
     out, res = etiquetar(filas)
     idx = {i: out[i]["motivo_operador"] for i in range(len(out))}
     esperado = {0: "keepalive", 1: "", 2: "latido", 3: "logon_operador", 4: "",
                 5: "logs_operador", 6: "", 7: "vmware_tools", 8: "",
-                9: "logon_operador"}
+                9: "logon_operador", 10: "ssh_operador", 11: "ssh_operador",
+                12: "tareas_operador", 13: "logs_operador", 14: ""}
     assert idx == esperado, idx
-    assert res["operador"] == 6 and res["sin_operador"] == 4, res
+    assert res["operador"] == 10 and res["sin_operador"] == 5, res
     assert res["alerta_diseno"] is False, res
     f = doble_fpr(342966, 294252, 4)
     assert f["FPR_canonico"] == 0.857963, f
     assert f["FPR_sin_operador"] == round(294248 / 342966, 6), f
-    print("autotest: OK (6 operador / 4 usuario; FPR canónico reproduce 0,857963)")
+    print("autotest: OK (10 operador / 5 usuario; FPR canónico reproduce 0,857963)")
     return 0
 
 
@@ -645,8 +700,10 @@ def main(argv=None) -> int:
                 "watch": list(CMD_WATCH),
                 "deploy": list(CMD_DEPLOY),
                 "latido": f"{SINK_IP}:{SINK_PORT}",
-                "logs_operador": [RUTA_LOGS_OPERADOR] + list(FICHEROS_OPERADOR),
+                "logs_operador": [RUTA_LOGS_OPERADOR] + list(CMD_FICHEROS_OPERADOR),
                 "vmware_tools": VMTOOLS,
+                "ssh_operador": SSHD,
+                "tareas_operador": list(CMD_TAREAS),
                 "logon_operador": "filtrar_ruido_windows.detectar_operador (OPERADOR_WIN)"
                                  " + contexto de red/SSH propio (logon_type=3 |"
                                  " srcip=192.168.65.1 | sshd_<pid>)"},

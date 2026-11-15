@@ -3,7 +3,7 @@
 # Bloque `windows-legit-prep` (W3-bis). Espejo de `legitimo_72h/legitimo_host_control.ps1`.
 # ----------------------------------------------------------------------------
 # Fases:
-#   prep    : G-W1..G-W12 -> revert a `lab-listo-windows-legit` + arranque + deploy
+#   prep    : G-W1..G-W12 -> revert a `lab-listo-windows-legit-v2` + arranque + deploy
 #             idempotente + verificacion del invitado + SINK 9095 arriba y POST de
 #             prueba (si no, exit 48) + manifiesto si esta sellado (si DIFIERE, exit 46).
 #             C8: ANTES de tocar nada ejecuta `verificar_sellos_windows.py`; si el
@@ -23,6 +23,13 @@
 #   watch   : vigilancia READ-ONLY **SIN SSH AL INVITADO**: lee `heartbeat.jsonl` en el
 #             host (chivato por red). G-W13 (nuevo): frescura <= 12 min, `seq` monotono
 #             y `ka_instancias=1`. G-W5/G-W8/G-W9/G-W10/G-W11 salen del latido.
+#   cosecha : (v5, auditoria 2026-11-13) copia la evidencia del INVITADO (VM encendida, tras
+#             `t1`, ANTES de `crudo`): keepalive/recovery/estado/client.out, errores.log,
+#             22 marcas de campana, `ossec.log` del agente, EVTX (Security, Sysmon,
+#             PowerShell, System, Application), reinicios desde t0, reloj, reg/schtasks.
+#             Verifica sha256 de la copia en el host y escribe `cosecha.done` en
+#             `D:\TFG-VMs\legitimo-windows-<fecha>\cosecha\`. Es PUERTA de `stop` (exit 70)
+#             y de `cleanup` (exit 87). exit 88 = fallo de cosecha.
 #   crudo   : copia `archives` + `alerts` del manager a
 #             `D:\TFG-VMs\legitimo-windows-<fecha>\crudo\`, por **dias UTC D..D+2**
 #             (como Linux `exportar_denominador.sh:57-74`), incluyendo `.gz`, su
@@ -43,7 +50,7 @@
 # Guardarrailes (definidos aqui porque el plan los nombra sin enumerarlos; cada uno cita
 # su criterio del plan):
 #   G-W1  tareas `TFG-Baseline-*` del host desactivadas o ausentes        (R-W1/CA-W19)
-#   G-W2  snapshot `lab-listo-windows-legit` presente + los 6 previos     (CA-W11)
+#   G-W2  snapshot `lab-listo-windows-legit-v2` presente + los 7 previos (CA-W11)
 #   G-W3  disco del host D: >= 60 GB libres                               (R-W3)
 #   G-W4  receta `--check` PASS + sha256 + espejo 504=504                 (CA-W1/CA-W2)
 #   G-W5  Sysmon64/WazuhSvc Running y agente 002 Active                   (WE0-1)
@@ -53,13 +60,15 @@
 #   G-W9  sin suspension (STANDBYIDLE/HIBERNATEIDLE/HYBRIDSLEEP = 0)      (R-W4)
 #   G-W10 disco del invitado >= 4 GB + guarda 500 MB del keepalive        (R-W15)
 #   G-W11 un solo cliente vivo (1 `ghosts.exe`, 1 machineid)              (CA-W6)
-#   G-W12 host: RAM libre >= 1500 MB y Windows Update pausado             (R-W4)
+#   G-W12 host: RAM libre >= 1500 MB y Windows Update PAUSADO (politica AU)  (R-W4)
 #   G-W13 latido fresco (<= 12 min) + `seq` monotono + `ka_instancias=1`   (CA-W3b-12b)
 #   G-W14 campo `defender` del latido en `off` (si `on` => ALARMA; R4)      (T2b-1b)
+#   G-W15 pila del host viva: GHOSTS API 5000, PostgreSQL 5432, web 8080, sink 9090,
+#         webdav 9092 (conteo de acciones + descargas de la receta)  (auditoria 2026-11-13)
 #
 # Sin secretos. Uso (HOST):
 #   powershell -NoProfile -ExecutionPolicy Bypass -File windows_legit_host_control.ps1 -Phase drytest
-#   ... -Phase prep | arm -T0 2026-11-16T00:00:00Z -T1 2026-11-19T00:00:00Z | watch | crudo | stop | cleanup | status
+#   ... -Phase prep | arm -T0 2026-11-23T00:00:00Z -T1 2026-11-26T00:00:00Z | watch | cosecha | crudo | stop | cleanup | status
 #   `G-W7` decide por la ventana: con `-T0/-T1` exige `yes` dentro y `no` fuera; sin
 #   ellos usa `ventana_actual.json` (lo escribe `arm`); si tampoco existe, SKIP declarado.
 #   `watch`/`crudo`/`cleanup` aceptan `-Heartbeat` (ruta del JSONL del chivato).
@@ -73,12 +82,12 @@
 [CmdletBinding()]
 param(
   [Parameter(Mandatory = $true)]
-  [ValidateSet('prep', 'arm', 'watch', 'crudo', 'stop', 'cleanup', 'status', 'drytest')]
+  [ValidateSet('prep', 'arm', 'watch', 'cosecha', 'crudo', 'stop', 'cleanup', 'status', 'drytest')]
   [string]$Phase,
   [string]$T0 = '',
   [string]$T1 = '',
   # drytest: limita la prueba a una fase (por defecto, todas).
-  [ValidateSet('', 'prep', 'arm', 'watch', 'crudo', 'stop', 'cleanup', 'status')]
+  [ValidateSet('', 'prep', 'arm', 'watch', 'cosecha', 'crudo', 'stop', 'cleanup', 'status')]
   [string]$DryPhase = '',
   # drytest: log alternativo (la prueba negativa de G-W11 no ensucia `drytest.log`).
   [string]$DryLogPath = '',
@@ -156,10 +165,15 @@ $Vmrun   = 'C:\Program Files\VMware\VMware Workstation\vmrun.exe'
 $Vmx     = 'D:\TFG-VMs\victima-windows\victima-windows.vmx'
 $VmxLinux = 'D:\TFG-VMs\victima-linux\victima-linux.vmx'
 $VmxMgr  = 'D:\TFG-VMs\wazuh-server\wazuh-server.vmx'
-$Snap    = 'lab-listo-windows-legit'
+# Snapshot al que revierte `prep`: el v2 (294 ficheros, cliente 8.3.1 limpio, manifiesto
+# `4621046f`). ANTES apuntaba al v1 (304 ficheros con restos del cliente 8.0.0): `prep`
+# habria revertido a un estado que su propio gate de manifiesto rechaza (exit 46).
+# Auditoria 2026-11-13: el ultimo `prep` real (12-nov 09:34) fallo justo por esto.
+$Snap    = 'lab-listo-windows-legit-v2'
+$SnapV1  = 'lab-listo-windows-legit'
 $SnapsPrevios = @('base-limpia', 'lab-listo-windows', 'lab-listo-windows-baseline',
                   'lab-listo-windows-ataques', 'lab-listo-windows-ataques-ssh',
-                  'lab-listo-windows-ataques-gui')
+                  'lab-listo-windows-ataques-gui', $SnapV1)
 
 $Ssh = 'C:\Program Files\Git\usr\bin\ssh.exe'
 $Scp = 'C:\Program Files\Git\usr\bin\scp.exe'
@@ -177,6 +191,15 @@ function Log([string]$m) {
   $linea = "[$(Ts)] [$Phase] $m"
   Add-Content -Path $Log -Value $linea -Encoding utf8
   Write-Output $linea
+}
+
+function LogC([string]$m) {
+  # Igual que `Log` pero SIN `Write-Output`: dentro de una funcion que DEVUELVE un valor,
+  # `Log` mete la linea en la tuberia y contamina el retorno (`-not (f)` dejaria de
+  # detectar el fallo). Usar `LogC` en las funciones `Set-*`/`Start-*` que devuelven $bool.
+  $linea = "[$(Ts)] [$Phase] $m"
+  Add-Content -Path $Log -Value $linea -Encoding utf8
+  Write-Host $linea
 }
 
 function Invoke-Remote([string]$Cmd, [switch]$PermitirFallo) {
@@ -575,6 +598,13 @@ function Get-CrudoDest {
   return (Join-Path $CrudoBase ("legitimo-windows-" + $vent.fecha + "\crudo"))
 }
 
+function Get-CosechaDest {
+  # Evidencia del INVITADO (logs, EVTX, marcas, estado). Hermano de `crudo\` (manager).
+  $vent = Get-Ventana
+  if (-not $vent.fecha) { return '' }
+  return (Join-Path $CrudoBase ("legitimo-windows-" + $vent.fecha + "\cosecha"))
+}
+
 function Wait-KeepaliveSalida([int]$MaxSeg = 360) {
   # Espera a que el bucle `-Loop` desaparezca del invitado (parada ordenada <= 5 min).
   # Se usa el estado de la TAREA (`Running` -> `Ready`): `schtasks` no necesita comillas
@@ -587,6 +617,30 @@ function Wait-KeepaliveSalida([int]$MaxSeg = 360) {
     $t += 15
   }
   return $false
+}
+
+function Set-TamanoLogsInvitado {
+  # Auditoria 2026-11-13: en el snapshot v2 el log Security vale 20 MB (circular) y ya
+  # esta a 17 MB; PowerShell/Operational 15 MB (lleno). En 72 h Windows SOBRESCRIBIRIA lo
+  # antiguo y la copia de los `.evtx` (cosecha) quedaria truncada. El agente Wazuh envia en
+  # tiempo real, asi que `archives` no depende de esto; es la copia de respaldo del invitado.
+  # SOLO se amplia la capacidad: no cambia QUE se registra (no toca Sysmon ni auditpol).
+  $logs = [ordered]@{
+    'Security'                                  = 536870912   # 512 MB
+    'Microsoft-Windows-Sysmon/Operational'      = 268435456   # 256 MB
+    'Microsoft-Windows-PowerShell/Operational'  = 134217728   # 128 MB
+  }
+  $todoOk = $true
+  foreach ($n in $logs.Keys) {
+    $want = [int64]$logs[$n]
+    Invoke-Remote "wevtutil sl $n /ms:$want" -PermitirFallo | Out-Null
+    $gl = Invoke-Remote "wevtutil gl $n" -PermitirFallo
+    $got = -1
+    if ($gl -match '(?im)^\s*maxSize:\s*(\d+)') { $got = [int64]$Matches[1] }
+    LogC ("prep: log '" + $n + "' maxSize=" + $got + " (pedido " + $want + ")")
+    if ($got -lt $want) { $todoOk = $false }
+  }
+  return $todoOk
 }
 
 function Set-StopFlag([bool]$Crear) {
@@ -826,7 +880,83 @@ function Test-GW12 {
   $wuTxt = 'AUSENTE'
   if ($wu) { $wuTxt = "$($wu.Status)/$($wu.StartType)" }
   $wuOk = (-not $wu) -or ($wu.Status -ne 'Running')
-  return @{ ok = ($libre -ge $RamMinMb -and $wuOk); detalle = "ram_libre_mb=$libre min=$RamMinMb wu=$wuTxt" }
+  # Auditoria 2026-11-13: parar `wuauserv` NO basta (esta en Manual y `UsoSvc` lo puede
+  # arrancar). Se exige ademas la POLITICA `NoAutoUpdate=1` + `NoAutoRebootWithLoggedOnUsers=1`
+  # (la pausa del host, `legitimo_72h\pausar_windows_update.ps1 pausar`). Sin ella, el PC
+  # podria instalar y REINICIARSE durante las 72 h, lo que invalida la ventana.
+  $pol = ''
+  $polOk = $false
+  try {
+    $au = Get-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU' -ErrorAction SilentlyContinue
+    if ($au) {
+      $pol = "NoAutoUpdate=$($au.NoAutoUpdate) NoAutoReboot=$($au.NoAutoRebootWithLoggedOnUsers)"
+      $polOk = ($au.NoAutoUpdate -eq 1 -and $au.NoAutoRebootWithLoggedOnUsers -eq 1)
+    } else { $pol = 'politica_ausente' }
+  } catch { $pol = 'politica_ilegible' }
+  $det = "ram_libre_mb=$libre min=$RamMinMb wu=$wuTxt pausa_host=[$pol]"
+  if (-not $polOk) { $det += ' -> FALTA la pausa de Windows Update del host: ejecutar legitimo_72h\pausar_windows_update.ps1 pausar' }
+  return @{ ok = ($libre -ge $RamMinMb -and $wuOk -and $polOk); detalle = $det }
+}
+
+function Test-TcpAbierto([string]$Ip, [int]$Puerto, [int]$MsEspera = 1200) {
+  $c = New-Object System.Net.Sockets.TcpClient
+  try {
+    $iar = $c.BeginConnect($Ip, $Puerto, $null, $null)
+    if (-not $iar.AsyncWaitHandle.WaitOne($MsEspera)) { return $false }
+    $c.EndConnect($iar)
+    return $true
+  } catch { return $false } finally { $c.Close() }
+}
+
+# Pila del HOST que la ventana necesita VIVA las 72 h. Auditoria 2026-11-13:
+#  - GHOSTS API (:5000) + PostgreSQL (:5432): de ahi sale el conteo de acciones
+#    (`history_timeline`, W-V2). Sin API los reportes del cliente se pierden.
+#  - "Internet local" (:8080 web, :9090 paste, :9092 WebDAV): la receta y la campana de
+#    Windows tienen ~50 acciones `curl`/web contra `intranet.local`. En la prueba de 2 h
+#    hubo 32 `curl` y 0 conexiones a 8080 (nadie arranco el servidor) => descargas
+#    FALLIDAS, distintas de Linux (donde `prep` si la levantaba).
+$PilaHost = @(
+  @{ n = 'ghosts_api';   ip = '192.168.65.1'; p = 5000 },
+  @{ n = 'postgres';     ip = '127.0.0.1';    p = 5432 },
+  @{ n = 'web_8080';     ip = '192.168.65.1'; p = 8080 },
+  @{ n = 'sink_9090';    ip = '192.168.65.1'; p = 9090 },
+  @{ n = 'webdav_9092';  ip = '192.168.65.1'; p = 9092 }
+)
+
+function Test-GW15 {
+  $caidos = @()
+  foreach ($s in $PilaHost) {
+    if (-not (Test-TcpAbierto $s.ip $s.p)) { $caidos += ("{0}:{1}" -f $s.n, $s.p) }
+  }
+  if ($caidos.Count -eq 0) { return @{ ok = $true; detalle = 'pila del host viva (GHOSTS API 5000, PostgreSQL 5432, web 8080, sink 9090, webdav 9092)' } }
+  return @{ ok = $false; detalle = ('CAIDO: ' + ($caidos -join ', ')) }
+}
+
+function Start-PilaHost {
+  # Idempotente: solo lanza lo que no responde. Devuelve $true si TODO queda vivo.
+  # OJO: se lanza con `Start-Process` SIN `-Wait` y se SONDEAN los puertos. `start_ghosts.ps1`
+  # deja `postgres` y la API vivos a proposito; `-Wait` espera a TODO el arbol de procesos
+  # y `& ... | Out-Null` / `> $null` esperan a que los hijos cierren la salida: las dos
+  # variantes se COLGABAN (medido el 13-nov). Sondear el puerto es lo unico que no depende
+  # de como termine el lanzador.
+  $apiPg = (Test-TcpAbierto '192.168.65.1' 5000) -and (Test-TcpAbierto '127.0.0.1' 5432)
+  if (-not $apiPg) {
+    LogC 'prep: arrancando GHOSTS API + PostgreSQL (start_ghosts.ps1)'
+    Start-Process -FilePath 'powershell' -ArgumentList @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', (Join-Path $Ghosts 'start_ghosts.ps1')) -WindowStyle Hidden | Out-Null
+  }
+  $inet = (Test-TcpAbierto '192.168.65.1' 8080) -and (Test-TcpAbierto '192.168.65.1' 9090) -and (Test-TcpAbierto '192.168.65.1' 9092)
+  if (-not $inet) {
+    LogC 'prep: arrancando la "internet local" (start_internet_local.ps1)'
+    Start-Process -FilePath 'powershell' -ArgumentList @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', (Join-Path $Repo 'Soporte\Laboratorio\internet_local\start_internet_local.ps1')) -WindowStyle Hidden | Out-Null
+  }
+  $g = $null
+  for ($i = 0; $i -lt 45; $i++) {          # hasta ~90 s (PostgreSQL 3 s + API 8 s + web)
+    $g = Test-GW15
+    if ($g.ok) { return $true }
+    Start-Sleep -Seconds 2
+  }
+  LogC ("prep: pila del host NO levantada: " + $g.detalle)
+  return $false
 }
 
 function Test-GW13 {
@@ -876,6 +1006,7 @@ $Guardarrailes = [ordered]@{
   'G-W12' = 'Test-GW12'
   'G-W13' = 'Test-GW13'
   'G-W14' = 'Test-GW14'
+  'G-W15' = 'Test-GW15'
 }
 
 # Que guardarrailes aplican a cada fase (los demas no se evaluan en esa fase).
@@ -885,11 +1016,11 @@ $Guardarrailes = [ordered]@{
 # de forma explicita (logall_json=yes) y NO ejecuta `on` si ya estaba.
 $Aplican = @{
   prep    = @('G-W1', 'G-W2', 'G-W3', 'G-W4', 'G-W5', 'G-W6', 'G-W7', 'G-W9', 'G-W10', 'G-W12')
-  arm     = @('G-W1', 'G-W2', 'G-W4', 'G-W5', 'G-W6', 'G-W9', 'G-W10', 'G-W11', 'G-W12')
-  watch   = @('G-W5', 'G-W7', 'G-W8', 'G-W9', 'G-W10', 'G-W11', 'G-W12', 'G-W13', 'G-W14')
+  arm     = @('G-W1', 'G-W2', 'G-W4', 'G-W5', 'G-W6', 'G-W9', 'G-W10', 'G-W11', 'G-W12', 'G-W15')
+  watch   = @('G-W5', 'G-W7', 'G-W8', 'G-W9', 'G-W10', 'G-W11', 'G-W12', 'G-W13', 'G-W14', 'G-W15')
   stop    = @('G-W5', 'G-W10')
   cleanup = @('G-W1', 'G-W2', 'G-W3', 'G-W7', 'G-W12')
-  status  = @('G-W1', 'G-W2', 'G-W3', 'G-W4', 'G-W5', 'G-W6', 'G-W7', 'G-W8', 'G-W9', 'G-W10', 'G-W11', 'G-W12', 'G-W13', 'G-W14')
+  status  = @('G-W1', 'G-W2', 'G-W3', 'G-W4', 'G-W5', 'G-W6', 'G-W7', 'G-W8', 'G-W9', 'G-W10', 'G-W11', 'G-W12', 'G-W13', 'G-W14', 'G-W15')
 }
 
 function Invoke-Guardarrailes([string]$Fase) {
@@ -1045,6 +1176,10 @@ switch ($Phase) {
     Log "prep: sink OK ($($sink.motivo))"
     $r = Invoke-Guardarrailes 'prep'
     if ($r.fallos.Count -gt 0) { Log "prep ABORTADO por guardarrailes: $(($r.fallos | ForEach-Object { $_.id }) -join ',')"; exit 41 }
+    # Auditoria 2026-11-13: `prep` NO arrancaba la pila del host (GHOSTS API, PostgreSQL,
+    # internet local). Se arranca aqui (idempotente) y se exige que quede viva.
+    if (-not (Start-PilaHost)) { Log 'prep FALLO: no se pudo levantar la pila del host (GHOSTS/PostgreSQL/internet local) -> exit 40'; exit 40 }
+    Log 'prep: pila del host viva (GHOSTS API, PostgreSQL, web 8080, sink 9090, webdav 9092)'
     Log 'prep: revert a snapshot y arranque'
     & $Vmrun -T ws revertToSnapshot $Vmx $Snap | Out-Null
     if ($LASTEXITCODE -ne 0) { Log 'prep FALLO: revertToSnapshot'; exit 42 }
@@ -1059,6 +1194,10 @@ switch ($Phase) {
     # F-1.2: el `heartbeat.seq` del invitado tambien es de la ventana anterior.
     $seqArc = Invoke-Remote 'if exist C:\Users\angel\ghosts-client\heartbeat.seq (move /y C:\Users\angel\ghosts-client\heartbeat.seq C:\Users\angel\ghosts-client\heartbeat.seq.prev >nul 2>&1 & echo SEQ_ARCHIVADO) else (echo SEQ_AUSENTE)' -PermitirFallo
     Log ("prep: heartbeat.seq " + (($seqArc -replace '\s+', ' ').Trim()))
+    if (-not (Set-TamanoLogsInvitado)) {
+      Log 'prep FALLO: no se pudo ampliar/verificar el tamano de los logs de eventos del invitado -> exit 49'
+      exit 49
+    }
     Log 'prep: deploy idempotente'
     & powershell -NoProfile -ExecutionPolicy Bypass -File $Deploy -Phase apply
     if ($LASTEXITCODE -ne 0) { Log 'prep FALLO: deploy'; exit 44 }
@@ -1078,6 +1217,14 @@ switch ($Phase) {
       Log "prep FALLO: lista negra 7.3 con residuos ($malos) -> exit 46"; exit 46
     }
     Log 'prep: lista negra 7.3 OK (0 residuos)'
+    # Prueba REAL de extremo a extremo de la "internet local" DESDE el invitado (antes de t0,
+    # el operador puede entrar por SSH): la receta/campana hacen ~50 `curl` a intranet.local.
+    $web = Invoke-Remote 'curl.exe -sS -o NUL -w %{http_code} http://intranet.local:8080/' -PermitirFallo
+    if ($web -notmatch '200') {
+      Log ("prep FALLO: el invitado no llega a http://intranet.local:8080/ (respuesta='" + (($web -replace '\s+', ' ').Trim()) + "') -> exit 40")
+      exit 40
+    }
+    Log 'prep: internet local alcanzable desde el invitado (HTTP 200)'
     # Manifiesto esperado (T2b-2): el sello `manifiesto_esperado.json` lo genera
     # `manifiesto_snapshot.ps1` con el deploy 8.3.1 ya aplicado. Si existe y DIFIERE,
     # `prep` aborta con 46 (no se arma). Si no existe, SKIP declarado (no se inventa).
@@ -1192,6 +1339,139 @@ switch ($Phase) {
     if ($r.fallos.Count -gt 0) { exit 60 }
   }
 
+  'cosecha' {
+    # R-02 (auditoria del plan): `stop`/`cleanup` no copiaban NADA del invitado; al apagar o
+    # revertir la VM se perdian keepalive.log, recovery.log, las marcas de la campana, el
+    # ossec.log del agente y los EVTX. Esta fase lo copia (VM ENCENDIDA, tras `t1`), verifica
+    # los hashes en el host y escribe `cosecha.done`, que es PUERTA de `stop` y `cleanup`
+    # (exit 87). Se ejecuta ANTES de `crudo` y de `cleanup`.
+    $vent = Get-Ventana
+    if (-not $vent.fecha) { Log 'cosecha FALLO: sin ventana_actual.json (no se sabe la fecha)'; exit 88 }
+    if (-not (Get-VmEnMarcha $Vmx)) { Log 'cosecha FALLO: la VM Windows esta apagada (la cosecha exige la VM encendida)'; exit 88 }
+    $dest = Get-CosechaDest
+    if (-not $dest) { Log 'cosecha FALLO: sin fecha de ventana'; exit 88 }
+    $ant = Join-Path $dest 'cosecha.done'
+    if (Test-Path $ant) { Log "cosecha: AVISO ya existia cosecha.done; se rehace ($ant)"; Remove-Item -LiteralPath $ant -Force }
+    New-Item -ItemType Directory -Force -Path $dest | Out-Null
+    # Rutas del invitado con `/`: PowerShell 5.1 pierde las `\` al pasar argumentos por SSH
+    # (medido: `C:Usersangelcosecha_invitado.ps1`); el resto del controlador ya lo hace asi.
+    $stageG = 'C:/Users/angel/cosecha_stage'
+    $scriptG = 'C:/Users/angel/cosecha_invitado.ps1'
+    $scriptH = Join-Path $Win 'legit\cosecha_invitado.ps1'
+    if (-not (Test-Path $scriptH)) { Log "cosecha FALLO: falta $scriptH"; exit 88 }
+    Log "cosecha: copiando evidencia del invitado a $dest"
+
+    # reloj: host antes/despues del script del invitado (W-V9; |delta| <= 2 s en cosecha)
+    $hostAntes = (Get-Date).ToUniversalTime()
+    $eap = $ErrorActionPreference; $ErrorActionPreference = 'Continue'
+    & $Scp -i $Key -o BatchMode=yes -o ConnectTimeout=10 -o StrictHostKeyChecking=accept-new -o LogLevel=ERROR $scriptH ("angel@192.168.65.130:" + $scriptG) 2>&1 | Out-Null
+    $rcPush = $LASTEXITCODE
+    $ErrorActionPreference = $eap
+    if ($rcPush -ne 0) { Log "cosecha FALLO: no se pudo copiar el script al invitado (scp rc=$rcPush)"; exit 88 }
+    $desde = if ($vent.t0) { ([datetime]$vent.t0).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ') } else { '' }
+    $cmdG = "powershell -NoProfile -ExecutionPolicy Bypass -File $scriptG -Stage $stageG"
+    if ($desde) { $cmdG += " -Desde $desde" }
+    $hasta = if ($vent.t1) { ([datetime]$vent.t1).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ') } else { '' }
+    if ($hasta) { $cmdG += " -Hasta $hasta" }
+    $outG = Invoke-Remote $cmdG -PermitirFallo
+    $hostDespues = (Get-Date).ToUniversalTime()
+    if (-not $outG -or $outG -notmatch 'COSECHA_INVITADO_OK') {
+      Log ("cosecha FALLO: el script del invitado no termino OK :: " + (($outG -replace '\s+', ' ').Trim()))
+      exit 88
+    }
+    $nAvisos = 0
+    if ($outG -match 'COSECHA_INVITADO_AVISOS=(\d+)') { $nAvisos = [int]$Matches[1] }
+    $nFich = 0
+    if ($outG -match 'COSECHA_INVITADO_FICHEROS=(\d+)') { $nFich = [int]$Matches[1] }
+    $guestUtc = ''
+    if ($outG -match '(?m)^AVISO ') { Log ("cosecha: avisos del invitado: " + (($outG -split "`r?`n" | Where-Object { $_ -match '^AVISO ' }) -join ' ; ')) }
+
+    # traer el stage al host (scp -r) y renombrarlo a `invitado`
+    $dstInv = Join-Path $dest 'invitado'
+    if (Test-Path $dstInv) { Remove-Item -LiteralPath $dstInv -Recurse -Force }
+    $eap = $ErrorActionPreference; $ErrorActionPreference = 'Continue'
+    $scpLog = (& $Scp -i $Key -o BatchMode=yes -o ConnectTimeout=10 -o StrictHostKeyChecking=accept-new -o LogLevel=ERROR -r ("angel@192.168.65.130:" + $stageG) $dest 2>&1 | Out-String)
+    $rcScp = $LASTEXITCODE
+    $ErrorActionPreference = $eap
+    $traido = Join-Path $dest 'cosecha_stage'
+    if ($rcScp -ne 0 -or -not (Test-Path $traido)) {
+      Log ("cosecha FALLO: scp -r del stage rc=$rcScp :: " + (($scpLog -replace '\s+', ' ').Trim())); exit 88
+    }
+    Rename-Item -LiteralPath $traido -NewName 'invitado'
+
+    # verificacion de la copia: sha256 del HOST contra `MANIFEST_INVITADO.tsv` del invitado
+    $manG = Join-Path $dstInv 'MANIFEST_INVITADO.tsv'
+    if (-not (Test-Path $manG)) { Log 'cosecha FALLO: falta MANIFEST_INVITADO.tsv en la copia'; exit 87 }
+    $malos = @()
+    $verif = 0
+    foreach ($ln in @(Get-Content -LiteralPath $manG | Select-Object -Skip 1)) {
+      $c = $ln -split "`t"
+      if ($c.Count -lt 3) { continue }
+      $f = Join-Path $dstInv $c[0]
+      if (-not (Test-Path -LiteralPath $f)) { $malos += ("FALTA " + $c[0]); continue }
+      $h = (Get-FileHash -LiteralPath $f -Algorithm SHA256).Hash.ToLower()
+      if ($h -ne $c[2]) { $malos += ("HASH " + $c[0]) } else { $verif++ }
+    }
+    if ($malos.Count -gt 0) {
+      Log ("cosecha FALLO: la copia NO coincide con el invitado (" + $malos.Count + " ficheros): " + (($malos | Select-Object -First 8) -join ' ; ') + ' -> exit 87')
+      exit 87
+    }
+    # reloj del invitado frente al host (W-V9: |delta| <= 2 s). Se muestrea 3 veces, cada una
+    # con el instante del host JUSTO antes y despues de leer el reloj del invitado (el
+    # arranque de powershell en el invitado mete ~0,5 s de sesgo positivo), y se toma la
+    # mediana. (Version anterior: comparaba `reloj.txt` del inicio del script con el punto
+    # medio de TODO el script y daba ~-4 s falsos.)
+    $deltaS = 'n/d'
+    $muestras = @()
+    for ($i = 0; $i -lt 3; $i++) {
+      $h1 = [DateTime]::UtcNow.Ticks
+      $gt = Invoke-Remote 'powershell -NoProfile -Command [DateTime]::UtcNow.Ticks' -PermitirFallo
+      $h2 = [DateTime]::UtcNow.Ticks
+      if ($gt -match '(\d{17,19})') {
+        $muestras += (([double]([int64]$Matches[1]) - (($h1 + $h2) / 2.0)) / 1e7)
+      }
+    }
+    if ($muestras.Count -gt 0) {
+      $ord = @($muestras | Sort-Object)
+      $deltaS = [math]::Round($ord[[int][math]::Floor(($ord.Count - 1) / 2)], 2)
+    }
+    $relojTxt = Join-Path $dstInv 'reloj.txt'
+    if (Test-Path $relojTxt) {
+      $l = (Get-Content -LiteralPath $relojTxt | Where-Object { $_ -match '^guest_utc=' } | Select-Object -First 1)
+      if ($l) { $guestUtc = ($l -replace '^guest_utc=', '').Trim() }
+    }
+    # limpieza en el invitado (no deja residuos para el snapshot final)
+    Invoke-Remote ("rmdir /s /q " + ($stageG -replace '/', '\')) -PermitirFallo | Out-Null
+    Invoke-Remote ("del /f /q " + ($scriptG -replace '/', '\')) -PermitirFallo | Out-Null
+
+    # MANIFEST del host (toda la carpeta) y `cosecha.done`
+    $man = Join-Path $dest 'MANIFEST.tsv'
+    $lineas = @("fichero`tbytes`tsha256")
+    foreach ($f in @(Get-ChildItem -Path $dest -Recurse -File | Where-Object { $_.FullName -ne $man -and $_.Name -ne 'cosecha.done' })) {
+      $h = (Get-FileHash -LiteralPath $f.FullName -Algorithm SHA256).Hash.ToLower()
+      $lineas += ("{0}`t{1}`t{2}" -f $f.FullName, $f.Length, $h)
+    }
+    $lineas | Set-Content -Path $man -Encoding utf8
+    $shaMan = (Get-FileHash -LiteralPath $man -Algorithm SHA256).Hash.ToLower()
+    $evtx = @(Get-ChildItem -Path (Join-Path $dstInv 'evtx') -Filter *.evtx -ErrorAction SilentlyContinue)
+    @(
+      "cosecha_utc=$(Ts)",
+      "fecha=$($vent.fecha)",
+      "t0=$($vent.t0)",
+      "t1=$($vent.t1)",
+      "ficheros_invitado=$nFich",
+      "ficheros_verificados=$verif",
+      "avisos_invitado=$nAvisos",
+      "evtx=$($evtx.Count)",
+      "evtx_bytes=$(($evtx | Measure-Object -Property Length -Sum).Sum)",
+      "delta_reloj_s=$deltaS",
+      "guest_utc=$guestUtc",
+      "manifest_sha256=$shaMan"
+    ) | Set-Content -Path (Join-Path $dest 'cosecha.done') -Encoding utf8
+    Log "cosecha OK: $dest (ficheros=$nFich verificados=$verif avisos=$nAvisos evtx=$($evtx.Count) delta_reloj_s=$deltaS manifest=$shaMan)"
+    if ($deltaS -ne 'n/d' -and [math]::Abs([double]$deltaS) -gt 2) { Log "cosecha AVISO: reloj del invitado desfasado $deltaS s (W-V9 pide <= 2 s)" }
+  }
+
   'crudo' {
     # C-4: copia el crudo del manager ANTES de apagar `logall_json`. Es la regla dura
     # de `state.md:8-18`: sin `archives` no se puede re-puntuar con reglas nuevas.
@@ -1281,6 +1561,31 @@ exit 0
       $sub = if ($p -match '/archives/') { 'archives' } else { 'alerts' }
       Invoke-Manager "sudo -S -p '' cp '$p' '$stage/$sub/'" | Out-Null
     }
+    # Auditoria 2026-11-13: ademas de archives/alerts se guarda la EVIDENCIA DE PERDIDAS del
+    # manager: `ossec.log` (avisos "Package dropped", "queue is full"), los contadores
+    # `events_dropped` de analisisd/remoted y el disco. Sin esto no se puede demostrar que
+    # `archives` esta completo. (El 08-nov-2026 el manager ya registro 1 "Package dropped".)
+    $ym0 = ([datetime]$t0Utc).ToUniversalTime().ToString('yyyy/MMM', [Globalization.CultureInfo]::InvariantCulture)
+    $ym2 = ([datetime]$t0Utc).ToUniversalTime().AddDays(2).ToString('yyyy/MMM', [Globalization.CultureInfo]::InvariantCulture)
+    $mgrSh = @'
+S="__STAGE__"
+mkdir -p "$S/manager"
+cp /var/ossec/logs/ossec.log "$S/manager/" 2>/dev/null
+for f in /var/ossec/var/run/wazuh-analysisd.state /var/ossec/var/run/wazuh-remoted.state; do
+  [ -f "$f" ] && cp "$f" "$S/manager/"
+done
+for ym in __YM0__ __YM2__; do
+  for g in /var/ossec/logs/$ym/ossec-*.log.gz; do [ -f "$g" ] && cp "$g" "$S/manager/"; done
+done
+df -h / > "$S/manager/df.txt" 2>&1
+date -u > "$S/manager/date_utc.txt"
+echo MANAGER_LOGS_OK
+'@
+    $mgrSh = $mgrSh.Replace('__STAGE__', $stage).Replace('__YM0__', $ym0).Replace('__YM2__', $ym2)
+    $b64m = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($mgrSh))
+    $mgrOut = Invoke-Manager "sudo -S -p '' bash -c 'echo $b64m | base64 -d | bash'"
+    $mgrLogsOk = ($mgrOut -and $mgrOut -match 'MANAGER_LOGS_OK')
+    if (-not $mgrLogsOk) { Log 'crudo AVISO: no se pudieron copiar ossec.log/estados del manager (evidencia de perdidas incompleta)' }
     Invoke-Manager "sudo -S -p '' chmod -R a+rX $stage" | Out-Null
     $eap = $ErrorActionPreference; $ErrorActionPreference = 'Continue'
     $scpLog = @()
@@ -1288,6 +1593,10 @@ exit 0
     $rc1 = $LASTEXITCODE
     $scpLog += (& $Scp -i (Get-ManagerKey) -o BatchMode=yes -o ConnectTimeout=10 -o StrictHostKeyChecking=accept-new -o LogLevel=ERROR -r "angel@192.168.65.128:$stage/alerts" $dest 2>&1 | Out-String)
     $rc2 = $LASTEXITCODE
+    if ($mgrLogsOk) {
+      $scpLog += (& $Scp -i (Get-ManagerKey) -o BatchMode=yes -o ConnectTimeout=10 -o StrictHostKeyChecking=accept-new -o LogLevel=ERROR -r "angel@192.168.65.128:$stage/manager" $dest 2>&1 | Out-String)
+      if ($LASTEXITCODE -ne 0) { $rc2 = $LASTEXITCODE }
+    }
     $ErrorActionPreference = $eap
     Invoke-Manager "sudo -S -p '' rm -rf $stage" | Out-Null
     if ($rc1 -ne 0 -or $rc2 -ne 0) {
@@ -1347,14 +1656,22 @@ exit 0
   'stop' {
     # Orden critico: no se para la ventana sin el crudo copiado. Se acepta el
     # `crudo.done` nuevo (fase `crudo`) o el `cosecha.done` heredado de W3.
+    # Auditoria 2026-11-13 (R-02/R-03): ahora se exigen LAS DOS puertas: `crudo.done`
+    # (manager) y `cosecha.done` (invitado). `stop` apaga la VM: sin la cosecha se perderia
+    # la evidencia del invitado. (Antes bastaba uno de los dos, o un `cosecha.done` heredado.)
     $vent = Get-Ventana
     $crudoDone = ''
-    if ($vent.fecha) { $crudoDone = Join-Path (Get-CrudoDest) 'crudo.done' }
-    $tieneCrudo = ($vent.fecha -and (Test-Path $crudoDone))
-    if (-not $tieneCrudo -and -not (Test-Path $Cosecha)) {
-      Log "stop BLOQUEADO: no existe crudo.done ($crudoDone) ni cosecha.done (orden critico)"; exit 70
+    $cosechaDone = ''
+    if ($vent.fecha) {
+      $crudoDone = Join-Path (Get-CrudoDest) 'crudo.done'
+      $cosechaDone = Join-Path (Get-CosechaDest) 'cosecha.done'
     }
-    Log ("stop: crudo=" + $(if ($tieneCrudo) { 'crudo.done' } else { 'cosecha.done' }))
+    $tieneCrudo = ($vent.fecha -and (Test-Path $crudoDone))
+    $tieneCosecha = ($vent.fecha -and (Test-Path $cosechaDone))
+    if (-not ($tieneCrudo -and $tieneCosecha)) {
+      Log "stop BLOQUEADO: faltan puertas (crudo.done=$tieneCrudo cosecha.done=$tieneCosecha; orden critico: cosecha -> crudo -> stop)"; exit 70
+    }
+    Log 'stop: crudo.done y cosecha.done presentes'
     # C-8: parada ordenada del bucle (`stop.flag`), retirada del flag y parada del sink.
     if (Get-VmEnMarcha $Vmx) {
       Log 'stop: creando stop.flag'
@@ -1381,6 +1698,13 @@ exit 0
       exit 84
     }
     Log "cleanup: crudo.done presente ($crudoDone)"
+    # R-02: `cleanup` APAGA la VM del invitado; sin la cosecha se perderia su evidencia.
+    $cosechaDone = Join-Path (Get-CosechaDest) 'cosecha.done'
+    if (-not (Test-Path $cosechaDone)) {
+      Log "cleanup BLOQUEADO: no existe cosecha.done ($cosechaDone) -> exit 87 (ejecuta -Phase cosecha con la VM encendida)"
+      exit 87
+    }
+    Log "cleanup: cosecha.done presente ($cosechaDone)"
     # C-8: parada ordenada del bucle + parada del sink ANTES de tocar el manager.
     if (Get-VmEnMarcha $Vmx) {
       Set-StopFlag $true
@@ -1409,6 +1733,13 @@ exit 0
       $pgParado = ($LASTEXITCODE -ne 0)
       Log "cleanup: GHOSTS/PostgreSQL parados (api_procesos=$apiViva postgres_parado=$pgParado)"
       if ($apiViva -gt 0) { Log 'cleanup FALLO: la GHOSTS API sigue viva'; exit 83 }
+      $stopInet = Join-Path $Repo 'Soporte\Laboratorio\internet_local\stop_internet_local.ps1'
+      if (Test-Path $stopInet) {
+        & powershell -NoProfile -ExecutionPolicy Bypass -File $stopInet | Out-Null
+        $inetViva = @(8080, 9090, 9092 | Where-Object { Test-TcpAbierto '192.168.65.1' $_ })
+        Log ("cleanup: internet local parada (puertos aun abiertos=" + $inetViva.Count + ")")
+        if ($inetViva.Count -gt 0) { Log 'cleanup FALLO: la internet local sigue viva'; exit 83 }
+      }
     } else {
       Log "cleanup AVISO: no existe stop_ghosts.ps1 ($stopGhosts)"
     }

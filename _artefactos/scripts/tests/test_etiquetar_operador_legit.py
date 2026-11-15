@@ -238,3 +238,69 @@ def test_cli_columnas_auditoria_y_determinismo(tmp_path):
                                "win_command_line=" + filas[0]["win_command_line"],
                                "motivo": "keepalive", "rule_id": "67027",
                                "timestamp_utc": "2026-11-11T15:00:00.000Z"}]
+
+
+# --------------------------------------------------------------------------
+# Cobertura medida en el crudo de 2 h (13-nov): sshd, schtasks del laboratorio,
+# lectura de ficheros del operador. Antes se escapaban ~39 de 352 alertas.
+# --------------------------------------------------------------------------
+SSHD = r"C:\Windows\System32\OpenSSH\sshd.exe"
+CMD = r"C:\Windows\System32\cmd.exe"
+
+
+def test_sshd_proceso_y_hijo_de_sshd_son_operador():
+    proc = fila(rule_id="67027", win_image=SSHD)
+    hijo = fila(rule_id="92052", win_image=CMD, win_parent_image=SSHD)
+    assert E.motivo_operador(proc)[0] == "ssh_operador"
+    assert E.motivo_operador(hijo)[0] == "ssh_operador"
+
+
+def test_schtasks_de_tareas_del_laboratorio_es_operador():
+    r = fila(win_command_line="schtasks  /run /tn TFG-WinLegit-Keepalive")
+    assert E.motivo_operador(r)[0] == "tareas_operador"
+    r2 = fila(win_command_line=r'"c:\windows\system32\cmd.exe" /c "schtasks /run /tn TFG-WinLegit-Actividad"')
+    assert E.motivo_operador(r2)[0] == "tareas_operador"
+
+
+def test_linea_de_comandos_sobre_ficheros_del_operador():
+    r = fila(win_command_line=r'"c:\windows\system32\cmd.exe" /c "type C:\Users\angel\ghosts-client\keepalive.log"')
+    assert E.motivo_operador(r)[0] == "logs_operador"
+    r2 = fila(win_command_line=r"cmd /c type nul > C:\Users\angel\ghosts-client\armado.flag")
+    assert E.motivo_operador(r2)[0] == "logs_operador"
+
+
+def test_actividad_legitima_parecida_no_se_marca():
+    """Mismos binarios que usa el operador, pero sobre rutas/tareas del usuario: NO."""
+    for cmd in (
+        r"cmd /c type C:\Users\angel\Documentos\informes\informe.txt",
+        r"schtasks /query /tn \Microsoft\Windows\Defrag\ScheduledDefrag",
+        r"cmd /c tasklist /nh",
+        r"cmd /c type C:\lab-legit\campana\W-03\keepalive.log",   # sin `ghosts-client`
+    ):
+        assert E.motivo_operador(fila(win_command_line=cmd)) is None, cmd
+
+
+def test_las_recetas_legitimas_no_disparan_ninguna_regla_nueva():
+    """Garantía de no sobre-marcar: ninguna acción de w1/w2/w3 ni de la campaña es operador."""
+    raiz = Path(__file__).resolve().parents[3] / "Soporte" / "Laboratorio" / "windows" / "recetas"
+    malas = []
+    for f in ("w1.json", "w2.json", "w3.json"):
+        txt = (raiz / f).read_text(encoding="utf-8")
+        for cmd in _comandos_json(txt):
+            hit = E.motivo_operador(fila(win_command_line=cmd))
+            if hit and hit[0] in ("ssh_operador", "tareas_operador", "logs_operador"):
+                malas.append((f, hit, cmd[:120]))
+    assert not malas, malas[:5]
+
+
+def _comandos_json(txt: str):
+    def walk(o):
+        if isinstance(o, dict):
+            for v in o.values():
+                yield from walk(v)
+        elif isinstance(o, list):
+            for v in o:
+                yield from walk(v)
+        elif isinstance(o, str):
+            yield o
+    return list(walk(json.loads(txt)))

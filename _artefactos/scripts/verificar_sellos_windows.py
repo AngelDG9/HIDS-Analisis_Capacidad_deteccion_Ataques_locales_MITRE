@@ -60,6 +60,9 @@ RUTAS_CRITICAS = (
     # sink del latido y procedencia del cliente
     "Soporte/Laboratorio/windows/legit/heartbeat_sink.py",
     "Soporte/Laboratorio/windows/legit/heartbeat_sink_ctl.ps1",
+    # auditoria 2026-11-13: vigilante del host (R-01) y cosecha del invitado (R-02)
+    "Soporte/Laboratorio/windows/legit/watch_loop.ps1",
+    "Soporte/Laboratorio/windows/legit/cosecha_invitado.ps1",
     "Soporte/Laboratorio/windows/legit/BUILD.md",
     "Soporte/Laboratorio/windows/legit/comparabilidad_windows.md",
     "Soporte/Laboratorio/windows/legit/snapshot_windows_legit.md",
@@ -76,6 +79,7 @@ RUTAS_CRITICAS = (
     "_artefactos/scripts/verificar_paridad_windows.py",
     "_artefactos/scripts/verificar_sellos_windows.py",
     "_artefactos/scripts/etiquetar_operador_legit.py",
+    "_artefactos/scripts/analizar_ensayo_windows.py",
     "_artefactos/scripts/filtrar_ruido_windows.py",
     "_artefactos/scripts/contar_denominador.py",
     # tests
@@ -91,6 +95,8 @@ RUTAS_CRITICAS = (
     "_artefactos/scripts/tests/test_etiquetar_operador_legit.py",
     "_artefactos/scripts/tests/test_filtrar_ruido_windows.py",
     "_artefactos/scripts/tests/test_contar_denominador.py",
+    "_artefactos/scripts/tests/test_watch_cosecha_windows.py",
+    "_artefactos/scripts/tests/test_analizar_ensayo_windows.py",
 )
 
 

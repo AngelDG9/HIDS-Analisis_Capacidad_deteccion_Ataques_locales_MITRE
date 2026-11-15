@@ -148,9 +148,23 @@ function Build-Payload {
     if (-not (Test-Path (Join-Path $Guest $f))) { throw "falta guest\$f" }
   }
 
-  if (Test-Path $Stage) { Remove-Item -LiteralPath $Stage -Recurse -Force }
-  New-Item -ItemType Directory -Force -Path (Join-Path $Payload 'client') | Out-Null
-  New-Item -ItemType Directory -Force -Path (Join-Path $Payload 'campana') | Out-Null
+  # Auditoria 2026-11-15: el prep real dejo `payload\campana` como un FICHERO (el CSV) en lugar de
+  # una carpeta con los 2 ficheros, y `robocopy campana` fallo en el invitado (rc=16). En
+  # aislado el mismo codigo funciona: lo mas probable es que `Remove-Item -Recurse` sobre el
+  # stage viejo (15 MB de DLL, con el antivirus del host escaneando) devuelva antes de que
+  # NTFS termine de borrar y las carpetas recien creadas queden en estado raro. Ahora: (1) se
+  # ESPERA a que el stage desaparezca, (2) las carpetas se crean con la API de .NET, (3) cada
+  # fichero se copia a una ruta de FICHERO explicita (nunca a una carpeta que quiza no exista)
+  # y (4) se VERIFICA la estructura antes de comprimir. Falla pronto y claro.
+  if (Test-Path $Stage) {
+    for ($i = 0; ($i -lt 40) -and (Test-Path $Stage); $i++) {
+      Remove-Item -LiteralPath $Stage -Recurse -Force -ErrorAction SilentlyContinue
+      if (Test-Path $Stage) { Start-Sleep -Milliseconds 750 }
+    }
+    if (Test-Path $Stage) { throw "no se pudo limpiar el stage $Stage (algo lo tiene bloqueado)" }
+  }
+  [void][System.IO.Directory]::CreateDirectory((Join-Path $Payload 'client'))
+  [void][System.IO.Directory]::CreateDirectory((Join-Path $Payload 'campana'))
 
   # Cliente (sin app.publish: es la copia de publicacion, no la usa ghosts.exe)
   $excluir = @('app.publish', 'logs', 'instance', 'client.out', 'client.out.1')
@@ -183,7 +197,19 @@ function Build-Payload {
 
   # Documentos de la campana (pre-registro; los casos W-XX los crea la receta)
   foreach ($f in @('casos_windows.md', 'campana_windows.csv')) {
-    Copy-Item (Join-Path $Campana $f) (Join-Path $Payload 'campana') -Force
+    Copy-Item -LiteralPath (Join-Path $Campana $f) -Destination (Join-Path (Join-Path $Payload 'campana') $f) -Force
+  }
+  # Verificacion estructural del payload ANTES de comprimir (falla pronto y claro).
+  if (-not (Test-Path -LiteralPath (Join-Path $Payload 'campana') -PathType Container)) {
+    throw "payload mal formado: '$Payload\campana' no es una carpeta"
+  }
+  foreach ($f in @('casos_windows.md', 'campana_windows.csv')) {
+    if (-not (Test-Path -LiteralPath (Join-Path (Join-Path $Payload 'campana') $f) -PathType Leaf)) {
+      throw "payload mal formado: falta campana\$f"
+    }
+  }
+  if (-not (Test-Path -LiteralPath (Join-Path $Payload 'client\ghosts.exe') -PathType Leaf)) {
+    throw "payload mal formado: falta client\ghosts.exe"
   }
 
   if (Test-Path $Zip) { Remove-Item -LiteralPath $Zip -Force }
