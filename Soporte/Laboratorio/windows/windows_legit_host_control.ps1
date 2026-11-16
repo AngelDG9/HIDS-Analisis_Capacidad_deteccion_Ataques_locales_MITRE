@@ -895,7 +895,14 @@ function Test-GW12 {
   } catch { $pol = 'politica_ilegible' }
   $det = "ram_libre_mb=$libre min=$RamMinMb wu=$wuTxt pausa_host=[$pol]"
   if (-not $polOk) { $det += ' -> FALTA la pausa de Windows Update del host: ejecutar legitimo_72h\pausar_windows_update.ps1 pausar' }
-  return @{ ok = ($libre -ge $RamMinMb -and $wuOk -and $polOk); detalle = $det }
+  # Medido en el ensayo WE0 (16-nov-2026): Windows (Update Medic) REARRANCA `wuauserv` por su
+  # cuenta aunque la pausa este aplicada (3 alarmas en 9 h, siempre `wu=Running/Manual` con la
+  # politica puesta y la RAM de sobra). Lo que EVITA que se instale algo o se reinicie el PC es
+  # la POLITICA (NoAutoUpdate=1 + NoAutoRebootWithLoggedOnUsers=1), no que el servicio este
+  # parado: `wuauserv` en marcha es solo INFORMATIVO si la politica esta puesta. Sin politica
+  # sigue siendo FALLO. (`$wuOk` se conserva para el detalle.)
+  if (-not $wuOk) { $det += ' [info: wuauserv en marcha; la politica lo neutraliza]' }
+  return @{ ok = ($libre -ge $RamMinMb -and $polOk); detalle = $det }
 }
 
 function Test-TcpAbierto([string]$Ip, [int]$Puerto, [int]$MsEspera = 1200) {

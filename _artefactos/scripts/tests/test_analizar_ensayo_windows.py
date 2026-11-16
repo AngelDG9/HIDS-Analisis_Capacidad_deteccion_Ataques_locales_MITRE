@@ -217,3 +217,43 @@ def test_informe_y_codigo_de_salida(mundo, tmp_path, capsys):
     (cos / "cosecha.done").write_text("ficheros_invitado=3\nficheros_verificados=2\nevtx=5\n", encoding="utf-8")
     assert A.main(["--crudo", str(crudo), "--cosecha", str(cos), "--t0", "2026-11-21T00:00:00Z",
                    "--t1", "2026-11-21T03:00:00Z"]) == 1
+
+
+# --------------------------------------------------------------------------
+# A8: solo cuenta lo que pasa DENTRO de la ventana (el log arrastra el historial de la imagen)
+# --------------------------------------------------------------------------
+def _reloj(cos, local_iso):
+    (cos / "invitado" / "reloj.txt").write_text(
+        "guest_utc=2026-11-21T03:00:00.000Z\nguest_local=" + local_iso + "\ntz=Romance Standard Time\n", encoding="utf-8")
+
+
+def test_a8_ignora_el_historial_anterior_a_la_ventana(mundo):
+    crudo, cos = mundo
+    _reloj(cos, "2026-11-21T04:00:00.0000000+01:00")
+    (cos / "invitado" / "agente" / "ossec.log").write_text(
+        "2026/11/08 11:00:00 wazuh-agent: WARNING: Agent buffer is full: Events may be lost.\n"
+        "2026/11/12 11:51:21 wazuh-agent: ERROR: (1137): Lost connection with manager.\n"
+        "2026/11/21 01:20:00 wazuh-agent: ERROR: (1137): Lost connection with manager.\n",   # 00:20Z: dentro
+        encoding="utf-8")
+    r, _ = _res(mundo)
+    assert r["A8"][0] == "PASS", r["A8"]
+    assert "reconexiones en la ventana=1" in r["A8"][1] and "ignoradas: 2" in r["A8"][1]
+
+
+def test_a8_un_aviso_de_buffer_dentro_de_la_ventana_sigue_fallando(mundo):
+    crudo, cos = mundo
+    _reloj(cos, "2026-11-21T04:00:00.0000000+01:00")
+    (cos / "invitado" / "agente" / "ossec.log").write_text(
+        "2026/11/21 01:30:00 wazuh-agent: WARNING: Agent buffer is full: Events may be lost.\n", encoding="utf-8")
+    r, _ = _res(mundo)
+    assert r["A8"][0] == "FAIL"
+
+
+def test_a8_usa_el_desfase_del_invitado_para_pasar_a_utc(mundo):
+    """La hora del log es LOCAL (CET, UTC+1): 00:30 local = 23:30Z del dia anterior = FUERA de la ventana."""
+    crudo, cos = mundo
+    _reloj(cos, "2026-11-21T04:00:00.0000000+01:00")
+    (cos / "invitado" / "agente" / "ossec.log").write_text(
+        "2026/11/21 00:30:00 wazuh-agent: WARNING: Agent buffer is full: Events may be lost.\n", encoding="utf-8")
+    r, _ = _res(mundo)
+    assert r["A8"][0] == "PASS", r["A8"]

@@ -54,7 +54,7 @@ import os
 import re
 import sys
 from collections import Counter, defaultdict
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -287,16 +287,40 @@ def c_a7(crudo, t0, t1):
             + (f" p.ej. {avisos[0]}" if avisos else ""))
 
 
-def c_a8(cosecha):
+def _offset_invitado(cosecha):
+    """Desfase UTC del invitado (de `guest_local=...+01:00` en `reloj.txt`); 0 si no consta."""
+    txt = _leer_texto(os.path.join(cosecha, "invitado", "reloj.txt")) if cosecha else ""
+    m = re.search(r"guest_local=\S*?([+-])(\d{2}):(\d{2})\s*$", txt, re.M)
+    if not m:
+        return timedelta(0)
+    d = timedelta(hours=int(m.group(2)), minutes=int(m.group(3)))
+    return d if m.group(1) == "+" else -d
+
+
+def c_a8(cosecha, t0=None, t1=None):
+    """Pérdidas del agente DENTRO de la ventana. El `ossec.log` del invitado arrastra el historial
+    de la imagen (reconexiones de días anteriores): solo cuentan las líneas con hora en [t0,t1]
+    (la hora del log es LOCAL del invitado; se pasa a UTC con el desfase de `reloj.txt`)."""
     p = os.path.join(cosecha, "invitado", "agente", "ossec.log") if cosecha else ""
     if not p or not os.path.isfile(p):
         return ("A8", "ND", "sin agente\\ossec.log")
-    txt = _leer_texto(p)
-    perd = [ln.strip()[:140] for ln in txt.splitlines()
-            if AVISOS_PERDIDA.search(ln) and "Lost connection" not in ln]
-    desc = sum(1 for ln in txt.splitlines() if re.search(r"Lost connection|Unable to connect", ln))
+    off = _offset_invitado(cosecha)
+    perd, desc, fuera = [], 0, 0
+    for ln in _leer_texto(p).splitlines():
+        m = re.match(r"(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2})", ln)
+        if not m:
+            continue
+        ts = datetime(*map(int, m.groups()), tzinfo=timezone.utc) - off
+        if t0 is not None and not (t0 <= ts <= t1):
+            fuera += 1
+            continue
+        if AVISOS_PERDIDA.search(ln) and "Lost connection" not in ln:
+            perd.append(ln.strip()[:140])
+        if re.search(r"Lost connection|Unable to connect", ln):
+            desc += 1
     return ("A8", "PASS" if not perd else "FAIL",
-            f"avisos buffer/flood/dropped={len(perd)}; reconexiones={desc}"
+            f"avisos buffer/flood/dropped={len(perd)}; reconexiones en la ventana={desc} "
+            f"(líneas del log fuera de la ventana, ignoradas: {fuera})"
             + (f" p.ej. {perd[0]}" if perd else ""))
 
 
@@ -348,7 +372,7 @@ def analizar(crudo, cosecha, t0, t1, agent_id="002", agent_name="victima-windows
     a6, filas6 = c_a6(arch, cosecha)
     resultados.append(a6)
     resultados.append(c_a7(crudo, t0, t1))
-    resultados.append(c_a8(cosecha))
+    resultados.append(c_a8(cosecha, t0, t1))
     a9 = c_a9(cosecha)
     kv = {}
     if len(a9) == 2 and isinstance(a9[1], dict):

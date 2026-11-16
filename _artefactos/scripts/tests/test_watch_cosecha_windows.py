@@ -304,3 +304,22 @@ def test_gw15_cubre_api_postgres_y_internet_local_y_aplica_en_watch(ctl):
 def test_cleanup_para_tambien_la_internet_local(ctl):
     cl = ctl[ctl.index("'cleanup' {"):ctl.index("'status' {")]
     assert "stop_internet_local.ps1" in cl
+
+
+# --------------------------------------------------------------------------
+# Arreglos del ensayo WE0 (16-nov-2026)
+# --------------------------------------------------------------------------
+def test_cosecha_filtra_los_reinicios_en_hora_local_y_dentro_de_la_ventana():
+    """`Get-WinEvent -FilterHashtable` lee StartTime como HORA LOCAL aunque sea UTC: sin
+    `.ToLocalTime()` el arranque de la VM antes de t0 se colaba como reinicio (falsa alarma A10)."""
+    txt = COSECHA.read_text(encoding="ascii")
+    bloque = txt[txt.index("# --- 5) reinicios"):txt.index("# --- 6)")]
+    assert bloque.count("StartTime = $t0.ToLocalTime()") == 2
+    assert bloque.count("EndTime = $fin.ToLocalTime()") == 2
+
+
+def test_gw12_wuauserv_en_marcha_es_informativo_si_la_politica_esta_puesta(ctl):
+    g = ctl[ctl.index("function Test-GW12"):ctl.index("function Test-TcpAbierto")]
+    assert "$polOk" in g and "-and $wuOk" not in g           # ya no exige que wuauserv este parado
+    assert "ok = ($libre -ge $RamMinMb -and $polOk)" in g    # la politica SI es obligatoria
+    assert "info: wuauserv en marcha" in g                    # pero se sigue informando

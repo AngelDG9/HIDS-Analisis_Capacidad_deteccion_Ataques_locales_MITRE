@@ -137,15 +137,18 @@ foreach ($n in $logs.Keys) {
 $conteo | Set-Content -LiteralPath (Join-Path $Stage 'evtx\conteo_por_evento.csv') -Encoding ASCII
 Salida 'evtx\conteo_ventana.txt' { 'desde_utc=' + $ini.ToString('o'); 'hasta_utc=' + $fin.ToString('o') }
 
-# --- 5) reinicios / suspensiones desde t0 (W-V8) ----------------------------
+# --- 5) reinicios / suspensiones dentro de [t0, t1] (W-V8) --------------------
+# OJO: `Get-WinEvent -FilterHashtable` interpreta StartTime/EndTime como HORA LOCAL aunque el
+# DateTime sea UTC. Sin `.ToLocalTime()` el arranque de la VM de la preparacion (23:35Z, ANTES de
+# t0) se colaba como "reinicio en la ventana" (falsa alarma A10 del ensayo WE0 del 16-nov).
 $t0 = (Get-Date).AddDays(-7)
 if ($Desde) { try { $t0 = [datetime]::Parse($Desde, [Globalization.CultureInfo]::InvariantCulture, [Globalization.DateTimeStyles]::AdjustToUniversal -bor [Globalization.DateTimeStyles]::AssumeUniversal) } catch { } }
 Salida 'sistema\reinicios.txt' {
   "desde_utc=" + $t0.ToUniversalTime().ToString('o')
-  $ev = Get-WinEvent -FilterHashtable @{ LogName = 'System'; Id = 1074, 6005, 6006, 6008, 41, 42, 107, 109; StartTime = $t0 } -ErrorAction SilentlyContinue
+  $ev = Get-WinEvent -FilterHashtable @{ LogName = 'System'; Id = 1074, 6005, 6006, 6008, 41, 42, 107, 109; StartTime = $t0.ToLocalTime(); EndTime = $fin.ToLocalTime() } -ErrorAction SilentlyContinue
   "reinicios_o_suspensiones=" + @($ev).Count
   $ev | Select-Object TimeCreated, Id, ProviderName | Format-Table -AutoSize | Out-String -Width 200
-  $wu = Get-WinEvent -FilterHashtable @{ LogName = 'System'; ProviderName = 'Microsoft-Windows-WindowsUpdateClient'; StartTime = $t0 } -ErrorAction SilentlyContinue
+  $wu = Get-WinEvent -FilterHashtable @{ LogName = 'System'; ProviderName = 'Microsoft-Windows-WindowsUpdateClient'; StartTime = $t0.ToLocalTime(); EndTime = $fin.ToLocalTime() } -ErrorAction SilentlyContinue
   "eventos_windowsupdateclient=" + @($wu).Count
 }
 

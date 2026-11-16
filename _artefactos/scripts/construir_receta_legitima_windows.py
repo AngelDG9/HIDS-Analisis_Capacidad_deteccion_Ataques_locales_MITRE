@@ -222,7 +222,8 @@ def _regla(nombre, patron):
 def _curl(args: str) -> str:
     """Traduce una invocación de `curl` (Linux) a `curl.exe` (Windows).
 
-    `curl.exe` viene en Windows 10 ≥ 1803 y acepta los mismos flags; cambian la UA
+    `curl.exe` viene en Windows 10 ≥ 1803 y acepta casi los mismos flags (**salvo
+    `--compressed`**, que se traduce por una cabecera: ver abajo); cambian la UA
     (declarada), las rutas y las comillas (`"` es lo único que entiende `cmd`).
     """
     toks = shlex.split(args, posix=True)
@@ -250,6 +251,14 @@ def _curl(args: str) -> str:
             v = toks[i + 1]
             out += ["--data", _q(v) if " " in v else v]
             i += 2
+        elif t == "--compressed":
+            # El `curl.exe` de Windows (8.4.0, Schannel) NO admite `--compressed`: se niega a
+            # ejecutarse (rc=2) SIN enviar la peticion. Medido en el ensayo WE0 (16-nov-2026):
+            # 34 de las 504 acciones (todas las «sesion-web») no generaban ningun trafico.
+            # Se traduce por su cabecera equivalente, que si envia la peticion (y la UA,
+            # `Accept` y `Accept-Language` ya viajan igual que en Linux).
+            out += ["-H", _q("Accept-Encoding: gzip, deflate")]
+            i += 1
         else:
             out.append(t)
             i += 1

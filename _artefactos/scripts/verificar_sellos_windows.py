@@ -97,6 +97,7 @@ RUTAS_CRITICAS = (
     "_artefactos/scripts/tests/test_contar_denominador.py",
     "_artefactos/scripts/tests/test_watch_cosecha_windows.py",
     "_artefactos/scripts/tests/test_analizar_ensayo_windows.py",
+    "_artefactos/scripts/tests/test_receta_windows_curl.py",
 )
 
 
