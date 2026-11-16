@@ -1,0 +1,4 @@
+﻿tick 12/18 rc=60
+ALARMA chequeo ok=9 fallos=1 skip=0 :: G-W12=ram_libre_mb=2638 min=1500 wu=Running/Manual pausa_host=[NoAutoUpdate=1 NoAutoReboot=1] :: HB_EDAD_MIN=0.1 SEQ=79 KA_PID=1756 KA_INSTANCIAS=1 SSH_INVITADO=0
+SSH_INVITADO=0
+
