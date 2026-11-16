@@ -1,5 +1,5 @@
 ﻿{
-    "generado_utc":  "2026-11-12T13:18:50Z",
+    "generado_utc":  "2026-11-16T09:55:53Z",
     "cliente_dir":  "C:\\Users\\angel\\ghosts-client",
     "cliente":  {
                     "ghosts_exe_fileversion":  "8.2.2.0",
@@ -23,7 +23,7 @@
                       "config\\timeline.json"
                   ],
     "MANIFEST_FILES":  294,
-    "MANIFEST_SHA256":  "4621046f028cb37ad8bbc6a1e9c5adae29bc8c238f774471b6d579011afdf3f0",
+    "MANIFEST_SHA256":  "77a8eba864a3a901157441fad1b444efe51daae4e703c7cc589c5607e413d562",
     "ficheros":  [
                      {
                          "ruta":  "[task]TFG-WinLegit-Actividad",
@@ -195,20 +195,20 @@
                      },
                      {
                          "ruta":  "C:\\Users\\angel\\ghosts-client\\config\\timeline.d1.json",
-                         "sha256":  "05dbf6b001c43ec60eadd44fad86a42aa7807941633ef9fd01cdc76bbc09497e",
-                         "bytes":  43637,
+                         "sha256":  "41d6ea7a9f2a7e26f5269621839586f86cdd92e1154dda5fe2c6c07df9f720cf",
+                         "bytes":  43962,
                          "tipo":  "payload"
                      },
                      {
                          "ruta":  "C:\\Users\\angel\\ghosts-client\\config\\timeline.d2.json",
-                         "sha256":  "054bc34511ce42c08230f60e83f862d644b6e633d58f85c62da518b887712d0e",
-                         "bytes":  47554,
+                         "sha256":  "ed1734dc96a6fc2370000d286fa5256be75753408ec273180ee80ac5b2bd4e13",
+                         "bytes":  47829,
                          "tipo":  "payload"
                      },
                      {
                          "ruta":  "C:\\Users\\angel\\ghosts-client\\config\\timeline.d3.json",
-                         "sha256":  "8ed8fa16ccb942776be0c677db5e912140229222663093010baa85211af2335e",
-                         "bytes":  43204,
+                         "sha256":  "0dfce1b2ac098f41357a29a88ba7ce8fc0956450bcb5276f83367530bc9691f1",
+                         "bytes":  43454,
                          "tipo":  "payload"
                      },
                      {

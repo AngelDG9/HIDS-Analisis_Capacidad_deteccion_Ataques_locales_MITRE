@@ -1,14 +1,14 @@
 ﻿{
-    "t0":  "2026-11-16T00:00:00Z",
-    "t1":  "2026-11-16T09:00:00Z",
+    "t0":  "2026-11-16T10:03:00Z",
+    "t1":  "2026-11-16T12:03:00Z",
     "intervalo_s":  1800,
-    "esperados":  18,
-    "ejecutados":  18,
+    "esperados":  4,
+    "ejecutados":  4,
     "saltados":  0,
-    "alarmas":  3,
-    "min_ok":  14,
-    "primera":  "2026-11-16T00:00:02Z",
-    "ultima":  "2026-11-16T08:30:02Z",
+    "alarmas":  0,
+    "min_ok":  1,
+    "primera":  "2026-11-16T10:03:02Z",
+    "ultima":  "2026-11-16T11:33:02Z",
     "veredicto":  "OK",
     "nota":  "INCIDENCIA no invalida los datos por si sola: lo decide el latido heartbeat.jsonl (huecos) y W-V1..W-V9"
 }

@@ -22,3 +22,10 @@
 [2026-11-16T08:00:02Z] tick 16/18 rc=0 tarde_s=0.8 :: chequeo ok=10 fallos=0 skip=0 :: HB_EDAD_MIN=0 SEQ=103 KA_PID=1756 KA_INSTANCIAS=1 SSH_INVITADO=0
 [2026-11-16T08:30:02Z] tick 17/18 rc=0 tarde_s=0.7 :: chequeo ok=10 fallos=0 skip=0 :: HB_EDAD_MIN=0 SEQ=109 KA_PID=1756 KA_INSTANCIAS=1 SSH_INVITADO=0
 [2026-11-16T08:30:02Z] watch_loop FIN: esperados=18 ejecutados=18 saltados=0 alarmas=3 veredicto=OK
+[2026-11-16T09:57:32Z] suspension del PC bloqueada mientras corra el watch_loop (SetThreadExecutionState)
+[2026-11-16T09:57:32Z] watch_loop arranca: t0=2026-11-16T10:03:00Z t1=2026-11-16T12:03:00Z intervalo_s=1800 ticks=4 min_ok=1 control=D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\windows\windows_legit_host_control.ps1
+[2026-11-16T10:03:02Z] tick 0/4 rc=0 tarde_s=0.1 :: chequeo ok=10 fallos=0 skip=0 :: HB_EDAD_MIN=3 SEQ=3 KA_PID=5348 KA_INSTANCIAS=1 SSH_INVITADO=0
+[2026-11-16T10:33:02Z] tick 1/4 rc=0 tarde_s=0.8 :: chequeo ok=10 fallos=0 skip=0 :: HB_EDAD_MIN=3 SEQ=9 KA_PID=5348 KA_INSTANCIAS=1 SSH_INVITADO=0
+[2026-11-16T11:03:02Z] tick 2/4 rc=0 tarde_s=0.7 :: chequeo ok=10 fallos=0 skip=0 :: HB_EDAD_MIN=3 SEQ=15 KA_PID=5348 KA_INSTANCIAS=1 SSH_INVITADO=0
+[2026-11-16T11:33:02Z] tick 3/4 rc=0 tarde_s=0.7 :: chequeo ok=10 fallos=0 skip=0 :: HB_EDAD_MIN=3 SEQ=21 KA_PID=5348 KA_INSTANCIAS=1 SSH_INVITADO=0
+[2026-11-16T11:33:02Z] watch_loop FIN: esperados=4 ejecutados=4 saltados=0 alarmas=0 veredicto=OK
