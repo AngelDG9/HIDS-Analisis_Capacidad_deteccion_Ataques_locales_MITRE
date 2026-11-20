@@ -443,3 +443,41 @@ manifiesto 294 (**no se modificó ninguno**: por eso el snapshot v2 sigue siendo
 | **Q7** | **Commit** de los cambios de esta auditoría (los hace el orquestador/tú) | Antes del WE0, para que el sello apunte a un commit |
 
 **Nada de la ventana se ejecuta hasta que apruebes y el WE0 pase.**
+
+---
+
+## 13. Registro de ejecución real (actualizado 2026-11-20)
+
+**La ventana se ejecutó.** `t0 = 2026-11-17T00:00:00Z`, `t1 = 2026-11-20T00:00:00Z` (arrancada desde
+`D:\TFG-VMs\lab-logs\ventana_chain.sh`; `prep` 22:15Z, `arm` 23:40Z, 144 chequeos, cosecha/crudo/cleanup a t1).
+
+| Resultado | Valor |
+|---|---|
+| Vigilancia | 144/144 chequeos, 0 saltados, **0 alarmas**, veredicto OK |
+| Latido | 864/864 (100 %), hueco máx. 5,1 min |
+| `M` endpoint (eventos de `archives`, agente 002) | **21 589** (hueco máx. 5,0 min; umbral 10) |
+| Alertas del agente 002 | **6 344** (niveles: 3→5522, 4→602, 5→67, 6→10, 9→55, 14→2, 15→86) |
+| Operador en alertas | 6/6 344 (0,09 %; umbral 5 %), todas `tareas_operador` |
+| A1…A11 | **PASS** (`informe_VENTANA_2026-11-17.md`); A3 INFO: hueco máx. entre alertas 6,3 min |
+| Completitud | A6 evtx 12 061 vs archives 12 059 (24 tipos, 0 fuera de tolerancia), A7/A8 sin pérdidas, A10 sin reinicios, A11 reloj +0,13 s |
+| Datos | `D:\TFG-VMs\legitimo-windows-2026-11-17\` (cosecha, crudo, repo_evidencia, internet_local, lab-logs, `SHA256_TODO.txt`); snapshot `lab-listo-windows-legit-post72h` |
+
+**V1 (resuelto):** en Windows hay alertas toda la noche (hueco máx. 6,3 min ≪ 30 min) → **V1 se mantiene tal cual
+que en Linux** (comparable). No se rebajó nada.
+
+**Hallazgos de la ejecución (todos corregidos y sellados, ver `Soporte/Laboratorio/windows/legit/evidencia/INCIDENCIA_crudo_alertas_2026-11-20.md`):**
+
+| # | Hallazgo | Estado |
+|---|---|---|
+| **H16** | `curl.exe` de Windows 8.4.0 **no admite `--compressed`**: la acción salía con rc=2 sin enviar la petición y GHOSTS la contaba como hecha. Las sesiones web no llegaban al servidor | Corregido (`_curl` traduce a `-H "Accept-Encoding: gzip, deflate"`); `prueba_comandos_invitado.ps1` ejecuta cada comando de la receta y anota rc |
+| **H17** | **La fase `crudo` no copiaba las alertas**: buscaba `ossec-alert-DD.json.gz` y `.json.gz.sum` (real: `ossec-alerts-DD.json.gz` y `.json.sum`). El primer informe salió con alertas = 0 | Alertas recuperadas del manager con checksum OK; controlador **corregido y resellado tras la ventana** (el código que corrió fue el sellado; hash anterior en `SELLO_ANTES_DE_RESELLAR.txt`). El test imitaba el error y se corrigió |
+| **H18** | La fase `crudo` copiaba los logs internos del manager de `/var/ossec/logs/$ym/` (no existe); lo real es `logs/wazuh/$ym/ossec-*.log.gz` y `logs/api/$ym/` | Corregido junto con H17; logs de la ventana copiados a mano a `crudo/manager_logs` |
+| **H19** | A10/A8/G-W12 daban falsos positivos (reinicios por zona horaria, avisos fuera de ventana, `wuauserv` parado) | Corregidos antes de la ventana |
+
+**Operativa aprendida:** el lanzamiento desacoplado (WMI `Win32_Process.Create` con el entorno completo +
+`TFG_MANAGER_PW` solo en memoria) exige sesión de administrador **solo en el momento de lanzar**; el proceso
+sigue elevado. El margen de RAM con las dos VMs es ~1,6 GB: el PC debe ir ligero (sin WARP/navegadores).
+
+**Pendiente tras la ventana:** T3-W (FPR) y comparación con Linux (F2); repetir los ataques con `logall_json=yes`
+y lanzador local en Linux y Windows (F3, versión 2; los resultados por SSH quedan como «versión 1 (por SSH)»);
+M1b-W; Velociraptor; fusionar ramas `bloque/*`; restaurar Windows Update del host si procede.

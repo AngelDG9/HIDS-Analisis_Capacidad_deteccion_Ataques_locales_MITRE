@@ -462,3 +462,49 @@
 [2026-11-16T12:11:00Z] [cleanup] cleanup: logall_json=no verificado
 [2026-11-16T12:11:01Z] [cleanup] cleanup: CONFIG_IDENTICA
 [2026-11-16T12:11:03Z] [cleanup] cleanup: guardarrailes fallos=0 victima_windows_off=True victima_linux_off=True manager_on=True
+[2026-11-16T22:15:34Z] [prep] prep: gate de sellos Windows OK (C8)
+[2026-11-16T22:15:34Z] [prep] prep: gate Defender/sesion NO EVALUABLE en entrada (sin salida de verificar_windows.ps1)
+[2026-11-16T22:15:37Z] [prep] firewall: TFG-hb-9095 creada y verificada (enabled=True dir=Inbound action=Allow proto=TCP puerto=9095 remoto=192.168.65.0/255.255.255.0)
+[2026-11-16T22:15:37Z] [prep] prep: heartbeat.jsonl anterior archivado -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\windows\legit\evidencia\historico\heartbeat_20261116T221537Z.jsonl
+[2026-11-16T22:15:37Z] [prep] prep: ventana_actual.json anterior archivado -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\windows\legit\evidencia\historico\ventana_actual_20261116T221537Z.json
+[2026-11-16T22:15:39Z] [prep] test-sink: inicio
+[2026-11-16T22:15:39Z] [prep] test-sink: conectado
+[2026-11-16T22:15:39Z] [prep] test-sink: escrito
+[2026-11-16T22:15:39Z] [prep] test-sink: leido len=206
+[2026-11-16T22:15:39Z] [prep] prep: sink OK (POST /test ok len=51)
+[2026-11-16T22:15:43Z] [prep] prep: arrancando GHOSTS API + PostgreSQL (start_ghosts.ps1)
+[2026-11-16T22:15:45Z] [prep] prep: arrancando la "internet local" (start_internet_local.ps1)
+[2026-11-16T22:15:53Z] [prep] prep: pila del host viva (GHOSTS API, PostgreSQL, web 8080, sink 9090, webdav 9092)
+[2026-11-16T22:15:53Z] [prep] prep: revert a snapshot y arranque
+[2026-11-16T22:16:44Z] [prep] prep: heartbeat.seq SEQ_AUSENTE
+[2026-11-16T22:16:45Z] [prep] prep: log 'Security' maxSize=536870912 (pedido 536870912)
+[2026-11-16T22:16:55Z] [prep] prep: log 'Microsoft-Windows-Sysmon/Operational' maxSize=268435456 (pedido 268435456)
+[2026-11-16T22:16:56Z] [prep] prep: log 'Microsoft-Windows-PowerShell/Operational' maxSize=134217728 (pedido 134217728)
+[2026-11-16T22:16:56Z] [prep] prep: deploy idempotente
+[2026-11-16T22:18:46Z] [prep] prep: gate Defender/sesion OK (DEFENDER_OFF=1 SESION_ANGEL=1)
+[2026-11-16T22:18:46Z] [prep] prep: lista negra 7.3 OK (0 residuos)
+[2026-11-16T22:18:47Z] [prep] prep: internet local alcanzable desde el invitado (HTTP 200)
+[2026-11-16T22:18:50Z] [prep] prep: manifiesto OK (77a8eba864a3a901157441fad1b444efe51daae4e703c7cc589c5607e413d562)
+[2026-11-16T22:18:50Z] [prep] prep OK (NO armado)
+[2026-11-16T23:40:28Z] [arm] arm: fijando mapa de dias con --t0 2026-11-17
+[2026-11-16T23:41:45Z] [arm] arm: logall_json ON verificado (antes=no on_ejecutado=True manager_active=True daemons=2)
+[2026-11-16T23:41:45Z] [arm] arm: ventana_actual.json escrito (D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\windows\legit\evidencia\ventana_actual.json)
+[2026-11-16T23:41:45Z] [arm] arm OK
+[2026-11-20T00:02:10Z] [cosecha] cosecha: copiando evidencia del invitado a D:\TFG-VMs\legitimo-windows-2026-11-17\cosecha
+[2026-11-20T00:03:26Z] [cosecha] cosecha: avisos del invitado: AVISO AUSENTE C:\Users\angel\ghosts-client\keepalive.log.1 ; AVISO AUSENTE C:\Users\angel\ghosts-client\recovery.log.1 ; AVISO AUSENTE C:\Users\angel\ghosts-client\client.out.1 ; AVISO AUSENTE C:\Users\angel\ghosts-client\heartbeat.seq.prev ; AVISO AUSENTE C:\Users\angel\ghosts-client\stop.flag ; AVISO CONTEO_ERROR Microsoft-Windows-Sysmon/Operational : The description string for parameter reference (%1) could not be found
+[2026-11-20T00:03:31Z] [cosecha] cosecha OK: D:\TFG-VMs\legitimo-windows-2026-11-17\cosecha (ficheros=70 verificados=70 avisos=6 evtx=5 delta_reloj_s=0.13 manifest=894243bdf865473920e192cae2d855eca5201d2607afbb3fd14f27bf7f6bd445)
+[2026-11-20T00:03:32Z] [crudo] crudo: copiando archives+alerts del manager a D:\TFG-VMs\legitimo-windows-2026-11-17\crudo
+[2026-11-20T00:03:33Z] [crudo] crudo: criterio=utc_dias_D_D+2 tz=CET dias=2026-11-17,2026-11-18,2026-11-19 ficheros=5 avisos=AVISO=sin_sum:/var/ossec/logs/archives/2026/Nov/ossec-archive-17.json.gz;AVISO=sin_gz:2026-11-17:alerts;AVISO=sin_sum:/var/ossec/logs/archives/2026/Nov/ossec-archive-18.json.gz;AVISO=sin_gz:2026-11-18:alerts;AVISO=sin_sum:/var/ossec/logs/archives/2026/Nov/ossec-archive-19.json.gz;AVISO=sin_gz:2026-11-19:alerts
+[2026-11-20T00:03:39Z] [crudo] crudo OK: D:\TFG-VMs\legitimo-windows-2026-11-17\crudo (criterio=utc_dias_D_D+2 tz=CET dias=2026-11-17,2026-11-18,2026-11-19 ficheros=5 sums=0 planos=2 manifest=60943f8eb1c895b2c86a3c22fc4474d7a14b49a382c587751c1b5ce13e3047c0 M_rc=0)
+[2026-11-20T00:03:41Z] [cleanup] cleanup: crudo.done presente (D:\TFG-VMs\legitimo-windows-2026-11-17\crudo\crudo.done)
+[2026-11-20T00:03:41Z] [cleanup] cleanup: cosecha.done presente (D:\TFG-VMs\legitimo-windows-2026-11-17\cosecha\cosecha.done)
+[2026-11-20T00:05:14Z] [cleanup] cleanup: bucle_salio=True
+[2026-11-20T00:05:16Z] [cleanup] sink: (ver heartbeat_sink_ctl.log)
+[2026-11-20T00:05:17Z] [cleanup] actividad: armado.flag FLAG_RETIRADO
+[2026-11-20T00:05:18Z] [cleanup] cleanup: tareas invitado retiradas [actividad=SUCCESS: The scheduled task "TFG-WinLegit-Actividad" was successfully deleted. keepalive=SUCCESS: The scheduled task "TFG-WinLegit-Keepalive" was successfully deleted.]
+[2026-11-20T00:05:32Z] [cleanup] firewall: TFG-hb-9095 retirada y verificada ausente
+[2026-11-20T00:05:37Z] [cleanup] cleanup: GHOSTS/PostgreSQL parados (api_procesos=0 postgres_parado=True)
+[2026-11-20T00:05:43Z] [cleanup] cleanup: internet local parada (puertos aun abiertos=0)
+[2026-11-20T00:06:45Z] [cleanup] cleanup: logall_json=no verificado
+[2026-11-20T00:06:46Z] [cleanup] cleanup: CONFIG_IDENTICA
+[2026-11-20T00:06:48Z] [cleanup] cleanup: guardarrailes fallos=0 victima_windows_off=True victima_linux_off=True manager_on=True

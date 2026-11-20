@@ -310,8 +310,10 @@ def test_crudo_usa_dias_utc_y_no_mtime_local():
 
 def test_crudo_copia_sum_y_plano_de_archives_y_alerts():
     texto = _ps()
-    assert 'for par in "archives|$ARCHDIR|ossec-archive" "alerts|$ALERTDIR|ossec-alert"' in texto
-    assert '[ -f "$gz.sum" ]' in texto
+    assert 'for par in "archives|$ARCHDIR|ossec-archive" "alerts|$ALERTDIR|ossec-alerts"' in texto
+    # nombres REALES de Wazuh 4.14.7: ossec-alerts-DD.json.gz y ossec-alerts-DD.json.sum (no .json.gz.sum)
+    assert 'sm="$dir/$anio/$mes/$base-$dd.json.sum"' in texto
+    assert "ossec-alert\"" not in texto
     assert 'plano="$dir/$anio/$mes/$base-$dd.json"' in texto
     assert '"sums=$($sums.Count)"' in texto and '"planos=$($planos.Count)"' in texto
 
@@ -323,13 +325,16 @@ def test_crudo_m_solo_usa_archives_json_y_gz():
 
 
 def _fake_crudo(tmp_path: Path):
-    for sub, base in (("archives", "ossec-archive"), ("alerts", "ossec-alert")):
+    for sub, base in (("archives", "ossec-archive"), ("alerts", "ossec-alerts")):
         d = tmp_path / sub / "2026" / "Nov"
         d.mkdir(parents=True)
         for dia in (11, 12, 13, 14):          # D+3 (14) NO debe seleccionarse
             gz = d / f"{base}-{dia:02d}.json.gz"
             gz.write_bytes(b"gz")
-            (d / f"{base}-{dia:02d}.json.gz.sum").write_bytes(b"sum")
+            (d / f"{base}-{dia:02d}.json.sum").write_bytes(b"sum")
+            if sub == "alerts":
+                (d / f"{base}-{dia:02d}.log.gz").write_bytes(b"lgz")
+                (d / f"{base}-{dia:02d}.log.sum").write_bytes(b"lsum")
             (d / f"{base}-{dia:02d}.json").write_bytes(b"plano")
         (tmp_path / sub / f"{sub}.json").write_bytes(b"vivo")
     return tmp_path / "archives", tmp_path / "alerts"
@@ -349,10 +354,14 @@ def test_bash_selecciona_dias_utc_y_suma_plano(tmp_path):
     lineas = [l.strip() for l in p.stdout.splitlines() if l.strip()]
     assert any(l.startswith("TZ=") for l in lineas)
     assert {"DIA=2026-11-11", "DIA=2026-11-12", "DIA=2026-11-13"} <= set(lineas)
-    for base in ("ossec-archive", "ossec-alert"):
+    for base in ("ossec-archive", "ossec-alerts"):
         for dia in (11, 12, 13):
             assert any(l.endswith(f"{base}-{dia:02d}.json.gz") for l in lineas), (base, dia)
-            assert any(l.endswith(f"{base}-{dia:02d}.json.gz.sum") for l in lineas)
+            assert any(l.endswith(f"{base}-{dia:02d}.json.sum") for l in lineas), (base, dia)
+            assert not any("AVISO=sin_" in l and f"{base}-{dia:02d}" in l for l in lineas), (base, dia)
+            if base == "ossec-alerts":
+                assert any(l.endswith(f"{base}-{dia:02d}.log.gz") for l in lineas)
+                assert any(l.endswith(f"{base}-{dia:02d}.log.sum") for l in lineas)
             assert any(l.endswith(f"{base}-{dia:02d}.json") for l in lineas)
         assert not any(f"{base}-14" in l for l in lineas), "se coló D+3"
     assert any(l.endswith("archives.json") for l in lineas)

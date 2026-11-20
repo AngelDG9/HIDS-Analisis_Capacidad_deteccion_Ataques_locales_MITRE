@@ -1,0 +1,12 @@
+﻿cosecha_utc=2026-11-20T00:03:31Z
+fecha=2026-11-17
+t0=2026-11-17T00:00:00Z
+t1=2026-11-20T00:00:00Z
+ficheros_invitado=70
+ficheros_verificados=70
+avisos_invitado=6
+evtx=5
+evtx_bytes=98914304
+delta_reloj_s=0.13
+guest_utc=2026-11-20T00:02:11.068Z
+manifest_sha256=894243bdf865473920e192cae2d855eca5201d2607afbb3fd14f27bf7f6bd445

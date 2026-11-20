@@ -1,0 +1,2 @@
+7da2990bd4529b35f6b12313b1dc57281126f9612afd11b923a3d6981c53de67  _artefactos/scripts/tests/test_ejecucion_windows.py
+2ffbc01d7749409604ecc9cb7806ccf0f0358c03b474f4c6d3184189f6f1e00a  Soporte/Laboratorio/windows/windows_legit_host_control.ps1

@@ -1,0 +1,6 @@
+Complemento a mano el 2026-11-20 (copiado del manager con sudo tras acabar la ventana).
+El controlador (fase crudo) tenia un fallo: buscaba ossec-alert-DD.json.gz (sin 's') y
+.json.gz.sum (el real es .json.sum), asi que NO copio las alertas de los dias 17-19 ni los .sum.
+Aqui estan: alerts/ossec-alerts-17|18|19 (.json.gz y .log.gz, con sus .sum) y archives/*.json.sum.
+Integridad: el sha1/md5 del contenido descomprimido coincide con "Current checksum" de cada .sum.
+Hay una copia identica en alerts_manager/. No se toca el MANIFEST.tsv original.

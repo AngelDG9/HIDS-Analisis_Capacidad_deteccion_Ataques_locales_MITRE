@@ -1,0 +1,11 @@
+﻿fichero	bytes	sha256
+D:\TFG-VMs\legitimo-windows-2026-11-17\crudo\alerts\alerts.json	425129	b47e1b6d2257ca7e1456162390dfa94bffdb093f445f3b55124e96115b4c0853
+D:\TFG-VMs\legitimo-windows-2026-11-17\crudo\archives\archives.json	2063658	0461c2d48095548e96e377229fb9f11aeeee35a582c8cbdbeaa5a417ffde603e
+D:\TFG-VMs\legitimo-windows-2026-11-17\crudo\archives\ossec-archive-17.json.gz	3402017	9c1a730506f25686a290b142dc786957c865d208e86c6c16b3f84a9a43efd676
+D:\TFG-VMs\legitimo-windows-2026-11-17\crudo\archives\ossec-archive-18.json.gz	3493208	34b254b01b79c75cb19ed7a13166f44c7d2eed4c6a689e67090d6c19eb5158df
+D:\TFG-VMs\legitimo-windows-2026-11-17\crudo\archives\ossec-archive-19.json.gz	3425048	f1975180b03c67f29a9c0ef98717fca200f3fea6f4cf4e8c425b4a0f9b5501b0
+D:\TFG-VMs\legitimo-windows-2026-11-17\crudo\manager\date_utc.txt	32	522dfe149124d1a2e5310f6fc5a405fa3c7e977eea829870142fea1800490c1f
+D:\TFG-VMs\legitimo-windows-2026-11-17\crudo\manager\df.txt	127	adb7876ebcc35c893776e8f9f557ce1839e8fabd4a5fe5313e39712d9e4c27c5
+D:\TFG-VMs\legitimo-windows-2026-11-17\crudo\manager\ossec.log	75	64b0d3a38341fc66848082f1fa021b07371651c5130cff3a2a495c020e4fffe2
+D:\TFG-VMs\legitimo-windows-2026-11-17\crudo\manager\wazuh-analysisd.state	2399	c46977580e0f0a31bc636cf73fe0340331f7c215664c2d975db7a1ac8f0ba3f2
+D:\TFG-VMs\legitimo-windows-2026-11-17\crudo\manager\wazuh-remoted.state	734	1964534231f734037982174c350f6d706ab4578e36c5f39d7e27cb643940bb4c

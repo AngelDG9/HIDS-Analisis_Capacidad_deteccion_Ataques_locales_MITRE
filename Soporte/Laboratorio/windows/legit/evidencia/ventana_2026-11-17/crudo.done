@@ -1,0 +1,13 @@
+﻿crudo_utc=2026-11-20T00:03:39Z
+criterio=utc_dias_D_D+2
+tz=CET
+dias=2026-11-17,2026-11-18,2026-11-19
+fecha=2026-11-17
+t0=2026-11-17T00:00:00Z
+t1=2026-11-20T00:00:00Z
+ficheros=5
+sums=0
+planos=2
+manifest_sha256=60943f8eb1c895b2c86a3c22fc4474d7a14b49a382c587751c1b5ce13e3047c0
+M_rc=0
+M_csv=D:\TFG-VMs\legitimo-windows-2026-11-17\crudo\denominador_M.csv

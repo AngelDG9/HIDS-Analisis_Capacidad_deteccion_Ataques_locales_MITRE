@@ -1,0 +1,6 @@
+﻿AUSENTE C:\Users\angel\ghosts-client\keepalive.log.1
+AUSENTE C:\Users\angel\ghosts-client\recovery.log.1
+AUSENTE C:\Users\angel\ghosts-client\client.out.1
+AUSENTE C:\Users\angel\ghosts-client\heartbeat.seq.prev
+AUSENTE C:\Users\angel\ghosts-client\stop.flag
+CONTEO_ERROR Microsoft-Windows-Sysmon/Operational : The description string for parameter reference (%1) could not be found

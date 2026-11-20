@@ -1514,14 +1514,20 @@ for k in 0 1 2; do
   dia=$(date -u -d "$d0 +$k day" +%Y-%m-%d)
   anio=$(date -u -d "$dia" +%Y); mes=$(date -u -d "$dia" +%b); dd=$(date -u -d "$dia" +%d)
   echo "DIA=$dia"
-  for par in "archives|$ARCHDIR|ossec-archive" "alerts|$ALERTDIR|ossec-alert"; do
+  for par in "archives|$ARCHDIR|ossec-archive" "alerts|$ALERTDIR|ossec-alerts"; do
     sub=${par%%|*}; resto=${par#*|}; dir=${resto%%|*}; base=${resto##*|}
     gz="$dir/$anio/$mes/$base-$dd.json.gz"
     if [ -f "$gz" ]; then
       echo "$gz"
-      if [ -f "$gz.sum" ]; then echo "$gz.sum"; else echo "AVISO=sin_sum:$gz"; fi
+      sm="$dir/$anio/$mes/$base-$dd.json.sum"
+      if [ -f "$sm" ]; then echo "$sm"; else echo "AVISO=sin_sum:$gz"; fi
     else
       echo "AVISO=sin_gz:$dia:$sub"
+    fi
+    # alerts.log (texto) y su .sum: tambien se guardan (auditoria 2026-11-20)
+    if [ "$sub" = "alerts" ]; then
+      lg="$dir/$anio/$mes/$base-$dd.log.gz"
+      if [ -f "$lg" ]; then echo "$lg"; [ -f "$dir/$anio/$mes/$base-$dd.log.sum" ] && echo "$dir/$anio/$mes/$base-$dd.log.sum"; fi
     fi
     plano="$dir/$anio/$mes/$base-$dd.json"
     if [ -f "$plano" ]; then echo "$plano"; fi
@@ -1582,7 +1588,8 @@ for f in /var/ossec/var/run/wazuh-analysisd.state /var/ossec/var/run/wazuh-remot
   [ -f "$f" ] && cp "$f" "$S/manager/"
 done
 for ym in __YM0__ __YM2__; do
-  for g in /var/ossec/logs/$ym/ossec-*.log.gz; do [ -f "$g" ] && cp "$g" "$S/manager/"; done
+  for g in /var/ossec/logs/wazuh/$ym/ossec-*.log.gz; do [ -f "$g" ] && cp "$g" "$S/manager/"; done
+  for g in /var/ossec/logs/api/$ym/api.log-*.gz; do [ -f "$g" ] && cp "$g" "$S/manager/"; done
 done
 df -h / > "$S/manager/df.txt" 2>&1
 date -u > "$S/manager/date_utc.txt"
