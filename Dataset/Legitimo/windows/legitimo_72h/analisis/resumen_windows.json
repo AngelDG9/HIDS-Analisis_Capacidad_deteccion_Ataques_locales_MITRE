@@ -1,0 +1,34 @@
+{
+  "FPR_canonico_N0": 0.293853,
+  "FPR_sin_operador_N0": 0.293575,
+  "M_endpoint": 21589,
+  "M_total": 73667,
+  "agente": {
+    "id": "002",
+    "nombre": "victima-windows"
+  },
+  "auto_ruido_uni": 60,
+  "declaraciones": [
+    "M se re-cuenta aqui con contar_denominador; coincide con el indice (comprobado)",
+    "FPR_sin_operador no cambia el denominador",
+    "auto_ruido = agente Wazuh/Sysmon (sensibilidad, no entra en el canonico)",
+    "92052/92032 con padre sshd.exe son artefacto de entrega: se tratan en M1b-W, por alerta"
+  ],
+  "duplicados_descartados": 0,
+  "ficheros": [
+    "archives.json",
+    "ossec-archive-17.json.gz",
+    "ossec-archive-18.json.gz",
+    "ossec-archive-19.json.gz"
+  ],
+  "fp_uni_N0": 6344,
+  "n_acciones": 504,
+  "operador_uni_N0": 6,
+  "reglas_distintas": 24,
+  "solapes": 0,
+  "ventana": {
+    "horas": 72.0,
+    "t0": "2026-11-17T00:00:00Z",
+    "t1": "2026-11-20T00:00:00Z"
+  }
+}

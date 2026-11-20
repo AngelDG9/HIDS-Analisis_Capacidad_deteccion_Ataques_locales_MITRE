@@ -1,0 +1,7 @@
+# fpr_doble_windows.csv | TFG HIDS - T3-W (ventana legitima Windows) | metrica_version=1 | boveda_version=3 | plataforma=windows | M=21589 | n_acciones=504 | horas=72.0 | FPR_sin_operador=(FP_uni-operador_uni)/M (el denominador no cambia)
+umbral_N,FP_uni,operador_uni,M,FPR_canonico,FPR_sin_operador,FP_por_accion,FP_por_hora
+0,6344,6,21589,0.293853,0.293575,12.587302,88.111111
+3,6344,6,21589,0.293853,0.293575,12.587302,88.111111
+7,143,0,21589,0.006624,0.006624,0.28373,1.986111
+10,88,0,21589,0.004076,0.004076,0.174603,1.222222
+12,88,0,21589,0.004076,0.004076,0.174603,1.222222

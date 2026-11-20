@@ -1,0 +1,5 @@
+# estabilidad_dia_windows.csv | TFG HIDS - T3-W (ventana legitima Windows) | metrica_version=1 | boveda_version=3 | plataforma=windows | dias=3
+periodo,eventos_M,alertas,alertas_operador,alertas_auto_ruido
+2026-11-17,6922,2109,2,20
+2026-11-18,7620,2159,2,20
+2026-11-19,7047,2076,2,20
