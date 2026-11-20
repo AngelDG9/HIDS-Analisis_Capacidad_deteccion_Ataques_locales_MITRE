@@ -1,0 +1,12 @@
+ATA024_rev · T1531 Account Access Removal (atómica ART passwd, usuario desechable) — repeticion
+T0=2026-11-20T04:52:53Z
+--- comando atómico: passwd tfg-victim01 (nueva contraseña por stdin) ---
+--- estado de la cuenta tras el cambio (passwd -S) ---
+tfg-victim01 P 2026-11-20 0 99999 7 -1
+shadow_hash_antes  =123b9db8a5650c1ed67f48edd10562aa60836c2782571b2d4d41edc3fbf7037b
+shadow_hash_despues=5a2f178acac55aaec26ee807476c467277a5bbb9f0b096a3648d0d540a740857
+PASSWORD_CHANGE=OK (la entrada de /etc/shadow cambio: hash antes != despues)
+T1_LOCAL=2026-11-20T04:52:55Z
+
+--STDERR--
+New password: Retype new password: passwd: password updated successfully

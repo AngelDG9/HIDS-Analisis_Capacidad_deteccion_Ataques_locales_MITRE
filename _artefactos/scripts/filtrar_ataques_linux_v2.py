@@ -34,11 +34,12 @@ def main():
     aud = os.path.join(args.out, "Auditado")
     os.makedirs(aud, exist_ok=True)
     filas = [["tag", "estado_filtro", "rc", "nota"]]
-    vistos = set()
-    for r in csv.DictReader(open(idx, encoding="utf-8")):
-        if r["estado"] not in ("OK", "REVISAR") or r["tag"] in vistos:
+    ultimo = {}
+    for r in csv.DictReader(open(idx, encoding="utf-8")):      # si un tag se repite, manda la ULTIMA fila
+        ultimo[r["tag"]] = r
+    for r in ultimo.values():
+        if r["estado"] not in ("OK", "REVISAR"):
             continue
-        vistos.add(r["tag"])
         tag, ata, rev, it = r["tag"], r["ata"], r["variante"] == "rev", int(r["iter"])
         det = os.path.join(args.out, "CSV", "%s-Detalle.csv" % tag)
         esp = esperado(ata, rev)

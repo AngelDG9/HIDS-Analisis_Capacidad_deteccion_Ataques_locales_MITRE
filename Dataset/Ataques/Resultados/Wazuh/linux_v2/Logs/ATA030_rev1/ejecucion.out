@@ -1,0 +1,19 @@
+ATA030_rev · T1560.001 Archive via Utility (atómica ART tar) — repeticion
+T0=2026-11-20T05:45:26Z
+--- comando atómico: tar -cvzf /home/angel/lab-attack/ATA030/collected_ATA030.tar.gz /home/angel/lab-attack/ATA030/staging ---
+/home/angel/lab-attack/ATA030/staging/
+/home/angel/lab-attack/ATA030/staging/credenciales_servicio.txt
+/home/angel/lab-attack/ATA030/staging/informe_interno.txt
+/home/angel/lab-attack/ATA030/staging/clientes.csv
+--- prueba de efecto: tar -tzf ---
+home/angel/lab-attack/ATA030/staging/
+home/angel/lab-attack/ATA030/staging/credenciales_servicio.txt
+home/angel/lab-attack/ATA030/staging/informe_interno.txt
+home/angel/lab-attack/ATA030/staging/clientes.csv
+miembros_de_datos=3
+bb634237ceec434346bca06494488b65d327310377be5b996e1789f79dee33e6  /home/angel/lab-attack/ATA030/collected_ATA030.tar.gz
+ARCHIVADO=OK (tar.gz creado y con los 3 ficheros del material)
+T1_LOCAL=2026-11-20T05:45:27Z
+
+--STDERR--
+tar: Removing leading `/' from member names

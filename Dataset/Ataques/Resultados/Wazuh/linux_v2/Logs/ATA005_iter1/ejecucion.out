@@ -1,0 +1,9 @@
+ATA005 · T1561 Disk Wipe (dd/shred) — custom (manual)
+T0=2026-11-20T01:54:09Z
+--- estado final ---
+-rw-r--r-- 1 angel angel 33554432 Nov 20 02:54 /home/angel/lab-attack/ATA005/backup_completo_2026-09.bin
+sha256 antes   = 83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302
+sha256 despues = dfd9c1be140058ce9442a0a67e26a40c06c477ad068a063cec5abb838919f878
+size antes=33554432 despues=33554432
+WIPE=OK (contenido sobrescrito; tamano estable)
+T1_LOCAL=2026-11-20T01:54:09Z

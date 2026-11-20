@@ -1,0 +1,10 @@
+ATA042 · T1048.003 Unencrypted Non-C2 (nc.openbsd, TCP crudo en claro) — custom
+T0=2026-11-20T07:26:07Z
+--- FICHERO EN CLARO (a enviar) ---
+69ae035970a4663b3a45bbe0c24adc33affa9b0feac41d7273260cf94520b854  /home/angel/lab-attack/ATA042/extracto_clientes_2026.txt
+bytes_original=173
+sha256 enviado (claro) = 69ae035970a4663b3a45bbe0c24adc33affa9b0feac41d7273260cf94520b854
+--- estado final ---
+-rw-r--r-- 1 angel angel 173 Nov 20 08:26 /home/angel/lab-attack/ATA042/extracto_clientes_2026.txt
+EXFIL_EN_CLARO=OK (dato sin cifrar enviado por TCP crudo 192.168.65.1:9091)
+T1_LOCAL=2026-11-20T07:26:08Z

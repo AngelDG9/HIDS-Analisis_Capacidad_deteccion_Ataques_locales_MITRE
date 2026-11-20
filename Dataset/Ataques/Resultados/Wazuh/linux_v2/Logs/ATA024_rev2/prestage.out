@@ -1,0 +1,3 @@
+ATA024_rev · T1531 Account Access Removal (atómica ART passwd, usuario desechable) — repeticion
+tfg-victim01:x:1001:1001::/home/tfg-victim01:/bin/bash
+PRESTAGE=OK (usuario desechable tfg-victim01 creado antes de t0)

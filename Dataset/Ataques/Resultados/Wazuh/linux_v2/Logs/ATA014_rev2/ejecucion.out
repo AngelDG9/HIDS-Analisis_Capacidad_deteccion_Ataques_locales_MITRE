@@ -1,0 +1,14 @@
+ATA014_rev · T1114 Email Collection (grep + cp sobre mbox local) — repeticion (pre-staging)
+T0=2026-11-20T03:16:31Z
+mensajes_en_buzon=3
+--- estado final ---
+-rw-rw-r-- 1 angel angel  574 Nov 20 04:16 /home/angel/lab-legit/mailbox_angel_2026.mbox
+
+/home/angel/lab-attack/ATA014/collected/:
+total 8
+-rw-r--r-- 1 angel angel 135 Nov 20 04:16 asuntos.txt
+-rw-r--r-- 1 angel angel 574 Nov 20 04:16 mailbox_angel_2026.mbox
+sha256 origen  = 7108682bd104eb1c96d307783778f8d4f282c3e0314212c2922a64a9e890e7a1
+sha256 copiado = 7108682bd104eb1c96d307783778f8d4f282c3e0314212c2922a64a9e890e7a1
+RECOLECCION=OK (3 mensajes recolectados; copia identica)
+T1_LOCAL=2026-11-20T03:16:32Z

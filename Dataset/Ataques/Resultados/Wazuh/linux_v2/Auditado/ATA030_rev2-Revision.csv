@@ -1,0 +1,14 @@
+# ATA030_rev2-Revision.csv | TFG HIDS - Fase 3 A2.1 (R-09/R-13) | ata=ATA030 iter=2 | modo=ataque | alerta=D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\CSV\ATA030_rev2-Detalle.csv sha256=fae6a94c037d84889510064b1b39f22e8e7b386a08c812ade6658282ef92665a | catalogo=Dataset/Legitimo/ruleids_legitimos.csv sha256=388dce2f0a3c51e8dcb5583a393a25d4b9483e35881701817bc1d3bd41561be8 | esperado=D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Comandos\T1560.001-Archive_via_Utility\ATA030_esperado_rev.csv sha256=e3f8707457e5ae95e5ec6a188c3250318c5718a97909eb0838b62cd12089c6ed | conteos: filas=946 deteccion=12 auto_ruido=607 ruido_conocido=301 dudosa=12 artefacto_ataque=14 | columnas: ata_id,iter,timestamp_utc,agent_name,rule_id,rule_level,rule_groups,rs_origen,rule_description,categoria,motivo,atribucion,revision,veredicto_humano,evidencia
+ata_id,iter,timestamp_utc,agent_name,rule_id,rule_level,rule_groups,rs_origen,rule_description,categoria,motivo,atribucion,revision,veredicto_humano,evidencia,veredicto,nota,revisor,fecha
+ATA030,2,2026-11-20T05:49:26.684Z,victima-linux,80790,3,audit|audit_watch_create|audit_watch_write,RS2,Audit: Created: /home/angel/lab-attack/ATA030/collected_ATA030.tar.gz.,dudosa,sin_ancla:T1560.001-S1,T1560.001|Process Creation,pendiente,,audit_exe=/usr/bin/tar,,,,
+ATA030,2,2026-11-20T05:49:26.731Z,victima-linux,5502,3,pam|syslog,RS1,PAM: Login session closed.,dudosa,sin_campos,,pendiente,,,,,,
+ATA030,2,2026-11-20T05:49:26.753Z,victima-linux,5501,3,pam|syslog|authentication_success,RS1,PAM: Login session opened.,dudosa,sin_campos,,pendiente,,,,,,
+ATA030,2,2026-11-20T05:49:26.753Z,victima-linux,5502,3,pam|syslog,RS1,PAM: Login session closed.,dudosa,sin_campos,,pendiente,,,,,,
+ATA030,2,2026-11-20T05:49:26.776Z,victima-linux,5501,3,pam|syslog|authentication_success,RS1,PAM: Login session opened.,dudosa,sin_campos,,pendiente,,,,,,
+ATA030,2,2026-11-20T05:49:26.776Z,victima-linux,5502,3,pam|syslog,RS1,PAM: Login session closed.,dudosa,sin_campos,,pendiente,,,,,,
+ATA030,2,2026-11-20T05:49:26.796Z,victima-linux,5402,3,syslog|sudo,RS1,Successful sudo to ROOT executed.,dudosa,sin_campos,,pendiente,,,,,,
+ATA030,2,2026-11-20T05:49:26.796Z,victima-linux,5501,3,pam|syslog|authentication_success,RS1,PAM: Login session opened.,dudosa,sin_campos,,pendiente,,,,,,
+ATA030,2,2026-11-20T05:49:26.796Z,victima-linux,5501,3,pam|syslog|authentication_success,RS1,PAM: Login session opened.,dudosa,sin_campos,,pendiente,,,,,,
+ATA030,2,2026-11-20T05:49:27.933Z,victima-linux,5502,3,pam|syslog,RS1,PAM: Login session closed.,dudosa,sin_campos,,pendiente,,,,,,
+ATA030,2,2026-11-20T05:49:27.941Z,victima-linux,5502,3,pam|syslog,RS1,PAM: Login session closed.,dudosa,sin_campos,,pendiente,,,,,,
+ATA030,2,2026-11-20T05:49:38.219Z,victima-linux,5502,3,pam|syslog,RS1,PAM: Login session closed.,dudosa,sin_campos,,pendiente,,,,,,

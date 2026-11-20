@@ -1,0 +1,9 @@
+medio_creado=/home/angel/lab-attack/ATA044/removable.img (4194304 bytes)
+--- documentos inyectados en el medio ---
+total 6
+-rwxr-xr-x 1 angel angel 74 Nov 20 08:42 clientes_2026.csv
+-rwxr-xr-x 1 angel angel 68 Nov 20 08:42 nominas.csv
+-rwxr-xr-x 1 angel angel 57 Nov 20 08:42 notas.txt
+--- sha256 del medio (para trazabilidad) ---
+e89d4065d3c3b39d86679dfa26af9f657aa5acc61e62a19a7acf998f1e61b39a  /home/angel/lab-attack/ATA044/removable.img
+PRE_STAGING=OK

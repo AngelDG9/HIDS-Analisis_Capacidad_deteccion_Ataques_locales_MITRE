@@ -1,0 +1,10 @@
+ATA004 · T1489 Service Stop (systemctl) — GUID 42e3a5bd-1e45-427f-aa08-2a65fa29a820
+T0=2026-11-20T01:46:21Z
+--- estado del servicio ANTES ---
+active
+--- estado del servicio DESPUES ---
+inactive
+T1_LOCAL=2026-11-20T01:46:21Z
+
+--STDERR--
+[sudo] password for angel: 

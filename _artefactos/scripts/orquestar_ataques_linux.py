@@ -293,9 +293,11 @@ def ventana(spec, it, timeout_ataque):
             if rc != 0:
                 raise RuntimeError("scp %s: %s" % (os.path.basename(f), e))
         if ata == "ATA008":
-            at = os.path.join(REPO, "Soporte", "Ataques", "atomic-red-team", "atomics", "T1048.002")
+            at = os.path.join(REPO, "Soporte", "Ataques", "atomic-red-team", "atomics", "T1048.002", "src")
             if os.path.isdir(at):
-                scp_to(IP_V, at, d_dest + "/", recursive=True)
+                scp_to(IP_V, at, d_dest + "/", recursive=True)      # deja ATA008/src/artifact
+        if ata == "ATA047":                               # su prestaging arranca el sink dentro de la victima
+            scp_to(IP_V, SINK, d_dest + "/")
         ssh(IP_V, "chmod +x %s/*.sh 2>/dev/null; true" % d_dest)
         rc, o, _ = ssh(IP_V, "sha256sum %s/%s" % (d_dest, spec["nombre"]))
         meta["sha256_en_victima"] = o.split()[0] if o.split() else ""

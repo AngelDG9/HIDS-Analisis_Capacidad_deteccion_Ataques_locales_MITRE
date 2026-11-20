@@ -1,0 +1,3 @@
+ATA016_rev · T1213.006 Databases (cp + grep sobre SQLite local) — repeticion (pre-staging)
+BD sembrada (prestage): /home/angel/lab-legit/clientes_clientes.db
+PRESTAGE=OK (BD SQLite sembrada en lab-legit antes de t0)
