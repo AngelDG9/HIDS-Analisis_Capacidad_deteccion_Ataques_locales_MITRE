@@ -1,0 +1,12 @@
+ATA038_rev · T1529 System Shutdown/Reboot (atómica ART, reinicio VM victima) — repeticion
+MODE=attack
+hostname=victima-linux
+ips=192.168.65.129 
+T0=2026-11-20T12:49:20Z
+--- atómica ART: shutdown -r +1 (guid 6326dbc4-444b-4c04-88f4-27e94d0327cb) ---
+shutdown_rc=0
+REBOOT_PROGRAMADO=si (host=victima-linux, +1 min)
+T1_LOCAL=(lo sella el operador tras la reconexion; la VM se reinicia)
+
+--STDERR--
+Reboot scheduled for Fri 2026-11-20 13:50:20 CET, use 'shutdown -c' to cancel.

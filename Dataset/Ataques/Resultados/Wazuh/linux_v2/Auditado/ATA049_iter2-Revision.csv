@@ -1,0 +1,16 @@
+# ATA049_iter2-Revision.csv | TFG HIDS - Fase 3 A2.1 (R-09/R-13) | ata=ATA049 iter=2 | modo=ataque | alerta=D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\CSV\ATA049_iter2-Detalle.csv sha256=59ff72754deb6369b97ed9d60c32455275d2fe28af2c7eb4a4479bce0b342710 | catalogo=Dataset/Legitimo/ruleids_legitimos.csv sha256=388dce2f0a3c51e8dcb5583a393a25d4b9483e35881701817bc1d3bd41561be8 | esperado=D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Comandos\T1567.002-Exfiltration_To_Cloud_Storage\ATA049_esperado.csv sha256=b27406fd5278343eed708e60e94b9cd05dc99a46db2d1894d2e19a3173680d86 | conteos: filas=990 deteccion=1 auto_ruido=624 ruido_conocido=339 dudosa=14 artefacto_ataque=12 | columnas: ata_id,iter,timestamp_utc,agent_name,rule_id,rule_level,rule_groups,rs_origen,rule_description,categoria,motivo,atribucion,revision,veredicto_humano,evidencia
+ata_id,iter,timestamp_utc,agent_name,rule_id,rule_level,rule_groups,rs_origen,rule_description,categoria,motivo,atribucion,revision,veredicto_humano,evidencia,veredicto,nota,revisor,fecha
+ATA049,2,2026-11-20T13:23:50.511Z,victima-linux,5502,3,pam|syslog,RS1,PAM: Login session closed.,dudosa,sin_campos,,pendiente,,,,,,
+ATA049,2,2026-11-20T13:23:50.512Z,victima-linux,5501,3,pam|syslog|authentication_success,RS1,PAM: Login session opened.,dudosa,sin_campos,,pendiente,,,,,,
+ATA049,2,2026-11-20T13:23:50.534Z,victima-linux,5502,3,pam|syslog,RS1,PAM: Login session closed.,dudosa,sin_campos,,pendiente,,,,,,
+ATA049,2,2026-11-20T13:23:50.556Z,victima-linux,5501,3,pam|syslog|authentication_success,RS1,PAM: Login session opened.,dudosa,sin_campos,,pendiente,,,,,,
+ATA049,2,2026-11-20T13:23:50.556Z,victima-linux,5502,3,pam|syslog,RS1,PAM: Login session closed.,dudosa,sin_campos,,pendiente,,,,,,
+ATA049,2,2026-11-20T13:23:50.578Z,victima-linux,5501,3,pam|syslog|authentication_success,RS1,PAM: Login session opened.,dudosa,sin_campos,,pendiente,,,,,,
+ATA049,2,2026-11-20T13:23:50.578Z,victima-linux,5502,3,pam|syslog,RS1,PAM: Login session closed.,dudosa,sin_campos,,pendiente,,,,,,
+ATA049,2,2026-11-20T13:23:50.593Z,victima-linux,5501,3,pam|syslog|authentication_success,RS1,PAM: Login session opened.,dudosa,sin_campos,,pendiente,,,,,,
+ATA049,2,2026-11-20T13:23:51.844Z,victima-linux,80791,3,audit|audit_watch_delete|audit_watch_write,RS2,Audit: Deleted: /tmp/rclone4125225589.,dudosa,sin_ancla:T1567.002-S1,T1567.002|Process Creation,pendiente,,audit_exe=/home/angel/lab-attack/ATA049/rclone,,,,
+ATA049,2,2026-11-20T13:23:51.884Z,victima-linux,5402,3,syslog|sudo,RS1,Successful sudo to ROOT executed.,dudosa,sin_campos,,pendiente,,,,,,
+ATA049,2,2026-11-20T13:23:51.886Z,victima-linux,5501,3,pam|syslog|authentication_success,RS1,PAM: Login session opened.,dudosa,sin_campos,,pendiente,,,,,,
+ATA049,2,2026-11-20T13:23:51.893Z,victima-linux,5502,3,pam|syslog,RS1,PAM: Login session closed.,dudosa,sin_campos,,pendiente,,,,,,
+ATA049,2,2026-11-20T13:23:51.900Z,victima-linux,5502,3,pam|syslog,RS1,PAM: Login session closed.,dudosa,sin_campos,,pendiente,,,,,,
+ATA049,2,2026-11-20T13:24:02.114Z,victima-linux,5502,3,pam|syslog,RS1,PAM: Login session closed.,dudosa,sin_campos,,pendiente,,,,,,

@@ -56,20 +56,10 @@ SUDO_STDIN = {"ATA024", "ATA027", "ATA037", "ATA044", "ATA038"}
 SUDO_WRAPPER = {"ATA004", "ATA054", "ATA055"}
 # receptores del host (HTTP 9090 + TCP 9091); se levantan para estos
 SINK_ATAS = {"ATA008", "ATA009", "ATA010", "ATA019", "ATA020", "ATA021", "ATA023", "ATA026",
-             "ATA041", "ATA042", "ATA043", "ATA048"}
+             "ATA041", "ATA042", "ATA043", "ATA048", "ATA049", "ATA050"}
 # infraestructura aun no montada para el orquestador: se anotan como PENDIENTE (no se inventan)
-PENDIENTE = {
-    "ATA038": "reinicio de la victima a mitad de ventana (manejo propio)",
-    "ATA038_rev": "reinicio de la victima a mitad de ventana (manejo propio)",
-    "ATA039": "daemon rsync en el manager (rsync://192.168.65.128:9873)",
-    "ATA040": "daemon rsync en el manager (rsync://192.168.65.128:9873)",
-    "ATA049": "paquetes .deb GUI offline (Xvfb) por descargar y verificar sha256",
-    "ATA050": "paquetes .deb GUI offline (Xvfb) por descargar y verificar sha256",
-    "ATA051": "paquetes .deb GUI offline (Xvfb) por descargar y verificar sha256",
-    "ATA052": "paquetes .deb GUI offline (Xvfb) por descargar y verificar sha256",
-    "ATA053": "paquetes .deb GUI offline (Xvfb) por descargar y verificar sha256",
-    "ATA029_rev": "paquetes .deb (sqlite3/binutils) offline",
-}
+# (vacio: los 10 casos que faltaban ya tienen su infraestructura: rsync, paquetes, rclone y reinicio)
+PENDIENTE = {}
 
 PW = os.environ.get("TFG_MANAGER_PW", "")
 OUT = RAW = None
@@ -254,6 +244,101 @@ def lanzar_local(spec, modo, d_dest):
     return cmd, lineas
 
 
+MATERIAL = r"D:\TFG-VMs\material-linux-v2"
+RSYNC_CONF = """port = 9873
+use chroot = no
+address = 192.168.65.128
+pid file = /tmp/rsyncd_tfg.pid
+log file = /tmp/rsyncd_tfg.log
+[share]
+    path = /home/angel/lab-share/export
+    read only = yes
+[incoming]
+    path = /home/angel/lab-share/incoming
+    read only = no
+"""
+RSYNC_UP = """set -u
+pkill -f rsyncd_tfg.conf 2>/dev/null; rm -rf /home/angel/lab-share /tmp/rsyncd_tfg.conf /tmp/rsyncd_tfg.log
+mkdir -p /home/angel/lab-share/export/rrhh /home/angel/lab-share/export/finanzas /home/angel/lab-share/incoming
+printf 'empleado,bruto_eur\\nA. Gomez,2450.00\\nB. Ruiz,2600.00\\nC. Soto,2300.00\\n' > /home/angel/lab-share/export/rrhh/nominas_2026.csv
+printf 'trimestre,region,importe_eur\\n2026-Q3,Norte,121780.00\\n2026-Q3,Sur,98410.50\\n' > /home/angel/lab-share/export/finanzas/ventas_2026.csv
+cat > /tmp/rsyncd_tfg.conf <<'EOF'
+__CONF__
+EOF
+rsync --daemon --config=/tmp/rsyncd_tfg.conf
+sleep 2
+rsync --list-only rsync://192.168.65.128:9873/ && echo RSYNC_UP_OK
+"""
+
+
+def scp_many(ip, locales, remoto, timeout=300):
+    cmd = [SCP, "-q", "-i", KEY, "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=accept-new"] + list(locales) + ["angel@%s:%s" % (ip, remoto)]
+    return run(cmd, timeout=timeout)
+
+
+def rsync_up():
+    rc, o, e = ssh(IP_M, "bash -s", inp=RSYNC_UP.replace("__CONF__", RSYNC_CONF.strip()), timeout=60)
+    if "RSYNC_UP_OK" not in o:
+        raise RuntimeError("no arranca el daemon rsync del manager: %s %s" % (o.strip()[-120:], e.strip()[-120:]))
+
+
+def rsync_down(ldir):
+    try:
+        rc, o, e = ssh(IP_M, "find /home/angel/lab-share -type f -exec sha256sum {} + 2>/dev/null; pkill -f rsyncd_tfg.conf; "
+                       "rm -rf /home/angel/lab-share /tmp/rsyncd_tfg.conf /tmp/rsyncd_tfg.pid /tmp/rsyncd_tfg.log", timeout=60)
+        open(os.path.join(ldir, "recurso_remoto.txt"), "w", encoding="utf-8", newline="\n").write(o)
+    except Exception as ex:                                  # noqa: BLE001
+        log("rsync_down: %s" % ex)
+
+
+def extras_pre(spec, d_dest):
+    """Material fijado (URL + sha256 verificados en el host) que entra ANTES de t0."""
+    ata, rev = spec["ata"], spec["variante"] == "rev"
+    if ata == "ATA029" and rev:
+        ssh(IP_V, "mkdir -p %s/ATA029_src %s/ATA029_pkgs" % (LAB, LAB))
+        src = os.path.join(REPO, "Soporte", "Ataques", "atomic-red-team", "atomics", "T1005", "src")
+        rc, o, e = scp_many(IP_V, [os.path.join(src, f) for f in ("art", "gta.db", "sqlite_dump.sh")], LAB + "/ATA029_src/")
+        if rc != 0:
+            raise RuntimeError("scp src ATA029: %s" % e)
+        rc, o, e = scp_many(IP_V, sorted(glob.glob(os.path.join(MATERIAL, "sqlite_debs", "*.deb"))), LAB + "/ATA029_pkgs/")
+        if rc != 0:
+            raise RuntimeError("scp debs ATA029: %s" % e)
+    if ata == "ATA049":
+        import zipfile
+        z = os.path.join(MATERIAL, "rclone", "rclone-v1.75.1-linux-amd64.zip")
+        dst = os.path.join(MATERIAL, "rclone", "bin")
+        os.makedirs(dst, exist_ok=True)
+        with zipfile.ZipFile(z) as zf:
+            with zf.open("rclone-v1.75.1-linux-amd64/rclone") as src_f, open(os.path.join(dst, "rclone"), "wb") as out_f:
+                out_f.write(src_f.read())
+        rc, o, e = scp_to(IP_V, os.path.join(dst, "rclone"), d_dest + "/rclone")
+        if rc != 0:
+            raise RuntimeError("scp rclone: %s" % e)
+    if ata in ("ATA051", "ATA052", "ATA053"):
+        ssh(IP_V, "mkdir -p /home/angel/lab-legit/tandaB_debs")
+        rc, o, e = scp_many(IP_V, sorted(glob.glob(os.path.join(MATERIAL, "gui_debs", "*.deb"))), "/home/angel/lab-legit/tandaB_debs/", timeout=600)
+        if rc != 0:
+            raise RuntimeError("scp debs GUI: %s" % e)
+
+
+def boot_id():
+    rc, o, _ = ssh(IP_V, "cat /proc/sys/kernel/random/boot_id", timeout=20)
+    return o.strip() if rc == 0 else ""
+
+
+def esperar_reinicio(antes, seg=720):
+    """ATA038: espera a que la victima vuelva con otro boot_id y el agente 001 Active."""
+    t = time.time()
+    while time.time() - t < seg:
+        b = boot_id()
+        if b and b != antes:
+            if esperar_agente(420):
+                return b
+            raise RuntimeError("la victima reinicio pero el agente no vuelve a Active")
+        time.sleep(6)
+    raise RuntimeError("la victima no reinicia en %d s" % seg)
+
+
 def ventana(spec, it, timeout_ataque):
     ata = spec["ata"]
     tag = tag_de(spec, it)
@@ -274,6 +359,8 @@ def ventana(spec, it, timeout_ataque):
             time.sleep(esp)
         if sink:
             sink.start()
+        if ata in ("ATA039", "ATA040"):
+            rsync_up()
         vm_reset()
         if not esperar_ssh(IP_V, 300):
             raise RuntimeError("la victima no responde por SSH tras el arranque")
@@ -298,6 +385,7 @@ def ventana(spec, it, timeout_ataque):
                 scp_to(IP_V, at, d_dest + "/", recursive=True)      # deja ATA008/src/artifact
         if ata == "ATA047":                               # su prestaging arranca el sink dentro de la victima
             scp_to(IP_V, SINK, d_dest + "/")
+        extras_pre(spec, d_dest)
         ssh(IP_V, "chmod +x %s/*.sh 2>/dev/null; true" % d_dest)
         rc, o, _ = ssh(IP_V, "sha256sum %s/%s" % (d_dest, spec["nombre"]))
         meta["sha256_en_victima"] = o.split()[0] if o.split() else ""
@@ -322,6 +410,8 @@ def ventana(spec, it, timeout_ataque):
         # VENTANA: lanzamiento local; t0 = la marca T0= que imprime el propio ataque
         modo = "attack" if spec["variante"] == "rev" else ""
         cmd, entrada = lanzar_local(spec, modo, d_dest)
+        if ata == "ATA038":
+            meta["boot_id_antes"] = boot_id()
         t_lanz = mgr_now()
         rc, o, e = ssh(IP_V, cmd, inp=entrada, timeout=timeout_ataque)
         meta["lanzamiento_rc"] = rc
@@ -329,9 +419,14 @@ def ventana(spec, it, timeout_ataque):
         m = re.search(r"T0=(\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ)", o)
         t0 = m.group(1) if m else t_lanz
         meta["t0_fuente"] = "marca T0= del ataque" if m else "reloj del manager al lanzar"
-        # FIM forzado + 30 s, t1
-        msudo("/var/ossec/bin/agent_control -r -u %s" % AGENTE, timeout=90)
-        time.sleep(30)
+        if ata == "ATA038":
+            # t1 lo sella el operador TRAS la reconexion del agente (como en la version 1)
+            meta["boot_id_despues"] = esperar_reinicio(meta.get("boot_id_antes", ""))
+            time.sleep(20)
+        else:
+            # FIM forzado + 30 s, t1
+            msudo("/var/ossec/bin/agent_control -r -u %s" % AGENTE, timeout=90)
+            time.sleep(30)
         t1 = mgr_now()
         meta["t0"], meta["t1"] = t0, t1
         with open(os.path.join(ldir, "times.log"), "w", encoding="utf-8", newline="\n") as fh:
@@ -371,6 +466,8 @@ def ventana(spec, it, timeout_ataque):
     finally:
         if sink:
             sink.stop()
+        if ata in ("ATA039", "ATA040"):
+            rsync_down(ldir)
         meta["fin_utc"] = now_utc()
         meta["segundos"] = round(time.time() - t_ini)
         with open(os.path.join(ldir, "lanzamiento.json"), "w", encoding="utf-8", newline="\n") as fh:
