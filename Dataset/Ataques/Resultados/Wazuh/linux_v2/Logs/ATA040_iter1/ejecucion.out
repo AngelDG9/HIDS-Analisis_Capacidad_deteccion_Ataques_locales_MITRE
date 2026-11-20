@@ -1,5 +1,5 @@
 ATA040 · T1074.002 Remote Data Staging (rsync envia el staging al recurso remoto) — custom
-T0=2026-11-20T13:10:26Z
+T0=2026-11-20T15:16:34Z
 --- MATERIAL A ESTAGIAR (sha256 local) ---
 2ad637b8797a4c6e22a5da27f698f31c9da4088367df78a795414d1a6721d9e6  /home/angel/lab-attack/ATA040/staging/clientes.csv
 1011daaaa9e7a03a133476dad85bec06a61f30d21a13150b598105a8e35de115  /home/angel/lab-attack/ATA040/staging/facturas.csv
@@ -16,12 +16,12 @@ Matched data: 0 bytes
 File list size: 0
 File list generation time: 0.001 seconds
 File list transfer time: 0.000 seconds
-Total bytes sent: 493
+Total bytes sent: 489
 Total bytes received: 76
 
-sent 493 bytes  received 76 bytes  54.19 bytes/sec
-total size is 230  speedup is 0.40
+sent 489 bytes  received 76 bytes  53.81 bytes/sec
+total size is 230  speedup is 0.41
 --- estado final ---
 ficheros_estagiados=3
 STAGING_REMOTO=OK (3 ficheros enviados al recurso remoto rsync://192.168.65.128:9873/incoming/ATA040/)
-T1_LOCAL=2026-11-20T13:10:47Z
+T1_LOCAL=2026-11-20T15:16:55Z

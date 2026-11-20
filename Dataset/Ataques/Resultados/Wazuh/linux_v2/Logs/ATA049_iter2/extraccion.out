@@ -1,2 +1,2 @@
-detalle: filas=1000 en_ventana=1000 -> /tmp/ATA049_iter2-Detalle_raw.csv
-filas_detalle 978
+detalle: filas=983 en_ventana=983 -> /tmp/ATA049_iter2-Detalle_raw.csv
+filas_detalle 927

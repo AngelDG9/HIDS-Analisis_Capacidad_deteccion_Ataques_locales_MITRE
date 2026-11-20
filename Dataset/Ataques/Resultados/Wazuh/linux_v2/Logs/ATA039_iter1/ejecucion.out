@@ -1,9 +1,9 @@
 ATA039 · T1039 Data from Network Shared Drive (rsync recolecta el recurso) — custom
-T0=2026-11-20T13:00:43Z
+T0=2026-11-20T15:06:36Z
 --- RECURSO COMPARTIDO (listado remoto) ---
-drwxrwxr-x          4,096 2026/11/20 13:58:11 .
-drwxrwxr-x          4,096 2026/11/20 13:58:11 finanzas
-drwxrwxr-x          4,096 2026/11/20 13:58:11 rrhh
+drwxrwxr-x          4,096 2026/11/20 16:04:04 .
+drwxrwxr-x          4,096 2026/11/20 16:04:04 finanzas
+drwxrwxr-x          4,096 2026/11/20 16:04:04 rrhh
 
 Number of files: 5 (reg: 2, dir: 3)
 Number of created files: 4 (reg: 2, dir: 2)
@@ -27,4 +27,4 @@ d17919414100fba23b9fbaf1cc69efee434469e07ff5ca01f9274eaff7529a0c  /home/angel/la
 --- estado final ---
 ficheros_recolectados=2
 RECOLECCION=OK (2 ficheros copiados del recurso compartido)
-T1_LOCAL=2026-11-20T13:01:15Z
+T1_LOCAL=2026-11-20T15:07:07Z

@@ -1,5 +1,5 @@
 ATA029_rev · T1005 Data from Local System (atómica ART sqlite) — repeticion
-T0=2026-11-20T12:33:58Z
+T0=2026-11-20T14:38:54Z
 --- comando atómico: find . ! -executable -exec bash -c '… head|strings → sqlite_dump.sh' ---
 ./art
 List of tables:
@@ -28,4 +28,4 @@ Table: cities
 Liberty City|New York
 
 --- prueba de efecto: el volcado anterior (tablas y filas) es la recoleccion ---
-T1_LOCAL=2026-11-20T12:33:59Z
+T1_LOCAL=2026-11-20T14:38:55Z

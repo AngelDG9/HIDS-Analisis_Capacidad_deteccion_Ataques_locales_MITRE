@@ -39,8 +39,15 @@ def main(argv):
         d = "/var/ossec/logs/%s/%d/%s/%s-%02d.json" % (kind, dia.year, MES[dia.month - 1], base, dia.day)
         ficheros.append(d if os.path.isfile(d) else d + ".gz")
         dia += datetime.timedelta(days=1)
+    if kind == "archives":
+        # `archives.json` (vivo): normalmente es un enlace duro del diario, pero si se borro y se recreo
+        # puede ir SOLO a el (auditoria 2026-11-20: 20 ventanas de Linux quedaron sin archives por esto).
+        vivo = "/var/ossec/logs/archives/archives.json"
+        if os.path.isfile(vivo) and not any(os.path.isfile(f) and os.path.samefile(f, vivo) for f in ficheros):
+            ficheros.append(vivo)
     out = sys.stdout.buffer
     n = 0
+    vistos = set()
     f0 = desde.replace("Z", "")[:19]
     f1 = hasta.replace("Z", "")[:19]
     for p in ficheros:
@@ -58,6 +65,9 @@ def main(argv):
                     continue
                 ts = m.group(1)
                 if f0 <= ts <= f1:
+                    if raw in vistos:
+                        continue
+                    vistos.add(raw)
                     out.write(raw if raw.endswith(b"\n") else raw + b"\n")
                     n += 1
     sys.stderr.write("lineas=%d\n" % n)

@@ -35,7 +35,7 @@ import orquestar_ataques_linux as L  # noqa: E402  (reutiliza run/ssh/scp/msudo/
 
 VMX = r"D:\TFG-VMs\victima-windows\victima-windows.vmx"
 SNAP = "lab-listo-windows-ataques-gui"
-IP_W = "192.168.65.130"
+IP_W = L.IP_W
 AGENTE, AGENTE_NOMBRE = "002", "victima-windows"
 CMD_DIR = os.path.join(L.REPO, "Dataset", "Ataques", "Comandos", "windows")
 SERV = os.path.join(L.REPO, "_artefactos", "scripts", "arrancar_servicios_host.py")
@@ -66,6 +66,7 @@ def ficheros(spec):
 
 def vm_reset():
     L.run([L.VMRUN, "-T", "ws", "stop", VMX, "soft"], timeout=180)
+    esperar_ram(2500)          # con la VM Windows parada tiene que haber >2,5 GB; con las 2 VMs en marcha quedan ~300 MB (normal)
     rc, o, e = L.run([L.VMRUN, "-T", "ws", "revertToSnapshot", VMX, SNAP], timeout=300)
     if rc != 0:
         raise RuntimeError("revert rc=%s %s %s" % (rc, o.strip(), e.strip()))
@@ -95,6 +96,30 @@ def tarea_estado(tn):
     return m[2] if len(m) >= 3 else ("?" if rc else "")
 
 
+def ram_libre_mb():
+    """Memoria fisica disponible (MB) del host; evita que el PC se quede sin RAM con 2 VMs + la pila."""
+    import ctypes
+
+    class MS(ctypes.Structure):
+        _fields_ = [("dwLength", ctypes.c_ulong), ("dwMemoryLoad", ctypes.c_ulong), ("ullTotalPhys", ctypes.c_ulonglong),
+                    ("ullAvailPhys", ctypes.c_ulonglong), ("ullTotalPageFile", ctypes.c_ulonglong),
+                    ("ullAvailPageFile", ctypes.c_ulonglong), ("ullTotalVirtual", ctypes.c_ulonglong),
+                    ("ullAvailVirtual", ctypes.c_ulonglong), ("sullAvailExtendedVirtual", ctypes.c_ulonglong)]
+    m = MS()
+    m.dwLength = ctypes.sizeof(MS)
+    ctypes.windll.kernel32.GlobalMemoryStatusEx(ctypes.byref(m))
+    return int(m.ullAvailPhys / (1024 * 1024))
+
+
+def esperar_ram(minimo=1200, max_seg=1800):
+    t = time.time()
+    while ram_libre_mb() < minimo:
+        if time.time() - t > max_seg:
+            raise RuntimeError("RAM libre < %d MB durante %d s: paro para no colgar el PC" % (minimo, max_seg))
+        L.log("RAM libre %d MB < %d: espero" % (ram_libre_mb(), minimo))
+        time.sleep(30)
+
+
 def ventana(spec, it, timeout_ataque):
     ata = spec["ata"]
     tag = "%s_iter%d" % (ata, it)
@@ -117,6 +142,7 @@ def ventana(spec, it, timeout_ataque):
             raise RuntimeError("la victima no responde por SSH")
         if not esperar_agente(480):
             raise RuntimeError("el agente 002 no llega a Active")
+        L.log("%s RAM libre tras arrancar la VM: %d MB" % (tag, ram_libre_mb()))
         L.log("%s agente Active; asentamiento %d s" % (tag, L.SETTLE_S))
         time.sleep(L.SETTLE_S)
         meta["reloj_manager"] = L.mgr_now()
@@ -164,7 +190,7 @@ def ventana(spec, it, timeout_ataque):
         # recoger evidencias y leer t0 del propio ataque
         ev_local = os.path.join(ldir, "evidencias")
         os.makedirs(ev_local, exist_ok=True)
-        L.run([L.SCP, "-q", "-r", "-i", L.KEY, "-o", "BatchMode=yes", "angel@%s:C:/lab-attack/%s/evidencias/." % (IP_W, ata), ev_local], timeout=300)
+        L.run([L.SCP, "-q", "-r", "-i", L.KEY_WIN, "-o", "BatchMode=yes", "angel@%s:C:/lab-attack/%s/evidencias/." % (IP_W, ata), ev_local], timeout=300)
         t0 = t_lanz
         tl = os.path.join(ev_local, "times.log")
         if os.path.isfile(tl):

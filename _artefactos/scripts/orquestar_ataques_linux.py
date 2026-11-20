@@ -41,6 +41,13 @@ VMRUN = r"C:\Program Files\VMware\VMware Workstation\vmrun.exe"
 VMX = r"D:\TFG-VMs\victima-linux\victima-linux.vmx"
 SNAP = "lab-listo"
 IP_V, IP_M, IP_H = "192.168.65.129", "192.168.65.128", "192.168.65.1"
+IP_W = "192.168.65.130"                      # victima Windows: usa SU clave (id_ed25519_tfg_win)
+KEY_WIN = os.path.join(os.path.expanduser("~"), ".ssh", "id_ed25519_tfg_win")
+
+
+def key_for(ip):
+    return KEY_WIN if ip == IP_W else KEY
+
 LAB = "/home/angel/lab-attack"
 AGENTE = "001"
 AGENTE_NOMBRE = "victima-linux"
@@ -91,7 +98,7 @@ def run(cmd, inp=None, timeout=120, binary=False):
 
 
 def _ssh_base(ip):
-    return [SSH, "-q", "-i", KEY, "-o", "BatchMode=yes", "-o", "ConnectTimeout=10",
+    return [SSH, "-q", "-i", key_for(ip), "-o", "BatchMode=yes", "-o", "ConnectTimeout=10",
             "-o", "StrictHostKeyChecking=accept-new", "-o", "ServerAliveInterval=15",
             "-o", "ServerAliveCountMax=6", "angel@" + ip]
 
@@ -101,14 +108,14 @@ def ssh(ip, remote, inp=None, timeout=120, binary=False):
 
 
 def scp_to(ip, local, remote, recursive=False, timeout=120):
-    cmd = [SCP, "-q", "-i", KEY, "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=accept-new"]
+    cmd = [SCP, "-q", "-i", key_for(ip), "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=accept-new"]
     if recursive:
         cmd.append("-r")
     return run(cmd + [local, "angel@%s:%s" % (ip, remote)], timeout=timeout)
 
 
 def scp_from(ip, remote, local, timeout=120):
-    cmd = [SCP, "-q", "-i", KEY, "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=accept-new",
+    cmd = [SCP, "-q", "-i", key_for(ip), "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=accept-new",
            "angel@%s:%s" % (ip, remote), local]
     return run(cmd, timeout=timeout)
 
@@ -200,6 +207,31 @@ def esperar_agente(seg=360):
     return False
 
 
+def logall_escribe(seg=30) -> bool:
+    """Comprueba que el manager GUARDA archives: emite un evento de prueba y lo busca en archives."""
+    marca = "TFG_LOGALL_%d" % int(time.time())
+    ssh(IP_M, "logger -t TFG_TEST %s" % marca, timeout=30)
+    t = time.time()
+    while time.time() - t < seg:
+        time.sleep(4)
+        rc, o, _ = ssh(IP_M, "sudo -S -p '' sh -c 'grep -c %s /var/ossec/logs/archives/archives.json /var/ossec/logs/archives/$(date -u +%%Y/%%b)/ossec-archive-$(date -u +%%d).json 2>/dev/null'" % marca,
+                       inp=PW + "\n", timeout=60)
+        if re.search(r":[1-9]", o or ""):
+            return True
+    return False
+
+
+def asegurar_logall():
+    """logall_json=yes y archives escribiendo; si no, `on` (reinicio robusto) y se vuelve a comprobar (3 intentos)."""
+    for intento in (1, 2, 3):
+        if logall_escribe():
+            return
+        log("AVISO: el manager NO esta guardando archives (intento %d): se reaplica logall_json on" % intento)
+        ssh(IP_M, "bash /home/angel/logall_json_ctl.sh on", inp=PW + "\n", timeout=300)
+        time.sleep(20)
+    raise RuntimeError("el manager no guarda archives aunque logall_json=yes")
+
+
 def espacio_manager_gb() -> float:
     rc, out, _ = ssh(IP_M, "df -BG --output=avail / | tail -1", timeout=30)
     m = re.search(r"(\d+)", out or "")
@@ -272,7 +304,7 @@ rsync --list-only rsync://192.168.65.128:9873/ && echo RSYNC_UP_OK
 
 
 def scp_many(ip, locales, remoto, timeout=300):
-    cmd = [SCP, "-q", "-i", KEY, "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=accept-new"] + list(locales) + ["angel@%s:%s" % (ip, remoto)]
+    cmd = [SCP, "-q", "-i", key_for(ip), "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=accept-new"] + list(locales) + ["angel@%s:%s" % (ip, remoto)]
     return run(cmd, timeout=timeout)
 
 
@@ -359,6 +391,7 @@ def ventana(spec, it, timeout_ataque):
             time.sleep(esp)
         if sink:
             sink.start()
+        asegurar_logall()
         if ata in ("ATA039", "ATA040"):
             rsync_up()
         vm_reset()
@@ -458,6 +491,8 @@ def ventana(spec, it, timeout_ataque):
             with gzip.GzipFile(os.path.join(RAW, "%s_%s_%s.jsonl.gz" % (tag, kind, AGENTE)), "wb", mtime=0) as gz:
                 gz.write(blob)
             meta["lineas_%s" % kind] = blob.count(b"\n")
+        if meta.get("lineas_archives", 0) == 0:
+            raise RuntimeError("archives vacio en la ventana: el registro completo no se guardo")
         meta["estado"] = "OK" if meta.get("lanzamiento_rc", 1) == 0 and meta["filas_detalle"] >= 0 else "REVISAR"
     except Exception as ex:                                  # noqa: BLE001 - se anota y se sigue
         meta["estado"] = "FALLO"
@@ -573,6 +608,9 @@ def fase_post(args):
     for p in listado:
         sub = "alerts" if "/alerts/" in p else "archives"
         sh += '[ -f "%s" ] && cp "%s" %s/%s/\n' % (p, p, stage, sub)
+    sh += ('V=/var/ossec/logs/archives/archives.json; for D in %s; do [ -f "$V" ] && [ -f "$D" ] && [ "$V" -ef "$D" ] && SAME=1; done; '
+           '[ -f "$V" ] && [ -z "${SAME:-}" ] && cp "$V" %s/archives/archives_vivo.json\n') % (
+        " ".join('"/var/ossec/logs/archives/%s/%s/ossec-archive-%s.json"' % (d[:4], dt.datetime.strptime(d, "%Y-%m-%d").strftime("%b"), d[8:10]) for d in dias), stage)
     sh += "cp /var/ossec/logs/ossec.log %s/manager/ 2>/dev/null\n" % stage
     sh += "cp /var/ossec/var/run/wazuh-analysisd.state /var/ossec/var/run/wazuh-remoted.state %s/manager/ 2>/dev/null\n" % stage
     sh += "for ym in %s; do cp /var/ossec/logs/wazuh/$ym/ossec-*.log.gz %s/manager/ 2>/dev/null; cp /var/ossec/logs/api/$ym/api.log-*.gz %s/manager/ 2>/dev/null; done\n" % (
