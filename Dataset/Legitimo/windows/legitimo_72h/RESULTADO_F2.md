@@ -32,21 +32,26 @@ soltado en carpeta típica de malware») 86** · `92201` (nivel 9) 51 · `91823`
 
 ## Comparación con Linux (misma métrica, misma unidad; ventana Linux 2–4 nov, `M = 342 966`)
 
-| | Linux **C0** (Wazuh virgen) | Linux **C1** (+ reglas auditd) | **Windows** (virgen) |
+> **Definiciones (de `Soporte/Metrica/metrica_hids.md` §6 y `boveda_congelacion.md` B6):** `C0 = {RS1}` (solo el ruleset
+> principal), **`C1 = {RS1, RS2}` = Wazuh «virgen»** (titular de la métrica; auditd/Sysmon son *telemetría*, no reglas, y van activados),
+> `C2 = C1 ∪ {RS3}`, `C3 = C2 ∪ {RS4}` (RS3 y RS4 = reglas añadidas; hoy **vacías**). *(Una versión anterior de este fichero
+> etiquetaba mal C0 como «virgen» y C1 como «+ reglas auditd»; corregido el 2026-11-20.)*
+
+| | Linux C0 (solo RS1) | Linux **C1 = virgen** | **Windows** (C0 = C1) |
 |---|---:|---:|---:|
-| FP en N≥3 | 50 | 294 252 | 6 344 |
-| FPR en N≥3 | 0,015 % | 85,80 % | 29,39 % |
-| FP/hora en N≥3 | 0,69 | 4 086,8 | 88,1 |
-| FP en N≥7 | 0 | 2 | **143** |
-| FP/hora en N≥7 | 0 | 0,028 | **1,99** |
+| FP en N≥3 | 50 | **294 252** | **6 344** |
+| FPR en N≥3 | 0,015 % | **85,80 %** | **29,39 %** |
+| FP/hora en N≥3 | 0,69 | **4 086,8** | **88,1** |
+| FP en N≥7 | 0 | **2** | **143** |
+| FP/hora en N≥7 | 0 | **0,028** | **1,99** |
 
 Lectura (declarada con cautela):
-1. **No son comparables en bruto por `M`**: en Linux `M` incluye cada `execve` que registra auditd (342 966 eventos), en Windows solo lo que envía el agente
-   (21 589). Por eso se comparan **FP/hora, FP/acción y los umbrales de nivel**, no solo el %.
-2. **Windows virgen ya trae reglas que alertan** (Sysmon + eventos de seguridad), así que no hay «C0 sin ruido»: C0 = C1. En Linux virgen casi no alerta (50 en 72 h) y
-   el ruido llega al añadir reglas de auditoría.
-3. **En niveles altos (≥7) Windows genera ~70 veces más FP/hora que Linux C1** (1,99 frente a 0,028): el coste de usar Windows «virgen» en un entorno con
-   actividad de usuario es que aparecen alertas críticas falsas (`92213`, `91823`).
+1. **No son comparables en bruto por `M`**: en Linux `M` incluye cada `execve` que registra auditd (342 966 eventos), en Windows solo lo que envía el
+   agente (21 589). Por eso se comparan **FP/hora, FP/acción y los umbrales de nivel**, no solo el %.
+2. **Titular (virgen = C1):** Linux produce muchas más alertas bajas (85,8 % frente a 29,4 %; 4 087 frente a 88 por hora), porque RS2 incluye las reglas que
+   alertan por cada comando auditado. En Windows C0 = C1: ninguna regla de RS2 interviene (todas las reglas que saltan son de RS1).
+3. **En niveles altos (≥7) ocurre lo contrario**: Windows genera ~70 veces más FP/hora que Linux C1 (1,99 frente a 0,028), por actividad legítima que Wazuh trata
+   como crítica (`92213`, `91823`).
 4. La campaña de GHOSTS **está dentro de `M`** (se declara; no se fabrica un FPR sin campaña).
 
 ## Cautelas y límites (declarados)
