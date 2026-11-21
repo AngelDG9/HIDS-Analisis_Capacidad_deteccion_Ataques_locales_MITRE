@@ -1,0 +1,21 @@
+# T4_rendimiento_windows_v2.csv | TFG HIDS - R2 T4 (metricas de rendimiento) | metrica_version=1 | boveda_version=2 | hids=wazuh | M=instrumentado | auditado=Dataset/Ataques/Resultados/Wazuh/windows_v2/M1b/Auditado | t2=Hojas/T2_ataques_windows_v2.csv | t3=Hojas/T3_legitimo_windows.csv | sha256_entradas=e0eb624eee6dae37a3796fb989d734745a1f7229f8ecf71aa4f6d8c05531fca1,ed21b48a367f29f43d2b4f63311d07b79b2e373b29e3178d6043c3c95c4318e4 | columnas=wazuh_C0_N0,wazuh_C0_N3,wazuh_C0_N7,wazuh_C0_N10,wazuh_C0_N12,wazuh_C1_N0,wazuh_C1_N3,wazuh_C1_N7,wazuh_C1_N10,wazuh_C1_N12 | formulas_literales=metrica_hids.py (§2.5) | layout=ancho(1 columna por HIDS x config x umbral; las filas de metrica pueden empezar por '#') | columnas_csv=metrica,excel_profesor,formula_literal,wazuh_C0_N0,wazuh_C0_N3,wazuh_C0_N7,wazuh_C0_N10,wazuh_C0_N12,wazuh_C1_N0,wazuh_C1_N3,wazuh_C1_N7,wazuh_C1_N10,wazuh_C1_N12
+metrica,excel_profesor,formula_literal,wazuh_C0_N0,wazuh_C0_N3,wazuh_C0_N7,wazuh_C0_N10,wazuh_C0_N12,wazuh_C1_N0,wazuh_C1_N3,wazuh_C1_N7,wazuh_C1_N10,wazuh_C1_N12
+#Casos,#Attack flows,N = 55,54,54,54,54,54,54,54,54,54,54
+#Unidades_legitimas (M),#Clear flows,denominador §2.2,21589,21589,21589,21589,21589,21589,21589,21589,21589,21589
+#Total,#Total Flows,#Casos + M,21643,21643,21643,21643,21643,21643,21643,21643,21643,21643
+#Casos_TP,#pcaps TP,§2.3,54,54,0,0,0,54,54,0,0,0
+#Casos_FN,#pcaps FN,N - #Casos_TP,0,0,54,54,54,0,0,54,54,54
+#Alertas_TP,#Alerts TP,A_TP,422,422,0,0,0,422,422,0,0,0
+#Alertas_correlacionadas_TP,#Flow-correlated Alerts TP,A_TP^c,118,118,0,0,0,118,118,0,0,0
+#Unidades_FP,#Flows FP,FP_uni,6344,6344,143,88,88,6344,6344,143,88,88
+#Unidades_TN,#Flows TN,M - FP_uni,15245,15245,21446,21501,21501,15245,15245,21446,21501,21501
+#Alertas_FP,#Alerts FP,A_FP,6344,6344,143,88,88,6344,6344,143,88,88
+#Alertas_correlacionadas_FP,#Flow-correlated Alerts FP,A_FP^c,6344,6344,143,88,88,6344,6344,143,88,88
+TPR,TPR,TPR = #Casos_TP / #Casos  (Excel B14 = B6/'T2'!$D$79),1.000000,1.000000,0.000000,0.000000,0.000000,1.000000,1.000000,0.000000,0.000000,0.000000
+FPR,FPR,FPR = #Unidades_FP / M  (Excel B15 = B10/$B$4),0.293853,0.293853,0.006624,0.004076,0.004076,0.293853,0.293853,0.006624,0.004076,0.004076
+TNR,(añadido),TNR = 1 - FPR  (Excel %Flows_TN = 1 - %Flows_FP),0.706147,0.706147,0.993376,0.995924,0.995924,0.706147,0.706147,0.993376,0.995924,0.995924
+Precisión,(bloque fórmulas),P = A_TP / (A_TP + A_FP)  (Excel P = TP/(TP+FP)),0.062371,0.062371,0.000000,0.000000,0.000000,0.062371,0.062371,0.000000,0.000000,0.000000
+F1,(bloque fórmulas),"F1 = 2*P*R / (P + R), R = TPR  (Excel F1 = 2PR/(P+R))",0.117418,0.117418,0.000000,0.000000,0.000000,0.117418,0.117418,0.000000,0.000000,0.000000
+GM,GM,GM = sqrt(TPR * (1 - FPR))  (Excel B16 = SQRT(B14*(1-B15))),0.840325,0.840325,0.000000,0.000000,0.000000,0.840325,0.840325,0.000000,0.000000,0.000000
+Usabilidad,Operational Usability,Usab = A_FP / A_TP  (Excel B17 = B12/B8),15.0332,15.0332,0.0000,0.0000,0.0000,15.0332,15.0332,0.0000,0.0000,0.0000
+Usabilidad (correlacionadas),Operational Usability (correlated alerts),Usab^c = A_FP^c / A_TP^c  (Excel B18 = B13/B9),53.7627,53.7627,0.0000,0.0000,0.0000,53.7627,53.7627,0.0000,0.0000,0.0000

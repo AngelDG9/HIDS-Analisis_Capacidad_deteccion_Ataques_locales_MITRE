@@ -1,0 +1,131 @@
+{
+ "ata_id": "ATA097",
+ "tecnica": "T1565.003",
+ "tactica": "Impact",
+ "sistema": "windows",
+ "bloque": "B2",
+ "tanda": "B2.2",
+ "estado": "piloto-ok",
+ "canal": "ssh",
+ "artefacto": "Dataset/Ataques/Comandos/windows/T1565.003-Runtime_Data_Manipulation/",
+ "atomic": {
+  "fuente": "manual",
+  "guid": "",
+  "adaptacion": "WriteProcessMemory sobre proceso PowerShell de juguete (ATA097_toy.ps1); solo ese PID",
+  "fuente_norm": "manual",
+  "motivo_codigo": "manual",
+  "motivo_detalle": "WriteProcessMemory sobre proceso PowerShell de juguete (ATA097_toy.ps1); solo ese PID"
+ },
+ "esperado_sha256": "08c2b0db2141947c3f56e142ccd4dfefa844b418d8f26b857ba21faba2916c34",
+ "ataque_sha256": "acb8d9a627cc00bb368726110e4f1cb6dba646c9d21a83bdd5de79f65c901b56",
+ "toy_sha256": "c207f3c0a27a9dbe366d75cfba21f7a4698b6d748478cf260b323e62dfe58705",
+ "validacion_humana_esperado": "pre-registrado y sellado en a2eca10",
+ "c0": {
+  "documento": "Soporte/Ataques/c0/windows/ATA097_c0.md",
+  "sha256": "",
+  "resultado": "PASA (clases de B1.0 + preflight B2.2); RS3=RS4=0"
+ },
+ "iteraciones": [
+  {
+   "iter": 1,
+   "variante": "base",
+   "t0": "2026-11-20T23:13:56Z",
+   "t1": "2026-11-20T23:14:43Z",
+   "duracion_s": 47,
+   "snapshot": "lab-listo-windows-ataques-gui",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/windows_v2/CSV/ATA097_iter1-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/windows_v2/Auditado/ATA097_iter1-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (tarea programada)",
+   "version_datos": 2
+  },
+  {
+   "iter": 2,
+   "variante": "base",
+   "t0": "2026-11-20T23:18:45Z",
+   "t1": "2026-11-20T23:19:32Z",
+   "duracion_s": 47,
+   "snapshot": "lab-listo-windows-ataques-gui",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/windows_v2/CSV/ATA097_iter2-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/windows_v2/Auditado/ATA097_iter2-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (tarea programada)",
+   "version_datos": 2
+  }
+ ],
+ "revision_global": {
+  "fecha": "2026-11-09",
+  "veredicto": "artefacto/ruido/deteccion segun fila",
+  "motivo": "FIM ambigua, servicio/cuenta/registro y ruido de arranque resueltos antes de T2",
+  "revisor": "executor B2.2"
+ },
+ "doble_iteracion": "iguales",
+ "doble_iteracion_detalle": {
+  "criterio": "v2",
+  "mismo_conjunto_rule_id_deteccion": true,
+  "rule_ids_iter1": [
+   "67027",
+   "92032",
+   "92052",
+   "92213"
+  ],
+  "rule_ids_iter2": [
+   "67027",
+   "92032",
+   "92052",
+   "92213"
+  ],
+  "rule_ids_deteccion": [
+   "67027",
+   "92032",
+   "92052",
+   "92213"
+  ],
+  "n1": 8,
+  "n2": 8,
+  "margen": 2,
+  "criterio_recuento_ok": true,
+  "sin_dudosas_sin_resolver": true,
+  "veredicto": "iguales"
+ },
+ "extraccion": {
+  "extractor": "extraer_alertas_windows.py (27 columnas; RS desde el ruleset del manager)",
+  "fuente": "/var/ossec/logs/alerts/2026/Nov/ossec-alerts-09.json",
+  "aislamiento": "agent_id=002",
+  "ventana": "t0-3s .. t1+3s"
+ },
+ "prueba_de_efecto": "cadena TFG-ORIGINAL-STRING -> TFG-MANIPULATED-STRING leida por el toy",
+ "receptor": {
+  "script": "n/a (local)",
+  "parado_tras_t1": true
+ },
+ "limitacion": "primer iter1 fallo por [UIntPtr]256; toy corregido a ::new(256); iteracion invalida archivada",
+ "eventos": [
+  {
+   "ts": "2026-11-09T19:58:40Z",
+   "tipo": "t0",
+   "detalle": "iter1 t0"
+  },
+  {
+   "ts": "2026-11-09T20:02:31Z",
+   "tipo": "t0",
+   "detalle": "iter2 t0"
+  },
+  {
+   "ts": "2026-11-09T19:58:43Z",
+   "tipo": "t1",
+   "detalle": "iter1 t1"
+  },
+  {
+   "ts": "2026-11-09T20:02:34Z",
+   "tipo": "t1",
+   "detalle": "iter2 t1"
+  },
+  {
+   "ts": "2026-11-09T20:05:00Z",
+   "tipo": "cierre",
+   "detalle": "doble iteracion v2: iguales"
+  }
+ ],
+ "bitacora_origen": "generada por generar_bitacora_v2.py a partir de Bitacora/ATA097.json (metadatos) y del indice v2 (iteraciones)"
+}

@@ -293,6 +293,10 @@ def main(argv=None) -> int:
     ap.add_argument("--catalogo", default=DEFAULT_CATALOGO)
     ap.add_argument("--catalogo-sensibilidad", default=DEFAULT_CATALOGO_SENS)
     ap.add_argument("--out-dir", default=DEFAULT_OUT_DIR)
+    ap.add_argument("--filtro", default="filtrar_ruido.py",
+                    help="script de filtrado en _artefactos/scripts (Windows: filtrar_ruido_windows.py)")
+    ap.add_argument("--permitir-diferencias", action="store_true",
+                    help="en la tanda canonica, las lineas distintas vs el origen NO son error (Windows: el catalogo M1b-W si cambia categorias)")
     ap.add_argument(
         "--solo",
         choices=("canonica", "sensibilidad", "ambas"),
@@ -300,6 +304,8 @@ def main(argv=None) -> int:
         help="qué tanda ejecutar (por defecto ambas)",
     )
     args = ap.parse_args(argv)
+    global FILTRAR
+    FILTRAR = os.path.join(SCRIPTS_DIR, args.filtro)
 
     resultados = []
     if args.solo in ("canonica", "ambas"):
@@ -334,7 +340,7 @@ def main(argv=None) -> int:
             fallo = True
             for e in r["errores"]:
                 print(f"ERROR: {e}", file=sys.stderr)
-        if r["diferencias"] and r["canonica"]:
+        if r["diferencias"] and r["canonica"] and not args.permitir_diferencias:
             fallo = True
             print(
                 f"ERROR: {r['diferencias']} lineas de datos distintas en {r['out_dir']}/diff.csv",

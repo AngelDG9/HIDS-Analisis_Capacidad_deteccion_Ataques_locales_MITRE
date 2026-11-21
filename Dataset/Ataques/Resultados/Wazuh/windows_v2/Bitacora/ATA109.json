@@ -1,0 +1,127 @@
+{
+ "ata_id": "ATA109",
+ "tecnica": "T1114.003",
+ "tactica": "Collection",
+ "sistema": "windows",
+ "bloque": "B2",
+ "tanda": "B2.4",
+ "estado": "piloto-ok",
+ "canal": "ssh",
+ "artefacto": "Dataset/Ataques/Comandos/windows/T1114.003-Email_Forwarding_Rule/",
+ "atomic": {
+  "fuente": "manual",
+  "guid": "",
+  "adaptacion": "perfil sintetico + regla de reenvio + sink local; .eml",
+  "fuente_norm": "manual",
+  "motivo_codigo": "manual",
+  "motivo_detalle": "perfil sintetico + regla de reenvio + sink local; .eml"
+ },
+ "esperado_sha256": "ceefc8ad362bc0c696202a85f759b61558ee27280036211415e6496e8d5444e2",
+ "ataque_sha256": "04c4be3c25b1d7a8c84f39d98fa9e11fe04053a76970c72aef15475b4eca5dac",
+ "validacion_humana_esperado": "pre-registrado y sellado en 2af6ed0",
+ "c0": {
+  "documento": "Soporte/Ataques/c0/windows/ATA109_c0.md",
+  "sha256": "",
+  "resultado": "PASA (clases de B1.0 + preflight B2.4); RS3=RS4=0"
+ },
+ "iteraciones": [
+  {
+   "iter": 1,
+   "variante": "base",
+   "t0": "2026-11-21T01:23:50Z",
+   "t1": "2026-11-21T01:24:37Z",
+   "duracion_s": 47,
+   "snapshot": "lab-listo-windows-ataques-gui",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/windows_v2/CSV/ATA109_iter1-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/windows_v2/Auditado/ATA109_iter1-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (tarea programada)",
+   "version_datos": 2
+  },
+  {
+   "iter": 2,
+   "variante": "base",
+   "t0": "2026-11-21T01:28:52Z",
+   "t1": "2026-11-21T01:29:38Z",
+   "duracion_s": 46,
+   "snapshot": "lab-listo-windows-ataques-gui",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/windows_v2/CSV/ATA109_iter2-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/windows_v2/Auditado/ATA109_iter2-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (tarea programada)",
+   "version_datos": 2
+  }
+ ],
+ "revision_global": {
+  "fecha": "2026-11-09",
+  "veredicto": "artefacto/ruido/deteccion segun fila",
+  "motivo": "FIM ambigua, servicio/cuenta/registro y ruido de arranque resueltos antes de T2",
+  "revisor": "executor B2.4"
+ },
+ "doble_iteracion": "iguales",
+ "doble_iteracion_detalle": {
+  "criterio": "v2",
+  "mismo_conjunto_rule_id_deteccion": true,
+  "rule_ids_iter1": [
+   "67027",
+   "92032",
+   "92052"
+  ],
+  "rule_ids_iter2": [
+   "67027",
+   "92032",
+   "92052"
+  ],
+  "rule_ids_deteccion": [
+   "67027",
+   "92032",
+   "92052"
+  ],
+  "n1": 5,
+  "n2": 5,
+  "margen": 2,
+  "criterio_recuento_ok": true,
+  "sin_dudosas_sin_resolver": true,
+  "veredicto": "iguales"
+ },
+ "extraccion": {
+  "extractor": "extraer_alertas_windows.py (27 columnas; RS desde el ruleset del manager)",
+  "fuente": "/var/ossec/logs/alerts/2026/Nov/ossec-alerts-09.json",
+  "aislamiento": "agent_id=002",
+  "ventana": "t0-3s .. t1+3s"
+ },
+ "prueba_de_efecto": ".eml reenviado a sink@tfg.local",
+ "receptor": {
+  "script": "n/a (local)",
+  "parado_tras_t1": true
+ },
+ "limitacion": "",
+ "eventos": [
+  {
+   "ts": "2026-11-09T23:01:07Z",
+   "tipo": "t0",
+   "detalle": "iter1 t0"
+  },
+  {
+   "ts": "2026-11-09T23:05:04Z",
+   "tipo": "t0",
+   "detalle": "iter2 t0"
+  },
+  {
+   "ts": "2026-11-09T23:01:10Z",
+   "tipo": "t1",
+   "detalle": "iter1 t1"
+  },
+  {
+   "ts": "2026-11-09T23:05:09Z",
+   "tipo": "t1",
+   "detalle": "iter2 t1"
+  },
+  {
+   "ts": "2026-11-09T23:10:00Z",
+   "tipo": "cierre",
+   "detalle": "doble iteracion v2: iguales"
+  }
+ ],
+ "bitacora_origen": "generada por generar_bitacora_v2.py a partir de Bitacora/ATA109.json (metadatos) y del indice v2 (iteraciones)"
+}

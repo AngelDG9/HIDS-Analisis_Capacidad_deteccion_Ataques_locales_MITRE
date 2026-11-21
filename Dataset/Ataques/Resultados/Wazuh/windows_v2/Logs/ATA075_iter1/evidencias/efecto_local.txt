@@ -1,0 +1,9 @@
+ata=ATA075
+tecnica=T1048.001
+fuente=manual
+t0=2026-11-20T19:25:33Z
+t1=2026-11-20T19:25:33Z
+destino=192.168.65.1:9091
+bytes=1536
+sha256_cifrado=bd22822f1eeba75cd5456d28b23f7e60ca0b51b4b9e645735f51af016750e9ca
+aes=256

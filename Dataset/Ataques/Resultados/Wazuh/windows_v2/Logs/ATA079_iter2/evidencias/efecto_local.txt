@@ -1,0 +1,10 @@
+ata=ATA079
+tecnica=T1029
+fuente=manual
+t0=2026-11-20T20:10:48Z
+t1=2026-11-20T20:11:01Z
+task=TFG-ATA079
+trigger=21:11
+last_run=11/20/2026 9:11:00 PM
+post=C:\lab-attack\ATA079\post.cmd
+payload=C:\lab-attack\ATA079\payload.txt

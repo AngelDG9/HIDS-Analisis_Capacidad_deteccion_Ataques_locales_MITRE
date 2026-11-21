@@ -1,0 +1,8 @@
+ata=ATA088
+tecnica=T1496.002
+fuente=manual
+t0=2026-11-20T21:42:21Z
+t1=2026-11-20T21:42:22Z
+destino=192.168.65.1:9091
+conexiones=1
+bytes=33554432

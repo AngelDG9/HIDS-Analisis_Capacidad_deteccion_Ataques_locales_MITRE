@@ -4,7 +4,8 @@ Generado por `_artefactos/scripts/verificar_completitud_ataques_v2.py` (recalcul
 
 - Estados en el indice: {'OK': 128}
 - Ventanas OK y completas: **128** de 128
-- crudo: 35 ficheros en el manifiesto
+- crudo: 34 ficheros en el manifiesto
+- crudo: sha256 recalculados, discrepancias=0
 
 ## Fallos (0)
 ninguno

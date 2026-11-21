@@ -1,0 +1,4 @@
+C:\lab-attack\ATA102\ATA102_ataque.ps1 : GUARDARRAIL: VHD ausente
+    + CategoryInfo          : NotSpecified: (:) [Write-Error], WriteErrorException
+    + FullyQualifiedErrorId : Microsoft.PowerShell.Commands.WriteErrorException,ATA102_ataque.ps1
+ 

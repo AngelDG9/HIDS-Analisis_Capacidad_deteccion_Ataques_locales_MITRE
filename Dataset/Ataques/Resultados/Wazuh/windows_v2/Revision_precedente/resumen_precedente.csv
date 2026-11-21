@@ -1,0 +1,295 @@
+rule_id,motivo,atribucion,apoyo_v1,veredicto_v1,v2_resueltas,v2_sin_resolver
+554,ambigua,T1074.001|File Integrity Monitoring,0,,0,126
+554,ambigua,T1114.001|File Integrity Monitoring,0,,0,91
+554,ambigua,T1560.002|File Integrity Monitoring,0,,0,86
+554,ambigua,T1560.003|File Integrity Monitoring,0,,0,86
+554,ambigua,T1039|File Integrity Monitoring,0,,0,84
+554,ambigua,T1119|File Integrity Monitoring,0,,0,84
+60642,sin_campos,,30,ruido:30,63,0
+554,ambigua,T1667|File Integrity Monitoring,0,,0,54
+554,ambigua,T1005|File Integrity Monitoring,0,,0,46
+554,ambigua,T1560.001|File Integrity Monitoring,0,,0,46
+554,ambigua,T1041|File Integrity Monitoring,0,,0,46
+554,ambigua,T1048.001|File Integrity Monitoring,0,,0,46
+554,ambigua,T1074.002|File Integrity Monitoring,0,,0,44
+67027,sin_ancla,T1499.003|Process Creation,0,,0,41
+67027,sin_ancla,T1529|Process Creation,24,ruido:24,36,0
+92213,sin_ancla,T1499.003|Process Creation,0,,0,26
+554,ambigua,T1490|File Integrity Monitoring,0,,0,24
+67027,sin_ancla,T1029|Process Creation,4,ruido:4,0,23
+92052,sin_ancla,T1499.003|Process Creation,0,,0,20
+91816,sin_campos,,16,ruido:16,19,0
+91819,sin_campos,,0,,0,18
+92021,sin_ancla,T1529|Process Creation,16,ruido:16,16,0
+92201,sin_ancla,T1529|Process Creation,16,ruido:16,16,0
+67027,sin_ancla,T1499.002|Process Creation,2,ruido:2,0,15
+554,ambigua,T1485|File Integrity Monitoring,0,,0,14
+92052,sin_ancla,T1499.002|Process Creation,0,,0,14
+92213,sin_ancla,T1565.003|Process Creation,0,,0,14
+92213,sin_ancla,T1056.001|Process Creation,0,,0,13
+92052,sin_ancla,T1529|Process Creation,4,ruido:4,0,12
+554,ambigua,T1185|File Integrity Monitoring,0,,0,12
+92213,sin_ancla,T1529|Process Creation,0,,0,11
+550,ambigua,T1565.003|File Integrity Monitoring,0,,0,11
+92052,sin_ancla,T1496.001|Process Creation,0,,0,10
+553,ambigua,T1485|File Integrity Monitoring,0,,0,10
+91820,sin_campos,,0,,0,10
+554,ambigua,T1114.003|File Integrity Monitoring,0,,0,10
+67027,sin_ancla,T1496.001|Process Creation,0,,0,8
+91826,sin_campos,,0,,0,8
+554,ambigua,T1489|File Integrity Monitoring,0,,0,8
+550,ambigua,T1489|File Integrity Monitoring,0,,0,8
+554,ambigua,T1529|File Integrity Monitoring,0,,0,8
+92032,sin_ancla,T1529|Process Creation,4,ruido:4,0,8
+67027,sin_ancla,T1560.001|Process Creation,0,,0,8
+67027,sin_ancla,T1056.001|Process Creation,6,ruido:6,0,8
+554,ambigua,T1029|File Integrity Monitoring,0,,0,8
+554,ambigua,T1657|File Integrity Monitoring,0,,0,8
+554,ambigua,T1565.003|File Integrity Monitoring,0,,0,8
+92052,sin_ancla,T1039|Process Creation,0,,0,8
+92052,sin_ancla,T1490|Process Creation,0,,0,7
+92052,sin_ancla,T1056.001|Process Creation,2,ruido:2,0,7
+92052,sin_ancla,T1499.001|Process Creation,0,,0,7
+67027,sin_ancla,T1557.003|Process Creation,0,,0,7
+67027,sin_ancla,T1565.003|Process Creation,0,,0,7
+67027,sin_ancla,T1039|Process Creation,0,,0,7
+554,ambigua,T1056.003|File Integrity Monitoring,0,,0,7
+67027,sin_ancla,T1056.003|Process Creation,0,,0,7
+67027,sin_ancla,T1485|Process Creation,0,,0,6
+92203,sin_ancla,T1490|Process Creation,0,,0,6
+67027,sin_ancla,T1489|Process Creation,0,,0,6
+92052,sin_ancla,T1489|Process Creation,0,,0,6
+92213,sin_ancla,T1489|Process Creation,0,,0,6
+92052,sin_ancla,T1531|Process Creation,0,,0,6
+92213,sin_ancla,T1531|Process Creation,0,,0,6
+550,ambigua,T1531|File Integrity Monitoring,0,,0,6
+554,ambigua,T1491.001|File Integrity Monitoring,0,,0,6
+60775,sin_campos,,0,,0,6
+554,ambigua,T1115|File Integrity Monitoring,0,,0,6
+67027,sin_ancla,T1048.001|Process Creation,0,,0,6
+92052,sin_ancla,T1048.001|Process Creation,0,,0,6
+92052,sin_ancla,T1048.003|Process Creation,0,,0,6
+554,ambigua,T1048.003|File Integrity Monitoring,0,,0,6
+92052,sin_ancla,T1567.001|Process Creation,0,,0,6
+92052,sin_ancla,T1213.006|Process Creation,0,,0,6
+67027,sin_ancla,T1114.001|Process Creation,0,,0,6
+92052,sin_ancla,T1114.001|Process Creation,0,,0,6
+67027,sin_ancla,T1667|Process Creation,0,,0,6
+92052,sin_ancla,T1667|Process Creation,0,,0,6
+92052,sin_ancla,T1657|Process Creation,0,,0,6
+67027,sin_ancla,T1498.001|Process Creation,0,,0,6
+92052,sin_ancla,T1498.001|Process Creation,0,,0,6
+67027,sin_ancla,T1499.001|Process Creation,0,,0,6
+92213,sin_ancla,T1499.002|Process Creation,0,,0,6
+92052,sin_ancla,T1498.002|Process Creation,0,,0,6
+92213,sin_ancla,T1498.002|Process Creation,0,,0,6
+67027,sin_ancla,T1498.002|Process Creation,0,,0,6
+92052,sin_ancla,T1557.003|Process Creation,0,,0,6
+92213,sin_ancla,T1557.003|Process Creation,0,,0,6
+554,ambigua,T1557.003|File Integrity Monitoring,0,,0,6
+92052,sin_ancla,T1560.002|Process Creation,0,,0,6
+67027,sin_ancla,T1560.003|Process Creation,0,,0,6
+92052,sin_ancla,T1560.003|Process Creation,0,,0,6
+92052,sin_ancla,T1565.001|Process Creation,0,,0,6
+554,ambigua,T1565.001|File Integrity Monitoring,0,,0,6
+92213,sin_ancla,T1565.002|Process Creation,0,,0,6
+554,ambigua,T1565.002|File Integrity Monitoring,0,,0,6
+67027,sin_ancla,T1565.002|Process Creation,0,,0,6
+92052,sin_ancla,T1565.003|Process Creation,0,,0,6
+67027,sin_ancla,T1561|Process Creation,0,,0,6
+92052,sin_ancla,T1561|Process Creation,0,,0,6
+92052,sin_ancla,T1561.001|Process Creation,0,,0,6
+92052,sin_ancla,T1561.002|Process Creation,0,,0,6
+92052,sin_ancla,T1056.002|Process Creation,0,,0,6
+550,ambigua,T1056.002|File Integrity Monitoring,0,,0,6
+92052,sin_ancla,T1119|Process Creation,0,,0,6
+92052,sin_ancla,T1020|Process Creation,0,,0,5
+67027,sin_ancla,T1567.003|Process Creation,0,,0,5
+92052,sin_ancla,T1567.003|Process Creation,0,,0,5
+92052,sin_ancla,T1485|Process Creation,0,,0,5
+67027,sin_ancla,T1490|Process Creation,0,,0,5
+92052,sin_ancla,T1491.001|Process Creation,0,,0,5
+92052,sin_ancla,T1005|Process Creation,0,,0,5
+92052,sin_ancla,T1560.001|Process Creation,0,,0,5
+92052,sin_ancla,T1074.001|Process Creation,0,,0,5
+67027,sin_ancla,T1074.001|Process Creation,0,,0,5
+67027,sin_ancla,T1113|Process Creation,4,ruido:4,0,5
+92052,sin_ancla,T1113|Process Creation,2,ruido:2,0,5
+67027,sin_ancla,T1115|Process Creation,4,ruido:4,0,5
+92052,sin_ancla,T1115|Process Creation,2,ruido:2,0,5
+92052,sin_ancla,T1041|Process Creation,0,,0,5
+92052,sin_ancla,T1048.002|Process Creation,0,,0,5
+67027,sin_ancla,T1048.002|Process Creation,0,,0,5
+67027,sin_ancla,T1048.003|Process Creation,0,,0,5
+67027,sin_ancla,T1567.001|Process Creation,0,,0,5
+92052,sin_ancla,T1029|Process Creation,3,ruido:3,0,5
+92032,sin_ancla,T1029|Process Creation,3,ruido:3,0,5
+67027,sin_ancla,T1213.006|Process Creation,0,,0,5
+92052,sin_ancla,T1185|Process Creation,0,,0,5
+67027,sin_ancla,T1657|Process Creation,0,,0,5
+60702,sin_campos,,8,ruido:8,0,5
+92052,sin_ancla,T1496.002|Process Creation,0,,0,5
+67027,sin_ancla,T1496.002|Process Creation,0,,0,5
+92052,sin_ancla,T1557.001|Process Creation,0,,0,5
+67027,sin_ancla,T1560.002|Process Creation,0,,0,5
+67027,sin_ancla,T1565.001|Process Creation,0,,0,5
+92052,sin_ancla,T1565.002|Process Creation,0,,0,5
+92052,sin_ancla,T1025|Process Creation,0,,0,5
+92052,sin_ancla,T1052.001|Process Creation,0,,0,5
+67027,sin_ancla,T1052.001|Process Creation,0,,0,5
+92213,sin_ancla,T1039|Process Creation,0,,0,5
+67027,sin_ancla,T1056.002|Process Creation,0,,0,5
+92052,sin_ancla,T1056.003|Process Creation,0,,0,5
+92213,sin_ancla,T1056.003|Process Creation,0,,0,5
+67027,sin_ancla,T1114.003|Process Creation,0,,0,5
+92052,sin_ancla,T1114.003|Process Creation,0,,0,5
+67027,sin_ancla,T1020|Process Creation,0,,0,4
+67027,sin_ancla,T1567.004|Process Creation,0,,0,4
+92052,sin_ancla,T1567.004|Process Creation,0,,0,4
+92213,sin_ancla,T1567.002|Process Creation,0,,0,4
+67027,sin_ancla,T1567.002|Process Creation,0,,0,4
+92052,sin_ancla,T1567.002|Process Creation,0,,0,4
+92213,sin_ancla,T1496.001|Process Creation,0,,0,4
+92213,sin_ancla,T1486|Process Creation,0,,0,4
+67027,sin_ancla,T1486|Process Creation,0,,0,4
+92052,sin_ancla,T1486|Process Creation,0,,0,4
+92213,sin_ancla,T1490|Process Creation,0,,0,4
+554,ambigua,T1531|File Integrity Monitoring,0,,0,4
+67027,sin_ancla,T1531|Process Creation,0,,0,4
+60160,sin_campos,,0,,0,4
+60109,sin_campos,,0,,0,4
+67027,sin_ancla,T1491.001|Process Creation,0,,0,4
+550,ambigua,T1491.001|File Integrity Monitoring,0,,0,4
+60118,sin_campos,,0,,0,4
+67027,sin_ancla,T1005|Process Creation,0,,0,4
+92213,sin_ancla,T1560.001|Process Creation,0,,0,4
+550,ambigua,T1560.001|File Integrity Monitoring,0,,0,4
+92213,sin_ancla,T1074.001|Process Creation,0,,0,4
+554,ambigua,T1113|File Integrity Monitoring,0,,0,4
+91803,sin_campos,,0,,0,4
+92213,sin_ancla,T1115|Process Creation,0,,0,4
+554,ambigua,T1056.001|File Integrity Monitoring,0,,0,4
+92213,sin_ancla,T1041|Process Creation,0,,0,4
+67027,sin_ancla,T1041|Process Creation,0,,0,4
+92213,sin_ancla,T1048.001|Process Creation,0,,0,4
+92213,sin_ancla,T1048.002|Process Creation,0,,0,4
+554,ambigua,T1048.002|File Integrity Monitoring,0,,0,4
+92213,sin_ancla,T1048.003|Process Creation,0,,0,4
+92213,sin_ancla,T1567.001|Process Creation,0,,0,4
+554,ambigua,T1567.001|File Integrity Monitoring,0,,0,4
+92213,sin_ancla,T1213.006|Process Creation,0,,0,4
+554,ambigua,T1213.006|File Integrity Monitoring,0,,0,4
+92213,sin_ancla,T1114.001|Process Creation,0,,0,4
+92213,sin_ancla,T1185|Process Creation,0,,0,4
+67027,sin_ancla,T1185|Process Creation,0,,0,4
+92213,sin_ancla,T1667|Process Creation,0,,0,4
+92213,sin_ancla,T1657|Process Creation,0,,0,4
+92213,sin_ancla,T1498.001|Process Creation,0,,0,4
+554,ambigua,T1498.001|File Integrity Monitoring,0,,0,4
+92213,sin_ancla,T1499.001|Process Creation,0,,0,4
+554,ambigua,T1499.001|File Integrity Monitoring,0,,0,4
+554,ambigua,T1499.002|File Integrity Monitoring,0,,0,4
+92213,sin_ancla,T1496.002|Process Creation,0,,0,4
+554,ambigua,T1496.002|File Integrity Monitoring,0,,0,4
+554,ambigua,T1499.003|File Integrity Monitoring,0,,0,4
+554,ambigua,T1498.002|File Integrity Monitoring,0,,0,4
+554,ambigua,T1557.001|File Integrity Monitoring,0,,0,4
+67027,sin_ancla,T1557.001|Process Creation,0,,0,4
+92213,sin_ancla,T1560.002|Process Creation,0,,0,4
+550,ambigua,T1560.002|File Integrity Monitoring,0,,0,4
+92213,sin_ancla,T1560.003|Process Creation,0,,0,4
+92213,sin_ancla,T1565.001|Process Creation,0,,0,4
+550,ambigua,T1565.001|File Integrity Monitoring,0,,0,4
+92213,sin_ancla,T1561|Process Creation,0,,0,4
+92213,sin_ancla,T1561.001|Process Creation,0,,0,4
+67027,sin_ancla,T1561.001|Process Creation,0,,0,4
+92213,sin_ancla,T1561.002|Process Creation,0,,0,4
+67027,sin_ancla,T1561.002|Process Creation,0,,0,4
+67027,sin_ancla,T1025|Process Creation,0,,0,4
+92213,sin_ancla,T1056.002|Process Creation,0,,0,4
+554,ambigua,T1056.002|File Integrity Monitoring,0,,0,4
+92213,sin_ancla,T1056.004|Process Creation,0,,0,4
+92052,sin_ancla,T1056.004|Process Creation,0,,0,4
+554,ambigua,T1056.004|File Integrity Monitoring,0,,0,4
+67027,sin_ancla,T1056.004|Process Creation,0,,0,4
+67027,sin_ancla,T1074.002|Process Creation,0,,0,4
+92052,sin_ancla,T1074.002|Process Creation,0,,0,4
+92213,sin_ancla,T1119|Process Creation,0,,0,4
+67027,sin_ancla,T1119|Process Creation,0,,0,4
+92213,sin_ancla,T1020|Process Creation,0,,0,3
+92213,sin_ancla,T1567.003|Process Creation,0,,0,3
+92213,sin_ancla,T1485|Process Creation,0,,0,3
+550,ambigua,T1490|File Integrity Monitoring,0,,0,3
+92213,sin_ancla,T1491.001|Process Creation,0,,0,3
+60646,sin_campos,,2,ruido:2,0,3
+92213,sin_ancla,T1005|Process Creation,0,,0,3
+92213,sin_ancla,T1113|Process Creation,0,,0,3
+550,ambigua,T1048.001|File Integrity Monitoring,0,,0,3
+550,ambigua,T1657|File Integrity Monitoring,0,,0,3
+92213,sin_ancla,T1557.001|Process Creation,0,,0,3
+92213,sin_ancla,T1025|Process Creation,0,,0,3
+92213,sin_ancla,T1052.001|Process Creation,0,,0,3
+92213,sin_ancla,T1074.002|Process Creation,0,,0,3
+550,ambigua,T1074.002|File Integrity Monitoring,0,,0,3
+92213,sin_ancla,T1114.003|Process Creation,0,,0,3
+92213,sin_ancla,T1567.004|Process Creation,0,,0,2
+550,ambigua,T1485|File Integrity Monitoring,0,,0,2
+91818,sin_campos,,0,,0,2
+553,ambigua,T1489|File Integrity Monitoring,0,,0,2
+61138,sin_campos,,0,,0,2
+60110,sin_campos,,0,,0,2
+60111,sin_campos,,0,,0,2
+92203,sin_ancla,T1529|Process Creation,0,,0,2
+550,ambigua,T1529|File Integrity Monitoring,0,,0,2
+67018,sin_campos,,2,deteccion:2,0,2
+60137,sin_campos,,0,,0,2
+503,sin_campos,,2,deteccion:2,0,2
+60776,sin_campos,,0,,0,2
+60805,sin_campos,,1,ruido:1,0,2
+60798,sin_campos,,1,ruido:1,0,2
+60668,sin_campos,,1,ruido:1,0,2
+550,ambigua,T1005|File Integrity Monitoring,0,,0,2
+550,ambigua,T1074.001|File Integrity Monitoring,0,,0,2
+91824,sin_campos,,2,deteccion:2,0,2
+550,ambigua,T1115|File Integrity Monitoring,0,,0,2
+550,ambigua,T1041|File Integrity Monitoring,0,,0,2
+550,ambigua,T1048.003|File Integrity Monitoring,0,,0,2
+550,ambigua,T1567.001|File Integrity Monitoring,0,,0,2
+92213,sin_ancla,T1029|Process Creation,0,,0,2
+550,ambigua,T1029|File Integrity Monitoring,0,,0,2
+92203,sin_ancla,T1029|Process Creation,0,,0,2
+550,ambigua,T1213.006|File Integrity Monitoring,0,,0,2
+550,ambigua,T1114.001|File Integrity Monitoring,0,,0,2
+550,ambigua,T1667|File Integrity Monitoring,0,,0,2
+550,ambigua,T1498.001|File Integrity Monitoring,0,,0,2
+550,ambigua,T1499.001|File Integrity Monitoring,0,,0,2
+550,ambigua,T1499.002|File Integrity Monitoring,0,,0,2
+550,ambigua,T1496.002|File Integrity Monitoring,0,,0,2
+550,ambigua,T1557.001|File Integrity Monitoring,0,,0,2
+550,ambigua,T1557.003|File Integrity Monitoring,0,,0,2
+91846,sin_campos,,0,,0,2
+550,ambigua,T1560.003|File Integrity Monitoring,0,,0,2
+550,ambigua,T1565.002|File Integrity Monitoring,0,,0,2
+554,ambigua,T1561|File Integrity Monitoring,0,,0,2
+550,ambigua,T1561|File Integrity Monitoring,0,,0,2
+554,ambigua,T1561.001|File Integrity Monitoring,0,,0,2
+550,ambigua,T1561.001|File Integrity Monitoring,0,,0,2
+554,ambigua,T1561.002|File Integrity Monitoring,0,,0,2
+550,ambigua,T1561.002|File Integrity Monitoring,0,,0,2
+554,ambigua,T1025|File Integrity Monitoring,0,,0,2
+550,ambigua,T1025|File Integrity Monitoring,0,,0,2
+554,ambigua,T1052.001|File Integrity Monitoring,0,,0,2
+550,ambigua,T1052.001|File Integrity Monitoring,0,,0,2
+550,ambigua,T1039|File Integrity Monitoring,0,,0,2
+550,ambigua,T1056.004|File Integrity Monitoring,0,,0,2
+550,ambigua,T1119|File Integrity Monitoring,0,,0,2
+550,ambigua,T1114.003|File Integrity Monitoring,0,,0,2
+19014,sin_campos,,0,,0,1
+19005,sin_campos,,0,,0,1
+19009,sin_campos,,0,,0,1
+550,ambigua,T1113|File Integrity Monitoring,0,,0,1
+550,ambigua,T1498.002|File Integrity Monitoring,0,,0,1
+92021,sin_ancla,T1052.001|Process Creation,0,,0,1
+92201,sin_ancla,T1052.001|Process Creation,0,,0,1
+19012,sin_campos,,0,,0,1
+550,ambigua,T1056.003|File Integrity Monitoring,0,,0,1

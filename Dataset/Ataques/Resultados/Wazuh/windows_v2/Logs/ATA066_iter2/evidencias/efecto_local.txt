@@ -1,0 +1,13 @@
+ata=ATA066
+tecnica=T1491.001
+fuente=ART_adaptado
+guid=30558d53-9d76-41c4-9267-a7bd5184bed3
+t0=2026-11-20T18:11:35Z
+t1=2026-11-20T18:11:35Z
+fichero=C:\lab-attack\ATA066\web\index.html
+sha256_antes=20c783c28128d1d606474c887dcf6d0123068bcc1a4a4700936915a4b35cc123
+sha256_despues=725323c28b69fc74af64f2ecd4d1cbff82b375d35f6f1573af6ee05986e5470a
+cambiado=
+True
+contiene_deface=
+True

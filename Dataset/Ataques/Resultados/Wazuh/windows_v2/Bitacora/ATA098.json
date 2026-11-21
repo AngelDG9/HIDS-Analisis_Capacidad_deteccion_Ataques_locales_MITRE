@@ -1,0 +1,127 @@
+{
+ "ata_id": "ATA098",
+ "tecnica": "T1561",
+ "tactica": "Impact",
+ "sistema": "windows",
+ "bloque": "B2",
+ "tanda": "B2.3",
+ "estado": "piloto-ok",
+ "canal": "ssh",
+ "artefacto": "Dataset/Ataques/Comandos/windows/T1561-Disk_Wipe/",
+ "atomic": {
+  "fuente": "manual",
+  "guid": "",
+  "adaptacion": "VHD fijo 100 MiB; siembra 0xAA y sobrescribe el volumen con 0xFF; footer intacto",
+  "fuente_norm": "manual",
+  "motivo_codigo": "manual",
+  "motivo_detalle": "VHD fijo 100 MiB; siembra 0xAA y sobrescribe el volumen con 0xFF; footer intacto"
+ },
+ "esperado_sha256": "caf34939cbc0a0ee276db42a45d1f36c591e3f527e778f092c76c60ae56ed680",
+ "ataque_sha256": "13ee538408a71d6927e788e74ca5e1a3e56b9e8c621610ba58f7c096007d40df",
+ "validacion_humana_esperado": "pre-registrado y sellado en 312d9fe",
+ "c0": {
+  "documento": "Soporte/Ataques/c0/windows/ATA098_c0.md",
+  "sha256": "",
+  "resultado": "PASA (clases de B1.0 + preflight B2.3); RS3=RS4=0"
+ },
+ "iteraciones": [
+  {
+   "iter": 1,
+   "variante": "base",
+   "t0": "2026-11-20T23:23:48Z",
+   "t1": "2026-11-20T23:24:34Z",
+   "duracion_s": 46,
+   "snapshot": "lab-listo-windows-ataques-gui",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/windows_v2/CSV/ATA098_iter1-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/windows_v2/Auditado/ATA098_iter1-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (tarea programada)",
+   "version_datos": 2
+  },
+  {
+   "iter": 2,
+   "variante": "base",
+   "t0": "2026-11-20T23:29:15Z",
+   "t1": "2026-11-20T23:30:02Z",
+   "duracion_s": 47,
+   "snapshot": "lab-listo-windows-ataques-gui",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/windows_v2/CSV/ATA098_iter2-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/windows_v2/Auditado/ATA098_iter2-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (tarea programada)",
+   "version_datos": 2
+  }
+ ],
+ "revision_global": {
+  "fecha": "2026-11-09",
+  "veredicto": "artefacto/ruido/deteccion segun fila",
+  "motivo": "FIM ambigua, servicio/cuenta/registro y ruido de arranque resueltos antes de T2",
+  "revisor": "executor B2.3"
+ },
+ "doble_iteracion": "iguales",
+ "doble_iteracion_detalle": {
+  "criterio": "v2",
+  "mismo_conjunto_rule_id_deteccion": true,
+  "rule_ids_iter1": [
+   "67027",
+   "92032",
+   "92052"
+  ],
+  "rule_ids_iter2": [
+   "67027",
+   "92032",
+   "92052"
+  ],
+  "rule_ids_deteccion": [
+   "67027",
+   "92032",
+   "92052"
+  ],
+  "n1": 5,
+  "n2": 5,
+  "margen": 2,
+  "criterio_recuento_ok": true,
+  "sin_dudosas_sin_resolver": true,
+  "veredicto": "iguales"
+ },
+ "extraccion": {
+  "extractor": "extraer_alertas_windows.py (27 columnas; RS desde el ruleset del manager)",
+  "fuente": "/var/ossec/logs/alerts/2026/Nov/ossec-alerts-09.json",
+  "aislamiento": "agent_id=002",
+  "ventana": "t0-3s .. t1+3s"
+ },
+ "prueba_de_efecto": "VHD corrupto (0xFF en el volumen; footer conectix intacto)",
+ "receptor": {
+  "script": "n/a (VHD local)",
+  "parado_tras_t1": true
+ },
+ "limitacion": "VHD pre-staged vacio; se siembra antes de borrar/corromper para que el efecto sea medible",
+ "eventos": [
+  {
+   "ts": "2026-11-09T20:41:36Z",
+   "tipo": "t0",
+   "detalle": "iter1 t0"
+  },
+  {
+   "ts": "2026-11-09T20:45:29Z",
+   "tipo": "t0",
+   "detalle": "iter2 t0"
+  },
+  {
+   "ts": "2026-11-09T20:41:39Z",
+   "tipo": "t1",
+   "detalle": "iter1 t1"
+  },
+  {
+   "ts": "2026-11-09T20:45:32Z",
+   "tipo": "t1",
+   "detalle": "iter2 t1"
+  },
+  {
+   "ts": "2026-11-09T21:40:00Z",
+   "tipo": "cierre",
+   "detalle": "doble iteracion v2: iguales"
+  }
+ ],
+ "bitacora_origen": "generada por generar_bitacora_v2.py a partir de Bitacora/ATA098.json (metadatos) y del indice v2 (iteraciones)"
+}

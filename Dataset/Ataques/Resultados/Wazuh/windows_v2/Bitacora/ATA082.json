@@ -1,0 +1,126 @@
+{
+ "ata_id": "ATA082",
+ "tecnica": "T1185",
+ "tactica": "Collection",
+ "sistema": "windows",
+ "bloque": "B1",
+ "tanda": "B1.5",
+ "estado": "piloto-ok",
+ "canal": "ssh",
+ "artefacto": "Dataset/Ataques/Comandos/windows/T1185-Browser_Session_Hijacking/",
+ "atomic": {
+  "fuente": "manual",
+  "guid": "",
+  "adaptacion": "perfil de navegador sintetico (Cookies/Login Data) con cabecera SQLite",
+  "fuente_norm": "manual",
+  "motivo_codigo": "manual",
+  "motivo_detalle": "perfil de navegador sintetico (Cookies/Login Data) con cabecera SQLite"
+ },
+ "esperado_sha256": "d528445d80dfc215b3255e2f6fbf68a2de46a0a30d83edbc1fc2d123dd44cd00",
+ "ataque_sha256": "74be1a9c44775e301c9cbc69411cc5f34198bd872ad68ebc2843ea3a391de2ac",
+ "validacion_humana_esperado": "pre-registrado y sellado en 4e41f38",
+ "c0": {
+  "documento": "Soporte/Ataques/c0/windows/ATA082_c0.md",
+  "sha256": "",
+  "resultado": "PASA (clases de B1.0 + preflight B1.5); RS3=RS4=0"
+ },
+ "iteraciones": [
+  {
+   "iter": 1,
+   "variante": "base",
+   "t0": "2026-11-20T20:36:14Z",
+   "t1": "2026-11-20T20:37:01Z",
+   "duracion_s": 47,
+   "snapshot": "lab-listo-windows-ataques-gui",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/windows_v2/CSV/ATA082_iter1-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/windows_v2/Auditado/ATA082_iter1-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (tarea programada)",
+   "version_datos": 2
+  },
+  {
+   "iter": 2,
+   "variante": "base",
+   "t0": "2026-11-20T20:41:32Z",
+   "t1": "2026-11-20T20:42:19Z",
+   "duracion_s": 47,
+   "snapshot": "lab-listo-windows-ataques-gui",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/windows_v2/CSV/ATA082_iter2-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/windows_v2/Auditado/ATA082_iter2-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (tarea programada)",
+   "version_datos": 2
+  }
+ ],
+ "revision_global": {
+  "fecha": "2026-11-09",
+  "veredicto": "artefacto/ruido/deteccion segun fila",
+  "motivo": "FIM ambigua, servicio/cuenta/registro y ruido de arranque resueltos antes de T2",
+  "revisor": "executor B1.5"
+ },
+ "doble_iteracion": "iguales",
+ "doble_iteracion_detalle": {
+  "criterio": "v2",
+  "mismo_conjunto_rule_id_deteccion": true,
+  "rule_ids_iter1": [
+   "67027",
+   "92032",
+   "92052"
+  ],
+  "rule_ids_iter2": [
+   "67027",
+   "92032",
+   "92052"
+  ],
+  "rule_ids_deteccion": [
+   "67027",
+   "92032",
+   "92052"
+  ],
+  "n1": 5,
+  "n2": 5,
+  "margen": 2,
+  "criterio_recuento_ok": true,
+  "sin_dudosas_sin_resolver": true,
+  "veredicto": "iguales"
+ },
+ "extraccion": {
+  "extractor": "extraer_alertas_windows.py (27 columnas; RS desde el ruleset del manager)",
+  "fuente": "/var/ossec/logs/alerts/2026/Nov/ossec-alerts-09.json",
+  "aislamiento": "agent_id=002",
+  "ventana": "t0-3s .. t1+3s"
+ },
+ "prueba_de_efecto": "Cookies + Login Data copiados; cabecera SQLite format 3",
+ "receptor": {
+  "script": "n/a (local/loopback)",
+  "parado_tras_t1": true
+ },
+ "eventos": [
+  {
+   "ts": "2026-11-09T14:26:58Z",
+   "tipo": "t0",
+   "detalle": "iter1 t0"
+  },
+  {
+   "ts": "2026-11-09T14:31:09Z",
+   "tipo": "t0",
+   "detalle": "iter2 t0"
+  },
+  {
+   "ts": "2026-11-09T14:27:00Z",
+   "tipo": "t1",
+   "detalle": "iter1 t1"
+  },
+  {
+   "ts": "2026-11-09T14:31:10Z",
+   "tipo": "t1",
+   "detalle": "iter2 t1"
+  },
+  {
+   "ts": "2026-11-09T15:20:00Z",
+   "tipo": "cierre",
+   "detalle": "doble iteracion v2: iguales"
+  }
+ ],
+ "bitacora_origen": "generada por generar_bitacora_v2.py a partir de Bitacora/ATA082.json (metadatos) y del indice v2 (iteraciones)"
+}

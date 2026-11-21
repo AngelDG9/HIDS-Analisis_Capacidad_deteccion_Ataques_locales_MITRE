@@ -1,0 +1,13 @@
+ata=ATA064
+tecnica=T1489
+fuente=ART_adaptado
+guid=21dfb440-830d-4c86-a3e5-2a491d5a8d04
+t0=2026-11-20T17:52:19Z
+t1=2026-11-20T17:52:33Z
+servicio=TFG-Svc-1489
+binario=C:\lab-attack\ATA064\ToyService.exe
+creado=True
+estado_antes=Running
+estado_despues=Stopped
+borrado=True
+error=

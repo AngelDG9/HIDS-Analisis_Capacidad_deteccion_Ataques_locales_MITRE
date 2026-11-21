@@ -1,0 +1,11 @@
+ata=ATA065
+tecnica=T1531
+fuente=ART_adaptado
+guid=f21a1d7d-a62f-442a-8c3a-2440d43b19e5
+t0=2026-11-20T18:02:00Z
+t1=2026-11-20T18:02:01Z
+usuario=tfg_toy_1531
+creado=True
+existe_antes=True
+existe_despues=False
+error=

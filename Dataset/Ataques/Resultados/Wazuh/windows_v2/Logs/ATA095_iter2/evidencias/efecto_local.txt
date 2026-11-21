@@ -1,0 +1,9 @@
+ata=ATA095
+tecnica=T1565.001
+fuente=manual
+t0=2026-11-20T22:58:11Z
+t1=2026-11-20T22:58:11Z
+libro=C:\lab-attack\ATA095\libro.csv
+sha256_antes=7972e976ff8b9af3803d46a48c35516eefed4631bab790a758a04e3a9943941c
+sha256_despues=28540b793aaad023d36f33c65661143e3bacf445bb6f02cd0c56364fb720f980
+alterado=True

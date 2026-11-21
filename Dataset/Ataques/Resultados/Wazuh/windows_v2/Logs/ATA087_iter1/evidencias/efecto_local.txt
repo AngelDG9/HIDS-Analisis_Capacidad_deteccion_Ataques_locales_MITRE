@@ -1,0 +1,10 @@
+ata=ATA087
+tecnica=T1499.002
+fuente=manual
+t0=2026-11-20T21:26:26Z
+t1=2026-11-20T21:27:08Z
+endpoint=127.0.0.1:9094
+peticiones=200
+ok=10
+fail=190
+servicio_responde=False

@@ -152,6 +152,7 @@ def main():
         fallos.append("falta crudo/crudo.done")
     else:
         filas = [l.rstrip("\n").split("\t") for l in open(man, encoding="utf-8")][1:]
+        filas = [f for f in filas if not f[0].endswith("crudo.done")]   # crudo.done se reescribe en cada `post`
         cr.append("crudo: %d ficheros en el manifiesto" % len(filas))
         if not a.sin_hash_crudo:
             malos = 0

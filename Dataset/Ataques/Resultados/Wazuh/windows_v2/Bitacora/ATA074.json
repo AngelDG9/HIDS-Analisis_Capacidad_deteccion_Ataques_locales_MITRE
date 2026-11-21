@@ -1,0 +1,126 @@
+{
+ "ata_id": "ATA074",
+ "tecnica": "T1041",
+ "tactica": "Exfiltration",
+ "sistema": "windows",
+ "bloque": "B1",
+ "tanda": "B1.4",
+ "estado": "piloto-ok",
+ "canal": "ssh",
+ "artefacto": "Dataset/Ataques/Comandos/windows/T1041-Exfiltration_Over_C2_Channel/",
+ "atomic": {
+  "fuente": "ART_adaptado",
+  "guid": "d1253f6e-c29b-49dc-b466-2147a6191932",
+  "adaptacion": "ART d1253f6e -> POST de payload.txt con curl.exe al sink local",
+  "fuente_norm": "ART_adaptado",
+  "motivo_codigo": "art_adaptado",
+  "motivo_detalle": "ART d1253f6e -> POST de payload.txt con curl.exe al sink local"
+ },
+ "esperado_sha256": "7b6c1fb2f8306960282ae1fd691be398e4af327ab578141151e7b106f51d548b",
+ "ataque_sha256": "aef83658626397a780f40be13a8e80afcca7d05071acfd0fc6ffa4308ecd7709",
+ "validacion_humana_esperado": "pre-registrado y sellado en 7e3e872",
+ "c0": {
+  "documento": "Soporte/Ataques/c0/windows/ATA074_c0.md",
+  "sha256": "",
+  "resultado": "PASA (clases de B1.0 + preflight B1.4); RS3=RS4=0"
+ },
+ "iteraciones": [
+  {
+   "iter": 1,
+   "variante": "base",
+   "t0": "2026-11-20T19:15:46Z",
+   "t1": "2026-11-20T19:16:33Z",
+   "duracion_s": 47,
+   "snapshot": "lab-listo-windows-ataques-gui",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/windows_v2/CSV/ATA074_iter1-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/windows_v2/Auditado/ATA074_iter1-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (tarea programada)",
+   "version_datos": 2
+  },
+  {
+   "iter": 2,
+   "variante": "base",
+   "t0": "2026-11-20T19:20:39Z",
+   "t1": "2026-11-20T19:21:26Z",
+   "duracion_s": 47,
+   "snapshot": "lab-listo-windows-ataques-gui",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/windows_v2/CSV/ATA074_iter2-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/windows_v2/Auditado/ATA074_iter2-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (tarea programada)",
+   "version_datos": 2
+  }
+ ],
+ "revision_global": {
+  "fecha": "2026-11-09",
+  "veredicto": "artefacto/ruido/deteccion segun fila",
+  "motivo": "FIM ambigua, servicio/cuenta/registro y ruido de arranque resueltos antes de T2",
+  "revisor": "executor B1.4"
+ },
+ "doble_iteracion": "iguales",
+ "doble_iteracion_detalle": {
+  "criterio": "v2",
+  "mismo_conjunto_rule_id_deteccion": true,
+  "rule_ids_iter1": [
+   "67027",
+   "92032",
+   "92052"
+  ],
+  "rule_ids_iter2": [
+   "67027",
+   "92032",
+   "92052"
+  ],
+  "rule_ids_deteccion": [
+   "67027",
+   "92032",
+   "92052"
+  ],
+  "n1": 6,
+  "n2": 6,
+  "margen": 2,
+  "criterio_recuento_ok": true,
+  "sin_dudosas_sin_resolver": true,
+  "veredicto": "iguales"
+ },
+ "extraccion": {
+  "extractor": "extraer_alertas_windows.py (27 columnas; RS desde el ruleset del manager)",
+  "fuente": "/var/ossec/logs/alerts/2026/Nov/ossec-alerts-09.json",
+  "aislamiento": "agent_id=002",
+  "ventana": "t0-3s .. t1+3s"
+ },
+ "prueba_de_efecto": "sink.log POST + sha256 del payload",
+ "receptor": {
+  "script": "sink_http.py 9090/9091",
+  "parado_tras_t1": true
+ },
+ "eventos": [
+  {
+   "ts": "2026-11-09T11:58:17Z",
+   "tipo": "t0",
+   "detalle": "iter1 t0"
+  },
+  {
+   "ts": "2026-11-09T12:02:39Z",
+   "tipo": "t0",
+   "detalle": "iter2 t0"
+  },
+  {
+   "ts": "2026-11-09T11:58:22Z",
+   "tipo": "t1",
+   "detalle": "iter1 t1"
+  },
+  {
+   "ts": "2026-11-09T12:02:40Z",
+   "tipo": "t1",
+   "detalle": "iter2 t1"
+  },
+  {
+   "ts": "2026-11-09T13:40:00Z",
+   "tipo": "cierre",
+   "detalle": "doble iteracion v2: iguales"
+  }
+ ],
+ "bitacora_origen": "generada por generar_bitacora_v2.py a partir de Bitacora/ATA074.json (metadatos) y del indice v2 (iteraciones)"
+}

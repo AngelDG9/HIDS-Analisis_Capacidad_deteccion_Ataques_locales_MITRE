@@ -628,7 +628,7 @@ def fase_post(args):
     ssh(IP_M, "sudo -S -p '' rm -rf %s" % stage, inp=PW + "\n")
     lin = ["fichero\tbytes\tsha256"]
     for f in sorted(glob.glob(os.path.join(dest, "**", "*"), recursive=True)):
-        if os.path.isfile(f) and not f.endswith("MANIFEST.tsv"):
+        if os.path.isfile(f) and not f.endswith("MANIFEST.tsv") and not f.endswith("crudo.done"):
             lin.append("%s\t%d\t%s" % (os.path.relpath(f, dest).replace("\\", "/"), os.path.getsize(f), sha256_file(f)))
     open(os.path.join(dest, "MANIFEST.tsv"), "w", encoding="utf-8", newline="\n").write("\n".join(lin) + "\n")
     open(os.path.join(dest, "crudo.done"), "w", encoding="utf-8", newline="\n").write("crudo_utc=%s\nficheros=%d\n" % (now_utc(), len(lin) - 1))

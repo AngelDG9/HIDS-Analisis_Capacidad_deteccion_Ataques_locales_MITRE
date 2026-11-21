@@ -40,6 +40,10 @@ AGENTE, AGENTE_NOMBRE = "002", "victima-windows"
 CMD_DIR = os.path.join(L.REPO, "Dataset", "Ataques", "Comandos", "windows")
 SERV = os.path.join(L.REPO, "_artefactos", "scripts", "arrancar_servicios_host.py")
 RAIZ_W = r"C:\lab-attack"
+# copia del ruleset del manager (para `rs_origen` correcto en el Detalle; sin esto sale UNKNOWN y nada cuenta para C0/C1)
+_RS = r"D:\TFG-VMs\ataques-windows-v2-2026-11-20\ruleset_manager"
+RULESET_ARGS = (["--ruleset-dir", _RS + r"\ruleset\rules", "--etc-rules-dir", _RS + r"\etc\rules"]
+                if os.path.isdir(_RS + r"\ruleset\rules") else [])
 PENDIENTE = {}   # ATA067 (reinicio) ya tiene manejo propio: espera al nuevo arranque y a la reconexion del agente
 
 
@@ -248,7 +252,8 @@ def ventana(spec, it, timeout_ataque):
         det = os.path.join(L.OUT, "CSV", "%s-Detalle.csv" % tag)
         p = subprocess.run([sys.executable, "-I", os.path.join(L.REPO, "_artefactos", "scripts", "extraer_alertas_windows.py"),
                             "--alerts", rutas["alerts"], "--desde", t0, "--hasta", t1, "--agent-id", AGENTE,
-                            "--agent-name", AGENTE_NOMBRE, "--detail", det], capture_output=True, text=True, encoding="utf-8", errors="replace")
+                            "--agent-name", AGENTE_NOMBRE, "--detail", det] + RULESET_ARGS,
+                           capture_output=True, text=True, encoding="utf-8", errors="replace")
         meta["extraccion_rc"] = p.returncode
         open(os.path.join(ldir, "extraccion.out"), "w", encoding="utf-8", newline="\n").write(p.stdout + p.stderr)
         meta["filas_detalle"] = max(0, sum(1 for _ in open(det, encoding="utf-8", errors="replace")) - 2) if os.path.isfile(det) else -1

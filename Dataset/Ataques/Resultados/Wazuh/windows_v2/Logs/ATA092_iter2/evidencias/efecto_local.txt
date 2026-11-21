@@ -1,0 +1,10 @@
+ata=ATA092
+tecnica=T1557.003
+fuente=manual
+t0=2026-11-20T22:28:00Z
+t1=2026-11-20T22:28:00Z
+lease=C:\lab-attack\ATA092\evidencias\lease.txt
+ip=192.168.65.200
+gw=192.168.65.1
+dns=192.168.65.1
+ack_ok=True

@@ -1,0 +1,4 @@
+alertas leidas=650 en_ventana=531 otros_agentes=0 sin_agente=0 fuera_ventana=119 no_json=0
+campos_win={'win_image': 44, 'win_command_line': 42, 'win_cwd': 10, 'win_user': 72, 'event_id': 73, 'win_target': 2, 'logon_type': 19, 'win_parent_image': 10, 'win_target_user': 29}
+detalle: filas=531 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\windows_v2\CSV\ATA098_iter2-Detalle.csv
+AVISO: ruleset no disponible; rs_origen quedar� UNKNOWN (no se inventa)

@@ -1,0 +1,116 @@
+{
+ "ata_id": "ATA057",
+ "tecnica": "T1567.004",
+ "tactica": "Exfiltration",
+ "sistema": "windows",
+ "bloque": "B1",
+ "tanda": "B1.1",
+ "estado": "piloto-ok",
+ "canal": "ssh",
+ "artefacto": "Dataset/Ataques/Comandos/windows/T1567.004-Exfiltration_Over_Webhook/",
+ "atomic": {
+  "fuente": "ART",
+  "prueba": "T1567.004 Discord webhook (PowerShell)",
+  "guid": "f0057c81-24dc-4a2e-b658-5809c242180b",
+  "adaptacion": "webhook_url/staged_file locales; cuerpo UTF-8 identico al JSON del ART",
+  "fuente_norm": "ART",
+  "motivo_codigo": "art_tal_cual",
+  "motivo_detalle": "webhook_url/staged_file locales; cuerpo UTF-8 identico al JSON del ART"
+ },
+ "esperado_sha256": "2e58477ab0f1ef6e8c6feb995fae7edd743e622e7b06d1b960a11cef89b4065d",
+ "ataque_sha256": "db472956813e0c230f66a40d3a4e114085b85bf85b6f7a25081efeddd0a32764",
+ "validacion_humana_esperado": "pre-registrado 2026-11-08 (B1.1); sin re-escritura tras t0",
+ "c0": {
+  "documento": "Soporte/Ataques/c0/windows/ATA057_c0.md",
+  "sha256": "ae7bc49eccb988b4a0bb8027ca5a9f0fa0c01c98118439743da5a3c01b539cb7",
+  "resultado": "PASA (clases de B1.0 + preflight B1.1); RS3=RS4=0"
+ },
+ "iteraciones": [
+  {
+   "iter": 1,
+   "variante": "base",
+   "t0": "2026-11-20T16:39:48Z",
+   "t1": "2026-11-20T16:40:34Z",
+   "duracion_s": 46,
+   "snapshot": "lab-listo-windows-ataques-gui",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/windows_v2/CSV/ATA057_iter1-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/windows_v2/Auditado/ATA057_iter1-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (tarea programada)",
+   "version_datos": 2
+  },
+  {
+   "iter": 2,
+   "variante": "base",
+   "t0": "2026-11-20T16:44:32Z",
+   "t1": "2026-11-20T16:45:19Z",
+   "duracion_s": 47,
+   "snapshot": "lab-listo-windows-ataques-gui",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/windows_v2/CSV/ATA057_iter2-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/windows_v2/Auditado/ATA057_iter2-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (tarea programada)",
+   "version_datos": 2
+  }
+ ],
+ "revision_global": {
+  "fecha": "2026-11-08",
+  "veredicto": "artefacto/ruido segun fila (ver -Revision.csv)",
+  "motivo": "Sysmon 11 y 4104 del ataque sin ancla de ejecucion H4-W -> artefacto; 60642 del catalogo -> ruido",
+  "revisor": "executor B1.1"
+ },
+ "doble_iteracion": "iguales",
+ "doble_iteracion_detalle": {
+  "criterio": "v2",
+  "mismo_conjunto_rule_id_deteccion": true,
+  "rule_ids_deteccion": [
+   "67027",
+   "92032",
+   "92052"
+  ],
+  "n1": 5,
+  "n2": 5,
+  "margen": 2,
+  "criterio_recuento_ok": true,
+  "sin_dudosas_sin_resolver": true
+ },
+ "extraccion": {
+  "extractor": "extraer_alertas_windows.py (27 columnas; reglas RS desde el ruleset del manager)",
+  "fuente": "/var/ossec/logs/alerts/2026/Nov/ossec-alerts-08.json",
+  "aislamiento": "agent_id=002 (victima-windows)",
+  "ventana": "t0-3s .. t1+3s (la cosecha scp queda fuera)"
+ },
+ "prueba_de_efecto": "POST JSON al sink con sha256 del cuerpo (1809 B)",
+ "receptor": {
+  "script": "sink_http.py :9090 (POST /hook/ATA057)",
+  "parado_tras_t1": true
+ },
+ "eventos": [
+  {
+   "ts": "2026-11-08T20:50:50Z",
+   "tipo": "t0",
+   "detalle": "iter1 t0 (revert + Active + 90 s)"
+  },
+  {
+   "ts": "2026-11-08T20:51:08Z",
+   "tipo": "t1",
+   "detalle": "iter1 t1"
+  },
+  {
+   "ts": "2026-11-08T20:54:33Z",
+   "tipo": "t0",
+   "detalle": "iter2 t0 (revert + Active + 90 s)"
+  },
+  {
+   "ts": "2026-11-08T20:54:40Z",
+   "tipo": "t1",
+   "detalle": "iter2 t1"
+  },
+  {
+   "ts": "2026-11-08T20:00:00Z",
+   "tipo": "cierre",
+   "detalle": "doble iteracion v2: mismo conjunto de rule_id y recuento -> iguales"
+  }
+ ],
+ "bitacora_origen": "generada por generar_bitacora_v2.py a partir de Bitacora/ATA057.json (metadatos) y del indice v2 (iteraciones)"
+}

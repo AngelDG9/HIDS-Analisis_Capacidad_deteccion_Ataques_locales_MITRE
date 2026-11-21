@@ -1,0 +1,10 @@
+ata=ATA103
+tecnica=T1039
+fuente=ART_adaptado
+t0=2026-11-21T00:30:55Z
+t1=2026-11-21T00:30:55Z
+share=\\127.0.0.1\labshare
+copiados=C:\lab-attack\ATA103\copiados
+ficheros_copiados=20
+sha256_coinciden=True
+copia_ok=True

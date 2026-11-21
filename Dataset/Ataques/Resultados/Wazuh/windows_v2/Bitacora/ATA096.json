@@ -1,0 +1,131 @@
+{
+ "ata_id": "ATA096",
+ "tecnica": "T1565.002",
+ "tactica": "Impact",
+ "sistema": "windows",
+ "bloque": "B2",
+ "tanda": "B2.2",
+ "estado": "piloto-ok",
+ "canal": "ssh",
+ "artefacto": "Dataset/Ataques/Comandos/windows/T1565.002-Transmitted_Data_Manipulation/",
+ "atomic": {
+  "fuente": "manual",
+  "guid": "",
+  "adaptacion": "proxy loopback 127.0.0.1:9095 reescribe el body; sink host 192.168.65.1:9090 recibe sha distinto",
+  "fuente_norm": "manual",
+  "motivo_codigo": "manual",
+  "motivo_detalle": "proxy loopback 127.0.0.1:9095 reescribe el body; sink host 192.168.65.1:9090 recibe sha distinto"
+ },
+ "esperado_sha256": "2ed0d8af52fcd84639348e4fb4806122e3622478b5f29c2c3b2d20c390617027",
+ "ataque_sha256": "222435721992425bfaaae216834a180f6f2e10eb114f901f0ea9d9ebe3725817",
+ "toy_sha256": "",
+ "validacion_humana_esperado": "pre-registrado y sellado en a2eca10",
+ "c0": {
+  "documento": "Soporte/Ataques/c0/windows/ATA096_c0.md",
+  "sha256": "",
+  "resultado": "PASA (clases de B1.0 + preflight B2.2); RS3=RS4=0"
+ },
+ "iteraciones": [
+  {
+   "iter": 1,
+   "variante": "base",
+   "t0": "2026-11-20T23:03:30Z",
+   "t1": "2026-11-20T23:04:16Z",
+   "duracion_s": 46,
+   "snapshot": "lab-listo-windows-ataques-gui",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/windows_v2/CSV/ATA096_iter1-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/windows_v2/Auditado/ATA096_iter1-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (tarea programada)",
+   "version_datos": 2
+  },
+  {
+   "iter": 2,
+   "variante": "base",
+   "t0": "2026-11-20T23:08:27Z",
+   "t1": "2026-11-20T23:09:13Z",
+   "duracion_s": 46,
+   "snapshot": "lab-listo-windows-ataques-gui",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/windows_v2/CSV/ATA096_iter2-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/windows_v2/Auditado/ATA096_iter2-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (tarea programada)",
+   "version_datos": 2
+  }
+ ],
+ "revision_global": {
+  "fecha": "2026-11-09",
+  "veredicto": "artefacto/ruido/deteccion segun fila",
+  "motivo": "FIM ambigua, servicio/cuenta/registro y ruido de arranque resueltos antes de T2",
+  "revisor": "executor B2.2"
+ },
+ "doble_iteracion": "iguales",
+ "doble_iteracion_detalle": {
+  "criterio": "v2",
+  "mismo_conjunto_rule_id_deteccion": true,
+  "rule_ids_iter1": [
+   "67027",
+   "92027",
+   "92032",
+   "92052"
+  ],
+  "rule_ids_iter2": [
+   "67027",
+   "92027",
+   "92032",
+   "92052"
+  ],
+  "rule_ids_deteccion": [
+   "67027",
+   "92027",
+   "92032",
+   "92052"
+  ],
+  "n1": 6,
+  "n2": 6,
+  "margen": 2,
+  "criterio_recuento_ok": true,
+  "sin_dudosas_sin_resolver": true,
+  "veredicto": "iguales"
+ },
+ "extraccion": {
+  "extractor": "extraer_alertas_windows.py (27 columnas; RS desde el ruleset del manager)",
+  "fuente": "/var/ossec/logs/alerts/2026/Nov/ossec-alerts-09.json",
+  "aislamiento": "agent_id=002",
+  "ventana": "t0-3s .. t1+3s"
+ },
+ "prueba_de_efecto": "sink recibe sha256 distinto del fichero; proxy.log orig/mod; sink.log",
+ "receptor": {
+  "script": "sink_http.py 9090",
+  "parado_tras_t1": true
+ },
+ "limitacion": "proxy lee un solo Read; no reenvia el body original (orig=sha vacio); efecto de manipulacion valido",
+ "eventos": [
+  {
+   "ts": "2026-11-09T19:44:39Z",
+   "tipo": "t0",
+   "detalle": "iter1 t0"
+  },
+  {
+   "ts": "2026-11-09T19:48:53Z",
+   "tipo": "t0",
+   "detalle": "iter2 t0"
+  },
+  {
+   "ts": "2026-11-09T19:44:46Z",
+   "tipo": "t1",
+   "detalle": "iter1 t1"
+  },
+  {
+   "ts": "2026-11-09T19:48:57Z",
+   "tipo": "t1",
+   "detalle": "iter2 t1"
+  },
+  {
+   "ts": "2026-11-09T20:05:00Z",
+   "tipo": "cierre",
+   "detalle": "doble iteracion v2: iguales"
+  }
+ ],
+ "bitacora_origen": "generada por generar_bitacora_v2.py a partir de Bitacora/ATA096.json (metadatos) y del indice v2 (iteraciones)"
+}

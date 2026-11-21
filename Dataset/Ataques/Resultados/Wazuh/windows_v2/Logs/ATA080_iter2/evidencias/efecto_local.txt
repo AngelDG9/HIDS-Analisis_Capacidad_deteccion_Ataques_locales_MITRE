@@ -1,0 +1,1 @@
+GUARDARRAIL: sqlite3.exe no pre-staged

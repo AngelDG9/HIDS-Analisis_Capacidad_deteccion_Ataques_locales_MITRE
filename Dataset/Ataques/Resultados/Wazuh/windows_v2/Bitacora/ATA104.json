@@ -1,0 +1,124 @@
+{
+ "ata_id": "ATA104",
+ "tecnica": "T1056.002",
+ "tactica": "Collection",
+ "sistema": "windows",
+ "bloque": "B2",
+ "tanda": "B2.4",
+ "estado": "piloto-ok",
+ "canal": "ssh",
+ "artefacto": "Dataset/Ataques/Comandos/windows/T1056.002-GUI_Input_Capture/",
+ "atomic": {
+  "fuente": "ART_adaptado",
+  "guid": "2b162bfd-0928-4d4c-9ec3-4d9f88374b52",
+  "adaptacion": "formulario WinForms + SendKeys TFG-GUI-TEXT + captura PNG (S1)",
+  "fuente_norm": "ART_adaptado",
+  "motivo_codigo": "art_adaptado",
+  "motivo_detalle": "formulario WinForms + SendKeys TFG-GUI-TEXT + captura PNG (S1)"
+ },
+ "esperado_sha256": "6874c4a274f02a2acb66c469223a96d84438a1799ec8c0604cf6e2aaf02a22b3",
+ "ataque_sha256": "a49d16327ff5ce2be4545a575437a64fe37fd3cefb9a63807bbee27c26bf5511",
+ "validacion_humana_esperado": "pre-registrado y sellado en 2af6ed0",
+ "c0": {
+  "documento": "Soporte/Ataques/c0/windows/ATA104_c0.md",
+  "sha256": "",
+  "resultado": "PASA (clases de B1.0 + preflight B2.4); RS3=RS4=0"
+ },
+ "iteraciones": [
+  {
+   "iter": 1,
+   "variante": "base",
+   "t0": "2026-11-21T00:35:19Z",
+   "t1": "2026-11-21T00:36:06Z",
+   "duracion_s": 47,
+   "snapshot": "lab-listo-windows-ataques-gui",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/windows_v2/CSV/ATA104_iter1-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/windows_v2/Auditado/ATA104_iter1-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (tarea programada)",
+   "version_datos": 2
+  },
+  {
+   "iter": 2,
+   "variante": "base",
+   "t0": "2026-11-21T00:40:20Z",
+   "t1": "2026-11-21T00:41:07Z",
+   "duracion_s": 47,
+   "snapshot": "lab-listo-windows-ataques-gui",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/windows_v2/CSV/ATA104_iter2-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/windows_v2/Auditado/ATA104_iter2-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (tarea programada)",
+   "version_datos": 2
+  }
+ ],
+ "revision_global": {
+  "fecha": "2026-11-09",
+  "veredicto": "artefacto/ruido/deteccion segun fila",
+  "motivo": "FIM ambigua, servicio/cuenta/registro y ruido de arranque resueltos antes de T2",
+  "revisor": "executor B2.4"
+ },
+ "doble_iteracion": "iguales",
+ "doble_iteracion_detalle": {
+  "criterio": "v2",
+  "mismo_conjunto_rule_id_deteccion": true,
+  "rule_ids_iter1": [
+   "67027",
+   "92052"
+  ],
+  "rule_ids_iter2": [
+   "67027",
+   "92052"
+  ],
+  "rule_ids_deteccion": [
+   "67027",
+   "92052"
+  ],
+  "n1": 3,
+  "n2": 3,
+  "margen": 2,
+  "criterio_recuento_ok": true,
+  "sin_dudosas_sin_resolver": true,
+  "veredicto": "iguales"
+ },
+ "extraccion": {
+  "extractor": "extraer_alertas_windows.py (27 columnas; RS desde el ruleset del manager)",
+  "fuente": "/var/ossec/logs/alerts/2026/Nov/ossec-alerts-09.json",
+  "aislamiento": "agent_id=002",
+  "ventana": "t0-3s .. t1+3s"
+ },
+ "prueba_de_efecto": "PNG real + texto TFG-GUI-TEXT",
+ "receptor": {
+  "script": "n/a (local)",
+  "parado_tras_t1": true
+ },
+ "limitacion": "poll del runner S1 reclasificado (72/68 filas) en -Audited.csv; raw en -Audited_raw.csv",
+ "eventos": [
+  {
+   "ts": "2026-11-09T22:15:37Z",
+   "tipo": "t0",
+   "detalle": "iter1 t0"
+  },
+  {
+   "ts": "2026-11-09T22:22:19Z",
+   "tipo": "t0",
+   "detalle": "iter2 t0"
+  },
+  {
+   "ts": "2026-11-09T22:16:16Z",
+   "tipo": "t1",
+   "detalle": "iter1 t1"
+  },
+  {
+   "ts": "2026-11-09T22:22:56Z",
+   "tipo": "t1",
+   "detalle": "iter2 t1"
+  },
+  {
+   "ts": "2026-11-09T23:10:00Z",
+   "tipo": "cierre",
+   "detalle": "doble iteracion v2: iguales"
+  }
+ ],
+ "bitacora_origen": "generada por generar_bitacora_v2.py a partir de Bitacora/ATA104.json (metadatos) y del indice v2 (iteraciones)"
+}

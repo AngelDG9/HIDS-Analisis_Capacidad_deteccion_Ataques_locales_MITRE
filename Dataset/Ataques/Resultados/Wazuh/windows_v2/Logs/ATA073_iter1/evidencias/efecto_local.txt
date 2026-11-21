@@ -1,0 +1,9 @@
+ata=ATA073
+tecnica=T1056.001
+fuente=ART_adaptado
+guid=d9b633ca-8efb-45e6-b838-70f595c6ae26
+t0=2026-11-20T19:05:53Z
+t1=2026-11-20T19:06:14Z
+seed=tfg-key-2026
+secuencia=54,46,47,BD,4B,45,59,BD,32,30,32,36
+cadena_detectada=True

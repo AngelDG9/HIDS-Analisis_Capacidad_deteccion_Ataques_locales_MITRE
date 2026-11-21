@@ -1,0 +1,10 @@
+ata=ATA109
+tecnica=T1114.003
+fuente=manual
+t0=2026-11-21T01:23:51Z
+t1=2026-11-21T01:23:51Z
+perfil=C:\lab-attack\ATA109\perfil
+regla=C:\lab-attack\ATA109\perfil\regla_reenvio.json
+destino=sink@tfg.local
+eml_reenviado=True
+eml_bytes=170

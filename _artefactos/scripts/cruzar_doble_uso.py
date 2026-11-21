@@ -109,13 +109,23 @@ def main(argv=None) -> int:
     ap.add_argument("--out", default=DEFAULT_OUT)
     args = ap.parse_args(argv)
 
-    _, cat = TC.read_csv_rows(os.path.join(TC.ROOT, args.catalogo),
-                              required=["rule_id", "rule_level", "rs_origen", "count"])
+    # Linux: columnas rule_id,rule_level,rs_origen,groups,count. Windows (catalogo_ruido_windows.csv): rule_groups y
+    # count_ventana, sin rs_origen (todas las reglas de Windows son del ruleset por defecto = RS1). Se admiten las dos.
+    _, cat = TC.read_csv_rows(os.path.join(TC.ROOT, args.catalogo), required=["rule_id", "rule_level"])
+    for _r in cat:
+        _r.setdefault("rs_origen", "")
+        if not _r.get("rs_origen"):
+            _r["rs_origen"] = "RS1"
+        if not _r.get("count"):
+            _r["count"] = _r.get("count_ventana") or 0
+        if not _r.get("groups"):
+            _r["groups"] = _r.get("rule_groups") or ""
     unidades, auto = _leer_indice(os.path.join(TC.ROOT, args.indice))
     rep = _repeticiones(os.path.join(TC.ROOT, args.repeticiones))
     det, casos = _detecciones(os.path.join(TC.ROOT, args.auditado), rep,
                               set(M.CONFIGS[args.config]), args.umbral)
 
+    n_casos = len({f.split("_")[0] for f in os.listdir(os.path.join(TC.ROOT, args.auditado)) if f.endswith("-Audited.csv")}) or 55
     # Casos cubiertos por cada regla (para detectar redundancia de evidencia)
     filas = []
     for r in sorted(cat, key=lambda x: _sort_rid(x["rule_id"])):
@@ -135,7 +145,7 @@ def main(argv=None) -> int:
                 o, _ = max(otros, key=lambda kv: det[kv[0]])
                 nota = f"redundante: {o} ya cubre {';'.join(cs)}"
             else:
-                nota = f"principal: cubre {len(cs)}/55 casos"
+                nota = f"principal: cubre {len(cs)}/{n_casos} casos"
         elif u > 0:
             nota = "solo legitimo (FP-only; nunca deteccion en ataque)"
         else:

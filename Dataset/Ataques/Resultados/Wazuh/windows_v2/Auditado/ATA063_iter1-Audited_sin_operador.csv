@@ -1,0 +1,138 @@
+# ATA063_iter1-Audited_sin_operador.csv | TFG HIDS - B1.0 filtro Windows (H4-W) | ata=ATA063 iter=1 | modo=ataque | operador=off (sensibilidad --sin-operador) | alerta=D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\windows_v2\CSV\ATA063_iter1-Detalle.csv sha256=3bd03d7cce0176fbed419e557a1dde95342d7f407f8ec40dbfe0808dc0cdec68 | catalogo=Dataset/Legitimo/windows/ruleids_legitimos.csv sha256=e726711f5acdfe4bf8fcb436ff629c904213bcda85d90e621b50cef72e77e96b | esperado=D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Comandos\windows\T1490-Inhibit_System_Recovery\ATA063_esperado.csv sha256=b87cc83429885a851e8752b760c84cd411a35708c79a7b62c60bb11570ddce3e | conteos: filas=136 deteccion=14 auto_ruido=14 ruido_conocido=41 dudosa=56 artefacto_ataque=11 | columnas: ata_id,iter,timestamp_utc,agent_name,rule_id,rule_level,rule_groups,rs_origen,rule_description,categoria,motivo,atribucion,revision,veredicto_humano,evidencia
+ata_id,iter,timestamp_utc,agent_name,rule_id,rule_level,rule_groups,rs_origen,rule_description,categoria,motivo,atribucion,revision,veredicto_humano,evidencia
+ATA063,1,2026-11-20T17:37:56.015Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,ruido_conocido,baseline,,,,rule_id=67027
+ATA063,1,2026-11-20T17:37:56.077Z,victima-windows,67024,3,windows| WEF,RS1,Service logon event registered from non standard service account.,dudosa,sin_campos,,pendiente,,
+ATA063,1,2026-11-20T17:37:56.094Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,dudosa,sin_campos,,pendiente,,
+ATA063,1,2026-11-20T17:37:56.162Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA063,1,2026-11-20T17:37:56.237Z,victima-windows,60106,3,windows|windows_security|authentication_success,RS1,Windows Logon Success,dudosa,sin_campos,,pendiente,,
+ATA063,1,2026-11-20T17:37:56.277Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,dudosa,sin_campos,,pendiente,,
+ATA063,1,2026-11-20T17:37:56.308Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA063,1,2026-11-20T17:37:56.323Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,dudosa,sin_ancla:T1490-S2,T1490|Process Creation,pendiente,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA063,1,2026-11-20T17:37:56.338Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,ruido_conocido,baseline,,,,rule_id=67027
+ATA063,1,2026-11-20T17:37:56.354Z,victima-windows,67023,3,windows| WEF,RS1,Non service account logged off.,dudosa,sin_campos,,pendiente,,
+ATA063,1,2026-11-20T17:37:56.369Z,victima-windows,60137,3,windows|windows_security,RS1,Windows User Logoff,dudosa,sin_campos,,pendiente,,
+ATA063,1,2026-11-20T17:37:56.384Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA063,1,2026-11-20T17:37:56.400Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,ruido_conocido,baseline,,,,rule_id=67027
+ATA063,1,2026-11-20T17:37:56.462Z,victima-windows,67024,3,windows| WEF,RS1,Service logon event registered from non standard service account.,dudosa,sin_campos,,pendiente,,
+ATA063,1,2026-11-20T17:37:56.493Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,dudosa,sin_campos,,pendiente,,
+ATA063,1,2026-11-20T17:37:56.523Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA063,1,2026-11-20T17:37:56.554Z,victima-windows,60106,3,windows|windows_security|authentication_success,RS1,Windows Logon Success,dudosa,sin_campos,,pendiente,,
+ATA063,1,2026-11-20T17:37:56.569Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,dudosa,sin_campos,,pendiente,,
+ATA063,1,2026-11-20T17:37:56.585Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA063,1,2026-11-20T17:37:56.600Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1490-S2,T1490|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA063,1,2026-11-20T17:37:56.615Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1490-S1,T1490|Process Creation,,,win_image=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe
+ATA063,1,2026-11-20T17:37:56.738Z,victima-windows,92052,4,sysmon|sysmon_eid1_detections|windows,RS1,Windows command prompt started by an abnormal process,dudosa,sin_ancla:T1490-S2,T1490|Process Creation,pendiente,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA063,1,2026-11-20T17:37:56.780Z,victima-windows,92032,3,sysmon|sysmon_eid1_detections|windows,RS1,Suspicious Windows cmd shell execution,deteccion,novel,,,,rule_id=92032
+ATA063,1,2026-11-20T17:37:56.861Z,victima-windows,92052,4,sysmon|sysmon_eid1_detections|windows,RS1,Windows command prompt started by an abnormal process,deteccion,senal:T1490-S2,T1490|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA063,1,2026-11-20T17:37:56.932Z,victima-windows,92213,15,sysmon|sysmon_eid11_detections|windows,RS1,Executable file dropped in folder commonly used by malware,dudosa,sin_ancla:T1490-S1,T1490|Process Creation,pendiente,,win_image=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe
+ATA063,1,2026-11-20T17:37:57.722Z,victima-windows,92052,4,sysmon|sysmon_eid1_detections|windows,RS1,Windows command prompt started by an abnormal process,deteccion,senal:T1490-S2,T1490|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA063,1,2026-11-20T17:37:57.738Z,victima-windows,92032,3,sysmon|sysmon_eid1_detections|windows,RS1,Suspicious Windows cmd shell execution,artefacto_ataque,del_ataque,,,,"win_command_line=schtasks  /create /tn TFG-Attack-ATA063 /tr \""C:\lab-attack\ATA063\run.cmd\"" /sc once /st 23:59 /ru angel /it /rl highest /f"
+ATA063,1,2026-11-20T17:37:57.938Z,victima-windows,67023,3,windows| WEF,RS1,Non service account logged off.,dudosa,sin_campos,,pendiente,,
+ATA063,1,2026-11-20T17:37:57.968Z,victima-windows,60137,3,windows|windows_security,RS1,Windows User Logoff,dudosa,sin_campos,,pendiente,,
+ATA063,1,2026-11-20T17:37:57.968Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA063,1,2026-11-20T17:37:57.999Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,ruido_conocido,baseline,,,,rule_id=67027
+ATA063,1,2026-11-20T17:37:58.068Z,victima-windows,67024,3,windows| WEF,RS1,Service logon event registered from non standard service account.,dudosa,sin_campos,,pendiente,,
+ATA063,1,2026-11-20T17:37:58.087Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,dudosa,sin_campos,,pendiente,,
+ATA063,1,2026-11-20T17:37:58.125Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA063,1,2026-11-20T17:37:58.173Z,victima-windows,60106,3,windows|windows_security|authentication_success,RS1,Windows Logon Success,dudosa,sin_campos,,pendiente,,
+ATA063,1,2026-11-20T17:37:58.212Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,dudosa,sin_campos,,pendiente,,
+ATA063,1,2026-11-20T17:37:58.234Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA063,1,2026-11-20T17:37:58.260Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1490-S2,T1490|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA063,1,2026-11-20T17:37:58.281Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,artefacto_ataque,del_ataque,,,,"win_command_line=schtasks  /create /tn TFG-Attack-ATA063 /tr \""C:\lab-attack\ATA063\run.cmd\"" /sc once /st 23:59 /ru angel /it /rl highest /f"
+ATA063,1,2026-11-20T17:37:58.296Z,victima-windows,67023,3,windows| WEF,RS1,Non service account logged off.,dudosa,sin_campos,,pendiente,,
+ATA063,1,2026-11-20T17:37:58.312Z,victima-windows,60137,3,windows|windows_security,RS1,Windows User Logoff,dudosa,sin_campos,,pendiente,,
+ATA063,1,2026-11-20T17:37:58.741Z,victima-windows,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,ambigua:T1490-S4,T1490|File Integrity Monitoring,pendiente,,syscheck_path=c:\lab-attack\ata063\evidencias\ejecucion.out
+ATA063,1,2026-11-20T17:37:58.942Z,victima-windows,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,ambigua:T1490-S4,T1490|File Integrity Monitoring,pendiente,,syscheck_path=c:\lab-attack\ata063\vssadmin.exe
+ATA063,1,2026-11-20T17:37:59.008Z,victima-windows,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,ambigua:T1490-S4,T1490|File Integrity Monitoring,pendiente,,syscheck_path=c:\lab-attack\ata063\bcdedit.exe
+ATA063,1,2026-11-20T17:37:59.021Z,victima-windows,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,ambigua:T1490-S4,T1490|File Integrity Monitoring,pendiente,,syscheck_path=c:\lab-attack\ata063\reagentc.exe
+ATA063,1,2026-11-20T17:37:59.079Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA063,1,2026-11-20T17:37:59.183Z,victima-windows,92052,4,sysmon|sysmon_eid1_detections|windows,RS1,Windows command prompt started by an abnormal process,dudosa,sin_ancla:T1490-S2,T1490|Process Creation,pendiente,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA063,1,2026-11-20T17:37:59.203Z,victima-windows,92032,3,sysmon|sysmon_eid1_detections|windows,RS1,Suspicious Windows cmd shell execution,deteccion,novel,,,,rule_id=92032
+ATA063,1,2026-11-20T17:37:59.221Z,victima-windows,92052,4,sysmon|sysmon_eid1_detections|windows,RS1,Windows command prompt started by an abnormal process,deteccion,senal:T1490-S2,T1490|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA063,1,2026-11-20T17:37:59.290Z,victima-windows,92213,15,sysmon|sysmon_eid11_detections|windows,RS1,Executable file dropped in folder commonly used by malware,dudosa,sin_ancla:T1490-S1,T1490|Process Creation,pendiente,,win_image=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe
+ATA063,1,2026-11-20T17:37:59.319Z,victima-windows,92203,6,sysmon|sysmon_eid11_detections|windows,RS1,Executable file created by powershell: C:\\lab-attack\\ATA063\\vssadmin.exe,dudosa,sin_ancla:T1490-S1,T1490|Process Creation,pendiente,,win_image=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe
+ATA063,1,2026-11-20T17:37:59.352Z,victima-windows,92203,6,sysmon|sysmon_eid11_detections|windows,RS1,Executable file created by powershell: C:\\lab-attack\\ATA063\\bcdedit.exe,dudosa,sin_ancla:T1490-S1,T1490|Process Creation,pendiente,,win_image=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe
+ATA063,1,2026-11-20T17:37:59.367Z,victima-windows,92203,6,sysmon|sysmon_eid11_detections|windows,RS1,Executable file created by powershell: C:\\lab-attack\\ATA063\\reagentc.exe,dudosa,sin_ancla:T1490-S1,T1490|Process Creation,pendiente,,win_image=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe
+ATA063,1,2026-11-20T17:37:59.393Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,ruido_conocido,baseline,,,,rule_id=67027
+ATA063,1,2026-11-20T17:37:59.476Z,victima-windows,67024,3,windows| WEF,RS1,Service logon event registered from non standard service account.,dudosa,sin_campos,,pendiente,,
+ATA063,1,2026-11-20T17:37:59.502Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,dudosa,sin_campos,,pendiente,,
+ATA063,1,2026-11-20T17:37:59.550Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA063,1,2026-11-20T17:37:59.594Z,victima-windows,60106,3,windows|windows_security|authentication_success,RS1,Windows Logon Success,dudosa,sin_campos,,pendiente,,
+ATA063,1,2026-11-20T17:37:59.609Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,dudosa,sin_campos,,pendiente,,
+ATA063,1,2026-11-20T17:37:59.624Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA063,1,2026-11-20T17:37:59.650Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,dudosa,sin_ancla:T1490-S2,T1490|Process Creation,pendiente,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA063,1,2026-11-20T17:37:59.660Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,ruido_conocido,baseline,,,,rule_id=67027
+ATA063,1,2026-11-20T17:37:59.675Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1490-S2,T1490|Process Creation,,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA063,1,2026-11-20T17:37:59.692Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,ruido_conocido,baseline,,,,rule_id=67027
+ATA063,1,2026-11-20T17:37:59.706Z,victima-windows,67023,3,windows| WEF,RS1,Non service account logged off.,dudosa,sin_campos,,pendiente,,
+ATA063,1,2026-11-20T17:37:59.738Z,victima-windows,60137,3,windows|windows_security,RS1,Windows User Logoff,dudosa,sin_campos,,pendiente,,
+ATA063,1,2026-11-20T17:37:59.752Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,deteccion,senal:T1490-S1,T1490|Process Creation,,,win_image=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe
+ATA063,1,2026-11-20T17:37:59.879Z,victima-windows,91826,4,windows| powershell,RS1,"Powershell executed ""Copy-Item""",dudosa,sin_campos,,pendiente,,
+ATA063,1,2026-11-20T17:37:59.975Z,victima-windows,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,ambigua:T1490-S4,T1490|File Integrity Monitoring,pendiente,,syscheck_path=c:\lab-attack\ata063\evidencias\vssadmin.out
+ATA063,1,2026-11-20T17:38:00.057Z,victima-windows,550,7,ossec|syscheck|syscheck_entry_modified|syscheck_file,RS1,Integrity checksum changed.,dudosa,ambigua:T1490-S4,T1490|File Integrity Monitoring,pendiente,,syscheck_path=c:\lab-attack\ata063\evidencias\vssadmin.out
+ATA063,1,2026-11-20T17:38:00.089Z,victima-windows,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,ambigua:T1490-S4,T1490|File Integrity Monitoring,pendiente,,syscheck_path=c:\lab-attack\ata063\evidencias\bcdedit_bootstatuspolicy.out
+ATA063,1,2026-11-20T17:38:00.177Z,victima-windows,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,ambigua:T1490-S4,T1490|File Integrity Monitoring,pendiente,,syscheck_path=c:\lab-attack\ata063\evidencias\bcdedit_recoveryenabled.out
+ATA063,1,2026-11-20T17:38:00.499Z,victima-windows,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,ambigua:T1490-S4,T1490|File Integrity Monitoring,pendiente,,syscheck_path=c:\lab-attack\ata063\evidencias\reagentc_disable.out
+ATA063,1,2026-11-20T17:38:00.692Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,artefacto_ataque,del_ataque,,,,"win_command_line=\""C:\lab-attack\ATA063\vssadmin.exe\"" list shadows"
+ATA063,1,2026-11-20T17:38:00.766Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,ruido_conocido,baseline,,,,rule_id=67027
+ATA063,1,2026-11-20T17:38:00.766Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,artefacto_ataque,del_ataque,,,,"win_command_line=\""C:\lab-attack\ATA063\vssadmin.exe\"" delete shadows /all /quiet"
+ATA063,1,2026-11-20T17:38:00.772Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,artefacto_ataque,del_ataque,,,,"win_command_line=\""C:\lab-attack\ATA063\bcdedit.exe\"" /enum {default}"
+ATA063,1,2026-11-20T17:38:00.783Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,artefacto_ataque,del_ataque,,,,"win_command_line=\""C:\lab-attack\ATA063\bcdedit.exe\"" /set {default} bootstatuspolicy ignoreallfailures"
+ATA063,1,2026-11-20T17:38:00.796Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,artefacto_ataque,del_ataque,,,,"win_command_line=\""C:\lab-attack\ATA063\bcdedit.exe\"" /set {default} recoveryenabled no"
+ATA063,1,2026-11-20T17:38:00.828Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,artefacto_ataque,del_ataque,,,,"win_command_line=\""C:\lab-attack\ATA063\reagentc.exe\"" /info"
+ATA063,1,2026-11-20T17:38:00.865Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,artefacto_ataque,del_ataque,,,,"win_command_line=\""C:\lab-attack\ATA063\reagentc.exe\"" /disable"
+ATA063,1,2026-11-20T17:38:06.597Z,victima-windows,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,ambigua:T1490-S4,T1490|File Integrity Monitoring,pendiente,,syscheck_path=c:\lab-attack\ata063\evidencias\efecto_local.txt
+ATA063,1,2026-11-20T17:38:06.625Z,victima-windows,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,ambigua:T1490-S4,T1490|File Integrity Monitoring,pendiente,,syscheck_path=c:\lab-attack\ata063\evidencias\bcdedit_antes.txt
+ATA063,1,2026-11-20T17:38:06.625Z,victima-windows,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,ambigua:T1490-S4,T1490|File Integrity Monitoring,pendiente,,syscheck_path=c:\lab-attack\ata063\evidencias\bcdedit_despues.txt
+ATA063,1,2026-11-20T17:38:06.625Z,victima-windows,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,ambigua:T1490-S4,T1490|File Integrity Monitoring,pendiente,,syscheck_path=c:\lab-attack\ata063\evidencias\reagentc_despues.txt
+ATA063,1,2026-11-20T17:38:07.108Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,artefacto_ataque,del_ataque,,,,"win_command_line=\""C:\lab-attack\ATA063\bcdedit.exe\"" /enum {default}"
+ATA063,1,2026-11-20T17:38:07.128Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,artefacto_ataque,del_ataque,,,,"win_command_line=\""C:\lab-attack\ATA063\reagentc.exe\"" /info"
+ATA063,1,2026-11-20T17:38:09.148Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,ruido_conocido,baseline,,,,rule_id=67027
+ATA063,1,2026-11-20T17:38:12.455Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,ruido_conocido,baseline,,,,rule_id=67027
+ATA063,1,2026-11-20T17:38:12.491Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,ruido_conocido,baseline,,,,rule_id=67027
+ATA063,1,2026-11-20T17:38:12.583Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,ruido_conocido,baseline,,,,rule_id=67027
+ATA063,1,2026-11-20T17:38:12.584Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA063,1,2026-11-20T17:38:12.606Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,ruido_conocido,baseline,,,,rule_id=67027
+ATA063,1,2026-11-20T17:38:12.683Z,victima-windows,67024,3,windows| WEF,RS1,Service logon event registered from non standard service account.,dudosa,sin_campos,,pendiente,,
+ATA063,1,2026-11-20T17:38:12.700Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,dudosa,sin_campos,,pendiente,,
+ATA063,1,2026-11-20T17:38:12.739Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA063,1,2026-11-20T17:38:12.758Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,ruido_conocido,baseline,,,,rule_id=67027
+ATA063,1,2026-11-20T17:38:12.796Z,victima-windows,60106,3,windows|windows_security|authentication_success,RS1,Windows Logon Success,dudosa,sin_campos,,pendiente,,
+ATA063,1,2026-11-20T17:38:12.813Z,victima-windows,67028,3,windows| WEF,RS1,Special privileges assigned to new logon.,dudosa,sin_campos,,pendiente,,
+ATA063,1,2026-11-20T17:38:12.847Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,auto_ruido,auto_ruido:canal-ssh,,,,win_image=C:\\Windows\\System32\\OpenSSH\\sshd.exe
+ATA063,1,2026-11-20T17:38:12.863Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,dudosa,sin_ancla:T1490-S2,T1490|Process Creation,pendiente,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA063,1,2026-11-20T17:38:12.879Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,ruido_conocido,baseline,,,,rule_id=67027
+ATA063,1,2026-11-20T17:38:13.098Z,victima-windows,92052,4,sysmon|sysmon_eid1_detections|windows,RS1,Windows command prompt started by an abnormal process,dudosa,sin_ancla:T1490-S2,T1490|Process Creation,pendiente,,win_image=C:\\Windows\\System32\\cmd.exe
+ATA063,1,2026-11-20T17:38:13.113Z,victima-windows,92032,3,sysmon|sysmon_eid1_detections|windows,RS1,Suspicious Windows cmd shell execution,deteccion,novel,,,,rule_id=92032
+ATA063,1,2026-11-20T17:38:13.591Z,victima-windows,67023,3,windows| WEF,RS1,Non service account logged off.,dudosa,sin_campos,,pendiente,,
+ATA063,1,2026-11-20T17:38:13.609Z,victima-windows,60137,3,windows|windows_security,RS1,Windows User Logoff,dudosa,sin_campos,,pendiente,,
+ATA063,1,2026-11-20T17:38:13.666Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,ruido_conocido,baseline,,,,rule_id=67027
+ATA063,1,2026-11-20T17:38:13.666Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,ruido_conocido,baseline,,,,rule_id=67027
+ATA063,1,2026-11-20T17:38:13.695Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,ruido_conocido,baseline,,,,rule_id=67027
+ATA063,1,2026-11-20T17:38:15.043Z,victima-windows,594,5,ossec|syscheck|syscheck_entry_modified|syscheck_registry,RS1,Registry Key Integrity Checksum Changed,ruido_conocido,baseline,,,,rule_id=594
+ATA063,1,2026-11-20T17:38:15.062Z,victima-windows,594,5,ossec|syscheck|syscheck_entry_modified|syscheck_registry,RS1,Registry Key Integrity Checksum Changed,ruido_conocido,baseline,,,,rule_id=594
+ATA063,1,2026-11-20T17:38:18.018Z,victima-windows,67027,3,windows| WEF,RS1,A process was created.,ruido_conocido,baseline,,,,rule_id=67027
+ATA063,1,2026-11-20T17:38:20.412Z,victima-windows,594,5,ossec|syscheck|syscheck_entry_modified|syscheck_registry,RS1,Registry Key Integrity Checksum Changed,ruido_conocido,baseline,,,,rule_id=594
+ATA063,1,2026-11-20T17:38:20.454Z,victima-windows,750,5,ossec|syscheck|syscheck_entry_modified|syscheck_registry,RS1,Registry Value Integrity Checksum Changed,ruido_conocido,baseline,,,,rule_id=750
+ATA063,1,2026-11-20T17:38:20.454Z,victima-windows,750,5,ossec|syscheck|syscheck_entry_modified|syscheck_registry,RS1,Registry Value Integrity Checksum Changed,ruido_conocido,baseline,,,,rule_id=750
+ATA063,1,2026-11-20T17:38:20.454Z,victima-windows,750,5,ossec|syscheck|syscheck_entry_modified|syscheck_registry,RS1,Registry Value Integrity Checksum Changed,ruido_conocido,baseline,,,,rule_id=750
+ATA063,1,2026-11-20T17:38:20.484Z,victima-windows,750,5,ossec|syscheck|syscheck_entry_modified|syscheck_registry,RS1,Registry Value Integrity Checksum Changed,ruido_conocido,baseline,,,,rule_id=750
+ATA063,1,2026-11-20T17:38:20.499Z,victima-windows,752,5,ossec|syscheck|syscheck_entry_added|syscheck_registry,RS1,Registry Value Entry Added to the System,deteccion,novel,,,,rule_id=752
+ATA063,1,2026-11-20T17:38:20.515Z,victima-windows,752,5,ossec|syscheck|syscheck_entry_added|syscheck_registry,RS1,Registry Value Entry Added to the System,deteccion,novel,,,,rule_id=752
+ATA063,1,2026-11-20T17:38:20.530Z,victima-windows,594,5,ossec|syscheck|syscheck_entry_modified|syscheck_registry,RS1,Registry Key Integrity Checksum Changed,ruido_conocido,baseline,,,,rule_id=594
+ATA063,1,2026-11-20T17:38:20.552Z,victima-windows,750,5,ossec|syscheck|syscheck_entry_modified|syscheck_registry,RS1,Registry Value Integrity Checksum Changed,ruido_conocido,baseline,,,,rule_id=750
+ATA063,1,2026-11-20T17:38:20.577Z,victima-windows,752,5,ossec|syscheck|syscheck_entry_added|syscheck_registry,RS1,Registry Value Entry Added to the System,deteccion,novel,,,,rule_id=752
+ATA063,1,2026-11-20T17:38:24.683Z,victima-windows,594,5,ossec|syscheck|syscheck_entry_modified|syscheck_registry,RS1,Registry Key Integrity Checksum Changed,ruido_conocido,baseline,,,,rule_id=594
+ATA063,1,2026-11-20T17:38:24.683Z,victima-windows,750,5,ossec|syscheck|syscheck_entry_modified|syscheck_registry,RS1,Registry Value Integrity Checksum Changed,ruido_conocido,baseline,,,,rule_id=750
+ATA063,1,2026-11-20T17:38:24.691Z,victima-windows,594,5,ossec|syscheck|syscheck_entry_modified|syscheck_registry,RS1,Registry Key Integrity Checksum Changed,ruido_conocido,baseline,,,,rule_id=594
+ATA063,1,2026-11-20T17:38:24.720Z,victima-windows,750,5,ossec|syscheck|syscheck_entry_modified|syscheck_registry,RS1,Registry Value Integrity Checksum Changed,ruido_conocido,baseline,,,,rule_id=750
+ATA063,1,2026-11-20T17:38:24.749Z,victima-windows,750,5,ossec|syscheck|syscheck_entry_modified|syscheck_registry,RS1,Registry Value Integrity Checksum Changed,ruido_conocido,baseline,,,,rule_id=750
+ATA063,1,2026-11-20T17:38:24.766Z,victima-windows,750,5,ossec|syscheck|syscheck_entry_modified|syscheck_registry,RS1,Registry Value Integrity Checksum Changed,ruido_conocido,baseline,,,,rule_id=750
+ATA063,1,2026-11-20T17:38:24.782Z,victima-windows,750,5,ossec|syscheck|syscheck_entry_modified|syscheck_registry,RS1,Registry Value Integrity Checksum Changed,ruido_conocido,baseline,,,,rule_id=750
+ATA063,1,2026-11-20T17:38:26.302Z,victima-windows,594,5,ossec|syscheck|syscheck_entry_modified|syscheck_registry,RS1,Registry Key Integrity Checksum Changed,ruido_conocido,baseline,,,,rule_id=594
+ATA063,1,2026-11-20T17:38:26.343Z,victima-windows,750,5,ossec|syscheck|syscheck_entry_modified|syscheck_registry,RS1,Registry Value Integrity Checksum Changed,ruido_conocido,baseline,,,,rule_id=750
+ATA063,1,2026-11-20T17:38:26.507Z,victima-windows,598,5,ossec|syscheck|syscheck_entry_added|syscheck_registry,RS1,Registry Key Entry Added to the System,ruido_conocido,baseline,,,,rule_id=598
+ATA063,1,2026-11-20T17:38:26.512Z,victima-windows,598,5,ossec|syscheck|syscheck_entry_added|syscheck_registry,RS1,Registry Key Entry Added to the System,ruido_conocido,baseline,,,,rule_id=598
+ATA063,1,2026-11-20T17:38:26.521Z,victima-windows,598,5,ossec|syscheck|syscheck_entry_added|syscheck_registry,RS1,Registry Key Entry Added to the System,ruido_conocido,baseline,,,,rule_id=598
+ATA063,1,2026-11-20T17:38:26.646Z,victima-windows,594,5,ossec|syscheck|syscheck_entry_modified|syscheck_registry,RS1,Registry Key Integrity Checksum Changed,ruido_conocido,baseline,,,,rule_id=594
+ATA063,1,2026-11-20T17:38:42.790Z,victima-windows,60642,3,windows|windows_application,RS1,Software protection service scheduled successfully.,dudosa,sin_campos,,pendiente,,

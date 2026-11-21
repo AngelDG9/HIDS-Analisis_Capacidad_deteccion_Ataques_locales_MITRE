@@ -1,0 +1,11 @@
+ata=ATA089
+tecnica=T1499.003
+fuente=manual
+t0=2026-11-20T21:53:32Z
+t1=2026-11-20T21:54:42Z
+endpoint=127.0.0.1:9093
+peticiones=200
+before_ms=3.7
+during_ms=5852
+after_ms=4998
+exhausted=True

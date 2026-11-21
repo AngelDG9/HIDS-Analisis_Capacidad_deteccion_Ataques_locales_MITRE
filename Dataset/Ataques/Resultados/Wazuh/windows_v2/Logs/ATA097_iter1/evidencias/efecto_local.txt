@@ -1,0 +1,11 @@
+ata=ATA097
+tecnica=T1565.003
+fuente=manual
+t0=2026-11-20T23:14:01Z
+t1=2026-11-20T23:14:04Z
+pid=2352
+write_ok=True
+original=TFG-ORIGINAL-STRING
+manipulated=TFG-MANIPULATED-STRING
+ultima_lectura=TFG-MANIPULATED-STRING
+alterado=True

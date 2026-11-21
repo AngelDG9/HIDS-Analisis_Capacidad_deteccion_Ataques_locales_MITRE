@@ -1,0 +1,9 @@
+ata=ATA092
+tecnica=T1557.003
+fuente=manual
+t0=2026-11-20T22:28:00Z
+t1=2026-11-20T22:28:00Z
+server=127.0.0.1:67
+xid=cdd7ab56
+offer=DHCPOFFER ip=192.168.65.200 gw=192.168.65.1 dns=192.168.65.1 xid=xid=cdd7ab56
+ack=DHCPACK ip=192.168.65.200 gw=192.168.65.1 dns=192.168.65.1 xid=xid=cdd7ab56

@@ -1,0 +1,8 @@
+ata=ATA083
+tecnica=T1667
+fuente=manual
+t0=2026-11-20T20:46:25Z
+t1=2026-11-20T20:46:26Z
+mailbox=C:\lab-attack\ATA083\mailbox
+ficheros=25
+bytes=2932

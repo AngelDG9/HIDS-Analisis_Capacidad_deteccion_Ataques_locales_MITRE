@@ -1,0 +1,26 @@
+# T5_doble_uso.csv | TFG HIDS - T5 reglas de doble uso (catalogo de ruido 72 h x detecciones canonicas) | metrica_version=1 | boveda_version=2 | config=C1 | umbral=0 | catalogo=Dataset/Legitimo/windows/legitimo_72h/analisis/catalogo_ruido_windows.csv | indice=Dataset/Legitimo/windows/legitimo_72h/analisis/eventos_alerta_windows.csv.gz | auditado=Dataset/Ataques/Resultados/Wazuh/windows_v2/M1b/Auditado | t2=n/a (T5_doble_uso se recalcula de Auditado; no consume T2) | unidad_legitimo=evento decodificado (linea de archives) | ventana_canonica=rev1_si_repeticiones_else_iter1 | reglas=24 | doble_uso=3 | declaracion=quitar una regla de doble uso redundante NO baja el TPR pero cambia la PRIMERA evidencia del caso (T5 mide rendimiento, no calidad de evidencia) | layout=largo(1 fila por rule_id)
+rule_id,rule_level,rs_origen,groups,legit_alertas,legit_unidades,legit_auto,pct_auto,attack_detecciones,attack_casos,attack_casos_lista,doble_uso,nota
+594,5,RS1,ossec|syscheck|syscheck_entry_modified|syscheck_registry,22,22,0,0.0000,0,0,,NO,solo legitimo (FP-only; nunca deteccion en ataque)
+598,5,RS1,ossec|syscheck|syscheck_entry_added|syscheck_registry,4,4,0,0.0000,0,0,,NO,solo legitimo (FP-only; nunca deteccion en ataque)
+750,5,RS1,ossec|syscheck|syscheck_entry_modified|syscheck_registry,36,36,0,0.0000,0,0,,NO,solo legitimo (FP-only; nunca deteccion en ataque)
+751,5,RS1,ossec|syscheck|syscheck_entry_deleted|syscheck_registry,1,1,0,0.0000,0,0,,NO,solo legitimo (FP-only; nunca deteccion en ataque)
+19005,9,RS1,sca,1,1,0,0.0000,0,0,,NO,solo legitimo (FP-only; nunca deteccion en ataque)
+19014,9,RS1,sca,1,1,0,0.0000,0,0,,NO,solo legitimo (FP-only; nunca deteccion en ataque)
+60602,9,RS1,windows|windows_application|system_error,2,2,0,0.0000,0,0,,NO,solo legitimo (FP-only; nunca deteccion en ataque)
+60642,3,RS1,windows|windows_application,9,9,0,0.0000,0,0,,NO,solo legitimo (FP-only; nunca deteccion en ataque)
+60646,5,RS1,windows|windows_application,3,3,0,0.0000,0,0,,NO,solo legitimo (FP-only; nunca deteccion en ataque)
+60702,5,RS1,windows|windows_application,1,1,0,0.0000,0,0,,NO,solo legitimo (FP-only; nunca deteccion en ataque)
+61104,3,RS1,windows|windows_system|policy_changed,158,158,0,0.0000,0,0,,NO,solo legitimo (FP-only; nunca deteccion en ataque)
+67027,3,RS1,windows| WEF,5023,5023,0,0.0000,233,54,ATA056;ATA057;ATA058;ATA059;ATA060;ATA061;ATA062;ATA063;ATA064;ATA065;ATA066;ATA067;ATA068;ATA069;ATA070;ATA071;ATA072;ATA073;ATA074;ATA075;ATA076;ATA077;ATA078;ATA079;ATA080;ATA081;ATA082;ATA083;ATA084;ATA085;ATA086;ATA087;ATA088;ATA089;ATA090;ATA091;ATA092;ATA093;ATA094;ATA095;ATA096;ATA097;ATA098;ATA099;ATA100;ATA101;ATA102;ATA103;ATA104;ATA105;ATA106;ATA107;ATA108;ATA109,SÍ,principal: cubre 54/54 casos
+91816,4,RS1,windows| powershell,48,48,0,0.0000,0,0,,NO,solo legitimo (FP-only; nunca deteccion en ataque)
+91820,4,RS1,windows| powershell,2,2,0,0.0000,0,0,,NO,solo legitimo (FP-only; nunca deteccion en ataque)
+91823,14,RS1,windows| powershell,2,2,0,0.0000,0,0,,NO,solo legitimo (FP-only; nunca deteccion en ataque)
+92021,3,RS1,sysmon|sysmon_eid1_detections|windows,52,52,48,92.3077,0,0,,NO,solo legitimo (FP-only; nunca deteccion en ataque)
+92031,3,RS1,sysmon|sysmon_eid1_detections|windows,24,24,12,50.0000,0,0,,NO,solo legitimo (FP-only; nunca deteccion en ataque)
+92032,3,RS1,sysmon|sysmon_eid1_detections|windows,256,256,0,0.0000,2,1,ATA079,SÍ,redundante: 67027 ya cubre ATA079
+92052,4,RS1,sysmon|sysmon_eid1_detections|windows,504,504,0,0.0000,150,54,ATA056;ATA057;ATA058;ATA059;ATA060;ATA061;ATA062;ATA063;ATA064;ATA065;ATA066;ATA067;ATA068;ATA069;ATA070;ATA071;ATA072;ATA073;ATA074;ATA075;ATA076;ATA077;ATA078;ATA079;ATA080;ATA081;ATA082;ATA083;ATA084;ATA085;ATA086;ATA087;ATA088;ATA089;ATA090;ATA091;ATA092;ATA093;ATA094;ATA095;ATA096;ATA097;ATA098;ATA099;ATA100;ATA101;ATA102;ATA103;ATA104;ATA105;ATA106;ATA107;ATA108;ATA109,SÍ,redundante: 67027 ya cubre ATA056;ATA057;ATA058;ATA059;ATA060;ATA061;ATA062;ATA063;ATA064;ATA065;ATA066;ATA067;ATA068;ATA069;ATA070;ATA071;ATA072;ATA073;ATA074;ATA075;ATA076;ATA077;ATA078;ATA079;ATA080;ATA081;ATA082;ATA083;ATA084;ATA085;ATA086;ATA087;ATA088;ATA089;ATA090;ATA091;ATA092;ATA093;ATA094;ATA095;ATA096;ATA097;ATA098;ATA099;ATA100;ATA101;ATA102;ATA103;ATA104;ATA105;ATA106;ATA107;ATA108;ATA109
+92066,4,RS1,sysmon|sysmon_eid1_detections|windows,48,48,0,0.0000,0,0,,NO,solo legitimo (FP-only; nunca deteccion en ataque)
+92200,6,RS1,sysmon|sysmon_eid11_detections|windows,9,9,0,0.0000,0,0,,NO,solo legitimo (FP-only; nunca deteccion en ataque)
+92201,9,RS1,sysmon|sysmon_eid11_detections|windows,51,51,0,0.0000,0,0,,NO,solo legitimo (FP-only; nunca deteccion en ataque)
+92213,15,RS1,sysmon|sysmon_eid11_detections|windows,86,86,0,0.0000,0,0,,NO,solo legitimo (FP-only; nunca deteccion en ataque)
+92217,6,RS1,sysmon|sysmon_eid11_detections|windows,1,1,0,0.0000,0,0,,NO,solo legitimo (FP-only; nunca deteccion en ataque)

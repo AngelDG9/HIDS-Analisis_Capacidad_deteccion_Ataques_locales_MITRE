@@ -1,0 +1,8 @@
+ata=ATA067
+tecnica=T1529
+fuente=ART_adaptado
+guid=f4648f0d-bf78-483c-bafc-3ec99cd1c302
+t0=2026-11-21T01:36:01Z
+boot_before=2026-11-21T01:33:04Z
+comando=shutdown /r /t 5 /f
+nota=el efecto se cierra en el host con boot_after tras el reinicio

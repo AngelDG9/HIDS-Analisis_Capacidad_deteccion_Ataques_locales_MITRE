@@ -1,0 +1,8 @@
+ata=ATA068
+tecnica=T1005
+fuente=ART_adaptado
+guid=d3d9af44-b8ad-4375-8b0a-4bff4b7e419c
+t0=2026-11-20T18:21:57Z
+t1=2026-11-20T18:21:58Z
+ficheros=20
+inventario=C:\lab-attack\ATA068\evidencias\inventario.txt

@@ -1,0 +1,9 @@
+ata=ATA104
+tecnica=T1056.002
+fuente=ART_adaptado
+t0=2026-11-21T00:35:29Z
+t1=2026-11-21T00:35:31Z
+png=C:\lab-attack\ATA104\captura.png
+png_bytes=137371
+texto=TFG-GUI-TEXT
+captura_ok=True

@@ -1,0 +1,9 @@
+ata=ATA093
+tecnica=T1560.002
+fuente=manual
+t0=2026-11-20T22:32:59Z
+t1=2026-11-20T22:33:00Z
+zip=C:\lab-attack\ATA093\archivo.zip
+entradas=20
+zip_sha256=870bb680b90e7696f941f3fc35996b7847ca1f0e9f53b77129644decba679434
+extraido_ok=True

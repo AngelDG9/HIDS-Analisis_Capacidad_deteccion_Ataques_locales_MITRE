@@ -1,0 +1,11 @@
+ata=ATA057
+tecnica=T1567.004
+fuente=ART
+guid=f0057c81-24dc-4a2e-b658-5809c242180b
+t0=2026-11-20T16:39:49Z
+t1=2026-11-20T16:39:50Z
+url=http://192.168.65.1:9090/hook/ATA057
+staged=C:\lab-attack\ATA057\T1567.004_loot.txt
+sha256_body=a14f54349e5ef38eb8eec5e0f3650b5b90dadf6a0a0d4fd95999dd6f5409e2f8
+len_body=1809
+resultado=HTTP=200
