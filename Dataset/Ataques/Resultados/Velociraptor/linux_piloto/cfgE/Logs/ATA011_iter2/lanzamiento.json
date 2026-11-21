@@ -1,0 +1,128 @@
+{
+ "tag": "ATA011_iter2",
+ "ata": "ATA011",
+ "iter": 2,
+ "cfg": "E",
+ "tabla": [
+  "Linux.Events.EBPF"
+ ],
+ "hids": "velociraptor-0.77.3",
+ "snapshot": "lab-listo-vr",
+ "lanzador": "systemd-run --uid=angel --pipe --wait (SSH solo inicia)",
+ "inicio_utc": "2026-11-21T14:29:10Z",
+ "script_sha256": "57fa2e9aa497b224707e5b1e49130419435ebd3e4e8bc6084c8fa5153a4e0e58",
+ "tabla_servidor": [
+  "Generic.Client.Stats",
+  "Linux.Events.EBPF"
+ ],
+ "marca_ini_seg": 12,
+ "reloj_victima": "2026-11-21T14:31:17Z",
+ "reloj_host": "2026-11-21T14:31:17Z",
+ "auditd_antes": "-a always,exit -F arch=b64 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b32 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b64 -S truncate,ftruncate,rename,creat,unlink,unlinkat,renameat,renameat2 -F key=audit-wazuh-w\n-w /etc -p wa -k audit-wazuh-w\n-w /home/angel/lab-legit -p wa -k audit-wazuh-w",
+ "sha256_en_victima": "57fa2e9aa497b224707e5b1e49130419435ebd3e4e8bc6084c8fa5153a4e0e58",
+ "lanzamiento_rc": 0,
+ "t0_fuente": "marca T0= del ataque",
+ "t0": "2026-11-21T14:31:19Z",
+ "t1": "2026-11-21T14:31:50Z",
+ "marca_fin_seg": 13,
+ "auditd_despues": "-a always,exit -F arch=b64 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b32 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b64 -S truncate,ftruncate,rename,creat,unlink,unlinkat,renameat,renameat2 -F key=audit-wazuh-w\n-w /etc -p wa -k audit-wazuh-w\n-w /home/angel/lab-legit -p wa -k audit-wazuh-w",
+ "resumen": {
+  "Linux.Events.ProcessExecutions": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1074-S1": 0,
+    "T1074-S2": 0,
+    "T1074-S3": 0
+   }
+  },
+  "Linux.Events.EBPF": {
+   "filas": 8960,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1074-S1": 32,
+    "T1074-S2": 42,
+    "T1074-S3": 41
+   },
+   "anclas_exec_estricto": {
+    "T1074-S1": 3,
+    "T1074-S2": 3,
+    "T1074-S3": 12
+   }
+  },
+  "Linux.Events.TrackProcesses": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1074-S1": 0,
+    "T1074-S2": 0,
+    "T1074-S3": 0
+   }
+  },
+  "Linux.Events.Journal": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1074-S1": 0,
+    "T1074-S2": 0,
+    "T1074-S3": 0
+   }
+  },
+  "Linux.Events.DNS": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1074-S1": 0,
+    "T1074-S2": 0,
+    "T1074-S3": 0
+   }
+  },
+  "Linux.Events.HTTPConnections": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1074-S1": 0,
+    "T1074-S2": 0,
+    "T1074-S3": 0
+   }
+  },
+  "Linux.Events.SSHLogin": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1074-S1": 0,
+    "T1074-S2": 0,
+    "T1074-S3": 0
+   }
+  },
+  "Linux.Events.SSHBruteforce": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1074-S1": 0,
+    "T1074-S2": 0,
+    "T1074-S3": 0
+   }
+  }
+ },
+ "anclas": [
+  [
+   "T1074-S1",
+   "audit_exe",
+   "mkdir"
+  ],
+  [
+   "T1074-S2",
+   "audit_exe",
+   "cp"
+  ],
+  [
+   "T1074-S3",
+   "audit_cwd",
+   "/home/angel/lab-attack/ATA011/*"
+  ]
+ ],
+ "estado": "OK",
+ "fin_utc": "2026-11-21T14:34:12Z",
+ "segundos": 302
+}
