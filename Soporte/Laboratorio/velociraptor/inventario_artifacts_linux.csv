@@ -1,0 +1,88 @@
+# inventario_artifacts_linux.csv | Velociraptor v0.77.3 (binario linux-amd64) | artifacts Linux.* y Generic.* | extraido con `velociraptor query ... artifact_definitions()` en la VM | clasificacion por texto de la definicion (script inventario_artifacts_velociraptor.py)
+name,tipo,clase,origen_datos,modifica_el_sistema,descripcion_1a_linea
+Generic.Applications.Chrome.SessionStorage,client,forense,ficheros,no,Extracts key-value session storage entries from Chrome; Brave; and
+Generic.Applications.Office.Keywords,client,forense,ficheros,no,Scans Microsoft Office and LibraOffice/OpenDocument files for
+Generic.Client.CleanupTemp,client,respuesta,ficheros,si,Removes old temporary files from the Velociraptor client's temp
+Generic.Client.DiskSpace,client,otro,ficheros,no,Reports disk usage and free disk space on Linux; macOS; and Windows
+Generic.Client.DiskUsage,client,otro,ficheros,no,Computes disk usage per directory recursively; similar to the `du`
+Generic.Client.Info,client,otro,red,no,Collects basic system details including hostname; OS version;
+Generic.Client.LocalLogs,client_event,telemetria,ficheros,si,Writes client logs to an encrypted local container file with
+Generic.Client.LocalLogsRetrieve,client,otro,otro,no,Fetches encrypted local log files from endpoints via the upload
+Generic.Client.Profile,client,otro,procfs,no,Collects runtime profiling data including goroutines; memory; CPU;
+Generic.Client.Rekey,client,respuesta,otro,si,Forces the client to regenerate its client ID and restart itself.
+Generic.Client.Stats,client_event,telemetria,procfs,no,Records CPU and memory statistics for the Velociraptor client
+Generic.Client.Trace,client,otro,otro,no,Captures runtime trace information from the client at a specified
+Generic.Client.VQL,client,otro,otro,no,Runs an arbitrary VQL query on the endpoint.
+Generic.Collectors.File,client,otro,ficheros,no,Searches a filesystem using a set of glob patterns and uploads
+Generic.Detection.HashHunter,client,deteccion,ficheros,no,Searches the filesystem for a list of hashes; with path file size
+Generic.Detection.Logs,client,deteccion,ficheros,no,Searches text-based log files for strings matching a regex pattern
+Generic.Detection.Yara.Glob,client,deteccion,ficheros,no,Runs YARA rules against files discovered via glob search with
+Generic.Detection.Yara.Zip,client,deteccion,ficheros,no,Searches for YARA matches inside nested compressed archives up to a
+Generic.Forensic.Carving.URLs,client,forense,ficheros,no,Extracts URLs from files in common user-related locations using
+Generic.Forensic.HashLookup,server_event,forense,otro,no,Collects file hashes from various sources into a central event
+Generic.Forensic.LocalHashes.Glob,client,forense,ficheros,no,Calculates hashes for files matching a glob pattern and stores them
+Generic.Forensic.LocalHashes.Init,client,forense,ficheros,si,Sets up a client-side SQLite database for storing file paths; MD5
+Generic.Forensic.LocalHashes.Query,client,forense,otro,no,Searches the local SQLite hash database for files matching a
+Generic.Forensic.Timeline,client,forense,ficheros,no,Creates a bodyfile-format timeline of files matching a glob pattern.
+Generic.Network.InterfaceAddresses,client,telemetria,otro,no,Collects interface addresses and metadata such as MAC; MTU; and IP
+Generic.System.EfiSignatures,client,otro,ficheros,no,Collects UEFI Secure Boot signature variables including PK; db; and
+Generic.System.HostsFile,client,otro,red|ficheros,no,Parses the system hosts file to extract hostname-to-IP mappings.
+Generic.System.ProcessSiblings,client,otro,procfs,no,Lists sibling processes from the process tracker to reveal related
+Generic.System.Pstree,client,otro,procfs,no,Shows process lineage by following parent PIDs to establish call
+Generic.Utils.Crypto,client,respuesta,otro,no,A utility artifact that provides HMAC-SHA256 and other custom hash
+Generic.Utils.DeadDiskRemapping,server,respuesta,procfs|red|ficheros,si,Inspects a disk image and produces an appropriate YAML remapping
+Generic.Utils.FetchBinary,client,respuesta,ficheros,si,A utility artifact which fetches a binary (or data file) from a URL
+Generic.Utils.SendEmail,server,respuesta,ficheros,no,A Utility artifact for sending emails.
+Linux.Applications.Chrome.Extensions,client,forense,ficheros,no,Enumerates installed Chrome extensions by locating and parsing
+Linux.Applications.Chrome.Extensions.Upload,client,forense,ficheros,no,Uploads the Chrome extension files from each user's home directory.
+Linux.Applications.Docker.Info,client,forense,ficheros,no,Connects to the Docker socket and retrieves daemon information
+Linux.Applications.Docker.Version,client,forense,ficheros,no,Connects to the Docker socket and retrieves daemon version details
+Linux.Debian.AptSources,client,otro,ficheros,no,Extracts package repository configuration from Debian-based systems
+Linux.Debian.Packages,client,otro,ficheros,no,Queries `dpkg` and `snapd` to list installed deb and snap packages.
+Linux.Detection.AnomalousFiles,client,deteccion,ficheros,no,Detects anomalous files in a Linux filesystem.
+Linux.Detection.Yara.Glob,client,deteccion,ficheros,no,Runs YARA rules against files discovered via glob search with
+Linux.Detection.Yara.Process,client,deteccion,procfs,no,Scans process memory with YARA rules; supporting URL-based or inline
+Linux.Events.DNS,client_event,telemetria,ebpf|red,no,Monitors DNS requests in real time using eBPF; with filtering by
+Linux.Events.EBPF,client_event,telemetria,ebpf|ficheros,no,Forwards selected EBPF events generated on the endpoint.
+Linux.Events.HTTPConnections,client_event,telemetria,ebpf|procfs|red,no,Monitors HTTP traffic on Linux systems using eBPF network tracing.
+Linux.Events.Journal,client_event,telemetria,journal|ficheros,no,Forwards events from the Systemd binary journal logs.
+Linux.Events.ProcessExecutions,client_event,telemetria,auditd|procfs|ficheros,si,Collects process execution logs from the Linux kernel.
+Linux.Events.SSHBruteforce,client_event,deteccion,otro,no,Monitors SSH authentication logs to detect successful logins
+Linux.Events.SSHLogin,client_event,telemetria,otro,no,Watches the `auth.log` file for new successful SSH login events and
+Linux.Events.TrackProcesses,client_event,telemetria,ebpf|procfs,no,Subscribes to eBPF process events to track new processes and their
+Linux.Forensics.ImmutableFiles,client,forense,ficheros,no,Locates immutable files on Linux by checking ext4 filesystem flags.
+Linux.Forensics.Journal,client,forense,journal|ficheros,no,Extracts records from systemd journal files for forensic analysis.
+Linux.Forensics.Journal.Fields,client,forense,journal|red|ficheros,no,Lists the fields and field values recorded in the systemd journal.
+Linux.Mounts,client,telemetria,procfs|ficheros,no,Lists mounted filesystems by reading `/proc/mounts`.
+Linux.Network.Netstat,client,telemetria,procfs|red|ficheros,no,Reads Linux `/proc/net` files to display socket connection states
+Linux.Network.NetstatEnriched,client,telemetria,red,no,Reports network connections and enriches with process information.
+Linux.Network.PacketCapture,client,telemetria,ebpf|red|ficheros,si,Runs tcpdump to capture network packets and upload the PCAP file.
+Linux.OSQuery.Generic,client,otro,ficheros,no,Deploys the osquery binary and runs a user-specified SQL query;
+Linux.Proc.Arp,client,telemetria,procfs|red,no,Parses the ARP table from /proc/net/arp.
+Linux.Proc.Modules,client,telemetria,procfs|ficheros,no,Parses `/proc/modules` to enumerate loaded kernel modules with their
+Linux.RHEL.Packages,client,otro,ficheros,no,Parses packages installed from `dnf` or `yum`.
+Linux.Remediation.Quarantine,client,respuesta,red|ficheros,si,Applies network quarantine to a Linux system using nftables.
+Linux.Search.FileFinder,client,forense,procfs|ficheros,no,Searches for files by path glob; inspects file content via YARA; and
+Linux.Ssh.AuthorizedKeys,client,telemetria,ficheros,no,Finds and parses SSH authorized keys files.
+Linux.Ssh.KnownHosts,client,telemetria,ficheros,no,Finds and parses SSH known hosts files.
+Linux.Ssh.PrivateKeys,client,telemetria,ficheros,no,Searches filesystem for SSH private keys and detects encryption
+Linux.SuSE.Packages,client,otro,ficheros,no,Queries `zypper` to retrieve installed packages with version and
+Linux.Sys.ACPITables,client,telemetria,ficheros,no,Lists ACPI firmware tables with their sizes and cryptographic
+Linux.Sys.BashHistory,client,telemetria,ficheros,no,Provides grep-like searching of Bash and alternate shell history log
+Linux.Sys.BashShell,client,respuesta,otro,si,This artifact allows running arbitrary commands through the system
+Linux.Sys.CPUTime,client,telemetria,procfs,no,Displays information from the `/proc/stat` file about the time the
+Linux.Sys.Crontab,client,telemetria,ficheros,no,Displays parsed information from crontab.
+Linux.Sys.Groups,client,telemetria,otro,no,Lists system group IDs; names and memberships from `/etc/group`.
+Linux.Sys.LastUserLogin,client,telemetria,ficheros,no,Parses system WTMP files. These indicate when users last logged in.
+Linux.Sys.LogGrep,client,telemetria,ficheros,no,Provides zgrep-like search capabilities across log files; including
+Linux.Sys.LogHunter,client,telemetria,journal|ficheros,no,Provides grep-like search capabilities for Linux; MacOS and Windows
+Linux.Sys.Maps,client,telemetria,procfs|ficheros,no,Extracts mapped library and file information from `/proc/<pid>/maps`
+Linux.Sys.Pslist,client,telemetria,procfs,no,Lists processes and their associated binaries.
+Linux.Sys.SUID,client,telemetria,ficheros,no,Searches for applications that have the `setuid` or `setgid` bits
+Linux.Sys.Services,client,telemetria,ficheros,no,Parses services output from `systemctl`.
+Linux.Sys.Users,client,telemetria,otro,no,Gets user-specific information like homedir; group; etc. from
+Linux.Syslog.SSHLogin,client,otro,ficheros,no,Parses the auth logs to identify all SSH login attempts.
+Linux.Triage.ProcessMemory,client,forense,procfs,no,Dumps process memory from a selected process and uploads it to the
+Linux.Users.InteractiveUsers,client,telemetria,otro,no,Gets the interactive users from a Linux host.
+Linux.Users.RootUsers,client,telemetria,otro,no,Detects users added in the `sudo` group.
+Linux.Utils.InstallDeb,client,respuesta,ficheros,si,Installs .deb packages on Debian-based systems with optional debconf
