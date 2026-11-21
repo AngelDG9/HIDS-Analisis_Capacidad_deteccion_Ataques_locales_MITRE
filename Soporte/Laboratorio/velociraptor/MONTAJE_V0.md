@@ -2,7 +2,7 @@
 
 > Estado: **MONTADO Y FUNCIONANDO (2026-11-21).** Servidor en el PC, cliente en la VM inscrito, y recogida de prueba completada.
 > Todo lo de aquí se comprobó en la máquina real (no se fía de la documentación). Sin secretos: las claves, la CA, `api.config.yaml` y el
-> `client.config.yaml` viven en `D:\TFG-VMselociraptor-server\` (fuera del repo).
+> `client.config.yaml` viven en `D:\TFG-VMs\velociraptor-server\` (fuera del repo).
 
 ## 1. Material (V0a)
 | Elemento | Valor |
@@ -40,7 +40,7 @@ Desde la VM, el puerto 8000 del PC no era alcanzable porque el cortafuegos de Wi
 - Cliente `C.dbc4d0ba705d6d27` (`victima-linux`) **inscrito** en el servidor (consulta `clients()`).
 - Usuario de API `tfg_api` (rol administrator,api; clave en `api.config.yaml`, fuera del repo) para consultar con `velociraptor.exe -a api.config.yaml query "…"`.
 - Colección `F.DC0JPT6OEAD5U` de `Generic.Client.Info`, `Linux.Sys.Pslist`, `Linux.Sys.Users`: **FINISHED, 269 filas, 5 fuentes de resultados**; `Pslist` devuelve ~98 procesos (incluye `velociraptor`, `auditd`, `sshd`) y `BasicInformation` el host `victima-linux`.
-- Arranque del servidor (con administrador no hace falta `RunAsInvoker`): `velociraptor.exe --config D:\TFG-VMselociraptor-server\server.config.yaml frontend -v`.
+- Arranque del servidor (con administrador no hace falta `RunAsInvoker`): `velociraptor.exe --config D:\TFG-VMs\velociraptor-server\server.config.yaml frontend -v`.
 - Usuario de la GUI: no creado (no se guardan contraseñas): `velociraptor.exe --config …\server.config.yaml user add admin --role administrator`.
 
 ## 5. Inventario real de artifacts (V0c, sin servidor)
