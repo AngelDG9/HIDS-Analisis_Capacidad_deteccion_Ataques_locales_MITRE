@@ -54,5 +54,14 @@ Hallazgos que condicionan el diseño:
 - Eventos continuos de Linux: `Events.{DNS, EBPF, HTTPConnections, Journal, ProcessExecutions, SSHBruteforce, SSHLogin, TrackProcesses}`.
 - Muy poca detección «de fábrica» (8 artifacts de detección, casi todos Yara/hash que necesitan reglas o parámetros): coincide con lo esperado en el diseño (mucha visibilidad, poca detección).
 
+## 5b. Medición en reposo, reloj y arranque (cierre de los huecos de la verificación)
+- **Reloj:** VM vs PC = **1 s** de diferencia, `System clock synchronized: yes` (systemd-timesyncd activo).
+- **Volumen en reposo 15 min** (VM sin GHOSTS ni ataques; `volumen_en_reposo_15min.csv`; flujo de 900 s, los eventos terminan por tiempo → estado `ERROR` esperado):
+  `Events.EBPF` 546 filas (≈2 184/h, ≈583 KB/h) · `Events.Journal` 292 (≈1 168/h, ≈314 KB/h) · `Events.DNS` 39 (≈156/h) · `SSHLogin`, `TrackProcesses` y `HTTPConnections` **0 eventos**.
+  Instantáneas de una colecta: `Sys.Services` 54, `Crontab` 8+11, `Netstat` 4+1 filas. Con eso, una ventana de 72 h en reposo serían unos 40 MB de JSON de eventos.
+- **De dónde leen** (comprobado): `Events.EBPF` usa eBPF del kernel (hay BTF: `/sys/kernel/btf/vmlinux`), `Events.Journal` el journal; **ninguno lee auditd**. Solo `Events.ProcessExecutions` lee auditd (e instala su regla). El resto de la telemetría de procesos «tipo Wazuh» pasaría por eBPF o por esa regla: **hay que decidirlo antes de medir** (recomendación: usar eBPF y declarar que la fuente de datos NO es la misma que la de Wazuh).
+- auditd tras la medición: sigue con las **5 reglas** (ninguno de los artifacts probados lo modificó).
+- **Arranque reproducible del servidor:** `arrancar_servidor.ps1` (comprueba/arranca sin duplicar; `-Estado`, `-Parar`). Probado sobre el servidor ya en marcha. No arranca solo al encender el PC (decisión: no tocar el arranque de Windows sin pedirlo).
+
 ## 6. Fuera de este montaje
 V0d (piloto de 6 casos), V1 (55×2) y V1-L (ventana de 72 h).

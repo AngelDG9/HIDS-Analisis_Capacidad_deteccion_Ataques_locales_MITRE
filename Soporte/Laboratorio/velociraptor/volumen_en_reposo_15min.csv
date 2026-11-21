@@ -1,0 +1,13 @@
+# volumen_en_reposo_15min.csv | VM victima-linux (lab-listo-vr) EN REPOSO (sin GHOSTS ni ataques) | Velociraptor 0.77.3 | flujo F.DC0K4JT68QAN0, 900 s | eventos: filas y bytes del fichero de resultados del servidor (clients/<id>/artifacts/<Artifact>/<flujo>.json); instantaneas: filas de una colecta | los eventos terminan por tiempo (estado ERROR esperado) | NO incluye Linux.Events.ProcessExecutions (instala una regla auditd propia)
+artifact,tipo,filas_15min,bytes_15min,filas_por_hora,KB_por_hora
+Linux.Events.Journal,evento_continuo,292,80323,1168,313.8
+Linux.Events.SSHLogin,evento_continuo,0,0,0,0.0
+Linux.Events.TrackProcesses,evento_continuo,0,0,0,0.0
+Linux.Events.HTTPConnections,evento_continuo,0,0,0,0.0
+Linux.Events.DNS,evento_continuo,39,12909,156,50.4
+Linux.Events.EBPF,evento_continuo,546,149357,2184,583.4
+Linux.Network.Netstat/TCP4,instantanea(1 colecta),4,,,
+Linux.Network.Netstat/TCP6,instantanea(1 colecta),1,,,
+Linux.Sys.Services,instantanea(1 colecta),54,,,
+Linux.Sys.Crontab/CronTabs,instantanea(1 colecta),8,,,
+Linux.Sys.Crontab/CronScripts,instantanea(1 colecta),11,,,
