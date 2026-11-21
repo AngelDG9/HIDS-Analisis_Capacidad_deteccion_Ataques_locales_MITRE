@@ -1,8 +1,8 @@
 # Velociraptor «virgen» sobre Linux — montaje V0 (2026-11-21)
 
-> Estado: **servidor y cliente montados; falta UNA regla de cortafuegos del PC (necesita administrador) para que el cliente se inscriba.**
-> Todo lo de aquí se comprobó en la máquina real (no se fía de la documentación). Sin secretos: las claves, la CA y el
-> `client.config.yaml` viven en `D:\TFG-VMs\velociraptor-server\` (fuera del repo).
+> Estado: **MONTADO Y FUNCIONANDO (2026-11-21).** Servidor en el PC, cliente en la VM inscrito, y recogida de prueba completada.
+> Todo lo de aquí se comprobó en la máquina real (no se fía de la documentación). Sin secretos: las claves, la CA, `api.config.yaml` y el
+> `client.config.yaml` viven en `D:\TFG-VMselociraptor-server\` (fuera del repo).
 
 ## 1. Material (V0a)
 | Elemento | Valor |
@@ -30,14 +30,18 @@
 - El cliente arranca, genera su identidad (`C.dbc4d0ba705d6d27`), carga 422 artifacts y **intenta conectar a `https://192.168.65.1:8000/`**.
 - Snapshot nuevo **`lab-listo-vr`** (no se tocó `lab-listo`). Probado: revertir a `lab-listo-vr` y arrancar deja el cliente y auditd activos y 0 paquetes de Wazuh.
 
-## 4. LO QUE FALTA (necesita administrador)
-Desde la VM, el puerto 8000 del PC **no es alcanzable** cuando lo escucha `velociraptor.exe` (conexión caduca), mientras que un `python.exe` en cualquier puerto sí lo es: el cortafuegos de Windows tiene reglas por programa y no hay ninguna para `velociraptor.exe`. Sin administrador no se pueden crear reglas, y **no se ha intentado eludirlo** (un reenvío desde `python.exe` se descartó por ser una forma de saltarse el control).
-Orden para el humano (PowerShell **como administrador**), acotada a la red del laboratorio:
-```
-New-NetFirewallRule -DisplayName "TFG-velociraptor-8000" -Direction Inbound -Protocol TCP -LocalPort 8000 -RemoteAddress 192.168.65.0/24 -Action Allow -Program "D:\TFG-VMs\material-velociraptor\velociraptor.exe"
-```
-Después: arrancar el servidor (§2) con la VM encendida; en ≤1 min el cliente aparece en
-`velociraptor.exe --config …\server.config.yaml query "SELECT client_id, os_info.hostname FROM clients()"`.
+## 4. Cortafuegos del PC y puesta en marcha (resuelto)
+Desde la VM, el puerto 8000 del PC no era alcanzable porque el cortafuegos de Windows tiene reglas **por programa**. Hizo falta, con administrador (lo hizo el humano / autorizó):
+1. Regla de entrada `TFG-velociraptor-8000` (TCP 8000, solo desde `192.168.65.0/24`, programa `velociraptor.exe`).
+2. **Quitar dos reglas de BLOQUEO automáticas** de Windows para ese mismo programa («Velociraptor: Digging Deeper!»): un bloqueo gana a un permiso, así que la regla de permiso por sí sola no bastaba.
+(No se usó ningún reenvío para saltarse el cortafuegos: un intento con `python.exe` se descartó.) Tras esto, `curl -k https://192.168.65.1:8000/server.pem` desde la VM → 200.
+
+## 4b. Prueba de humo (comprobada)
+- Cliente `C.dbc4d0ba705d6d27` (`victima-linux`) **inscrito** en el servidor (consulta `clients()`).
+- Usuario de API `tfg_api` (rol administrator,api; clave en `api.config.yaml`, fuera del repo) para consultar con `velociraptor.exe -a api.config.yaml query "…"`.
+- Colección `F.DC0JPT6OEAD5U` de `Generic.Client.Info`, `Linux.Sys.Pslist`, `Linux.Sys.Users`: **FINISHED, 269 filas, 5 fuentes de resultados**; `Pslist` devuelve ~98 procesos (incluye `velociraptor`, `auditd`, `sshd`) y `BasicInformation` el host `victima-linux`.
+- Arranque del servidor (con administrador no hace falta `RunAsInvoker`): `velociraptor.exe --config D:\TFG-VMselociraptor-server\server.config.yaml frontend -v`.
+- Usuario de la GUI: no creado (no se guardan contraseñas): `velociraptor.exe --config …\server.config.yaml user add admin --role administrator`.
 
 ## 5. Inventario real de artifacts (V0c, sin servidor)
 `velociraptor artifacts list` en la VM: **441 artifacts** en total; `Linux.*` = 53, `Generic.*` = 33. Inventario clasificado en
@@ -51,4 +55,4 @@ Hallazgos que condicionan el diseño:
 - Muy poca detección «de fábrica» (8 artifacts de detección, casi todos Yara/hash que necesitan reglas o parámetros): coincide con lo esperado en el diseño (mucha visibilidad, poca detección).
 
 ## 6. Fuera de este montaje
-Prueba de humo de colección (necesita el cliente inscrito), V0d (piloto de 6 casos), V1 (55×2) y V1-L (ventana de 72 h).
+V0d (piloto de 6 casos), V1 (55×2) y V1-L (ventana de 72 h).
