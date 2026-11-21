@@ -1,129 +1,129 @@
 tag,estado_filtro,rc,nota
-ATA001_iter1,OK,0,revisi�n pendiente: 14 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA001_iter1-R
-ATA001_iter2,OK,0,revisi�n pendiente: 14 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA001_iter2-R
-ATA002_iter1,OK,0,revisi�n pendiente: 98 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA002_iter1-R
-ATA002_iter2,OK,0,revisi�n pendiente: 81 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA002_iter2-R
-ATA003_iter1,OK,0,revisi�n pendiente: 90 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA003_iter1-R
-ATA003_iter2,OK,0,revisi�n pendiente: 107 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA003_iter2-
-ATA004_iter1,OK,0,revisi�n pendiente: 7 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA004_iter1-Re
-ATA004_iter2,OK,0,revisi�n pendiente: 7 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA004_iter2-Re
-ATA005_iter1,OK,0,revisi�n pendiente: 37 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA005_iter1-R
-ATA005_iter2,OK,0,revisi�n pendiente: 36 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA005_iter2-R
-ATA006_iter1,OK,0,revisi�n pendiente: 9 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA006_iter1-Re
-ATA006_iter2,OK,0,revisi�n pendiente: 9 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA006_iter2-Re
-ATA007_iter1,OK,0,revisi�n pendiente: 3 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA007_iter1-Re
-ATA007_iter2,OK,0,revisi�n pendiente: 3 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA007_iter2-Re
-ATA008_iter1,OK,0,revisi�n pendiente: 15 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA008_iter1-R
-ATA008_iter2,OK,0,revisi�n pendiente: 9 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA008_iter2-Re
-ATA009_iter1,OK,0,revisi�n pendiente: 9 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA009_iter1-Re
-ATA009_iter2,OK,0,revisi�n pendiente: 14 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA009_iter2-R
-ATA010_iter1,OK,0,revisi�n pendiente: 14 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA010_iter1-R
-ATA010_iter2,OK,0,revisi�n pendiente: 13 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA010_iter2-R
-ATA011_iter1,OK,0,revisi�n pendiente: 15 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA011_iter1-R
-ATA011_iter2,OK,0,revisi�n pendiente: 14 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA011_iter2-R
-ATA012_iter1,OK,0,revisi�n pendiente: 28 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA012_iter1-R
-ATA012_iter2,OK,0,revisi�n pendiente: 34 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA012_iter2-R
-ATA013_iter1,OK,0,revisi�n pendiente: 13 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA013_iter1-R
-ATA013_iter2,OK,0,revisi�n pendiente: 14 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA013_iter2-R
-ATA014_iter1,OK,0,revisi�n pendiente: 7 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA014_iter1-Re
-ATA014_iter2,OK,0,revisi�n pendiente: 11 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA014_iter2-R
-ATA014_rev1,OK,0,revisi�n pendiente: 25 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA014_rev1-Re
-ATA014_rev2,OK,0,revisi�n pendiente: 26 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA014_rev2-Re
-ATA015_iter1,OK,0,revisi�n pendiente: 33 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA015_iter1-R
-ATA015_iter2,OK,0,revisi�n pendiente: 30 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA015_iter2-R
-ATA016_iter1,OK,0,revisi�n pendiente: 6 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA016_iter1-Re
-ATA016_iter2,OK,0,revisi�n pendiente: 12 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA016_iter2-R
-ATA016_rev1,OK,0,revisi�n pendiente: 31 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA016_rev1-Re
-ATA016_rev2,OK,0,revisi�n pendiente: 25 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA016_rev2-Re
-ATA017_iter1,OK,0,revisi�n pendiente: 10 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA017_iter1-R
-ATA017_iter2,OK,0,revisi�n pendiente: 11 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA017_iter2-R
-ATA018_iter1,OK,0,revisi�n pendiente: 15 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA018_iter1-R
-ATA018_iter2,OK,0,revisi�n pendiente: 14 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA018_iter2-R
-ATA019_iter1,OK,0,revisi�n pendiente: 24 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA019_iter1-R
-ATA019_iter2,OK,0,revisi�n pendiente: 35 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA019_iter2-R
-ATA020_iter1,OK,0,revisi�n pendiente: 17 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA020_iter1-R
-ATA020_iter2,OK,0,revisi�n pendiente: 13 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA020_iter2-R
-ATA021_iter1,OK,0,revisi�n pendiente: 134 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA021_iter1-
-ATA021_iter2,OK,0,revisi�n pendiente: 151 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA021_iter2-
-ATA022_iter1,OK,0,revisi�n pendiente: 51 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA022_iter1-R
-ATA022_iter2,OK,0,revisi�n pendiente: 56 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA022_iter2-R
-ATA023_iter1,OK,0,revisi�n pendiente: 13 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA023_iter1-R
-ATA023_iter2,OK,0,revisi�n pendiente: 13 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA023_iter2-R
-ATA024_iter1,OK,0,revisi�n pendiente: 163 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA024_iter1-
-ATA024_iter2,OK,0,revisi�n pendiente: 163 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA024_iter2-
-ATA024_rev1,OK,0,revisi�n pendiente: 60 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA024_rev1-Re
-ATA024_rev2,OK,0,revisi�n pendiente: 60 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA024_rev2-Re
-ATA025_iter1,OK,0,revisi�n pendiente: 15 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA025_iter1-R
-ATA025_iter2,OK,0,revisi�n pendiente: 16 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA025_iter2-R
-ATA026_iter1,OK,0,revisi�n pendiente: 14 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA026_iter1-R
-ATA026_iter2,OK,0,revisi�n pendiente: 16 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA026_iter2-R
-ATA027_iter1,OK,0,revisi�n pendiente: 37 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA027_iter1-R
-ATA027_iter2,OK,0,revisi�n pendiente: 37 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA027_iter2-R
-ATA028_iter1,OK,0,revisi�n pendiente: 14 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA028_iter1-R
-ATA028_iter2,OK,0,revisi�n pendiente: 11 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA028_iter2-R
-ATA029_iter1,OK,0,revisi�n pendiente: 4 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA029_iter1-Re
-ATA029_iter2,OK,0,revisi�n pendiente: 4 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA029_iter2-Re
-ATA029_rev1,OK,0,revisi�n pendiente: 68 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA029_rev1-Re
-ATA029_rev2,OK,0,revisi�n pendiente: 103 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA029_rev2-R
-ATA030_iter1,OK,0,revisi�n pendiente: 15 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA030_iter1-R
-ATA030_iter2,OK,0,revisi�n pendiente: 16 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA030_iter2-R
-ATA030_rev1,OK,0,revisi�n pendiente: 18 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA030_rev1-Re
-ATA030_rev2,OK,0,revisi�n pendiente: 12 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA030_rev2-Re
-ATA031_iter1,OK,0,revisi�n pendiente: 27 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA031_iter1-R
-ATA031_iter2,OK,0,revisi�n pendiente: 27 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA031_iter2-R
-ATA032_iter1,OK,0,revisi�n pendiente: 10 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA032_iter1-R
-ATA032_iter2,OK,0,revisi�n pendiente: 10 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA032_iter2-R
-ATA033_iter1,OK,0,revisi�n pendiente: 3 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA033_iter1-Re
-ATA033_iter2,OK,0,revisi�n pendiente: 3 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA033_iter2-Re
+ATA001_iter1,OK,0,filas=1093 deteccion=2 auto_ruido=659 ruido_conocido=425 dudosa=0 artefacto_ataque=7 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\A
+ATA001_iter2,OK,0,filas=867 deteccion=2 auto_ruido=603 ruido_conocido=255 dudosa=0 artefacto_ataque=7 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\At
+ATA002_iter1,OK,0,revisi�n pendiente: 9 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA002_iter2,OK,0,revisi�n pendiente: 7 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA003_iter1,OK,0,revisi�n pendiente: 15 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA
+ATA003_iter2,OK,0,revisi�n pendiente: 16 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA
+ATA004_iter1,OK,0,revisi�n pendiente: 7 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA004_iter2,OK,0,revisi�n pendiente: 7 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA005_iter1,OK,0,revisi�n pendiente: 23 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA
+ATA005_iter2,OK,0,revisi�n pendiente: 23 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA
+ATA006_iter1,OK,0,revisi�n pendiente: 9 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA006_iter2,OK,0,revisi�n pendiente: 9 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA007_iter1,OK,0,revisi�n pendiente: 3 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA007_iter2,OK,0,revisi�n pendiente: 3 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA008_iter1,OK,0,filas=1056 deteccion=2 auto_ruido=603 ruido_conocido=448 dudosa=0 artefacto_ataque=3 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\A
+ATA008_iter2,OK,0,filas=831 deteccion=2 auto_ruido=622 ruido_conocido=204 dudosa=0 artefacto_ataque=3 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\At
+ATA009_iter1,OK,0,filas=817 deteccion=1 auto_ruido=604 ruido_conocido=207 dudosa=0 artefacto_ataque=5 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\At
+ATA009_iter2,OK,0,filas=1111 deteccion=1 auto_ruido=684 ruido_conocido=421 dudosa=0 artefacto_ataque=5 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\A
+ATA010_iter1,OK,0,filas=975 deteccion=1 auto_ruido=617 ruido_conocido=352 dudosa=0 artefacto_ataque=5 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\At
+ATA010_iter2,OK,0,filas=1105 deteccion=1 auto_ruido=642 ruido_conocido=457 dudosa=0 artefacto_ataque=5 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\A
+ATA011_iter1,OK,0,revisi�n pendiente: 1 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA011_iter2,OK,0,revisi�n pendiente: 1 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA012_iter1,OK,0,revisi�n pendiente: 15 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA
+ATA012_iter2,OK,0,revisi�n pendiente: 18 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA
+ATA013_iter1,OK,0,filas=1046 deteccion=0 auto_ruido=620 ruido_conocido=421 dudosa=0 artefacto_ataque=5 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\A
+ATA013_iter2,OK,0,filas=1047 deteccion=0 auto_ruido=617 ruido_conocido=425 dudosa=0 artefacto_ataque=5 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\A
+ATA014_iter1,OK,0,revisi�n pendiente: 1 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA014_iter2,OK,0,revisi�n pendiente: 1 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA014_rev1,OK,0,filas=990 deteccion=4 auto_ruido=608 ruido_conocido=365 dudosa=0 artefacto_ataque=13 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\A
+ATA014_rev2,OK,0,filas=1103 deteccion=4 auto_ruido=653 ruido_conocido=434 dudosa=0 artefacto_ataque=12 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\
+ATA015_iter1,OK,0,revisi�n pendiente: 2 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA015_iter2,OK,0,revisi�n pendiente: 2 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA016_iter1,OK,0,filas=897 deteccion=3 auto_ruido=601 ruido_conocido=280 dudosa=0 artefacto_ataque=13 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\A
+ATA016_iter2,OK,0,filas=1119 deteccion=3 auto_ruido=603 ruido_conocido=500 dudosa=0 artefacto_ataque=13 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\
+ATA016_rev1,OK,0,filas=1168 deteccion=3 auto_ruido=605 ruido_conocido=546 dudosa=0 artefacto_ataque=14 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\
+ATA016_rev2,OK,0,filas=933 deteccion=3 auto_ruido=605 ruido_conocido=311 dudosa=0 artefacto_ataque=14 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\A
+ATA017_iter1,OK,0,revisi�n pendiente: 10 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA
+ATA017_iter2,OK,0,revisi�n pendiente: 11 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA
+ATA018_iter1,OK,0,filas=1098 deteccion=2 auto_ruido=602 ruido_conocido=479 dudosa=0 artefacto_ataque=15 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\
+ATA018_iter2,OK,0,filas=1049 deteccion=2 auto_ruido=607 ruido_conocido=425 dudosa=0 artefacto_ataque=15 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\
+ATA019_iter1,OK,0,filas=830 deteccion=3 auto_ruido=609 ruido_conocido=206 dudosa=0 artefacto_ataque=12 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\A
+ATA019_iter2,OK,0,filas=979 deteccion=3 auto_ruido=608 ruido_conocido=356 dudosa=0 artefacto_ataque=12 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\A
+ATA020_iter1,OK,0,filas=1094 deteccion=4 auto_ruido=611 ruido_conocido=473 dudosa=0 artefacto_ataque=6 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\A
+ATA020_iter2,OK,0,filas=992 deteccion=4 auto_ruido=611 ruido_conocido=371 dudosa=0 artefacto_ataque=6 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\At
+ATA021_iter1,OK,0,revisi�n pendiente: 3 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA021_iter2,OK,0,revisi�n pendiente: 4 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA022_iter1,OK,0,revisi�n pendiente: 41 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA
+ATA022_iter2,OK,0,revisi�n pendiente: 43 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA
+ATA023_iter1,OK,0,revisi�n pendiente: 3 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA023_iter2,OK,0,revisi�n pendiente: 3 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA024_iter1,OK,0,revisi�n pendiente: 163 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\AT
+ATA024_iter2,OK,0,revisi�n pendiente: 163 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\AT
+ATA024_rev1,OK,0,revisi�n pendiente: 60 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA
+ATA024_rev2,OK,0,revisi�n pendiente: 60 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA
+ATA025_iter1,OK,0,revisi�n pendiente: 1 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA025_iter2,OK,0,revisi�n pendiente: 3 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA026_iter1,OK,0,filas=1048 deteccion=2 auto_ruido=604 ruido_conocido=428 dudosa=0 artefacto_ataque=14 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\
+ATA026_iter2,OK,0,revisi�n pendiente: 1 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA027_iter1,OK,0,revisi�n pendiente: 1 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA027_iter2,OK,0,revisi�n pendiente: 1 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA028_iter1,OK,0,filas=935 deteccion=1 auto_ruido=619 ruido_conocido=300 dudosa=0 artefacto_ataque=15 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\A
+ATA028_iter2,OK,0,filas=998 deteccion=1 auto_ruido=638 ruido_conocido=345 dudosa=0 artefacto_ataque=14 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\A
+ATA029_iter1,OK,0,revisi�n pendiente: 4 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA029_iter2,OK,0,revisi�n pendiente: 4 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA029_rev1,OK,0,revisi�n pendiente: 56 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA
+ATA029_rev2,OK,0,revisi�n pendiente: 81 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA
+ATA030_iter1,OK,0,revisi�n pendiente: 1 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA030_iter2,OK,0,revisi�n pendiente: 1 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA030_rev1,OK,0,revisi�n pendiente: 1 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA030_rev2,OK,0,revisi�n pendiente: 1 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA031_iter1,OK,0,revisi�n pendiente: 27 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA
+ATA031_iter2,OK,0,revisi�n pendiente: 27 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA
+ATA032_iter1,OK,0,revisi�n pendiente: 10 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA
+ATA032_iter2,OK,0,revisi�n pendiente: 10 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA
+ATA033_iter1,OK,0,revisi�n pendiente: 3 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA033_iter2,OK,0,revisi�n pendiente: 3 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
 ATA034_iter1,OK,0,filas=1053 deteccion=0 auto_ruido=601 ruido_conocido=426 dudosa=0 artefacto_ataque=26 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\
 ATA034_iter2,OK,0,filas=1077 deteccion=0 auto_ruido=615 ruido_conocido=435 dudosa=0 artefacto_ataque=27 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\
 ATA035_iter1,OK,0,filas=1100 deteccion=1 auto_ruido=608 ruido_conocido=477 dudosa=0 artefacto_ataque=14 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\
 ATA035_iter2,OK,0,filas=1042 deteccion=1 auto_ruido=602 ruido_conocido=425 dudosa=0 artefacto_ataque=14 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\
-ATA035_rev1,OK,0,revisi�n pendiente: 19 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA035_rev1-Re
-ATA035_rev2,OK,0,revisi�n pendiente: 23 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA035_rev2-Re
+ATA035_rev1,OK,0,filas=1235 deteccion=1 auto_ruido=635 ruido_conocido=584 dudosa=0 artefacto_ataque=15 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\
+ATA035_rev2,OK,0,filas=1029 deteccion=1 auto_ruido=608 ruido_conocido=405 dudosa=0 artefacto_ataque=15 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\
 ATA036_iter1,OK,0,filas=1166 deteccion=1 auto_ruido=606 ruido_conocido=539 dudosa=0 artefacto_ataque=20 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\
 ATA036_iter2,OK,0,filas=1031 deteccion=1 auto_ruido=607 ruido_conocido=404 dudosa=0 artefacto_ataque=19 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\
-ATA036_rev1,OK,0,revisi�n pendiente: 14 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA036_rev1-Re
-ATA036_rev2,OK,0,revisi�n pendiente: 17 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA036_rev2-Re
+ATA036_rev1,OK,0,filas=1066 deteccion=1 auto_ruido=616 ruido_conocido=424 dudosa=0 artefacto_ataque=25 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\
+ATA036_rev2,OK,0,filas=795 deteccion=1 auto_ruido=606 ruido_conocido=167 dudosa=0 artefacto_ataque=21 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\A
 ATA037_iter1,OK,0,filas=1254 deteccion=14 auto_ruido=606 ruido_conocido=599 dudosa=0 artefacto_ataque=35 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset
-ATA037_iter2,OK,0,revisi�n pendiente: 1 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA037_iter2-Re
-ATA037_rev1,OK,0,revisi�n pendiente: 56 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA037_rev1-Re
-ATA037_rev2,OK,0,revisi�n pendiente: 59 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA037_rev2-Re
-ATA038_iter1,OK,0,revisi�n pendiente: 9 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA038_iter1-Re
-ATA038_iter2,OK,0,revisi�n pendiente: 12 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA038_iter2-R
-ATA038_rev1,OK,0,revisi�n pendiente: 8 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA038_rev1-Rev
-ATA038_rev2,OK,0,revisi�n pendiente: 8 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA038_rev2-Rev
-ATA039_iter1,OK,0,revisi�n pendiente: 12 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA039_iter1-R
-ATA039_iter2,OK,0,revisi�n pendiente: 16 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA039_iter2-R
-ATA040_iter1,OK,0,revisi�n pendiente: 9 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA040_iter1-Re
-ATA040_iter2,OK,0,revisi�n pendiente: 14 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA040_iter2-R
-ATA041_iter1,OK,0,revisi�n pendiente: 14 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA041_iter1-R
-ATA041_iter2,OK,0,revisi�n pendiente: 14 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA041_iter2-R
-ATA042_iter1,OK,0,revisi�n pendiente: 14 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA042_iter1-R
-ATA042_iter2,OK,0,revisi�n pendiente: 14 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA042_iter2-R
-ATA043_iter1,OK,0,revisi�n pendiente: 12 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA043_iter1-R
-ATA043_iter2,OK,0,revisi�n pendiente: 16 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA043_iter2-R
-ATA044_iter1,OK,0,revisi�n pendiente: 63 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA044_iter1-R
-ATA044_iter2,OK,0,revisi�n pendiente: 54 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA044_iter2-R
-ATA045_iter1,OK,0,revisi�n pendiente: 17 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA045_iter1-R
-ATA045_iter2,OK,0,revisi�n pendiente: 16 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA045_iter2-R
-ATA046_iter1,OK,0,revisi�n pendiente: 8 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA046_iter1-Re
-ATA046_iter2,OK,0,revisi�n pendiente: 7 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA046_iter2-Re
-ATA047_iter1,OK,0,revisi�n pendiente: 9 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA047_iter1-Re
-ATA047_iter2,OK,0,revisi�n pendiente: 13 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA047_iter2-R
-ATA048_iter1,OK,0,revisi�n pendiente: 30 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA048_iter1-R
-ATA048_iter2,OK,0,revisi�n pendiente: 26 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA048_iter2-R
-ATA049_iter1,OK,0,revisi�n pendiente: 12 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA049_iter1-R
-ATA049_iter2,OK,0,revisi�n pendiente: 14 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA049_iter2-R
-ATA050_iter1,OK,0,revisi�n pendiente: 17 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA050_iter1-R
-ATA050_iter2,OK,0,revisi�n pendiente: 14 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA050_iter2-R
-ATA051_iter1,OK,0,revisi�n pendiente: 88 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA051_iter1-R
-ATA051_iter2,OK,0,revisi�n pendiente: 131 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA051_iter2-
-ATA052_iter1,OK,0,revisi�n pendiente: 90 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA052_iter1-R
-ATA052_iter2,OK,0,revisi�n pendiente: 143 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA052_iter2-
-ATA053_iter1,OK,0,revisi�n pendiente: 90 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA053_iter1-R
-ATA053_iter2,OK,0,revisi�n pendiente: 143 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA053_iter2-
-ATA054_iter1,OK,0,revisi�n pendiente: 23 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA054_iter1-R
-ATA054_iter2,OK,0,revisi�n pendiente: 27 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA054_iter2-R
-ATA055_iter1,OK,0,revisi�n pendiente: 16 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA055_iter1-R
-ATA055_iter2,OK,0,revisi�n pendiente: 18 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado\ATA055_iter2-R
+ATA037_iter2,OK,0,revisi�n pendiente: 1 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA037_rev1,OK,0,filas=1119 deteccion=17 auto_ruido=621 ruido_conocido=433 dudosa=0 artefacto_ataque=48 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset
+ATA037_rev2,OK,0,filas=1157 deteccion=17 auto_ruido=632 ruido_conocido=460 dudosa=0 artefacto_ataque=48 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset
+ATA038_iter1,OK,0,filas=2430 deteccion=12 auto_ruido=1625 ruido_conocido=783 dudosa=0 artefacto_ataque=10 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Datase
+ATA038_iter2,OK,0,revisi�n pendiente: 1 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA038_rev1,OK,0,filas=2642 deteccion=12 auto_ruido=1642 ruido_conocido=975 dudosa=0 artefacto_ataque=13 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Datase
+ATA038_rev2,OK,0,filas=2453 deteccion=12 auto_ruido=1649 ruido_conocido=779 dudosa=0 artefacto_ataque=13 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Datase
+ATA039_iter1,OK,0,revisi�n pendiente: 2 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA039_iter2,OK,0,revisi�n pendiente: 2 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA040_iter1,OK,0,filas=900 deteccion=2 auto_ruido=609 ruido_conocido=275 dudosa=0 artefacto_ataque=14 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\A
+ATA040_iter2,OK,0,filas=1046 deteccion=2 auto_ruido=604 ruido_conocido=426 dudosa=0 artefacto_ataque=14 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\
+ATA041_iter1,OK,0,filas=921 deteccion=5 auto_ruido=601 ruido_conocido=302 dudosa=0 artefacto_ataque=13 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\A
+ATA041_iter2,OK,0,filas=1033 deteccion=5 auto_ruido=600 ruido_conocido=417 dudosa=0 artefacto_ataque=11 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\
+ATA042_iter1,OK,0,filas=1044 deteccion=1 auto_ruido=609 ruido_conocido=425 dudosa=0 artefacto_ataque=9 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\A
+ATA042_iter2,OK,0,filas=1039 deteccion=1 auto_ruido=604 ruido_conocido=425 dudosa=0 artefacto_ataque=9 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\A
+ATA043_iter1,OK,0,filas=987 deteccion=1 auto_ruido=620 ruido_conocido=357 dudosa=0 artefacto_ataque=9 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\At
+ATA043_iter2,OK,0,filas=1057 deteccion=1 auto_ruido=653 ruido_conocido=394 dudosa=0 artefacto_ataque=9 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\A
+ATA044_iter1,OK,0,revisi�n pendiente: 19 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA
+ATA044_iter2,OK,0,revisi�n pendiente: 15 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA
+ATA045_iter1,OK,0,revisi�n pendiente: 3 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA045_iter2,OK,0,revisi�n pendiente: 3 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA046_iter1,OK,0,revisi�n pendiente: 1 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA046_iter2,OK,0,filas=860 deteccion=71 auto_ruido=611 ruido_conocido=152 dudosa=0 artefacto_ataque=26 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\
+ATA047_iter1,OK,0,revisi�n pendiente: 2 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA047_iter2,OK,0,filas=2542 deteccion=1602 auto_ruido=621 ruido_conocido=298 dudosa=0 artefacto_ataque=21 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Datas
+ATA048_iter1,OK,0,revisi�n pendiente: 15 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA
+ATA048_iter2,OK,0,revisi�n pendiente: 13 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA
+ATA049_iter1,OK,0,revisi�n pendiente: 1 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA049_iter2,OK,0,revisi�n pendiente: 1 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA050_iter1,OK,0,filas=1098 deteccion=1 auto_ruido=622 ruido_conocido=467 dudosa=0 artefacto_ataque=8 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\A
+ATA050_iter2,OK,0,filas=1052 deteccion=1 auto_ruido=619 ruido_conocido=424 dudosa=0 artefacto_ataque=8 -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\A
+ATA051_iter1,OK,0,revisi�n pendiente: 82 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA
+ATA051_iter2,OK,0,revisi�n pendiente: 124 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\AT
+ATA052_iter1,OK,0,revisi�n pendiente: 83 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA
+ATA052_iter2,OK,0,revisi�n pendiente: 136 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\AT
+ATA053_iter1,OK,0,revisi�n pendiente: 83 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA
+ATA053_iter2,OK,0,revisi�n pendiente: 136 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\AT
+ATA054_iter1,OK,0,revisi�n pendiente: 5 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA054_iter2,OK,0,revisi�n pendiente: 4 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA055_iter1,OK,0,revisi�n pendiente: 2 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0
+ATA055_iter2,OK,0,revisi�n pendiente: 2 filas -> D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\Auditado_precedente\ATA0

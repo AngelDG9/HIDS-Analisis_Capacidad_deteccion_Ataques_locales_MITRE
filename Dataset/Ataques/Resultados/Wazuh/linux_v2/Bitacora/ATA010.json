@@ -1,0 +1,119 @@
+{
+ "ata_id": "ATA010",
+ "tecnica": "T1041",
+ "tactica": "Exfiltration",
+ "sistema": "linux",
+ "bloque": "fase-03-escalado",
+ "tanda": "B",
+ "estado": "cerrado",
+ "artefacto": "Dataset/Ataques/Comandos/T1041-Exfiltration_Over_C2_Channel/",
+ "atomic": {
+  "fuente": "custom",
+  "nota": "ataque manual (ART T1041 no trae pruebas Linux -> solo_windows); canal C2 = receptor local del HOST (sink_http.py) via curl POST /c2/beacon. Decision D4-A",
+  "fuente_norm": "propio",
+  "motivo_codigo": "art_no_prueba_plataforma",
+  "motivo_detalle": "solo la otra"
+ },
+ "esperado_sha256": "7dc1fe5666261b621e42dd6b6cfc35df7dda87a4a0f079eee3412b0798c6839a",
+ "ataque_sha256": "b0f29a25441e333045a5bb127e0a635a404ca4d4d3e1cb2d4d45ab8e7fd6f3c4",
+ "validacion_humana_esperado": "APROBADO 2026-09-29",
+ "c0": {
+  "logtest": "Soporte/Ataques/c0/ATA010_logtest.txt",
+  "logtest_sha256": "47242630787b62307108eb12ce8f17b014baeb5a457ed1ff448ca8ea1957937a",
+  "preflight": "Soporte/Ataques/c0/ATA010_preflight.md",
+  "preflight_sha256": "2f5a9e7bcb55cc2ab5120d4a4ee4fff573d1973344ed6bf307c6ee242be1d33e",
+  "resultado": "PASA (1 evento curl -> 80792 level 3; sin silenciador de fabrica; mismo curl que ATA009)"
+ },
+ "iteraciones": [
+  {
+   "iter": 1,
+   "variante": "base",
+   "t0": "2026-11-20T02:33:21Z",
+   "t1": "2026-11-20T02:33:53Z",
+   "duracion_s": 32,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA010_iter1-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA010_iter1-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  },
+  {
+   "iter": 2,
+   "variante": "base",
+   "t0": "2026-11-20T02:37:18Z",
+   "t1": "2026-11-20T02:37:50Z",
+   "duracion_s": 32,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA010_iter2-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA010_iter2-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  }
+ ],
+ "revision_global": {
+  "fecha": "2026-09-29",
+  "filas": 0,
+  "veredicto": "sin dudosas",
+  "motivo": "dudosa=0 en ambas iteraciones -> no se genera -Revision.csv",
+  "revisor": "executor tanda B"
+ },
+ "doble_iteracion": "iguales",
+ "doble_iteracion_detalle": {
+  "criterio": "v2",
+  "mismo_conjunto_rule_id_deteccion": true,
+  "rule_ids_deteccion": [
+   "80792"
+  ],
+  "n1": 1,
+  "n2": 1,
+  "margen": 2,
+  "criterio_recuento_ok": true,
+  "sin_dudosas_sin_resolver": true,
+  "auto_ruido_delta": 11,
+  "ruido_conocido_delta": 0,
+  "nota": "1 alerta 80792/ventana = execve de curl anclado al cwd del ataque; O2 1/1 (T1041-S1). Canal C2 confirmado por sink.log (sha256 identico)"
+ },
+ "extraccion": {
+  "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)",
+  "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-28.json (NO alerts.json)",
+  "aislamiento": "filtro a agent_name == victima-linux"
+ },
+ "prueba_de_efecto": "sink.log del HOST: POST /c2/beacon from=192.168.65.129 len=86 sha256=8d21e366...; identico al sha256 local del beacon. HTTP=200. Canal C2 local, sin NAT",
+ "receptor": {
+  "script": "Soporte/Ataques/receiver/sink_http.py",
+  "bind": "192.168.65.1:9090",
+  "endpoint": "/c2/beacon",
+  "firewall": "NO se creo regla (el puerto ya era alcanzable); TFG-sink-9090 verificado ausente (CA10)",
+  "parado_tras_t1": true
+ },
+ "eventos": [
+  {
+   "ts": "2026-09-28T23:21:49Z",
+   "tipo": "t0",
+   "detalle": "iter1 t0 (tras revert + 95 s asentamiento; receptor-C2 levantado antes)"
+  },
+  {
+   "ts": "2026-09-28T23:22:30Z",
+   "tipo": "t1",
+   "detalle": "iter1 t1 (tras scan FIM forzado)"
+  },
+  {
+   "ts": "2026-09-28T23:25:32Z",
+   "tipo": "t0",
+   "detalle": "iter2 t0 (receptor relanzado para iter2)"
+  },
+  {
+   "ts": "2026-09-28T23:26:13Z",
+   "tipo": "t1",
+   "detalle": "iter2 t1"
+  },
+  {
+   "ts": "2026-09-28T23:27:00Z",
+   "tipo": "cierre",
+   "detalle": "criterio v2: deteccion identica (1/1, {80792}) -> iguales. Cierre tanda B"
+  }
+ ],
+ "bitacora_origen": "generada por generar_bitacora_v2.py a partir de Bitacora/ATA010.json (metadatos) y del indice v2 (iteraciones)"
+}

@@ -29,9 +29,12 @@ def esperado(ata, rev):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default=os.path.join(REPO, "Dataset", "Ataques", "Resultados", "Wazuh", "linux_v2"))
+    ap.add_argument("--catalogo", default="", help="catalogo de ruido (por defecto el de fabrica del filtro)")
+    ap.add_argument("--revision-dir", default="", help="carpeta con <tag>-Revision.csv ya rellenados (veredicto) para plegar")
+    ap.add_argument("--aud-dir", default="Auditado", help="subcarpeta de salida dentro de --out")
     args = ap.parse_args()
     idx = os.path.join(args.out, "windows_index.csv")
-    aud = os.path.join(args.out, "Auditado")
+    aud = os.path.join(args.out, args.aud_dir)
     os.makedirs(aud, exist_ok=True)
     filas = [["tag", "estado_filtro", "rc", "nota"]]
     ultimo = {}
@@ -49,6 +52,10 @@ def main():
         cmd = [sys.executable, "-I", FILTRO, "--alerta", det, "--ata", ata, "--iter", str(it), "--esperado", esp,
                "--out", os.path.join(aud, "%s-Audited.csv" % tag),
                "--rev-out", os.path.join(aud, "%s-Revision.csv" % tag)]
+        if args.catalogo:
+            cmd += ["--catalogo", args.catalogo]
+        if args.revision_dir and os.path.isfile(os.path.join(args.revision_dir, "%s-Revision.csv" % tag)):
+            cmd += ["--revision", os.path.join(args.revision_dir, "%s-Revision.csv" % tag)]
         p = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
         filas.append([tag, "OK" if p.returncode == 0 else "FALLO", p.returncode,
                       (p.stdout.strip().splitlines() or [""])[-1][:160] if p.returncode == 0 else p.stderr.strip()[-160:]])

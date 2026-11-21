@@ -40,9 +40,7 @@ AGENTE, AGENTE_NOMBRE = "002", "victima-windows"
 CMD_DIR = os.path.join(L.REPO, "Dataset", "Ataques", "Comandos", "windows")
 SERV = os.path.join(L.REPO, "_artefactos", "scripts", "arrancar_servicios_host.py")
 RAIZ_W = r"C:\lab-attack"
-PENDIENTE = {
-    "ATA067": "reinicio de la victima a mitad de ventana (manejo propio)",
-}
+PENDIENTE = {}   # ATA067 (reinicio) ya tiene manejo propio: espera al nuevo arranque y a la reconexion del agente
 
 
 def cargar_especificaciones():
@@ -88,6 +86,24 @@ def esperar_agente(seg=480):
             return True
         time.sleep(8)
     return False
+
+
+def boot_time_w():
+    rc, o, _ = L.ssh(IP_W, 'powershell -NoProfile -Command "(Get-CimInstance Win32_OperatingSystem).LastBootUpTime.ToUniversalTime().ToString(\'yyyy-MM-ddTHH:mm:ssZ\')"', timeout=40)
+    return o.strip() if rc == 0 else ""
+
+
+def esperar_reinicio_w(antes, seg=900):
+    """ATA067: espera a que la VM vuelva con otro LastBootUpTime y el agente 002 Active."""
+    t = time.time()
+    while time.time() - t < seg:
+        b = boot_time_w()
+        if b and b != antes:
+            if esperar_agente(480):
+                return b
+            raise RuntimeError("la victima reinicio pero el agente 002 no vuelve a Active")
+        time.sleep(6)
+    raise RuntimeError("la victima no reinicia en %d s" % seg)
 
 
 def tarea_estado(tn):
@@ -137,6 +153,7 @@ def ventana(spec, it, timeout_ataque):
                                        tzinfo=dt.timezone.utc) - ahora).total_seconds()
             L.log("espero %.0f s para no cruzar la medianoche" % esp)
             time.sleep(esp)
+        L.asegurar_logall()
         vm_reset()
         if not L.esperar_ssh(IP_W, 360):
             raise RuntimeError("la victima no responde por SSH")
@@ -169,23 +186,31 @@ def ventana(spec, it, timeout_ataque):
         if rc != 0:
             raise RuntimeError("schtasks /create rc=%s %s %s" % (rc, o.strip(), e.strip()))
         # VENTANA
+        if ata == "ATA067":
+            meta["boot_antes"] = boot_time_w()
         t_lanz = L.mgr_now()
         rc, o, e = L.ssh(IP_W, "schtasks /run /tn %s" % tn, timeout=60)
         meta["tarea_run_rc"] = rc
         if rc != 0:
             raise RuntimeError("schtasks /run rc=%s %s %s" % (rc, o.strip(), e.strip()))
-        time.sleep(15)
-        fin = time.time() + timeout_ataque
-        est = ""
-        while time.time() < fin:
-            est = tarea_estado(tn)
-            if est and est.lower() not in ("running", "en ejecuci\u00f3n", "en ejecucion", "?"):
-                break
-            time.sleep(10)
-        meta["tarea_estado_final"] = est
-        # FIM forzado + 30 s, t1
-        L.msudo("/var/ossec/bin/agent_control -r -u %s" % AGENTE, timeout=90)
-        time.sleep(30)
+        if ata == "ATA067":
+            # t1 se sella TRAS la reconexion del agente (la VM se reinicia a mitad de ventana)
+            meta["boot_despues"] = esperar_reinicio_w(meta.get("boot_antes", ""))
+            meta["tarea_estado_final"] = "reinicio"
+            time.sleep(20)
+        else:
+            time.sleep(15)
+            fin = time.time() + timeout_ataque
+            est = ""
+            while time.time() < fin:
+                est = tarea_estado(tn)
+                if est and est.lower() not in ("running", "en ejecuci\u00f3n", "en ejecucion", "?"):
+                    break
+                time.sleep(10)
+            meta["tarea_estado_final"] = est
+            # FIM forzado + 30 s, t1
+            L.msudo("/var/ossec/bin/agent_control -r -u %s" % AGENTE, timeout=90)
+            time.sleep(30)
         t1 = L.mgr_now()
         # recoger evidencias y leer t0 del propio ataque
         ev_local = os.path.join(ldir, "evidencias")
@@ -217,6 +242,8 @@ def ventana(spec, it, timeout_ataque):
                 gz.write(blob)
             rutas[kind] = p
             meta["lineas_%s" % kind] = blob.count(b"\n")
+        if meta.get("lineas_archives", 0) == 0:
+            raise RuntimeError("archives vacio en la ventana: el registro completo no se guardo")
         os.makedirs(os.path.join(L.OUT, "CSV"), exist_ok=True)
         det = os.path.join(L.OUT, "CSV", "%s-Detalle.csv" % tag)
         p = subprocess.run([sys.executable, "-I", os.path.join(L.REPO, "_artefactos", "scripts", "extraer_alertas_windows.py"),

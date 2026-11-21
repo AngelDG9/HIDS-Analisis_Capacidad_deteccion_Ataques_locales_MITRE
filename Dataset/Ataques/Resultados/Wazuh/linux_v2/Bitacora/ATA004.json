@@ -1,0 +1,151 @@
+{
+ "ata_id": "ATA004",
+ "tecnica": "T1489",
+ "tactica": "Impact",
+ "sistema": "linux",
+ "bloque": "fase-03-piloto-custom",
+ "estado": "cerrado",
+ "artefacto": "Dataset/Ataques/Comandos/T1489-Service_Stop/",
+ "atomic": {
+  "fuente": "atomic-red-team",
+  "guid": "42e3a5bd-1e45-427f-aa08-2a65fa29a820",
+  "path": "atomics/T1489/T1489.yaml",
+  "commit": "388942adbd9641f4dfdcf079d7efe9a75ec0ac43",
+  "nota": "control de ART; systemctl stop <servicio> (cron), elevation_required",
+  "fuente_norm": "art_tal_cual",
+  "motivo_codigo": "na_art_usado",
+  "motivo_detalle": "se usó ART"
+ },
+ "esperado_sha256": "a4a53a3c3c4032d312e26c794164d02870354c9409dcae63bcb6d62552c98341",
+ "ataque_sha256": "b6d8090857d26daed6817ce765dea10a0e845757cdcc47bbee95628823256755",
+ "elevacion": "echo '<contrasena del laboratorio>' | sudo -S bash ATA004_ataque.sh (solo stdin; sin secretos en el artefacto; sin sudo anidado)",
+ "c0": {
+  "logtest": "Soporte/Ataques/c0/ATA004_logtest.txt",
+  "logtest_sha256": "1176b82b922e609901be08bf1a9798c70396f1d7505efb2204539ede5732133b",
+  "preflight": "Soporte/Ataques/c0/ATA004_preflight.md",
+  "resultado": "PASA (C0 ejecutado, sin silenciadores de fabrica)"
+ },
+ "iteraciones": [
+  {
+   "iter": 1,
+   "variante": "base",
+   "t0": "2026-11-20T01:46:21Z",
+   "t1": "2026-11-20T01:46:52Z",
+   "duracion_s": 31,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA004_iter1-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA004_iter1-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  },
+  {
+   "iter": 2,
+   "variante": "base",
+   "t0": "2026-11-20T01:50:15Z",
+   "t1": "2026-11-20T01:50:46Z",
+   "duracion_s": 31,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA004_iter2-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA004_iter2-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  }
+ ],
+ "revision_global": {
+  "fecha": "2026-09-28",
+  "filas": 10,
+  "veredicto": "mixto (8 ruido / 2 artefacto)",
+  "motivo": "5 dudosas por iteracion: elevacion declarada ambigua en el esperado (A1: sudo en 80792/80780; A2: 5402 sudo a root) -> ruido (parte del ataque pero no de la tecnica, no infla); y las 2 systemctl --user del cierre de sesion del operador (sin_ancla:T1489-S1) -> ruido. La unica fila DEL ATAQUE (80792 execve de sudo con cwd de la carpeta) se pliega con el veredicto nuevo artefacto (fase-03-metrica), nunca ruido",
+  "revisor": "orquestador / humano (criterio 2026-09-26; veredicto artefacto fase-03-metrica 2026-09-28)"
+ },
+ "doble_iteracion": "iguales",
+ "doble_iteracion_detalle": {
+  "criterio": "v2",
+  "mismo_conjunto_rule_id_deteccion": true,
+  "rule_ids_deteccion": [
+   "80792"
+  ],
+  "n1": 3,
+  "n2": 3,
+  "margen": 2,
+  "criterio_recuento_ok": true,
+  "sin_dudosas_sin_resolver": true,
+  "auto_ruido_delta": 18,
+  "ruido_conocido_delta": 5,
+  "nota": "fase-03-senales (2026-09-28): con el ancla implicita (exe AND cwd-ancla AND audit_command) la deteccion son 3/3 genuinas (systemctl is-active/stop/is-active del ataque, cwd=ATA004). Las 2 ajenas (systemctl --user del cierre de sesion SSH del operador, cwd=/home/angel) caen a dudosa/sin_ancla:T1489-S1 y se resuelven a ruido. El ancla S2 (audit_cwd=.../ATA004/*) SI casa el cwd real. No hubo detecciones 40700 (systemd/journald)"
+ },
+ "extraccion": {
+  "extractor": "extraer_alertas.py H3 (con srcip/srcuser/dstuser)",
+  "nota": "ambas ventanas con el extractor H3 ya desplegado"
+ },
+ "eventos": [
+  {
+   "ts": "2026-09-26T12:34:39Z",
+   "tipo": "t0",
+   "detalle": "iter1 t0 (revert a lab-listo + asentamiento); ataque elevado con sudo -S"
+  },
+  {
+   "ts": "2026-09-26T12:34:39Z",
+   "tipo": "ataque",
+   "detalle": "systemctl stop cron -> cron inactive"
+  },
+  {
+   "ts": "2026-09-26T12:35:15Z",
+   "tipo": "t1",
+   "detalle": "iter1 t1 (tras scan FIM forzado)"
+  },
+  {
+   "ts": "2026-09-26T12:36:00Z",
+   "tipo": "filtrado",
+   "detalle": "iter1 deteccion=5 auto_ruido=622 ruido_conocido=121 dudosa=3 (A1/A2 elevacion); resueltas a ruido"
+  },
+  {
+   "ts": "2026-09-26T12:39:50Z",
+   "tipo": "t0",
+   "detalle": "iter2 t0 (revert a lab-listo + asentamiento); ataque elevado con sudo -S"
+  },
+  {
+   "ts": "2026-09-26T12:39:50Z",
+   "tipo": "ataque",
+   "detalle": "systemctl stop cron -> cron inactive"
+  },
+  {
+   "ts": "2026-09-26T12:40:26Z",
+   "tipo": "t1",
+   "detalle": "iter2 t1"
+  },
+  {
+   "ts": "2026-09-26T12:41:00Z",
+   "tipo": "filtrado",
+   "detalle": "iter2 deteccion=5 auto_ruido=604 ruido_conocido=126 dudosa=3; resueltas a ruido"
+  },
+  {
+   "ts": "2026-09-26T14:42:00Z",
+   "tipo": "cierre",
+   "detalle": "criterio v2: deteccion identica (5/5, mismo rule_id) -> iguales"
+  },
+  {
+   "ts": "2026-09-28T00:00:00Z",
+   "tipo": "correccion",
+   "detalle": "fase-03-cabos (cabos 2 y 4): cabecera del esperado arreglada (PENDIENTE -> validado el 2026-09-26); los 2 audited regenerados (unico cambio: el sha256 del esperado en la cabecera; determinismo re-verificado; cifras intactas); esperado_sha256 y audited_sha256 actualizados. Hallazgo journald documentado: la regla de fabrica 40700 es level=0 (agrupador) -> la parada normal de un servicio no genera alerta; la deteccion efectiva es el execve 80792. Los -Revision.csv no se tocan (su cabecera cita el esperado previo; patron ya existente en el piloto)"
+  },
+  {
+   "ts": "2026-09-28T00:00:00Z",
+   "tipo": "correccion",
+   "detalle": "fase-03-senales: mecanismo de ancla implicita + evento de ejecucion (exe AND cwd-ancla AND audit_command). Regenerados los 2 -Audited.csv y los 2 -Revision.csv en su sitio: deteccion 5/5 -> 3/3 (las 2 systemctl --user del cierre de sesion del operador pasan a dudosa/sin_ancla:T1489-S1 -> ruido); ruido_conocido 124/129 -> 126/131; dudosa final 0. Hashes (audited/revision) actualizados en esta bitacora y en la ficha (v3); Hojas/ATA_index.csv intacto (sigue cerrado); determinismo re-verificado (2 pasadas -> mismo sha256); el -Revision.csv queda con los veredictos explicitos (editable)"
+  },
+  {
+   "ts": "2026-09-28T00:00:00Z",
+   "tipo": "correccion",
+   "detalle": "fase-03-metrica (offline, sin VMs): anadida la categoria artefacto_ataque y la pertenencia al ataque por carpeta (ATTACK_ROOT + ata_id) + guardarrail de plegado + veredicto humano artefacto. Regenerados los 2 -Audited.csv y los 2 -Revision.csv: la unica fila DEL ATAQUE de cada ventana (80792 execve de sudo con cwd de la carpeta, antes plegada a ruido) pasa a veredicto artefacto -> artefacto_ataque (el guardarrail prohibe ruido sobre filas del ataque); las 6 filas/iter de la huella del ataque pasan a artefacto_ataque; ruido_conocido 126/131 -> 120/125; deteccion=3/3 (sin cambios). revision_global: 6 -> 10 filas, mixto (8 ruido / 2 artefacto). Hashes (audited/revision) actualizados; Hojas/ATA_index.csv intacto (cerrado); determinismo re-verificado"
+  },
+  {
+   "ts": "2026-09-28T00:00:00Z",
+   "tipo": "correccion",
+   "detalle": "fase-03-metrica ciclo 2 (correccion 2, coherencia): reescrita la nota de la fila artefacto (80792 execve de sudo) para que diga artefacto (es del ataque, pista floja -> artefacto, nunca ruido) y regenerada la cabecera de los -Revision.csv con los conteos del pase actual (ya incluye artefacto_ataque). Sin cambios de cifras (deteccion=3/3, artefacto_ataque=6/6, ruido_conocido=120/125). Hashes (audited/revision) actualizados"
+  }
+ ],
+ "bitacora_origen": "generada por generar_bitacora_v2.py a partir de Bitacora/ATA004.json (metadatos) y del indice v2 (iteraciones)"
+}

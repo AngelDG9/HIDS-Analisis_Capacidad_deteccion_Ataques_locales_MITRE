@@ -1,0 +1,122 @@
+{
+ "ata_id": "ATA044",
+ "tecnica": "T1025",
+ "tactica": "Collection",
+ "sistema": "linux",
+ "bloque": "fase-03-p1-cierre",
+ "tanda": "A",
+ "estado": "cerrado",
+ "artefacto": "Dataset/Ataques/Comandos/T1025-Data_from_Removable_Media/",
+ "atomic": {
+  "fuente": "custom",
+  "nota": "medio extraible SIMULADO con imagen vfat (removable.img) creada en pre-staging; en la ventana se adjunta en SOLO-LECTURA (losetup --read-only + mount -o ro) y se recopilan los documentos; guardarrail: solo imagen de fichero bajo lab-attack/ATA044, jamas /dev/ real",
+  "fuente_norm": "propio",
+  "motivo_codigo": "art_no_prueba_plataforma",
+  "motivo_detalle": "ART solo trae prueba Windows de T1025 (PowerShell/Get-Volume); no hay prueba Linux -> propio."
+ },
+ "material_externo": {
+  "aplica": false,
+  "nota": "sin material externo: todos los binarios son de serie; la imagen vfat se crea localmente en el pre-staging (sin URL)"
+ },
+ "esperado_sha256": "bcbc8ee26fd79b8b120c53984e62d1e48f5a56b8c6372b814e665c68598ac36e",
+ "ataque_sha256": "c18a644a131f9e17c37e07db3ecb9a9bdef5d66b064df203bb2e4339e14ba26d",
+ "validacion_humana_esperado": "APROBADO 2026-10-02",
+ "c0": {
+  "logtest": "Soporte/Ataques/c0/ATA044_logtest.txt",
+  "logtest_sha256": "e1e7655a3edc71214b93b6aa53b9a73e3eb31a94cac635552e00c53411f480d7",
+  "preflight": "Soporte/Ataques/c0/ATA044_preflight.md",
+  "preflight_sha256": "590078a616d38d367d3b5dc0cd7b9c34a19bea6b9ef0fbbdc66dab87a568d57a",
+  "resultado": "PASA (6 eventos mount/losetup/cp/find/sha256sum/umount -> 80792 level 3; sin silenciador)"
+ },
+ "iteraciones": [
+  {
+   "iter": 1,
+   "variante": "base",
+   "t0": "2026-11-20T07:38:15Z",
+   "t1": "2026-11-20T07:38:47Z",
+   "duracion_s": 32,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA044_iter1-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA044_iter1-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  },
+  {
+   "iter": 2,
+   "variante": "base",
+   "t0": "2026-11-20T07:42:17Z",
+   "t1": "2026-11-20T07:42:49Z",
+   "duracion_s": 32,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA044_iter2-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA044_iter2-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  }
+ ],
+ "revision_global": {
+  "fecha": "2026-10-02",
+  "filas": 39,
+  "veredicto": "PAM/sudo -> ruido; execve sin ancla / del ataque -> artefacto",
+  "motivo": "Criterio ratificado 2026-09-28; 0 filas del ataque en ruido.",
+  "revisor": "executor fase-03-p1-cierre tanda A"
+ },
+ "doble_iteracion": "iguales",
+ "doble_iteracion_detalle": {
+  "criterio": "v2",
+  "mismo_conjunto_rule_id_deteccion": true,
+  "rule_ids_deteccion": [
+   "80792"
+  ],
+  "n1": 17,
+  "n2": 16,
+  "margen": 2,
+  "criterio_recuento_ok": true,
+  "sin_dudosas_sin_resolver": true
+ },
+ "extraccion": {
+  "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)",
+  "fuente": "fichero diario /var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+  "aislamiento": "filtro a agent_name == victima-linux"
+ },
+ "prueba_de_efecto": "3 documentos recopilados con sha256 identico al original (bc8bf1dc/3a2ec5e2/04c33e33) y 0 loops residuales",
+ "receptor": {
+  "aplica": false,
+  "nota": "no hay receptor de red"
+ },
+ "hallazgos": [
+  "El HIDS ve el execve de las herramientas de montaje/copia, no que el medio sea extraible ni el contenido.",
+  "El 'medio extraible' es una imagen de fichero en SOLO-LECTURA (equivalente local acotado de un USB).",
+  "C0 sin silenciador."
+ ],
+ "eventos": [
+  {
+   "ts": "2026-10-02T00:10:28Z",
+   "tipo": "t0",
+   "detalle": "iter1 t0 (revert lab-listo + asentamiento)"
+  },
+  {
+   "ts": "2026-10-02T00:11:05Z",
+   "tipo": "t1",
+   "detalle": "iter1 t1 (tras scan FIM forzado)"
+  },
+  {
+   "ts": "2026-10-02T00:17:11Z",
+   "tipo": "t0",
+   "detalle": "iter2 t0"
+  },
+  {
+   "ts": "2026-10-02T00:17:44Z",
+   "tipo": "t1",
+   "detalle": "iter2 t1"
+  },
+  {
+   "ts": "2026-10-02T00:17:44Z",
+   "tipo": "cierre",
+   "detalle": "criterio v2: deteccion identica ({80792}) -> iguales"
+  }
+ ],
+ "bitacora_origen": "generada por generar_bitacora_v2.py a partir de Bitacora/ATA044.json (metadatos) y del indice v2 (iteraciones)"
+}

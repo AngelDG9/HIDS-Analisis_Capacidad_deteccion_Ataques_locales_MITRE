@@ -1,0 +1,810 @@
+# ATA051_iter1-Audited.csv | TFG HIDS - Fase 3 A2.1 (R-09/R-13) | ata=ATA051 iter=1 | modo=ataque | alerta=D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Resultados\Wazuh\linux_v2\CSV\ATA051_iter1-Detalle.csv sha256=0e3598b37f5424b6bcdadde27391e9aa7284f744ce8ef3c68b4cce774d33575a | catalogo=Dataset/Legitimo/legitimo_72h/analisis/catalogo_ruido_72h.csv sha256=8a72d849512c22808827313b601e62cc34ad92f0ac71a839b7245684918e2dba | esperado=D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Dataset\Ataques\Comandos\T1113-Screen_Capture\ATA051_esperado.csv sha256=541ede2e063fdd0c3a7876d29055a5b4e98e492e997952878778fcd2758441f7 | revision=Dataset/Ataques/Resultados/Wazuh/linux_v2/Revision_precedente\ATA051_iter1-Revision.csv sha256=3602dcdfb44056c66f875d78bf11900bfde8428525a387a5900c9bc45ae84eff | conteos: filas=808 deteccion=2 auto_ruido=626 ruido_conocido=84 dudosa=82 artefacto_ataque=14 | columnas: ata_id,iter,timestamp_utc,agent_name,rule_id,rule_level,rule_groups,rs_origen,rule_description,categoria,motivo,atribucion,revision,veredicto_humano,evidencia
+ata_id,iter,timestamp_utc,agent_name,rule_id,rule_level,rule_groups,rs_origen,rule_description,categoria,motivo,atribucion,revision,veredicto_humano,evidencia
+ATA051,1,2026-11-20T15:43:41.935Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/cat.,artefacto_ataque,del_ataque,,,,audit_cwd=/home/angel/lab-attack/ATA051
+ATA051,1,2026-11-20T15:43:41.940Z,victima-linux,80791,3,audit|audit_watch_delete|audit_watch_write,RS2,Audit: Deleted: /run/systemd/sessions/15.ref.,ruido_conocido,baseline,,,,rule_id=80791
+ATA051,1,2026-11-20T15:43:41.942Z,victima-linux,80791,3,audit|audit_watch_delete|audit_watch_write,RS2,Audit: Deleted: /run/systemd/sessions/.,ruido_conocido,baseline,,,,rule_id=80791
+ATA051,1,2026-11-20T15:43:41.945Z,victima-linux,80791,3,audit|audit_watch_delete|audit_watch_write,RS2,Audit: Deleted: /run/systemd/users/.,ruido_conocido,baseline,,,,rule_id=80791
+ATA051,1,2026-11-20T15:43:41.947Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/sbin/sshd.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:41.955Z,victima-linux,80780,3,audit|audit_watch_write,RS2,Audit: Watch - Write access.,ruido_conocido,baseline,,,,rule_id=80780
+ATA051,1,2026-11-20T15:43:41.960Z,victima-linux,80791,3,audit|audit_watch_delete|audit_watch_write,RS2,Audit: Deleted: /run/systemd/sessions/.,ruido_conocido,baseline,,,,rule_id=80791
+ATA051,1,2026-11-20T15:43:41.962Z,victima-linux,80791,3,audit|audit_watch_delete|audit_watch_write,RS2,Audit: Deleted: /run/systemd/users/.,ruido_conocido,baseline,,,,rule_id=80791
+ATA051,1,2026-11-20T15:43:41.965Z,victima-linux,80791,3,audit|audit_watch_delete|audit_watch_write,RS2,Audit: Deleted: /run/systemd/sessions/.,ruido_conocido,baseline,,,,rule_id=80791
+ATA051,1,2026-11-20T15:43:41.967Z,victima-linux,80791,3,audit|audit_watch_delete|audit_watch_write,RS2,Audit: Deleted: /run/systemd/sessions/.,ruido_conocido,baseline,,,,rule_id=80791
+ATA051,1,2026-11-20T15:43:41.969Z,victima-linux,80791,3,audit|audit_watch_delete|audit_watch_write,RS2,Audit: Deleted: /run/systemd/users/.,ruido_conocido,baseline,,,,rule_id=80791
+ATA051,1,2026-11-20T15:43:41.972Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:41.974Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/env.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:41.977Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/env.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:41.979Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/env.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:41.987Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:41.987Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/env.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:41.987Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/run-parts.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:41.989Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/uname.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:41.992Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/uname.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:41.999Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:41.999Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:41.999Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/uname.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.002Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/find.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.004Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/cat.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.007Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.009Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/cat.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.011Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/head.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.014Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/tr.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.021Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/cut.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.024Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.026Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.028Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/cat.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.031Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/find.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.033Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/grep.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.036Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.038Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/gettext.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.041Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/gettext.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.043Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.046Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.048Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/cut.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.051Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/id.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.053Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.056Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/date.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.058Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/stat.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.061Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/expr.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.063Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/cat.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.066Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.068Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.076Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.076Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.076Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/find.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.078Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.081Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/sort.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.083Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.086Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.093Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.093Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.093Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/grep.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.095Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.098Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/id.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.100Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/stat.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.103Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/gawk.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.105Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/date.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.113Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/cat.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.113Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.113Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/date.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.115Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.118Z,victima-linux,80791,3,audit|audit_watch_delete|audit_watch_write,RS2,Audit: Deleted: /run/.,ruido_conocido,baseline,,,,rule_id=80791
+ATA051,1,2026-11-20T15:43:42.125Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/bash.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.128Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/sudo.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.143Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/systemd-run.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.145Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/lib/systemd/systemd-executor.,ruido_conocido,baseline,,,,rule_id=80792
+ATA051,1,2026-11-20T15:43:42.150Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/bash.,artefacto_ataque,del_ataque,,,,audit_cwd=/home/angel/lab-attack/ATA051
+ATA051,1,2026-11-20T15:43:42.153Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/date.,artefacto_ataque,del_ataque,,,,audit_cwd=/home/angel/lab-attack/ATA051
+ATA051,1,2026-11-20T15:43:42.155Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/xwd.,deteccion,senal:T1113-S1,T1113|Process Creation,,,audit_exe=/usr/bin/xwd
+ATA051,1,2026-11-20T15:43:42.157Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/timeout.,artefacto_ataque,del_ataque,,,,audit_cwd=/home/angel/lab-attack/ATA051
+ATA051,1,2026-11-20T15:43:42.160Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/timeout.,artefacto_ataque,del_ataque,,,,audit_cwd=/home/angel/lab-attack/ATA051
+ATA051,1,2026-11-20T15:43:42.162Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/timeout.,artefacto_ataque,del_ataque,,,,audit_cwd=/home/angel/lab-attack/ATA051
+ATA051,1,2026-11-20T15:43:42.173Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/timeout.,artefacto_ataque,del_ataque,,,,audit_cwd=/home/angel/lab-attack/ATA051
+ATA051,1,2026-11-20T15:43:42.173Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/xwud.,deteccion,senal:T1113-S2,T1113|Process Creation,,,audit_exe=/usr/bin/xwud
+ATA051,1,2026-11-20T15:43:42.175Z,victima-linux,5502,3,pam|syslog,RS1,PAM: Login session closed.,ruido_conocido,sin_campos,,resuelta,ruido,revisor=regla:precedente_v1_unanime(NO humano);fecha=2026-11-21;nota=precedente v1 unanime n=232 clave=5502/sin_campos/
+ATA051,1,2026-11-20T15:43:42.180Z,victima-linux,5715,3,syslog|sshd|authentication_success,RS1,sshd: authentication success.,ruido_conocido,operador:5715,,,,srcip=192.168.65.1
+ATA051,1,2026-11-20T15:43:42.182Z,victima-linux,5501,3,pam|syslog|authentication_success,RS1,PAM: Login session opened.,ruido_conocido,sin_campos,,resuelta,ruido,revisor=regla:precedente_v1_unanime(NO humano);fecha=2026-11-21;nota=precedente v1 unanime n=195 clave=5501/sin_campos/
+ATA051,1,2026-11-20T15:43:42.190Z,victima-linux,5402,3,syslog|sudo,RS1,Successful sudo to ROOT executed.,ruido_conocido,sin_campos,,resuelta,ruido,revisor=regla:precedente_v1_unanime(NO humano);fecha=2026-11-21;nota=precedente v1 unanime n=30 clave=5402/sin_campos/
+ATA051,1,2026-11-20T15:43:42.192Z,victima-linux,5501,3,pam|syslog|authentication_success,RS1,PAM: Login session opened.,ruido_conocido,sin_campos,,resuelta,ruido,revisor=regla:precedente_v1_unanime(NO humano);fecha=2026-11-21;nota=precedente v1 unanime n=195 clave=5501/sin_campos/
+ATA051,1,2026-11-20T15:43:43.936Z,victima-linux,80791,3,audit|audit_watch_delete|audit_watch_write,RS2,Audit: Deleted: var/run/.,auto_ruido,auto_ruido:wazuh-agentd,,,,audit_exe=/var/ossec/bin/wazuh-agentd
+ATA051,1,2026-11-20T15:43:45.937Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/head.,artefacto_ataque,del_ataque,,,,audit_cwd=/home/angel/lab-attack/ATA051
+ATA051,1,2026-11-20T15:43:45.937Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/stat.,artefacto_ataque,del_ataque,,,,audit_cwd=/home/angel/lab-attack/ATA051
+ATA051,1,2026-11-20T15:43:45.939Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/od.,artefacto_ataque,del_ataque,,,,audit_cwd=/home/angel/lab-attack/ATA051
+ATA051,1,2026-11-20T15:43:45.943Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/tr.,artefacto_ataque,del_ataque,,,,audit_cwd=/home/angel/lab-attack/ATA051
+ATA051,1,2026-11-20T15:43:45.945Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/sha256sum.,artefacto_ataque,del_ataque,,,,audit_cwd=/home/angel/lab-attack/ATA051
+ATA051,1,2026-11-20T15:43:45.948Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/sleep.,artefacto_ataque,del_ataque,,,,audit_cwd=/home/angel/lab-attack/ATA051
+ATA051,1,2026-11-20T15:43:45.950Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/date.,artefacto_ataque,del_ataque,,,,audit_cwd=/home/angel/lab-attack/ATA051
+ATA051,1,2026-11-20T15:43:45.965Z,victima-linux,80791,3,audit|audit_watch_delete|audit_watch_write,RS2,Audit: Deleted: /run/systemd/sessions/16.ref.,ruido_conocido,baseline,,,,rule_id=80791
+ATA051,1,2026-11-20T15:43:45.968Z,victima-linux,80791,3,audit|audit_watch_delete|audit_watch_write,RS2,Audit: Deleted: /run/systemd/sessions/.,ruido_conocido,baseline,,,,rule_id=80791
+ATA051,1,2026-11-20T15:43:45.970Z,victima-linux,80791,3,audit|audit_watch_delete|audit_watch_write,RS2,Audit: Deleted: /run/systemd/users/.,ruido_conocido,baseline,,,,rule_id=80791
+ATA051,1,2026-11-20T15:43:45.973Z,victima-linux,80791,3,audit|audit_watch_delete|audit_watch_write,RS2,Audit: Deleted: /run/systemd/sessions/16.,ruido_conocido,baseline,,,,rule_id=80791
+ATA051,1,2026-11-20T15:43:45.975Z,victima-linux,80791,3,audit|audit_watch_delete|audit_watch_write,RS2,Audit: Deleted: /run/systemd/users/.,ruido_conocido,baseline,,,,rule_id=80791
+ATA051,1,2026-11-20T15:43:46.016Z,victima-linux,5502,3,pam|syslog,RS1,PAM: Login session closed.,ruido_conocido,sin_campos,,resuelta,ruido,revisor=regla:precedente_v1_unanime(NO humano);fecha=2026-11-21;nota=precedente v1 unanime n=232 clave=5502/sin_campos/
+ATA051,1,2026-11-20T15:43:46.022Z,victima-linux,5502,3,pam|syslog,RS1,PAM: Login session closed.,ruido_conocido,sin_campos,,resuelta,ruido,revisor=regla:precedente_v1_unanime(NO humano);fecha=2026-11-21;nota=precedente v1 unanime n=232 clave=5502/sin_campos/
+ATA051,1,2026-11-20T15:43:46.565Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.566Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.568Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.570Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.573Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.575Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.577Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.580Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.582Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.585Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.587Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.589Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.591Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.594Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.596Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.598Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.600Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.603Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.605Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.607Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.610Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.612Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.614Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.617Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.619Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.621Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.623Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.626Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.628Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.630Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.633Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.635Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.638Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.640Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.644Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.646Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.649Z,victima-linux,550,7,ossec|syscheck|syscheck_entry_modified|syscheck_file,RS1,Integrity checksum changed.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.716Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.718Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.735Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.735Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.751Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.763Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.764Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.768Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.795Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:46.798Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:47.808Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:47.811Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:47.813Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:47.815Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:47.823Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:47.847Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:47.860Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:47.884Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:47.905Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:47.908Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:47.929Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:47.939Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:47.939Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:47.941Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:47.943Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:47.946Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:47.948Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:47.951Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:47.953Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:47.956Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:47.958Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:47.961Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:47.963Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:47.965Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:47.967Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:47.969Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:47.972Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:47.974Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:47.976Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:48.003Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:48.015Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:48.016Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:48.026Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:48.030Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:48.034Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:48.038Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:48.107Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:48.112Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:48.120Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:48.127Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:48.156Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:48.162Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:48.274Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:48.280Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:48.297Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:48.347Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:48.354Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:48.371Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:48.375Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:48.413Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:48.449Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:48.457Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:48.458Z,victima-linux,554,5,ossec|syscheck|syscheck_entry_added|syscheck_file,RS1,File added to the system.,dudosa,sin_campos,,pendiente,,
+ATA051,1,2026-11-20T15:43:49.942Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:49.942Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:49.944Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:49.947Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:49.949Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:49.952Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:49.954Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:49.956Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:49.958Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:49.960Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:49.963Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:49.965Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:49.968Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:49.970Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:49.973Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:49.975Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:49.978Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:49.980Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:49.983Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:49.985Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:49.988Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:49.990Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:49.993Z,victima-linux,80780,3,audit|audit_watch_write,RS2,Audit: Watch - Write access.,auto_ruido,auto_ruido:wazuh-syscheckd,,,,audit_exe=/var/ossec/bin/wazuh-syscheckd
+ATA051,1,2026-11-20T15:43:49.995Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:49.998Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.000Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.003Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.005Z,victima-linux,80791,3,audit|audit_watch_delete|audit_watch_write,RS2,Audit: Deleted: var/run/.,auto_ruido,auto_ruido:wazuh-agentd,,,,audit_exe=/var/ossec/bin/wazuh-agentd
+ATA051,1,2026-11-20T15:43:50.008Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.010Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.013Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.015Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.018Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.020Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.022Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.025Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.027Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.029Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.031Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.034Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.036Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.039Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.041Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.044Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.046Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.049Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.051Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.054Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.056Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.059Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.061Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.064Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.066Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.069Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.071Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.074Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.076Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.079Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.081Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.084Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.086Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.088Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.091Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.093Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.096Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:50.098Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:51.945Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:51.945Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:51.947Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:51.950Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:51.952Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:51.955Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:51.957Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:51.960Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:51.962Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:51.965Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:51.967Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:51.970Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:51.972Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:51.975Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:51.977Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:51.980Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:51.982Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:51.985Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:51.987Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:51.990Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:51.992Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:51.995Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:51.997Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.000Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.002Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.005Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.007Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.009Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.012Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.014Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.017Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.019Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.022Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.024Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.027Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.029Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.031Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.034Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.036Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.039Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.041Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.044Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.046Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.049Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.051Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.054Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.056Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.059Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.061Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.064Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.066Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.068Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.071Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.073Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.075Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.078Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.080Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.083Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.085Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.088Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.090Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:52.093Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:53.946Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:53.947Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:53.949Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:53.951Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:53.954Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:53.956Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:53.959Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:53.961Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:53.964Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:53.966Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:53.969Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:53.971Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:53.974Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:53.976Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:53.979Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:53.981Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:53.983Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:53.986Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:53.989Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:53.991Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:53.993Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:53.996Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:53.998Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.001Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.003Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.005Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.008Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.010Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.012Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.015Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.017Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.020Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.022Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.025Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.027Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.030Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.032Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.035Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.037Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.040Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.042Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.045Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.047Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.050Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.052Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.054Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.057Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.059Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.062Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.064Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.067Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.069Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.072Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.074Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.077Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.079Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.082Z,victima-linux,80791,3,audit|audit_watch_delete|audit_watch_write,RS2,Audit: Deleted: var/run/.,auto_ruido,auto_ruido:wazuh-agentd,,,,audit_exe=/var/ossec/bin/wazuh-agentd
+ATA051,1,2026-11-20T15:43:54.089Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.089Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.089Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.092Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.094Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:54.097Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:55.949Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:55.949Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:55.951Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:55.953Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:55.956Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:55.958Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:55.961Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:55.963Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:55.966Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:55.968Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:55.971Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:55.973Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:55.976Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:55.978Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:55.981Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:55.983Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:55.986Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:55.988Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:55.991Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:55.993Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:55.996Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:55.998Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.001Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.003Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.006Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.008Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.011Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.013Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.016Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.018Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.020Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.023Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.026Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.028Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.030Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.032Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.035Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.037Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.040Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.042Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.045Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.047Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.050Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.052Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.055Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.057Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.060Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.062Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.065Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.067Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.070Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.072Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.075Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.077Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.080Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.082Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.085Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.087Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.089Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.092Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.094Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:56.097Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:57.952Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:57.952Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:57.953Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:57.956Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:57.958Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:57.961Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:57.963Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:57.966Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:57.968Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:57.971Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:57.973Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:57.976Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:57.978Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:57.981Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:57.983Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:57.985Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:57.988Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:57.991Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:57.993Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:57.996Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:57.998Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.001Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.003Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.005Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.007Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.010Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.012Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.015Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.017Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.020Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.022Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.025Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.027Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.030Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.032Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.035Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.037Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.040Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.042Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.045Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.047Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.050Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.052Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.054Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.057Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.059Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.062Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.064Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.066Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.069Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.071Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.074Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.076Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.079Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.081Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.084Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.086Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.089Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.091Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.094Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.096Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:58.099Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:59.953Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:59.953Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:59.955Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:59.958Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:59.960Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:59.963Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:59.965Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:59.968Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:59.970Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:59.973Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:59.975Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:59.977Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:59.980Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:59.982Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:59.985Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:59.988Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:59.990Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:59.992Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:59.995Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:43:59.997Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.000Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.002Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.004Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.007Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.009Z,victima-linux,80791,3,audit|audit_watch_delete|audit_watch_write,RS2,Audit: Deleted: var/run/.,auto_ruido,auto_ruido:wazuh-agentd,,,,audit_exe=/var/ossec/bin/wazuh-agentd
+ATA051,1,2026-11-20T15:44:00.017Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.017Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.017Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.019Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.022Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.024Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.027Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.029Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.032Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.034Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.037Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.039Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.042Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.044Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.046Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.049Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.051Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.054Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.056Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.059Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.062Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.064Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.066Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.069Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.071Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.074Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.076Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.079Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.081Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.084Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.086Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.089Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.091Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.094Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.096Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.099Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.101Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:00.104Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:01.955Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:01.956Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:01.957Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:01.960Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:01.963Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:01.965Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:01.967Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:01.970Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:01.972Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:01.975Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:01.977Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:01.980Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:01.982Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:01.985Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:01.987Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:01.990Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:01.992Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:01.995Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:01.997Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.000Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.002Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.004Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.007Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.009Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.012Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.014Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.016Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.019Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.021Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.024Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.026Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.028Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.031Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.033Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.036Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.038Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.041Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.043Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.046Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.048Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.051Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.053Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.056Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.058Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.061Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.063Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.066Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.068Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.071Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.073Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.075Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.078Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.080Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.083Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.085Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.087Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.090Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.092Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.095Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:02.097Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:03.956Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:03.956Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:03.958Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:03.961Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:03.963Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:03.966Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:03.968Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:03.971Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:03.973Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:03.976Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:03.978Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:03.981Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:03.983Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:03.986Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:03.988Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:03.991Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:03.993Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:03.996Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:03.998Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.001Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.003Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.006Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.008Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.010Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.012Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.015Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.017Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.020Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.022Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.025Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.028Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.030Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.033Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.035Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.038Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.040Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.043Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.045Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.048Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.050Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.053Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.055Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.058Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.060Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.063Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.065Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.068Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.070Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.072Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.075Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.077Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.080Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.082Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.085Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.088Z,victima-linux,80791,3,audit|audit_watch_delete|audit_watch_write,RS2,Audit: Deleted: var/run/.,auto_ruido,auto_ruido:wazuh-agentd,,,,audit_exe=/var/ossec/bin/wazuh-agentd
+ATA051,1,2026-11-20T15:44:04.095Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.095Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.095Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.097Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.102Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:04.104Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:05.959Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:05.959Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:05.961Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:05.963Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:05.966Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:05.968Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:05.971Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:05.973Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:05.975Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:05.977Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:05.980Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:05.982Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:05.984Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:05.987Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:05.989Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:05.992Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:05.994Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:05.997Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:05.999Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.002Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.004Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.007Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.009Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.012Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.014Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.017Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.019Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.022Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.024Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.026Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.030Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.033Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.035Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.037Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.040Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.042Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.045Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.047Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.049Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.052Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.054Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.056Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.059Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.061Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.064Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.066Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.069Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.071Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.074Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.076Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.079Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.081Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.084Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.086Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.089Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:06.091Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:07.960Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:07.960Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:07.962Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:07.965Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:07.967Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:07.969Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:07.972Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:07.975Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:07.977Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:07.979Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:07.982Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:07.984Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:07.986Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:07.989Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:07.991Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:07.994Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:07.996Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:07.999Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:08.001Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:08.004Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:08.006Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:08.009Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:08.011Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:08.014Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:08.016Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:08.019Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:08.021Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:08.024Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:08.026Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:08.029Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:08.031Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:08.034Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:08.036Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:08.038Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:08.041Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:08.043Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:08.046Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:08.048Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:08.050Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:08.053Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:08.055Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:08.058Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:08.060Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:08.062Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:08.065Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:08.067Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:08.070Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:08.072Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:09.961Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/dash.,auto_ruido,auto_ruido:dash,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:10.003Z,victima-linux,80791,3,audit|audit_watch_delete|audit_watch_write,RS2,Audit: Deleted: var/run/.,auto_ruido,auto_ruido:wazuh-agentd,,,,audit_exe=/var/ossec/bin/wazuh-agentd
+ATA051,1,2026-11-20T15:44:10.003Z,victima-linux,80792,3,audit|audit_command,RS2,Audit: Command: /usr/bin/ps.,auto_ruido,auto_ruido:ps,,,,audit_cwd=/var/ossec
+ATA051,1,2026-11-20T15:44:13.964Z,victima-linux,80791,3,audit|audit_watch_delete|audit_watch_write,RS2,Audit: Deleted: var/run/.,auto_ruido,auto_ruido:wazuh-agentd,,,,audit_exe=/var/ossec/bin/wazuh-agentd

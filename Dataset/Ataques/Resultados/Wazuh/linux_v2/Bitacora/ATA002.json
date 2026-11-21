@@ -1,0 +1,149 @@
+{
+ "ata_id": "ATA002",
+ "tecnica": "T1485",
+ "tactica": "Impact",
+ "sistema": "linux",
+ "estado": "review",
+ "artefacto": "Dataset/Ataques/Comandos/T1485-Data_Destruction/",
+ "atomic": {
+  "fuente": "atomic-red-team",
+  "guid": "38deee99-fd65-4031-bec8-bfa4f9f26146",
+  "path": "atomics/T1485",
+  "commit": "388942adbd9641f4dfdcf079d7efe9a75ec0ac43",
+  "fuente_norm": "art_tal_cual",
+  "motivo_codigo": "na_art_usado",
+  "motivo_detalle": "se usó ART"
+ },
+ "esperado_sha256": "970c5dfcc6c845e7e60fdfc4d5d010b17f6570d606514372abfbaf2aad1f17c7",
+ "ataque_sha256": "0a838e9732544b994aac16ecccf6dceda145e5a061d3ec73bcc9cf5bf3e27f16",
+ "iteraciones": [
+  {
+   "iter": 1,
+   "variante": "base",
+   "t0": "2026-11-20T01:30:47Z",
+   "t1": "2026-11-20T01:31:18Z",
+   "duracion_s": 31,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA002_iter1-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA002_iter1-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  },
+  {
+   "iter": 2,
+   "variante": "base",
+   "t0": "2026-11-20T01:34:41Z",
+   "t1": "2026-11-20T01:35:12Z",
+   "duracion_s": 31,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA002_iter2-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA002_iter2-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  }
+ ],
+ "revision_global": {
+  "decision_humana": "2026-09-25",
+  "filas": 177,
+  "veredicto": "ruido",
+  "motivo": "senal ambigua T1485-A2 (rule_group=audit_watch_write) demasiado amplia; ninguna fila toca la carpeta del ataque (lab-legit); churn de sistema; reglas ya en el catalogo del baseline",
+  "modo": "veredicto en bloque del humano (no fila a fila)"
+ },
+ "doble_iteracion": "review",
+ "doble_iteracion_detalle": {
+  "mismo_conjunto_rule_id_deteccion": true,
+  "rule_ids_deteccion": [
+   "80781",
+   "80790",
+   "80792"
+  ],
+  "n1": 4,
+  "n2": 4,
+  "margen": 2,
+  "criterio_recuento_ok": true,
+  "sin_dudosas_sin_resolver": true,
+  "auto_ruido_delta": 35,
+  "ruido_conocido_delta": 279,
+  "motivo": "los 3 criterios formales pasan; FALLA la sanidad de ruido_conocido (404 vs 125, delta 279 >> 10%). Causa: iter1 capturo un arranque de maquina con mas churn (pico de execve de utilidades de sistema en el primer segundo de la ventana) que iter2. No es del ataque (deteccion identica 4 y 4)."
+ },
+ "eventos": [
+  {
+   "ts": "2026-09-25T20:28:18Z",
+   "tipo": "inicio",
+   "detalle": "precondiciones OK: manager 4.14.7 (3 servicios active), agente 001 Active, 25 GB libres, auditd con watch lab-legit, diario ossec-alerts-25.json"
+  },
+  {
+   "ts": "2026-09-25T20:29:59Z",
+   "tipo": "t0",
+   "detalle": "iter1: revert victima a lab-listo (manager no revertido), scp artefacto, deps OK"
+  },
+  {
+   "ts": "2026-09-25T20:31:17Z",
+   "tipo": "t0",
+   "detalle": "iter1 t0"
+  },
+  {
+   "ts": "2026-09-25T20:32:01Z",
+   "tipo": "t1",
+   "detalle": "iter1 t1 (tras scan FIM forzado agent_control -r -u 001)"
+  },
+  {
+   "ts": "2026-09-25T20:33:00Z",
+   "tipo": "extraido",
+   "detalle": "iter1: _raw 1022 filas (1014 victima + 8 manager) -> Detalle 1014, 0 de otro agente"
+  },
+  {
+   "ts": "2026-09-25T20:33:30Z",
+   "tipo": "filtrado",
+   "detalle": "iter1 (pre-revision): deteccion=4 auto_ruido=606 ruido_conocido=276 dudosa=128"
+  },
+  {
+   "ts": "2026-09-25T20:36:17Z",
+   "tipo": "t0",
+   "detalle": "iter2: revert victima a lab-listo; t0"
+  },
+  {
+   "ts": "2026-09-25T20:36:48Z",
+   "tipo": "t1",
+   "detalle": "iter2 t1 (tras scan FIM forzado)"
+  },
+  {
+   "ts": "2026-09-25T20:37:50Z",
+   "tipo": "extraido",
+   "detalle": "iter2: _raw 777 filas (770 victima + 7 manager) -> Detalle 770, 0 de otro agente"
+  },
+  {
+   "ts": "2026-09-25T20:38:00Z",
+   "tipo": "filtrado",
+   "detalle": "iter2 (pre-revision): deteccion=4 auto_ruido=641 ruido_conocido=76 dudosa=49"
+  },
+  {
+   "ts": "2026-09-25T21:05:00Z",
+   "tipo": "revision",
+   "detalle": "veredicto global humano 2026-09-25: 177 dudosas (iter1 128, iter2 49) marcadas ruido; revisor=humano (veredicto en bloque); nota y justificacion en los ATA002_iterN-Revision.csv"
+  },
+  {
+   "ts": "2026-09-25T21:06:00Z",
+   "tipo": "filtrado",
+   "detalle": "re-ejecutado filtrar_ruido.py --revision: iter1 dudosa=0 ruido_conocido=404; iter2 dudosa=0 ruido_conocido=125; veredicto_humano=ruido"
+  },
+  {
+   "ts": "2026-09-25T21:07:00Z",
+   "tipo": "cierre",
+   "detalle": "criterio doble iteracion §6: 3 criterios formales OK (deteccion identica, delta 0, sin dudosas); sanidad ruido_conocido FALLA (404 vs 125, delta 279) por mas churn de arranque en iter1 -> review (no se cierra en silencio)"
+  },
+  {
+   "ts": "2026-09-28T00:00:00Z",
+   "tipo": "correccion",
+   "detalle": "fase-03-metrica (offline, sin VMs): anadida la categoria artefacto_ataque y la pertenencia al ataque por carpeta (ATTACK_ROOT + ata_id) + guardarrail de plegado + veredicto humano artefacto. Regenerados los 2 -Audited.csv con --revision sobre los MISMOS -Detalle.csv (determinista, 2 pasadas -> mismo sha256): las 9 filas/iter de la huella del propio ataque (execve con cwd=/home/angel/lab-attack/ATA002, antes en ruido_conocido) pasan a artefacto_ataque; ruido_conocido 404/125 -> 395/116; deteccion=4/4 (sin cambios). Los -Revision.csv NO cambian (sus claves siguen casando; veredicto humano=ruido sobre filas ajenas). Hashes actualizados (audited_sha256). Hojas/ATA_index.csv intacto (review). Ver plan.md (fase-03-metrica) y politica §3.ter"
+  },
+  {
+   "ts": "2026-09-28T00:00:00Z",
+   "tipo": "correccion",
+   "detalle": "fase-03-metrica ciclo 3 (metadatos): el -Revision.csv se regenera con la 1a pasada del codigo actual -> su cabecera pasa a incluir el campo artefacto_ataque y los conteos reales (ruido_conocido 276/76 -> 267/67; +artefacto_ataque 9/9) y se re-inyectan los MISMOS veredictos vigentes (128/49, ruido); el -Audited re-plegado sale byte-identico en el cuerpo y su cabecera cita el sha real del -Revision. Hashes (audited/revision) actualizados"
+  }
+ ],
+ "bitacora_origen": "generada por generar_bitacora_v2.py a partir de Bitacora/ATA002.json (metadatos) y del indice v2 (iteraciones)"
+}

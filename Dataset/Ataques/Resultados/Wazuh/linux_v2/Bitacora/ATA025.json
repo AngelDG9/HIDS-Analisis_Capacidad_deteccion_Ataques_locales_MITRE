@@ -1,0 +1,119 @@
+{
+ "ata_id": "ATA025",
+ "tecnica": "T1496.001",
+ "tactica": "Impact",
+ "sistema": "linux",
+ "bloque": "fase-03-ampliacion",
+ "tanda": "C",
+ "estado": "cerrado",
+ "artefacto": "Dataset/Ataques/Comandos/T1496.001-Compute_Hijacking/",
+ "atomic": {
+  "fuente": "custom",
+  "nota": "carga de CPU ACOTADA (2 x timeout 10s yes); guardarrail: WORKERS<=4 y DURATION<=15s; trap que mata remanentes; 0 residuos verificado",
+  "fuente_norm": "propio",
+  "motivo_codigo": "propio_por_diseno",
+  "motivo_detalle": "«Minería» simulada con carga de CPU acotada; Wazuh no tiene reglas de recursos -> se espera detección solo por `execve`."
+ },
+ "esperado_sha256": "c69a5dac12aa832b4689665c6f03eba85910189c15732053a3f3d768402945e3",
+ "ataque_sha256": "8dc97e905e50e85135324d695d3b1dfb2f4d37f49f3e9bfc598f8df4df6cdaf4",
+ "validacion_humana_esperado": "APROBADO 2026-09-29",
+ "c0": {
+  "logtest": "Soporte/Ataques/c0/ATA025_logtest.txt",
+  "logtest_sha256": "048569d51e66db498201590e86062345afb9fb1eb7ea0904a57422659c6f09f9",
+  "preflight": "Soporte/Ataques/c0/ATA025_preflight.md",
+  "preflight_sha256": "f7da05b7202198957d40750682b8180c7f683eb51154fef76030212a5e6b31c2",
+  "resultado": "PASA (2 eventos yes/timeout -> 80792 level 3; sin silenciador)"
+ },
+ "iteraciones": [
+  {
+   "iter": 1,
+   "variante": "base",
+   "t0": "2026-11-20T04:56:51Z",
+   "t1": "2026-11-20T04:57:35Z",
+   "duracion_s": 44,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA025_iter1-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA025_iter1-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  },
+  {
+   "iter": 2,
+   "variante": "base",
+   "t0": "2026-11-20T05:01:09Z",
+   "t1": "2026-11-20T05:01:52Z",
+   "duracion_s": 43,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA025_iter2-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA025_iter2-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  }
+ ],
+ "revision_global": {
+  "fecha": "2026-09-29",
+  "filas": 10,
+  "veredicto": "ruido (7) + artefacto (3)",
+  "motivo": "7 = PAM del operador (5501/5502, dstuser=angel) -> ruido (criterio ratificado 2026-09-28). 3 = 80792 sin_ancla (timeout/yes que case el exe pero no anclo) -> artefacto. Cero filas del ataque en ruido.",
+  "revisor": "executor ampliacion tanda C"
+ },
+ "doble_iteracion": "iguales",
+ "doble_iteracion_detalle": {
+  "criterio": "v2",
+  "mismo_conjunto_rule_id_deteccion": true,
+  "rule_ids_deteccion": [
+   "80792"
+  ],
+  "n1": 9,
+  "n2": 8,
+  "margen": 2,
+  "criterio_recuento_ok": true,
+  "sin_dudosas_sin_resolver": true,
+  "auto_ruido_delta": 14,
+  "ruido_conocido_delta": 23
+ },
+ "extraccion": {
+  "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)",
+  "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+  "aislamiento": "filtro a agent_name == victima-linux"
+ },
+ "prueba_de_efecto": "CPU de la victima al 100% durante la ventana (busy calculado de /proc/stat), loadavg sube, y al terminar 0 procesos yes vivos (carga ACOTADA, sin residuo).",
+ "receptor": {
+  "aplica": false,
+  "nota": "no hay receptor de red"
+ },
+ "hallazgos": [
+  "R9 confirmado: Wazuh no tiene reglas de CPU/recursos -> el consumo no se ve; unica deteccion por execve.",
+  "Si el consumo se hiciera con builtins del shell (sin execve) seria un PUNTO CIEGO total."
+ ],
+ "eventos": [
+  {
+   "ts": "2026-09-29T03:35:12Z",
+   "tipo": "t0",
+   "detalle": "iter1 t0 (revert lab-listo + 90 s asentamiento)"
+  },
+  {
+   "ts": "2026-09-29T03:35:56Z",
+   "tipo": "t1",
+   "detalle": "iter1 t1 (tras scan FIM forzado)"
+  },
+  {
+   "ts": "2026-09-29T03:38:59Z",
+   "tipo": "t0",
+   "detalle": "iter2 t0"
+  },
+  {
+   "ts": "2026-09-29T03:39:42Z",
+   "tipo": "t1",
+   "detalle": "iter2 t1"
+  },
+  {
+   "ts": "2026-09-29T03:43:00Z",
+   "tipo": "cierre",
+   "detalle": "criterio v2: deteccion identica ({80792}, 9 vs 8) -> iguales"
+  }
+ ],
+ "bitacora_origen": "generada por generar_bitacora_v2.py a partir de Bitacora/ATA025.json (metadatos) y del indice v2 (iteraciones)"
+}

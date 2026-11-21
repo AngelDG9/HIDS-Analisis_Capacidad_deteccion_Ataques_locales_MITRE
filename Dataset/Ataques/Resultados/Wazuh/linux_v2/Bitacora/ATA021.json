@@ -1,0 +1,134 @@
+{
+ "ata_id": "ATA021",
+ "tecnica": "T1029",
+ "tactica": "Exfiltration",
+ "sistema": "linux",
+ "bloque": "fase-03-ampliacion",
+ "tanda": "B",
+ "estado": "cerrado",
+ "artefacto": "Dataset/Ataques/Comandos/T1029-Scheduled_Transfer/",
+ "atomic": {
+  "fuente": "custom",
+  "nota": "crontab de usuario (angel, sin sudo); el job dispara DENTRO de la ventana; la entrada se retira al terminar",
+  "fuente_norm": "propio",
+  "motivo_codigo": "propio_por_diseno",
+  "motivo_detalle": "El mecanismo es programar la transferencia (crontab de usuario) para que la ejecute cron dentro de la ventana; distinto de un envío directo."
+ },
+ "esperado_sha256": "75499e0a7f399a44816431cde4911f67ad4915b90d5ffe54786363113efd1e08",
+ "ataque_sha256": "06d21fec27b0ee1d4d48947046e5955fc77618398830c4ec47b71ee01e34cf54",
+ "cron_job_sha256": "d65bd1f2bc814163ac5e43a2e64bc24ded6a0efef49758eb314daf75a00b0635",
+ "validacion_humana_esperado": "APROBADO 2026-09-29",
+ "c0": {
+  "logtest": "Soporte/Ataques/c0/ATA021_logtest.txt",
+  "logtest_sha256": "0a5d712ae40d77ccb6a1b206f0abf254744e3706161ae7ae4dc804ec5c1ee572",
+  "preflight": "Soporte/Ataques/c0/ATA021_preflight.md",
+  "preflight_sha256": "88127a5690c79fb4d887064660d23cf5aa94d44c43f02fbda76dd4b4634ac8e6",
+  "resultado": "PASA (crontab/curl/dash -> 80792 level 3; linea CRON -> 1002; sin silenciador)"
+ },
+ "iteraciones": [
+  {
+   "iter": 1,
+   "variante": "base",
+   "t0": "2026-11-20T04:16:04Z",
+   "t1": "2026-11-20T04:17:33Z",
+   "duracion_s": 89,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA021_iter1-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA021_iter1-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  },
+  {
+   "iter": 2,
+   "variante": "base",
+   "t0": "2026-11-20T04:21:01Z",
+   "t1": "2026-11-20T04:21:33Z",
+   "duracion_s": 32,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA021_iter2-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA021_iter2-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  }
+ ],
+ "revision_global": {
+  "fecha": "2026-09-29",
+  "filas": 154,
+  "veredicto": "ruido (146) + artefacto (8)",
+  "motivo": "por iteracion: 73 ruido = churn del login del operador (66 dash cwd=/ + 7 PAM) y 4 artefacto = artefactos del ataque (1 dash = lanzador de cron; 2x 80791 borrado en /var/spool/cron; 1x 2832 crontab entry changed). Las PAM 5501/5502 del operador = ruido SIEMPRE (criterio ratificado 2026-09-28: no es demostrable que sean del ataque, aunque caigan pegadas al disparo de cron)",
+  "revisor": "executor ampliacion tanda B"
+ },
+ "doble_iteracion": "iguales",
+ "doble_iteracion_detalle": {
+  "criterio": "v2",
+  "mismo_conjunto_rule_id_deteccion": true,
+  "rule_ids_deteccion": [
+   "80792"
+  ],
+  "n1": 6,
+  "n2": 6,
+  "margen": 2,
+  "criterio_recuento_ok": true,
+  "sin_dudosas_sin_resolver": true,
+  "auto_ruido_delta": 17,
+  "ruido_conocido_delta": 2
+ },
+ "extraccion": {
+  "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)",
+  "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+  "aislamiento": "filtro a agent_name == victima-linux"
+ },
+ "prueba_de_efecto": "sink.log del HOST: POST /api/scheduled/dato_programado.csv disparado por cron DENTRO de [t0,t1] (disparo 02:11:01Z y 02:16:01Z), sha256 identico al dato local (0916137c...). Sin NAT; receptor local",
+ "receptor": {
+  "script": "Soporte/Ataques/receiver/sink_http.py",
+  "bind": "192.168.65.1:9090 (HTTP)",
+  "firewall": "NO se creo regla; TFG-sink-9090 verificado ausente (CA10)",
+  "parado_tras_t1": true
+ },
+ "hallazgo": "los AFECTOS no declarados del ataque (80791 borrado en /var/spool/cron, 2832 'Crontab entry changed') aparecen como senales reales de la HIDS; van a artefacto_ataque (no eran la deteccion declarada)",
+ "eventos": [
+  {
+   "ts": "2026-09-29T02:10:12Z",
+   "tipo": "t0",
+   "detalle": "iter1 t0 (revert lab-listo + 90 s asentamiento)"
+  },
+  {
+   "ts": "2026-09-29T02:11:01Z",
+   "tipo": "cron",
+   "detalle": "iter1 disparo de cron dentro de la ventana"
+  },
+  {
+   "ts": "2026-09-29T02:11:33Z",
+   "tipo": "t1",
+   "detalle": "iter1 t1 (tras scan FIM forzado)"
+  },
+  {
+   "ts": "2026-09-29T02:15:27Z",
+   "tipo": "t0",
+   "detalle": "iter2 t0"
+  },
+  {
+   "ts": "2026-09-29T02:16:01Z",
+   "tipo": "cron",
+   "detalle": "iter2 disparo de cron"
+  },
+  {
+   "ts": "2026-09-29T02:16:34Z",
+   "tipo": "t1",
+   "detalle": "iter2 t1"
+  },
+  {
+   "ts": "2026-09-29T02:30:00Z",
+   "tipo": "cierre",
+   "detalle": "criterio v2: deteccion identica (6/6, {80792}) -> iguales"
+  },
+  {
+   "ts": "2026-09-29T03:10:00Z",
+   "tipo": "correccion",
+   "detalle": "ciclo 2 (tester): la PAM 5502 de 02:11:02.545Z (iter1) pasa de artefacto a ruido (sesion del operador; no es demostrable que sea del ataque aunque caiga pegada al disparo de cron). Re-plegado: i1 72+5 -> 73+4 (global ruido 146 / artefacto 8); -Audited iter1 regenerado (conteos dudosa=0 artefacto_ataque=66 ruido_conocido=259)"
+  }
+ ],
+ "bitacora_origen": "generada por generar_bitacora_v2.py a partir de Bitacora/ATA021.json (metadatos) y del indice v2 (iteraciones)"
+}

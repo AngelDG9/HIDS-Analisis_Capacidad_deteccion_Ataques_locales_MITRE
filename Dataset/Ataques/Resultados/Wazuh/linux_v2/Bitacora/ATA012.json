@@ -1,0 +1,167 @@
+{
+ "ata_id": "ATA012",
+ "tecnica": "T1119",
+ "tactica": "Collection",
+ "sistema": "linux",
+ "bloque": "fase-03-piloto-custom",
+ "estado": "cerrado",
+ "artefacto": "Dataset/Ataques/Comandos/T1119-Automated_Collection/",
+ "atomic": {
+  "fuente": "custom",
+  "nota": "ataque manual escrito por el TFG; Atomic Red Team no tiene pruebas Linux para T1119",
+  "fuente_norm": "propio",
+  "motivo_codigo": "art_no_prueba_plataforma",
+  "motivo_detalle": "solo la otra"
+ },
+ "esperado_sha256": "650d518283cbff3463b5024ddea539e05347fa20cc988f9cf6f69d937fa89424",
+ "ataque_sha256": "d5ecb91973cbb50f9afef58a2f72726ae58370950418d35e3c86d015a583016e",
+ "c0": {
+  "logtest": "Soporte/Ataques/c0/ATA012_logtest.txt",
+  "logtest_sha256": "029d45b59cf385f988d275afaa7c68ab5390f40d6a0f9849d6e754c2f8908f0b",
+  "preflight": "Soporte/Ataques/c0/ATA012_preflight.md",
+  "resultado": "PASA (C0 ejecutado n=3, sin silenciadores de fabrica)"
+ },
+ "iteraciones": [
+  {
+   "iter": 1,
+   "variante": "base",
+   "t0": "2026-11-20T02:49:01Z",
+   "t1": "2026-11-20T02:49:32Z",
+   "duracion_s": 31,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA012_iter1-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA012_iter1-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  },
+  {
+   "iter": 2,
+   "variante": "base",
+   "t0": "2026-11-20T02:52:55Z",
+   "t1": "2026-11-20T02:53:26Z",
+   "duracion_s": 31,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA012_iter2-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA012_iter2-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  }
+ ],
+ "revision_global": {
+  "fecha": "2026-09-28",
+  "filas": 13,
+  "veredicto": "mixto (11 ruido / 2 artefacto)",
+  "motivo": "ajenas al ataque (find de update-motd.d del login del operador, cwd=/; find sin cwd) y escritura watch del tar (80790), fuera del ancla o no-execve -> ruido; mas las sesiones PAM del operador (5501/5502) -> ruido. La escritura watch del .tar.gz (80790 Created: /home/angel/lab-attack/ATA012/collected.tar.gz), que es DEL ATAQUE, se pliega con el veredicto nuevo artefacto (fase-03-metrica) -> artefacto_ataque, nunca ruido (el guardarrail prohibe ruido sobre filas del ataque). Criterio del humano (sesiones/FPs del operador, ajenas al ataque); el esperado declara las escrituras como no-deteccion",
+  "revisor": "humano / orquestador (criterio humano 2026-09-26; veredicto artefacto fase-03-metrica 2026-09-28)"
+ },
+ "doble_iteracion": "iguales",
+ "doble_iteracion_detalle": {
+  "criterio": "v2",
+  "mismo_conjunto_rule_id_deteccion": true,
+  "rule_ids_deteccion": [
+   "80792"
+  ],
+  "n1": 6,
+  "n2": 7,
+  "margen": 2,
+  "criterio_recuento_ok": true,
+  "sin_dudosas_sin_resolver": true,
+  "auto_ruido_delta": 1,
+  "ruido_conocido_delta": 3,
+  "nota": "fase-03-senales (2026-09-28): con el ancla implicita + evento de ejecucion la deteccion es 6/7 (find x4/5, cp, tar; todos 80792 execve anclados a cwd=ATA012). Las 3 find ajenas (cwd=/), el find con cwd vacio y el tar watch caen a dudosa/sin_ancla -> ruido (antes contados como deteccion). S4 (audit_cwd) ya casa el cwd real sin barra final"
+ },
+ "extraccion": {
+  "extractor": "extraer_alertas.py H3 (con srcip/srcuser/dstuser)",
+  "nota": "iter1 re-extraida tras desplegar el extractor H3; 5715 del operador -> operador:5715 (antes dudosa). iter2 ya con el extractor nuevo"
+ },
+ "eventos": [
+  {
+   "ts": "2026-09-26T12:20:57Z",
+   "tipo": "t0",
+   "detalle": "iter1 t0 (revert a lab-listo + asentamiento)"
+  },
+  {
+   "ts": "2026-09-26T12:21:33Z",
+   "tipo": "t1",
+   "detalle": "iter1 t1 (tras scan FIM forzado)"
+  },
+  {
+   "ts": "2026-09-26T12:21:35Z",
+   "tipo": "extraido",
+   "detalle": "iter1 raw 758 (751 victima + 7 otros) -> Detalle 751; extractor ANTIGUO (sin srcip) -> 5715 dudosa"
+  },
+  {
+   "ts": "2026-09-26T12:22:00Z",
+   "tipo": "filtrado",
+   "detalle": "iter1 deteccion=11 auto_ruido=619 ruido_conocido=118 dudosa=3 (5501,5502,5715)"
+  },
+  {
+   "ts": "2026-09-26T14:25:00Z",
+   "tipo": "gap",
+   "detalle": "DETECTADO gap de despliegue: extraer_alertas.py del manager obsoleto (sha 71ccca4a) vs repo H3 (sha 4019fda8)"
+  },
+  {
+   "ts": "2026-09-26T14:26:00Z",
+   "tipo": "despliegue",
+   "detalle": "desplegado extraer_alertas.py H3 en el manager (backup .bak-preH3-20260926); sha verificado = repo"
+  },
+  {
+   "ts": "2026-09-26T14:27:00Z",
+   "tipo": "re-extraido",
+   "detalle": "iter1 re-extraida con H3: 5715 -> ruido_conocido/operador:5715 (srcip=192.168.65.1); dudosas -> solo PAM 5501/5502"
+  },
+  {
+   "ts": "2026-09-26T14:28:00Z",
+   "tipo": "revision",
+   "detalle": "PAM 5501/5502 -> ruido (criterio humano); dudosa=0"
+  },
+  {
+   "ts": "2026-09-26T12:30:03Z",
+   "tipo": "t0",
+   "detalle": "iter2 t0 (revert a lab-listo + asentamiento)"
+  },
+  {
+   "ts": "2026-09-26T12:30:38Z",
+   "tipo": "t1",
+   "detalle": "iter2 t1"
+  },
+  {
+   "ts": "2026-09-26T12:31:00Z",
+   "tipo": "extraido",
+   "detalle": "iter2 raw 763 (756 victima + 7 otros) -> Detalle 756 (con extractor H3)"
+  },
+  {
+   "ts": "2026-09-26T12:32:00Z",
+   "tipo": "filtrado",
+   "detalle": "iter2 deteccion=11 auto_ruido=620 ruido_conocido=125 dudosa=0 tras resolver PAM a ruido"
+  },
+  {
+   "ts": "2026-09-26T14:40:00Z",
+   "tipo": "cierre",
+   "detalle": "criterio v2: deteccion identica (11/11, mismo conjunto) -> iguales"
+  },
+  {
+   "ts": "2026-09-28T00:00:00Z",
+   "tipo": "correccion",
+   "detalle": "fase-03-cabos (cabo 2): cabecera del esperado arreglada (PENDIENTE -> validado el 2026-09-26); los 2 audited regenerados (unico cambio: el sha256 del esperado en la cabecera; determinismo re-verificado; cifras intactas); esperado_sha256 y audited_sha256 actualizados. Los -Revision.csv no se tocan (su cabecera cita el esperado previo; patron ya existente en el piloto)"
+  },
+  {
+   "ts": "2026-09-28T00:00:00Z",
+   "tipo": "correccion",
+   "detalle": "fase-03-senales: mecanismo de ancla implicita + evento de ejecucion (exe AND cwd-ancla AND audit_command). Regenerados los 2 -Audited.csv y los 2 -Revision.csv: deteccion 11/11 -> 6/7 (los 3 find de update-motd.d con cwd=/, el find con cwd vacio y el tar watch pasan a dudosa/sin_ancla:T1119-S1/S3 -> ruido); ruido_conocido 121/125 -> 126/129; dudosa final 0. Hashes actualizados; Hojas/ATA_index.csv intacto (sigue cerrado); determinismo re-verificado; el -Revision.csv queda con los veredictos explicitos (editable)"
+  },
+  {
+   "ts": "2026-09-28T00:00:00Z",
+   "tipo": "correccion",
+   "detalle": "fase-03-metrica (offline, sin VMs): anadida la categoria artefacto_ataque y la pertenencia al ataque por carpeta (ATTACK_ROOT + ata_id) + guardarrail de plegado + veredicto humano artefacto. Regenerados los 2 -Audited.csv y los 2 -Revision.csv: las 10 filas/iter de la huella del propio ataque (staging del ataque: execve del arbol + el .tar.gz creado) pasan a artefacto_ataque; la fila del .tar.gz (80790 watch DEL ATAQUE) pasa de veredicto ruido a artefacto; ruido_conocido 126/129 -> 116/119; deteccion=6/7 (sin cambios). revision_global: mixto (11 ruido / 2 artefacto). Hashes (audited/revision) actualizados; Hojas/ATA_index.csv intacto (cerrado); determinismo re-verificado"
+  },
+  {
+   "ts": "2026-09-28T00:00:00Z",
+   "tipo": "correccion",
+   "detalle": "fase-03-metrica ciclo 2 (correccion 2, coherencia): reescrita la nota de la fila artefacto (80790 watch del .tar.gz) para que diga artefacto (es del ataque, pista floja -> artefacto, nunca ruido) y regenerada la cabecera de los -Revision.csv con los conteos del pase actual (ya incluye artefacto_ataque). Sin cambios de cifras (deteccion=6/7, artefacto_ataque=10/10, ruido_conocido=116/119). Hashes (audited/revision) actualizados"
+  }
+ ],
+ "bitacora_origen": "generada por generar_bitacora_v2.py a partir de Bitacora/ATA012.json (metadatos) y del indice v2 (iteraciones)"
+}

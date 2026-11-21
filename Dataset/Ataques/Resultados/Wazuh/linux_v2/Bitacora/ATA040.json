@@ -1,0 +1,125 @@
+{
+ "ata_id": "ATA040",
+ "tecnica": "T1074.002",
+ "tactica": "Collection",
+ "sistema": "linux",
+ "bloque": "fase-03-ampliacion-2",
+ "tanda": "C",
+ "estado": "cerrado",
+ "artefacto": "Dataset/Ataques/Comandos/T1074.002-Remote_Data_Staging/",
+ "atomic": {
+  "fuente": "custom",
+  "nota": "staging REMOTO: copia el material recolectado al recurso remoto del manager (daemon rsync, modulo escribible incoming). Mismo recurso que ATA039, direccion local->remoto. Sin cliente NFS/SMB offline -> no se monta FS. Guardarrail: destino 192.168.65.128:9873 y semilla bajo lab-attack/ATA040",
+  "fuente_norm": "propio",
+  "motivo_codigo": "propio_por_diseno",
+  "motivo_detalle": "Staging REMOTO: copia el material ya recolectado al recurso remoto local; dirección local->remoto (hermano de ATA011/T1074.001 local)."
+ },
+ "esperado_sha256": "b91a6f32b0b9741134818144a3df7ff10734b29fd366c7884b240d411e329c1e",
+ "ataque_sha256": "539c7ef3dc371c2b4c03a222bdddfe86c9d8432f7a8f533ef91316db8c91daed",
+ "validacion_humana_esperado": "APROBADO 2026-09-29",
+ "c0": {
+  "logtest": "Soporte/Ataques/c0/ATA040_logtest.txt",
+  "logtest_sha256": "52fc71ff52517822a3c40eb95ca3a41076a71d287e3361bd1738368048ed86d6",
+  "preflight": "Soporte/Ataques/c0/ATA040_preflight.md",
+  "preflight_sha256": "78351b372755c4bd312f2d9b34b227ecfb02c9127581919128fa956eeb4a6cb5",
+  "resultado": "PASA (1 evento /usr/bin/rsync -> 80792 level 3; sin silenciador de fabrica)"
+ },
+ "iteraciones": [
+  {
+   "iter": 1,
+   "variante": "base",
+   "t0": "2026-11-20T15:16:34Z",
+   "t1": "2026-11-20T15:17:26Z",
+   "duracion_s": 52,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA040_iter1-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA040_iter1-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  },
+  {
+   "iter": 2,
+   "variante": "base",
+   "t0": "2026-11-20T15:21:23Z",
+   "t1": "2026-11-20T15:22:15Z",
+   "duracion_s": 52,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA040_iter2-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA040_iter2-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  }
+ ],
+ "revision_global": {
+  "fecha": "2026-09-29",
+  "filas": 10,
+  "veredicto": "ruido (10: PAM 5501/5502 del login del operador)",
+  "motivo": "iter1: 7 filas; iter2: 3 filas, todas PAM de la sesion del operador -> ruido (criterio ratificado). Cero filas del ataque en ruido.",
+  "revisor": "executor ampliacion-2 tanda C"
+ },
+ "doble_iteracion": "iguales",
+ "doble_iteracion_detalle": {
+  "criterio": "v2",
+  "mismo_conjunto_rule_id_deteccion": true,
+  "rule_ids_deteccion": [
+   "80792"
+  ],
+  "n1": 2,
+  "n2": 2,
+  "margen": 2,
+  "criterio_recuento_ok": true,
+  "sin_dudosas_sin_resolver": true,
+  "auto_ruido_delta": 36,
+  "ruido_conocido_delta": 43
+ },
+ "extraccion": {
+  "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)",
+  "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+  "aislamiento": "filtro a agent_name == victima-linux"
+ },
+ "prueba_de_efecto": "staging remoto: el sha256 de los ficheros estagiados en el recurso remoto del manager coincide con el de la victima (clientes.csv 2ad637b8..., facturas.csv 1011daaa..., nominas.csv b5c25b1a...). Sin NAT; daemon rsync local",
+ "receptor": {
+  "aplica": false,
+  "nota": "no usa receptor HTTP; usa el recurso remoto (daemon rsync del manager, puerto 9873)"
+ },
+ "guardarrailes": {
+  "destino_lab": true,
+  "sin_montaje_fs": "declarado",
+  "datos_juguete": true
+ },
+ "hallazgos": [
+  "Distincion con ATA039: mismo recurso, direccion opuesta (local->remoto = staging).",
+  "El HIDS de host ve el PROCESO cliente (rsync), no la red; la prueba es el sha256 en el recurso remoto.",
+  "Mismo binario (rsync) que ATA039 -> O2 1/1 por ancla."
+ ],
+ "eventos": [
+  {
+   "ts": "2026-09-29T11:49:39Z",
+   "tipo": "t0",
+   "detalle": "iter1 t0 (revert lab-listo + 90 s asentamiento)"
+  },
+  {
+   "ts": "2026-09-29T11:50:11Z",
+   "tipo": "t1",
+   "detalle": "iter1 t1 (tras scan FIM forzado)"
+  },
+  {
+   "ts": "2026-09-29T11:52:29Z",
+   "tipo": "t0",
+   "detalle": "iter2 t0"
+  },
+  {
+   "ts": "2026-09-29T11:53:01Z",
+   "tipo": "t1",
+   "detalle": "iter2 t1"
+  },
+  {
+   "ts": "2026-09-29T12:20:00Z",
+   "tipo": "cierre",
+   "detalle": "criterio v2: deteccion identica (2/2, {80792}) -> iguales"
+  }
+ ],
+ "bitacora_origen": "generada por generar_bitacora_v2.py a partir de Bitacora/ATA040.json (metadatos) y del indice v2 (iteraciones)"
+}

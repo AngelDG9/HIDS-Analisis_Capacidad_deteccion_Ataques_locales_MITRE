@@ -1,0 +1,122 @@
+{
+ "ata_id": "ATA045",
+ "tecnica": "T1499.001",
+ "tactica": "Impact",
+ "sistema": "linux",
+ "bloque": "fase-03-p1-cierre",
+ "tanda": "A",
+ "estado": "cerrado",
+ "artefacto": "Dataset/Ataques/Comandos/T1499.001-OS_Exhaustion_Flood/",
+ "atomic": {
+  "fuente": "custom",
+  "nota": "agotamiento ACOTADO de memoria del SO: relleno de /dev/shm (tmpfs RAM) con dd hasta 512 MiB bajo timeout, mantenido y liberado; guardarrail MAX_MB<=768, HOLD<=15s, trap de limpieza",
+  "fuente_norm": "propio",
+  "motivo_codigo": "art_no_prueba_plataforma",
+  "motivo_detalle": "ART no trae prueba de T1499 (tecnica ausente del clon) -> propio."
+ },
+ "material_externo": {
+  "aplica": false,
+  "nota": "sin material externo: dd/timeout/free/rm de serie"
+ },
+ "esperado_sha256": "6c33c96c1d6cc11f3c1aae9c3aaf7cb29a283857760ae4442804341723f41c5e",
+ "ataque_sha256": "7e82f500f41cad49531db9c79908fc9f9d0d857991f872eb873a69294d0f5148",
+ "validacion_humana_esperado": "APROBADO 2026-10-02",
+ "c0": {
+  "logtest": "Soporte/Ataques/c0/ATA045_logtest.txt",
+  "logtest_sha256": "77fbe83bdf40fd560929c42560a77712e244c6de2a5b752b763fdf83451cc6cf",
+  "preflight": "Soporte/Ataques/c0/ATA045_preflight.md",
+  "preflight_sha256": "f99e53f20ff3d16b96e276a4dae60be213e74d3986275eb4ce471178f0c0c379",
+  "resultado": "PASA (4 eventos dd/timeout/free/rm -> 80792 level 3; sin silenciador)"
+ },
+ "iteraciones": [
+  {
+   "iter": 1,
+   "variante": "base",
+   "t0": "2026-11-20T07:46:17Z",
+   "t1": "2026-11-20T07:46:56Z",
+   "duracion_s": 39,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA045_iter1-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA045_iter1-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  },
+  {
+   "iter": 2,
+   "variante": "base",
+   "t0": "2026-11-20T07:50:26Z",
+   "t1": "2026-11-20T07:51:04Z",
+   "duracion_s": 38,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA045_iter2-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA045_iter2-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  }
+ ],
+ "revision_global": {
+  "fecha": "2026-10-02",
+  "filas": 8,
+  "veredicto": "PAM/sudo -> ruido; execve sin ancla / del ataque -> artefacto",
+  "motivo": "Criterio ratificado 2026-09-28; 0 filas del ataque en ruido.",
+  "revisor": "executor fase-03-p1-cierre tanda A"
+ },
+ "doble_iteracion": "iguales",
+ "doble_iteracion_detalle": {
+  "criterio": "v2",
+  "mismo_conjunto_rule_id_deteccion": true,
+  "rule_ids_deteccion": [
+   "80792"
+  ],
+  "n1": 8,
+  "n2": 9,
+  "margen": 2,
+  "criterio_recuento_ok": true,
+  "sin_dudosas_sin_resolver": true
+ },
+ "extraccion": {
+  "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)",
+  "fuente": "fichero diario /var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+  "aislamiento": "filtro a agent_name == victima-linux"
+ },
+ "prueba_de_efecto": "MemAvailable cae ~507 MB durante el relleno y se recupera tras liberarlo; 0 residuo",
+ "receptor": {
+  "aplica": false,
+  "nota": "no hay receptor de red"
+ },
+ "hallazgos": [
+  "Wazuh NO tiene reglas de CPU/RAM -> el agotamiento no se ve; la unica capa es el execve.",
+  "Con builtins del shell no habria execve -> punto ciego total (R9).",
+  "C0 sin silenciador."
+ ],
+ "eventos": [
+  {
+   "ts": "2026-10-02T00:21:14Z",
+   "tipo": "t0",
+   "detalle": "iter1 t0 (revert lab-listo + asentamiento)"
+  },
+  {
+   "ts": "2026-10-02T00:21:53Z",
+   "tipo": "t1",
+   "detalle": "iter1 t1 (tras scan FIM forzado)"
+  },
+  {
+   "ts": "2026-10-02T00:26:56Z",
+   "tipo": "t0",
+   "detalle": "iter2 t0"
+  },
+  {
+   "ts": "2026-10-02T00:27:35Z",
+   "tipo": "t1",
+   "detalle": "iter2 t1"
+  },
+  {
+   "ts": "2026-10-02T00:27:35Z",
+   "tipo": "cierre",
+   "detalle": "criterio v2: deteccion identica ({80792}) -> iguales"
+  }
+ ],
+ "bitacora_origen": "generada por generar_bitacora_v2.py a partir de Bitacora/ATA045.json (metadatos) y del indice v2 (iteraciones)"
+}

@@ -1,0 +1,123 @@
+{
+ "ata_id": "ATA023",
+ "tecnica": "T1496.002",
+ "tactica": "Impact",
+ "sistema": "linux",
+ "bloque": "fase-03-ampliacion",
+ "tanda": "B",
+ "estado": "cerrado",
+ "artefacto": "Dataset/Ataques/Comandos/T1496.002-Bandwidth_Hijacking/",
+ "atomic": {
+  "fuente": "custom",
+  "nota": "transferencia masiva ACOTADA (32 MiB) al receptor del HOST; sin reglas de red/recursos en Wazuh -> se espera deteccion solo por execve",
+  "fuente_norm": "propio",
+  "motivo_codigo": "propio_por_diseno",
+  "motivo_detalle": "La técnica sí aplica a Linux, pero ART no trae prueba Linux utilizable sin NAT; el consumo de banda se simula con una transferencia acotada al receptor local."
+ },
+ "esperado_sha256": "41142efb43a2be4ecafba64cc8618a6d316715bf734201c5a09b0ae804583cfb",
+ "ataque_sha256": "db76ac459df61774fd2c4d70451787ee2aa56ce931e75f24f8ac3f54574cb310",
+ "validacion_humana_esperado": "APROBADO 2026-09-29",
+ "c0": {
+  "logtest": "Soporte/Ataques/c0/ATA023_logtest.txt",
+  "logtest_sha256": "2f44cc57dce5036c9b69495bcb995c34afa4c1d4367e41117c0b6b0b76518092",
+  "preflight": "Soporte/Ataques/c0/ATA023_preflight.md",
+  "preflight_sha256": "646fe995d568a0743095ee50ed6c6a212245bcfdf16b8223a818f4b4f067899d",
+  "resultado": "PASA (head y curl -> 80792 level 3; sin silenciador)"
+ },
+ "iteraciones": [
+  {
+   "iter": 1,
+   "variante": "base",
+   "t0": "2026-11-20T04:32:58Z",
+   "t1": "2026-11-20T04:33:31Z",
+   "duracion_s": 33,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA023_iter1-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA023_iter1-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  },
+  {
+   "iter": 2,
+   "variante": "base",
+   "t0": "2026-11-20T04:36:58Z",
+   "t1": "2026-11-20T04:37:31Z",
+   "duracion_s": 33,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA023_iter2-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA023_iter2-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  }
+ ],
+ "revision_global": {
+  "fecha": "2026-09-29",
+  "filas": 19,
+  "veredicto": "ruido (19)",
+  "motivo": "head con cwd=/ (churn del login del operador, sin_ancla) + PAM 5501/5502; ajenas al ataque — criterio ratificado 2026-09-28",
+  "revisor": "executor ampliacion tanda B"
+ },
+ "doble_iteracion": "iguales",
+ "doble_iteracion_detalle": {
+  "criterio": "v2",
+  "mismo_conjunto_rule_id_deteccion": true,
+  "rule_ids_deteccion": [
+   "80792"
+  ],
+  "n1": 2,
+  "n2": 2,
+  "margen": 2,
+  "criterio_recuento_ok": true,
+  "sin_dudosas_sin_resolver": true,
+  "auto_ruido_delta": 2,
+  "ruido_conocido_delta": 0
+ },
+ "extraccion": {
+  "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)",
+  "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+  "aislamiento": "filtro a agent_name == victima-linux"
+ },
+ "prueba_de_efecto": "sink.log del HOST: POST /api/bw/hog con len=33554432 (32 MiB) en ~1,2 s; HTTP=200. Acotado; sin NAT; receptor local",
+ "receptor": {
+  "script": "Soporte/Ataques/receiver/sink_http.py",
+  "bind": "192.168.65.1:9090 (HTTP)",
+  "firewall": "NO se creo regla; TFG-sink-9090 verificado ausente (CA10)",
+  "parado_tras_t1": true
+ },
+ "hallazgo": "R9 confirmado: Wazuh no tiene reglas de red/recursos; el 'ancho de banda' no se ve y la unica deteccion es el execve (head/curl)",
+ "eventos": [
+  {
+   "ts": "2026-09-29T02:02:46Z",
+   "tipo": "t0",
+   "detalle": "iter1 t0 (revert lab-listo + 90 s asentamiento)"
+  },
+  {
+   "ts": "2026-09-29T02:03:20Z",
+   "tipo": "t1",
+   "detalle": "iter1 t1 (tras scan FIM forzado)"
+  },
+  {
+   "ts": "2026-09-29T02:06:31Z",
+   "tipo": "t0",
+   "detalle": "iter2 t0"
+  },
+  {
+   "ts": "2026-09-29T02:07:04Z",
+   "tipo": "t1",
+   "detalle": "iter2 t1"
+  },
+  {
+   "ts": "2026-09-29T02:30:00Z",
+   "tipo": "cierre",
+   "detalle": "criterio v2: deteccion identica (2/2, {80792}) -> iguales"
+  },
+  {
+   "ts": "2026-09-29T03:10:00Z",
+   "tipo": "correccion",
+   "detalle": "ciclo 2 (tester): se endurece ATA023_ataque.sh — `HOG=OK` ya NO es incondicional: se comprueba el resultado de curl (rc=0, HTTP 2xx y enviado==MAX_BYTES) y en caso contrario `HOG=FALLO` + exit 1. Al cambiar el guion cambia su huella; se actualiza la cita a la REAL actual db76ac45…b310 (la ejecutada, aun en Logs/ATA023_iter*/sha256_artefacto.txt, fue 035cdc84…2ae2). NO se editó el fichero citado para cuadrar"
+  }
+ ],
+ "bitacora_origen": "generada por generar_bitacora_v2.py a partir de Bitacora/ATA023.json (metadatos) y del indice v2 (iteraciones)"
+}

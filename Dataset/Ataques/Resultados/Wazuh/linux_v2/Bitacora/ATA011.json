@@ -1,0 +1,112 @@
+{
+ "ata_id": "ATA011",
+ "tecnica": "T1074",
+ "tactica": "Collection",
+ "sistema": "linux",
+ "bloque": "fase-03-escalado",
+ "tanda": "B",
+ "estado": "cerrado",
+ "artefacto": "Dataset/Ataques/Comandos/T1074-Data_Staged/",
+ "atomic": {
+  "fuente": "custom",
+  "nota": "ataque manual (la prueba ART de T1074 en Linux descarga de GitHub -> no ejecutable sin NAT); accion caracteristica = REUNIR (mkdir+cp) en staging/ del ataque, con manifiesto sha256; sin find masivo (T1119) ni compresion (T1560)",
+  "fuente_norm": "propio",
+  "motivo_codigo": "art_requiere_red_nube",
+  "motivo_detalle": "ART trae 1 prueba Linux de T1074 que descarga datos de GitHub: no ejecutable sin NAT."
+ },
+ "esperado_sha256": "72c83b9eef0afdfdbf46b70203f8bfd411b37590f12ae46b021f0498ec529f06",
+ "ataque_sha256": "57fa2e9aa497b224707e5b1e49130419435ebd3e4e8bc6084c8fa5153a4e0e58",
+ "validacion_humana_esperado": "APROBADO 2026-09-29",
+ "c0": {
+  "logtest": "Soporte/Ataques/c0/ATA011_logtest.txt",
+  "logtest_sha256": "0db202ee329fd132945c7f9040fe59c52aa576763a26ab404eada7161b290bc2",
+  "preflight": "Soporte/Ataques/c0/ATA011_preflight.md",
+  "preflight_sha256": "c5dd03c5f23e31191616d92d632ea887a20f06a3df216c8846710efac07ca950",
+  "resultado": "PASA (2 eventos mkdir/cp -> 80792 level 3; sin silenciador de fabrica)"
+ },
+ "iteraciones": [
+  {
+   "iter": 1,
+   "variante": "base",
+   "t0": "2026-11-20T02:41:15Z",
+   "t1": "2026-11-20T02:41:47Z",
+   "duracion_s": 32,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA011_iter1-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA011_iter1-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  },
+  {
+   "iter": 2,
+   "variante": "base",
+   "t0": "2026-11-20T02:45:10Z",
+   "t1": "2026-11-20T02:45:42Z",
+   "duracion_s": 32,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA011_iter2-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA011_iter2-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  }
+ ],
+ "revision_global": {
+  "fecha": "2026-09-29",
+  "filas": 0,
+  "veredicto": "sin dudosas",
+  "motivo": "dudosa=0 en ambas iteraciones -> no se genera -Revision.csv; no hay filas que resolver",
+  "revisor": "executor tanda B"
+ },
+ "doble_iteracion": "iguales",
+ "doble_iteracion_detalle": {
+  "criterio": "v2",
+  "mismo_conjunto_rule_id_deteccion": true,
+  "rule_ids_deteccion": [
+   "80792"
+  ],
+  "n1": 5,
+  "n2": 5,
+  "margen": 2,
+  "criterio_recuento_ok": true,
+  "sin_dudosas_sin_resolver": true,
+  "auto_ruido_delta": 12,
+  "ruido_conocido_delta": 0,
+  "nota": "5 alertas 80792/ventana = 2 mkdir + 3 cp, todas ancladas al cwd del ataque; O2 2/2 (T1074-S1/S2)"
+ },
+ "extraccion": {
+  "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)",
+  "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-28.json (NO alerts.json)",
+  "aislamiento": "filtro a agent_name == victima-linux"
+ },
+ "prueba_de_efecto": "STAGING=OK: staging/ con 3 CSV reunidos; manifiesto sha256 revalidado (sha256sum -c -> 3 OK); hashes identicos entre iteraciones",
+ "eventos": [
+  {
+   "ts": "2026-09-28T23:03:10Z",
+   "tipo": "t0",
+   "detalle": "iter1 t0 (tras revert + 95 s asentamiento)"
+  },
+  {
+   "ts": "2026-09-28T23:03:52Z",
+   "tipo": "t1",
+   "detalle": "iter1 t1 (tras scan FIM forzado)"
+  },
+  {
+   "ts": "2026-09-28T23:07:57Z",
+   "tipo": "t0",
+   "detalle": "iter2 t0"
+  },
+  {
+   "ts": "2026-09-28T23:08:38Z",
+   "tipo": "t1",
+   "detalle": "iter2 t1"
+  },
+  {
+   "ts": "2026-09-28T23:09:30Z",
+   "tipo": "cierre",
+   "detalle": "criterio v2: deteccion identica (5/5, {80792}) -> iguales"
+  }
+ ],
+ "bitacora_origen": "generada por generar_bitacora_v2.py a partir de Bitacora/ATA011.json (metadatos) y del indice v2 (iteraciones)"
+}

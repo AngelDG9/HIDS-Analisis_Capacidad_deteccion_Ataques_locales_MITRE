@@ -1,0 +1,126 @@
+{
+ "ata_id": "ATA026",
+ "tecnica": "T1565.002",
+ "tactica": "Impact",
+ "sistema": "linux",
+ "bloque": "fase-03-ampliacion",
+ "tanda": "C",
+ "estado": "cerrado",
+ "artefacto": "Dataset/Ataques/Comandos/T1565.002-Transmitted_Data_Manipulation/",
+ "atomic": {
+  "fuente": "custom",
+  "nota": "proxy local (nc -l | sed | nc) que reescribe el cuerpo EN TRANSITO hacia el receptor del HOST; guardarrail: proxy solo 127.0.0.1, destino solo 192.168.65.1:9091, sed fijo, timeout",
+  "fuente_norm": "propio",
+  "motivo_codigo": "propio_por_diseno",
+  "motivo_detalle": "Manipulación del dato EN TRÁNSITO (proxy local `nc|sed|nc`): el efecto es la alteración, no el robo."
+ },
+ "esperado_sha256": "c1ffde8d138c1c2672f27e974c7a77ff28ccafbcebe87c132bcfb9cbf7bb5072",
+ "ataque_sha256": "19a23f6e620aa526725a1459ab356b6bd5b9b555a34ee86924f1c5604c6388fa",
+ "validacion_humana_esperado": "APROBADO 2026-09-29",
+ "c0": {
+  "logtest": "Soporte/Ataques/c0/ATA026_logtest.txt",
+  "logtest_sha256": "bac6447dc34909532cf29b5a122e55657079bbeff9de3a39e801aa3a5dbf2421",
+  "preflight": "Soporte/Ataques/c0/ATA026_preflight.md",
+  "preflight_sha256": "e3470aa57abcdd3db946353bdb9a0bb14179e2db2ec3720a5b6e96493f85b822",
+  "resultado": "PASA (2 eventos nc/sed -> 80792 level 3; sin silenciador)"
+ },
+ "iteraciones": [
+  {
+   "iter": 1,
+   "variante": "base",
+   "t0": "2026-11-20T05:05:20Z",
+   "t1": "2026-11-20T05:05:57Z",
+   "duracion_s": 37,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA026_iter1-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA026_iter1-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  },
+  {
+   "iter": 2,
+   "variante": "base",
+   "t0": "2026-11-20T05:09:20Z",
+   "t1": "2026-11-20T05:09:56Z",
+   "duracion_s": 36,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA026_iter2-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA026_iter2-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  }
+ ],
+ "revision_global": {
+  "fecha": "2026-09-29",
+  "filas": 20,
+  "veredicto": "ruido (18) + artefacto (2)",
+  "motivo": "18 = PAM del operador (5501/5502, dstuser=angel) -> ruido (criterio ratificado 2026-09-28). 2 = 80792 sin_ancla -> artefacto. Cero filas del ataque en ruido.",
+  "revisor": "executor ampliacion tanda C"
+ },
+ "doble_iteracion": "iguales",
+ "doble_iteracion_detalle": {
+  "criterio": "v2",
+  "mismo_conjunto_rule_id_deteccion": true,
+  "rule_ids_deteccion": [
+   "80792"
+  ],
+  "n1": 1,
+  "n2": 1,
+  "margen": 2,
+  "criterio_recuento_ok": true,
+  "sin_dudosas_sin_resolver": true,
+  "auto_ruido_delta": 48,
+  "ruido_conocido_delta": 36
+ },
+ "extraccion": {
+  "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)",
+  "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+  "aislamiento": "filtro a agent_name == victima-linux"
+ },
+ "prueba_de_efecto": "el receptor del HOST (sink.log) registro un cuerpo con sha256 b3fd1e3c... (el MANIPULADO), distinto del original c100612f... -> la manipulacion EN TRANSITO ocurrio.",
+ "receptor": {
+  "aplica": true,
+  "nota": "sink_http.py --bind 192.168.65.1 --port 9090 --tcp-port 9091, log por iteracion; levantado antes de t0 y parado tras t1; puerto alcanzable (TCP_OK), sin regla de firewall"
+ },
+ "hallazgos": [
+  "La manipulacion en transito es (casi) invisible al HIDS de host: no ve la red; solo los procesos. El efecto se prueba con el sink.log.",
+  "HALLAZGO (sistema): audit_exe=nc no casa (audit registra /usr/bin/nc.openbsd) -> O2=1/2; la deteccion la sostiene sed."
+ ],
+ "limitacion": {
+  "fecha": "2026-09-29",
+  "tipo": "cabos de documentacion (fase-03-ampliacion); NO se toca dato/filtro/esperado/metrica",
+  "invariante_0_filas_ataque_en_ruido": "se cumple BAJO LA PERTENENCIA POR CARPETA (audit_cwd o ruta bajo lab-attack/<ATA> -> artefacto_ataque, nunca ruido). Quedan FUERA las filas SIN cwd ni ruta de la carpeta -> DECLARADAS, NO deteccion.",
+  "huellas_ataque": "1 fila en iter2: 80792 con audit_exe=/usr/bin/nc.openbsd y audit_cwd VACIO (ts 2026-09-29T03:54:39.954Z). Cae en ruido_conocido/baseline: el 80792 esta en el catalogo base y, sin cwd, la pertenencia por carpeta no puede anclarla. Es una ejecucion de nc del propio ataque que el esperado no puede casar (declara 'nc', audit registra 'nc.openbsd') -> NO es deteccion. La tecnica sigue DETECTADA por 80792 de sed (reescritura en transito, anclada al cwd).",
+  "nota_alcance": "en iter1 las 3 filas de nc.openbsd SI llevan cwd del ataque (se anclan bien); en iter2 una de ellas salio sin cwd."
+ },
+ "eventos": [
+  {
+   "ts": "2026-09-29T03:50:53Z",
+   "tipo": "t0",
+   "detalle": "iter1 t0 (receptor arriba; revert lab-listo + 90 s)"
+  },
+  {
+   "ts": "2026-09-29T03:51:31Z",
+   "tipo": "t1",
+   "detalle": "iter1 t1 (tras scan FIM forzado); receptor parado"
+  },
+  {
+   "ts": "2026-09-29T03:54:38Z",
+   "tipo": "t0",
+   "detalle": "iter2 t0"
+  },
+  {
+   "ts": "2026-09-29T03:55:16Z",
+   "tipo": "t1",
+   "detalle": "iter2 t1; receptor parado"
+  },
+  {
+   "ts": "2026-09-29T03:58:00Z",
+   "tipo": "cierre",
+   "detalle": "criterio v2: deteccion identica ({80792}, 1 vs 1) -> iguales"
+  }
+ ],
+ "bitacora_origen": "generada por generar_bitacora_v2.py a partir de Bitacora/ATA026.json (metadatos) y del indice v2 (iteraciones)"
+}

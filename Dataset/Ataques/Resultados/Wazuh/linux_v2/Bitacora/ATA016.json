@@ -1,0 +1,251 @@
+{
+ "ata_id": "ATA016",
+ "tecnica": "T1213.006",
+ "tactica": "Collection",
+ "sistema": "linux",
+ "bloque": "fase-03-ampliacion",
+ "tanda": "A",
+ "estado": "cerrado",
+ "artefacto": "Dataset/Ataques/Comandos/T1213.006-Databases/",
+ "atomic": {
+  "fuente": "custom",
+  "nota": "sqlite3 y strings AUSENTES: BD SQLite real creada con la stdlib de python3 (punto ciego 92600 declarado); la coleccion usa cp/grep",
+  "fuente_norm": "propio",
+  "motivo_codigo": "art_requiere_red_nube",
+  "motivo_detalle": "La prueba ART de T1213 depende de repositorios en red/SaaS (no viable sin NAT)."
+ },
+ "esperado_sha256": "304563b42fc772ed3ef2e25b4f16b65e2b9be5925d2613f23c2bff353b577e62",
+ "ataque_sha256": "77a9543145f02edc478a036f39222d513c7e51d5041c2756c0f4e279a6a0143f",
+ "validacion_humana_esperado": "APROBADO 2026-09-29",
+ "c0": {
+  "logtest": "Soporte/Ataques/c0/ATA016_logtest.txt",
+  "logtest_sha256": "c20f71549e20be88a7cd1cfd6d17297124b20e8f692927f3f80a393a75323b9d",
+  "preflight": "Soporte/Ataques/c0/ATA016_preflight.md",
+  "preflight_sha256": "38176ab16f45f8a68dd5be470b93005b9358bdda1847d84ba846cf9c4927112a",
+  "resultado": "PASA (cp/grep -> 80792 level 3; sin silenciador)"
+ },
+ "iteraciones": [
+  {
+   "iter": 1,
+   "variante": "base",
+   "t0": "2026-11-20T03:28:16Z",
+   "t1": "2026-11-20T03:28:48Z",
+   "duracion_s": 32,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA016_iter1-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA016_iter1-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  },
+  {
+   "iter": 2,
+   "variante": "base",
+   "t0": "2026-11-20T03:32:13Z",
+   "t1": "2026-11-20T03:32:45Z",
+   "duracion_s": 32,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA016_iter2-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA016_iter2-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  },
+  {
+   "iter": 1,
+   "variante": "rev",
+   "t0": "2026-11-20T03:36:10Z",
+   "t1": "2026-11-20T03:36:42Z",
+   "duracion_s": 32,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA016_rev1-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA016_rev1-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  },
+  {
+   "iter": 2,
+   "variante": "rev",
+   "t0": "2026-11-20T03:40:19Z",
+   "t1": "2026-11-20T03:40:51Z",
+   "duracion_s": 32,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA016_rev2-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA016_rev2-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  }
+ ],
+ "revision_global": {
+  "fecha": "2026-09-29",
+  "filas": 30,
+  "veredicto": "ruido (30)",
+  "motivo": "28 = execve de grep cwd=/ (update-motd.d, login del operador); 2 = 80782 Watch-write en /run/user/1000/systemd (ajenas)",
+  "revisor": "executor ampliacion tanda A"
+ },
+ "doble_iteracion": "iguales",
+ "doble_iteracion_detalle": {
+  "criterio": "v2",
+  "mismo_conjunto_rule_id_deteccion": true,
+  "rule_ids_deteccion": [
+   "80792"
+  ],
+  "n1": 3,
+  "n2": 3,
+  "margen": 2,
+  "criterio_recuento_ok": true,
+  "sin_dudosas_sin_resolver": true,
+  "auto_ruido_delta": 11,
+  "ruido_conocido_delta": 196
+ },
+ "extraccion": {
+  "extractor": "extraer_alertas.py H3 (sha256 repo==manager)",
+  "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+  "aislamiento": "filtro a agent_name == victima-linux"
+ },
+ "prueba_de_efecto": "COLECCION=OK: copia es SQLite valida (magic 'SQLite format 3'); sha256 3726d9bc... identico; 4 codigos extraidos",
+ "hallazgo": "92600 (level 0) suprime el execve de python3 Y su evento watch asociado: la siembra de la BD no dejo ninguna alerta; la coleccion (cp/grep) si.",
+ "eventos": [
+  {
+   "ts": "2026-09-29T00:39:16Z",
+   "tipo": "t0",
+   "detalle": "iter1 t0"
+  },
+  {
+   "ts": "2026-09-29T00:39:49Z",
+   "tipo": "t1",
+   "detalle": "iter1 t1"
+  },
+  {
+   "ts": "2026-09-29T00:42:45Z",
+   "tipo": "t0",
+   "detalle": "iter2 t0"
+  },
+  {
+   "ts": "2026-09-29T00:43:17Z",
+   "tipo": "t1",
+   "detalle": "iter2 t1"
+  },
+  {
+   "ts": "2026-09-29T01:05:00Z",
+   "tipo": "cierre",
+   "detalle": "criterio v2: deteccion identica (3/3, {80792}) -> iguales"
+  }
+ ],
+ "repeticion": {
+  "fecha": "2026-10-01",
+  "motivo_repeticion": "prestaging",
+  "motivo_detalle": "Auditoría: ATA016 creaba la BD SQLite DENTRO de [t0,t1] (con python3→92600); la siembra no es la técnica — obs. §C.",
+  "metodo_original": "propio: siembra de la BD (python3) + colección (cp/grep) en la MISMA ventana",
+  "metodo_repeticion": "propio: siembra de la BD ANTES de t0; la ventana mide SOLO la colección (cp/grep)",
+  "prueba_art": null,
+  "material_prestaged": "BD SQLite (`clientes_clientes.db`, 4 clientes de juguete) sembrada en `lab-legit` ANTES de t0.",
+  "fim_flush_pre_t0": "scan FIM forzado tras el pre-staging y ANTES de t0 (evita que los cambios del prestage contaminen la ventana)",
+  "esperado_rev": {
+   "path": "Dataset/Ataques/Comandos/T1213.006-Databases/ATA016_esperado_rev.csv",
+   "sha256": "2b72ff36f53eece922ddde64d7ae61d95cdaa477752047058148760ee37ed80a",
+   "gate_humano": "APROBADO 2026-10-01 (validación humana)"
+  },
+  "ataque_rev": {
+   "path": "Dataset/Ataques/Comandos/T1213.006-Databases/ATA016_ataque_rev.sh",
+   "sha256": "a4b38f00e665261af8da49215d13d794d2c0f26d742fcd6a8047e73c65078981"
+  },
+  "c0": {
+   "logtest": "Soporte/Ataques/c0/ATA016_rev_logtest.txt",
+   "logtest_sha256": "9277c5e75b26df9e498fbb9ed6cc630452db94db4df006fe4eb7d4da8a8fabad",
+   "preflight": "Soporte/Ataques/c0/ATA016_rev_preflight.md",
+   "preflight_sha256": "726d0dcb6a0b1c7d1bdc14c43f58f0a9789d0e41225de9121e72a939f6af9e42",
+   "c0_plan": "Soporte/Ataques/c0/ATA016_rev_c0_plan.md",
+   "resultado": "PASA (80792 level 3 en todos los binarios clave; sin silenciador)"
+  },
+  "iteraciones_rev": [
+   {
+    "iter": 1,
+    "t0": "2026-10-01T19:46:21Z",
+    "t1": "2026-10-01T19:46:53Z",
+    "filas": 839,
+    "deteccion": 3,
+    "auto_ruido": 603,
+    "ruido_conocido": 219,
+    "dudosa": 0,
+    "artefacto_ataque": 14,
+    "ids": [
+     "80792"
+    ],
+    "matched": [
+     "T1213.006-S1",
+     "T1213.006-S2"
+    ],
+    "primera": {
+     "timestamp_utc": "2026-10-01T19:46:22.084Z",
+     "evidencia": "audit_exe=/usr/bin/grep",
+     "rule_id": "80792"
+    },
+    "resueltas": {
+     "ruido": 10
+    },
+    "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA016_rev1-Detalle.csv",
+    "detalle_sha256": "0bb288bbb158f0df82411631312d026b5e824f0016fdb952ae9ab53dae1ff23c",
+    "detalle_raw": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA016_rev1-Detalle_raw.csv",
+    "detalle_raw_sha256": "50f54b3a5064561f1fc194d128f9f7a5c83a7c3f9b9fd9c7cf32f7c57ed3349c",
+    "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA016_rev1-Audited.csv",
+    "audited_sha256": "cb54c6e61b73002f5dc503456006df8bdd816a06f7b40b827267664cef4f0c8a",
+    "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA016_rev1-Revision.csv",
+    "revision_sha256": "746d5aafbf631607de9e5986eadcc1ff53d4bb2edc09a8a03d535d8868196e20"
+   },
+   {
+    "iter": 2,
+    "t0": "2026-10-01T19:50:00Z",
+    "t1": "2026-10-01T19:50:33Z",
+    "filas": 845,
+    "deteccion": 3,
+    "auto_ruido": 605,
+    "ruido_conocido": 223,
+    "dudosa": 0,
+    "artefacto_ataque": 14,
+    "ids": [
+     "80792"
+    ],
+    "matched": [
+     "T1213.006-S1",
+     "T1213.006-S2"
+    ],
+    "primera": {
+     "timestamp_utc": "2026-10-01T19:50:01.838Z",
+     "evidencia": "audit_exe=/usr/bin/grep",
+     "rule_id": "80792"
+    },
+    "resueltas": {
+     "ruido": 11
+    },
+    "detalle": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA016_rev2-Detalle.csv",
+    "detalle_sha256": "f21fe2140b7a6fbd64b416db51d84ffdcccc55181d0f7f0d61104da5d4868b2f",
+    "detalle_raw": "Dataset/Ataques/Resultados/Wazuh/linux/CSV/ATA016_rev2-Detalle_raw.csv",
+    "detalle_raw_sha256": "c47ea5c2a663e48c7053c976c9058151d621664c75c237f753e776a4fdbab34e",
+    "audited": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA016_rev2-Audited.csv",
+    "audited_sha256": "73fc572f3823d347954be621f9fc1085b675f52afa41a94d59afe4d0a84bec68",
+    "revision": "Dataset/Ataques/Resultados/Wazuh/linux/Auditado/ATA016_rev2-Revision.csv",
+    "revision_sha256": "112241b2aa38d65b5ff00bfeda9c65b94669dd047f9cc6eb133e676b40b41eba"
+   }
+  ],
+  "veredicto_rev": "iguales",
+  "resultado_rev": "detectado (O1=si) rule_ids=['80792']; O2=2/2/2",
+  "prueba_de_efecto": "iter1: COLECCION=OK (BD SQLite íntegra, 4 códigos extraídos, sha256 idéntico) | iter2: COLECCION=OK (BD SQLite íntegra, 4 códigos extraídos, sha256 idéntico)",
+  "filas_resueltas": {
+   "iter1": {
+    "ruido": 10
+   },
+   "iter2": {
+    "ruido": 11
+   }
+  },
+  "nota": "Nuevo esperado SIN las señales `ambigua` de la siembra.",
+  "ref_original": {
+   "ficha": "Dataset/Ataques/Resultados/Wazuh/linux/ATA016_meta.md",
+   "bitacora": "Bitacora/ATA016.json"
+  }
+ },
+ "bitacora_origen": "generada por generar_bitacora_v2.py a partir de Bitacora/ATA016.json (metadatos) y del indice v2 (iteraciones)"
+}

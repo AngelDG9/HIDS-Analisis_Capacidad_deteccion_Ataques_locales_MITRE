@@ -1,0 +1,123 @@
+{
+ "ata_id": "ATA047",
+ "tecnica": "T1499.002",
+ "tactica": "Impact",
+ "sistema": "linux",
+ "bloque": "fase-03-p1-cierre",
+ "tanda": "A",
+ "estado": "cerrado",
+ "artefacto": "Dataset/Ataques/Comandos/T1499.002-Service_Exhaustion_Flood/",
+ "atomic": {
+  "fuente": "custom",
+  "nota": "rafaga ACOTADA por VOLUMEN de peticiones a un servicio local desechable (sink_http.py) en 127.0.0.1:9094, levantado en el pre-staging; guardarrail TOTAL<=800, CONC<=32, MAX_TIME<=15s, solo loopback",
+  "fuente_norm": "propio",
+  "motivo_codigo": "art_no_prueba_plataforma",
+  "motivo_detalle": "ART no trae prueba de T1499 (tecnica ausente del clon) -> propio."
+ },
+ "material_externo": {
+  "aplica": false,
+  "nota": "sin material externo: curl/xargs/seq/timeout de serie; el servicio es sink_http.py (Python stdlib) del repo"
+ },
+ "esperado_sha256": "d76d8a186fce6c31b1ccd07a5db3bc51f417bcbd556d3bd429503e215ba467e9",
+ "ataque_sha256": "340b22d6690c1f2d5095dd5a78e07de4791ccb8a8ae03deafbb78ebe1a677d60",
+ "validacion_humana_esperado": "APROBADO 2026-10-02",
+ "c0": {
+  "logtest": "Soporte/Ataques/c0/ATA047_logtest.txt",
+  "logtest_sha256": "5199fc5b6b9fa90f1cd4454e713d31ed1c3ec99ae89a2e0de2f5f2735d1ef591",
+  "preflight": "Soporte/Ataques/c0/ATA047_preflight.md",
+  "preflight_sha256": "b8eb078b0e3b79b692005766f794fa71525a49a30c4db62f30842210d9ccfcb7",
+  "resultado": "PASA (4 eventos curl/xargs/seq/timeout -> 80792 level 3; sin silenciador)"
+ },
+ "iteraciones": [
+  {
+   "iter": 1,
+   "variante": "base",
+   "t0": "2026-11-20T08:48:49Z",
+   "t1": "2026-11-20T08:49:22Z",
+   "duracion_s": 33,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA047_iter1-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA047_iter1-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  },
+  {
+   "iter": 2,
+   "variante": "base",
+   "t0": "2026-11-20T08:52:50Z",
+   "t1": "2026-11-20T08:53:23Z",
+   "duracion_s": 33,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA047_iter2-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA047_iter2-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  }
+ ],
+ "revision_global": {
+  "fecha": "2026-10-02",
+  "filas": 4,
+  "veredicto": "PAM/sudo -> ruido; execve sin ancla / del ataque -> artefacto",
+  "motivo": "Criterio ratificado 2026-09-28; 0 filas del ataque en ruido.",
+  "revisor": "executor fase-03-p1-cierre tanda A"
+ },
+ "doble_iteracion": "iguales",
+ "doble_iteracion_detalle": {
+  "criterio": "v2",
+  "mismo_conjunto_rule_id_deteccion": true,
+  "rule_ids_deteccion": [
+   "80792"
+  ],
+  "n1": 1604,
+  "n2": 1603,
+  "margen": 160,
+  "criterio_recuento_ok": true,
+  "sin_dudosas_sin_resolver": true
+ },
+ "extraccion": {
+  "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)",
+  "fuente": "fichero diario /var/ossec/logs/alerts/2026/Oct/ossec-alerts-02.json",
+  "aislamiento": "filtro a agent_name == victima-linux"
+ },
+ "prueba_de_efecto": "400 peticiones recibidas por el servicio; CPU del servicio +0.19 s; servicio vivo",
+ "receptor": {
+  "aplica": false,
+  "nota": "no hay receptor de red"
+ },
+ "hallazgos": [
+  "Wazuh no tiene reglas de servicio/recursos -> el volumen no se ve; solo el execve del cliente.",
+  "El servicio (python3, sink_http.py) arranca en el pre-staging (fuera de la ventana); nunca el manager.",
+  "ANOMALIA declarada: la rafaga genero ~1200 execve de xargs para 400 peticiones (~3x); el conteo bruto se infla, O1/O2 no se ven afectados.",
+  "C0 sin silenciador."
+ ],
+ "eventos": [
+  {
+   "ts": "2026-10-02T00:46:19Z",
+   "tipo": "t0",
+   "detalle": "iter1 t0 (revert lab-listo + asentamiento)"
+  },
+  {
+   "ts": "2026-10-02T00:46:53Z",
+   "tipo": "t1",
+   "detalle": "iter1 t1 (tras scan FIM forzado)"
+  },
+  {
+   "ts": "2026-10-02T00:51:07Z",
+   "tipo": "t0",
+   "detalle": "iter2 t0"
+  },
+  {
+   "ts": "2026-10-02T00:51:41Z",
+   "tipo": "t1",
+   "detalle": "iter2 t1"
+  },
+  {
+   "ts": "2026-10-02T00:51:41Z",
+   "tipo": "cierre",
+   "detalle": "criterio v2: deteccion identica ({80792}) -> iguales"
+  }
+ ],
+ "bitacora_origen": "generada por generar_bitacora_v2.py a partir de Bitacora/ATA047.json (metadatos) y del indice v2 (iteraciones)"
+}

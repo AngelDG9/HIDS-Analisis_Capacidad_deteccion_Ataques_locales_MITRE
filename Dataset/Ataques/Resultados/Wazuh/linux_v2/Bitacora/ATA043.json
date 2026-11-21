@@ -1,0 +1,127 @@
+{
+ "ata_id": "ATA043",
+ "tecnica": "T1567.004",
+ "tactica": "Exfiltration",
+ "sistema": "linux",
+ "bloque": "fase-03-ampliacion-2",
+ "tanda": "C",
+ "estado": "cerrado",
+ "artefacto": "Dataset/Ataques/Comandos/T1567.004-Exfiltration_Over_Webhook/",
+ "atomic": {
+  "fuente": "custom",
+  "nota": "exfiltracion a un endpoint WEBHOOK LOCAL: POST del payload JSON al receptor del HOST (/hook) con wget --post-file. Distinto de ATA009 (/api/upload) y ATA010 (/c2/beacon). Guardarrail: webhook LOCAL (nunca servicios reales/cloud)",
+  "fuente_norm": "propio",
+  "motivo_codigo": "art_requiere_red_nube",
+  "motivo_detalle": "ART trae pruebas Windows/Linux que apuntan a servicios cloud (no viables sin NAT)."
+ },
+ "esperado_sha256": "14a2acecd21b9b9e2a9f4e28926c9489d71166dd3d5d624ae81a0ca8a3252156",
+ "ataque_sha256": "b3df4e448b7ab29ed1cb11e33eb547de054caa7a213424bd70abf75f6c514912",
+ "validacion_humana_esperado": "APROBADO 2026-09-29",
+ "c0": {
+  "logtest": "Soporte/Ataques/c0/ATA043_logtest.txt",
+  "logtest_sha256": "16f18662f6345d5ea3356eb9b6f0e27b568ff1e71d1bd183f785646b9396beab",
+  "preflight": "Soporte/Ataques/c0/ATA043_preflight.md",
+  "preflight_sha256": "6d5a2ad066a65c76dd92a36c8c56a956324015e164d0a21c21cd4230e4954e2e",
+  "resultado": "PASA (1 evento /usr/bin/wget -> 80792 level 3; sin silenciador de fabrica)"
+ },
+ "iteraciones": [
+  {
+   "iter": 1,
+   "variante": "base",
+   "t0": "2026-11-20T07:30:10Z",
+   "t1": "2026-11-20T07:30:42Z",
+   "duracion_s": 32,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA043_iter1-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA043_iter1-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  },
+  {
+   "iter": 2,
+   "variante": "base",
+   "t0": "2026-11-20T07:34:13Z",
+   "t1": "2026-11-20T07:34:45Z",
+   "duracion_s": 32,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA043_iter2-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA043_iter2-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  }
+ ],
+ "revision_global": {
+  "fecha": "2026-09-29",
+  "filas": 17,
+  "veredicto": "ruido (17: PAM 5501/5502 del login del operador)",
+  "motivo": "iter1: 9 filas; iter2: 8 filas, todas PAM de la sesion del operador -> ruido (criterio ratificado). Cero filas del ataque en ruido.",
+  "revisor": "executor ampliacion-2 tanda C"
+ },
+ "doble_iteracion": "iguales",
+ "doble_iteracion_detalle": {
+  "criterio": "v2",
+  "mismo_conjunto_rule_id_deteccion": true,
+  "rule_ids_deteccion": [
+   "80792"
+  ],
+  "n1": 1,
+  "n2": 1,
+  "margen": 2,
+  "criterio_recuento_ok": true,
+  "sin_dudosas_sin_resolver": true,
+  "auto_ruido_delta": 2,
+  "ruido_conocido_delta": 138
+ },
+ "extraccion": {
+  "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)",
+  "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+  "aislamiento": "filtro a agent_name == victima-linux"
+ },
+ "prueba_de_efecto": "sink.log (POST /hook): len=179 con sha256 del cuerpo JSON identico al enviado (1b28889a...). Sin NAT; webhook local",
+ "receptor": {
+  "script": "Soporte/Ataques/receiver/sink_http.py",
+  "bind": "192.168.65.1:9090",
+  "endpoint_hook": "servido por el handler do_POST GENERICO del receptor; NO requirio codigo nuevo",
+  "firewall": "NO se creo regla; TFG-sink-9090 verificado ausente",
+  "parado_tras_t1": true
+ },
+ "guardarrailes": {
+  "webhook_local": true,
+  "nunca_servicios_reales": true,
+  "datos_juguete": true
+ },
+ "hallazgos": [
+  "El endpoint /hook NO requirio extension de codigo: el receptor generico registra cualquier ruta POST (se declara).",
+  "El HIDS de host no ve la red: la deteccion es el execve (wget); la prueba es el sink.log (sha del JSON)."
+ ],
+ "eventos": [
+  {
+   "ts": "2026-09-29T12:05:59Z",
+   "tipo": "t0",
+   "detalle": "iter1 t0 (revert lab-listo + 90 s asentamiento; receptor levantado antes)"
+  },
+  {
+   "ts": "2026-09-29T12:06:32Z",
+   "tipo": "t1",
+   "detalle": "iter1 t1 (tras scan FIM forzado)"
+  },
+  {
+   "ts": "2026-09-29T12:08:38Z",
+   "tipo": "t0",
+   "detalle": "iter2 t0"
+  },
+  {
+   "ts": "2026-09-29T12:09:10Z",
+   "tipo": "t1",
+   "detalle": "iter2 t1"
+  },
+  {
+   "ts": "2026-09-29T12:20:00Z",
+   "tipo": "cierre",
+   "detalle": "criterio v2: deteccion identica (1/1, {80792}) -> iguales"
+  }
+ ],
+ "bitacora_origen": "generada por generar_bitacora_v2.py a partir de Bitacora/ATA043.json (metadatos) y del indice v2 (iteraciones)"
+}

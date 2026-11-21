@@ -1,0 +1,78 @@
+rule_id,motivo,atribucion,apoyo_v1,veredicto_v1,v2_resueltas,v2_sin_resolver
+5502,sin_campos,,232,ruido:232,630,0
+554,sin_campos,,0,,0,590
+5501,sin_campos,,195,ruido:195,553,0
+80792,ambigua,T1029|Process Creation,132,ruido:132,249,0
+80781,ambigua,T1531|File Modification,0,,0,242
+80791,ambigua,T1490|File Modification,82,ruido:82,166,10
+80791,ambigua,T1485|File Modification,168,ruido:168,163,0
+5402,sin_campos,,30,ruido:30,151,0
+80790,ambigua,T1531|File Creation,0,,0,116
+2902,sin_campos,,0,,0,89
+80791,sin_ancla,T1531|Process Creation,0,,0,88
+2904,sin_campos,,0,,0,86
+80791,sin_ancla,T1567.001|Process Creation,0,,0,73
+80792,sin_ancla,T1114.003|Process Creation,97,ruido:97,59,0
+80790,ambigua,T1667|File Creation,0,,0,54
+80791,sin_ancla,T1561|Process Creation,0,,0,44
+80792,sin_ancla,T1213.006|Process Creation,38,ruido:38,39,0
+80792,sin_ancla,T1529|Process Creation,36,ruido:36,36,0
+80792,sin_ancla,T1025|Process Creation,0,,0,34
+80792,sin_ancla,T1114|Process Creation,30,ruido:30,33,0
+80792,sin_ancla,T1119|Process Creation,7,ruido:7,0,31
+80792,sin_ancla,T1048.001|Process Creation,32,ruido:32,30,0
+80792,sin_ancla,T1498.001|Process Creation,0,,0,28
+80780,ambigua,T1485|File Modification,7,ruido:7,0,16
+80780,ambigua,T1490|File Modification,0,,0,11
+80790,ambigua,T1490|File Modification,0,,0,10
+80782,sin_ancla,T1567.001|Process Creation,0,,0,10
+80792,sin_ancla,T1005|Process Creation,13,ruido:13,9,0
+80781,ambigua,T1565|File Modification,0,,0,8
+80790,ambigua,T1657|File Creation,0,,0,8
+80781,ambigua,T1657|File Modification,0,,0,8
+80790,ambigua,T1005|File Creation,0,,0,8
+550,sin_campos,,0,,0,8
+80790,ambigua,T1565.001|File Creation,0,,0,8
+80781,ambigua,T1565.001|File Modification,0,,0,8
+80790,ambigua,T1565|File Creation,0,,0,6
+80792,sin_ancla,T1496.002|Process Creation,6,ruido:6,0,6
+591,sin_campos,,0,,0,5
+80792,sin_ancla,T1498.002|Process Creation,0,,0,5
+80792,ambigua,T1489|Process Creation,0,,0,4
+5402,ambigua,T1489|Privilege Escalation,2,ruido:2,0,4
+80792,sin_ancla,T1489|Process Creation,4,ruido:4,0,4
+80791,sin_ancla,T1565|Process Creation,0,,0,4
+80790,ambigua,T1491|File Creation,0,,0,4
+80790,ambigua,T1114.003|File Creation,0,,0,4
+80791,sin_ancla,T1657|Process Creation,0,,0,4
+80791,sin_ancla,T1029|Process Creation,0,,0,4
+80792,sin_ancla,T1496.001|Process Creation,0,,0,4
+80790,sin_ancla,T1560.001|Process Creation,0,,0,4
+80791,sin_ancla,T1565.001|Process Creation,0,,0,4
+80790,ambigua,T1491.001|File Creation,0,,0,4
+80791,sin_ancla,T1039|Process Creation,0,,0,4
+80792,sin_ancla,T1499.001|Process Creation,0,,0,4
+2901,sin_campos,,0,,0,3
+80780,ambigua,T1489|Process Creation,2,ruido:2,0,2
+80780,sin_ancla,T1561|Process Creation,0,,0,2
+80781,ambigua,T1491|File Modification,0,,0,2
+80792,sin_ancla,T1074|Process Creation,0,,0,2
+80790,sin_ancla,T1119|Process Creation,0,,0,2
+80790,ambigua,T1114|File Creation,0,,0,2
+2832,sin_campos,,0,,0,2
+80792,sin_ancla,T1561.002|Process Creation,0,,0,2
+80781,ambigua,T1491.001|File Modification,0,,0,2
+80791,sin_ancla,T1499.001|Process Creation,0,,0,2
+80792,sin_ancla,T1499.002|Process Creation,0,,0,2
+80791,sin_ancla,T1567.002|Process Creation,0,,0,2
+80780,sin_ancla,T1498.002|Process Creation,0,,0,2
+80791,sin_ancla,T1498.002|Process Creation,0,,0,2
+80792,sin_ancla,T1557.003|Process Creation,0,,0,2
+80791,sin_ancla,T1557.003|Process Creation,0,,0,2
+80782,ambigua,T1657|File Modification,0,,0,1
+80792,sin_ancla,T1029|Process Creation,0,,0,1
+80792,sin_ancla,T1567.001|Process Creation,0,,0,1
+80792,sin_ancla,T1565.002|Process Creation,0,,0,1
+80781,ambigua,T1561.001|File Modification,0,,0,1
+80781,ambigua,T1529|File Modification,1,ruido:1,0,1
+80792,sin_ancla,T1499.003|Process Creation,0,,0,1

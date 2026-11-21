@@ -1,0 +1,119 @@
+{
+ "ata_id": "ATA028",
+ "tecnica": "T1056.003",
+ "tactica": "Collection",
+ "sistema": "linux",
+ "bloque": "fase-03-ampliacion",
+ "tanda": "C",
+ "estado": "cerrado",
+ "artefacto": "Dataset/Ataques/Comandos/T1056.003-Web_Portal_Capture/",
+ "atomic": {
+  "fuente": "custom",
+  "nota": "portal falso LOCAL (nc -l 127.0.0.1) + cliente curl con credenciales de JUGUETE; portal servido con nc (NO python3) para evitar el punto ciego 92600; guardarrail: solo loopback, puerto alto, timeout",
+  "fuente_norm": "propio",
+  "motivo_codigo": "propio_por_diseno",
+  "motivo_detalle": "Portal falso LOCAL (loopback) que captura el POST de credenciales de juguete; se sirve con `nc` (no `python3`) para evitar el punto ciego 92600."
+ },
+ "esperado_sha256": "978ff1868628f33d933a185e530a5a7264ba0c2a16c36afb81b49e0af296afbb",
+ "ataque_sha256": "346a48cf30158128cdf09ce77762ce1a40f704071eef36647e86aafc67a2e476",
+ "validacion_humana_esperado": "APROBADO 2026-09-29",
+ "c0": {
+  "logtest": "Soporte/Ataques/c0/ATA028_logtest.txt",
+  "logtest_sha256": "1202e1d6ce0ce9729f68094ce9d2cc360c5b586651de855fd296a6387221c914",
+  "preflight": "Soporte/Ataques/c0/ATA028_preflight.md",
+  "preflight_sha256": "9f713a3386ad88272591b13d113cd809efabe1e7392046c68ab9fc9e6b8c8db6",
+  "resultado": "PASA (2 eventos nc/curl -> 80792 level 3; sin silenciador)"
+ },
+ "iteraciones": [
+  {
+   "iter": 1,
+   "variante": "base",
+   "t0": "2026-11-20T05:21:25Z",
+   "t1": "2026-11-20T05:22:02Z",
+   "duracion_s": 37,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA028_iter1-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA028_iter1-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  },
+  {
+   "iter": 2,
+   "variante": "base",
+   "t0": "2026-11-20T05:25:25Z",
+   "t1": "2026-11-20T05:26:03Z",
+   "duracion_s": 38,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA028_iter2-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA028_iter2-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  }
+ ],
+ "revision_global": {
+  "fecha": "2026-09-29",
+  "filas": 8,
+  "veredicto": "ruido (8)",
+  "motivo": "8 = PAM del operador (5501/5502, dstuser=angel) -> ruido (criterio ratificado 2026-09-28). Cero filas del ataque en ruido.",
+  "revisor": "executor ampliacion tanda C"
+ },
+ "doble_iteracion": "iguales",
+ "doble_iteracion_detalle": {
+  "criterio": "v2",
+  "mismo_conjunto_rule_id_deteccion": true,
+  "rule_ids_deteccion": [
+   "80792"
+  ],
+  "n1": 1,
+  "n2": 1,
+  "margen": 2,
+  "criterio_recuento_ok": true,
+  "sin_dudosas_sin_resolver": true,
+  "auto_ruido_delta": 15,
+  "ruido_conocido_delta": 97
+ },
+ "extraccion": {
+  "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)",
+  "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+  "aislamiento": "filtro a agent_name == victima-linux"
+ },
+ "prueba_de_efecto": "el portal falso registro el POST con las credenciales de JUGUETE (usuario=demo&clave=demo-solo-juguete) en request.http; PORTAL_CAPTURE=OK.",
+ "receptor": {
+  "aplica": false,
+  "nota": "el portal vive en loopback de la victima; no se usa el receptor del HOST"
+ },
+ "hallazgos": [
+  "HALLAZGO (sistema): el esperado declara audit_exe=nc, pero audit registra /usr/bin/nc.openbsd (symlink/alternativa) -> nc NO casa (O2=1/2). La deteccion la sostiene curl. Regla practica: declarar audit_exe con el nombre REAL del binario o glob.",
+  "Punto ciego 92600 evitado: el portal se sirvio con nc, no con python3."
+ ],
+ "eventos": [
+  {
+   "ts": "2026-09-29T03:43:06Z",
+   "tipo": "t0",
+   "detalle": "iter1 t0 (revert lab-listo + 90 s asentamiento)"
+  },
+  {
+   "ts": "2026-09-29T03:43:44Z",
+   "tipo": "t1",
+   "detalle": "iter1 t1 (tras scan FIM forzado)"
+  },
+  {
+   "ts": "2026-09-29T03:46:47Z",
+   "tipo": "t0",
+   "detalle": "iter2 t0"
+  },
+  {
+   "ts": "2026-09-29T03:47:25Z",
+   "tipo": "t1",
+   "detalle": "iter2 t1"
+  },
+  {
+   "ts": "2026-09-29T03:50:00Z",
+   "tipo": "cierre",
+   "detalle": "criterio v2: deteccion identica ({80792}, 1 vs 1) -> iguales"
+  }
+ ],
+ "bitacora_origen": "generada por generar_bitacora_v2.py a partir de Bitacora/ATA028.json (metadatos) y del indice v2 (iteraciones)"
+}

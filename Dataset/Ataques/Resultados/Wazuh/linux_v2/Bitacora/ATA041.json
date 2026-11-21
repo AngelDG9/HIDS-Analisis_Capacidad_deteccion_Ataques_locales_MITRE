@@ -1,0 +1,128 @@
+{
+ "ata_id": "ATA041",
+ "tecnica": "T1048.002",
+ "tactica": "Exfiltration",
+ "sistema": "linux",
+ "bloque": "fase-03-ampliacion-2",
+ "tanda": "C",
+ "estado": "cerrado",
+ "artefacto": "Dataset/Ataques/Comandos/T1048.002-Asymmetric_Encrypted_Non-C2/",
+ "atomic": {
+  "fuente": "custom",
+  "nota": "exfiltracion con cifrado ASIMETRICO real: par RSA EFIMERO (openssl genpkey) + pkeyutl -encrypt + envio HTTP del blob cifrado (curl) + pkeyutl -decrypt (round-trip). Distinto de ATA008 (wget POST sin cifrar) y ATA019 (cifrado simetrico por TCP). Claves efimeras de juguete; cero credenciales reales",
+  "fuente_norm": "propio",
+  "motivo_codigo": "art_requiere_red_nube",
+  "motivo_detalle": "ART trae pruebas de T1048.002 basadas en servicios cloud (file.io), no viables sin NAT."
+ },
+ "esperado_sha256": "8fe608a68195898455f5ca11d1d8114a57ddb3bf7b02018a725875d7a4024fbe",
+ "ataque_sha256": "bedfd720bcd65168338bd416191a7cc65d3a9b5811f38f7df1616ac91584a990",
+ "validacion_humana_esperado": "APROBADO 2026-09-29",
+ "c0": {
+  "logtest": "Soporte/Ataques/c0/ATA041_logtest.txt",
+  "logtest_sha256": "6366418df437668bc410822560c779ad0a94627554ac5cda59aef461f82b1667",
+  "preflight": "Soporte/Ataques/c0/ATA041_preflight.md",
+  "preflight_sha256": "72922dbbbc9bcabece8310dd00d1a3259bf7fe110add7a985d41fe0d4248df69",
+  "resultado": "PASA (2 eventos /usr/bin/openssl y /usr/bin/curl -> 80792 level 3; sin silenciador de fabrica)"
+ },
+ "iteraciones": [
+  {
+   "iter": 1,
+   "variante": "base",
+   "t0": "2026-11-20T07:14:06Z",
+   "t1": "2026-11-20T07:14:38Z",
+   "duracion_s": 32,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA041_iter1-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA041_iter1-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  },
+  {
+   "iter": 2,
+   "variante": "base",
+   "t0": "2026-11-20T07:18:05Z",
+   "t1": "2026-11-20T07:18:37Z",
+   "duracion_s": 32,
+   "snapshot": "lab-listo",
+   "detalle": "Dataset/Ataques/Resultados/Wazuh/linux_v2/CSV/ATA041_iter2-Detalle.csv",
+   "audited": "Dataset/Ataques/Resultados/Wazuh/linux_v2/Auditado/ATA041_iter2-Audited.csv",
+   "metrico_o2": "",
+   "lanzador": "local (systemd-run)",
+   "version_datos": 2
+  }
+ ],
+ "revision_global": {
+  "fecha": "2026-09-29",
+  "filas": 8,
+  "veredicto": "ruido (8: PAM 5501/5502 del login del operador)",
+  "motivo": "iter1: 3 filas; iter2: 5 filas, todas PAM de la sesion del operador -> ruido (criterio ratificado). Cero filas del ataque en ruido.",
+  "revisor": "executor ampliacion-2 tanda C"
+ },
+ "doble_iteracion": "iguales",
+ "doble_iteracion_detalle": {
+  "criterio": "v2",
+  "mismo_conjunto_rule_id_deteccion": true,
+  "rule_ids_deteccion": [
+   "80792"
+  ],
+  "n1": 5,
+  "n2": 5,
+  "margen": 2,
+  "criterio_recuento_ok": true,
+  "sin_dudosas_sin_resolver": true,
+  "auto_ruido_delta": 13,
+  "ruido_conocido_delta": 3
+ },
+ "extraccion": {
+  "extractor": "extraer_alertas.py H3 (sha256 repo==manager 4019fda84a59f4079529f7f95cc6fe9d250b46fb447b235b3c9a90ba64569c44)",
+  "fuente": "fichero diario /var/ossec/logs/alerts/2026/Sep/ossec-alerts-29.json",
+  "aislamiento": "filtro a agent_name == victima-linux"
+ },
+ "prueba_de_efecto": "sink.log (HTTP): len=256 con sha256 del blob CIFRADO identico al enviado (a3f7d8b4... iter1, 1c8a3222... iter2); roundtrip descifrado == original (69ae0359...). Cifrado ASIMETRICO (RSA efimero). Sin NAT",
+ "receptor": {
+  "script": "Soporte/Ataques/receiver/sink_http.py",
+  "bind": "192.168.65.1:9090",
+  "firewall": "NO se creo regla (los puertos ya eran alcanzables); TFG-sink-9090 verificado ausente",
+  "parado_tras_t1": true
+ },
+ "guardarrailes": {
+  "endpoint_lab": true,
+  "claves_efimeras": true,
+  "sin_credenciales_reales": true,
+  "sin_ambigua": true
+ },
+ "hallazgos": [
+  "Cifrado asimetrico real (RSA efimero) distinto de ATA008 (sin cifrado) y ATA019 (simetrico).",
+  "El HIDS ve el PROCESO (openssl/curl), no la red NI el contenido; la prueba es el sink.log (sha del cifrado) + round-trip.",
+  "Claves efimeras generadas en lab-attack: al revertir la VM desaparecen; sin residuo de secretos."
+ ],
+ "eventos": [
+  {
+   "ts": "2026-09-29T11:55:23Z",
+   "tipo": "t0",
+   "detalle": "iter1 t0 (revert lab-listo + 90 s asentamiento; receptor levantado antes)"
+  },
+  {
+   "ts": "2026-09-29T11:55:55Z",
+   "tipo": "t1",
+   "detalle": "iter1 t1 (tras scan FIM forzado)"
+  },
+  {
+   "ts": "2026-09-29T11:58:02Z",
+   "tipo": "t0",
+   "detalle": "iter2 t0"
+  },
+  {
+   "ts": "2026-09-29T11:58:35Z",
+   "tipo": "t1",
+   "detalle": "iter2 t1"
+  },
+  {
+   "ts": "2026-09-29T12:20:00Z",
+   "tipo": "cierre",
+   "detalle": "criterio v2: deteccion identica (5/5, {80792}) -> iguales"
+  }
+ ],
+ "bitacora_origen": "generada por generar_bitacora_v2.py a partir de Bitacora/ATA041.json (metadatos) y del indice v2 (iteraciones)"
+}
