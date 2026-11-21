@@ -57,8 +57,10 @@ Hallazgos que condicionan el diseño:
 ## 5b. Medición en reposo, reloj y arranque (cierre de los huecos de la verificación)
 - **Reloj:** VM vs PC = **1 s** de diferencia, `System clock synchronized: yes` (systemd-timesyncd activo).
 - **Volumen en reposo 15 min** (VM sin GHOSTS ni ataques; `volumen_en_reposo_15min.csv`; flujo de 900 s, los eventos terminan por tiempo → estado `ERROR` esperado):
-  `Events.EBPF` 546 filas (≈2 184/h, ≈583 KB/h) · `Events.Journal` 292 (≈1 168/h, ≈314 KB/h) · `Events.DNS` 39 (≈156/h) · `SSHLogin`, `TrackProcesses` y `HTTPConnections` **0 eventos**.
-  Instantáneas de una colecta: `Sys.Services` 54, `Crontab` 8+11, `Netstat` 4+1 filas. Con eso, una ventana de 72 h en reposo serían ≈68 MB de JSON de eventos (≈948 KB/h × 72) **sin** actividad de GHOSTS, que lo aumentará.
+  **CORREGIDO el mismo día (la primera medición era errónea):** los ficheros de resultados son varios flujos zlib concatenados; la primera vez se leyó solo parte y se tomó el tamaño en disco (comprimido) como si fuera JSON. Medido bien con `_artefactos/scripts/medir_volumen_velociraptor.py`:
+  `Events.EBPF` **4 798 filas** (≈19 200/h; 2,6 MB sin comprimir, 0,15 MB en disco) · `Events.Journal` **1 622** (≈6 500/h; 1,6 MB / 0,08 MB) · `Events.DNS` **850** (≈3 400/h; 0,21 MB / 0,01 MB) · `SSHLogin`, `TrackProcesses` y `HTTPConnections` **0 eventos**.
+  Una ventana de 72 h en reposo serían ≈**1,3 GB sin comprimir** (≈0,7 millones de filas/día de EBPF+Journal+DNS) y ≈**70 MB en disco** (comprimido), **sin** actividad de GHOSTS, que lo aumentará. EBPF es casi todo `security_file_open` (4 459 de 4 798): **hay que filtrar al analizar**; `sched_process_exec` fue solo 15 filas.
+  Instantáneas de una colecta: `Sys.Services` 54, `Crontab` 8+11, `Netstat` 4+1 filas.
 - **De dónde leen** (comprobado): `Events.EBPF` usa eBPF del kernel (hay BTF: `/sys/kernel/btf/vmlinux`), `Events.Journal` el journal; **ninguno lee auditd**. Solo `Events.ProcessExecutions` lee auditd (e instala su regla). El resto de la telemetría de procesos «tipo Wazuh» pasaría por eBPF o por esa regla: **hay que decidirlo antes de medir** (recomendación: usar eBPF y declarar que la fuente de datos NO es la misma que la de Wazuh).
 - auditd tras la medición: sigue con las **5 reglas** (ninguno de los artifacts probados lo modificó).
 - **Arranque reproducible del servidor:** `arrancar_servidor.ps1` (comprueba/arranca sin duplicar; `-Estado`, `-Parar`). Probado sobre el servidor ya en marcha. No arranca solo al encender el PC (decisión: no tocar el arranque de Windows sin pedirlo).

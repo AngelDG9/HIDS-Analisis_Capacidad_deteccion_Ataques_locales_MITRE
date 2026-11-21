@@ -1,13 +1,6 @@
-# volumen_en_reposo_15min.csv | VM victima-linux (lab-listo-vr) EN REPOSO (sin GHOSTS ni ataques) | Velociraptor 0.77.3 | flujo F.DC0K4JT68QAN0, 900 s | eventos: filas y bytes del fichero de resultados del servidor (clients/<id>/artifacts/<Artifact>/<flujo>.json); instantaneas: filas de una colecta | los eventos terminan por tiempo (estado ERROR esperado) | NO incluye Linux.Events.ProcessExecutions (instala una regla auditd propia)
-artifact,tipo,filas_15min,bytes_15min,filas_por_hora,KB_por_hora
-Linux.Events.Journal,evento_continuo,292,80323,1168,313.8
-Linux.Events.SSHLogin,evento_continuo,0,0,0,0.0
-Linux.Events.TrackProcesses,evento_continuo,0,0,0,0.0
-Linux.Events.HTTPConnections,evento_continuo,0,0,0,0.0
-Linux.Events.DNS,evento_continuo,39,12909,156,50.4
-Linux.Events.EBPF,evento_continuo,546,149357,2184,583.4
-Linux.Network.Netstat/TCP4,instantanea(1 colecta),4,,,
-Linux.Network.Netstat/TCP6,instantanea(1 colecta),1,,,
-Linux.Sys.Services,instantanea(1 colecta),54,,,
-Linux.Sys.Crontab/CronTabs,instantanea(1 colecta),8,,,
-Linux.Sys.Crontab/CronScripts,instantanea(1 colecta),11,,,
+# volumen medido con medir_volumen_velociraptor.py (descomprime TODOS los flujos zlib) | cliente C.dbc4d0ba705d6d27 | flujo F.DC0K4JT68QAN0 | 900 s
+artifact,filas,bytes_sin_comprimir,bytes_en_disco,filas_por_hora,KB_sin_comprimir_por_hora,KB_en_disco_por_hora
+Linux.Events.DNS,850,212039,12909,3400,848.2,51.6
+Linux.Events.EBPF,4798,2624017,149357,19192,10496.1,597.4
+Linux.Events.Journal,1622,1600186,80323,6488,6400.7,321.3
+Linux.Sys.Services,54,7152,1612,216,28.6,6.4
