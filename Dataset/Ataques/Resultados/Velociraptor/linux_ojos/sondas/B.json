@@ -1,0 +1,45 @@
+{
+ "opcion": "B",
+ "tabla": [
+  "Linux.Events.EBPF"
+ ],
+ "parametros": {
+  "Linux.Events.EBPF": [
+   "Events"
+  ]
+ },
+ "inicio_utc": "2026-11-23T12:36:45Z",
+ "tabla_servidor": [
+  "Generic.Client.Stats",
+  "Linux.Events.EBPF"
+ ],
+ "cliente_conectado": true,
+ "audit_antes": "enabled 1\nfailure 1\npid 673\nrate_limit 0\nbacklog_limit 8192\nlost 0\nbacklog 0\nbacklog_wait_time 60000\nbacklog_wait_time_actual 0\nloginuid_immutable 0 unlocked\naudit.log bytes=6523500 mtime=1795437430\n2\nactive",
+ "auditctl_antes": "-a always,exit -F arch=b64 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b32 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b64 -S truncate,ftruncate,rename,creat,unlink,unlinkat,renameat,renameat2 -F key=audit-wazuh-w\n-w /etc -p wa -k audit-wazuh-w\n-w /home/angel/lab-legit -p wa -k audit-wazuh-w",
+ "segundos_hasta_primera_marca": 18,
+ "iteraciones_actividad": 4,
+ "audit_despues": "enabled 1\nfailure 1\npid 673\nrate_limit 0\nbacklog_limit 8192\nlost 0\nbacklog 0\nbacklog_wait_time 60000\nbacklog_wait_time_actual 0\nloginuid_immutable 0 unlocked\naudit.log bytes=7538699 mtime=1795437606\n8\nactive",
+ "auditctl_despues": "-a always,exit -F arch=b64 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b32 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b64 -S truncate,ftruncate,rename,creat,unlink,unlinkat,renameat,renameat2 -F key=audit-wazuh-w\n-w /etc -p wa -k audit-wazuh-w\n-w /home/angel/lab-legit -p wa -k audit-wazuh-w",
+ "filas_total": 2000,
+ "conteo": {
+  "marca": 9,
+  "fichero_creado": 9,
+  "fichero_renombrado": 15,
+  "red": 6,
+  "evento_exec": 458,
+  "evento_connect": 375,
+  "evento_unlink": 74,
+  "evento_rename": 111,
+  "evento_open": 0
+ },
+ "filas_por_s": 11.52,
+ "retraso_medio_s": 24.9,
+ "sample": [
+  "{\"System\":{\"Timestamp\":\"2026-11-23T12:37:10.783253449Z\",\"EventID\":715,\"EventName\":\"sched_process_exec\",\"ThreadStartTime\":\"2026-11-23T12:37:10.780781318Z\",\"ProcessorID\":1,\"ProcessID\":1538,\"ThreadID\":1538,\"ParentProcessID\":1537,\"HostProcessID\":1538,\"HostThreadID\":1538,\"HostParentProcessID\":1537,\"UserID\":1000,\"MountNS\":4026531841,\"ProcessName\":\"bash\",\"HostName\":\"victima-linux\",\"CgroupID\":3938},\"EventData\":{\"cmdpath\":\"/bin/bash\",\"pathname\":\"/usr/bin/bash\",\"dev\":264241152,\"inode\":511,\"ctime\":1790104800739971841,\"inode_mode\":33261,\"interpreter_pathname\":\"\",\"interpreter_dev\":0,\"interpreter_inode\":0,\"",
+  "{\"System\":{\"Timestamp\":\"2026-11-23T12:37:10.831838148Z\",\"EventID\":715,\"EventName\":\"sched_process_exec\",\"ThreadStartTime\":\"2026-11-23T12:37:10.831478135Z\",\"ProcessorID\":1,\"ProcessID\":1545,\"ThreadID\":1545,\"ParentProcessID\":1538,\"HostProcessID\":1545,\"HostThreadID\":1545,\"HostParentProcessID\":1538,\"UserID\":1000,\"MountNS\":4026531841,\"ProcessName\":\"sudo\",\"HostName\":\"victima-linux\",\"CgroupID\":3938},\"EventData\":{\"cmdpath\":\"/usr/bin/sudo\",\"pathname\":\"/usr/bin/sudo\",\"dev\":264241152,\"inode\":1120,\"ctime\":1790104802695971686,\"inode_mode\":35309,\"interpreter_pathname\":\"\",\"interpreter_dev\":0,\"interpreter_inode",
+  "{\"System\":{\"Timestamp\":\"2026-11-23T12:37:10.840769326Z\",\"EventID\":715,\"EventName\":\"sched_process_exec\",\"ThreadStartTime\":\"2026-11-23T12:37:10.839244509Z\",\"ProcessorID\":1,\"ProcessID\":1546,\"ThreadID\":1546,\"ParentProcessID\":1545,\"HostProcessID\":1546,\"HostThreadID\":1546,\"HostParentProcessID\":1545,\"UserID\":0,\"MountNS\":4026531841,\"ProcessName\":\"grep\",\"HostName\":\"victima-linux\",\"CgroupID\":3938},\"EventData\":{\"cmdpath\":\"/usr/bin/grep\",\"pathname\":\"/usr/bin/grep\",\"dev\":264241152,\"inode\":701,\"ctime\":1790104801378971790,\"inode_mode\":33261,\"interpreter_pathname\":\"\",\"interpreter_dev\":0,\"interpreter_inode\":0,",
+  "{\"System\":{\"Timestamp\":\"2026-11-23T12:37:11.858508105Z\",\"EventID\":715,\"EventName\":\"sched_process_exec\",\"ThreadStartTime\":\"2026-11-23T12:37:11.857342311Z\",\"ProcessorID\":0,\"ProcessID\":1685,\"ThreadID\":1685,\"ParentProcessID\":1684,\"HostProcessID\":1685,\"HostThreadID\":1685,\"HostParentProcessID\":1684,\"UserID\":1000,\"MountNS\":4026531841,\"ProcessName\":\"bash\",\"HostName\":\"victima-linux\",\"CgroupID\":4078},\"EventData\":{\"cmdpath\":\"/bin/bash\",\"pathname\":\"/usr/bin/bash\",\"dev\":264241152,\"inode\":511,\"ctime\":1790104800739971841,\"inode_mode\":33261,\"interpreter_pathname\":\"\",\"interpreter_dev\":0,\"interpreter_inode\":0,\"",
+  "{\"System\":{\"Timestamp\":\"2026-11-23T12:37:11.869702919Z\",\"EventID\":715,\"EventName\":\"sched_process_exec\",\"ThreadStartTime\":\"2026-11-23T12:37:11.862020071Z\",\"ProcessorID\":1,\"ProcessID\":1687,\"ThreadID\":1687,\"ParentProcessID\":1685,\"HostProcessID\":1687,\"HostThreadID\":1687,\"HostParentProcessID\":1685,\"UserID\":1000,\"MountNS\":4026531841,\"ProcessName\":\"echo\",\"HostName\":\"victima-linux\",\"CgroupID\":4078},\"EventData\":{\"cmdpath\":\"/bin/echo\",\"pathname\":\"/usr/bin/echo\",\"dev\":264241152,\"inode\":646,\"ctime\":1790104801089971813,\"inode_mode\":33261,\"interpreter_pathname\":\"\",\"interpreter_dev\":0,\"interpreter_inode\":0,\""
+ ],
+ "fin_utc": "2026-11-23T12:40:06Z"
+}

@@ -1,0 +1,10 @@
+name: Custom.Linux.Events.AuditRaw
+description: |
+  TFG HIDS - OJOS (no reglas). Entrega TODO el flujo de auditd del kernel, sin filtrar por clave
+  (a diferencia de Linux.Events.ProcessExecutions, que solo deja pasar la clave `procmon`).
+  Opcion F del plan _fases/velociraptor-ojos/plan.md. NOTA: audit() se registra como demonio de auditoria.
+type: CLIENT_EVENT
+precondition: SELECT OS FROM info() WHERE OS = 'linux'
+sources:
+  - query: |
+      SELECT * FROM audit()

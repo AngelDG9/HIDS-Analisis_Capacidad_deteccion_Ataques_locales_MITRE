@@ -1,7 +1,7 @@
 ---
 nombre: Velociraptor Linux - auditoria de los «ojos» (que sensor usar) antes de V1
 fecha: 2026-11-23
-estado: PROPUESTO - pendiente de aprobacion del humano (no se ha ejecutado nada)
+estado: APROBADO (2026-11-23) - E0 y E1a EJECUTADOS; E2 en adelante PENDIENTES (diseno revisado, ver §11)
 depende_de: _fases/velociraptor-piloto-procesos/plan.md · Dataset/Ataques/Resultados/Velociraptor/linux_piloto/RESULTADO_PILOTO.md · Soporte/Laboratorio/velociraptor/MONTAJE_V0.md
 ---
 
@@ -75,3 +75,17 @@ Tiempo: la etapa E1 es corta; E2/E3 dependen de cuantas opciones sobrevivan. Lo 
 
 ## 10. Lo que NO es esta auditoria
 Ni V1, ni la ventana legitima de 72 h, ni Windows, ni reglas/cerebro (C2/C3), ni cambiar Wazuh. Tampoco se repiten con otras reglas de auditd (trabajo futuro).
+
+## 11. Registro de ejecucion y diseno revisado (2026-11-23)
+**Aprobado por el humano**, que delega en mi criterio incluir u omitir opciones. Detalle y numeros: `Dataset/Ataques/Resultados/Velociraptor/linux_ojos/SONDAS.md`.
+- **E0 hecho (OK).** Hallazgo: la VM mostraba 6 reglas porque la tabla del servidor se habia quedado en la config O del piloto; con la tabla neutra son 5. Se anade a E0: «dejar la tabla en neutro antes de revertir».
+- **E1 se hizo como E1a (pruebas de mecanismo, sin ataques)** en lugar de «1 caso por opcion»: es mas barato y contesta lo que importaba (¿funciona?, ¿que tipo de evento ve?, ¿conviven?). Script: `_artefactos/scripts/probar_ojos_velociraptor.py`; artifacts propios: `Soporte/Laboratorio/velociraptor/artifacts_propios/`.
+- **Resultado del cribado:** B, F1, F2 y E **funcionan**; G funciona pero solo ve procesos y tarda ~185 s; A ya estaba medida.
+- **Opciones apartadas (decision mia, con motivo):**
+  - **C** — ya descartada con datos en el piloto.
+  - **D** (ProcessExecutions arreglado) — **dominada por E y F**: ve menos (solo `execve` b64), obliga a cambiar la clave de la regla de auditd (la VM deja de tener «las mismas 5 reglas» que Wazuh) y exige un snapshot nuevo; en cambio E da los mismos bytes que Wazuh sin tocar la VM. No se crea `lab-listo-vr-audit`.
+  - **G** — no aporta ojos nuevos (ni ficheros ni red); queda como posible complemento (arbol de procesos), no se activa.
+- **Diseno revisado para E2 («todos los ojos a la vez»):** como **conviven**, una sola pasada por caso con la configuracion `SUPER` = EBPF con todos los eventos (de fabrica + `security_inode_rename` + `mkdir`) + F1 + F2 + subida final de `audit.log*` (E). Las vistas **A** (de fabrica) y **B** (afinado) se obtienen **filtrando por `EventName` despues**; los ojos no se pueden repetir sobre datos ya guardados, pero un superconjunto si se puede recortar. Ventaja: el mismo ataque observado por todos los ojos a la vez (comparacion justa) y sin multiplicar pasadas.
+- **Casos de ampliacion (regla objetiva del §5, IDs fijados antes de ejecutar):** menor ATA, fuera del piloto, con comando estricto de cada categoria en su `_ataque.sh`: **ATA003** (borra/renombra: `rm`/`mv`), **ATA035** (permisos: `chmod`), **ATA026** (red: `nc`). Sin montaje especial (ATA026 usa el sumidero HTTP ya soportado).
+- **E2 revisado:** 9 casos (6 del piloto + ATA003, ATA035, ATA026) × 1 iteracion con `SUPER`. **E3:** 2ª iteracion de los 9 (determinismo). Para la subida de `audit.log*` se anade una marca de FIN dentro del propio fichero (el `/bin/echo TFGMARK` queda registrado por auditd) y se exige `audit.log` + `audit.log.1` si hubo rotacion.
+- **Riesgos nuevos anotados:** rotacion del `audit.log` (~8,4 MB; el snapshot ya parte de ~6,4 MB); ruido del propio cliente de Velociraptor en auditd; entrega por lotes (marca de FIN obligatoria); volumen de EBPF completo (~113 filas/s en la sonda).

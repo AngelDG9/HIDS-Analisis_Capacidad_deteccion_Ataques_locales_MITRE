@@ -1,0 +1,83 @@
+{
+ "opcion": "E",
+ "tabla": [],
+ "parametros": {},
+ "inicio_utc": "2026-11-23T12:54:09Z",
+ "tabla_servidor": [
+  "Generic.Client.Stats"
+ ],
+ "cliente_conectado": true,
+ "audit_antes": "enabled 1\nfailure 1\npid 673\nrate_limit 0\nbacklog_limit 8192\nlost 0\nbacklog 0\nbacklog_wait_time 60000\nbacklog_wait_time_actual 0\nloginuid_immutable 0 unlocked\naudit.log bytes=6400664 mtime=1795438473\n2\nactive",
+ "auditctl_antes": "-a always,exit -F arch=b64 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b32 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b64 -S truncate,ftruncate,rename,creat,unlink,unlinkat,renameat,renameat2 -F key=audit-wazuh-w\n-w /etc -p wa -k audit-wazuh-w\n-w /home/angel/lab-legit -p wa -k audit-wazuh-w",
+ "segundos_hasta_primera_marca": null,
+ "iteraciones_actividad": 4,
+ "audit_despues": "enabled 1\nfailure 1\npid 673\nrate_limit 0\nbacklog_limit 8192\nlost 0\nbacklog 0\nbacklog_wait_time 60000\nbacklog_wait_time_actual 0\nloginuid_immutable 0 unlocked\naudit.log bytes=7436598 mtime=1795438648\n8\nactive",
+ "auditctl_despues": "-a always,exit -F arch=b64 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b32 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b64 -S truncate,ftruncate,rename,creat,unlink,unlinkat,renameat,renameat2 -F key=audit-wazuh-w\n-w /etc -p wa -k audit-wazuh-w\n-w /home/angel/lab-legit -p wa -k audit-wazuh-w",
+ "collect_rc": 0,
+ "flow_id": "F.DC23GE77HNTU2",
+ "flow_estado": "FINISHED",
+ "ficheros_flow": [
+  [
+   "datastore\\clients\\C.dbc4d0ba705d6d27\\artifacts\\Generic.Collectors.File\\F.DC23GE77HNTU2\\Uploads.chunk",
+   40
+  ],
+  [
+   "datastore\\clients\\C.dbc4d0ba705d6d27\\artifacts\\Generic.Collectors.File\\F.DC23GE77HNTU2\\Uploads.json",
+   253
+  ],
+  [
+   "datastore\\clients\\C.dbc4d0ba705d6d27\\artifacts\\Generic.Collectors.File\\F.DC23GE77HNTU2\\Uploads.json.index",
+   8
+  ],
+  [
+   "datastore\\clients\\C.dbc4d0ba705d6d27\\collections\\F.DC23GE77HNTU2\\logs.json",
+   1224
+  ],
+  [
+   "datastore\\clients\\C.dbc4d0ba705d6d27\\collections\\F.DC23GE77HNTU2\\logs.json.index",
+   72
+  ],
+  [
+   "datastore\\clients\\C.dbc4d0ba705d6d27\\collections\\F.DC23GE77HNTU2\\requests.json.db",
+   327
+  ],
+  [
+   "datastore\\clients\\C.dbc4d0ba705d6d27\\collections\\F.DC23GE77HNTU2\\stats.json.db",
+   756
+  ],
+  [
+   "datastore\\clients\\C.dbc4d0ba705d6d27\\collections\\F.DC23GE77HNTU2\\task.db",
+   1968
+  ],
+  [
+   "datastore\\clients\\C.dbc4d0ba705d6d27\\collections\\F.DC23GE77HNTU2\\uploads.json",
+   369
+  ],
+  [
+   "datastore\\clients\\C.dbc4d0ba705d6d27\\collections\\F.DC23GE77HNTU2\\uploads.json.index",
+   8
+  ],
+  [
+   "datastore\\clients\\C.dbc4d0ba705d6d27\\collections\\F.DC23GE77HNTU2\\upload_transactions.json",
+   343
+  ],
+  [
+   "datastore\\clients\\C.dbc4d0ba705d6d27\\collections\\F.DC23GE77HNTU2\\upload_transactions.json.index",
+   8
+  ]
+ ],
+ "sample": [],
+ "conteo": {
+  "marca": 0,
+  "fichero_creado": 0,
+  "fichero_renombrado": 0,
+  "red": 0,
+  "evento_exec": 0,
+  "evento_connect": 0,
+  "evento_unlink": 0,
+  "evento_rename": 0,
+  "evento_open": 0
+ },
+ "bytes_audit_log_subido": 641612,
+ "fin_utc": "2026-11-23T12:57:34Z"
+}

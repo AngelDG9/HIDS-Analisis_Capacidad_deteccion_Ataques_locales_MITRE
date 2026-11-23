@@ -1,0 +1,155 @@
+{
+ "opcion": "SUPER",
+ "tabla": [
+  "Linux.Events.EBPF",
+  "Custom.Linux.Events.AuditRaw",
+  "Custom.Linux.Events.AuditLogTail"
+ ],
+ "parametros": {
+  "Linux.Events.EBPF": [
+   "Events"
+  ],
+  "Custom.Linux.Events.AuditRaw": [],
+  "Custom.Linux.Events.AuditLogTail": []
+ },
+ "inicio_utc": "2026-11-23T13:11:10Z",
+ "tabla_servidor": [
+  "Custom.Linux.Events.AuditLogTail",
+  "Custom.Linux.Events.AuditRaw",
+  "Generic.Client.Stats",
+  "Linux.Events.EBPF"
+ ],
+ "cliente_conectado": true,
+ "audit_antes": "enabled 1\nfailure 1\npid 669\nrate_limit 0\nbacklog_limit 8192\nlost 0\nbacklog 0\nbacklog_wait_time 60000\nbacklog_wait_time_actual 0\nloginuid_immutable 0 unlocked\naudit.log bytes=6543793 mtime=1795439501\n2\nactive",
+ "auditctl_antes": "-a always,exit -F arch=b64 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b32 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b64 -S truncate,ftruncate,rename,creat,unlink,unlinkat,renameat,renameat2 -F key=audit-wazuh-w\n-w /etc -p wa -k audit-wazuh-w\n-w /home/angel/lab-legit -p wa -k audit-wazuh-w",
+ "segundos_hasta_primera_marca": 19,
+ "iteraciones_actividad": 4,
+ "audit_despues": "enabled 1\nfailure 1\npid 669\nrate_limit 0\nbacklog_limit 8192\nlost 0\nbacklog 0\nbacklog_wait_time 60000\nbacklog_wait_time_actual 0\nloginuid_immutable 0 unlocked\naudit.log bytes=7583573 mtime=1795439679\n8\nactive",
+ "auditctl_despues": "-a always,exit -F arch=b64 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b32 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b64 -S truncate,ftruncate,rename,creat,unlink,unlinkat,renameat,renameat2 -F key=audit-wazuh-w\n-w /etc -p wa -k audit-wazuh-w\n-w /home/angel/lab-legit -p wa -k audit-wazuh-w",
+ "coleccion": {
+  "collect_rc": 0,
+  "flow_id": "F.DC23OFQEGPSFM",
+  "flow_estado": "FINISHED",
+  "ficheros": {
+   "audit.log": {
+    "bytes_zlib": 648625,
+    "bytes": 7701288,
+    "conteo": {
+     "marca": 8,
+     "fichero_creado": 12,
+     "fichero_renombrado": 24,
+     "red": 4,
+     "evento_exec": 0,
+     "evento_connect": 0,
+     "evento_unlink": 774,
+     "evento_rename": 0,
+     "evento_open": 0
+    }
+   },
+   "audit.log.1": {
+    "bytes_zlib": 647973,
+    "bytes": 8388770,
+    "conteo": {
+     "marca": 0,
+     "fichero_creado": 0,
+     "fichero_renombrado": 0,
+     "red": 0,
+     "evento_exec": 0,
+     "evento_connect": 0,
+     "evento_unlink": 616,
+     "evento_rename": 0,
+     "evento_open": 0
+    }
+   },
+   "audit.log.1.chunk": {
+    "bytes_en_disco": 360,
+    "no_descomprime": "Error -3 while decompressing data: unknown compression method"
+   },
+   "audit.log.chunk": {
+    "bytes_en_disco": 320,
+    "no_descomprime": "Error -3 while decompressing data: unknown compression method"
+   }
+  }
+ },
+ "por_artifact": {
+  "Linux.Events.EBPF": {
+   "filas": 20000,
+   "filas_por_s": 113.23,
+   "conteo": {
+    "marca": 14,
+    "fichero_creado": 16,
+    "fichero_renombrado": 20,
+    "red": 8,
+    "evento_exec": 683,
+    "evento_connect": 594,
+    "evento_unlink": 105,
+    "evento_rename": 171,
+    "evento_open": 16899
+   },
+   "retraso_medio_s": 7.0,
+   "primera_marca_utc": "2026-11-23T13:11:41Z",
+   "sample": [
+    "{\"System\":{\"Timestamp\":\"2026-11-23T13:11:42.319009374Z\",\"EventID\":715,\"EventName\":\"sched_process_exec\",\"ThreadStartTime\":\"2026-11-23T13:11:42.317652505Z\",\"ProcessorID\":0,\"ProcessID\":1713,\"ThreadID\":1713,\"ParentProcessID\":1712,\"HostProcessID\":1713,\"HostThreadID\":1713,\"HostParentProcessID\":1712,\"UserID\":1000,\"MountNS\":4026531841,\"ProcessName\":\"bash\",\"HostName\":\"victima-linux\",\"CgroupID\":4078},\"EventData\":{\"cmdpath\":\"/bin/bash\",\"pathname\":\"/usr/bin/bash\",\"dev\":264241152,\"inode\":511,\"ctime\":17901048",
+    "{\"System\":{\"Timestamp\":\"2026-11-23T13:11:42.326464618Z\",\"EventID\":715,\"EventName\":\"sched_process_exec\",\"ThreadStartTime\":\"2026-11-23T13:11:42.326068449Z\",\"ProcessorID\":0,\"ProcessID\":1716,\"ThreadID\":1716,\"ParentProcessID\":1713,\"HostProcessID\":1716,\"HostThreadID\":1716,\"HostParentProcessID\":1713,\"UserID\":1000,\"MountNS\":4026531841,\"ProcessName\":\"mv\",\"HostName\":\"victima-linux\",\"CgroupID\":4078},\"EventData\":{\"cmdpath\":\"/usr/bin/mv\",\"pathname\":\"/usr/bin/mv\",\"dev\":264241152,\"inode\":835,\"ctime\":1790104801",
+    "{\"System\":{\"Timestamp\":\"2026-11-23T13:11:42.327281454Z\",\"EventID\":768,\"EventName\":\"security_inode_rename\",\"ThreadStartTime\":\"2026-11-23T13:11:42.326068449Z\",\"ProcessorID\":0,\"ProcessID\":1716,\"ThreadID\":1716,\"ParentProcessID\":1713,\"HostProcessID\":1716,\"HostThreadID\":1716,\"HostParentProcessID\":1713,\"UserID\":1000,\"MountNS\":4026531841,\"ProcessName\":\"mv\",\"HostName\":\"victima-linux\",\"CgroupID\":4078},\"EventData\":{\"old_path\":\"/home/angel/lab-legit/probe/probe_file_1.txt\",\"new_path\":\"/home/angel/lab-legit/"
+   ]
+  },
+  "Custom.Linux.Events.AuditRaw": {
+   "filas": 935,
+   "filas_por_s": 5.29,
+   "conteo": {
+    "marca": 13,
+    "fichero_creado": 12,
+    "fichero_renombrado": 21,
+    "red": 6,
+    "evento_exec": 0,
+    "evento_connect": 0,
+    "evento_unlink": 98,
+    "evento_rename": 0,
+    "evento_open": 0
+   },
+   "retraso_medio_s": 43.6,
+   "primera_marca_utc": "2026-11-23T13:11:41Z",
+   "sample": [
+    "{\"Timestamp\":\"2026-11-23T13:11:42.317Z\",\"Sequence\":1279,\"Category\":\"audit-rule\",\"Type\":\"syscall\",\"Result\":\"success\",\"Session\":\"5\",\"Tags\":[\"audit-wazuh-c\"],\"Summary\":{\"actor\":{\"primary\":\"1000\",\"secondary\":\"1000\"},\"action\":\"executed\",\"object\":{\"type\":\"file\",\"primary\":\"/bin/bash\"},\"how\":\"bash\"},\"User\":{\"ids\":{\"auid\":\"1000\",\"egid\":\"1000\",\"euid\":\"1000\",\"fsgid\":\"1000\",\"fsuid\":\"1000\",\"gid\":\"1000\",\"sgid\":\"1000\",\"suid\":\"1000\",\"uid\":\"1000\"},\"selinux\":{\"user\":\"unconfined\"}},\"Process\":{\"pid\":\"1713\",\"ppid\":\"",
+    "{\"Timestamp\":\"2026-11-23T13:11:42.325Z\",\"Sequence\":1284,\"Category\":\"audit-rule\",\"Type\":\"syscall\",\"Result\":\"success\",\"Session\":\"5\",\"Tags\":[\"audit-wazuh-c\"],\"Summary\":{\"actor\":{\"primary\":\"1000\",\"secondary\":\"1000\"},\"action\":\"executed\",\"object\":{\"type\":\"file\",\"primary\":\"/usr/bin/mv\"},\"how\":\"/usr/bin/mv\"},\"User\":{\"ids\":{\"auid\":\"1000\",\"egid\":\"1000\",\"euid\":\"1000\",\"fsgid\":\"1000\",\"fsuid\":\"1000\",\"gid\":\"1000\",\"sgid\":\"1000\",\"suid\":\"1000\",\"uid\":\"1000\"},\"selinux\":{\"user\":\"unconfined\"}},\"Process\":{\"pid\":\"1716\"",
+    "{\"Timestamp\":\"2026-11-23T13:11:42.326Z\",\"Sequence\":1285,\"Category\":\"audit-rule\",\"Type\":\"syscall\",\"Result\":\"success\",\"Session\":\"5\",\"Tags\":[\"audit-wazuh-w\"],\"Summary\":{\"actor\":{\"primary\":\"1000\",\"secondary\":\"1000\"},\"action\":\"renamed\",\"object\":{\"type\":\"file\",\"primary\":\"/home/angel/lab-legit/probe/probe_file_1.txt\"},\"how\":\"/usr/bin/mv\"},\"User\":{\"ids\":{\"auid\":\"1000\",\"egid\":\"1000\",\"euid\":\"1000\",\"fsgid\":\"1000\",\"fsuid\":\"1000\",\"gid\":\"1000\",\"sgid\":\"1000\",\"suid\":\"1000\",\"uid\":\"1000\"},\"selinux\":{\"user\":\"uncon"
+   ]
+  },
+  "Custom.Linux.Events.AuditLogTail": {
+   "filas": 7000,
+   "filas_por_s": 39.63,
+   "conteo": {
+    "marca": 8,
+    "fichero_creado": 12,
+    "fichero_renombrado": 24,
+    "red": 4,
+    "evento_exec": 0,
+    "evento_connect": 0,
+    "evento_unlink": 141,
+    "evento_rename": 0,
+    "evento_open": 0
+   },
+   "retraso_medio_s": 0.0,
+   "primera_marca_utc": "2026-11-23T13:11:44Z",
+   "sample": [
+    "{\"OSPath\":\"/var/log/audit/audit.log\",\"Line\":\"type=EXECVE msg=audit(1795439502.325:1284): argc=3 a0=\\\"mv\\\" a1=\\\"/home/angel/lab-legit/probe/probe_file_1.txt\\\" a2=\\\"/home/angel/lab-legit/probe/probe_ren_1.txt\\\"\",\"ClientId\":\"C.dbc4d0ba705d6d27\",\"_Writer\":\"C.dbc4d0ba705d6d27\",\"_Source\":\"C.dbc4d0ba705d6d27\",\"_ts\":1795439536}",
+    "{\"OSPath\":\"/var/log/audit/audit.log\",\"Line\":\"type=PATH msg=audit(1795439502.326:1285): item=3 name=\\\"/home/angel/lab-legit/probe/probe_ren_1.txt\\\" inode=263856 dev=fc:00 mode=0100664 ouid=1000 ogid=1000 rdev=00:00 nametype=CREATE cap_fp=0 cap_fi=0 cap_fe=0 cap_fver=0 cap_frootid=0\\u001dOUID=\\\"angel\\\" OGID=\\\"angel\\\"\",\"ClientId\":\"C.dbc4d0ba705d6d27\",\"_Writer\":\"C.dbc4d0ba705d6d27\",\"_Source\":\"C.dbc4d0ba705d6d27\",\"_ts\":1795439536}",
+    "{\"OSPath\":\"/var/log/audit/audit.log\",\"Line\":\"type=EXECVE msg=audit(1795439502.326:1286): argc=3 a0=\\\"chmod\\\" a1=\\\"600\\\" a2=\\\"/home/angel/lab-legit/probe/probe_ren_1.txt\\\"\",\"ClientId\":\"C.dbc4d0ba705d6d27\",\"_Writer\":\"C.dbc4d0ba705d6d27\",\"_Source\":\"C.dbc4d0ba705d6d27\",\"_ts\":1795439536}"
+   ]
+  }
+ },
+ "filas_total": 27935,
+ "conteo": {
+  "marca": 35,
+  "fichero_creado": 40,
+  "fichero_renombrado": 65,
+  "red": 18,
+  "evento_exec": 683,
+  "evento_connect": 594,
+  "evento_unlink": 344,
+  "evento_rename": 171,
+  "evento_open": 16899
+ },
+ "fin_utc": "2026-11-23T13:14:47Z"
+}

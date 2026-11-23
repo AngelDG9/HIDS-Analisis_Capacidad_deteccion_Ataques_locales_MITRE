@@ -1,0 +1,43 @@
+{
+ "opcion": "F2",
+ "tabla": [
+  "Custom.Linux.Events.AuditLogTail"
+ ],
+ "parametros": {
+  "Custom.Linux.Events.AuditLogTail": []
+ },
+ "inicio_utc": "2026-11-23T12:46:13Z",
+ "tabla_servidor": [
+  "Custom.Linux.Events.AuditLogTail",
+  "Generic.Client.Stats"
+ ],
+ "cliente_conectado": true,
+ "audit_antes": "enabled 1\nfailure 1\npid 658\nrate_limit 0\nbacklog_limit 8192\nlost 0\nbacklog 0\nbacklog_wait_time 60000\nbacklog_wait_time_actual 0\nloginuid_immutable 0 unlocked\naudit.log bytes=6409596 mtime=1795437998\n2\nactive",
+ "auditctl_antes": "-a always,exit -F arch=b64 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b32 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b64 -S truncate,ftruncate,rename,creat,unlink,unlinkat,renameat,renameat2 -F key=audit-wazuh-w\n-w /etc -p wa -k audit-wazuh-w\n-w /home/angel/lab-legit -p wa -k audit-wazuh-w",
+ "segundos_hasta_primera_marca": 18,
+ "iteraciones_actividad": 4,
+ "audit_despues": "enabled 1\nfailure 1\npid 658\nrate_limit 0\nbacklog_limit 8192\nlost 0\nbacklog 0\nbacklog_wait_time 60000\nbacklog_wait_time_actual 0\nloginuid_immutable 0 unlocked\naudit.log bytes=7444637 mtime=1795438173\n8\nactive",
+ "auditctl_despues": "-a always,exit -F arch=b64 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b32 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b64 -S truncate,ftruncate,rename,creat,unlink,unlinkat,renameat,renameat2 -F key=audit-wazuh-w\n-w /etc -p wa -k audit-wazuh-w\n-w /home/angel/lab-legit -p wa -k audit-wazuh-w",
+ "filas_total": 5000,
+ "conteo": {
+  "marca": 5,
+  "fichero_creado": 9,
+  "fichero_renombrado": 18,
+  "red": 3,
+  "evento_exec": 0,
+  "evento_connect": 0,
+  "evento_unlink": 100,
+  "evento_rename": 0,
+  "evento_open": 0
+ },
+ "filas_por_s": 28.74,
+ "retraso_medio_s": 0.0,
+ "sample": [
+  "{\"OSPath\":\"/var/log/audit/audit.log\",\"Line\":\"type=EXECVE msg=audit(1795437998.212:898): argc=8 a0=\\\"sudo\\\" a1=\\\"-S\\\" a2=\\\"-p\\\" a3=\\\"\\\" a4=\\\"grep\\\" a5=\\\"-c\\\" a6=\\\"PROBEMARK\\\" a7=\\\"/var/log/audit/audit.log\\\"\",\"ClientId\":\"C.dbc4d0ba705d6d27\",\"_Writer\":\"C.dbc4d0ba705d6d27\",\"_Source\":\"C.dbc4d0ba705d6d27\",\"_ts\":1795438001}",
+  "{\"OSPath\":\"/var/log/audit/audit.log\",\"Line\":\"type=EXECVE msg=audit(1795437998.220:903): argc=4 a0=\\\"grep\\\" a1=\\\"-c\\\" a2=\\\"PROBEMARK\\\" a3=\\\"/var/log/audit/audit.log\\\"\",\"ClientId\":\"C.dbc4d0ba705d6d27\",\"_Writer\":\"C.dbc4d0ba705d6d27\",\"_Source\":\"C.dbc4d0ba705d6d27\",\"_ts\":1795438001}",
+  "{\"OSPath\":\"/var/log/audit/audit.log\",\"Line\":\"type=EXECVE msg=audit(1795437998.953:1083): argc=2 a0=\\\"/bin/echo\\\" a1=\\\"PROBEMARK_1\\\"\",\"ClientId\":\"C.dbc4d0ba705d6d27\",\"_Writer\":\"C.dbc4d0ba705d6d27\",\"_Source\":\"C.dbc4d0ba705d6d27\",\"_ts\":1795438019}",
+  "{\"OSPath\":\"/var/log/audit/audit.log\",\"Line\":\"type=EXECVE msg=audit(1795437998.956:1085): argc=3 a0=\\\"mv\\\" a1=\\\"/home/angel/lab-legit/probe/probe_file_1.txt\\\" a2=\\\"/home/angel/lab-legit/probe/probe_ren_1.txt\\\"\",\"ClientId\":\"C.dbc4d0ba705d6d27\",\"_Writer\":\"C.dbc4d0ba705d6d27\",\"_Source\":\"C.dbc4d0ba705d6d27\",\"_ts\":1795438019}",
+  "{\"OSPath\":\"/var/log/audit/audit.log\",\"Line\":\"type=PATH msg=audit(1795437998.957:1086): item=3 name=\\\"/home/angel/lab-legit/probe/probe_ren_1.txt\\\" inode=263854 dev=fc:00 mode=0100664 ouid=1000 ogid=1000 rdev=00:00 nametype=CREATE cap_fp=0 cap_fi=0 cap_fe=0 cap_fver=0 cap_frootid=0\\u001dOUID=\\\"angel\\\" OGID=\\\"angel\\\"\",\"ClientId\":\"C.dbc4d0ba705d6d27\",\"_Writer\":\"C.dbc4d0ba705d6d27\",\"_Source\":\"C.dbc4d0ba705d6d27\",\"_ts\":1795438019}"
+ ],
+ "fin_utc": "2026-11-23T12:49:34Z"
+}

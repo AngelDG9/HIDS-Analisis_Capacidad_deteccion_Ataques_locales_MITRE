@@ -1,0 +1,45 @@
+{
+ "opcion": "G",
+ "tabla": [
+  "Linux.Events.TrackProcesses"
+ ],
+ "parametros": {
+  "Linux.Events.TrackProcesses": [
+   "AlsoForwardUpdates"
+  ]
+ },
+ "inicio_utc": "2026-11-23T12:40:06Z",
+ "tabla_servidor": [
+  "Generic.Client.Stats",
+  "Linux.Events.TrackProcesses"
+ ],
+ "cliente_conectado": true,
+ "audit_antes": "enabled 1\nfailure 1\npid 660\nrate_limit 0\nbacklog_limit 8192\nlost 0\nbacklog 0\nbacklog_wait_time 60000\nbacklog_wait_time_actual 0\nloginuid_immutable 0 unlocked\naudit.log bytes=6540674 mtime=1795437631\n2\nactive",
+ "auditctl_antes": "-a always,exit -F arch=b64 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b32 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b64 -S truncate,ftruncate,rename,creat,unlink,unlinkat,renameat,renameat2 -F key=audit-wazuh-w\n-w /etc -p wa -k audit-wazuh-w\n-w /home/angel/lab-legit -p wa -k audit-wazuh-w",
+ "segundos_hasta_primera_marca": 185,
+ "iteraciones_actividad": 13,
+ "audit_despues": "enabled 1\nfailure 1\npid 660\nrate_limit 0\nbacklog_limit 8192\nlost 0\nbacklog 0\nbacklog_wait_time 60000\nbacklog_wait_time_actual 0\nloginuid_immutable 0 unlocked\naudit.log bytes=988631 mtime=1795437973\n6\nactive",
+ "auditctl_despues": "-a always,exit -F arch=b64 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b32 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b64 -S truncate,ftruncate,rename,creat,unlink,unlinkat,renameat,renameat2 -F key=audit-wazuh-w\n-w /etc -p wa -k audit-wazuh-w\n-w /home/angel/lab-legit -p wa -k audit-wazuh-w",
+ "filas_total": 702,
+ "conteo": {
+  "marca": 10,
+  "fichero_creado": 10,
+  "fichero_renombrado": 20,
+  "red": 10,
+  "evento_exec": 0,
+  "evento_connect": 0,
+  "evento_unlink": 0,
+  "evento_rename": 0,
+  "evento_open": 0
+ },
+ "filas_por_s": 2.06,
+ "retraso_medio_s": 0.0,
+ "sample": [
+  "{\"Id\":\"1934\",\"ParentId\":\"1933\",\"UpdateType\":\"start\",\"StartTime\":\"2026-11-23T12:41:27.63032357Z\",\"EndTime\":\"0001-01-01T00:00:00Z\",\"Data\":{\"Pid\":1934,\"Ppid\":1933,\"Name\":\"bash\",\"Username\":1000,\"Exe\":\"/bin/bash\",\"CommandLine\":\"bash -c mkdir -p /home/angel/lab-legit/probe; /bin/echo PROBEMARK_4; echo x \\u003e /home/angel/lab-legit/probe/probe_file_4.txt; mv /home/angel/lab-legit/probe/probe_file_4.txt /home/angel/lab-legit/probe/probe_ren_4.txt; chmod 600 /home/angel/lab-legit/probe/probe_ren_4.txt; rm -f /home/angel/lab-legit/probe/probe_ren_4.txt; curl -s -m 3 http://192.168.65.1:9/probe_net_4 \\u",
+  "{\"Id\":\"1936\",\"ParentId\":\"1934\",\"UpdateType\":\"start\",\"StartTime\":\"2026-11-23T12:41:27.633753656Z\",\"EndTime\":\"0001-01-01T00:00:00Z\",\"Data\":{\"Pid\":1936,\"Ppid\":1934,\"Name\":\"echo\",\"Username\":1000,\"Exe\":\"/bin/echo\",\"CommandLine\":\"/bin/echo PROBEMARK_4\"},\"GetRealId\":\"1936-1795437687\",\"ClientId\":\"C.dbc4d0ba705d6d27\",\"_Writer\":\"C.dbc4d0ba705d6d27\",\"_Source\":\"C.dbc4d0ba705d6d27\",\"_ts\":1795437799}",
+  "{\"Id\":\"1937\",\"ParentId\":\"1934\",\"UpdateType\":\"start\",\"StartTime\":\"2026-11-23T12:41:27.634795043Z\",\"EndTime\":\"0001-01-01T00:00:00Z\",\"Data\":{\"Pid\":1937,\"Ppid\":1934,\"Name\":\"mv\",\"Username\":1000,\"Exe\":\"/usr/bin/mv\",\"CommandLine\":\"mv /home/angel/lab-legit/probe/probe_file_4.txt /home/angel/lab-legit/probe/probe_ren_4.txt\"},\"GetRealId\":\"1937-1795437687\",\"ClientId\":\"C.dbc4d0ba705d6d27\",\"_Writer\":\"C.dbc4d0ba705d6d27\",\"_Source\":\"C.dbc4d0ba705d6d27\",\"_ts\":1795437799}",
+  "{\"Id\":\"1938\",\"ParentId\":\"1934\",\"UpdateType\":\"start\",\"StartTime\":\"2026-11-23T12:41:27.63613986Z\",\"EndTime\":\"0001-01-01T00:00:00Z\",\"Data\":{\"Pid\":1938,\"Ppid\":1934,\"Name\":\"chmod\",\"Username\":1000,\"Exe\":\"/usr/bin/chmod\",\"CommandLine\":\"chmod 600 /home/angel/lab-legit/probe/probe_ren_4.txt\"},\"GetRealId\":\"1938-1795437687\",\"ClientId\":\"C.dbc4d0ba705d6d27\",\"_Writer\":\"C.dbc4d0ba705d6d27\",\"_Source\":\"C.dbc4d0ba705d6d27\",\"_ts\":1795437799}",
+  "{\"Id\":\"1939\",\"ParentId\":\"1934\",\"UpdateType\":\"start\",\"StartTime\":\"2026-11-23T12:41:27.637045739Z\",\"EndTime\":\"0001-01-01T00:00:00Z\",\"Data\":{\"Pid\":1939,\"Ppid\":1934,\"Name\":\"rm\",\"Username\":1000,\"Exe\":\"/usr/bin/rm\",\"CommandLine\":\"rm -f /home/angel/lab-legit/probe/probe_ren_4.txt\"},\"GetRealId\":\"1939-1795437687\",\"ClientId\":\"C.dbc4d0ba705d6d27\",\"_Writer\":\"C.dbc4d0ba705d6d27\",\"_Source\":\"C.dbc4d0ba705d6d27\",\"_ts\":1795437799}"
+ ],
+ "fin_utc": "2026-11-23T12:46:13Z"
+}

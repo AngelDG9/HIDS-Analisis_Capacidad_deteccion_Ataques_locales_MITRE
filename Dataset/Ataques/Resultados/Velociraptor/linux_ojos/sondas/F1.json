@@ -1,0 +1,43 @@
+{
+ "opcion": "F1",
+ "tabla": [
+  "Custom.Linux.Events.AuditRaw"
+ ],
+ "parametros": {
+  "Custom.Linux.Events.AuditRaw": []
+ },
+ "inicio_utc": "2026-11-23T12:49:34Z",
+ "tabla_servidor": [
+  "Custom.Linux.Events.AuditRaw",
+  "Generic.Client.Stats"
+ ],
+ "cliente_conectado": true,
+ "audit_antes": "enabled 1\nfailure 1\npid 668\nrate_limit 0\nbacklog_limit 8192\nlost 0\nbacklog 0\nbacklog_wait_time 60000\nbacklog_wait_time_actual 0\nloginuid_immutable 0 unlocked\naudit.log bytes=6406124 mtime=1795438199\n2\nactive",
+ "auditctl_antes": "-a always,exit -F arch=b64 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b32 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b64 -S truncate,ftruncate,rename,creat,unlink,unlinkat,renameat,renameat2 -F key=audit-wazuh-w\n-w /etc -p wa -k audit-wazuh-w\n-w /home/angel/lab-legit -p wa -k audit-wazuh-w",
+ "segundos_hasta_primera_marca": 92,
+ "iteraciones_actividad": 8,
+ "audit_despues": "enabled 1\nfailure 1\npid 668\nrate_limit 0\nbacklog_limit 8192\nlost 0\nbacklog 0\nbacklog_wait_time 60000\nbacklog_wait_time_actual 0\nloginuid_immutable 0 unlocked\naudit.log bytes=8223407 mtime=1795438448\n12\nactive",
+ "auditctl_despues": "-a always,exit -F arch=b64 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b32 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b64 -S truncate,ftruncate,rename,creat,unlink,unlinkat,renameat,renameat2 -F key=audit-wazuh-w\n-w /etc -p wa -k audit-wazuh-w\n-w /home/angel/lab-legit -p wa -k audit-wazuh-w",
+ "filas_total": 1603,
+ "conteo": {
+  "marca": 28,
+  "fichero_creado": 32,
+  "fichero_renombrado": 56,
+  "red": 16,
+  "evento_exec": 0,
+  "evento_connect": 0,
+  "evento_unlink": 293,
+  "evento_rename": 0,
+  "evento_open": 0
+ },
+ "filas_por_s": 6.47,
+ "retraso_medio_s": 76.4,
+ "sample": [
+  "{\"Timestamp\":\"2026-11-23T12:49:59.79Z\",\"Sequence\":879,\"Category\":\"audit-rule\",\"Type\":\"syscall\",\"Result\":\"success\",\"Session\":\"3\",\"Tags\":[\"audit-wazuh-c\"],\"Summary\":{\"actor\":{\"primary\":\"1000\",\"secondary\":\"1000\"},\"action\":\"executed\",\"object\":{\"type\":\"file\",\"primary\":\"/bin/bash\"},\"how\":\"bash\"},\"User\":{\"ids\":{\"auid\":\"1000\",\"egid\":\"1000\",\"euid\":\"1000\",\"fsgid\":\"1000\",\"fsuid\":\"1000\",\"gid\":\"1000\",\"sgid\":\"1000\",\"suid\":\"1000\",\"uid\":\"1000\"},\"selinux\":{\"user\":\"unconfined\"}},\"Process\":{\"pid\":\"1541\",\"ppid\":\"1540\",\"title\":\"bash -c sudo -S -p '' auditctl -s; sudo -S -p '' stat -c 'audit.log bytes=%s mtime=%Y' ",
+  "{\"Timestamp\":\"2026-11-23T12:49:59.84Z\",\"Sequence\":898,\"Category\":\"audit-rule\",\"Type\":\"syscall\",\"Result\":\"success\",\"Session\":\"3\",\"Tags\":[\"audit-wazuh-c\"],\"Summary\":{\"actor\":{\"primary\":\"1000\",\"secondary\":\"1000\"},\"action\":\"executed\",\"object\":{\"type\":\"file\",\"primary\":\"/usr/bin/sudo\"},\"how\":\"/usr/bin/sudo\"},\"User\":{\"ids\":{\"auid\":\"1000\",\"egid\":\"1000\",\"euid\":\"0\",\"fsgid\":\"1000\",\"fsuid\":\"0\",\"gid\":\"1000\",\"sgid\":\"1000\",\"suid\":\"0\",\"uid\":\"1000\"},\"selinux\":{\"user\":\"unconfined\"}},\"Process\":{\"pid\":\"1548\",\"ppid\":\"1541\",\"title\":\"sudo -S -p  grep -c PROBEMARK /var/log/audit/audit.log\",\"name\":\"sudo\",\"exe\":\"/usr/b",
+  "{\"Timestamp\":\"2026-11-23T12:49:59.847Z\",\"Sequence\":900,\"Category\":\"user-space\",\"Type\":\"user_cmd\",\"Result\":\"success\",\"Session\":\"3\",\"Tags\":[],\"Summary\":{\"actor\":{\"primary\":\"1000\",\"secondary\":\"1000\"},\"action\":\"ran-command\",\"object\":{\"type\":\"process\",\"primary\":\"grep -c PROBEMARK /var/log/audit/audit.log\"},\"how\":\"/usr/bin/sudo\"},\"User\":{\"ids\":{\"auid\":\"1000\",\"uid\":\"1000\"},\"selinux\":{\"user\":\"unconfined\"}},\"Process\":{\"pid\":\"1548\",\"exe\":\"/usr/bin/sudo\",\"cwd\":\"/home/angel\"},\"File\":null,\"Source\":null,\"Dest\":null,\"Net\":null,\"Data\":{\"cmd\":\"grep -c PROBEMARK /var/log/audit/audit.log\"},\"Paths\":[],\"ECS\":{\"eve",
+  "{\"Timestamp\":\"2026-11-23T12:49:59.853Z\",\"Sequence\":903,\"Category\":\"audit-rule\",\"Type\":\"syscall\",\"Result\":\"success\",\"Session\":\"3\",\"Tags\":[\"audit-wazuh-c\"],\"Summary\":{\"actor\":{\"primary\":\"1000\",\"secondary\":\"0\"},\"action\":\"executed\",\"object\":{\"type\":\"file\",\"primary\":\"/usr/bin/grep\"},\"how\":\"/usr/bin/grep\"},\"User\":{\"ids\":{\"auid\":\"1000\",\"egid\":\"0\",\"euid\":\"0\",\"fsgid\":\"0\",\"fsuid\":\"0\",\"gid\":\"0\",\"sgid\":\"0\",\"suid\":\"0\",\"uid\":\"0\"},\"selinux\":{\"user\":\"unconfined\"}},\"Process\":{\"pid\":\"1549\",\"ppid\":\"1548\",\"title\":\"grep -c PROBEMARK /var/log/audit/audit.log\",\"name\":\"grep\",\"exe\":\"/usr/bin/grep\",\"cwd\":\"/home/angel\",",
+  "{\"Timestamp\":\"2026-11-23T12:50:00.579Z\",\"Sequence\":1098,\"Category\":\"audit-rule\",\"Type\":\"syscall\",\"Result\":\"success\",\"Session\":\"5\",\"Tags\":[\"audit-wazuh-c\"],\"Summary\":{\"actor\":{\"primary\":\"1000\",\"secondary\":\"1000\"},\"action\":\"executed\",\"object\":{\"type\":\"file\",\"primary\":\"/bin/bash\"},\"how\":\"bash\"},\"User\":{\"ids\":{\"auid\":\"1000\",\"egid\":\"1000\",\"euid\":\"1000\",\"fsgid\":\"1000\",\"fsuid\":\"1000\",\"gid\":\"1000\",\"sgid\":\"1000\",\"suid\":\"1000\",\"uid\":\"1000\"},\"selinux\":{\"user\":\"unconfined\"}},\"Process\":{\"pid\":\"1688\",\"ppid\":\"1687\",\"title\":\"bash -c mkdir -p /home/angel/lab-legit/probe; /bin/echo PROBEMARK_1; echo x \\u003e /h"
+ ],
+ "fin_utc": "2026-11-23T12:54:09Z"
+}

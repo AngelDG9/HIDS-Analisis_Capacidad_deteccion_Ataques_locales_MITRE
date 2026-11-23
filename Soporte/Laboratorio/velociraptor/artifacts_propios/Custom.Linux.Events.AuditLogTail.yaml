@@ -1,0 +1,9 @@
+name: Custom.Linux.Events.AuditLogTail
+description: |
+  TFG HIDS - OJOS (no reglas). Sigue en continuo /var/log/audit/audit.log y entrega cada linea TAL CUAL
+  (sin parsear): los mismos bytes que lee el agente de Wazuh. Opcion F2 del plan _fases/velociraptor-ojos/plan.md.
+type: CLIENT_EVENT
+precondition: SELECT OS FROM info() WHERE OS = 'linux'
+sources:
+  - query: |
+      SELECT * FROM watch_syslog(filename='/var/log/audit/audit.log')
