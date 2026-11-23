@@ -1,0 +1,13 @@
+ATA019 · T1048.001 Symmetric Encrypted Non-C2 (openssl enc + TCP crudo) — custom (manual)
+T0=2026-11-23T21:23:32Z
+--- FICHERO ORIGINAL (a cifrar) ---
+69ae035970a4663b3a45bbe0c24adc33affa9b0feac41d7273260cf94520b854  /home/angel/lab-attack/ATA019/extracto_clientes_2026.txt
+--- estado final ---
+-rw-r--r-- 1 angel angel 173 Nov 23 22:23 /home/angel/lab-attack/ATA019/extracto_clientes_2026.txt
+-rw-r--r-- 1 angel angel 192 Nov 23 22:23 /home/angel/lab-attack/ATA019/extracto_clientes_2026.txt.enc
+-rw-r--r-- 1 angel angel 173 Nov 23 22:23 /home/angel/lab-attack/ATA019/roundtrip_verificado.txt
+sha256 original       = 69ae035970a4663b3a45bbe0c24adc33affa9b0feac41d7273260cf94520b854
+sha256 enviado (cifr) = 75c0b52a026544073284747177a52b88c17c892bacb374ce1bf8f73c36b39d20
+sha256 roundtrip      = 69ae035970a4663b3a45bbe0c24adc33affa9b0feac41d7273260cf94520b854
+CIFRADO_SIMETRICO=OK (blob cifrado enviado por TCP; roundtrip identico al original)
+T1_LOCAL=2026-11-23T21:23:33Z
