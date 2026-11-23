@@ -1,0 +1,6 @@
+ATA012 · T1119 Automated Collection (find/cp/tar) — custom (manual)
+T0=2026-11-23T20:07:05Z
+--- estado final del staging ---
+-rw-r--r-- 1 angel angel 83066 Nov 23 21:07 /home/angel/lab-attack/ATA012/collected.tar.gz
+99
+T1_LOCAL=2026-11-23T20:07:05Z

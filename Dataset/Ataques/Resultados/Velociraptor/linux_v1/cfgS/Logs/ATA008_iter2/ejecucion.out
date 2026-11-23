@@ -1,0 +1,16 @@
+ATA008 · T1048.002 Exfiltration Over Alternative Protocol (wget) — GUID 7ccdfcfa-6707-46bc-b812-007ab6ff951c
+T0=2026-11-23T19:29:41Z
+T1_LOCAL=2026-11-23T19:29:41Z
+
+--STDERR--
+--2026-11-23 20:29:41--  http://192.168.65.1:9090/
+Connecting to 192.168.65.1:9090... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 3 [text/plain]
+Saving to: ‘index.html.tmp’
+
+     0K                                                       100%  388K=0s
+
+2026-11-23 20:29:41 (388 KB/s) - ‘index.html.tmp’ saved [3/3]
+
+Removing index.html.tmp.
