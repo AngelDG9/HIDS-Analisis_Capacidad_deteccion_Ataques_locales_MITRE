@@ -76,3 +76,38 @@ def test_cargar_anclas_ignora_ambiguas(tmp_path):
 def test_dias_cruzando_medianoche():
     t0, t1 = dt.datetime(2026, 11, 21, 23, 59, tzinfo=UTC), dt.datetime(2026, 11, 22, 0, 2, tzinfo=UTC)
     assert ev.dias(t0, t1) == ["2026-11-21", "2026-11-22"]
+
+
+# ------------------------------------------------------------------ lineas de auditd (audit.log subido tal cual)
+def _evento_exec(ts, seq, exe, cwd, key="audit-wazuh-c", syscall=59):
+    return [
+        ('type=SYSCALL msg=audit(%s:%d): arch=c000003e syscall=%d success=yes exit=0 pid=10 uid=1000 comm="x" exe="%s" key="%s"' % (ts, seq, syscall, exe, key)).encode(),
+        ('type=EXECVE msg=audit(%s:%d): argc=1 a0="x"' % (ts, seq)).encode(),
+        ('type=CWD msg=audit(%s:%d): cwd="%s"' % (ts, seq, cwd)).encode(),
+    ]
+
+
+def test_hora_audit_y_recorte():
+    assert ev.hora_audit(b'type=SYSCALL msg=audit(1795437996.329:654): arch=c000003e') == dt.datetime.fromtimestamp(1795437996.329, tz=UTC)
+    assert ev.hora_audit(b"sin marca de auditd") is None
+    lineas = _evento_exec("1000.500", 1, "/usr/bin/curl", "/a") + _evento_exec("2000.500", 2, "/usr/bin/curl", "/a") + _evento_exec("3000.500", 3, "/usr/bin/curl", "/a")
+    t0, t1 = dt.datetime.fromtimestamp(1500, tz=UTC), dt.datetime.fromtimestamp(2500, tz=UTC)
+    dentro, sin_hora = ev.recortar_audit(lineas + [b"basura sin hora"], t0, t1)
+    assert len(dentro) == 3 and all(b"2000.500" in l for l in dentro) and sin_hora == 1         # el evento entero (3 lineas) o nada
+
+
+def test_anclas_audit_solo_eventos_comando_y_por_evento():
+    anclas = [("S1", "audit_exe", "curl"), ("S2", "audit_cwd", "/home/angel/lab-attack/ATA009/*"), ("S3", "audit_exe", "cu")]
+    lineas = (_evento_exec("1.1", 1, "/usr/bin/curl", "/home/angel/lab-attack/ATA009")             # cuenta exe y cwd
+              + _evento_exec("1.2", 2, "/usr/bin/curl", "/home/angel/lab-attack/ATA009/sub")      # cwd por prefijo
+              + _evento_exec("1.3", 3, "/usr/bin/curl", "/tmp", key="audit-wazuh-w", syscall=87)  # NO es comando (clave w): no cuenta
+              + _evento_exec("1.4", 4, "/usr/bin/curlish", "/tmp"))                               # basename distinto: no cuenta
+    r = ev.contar_anclas_audit(lineas, anclas)
+    assert r == {"S1": 2, "S2": 2, "S3": 0}                                                       # `cu` no casa con `curl` (basename exacto)
+
+
+def test_anclas_audit_cwd_en_hexadecimal():
+    # auditd codifica en hex los valores con espacios/caracteres raros (sin comillas)
+    cwd_hex = "/home/angel/lab-attack/ATA 011".encode().hex().upper()
+    l = [b'type=SYSCALL msg=audit(1.1:9): syscall=59 exe="/usr/bin/cp" key="audit-wazuh-c"', ("type=CWD msg=audit(1.1:9): cwd=%s" % cwd_hex).encode()]
+    assert ev.contar_anclas_audit(l, [("S", "audit_cwd", "/home/angel/lab-attack/ATA 011/*")]) == {"S": 1}

@@ -1,7 +1,7 @@
 ---
 nombre: Velociraptor Linux - auditoria de los «ojos» (que sensor usar) antes de V1
 fecha: 2026-11-23
-estado: APROBADO (2026-11-23) - E0 y E1a EJECUTADOS; E2 en adelante PENDIENTES (diseno revisado, ver §11)
+estado: APROBADO (2026-11-23) - E0-E5 EJECUTADOS (pasada cfgS 18/18 OK, verificacion independiente OK); pendiente: confirmacion humana del ojo principal (ver Dataset/Ataques/Resultados/Velociraptor/linux_ojos/RESULTADO_OJOS.md)
 depende_de: _fases/velociraptor-piloto-procesos/plan.md · Dataset/Ataques/Resultados/Velociraptor/linux_piloto/RESULTADO_PILOTO.md · Soporte/Laboratorio/velociraptor/MONTAJE_V0.md
 ---
 

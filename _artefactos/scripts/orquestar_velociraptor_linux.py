@@ -39,6 +39,11 @@ SNAP_VR = "lab-listo-vr"
 CFG = {"E": ["Linux.Events.EBPF"],
        "O": ["Linux.Events.ProcessExecutions", "Linux.Events.TrackProcesses", "Linux.Events.Journal", "Linux.Events.DNS",
              "Linux.Events.HTTPConnections", "Linux.Events.SSHLogin", "Linux.Events.SSHBruteforce"]}
+# Ganchos para configuraciones nuevas (pasada de los «ojos», cfg S): se rellenan desde orquestar_velociraptor_ojos.py. E y O no cambian.
+FIJAR = {}      # cfg -> funcion(cfg) que deja la tabla de monitorizacion del servidor y devuelve la tabla
+POST = {}       # cfg -> funcion(meta, ldir, rdir, t0, t1) tras la marca de FIN (p. ej. subir audit.log); si lanza, la ventana FALLA
+SUBS_EXTRA = ()  # carpetas extra del datastore del cliente a copiar en --fase post (cfg S: «collections», con las subidas originales)
+CFG["S"] = ["Linux.Events.EBPF"]
 PILOTO = ["ATA001", "ATA002", "ATA008", "ATA009", "ATA011", "ATA012"]
 OUT = RAW = None
 
@@ -93,7 +98,7 @@ def cola_hoy(artifact, mb=24):
 
 def marca_vista(cfg, marca):
     b = marca.encode()
-    arts = ["Linux.Events.EBPF"] if cfg == "E" else ["Linux.Events.Journal"]
+    arts = ["Linux.Events.EBPF"] if cfg in ("E", "S") else ["Linux.Events.Journal"]
     return any(b in cola_hoy(a) for a in arts)
 
 
@@ -134,13 +139,14 @@ def ventana(spec, it, cfg, timeout_ataque):
     try:
         if sink:
             sink.start()
-        meta["tabla_servidor"] = fijar_cfg(cfg)
+        meta["tabla_servidor"] = FIJAR.get(cfg, fijar_cfg)(cfg)
         olx.vm_reset()
         if not olx.esperar_ssh(olx.IP_V, 300):
             raise RuntimeError("la victima no responde por SSH")
         mi = "TFGMARKINI%s" % re.sub(r"\W", "", tag + cfg + str(int(time.time())))
         s = esperar_marca(cfg, mi, 480)
         meta["marca_ini_seg"] = s
+        meta["marca_ini"] = mi
         if s is None:
             raise RuntimeError("la marca de INICIO no llega al servidor (tuberia no operativa)")
         time.sleep(olx.SETTLE_S)
@@ -190,12 +196,15 @@ def ventana(spec, it, cfg, timeout_ataque):
         mf = "TFGMARKFIN%s" % re.sub(r"\W", "", tag + cfg + str(int(time.time())))
         s = esperar_marca(cfg, mf, 420)
         meta["marca_fin_seg"] = s
+        meta["marca_fin"] = mf
         if s is None:
             raise RuntimeError("la marca de FIN no llega al servidor: la ventana puede estar incompleta")
         meta["auditd_despues"] = reglas_audit()
         # --- RECORTE y anclas
         a0 = ext._iso(t0) - dt.timedelta(seconds=60)
         a1 = ext._iso(t1) + dt.timedelta(seconds=120)
+        if cfg in POST:
+            POST[cfg](meta, ldir, rdir, a0, a1)
         anclas = []
         for f in glob.glob(os.path.join(olx.CMD_DIR, "T*", "%s_esperado.csv" % ata)):
             anclas = ext.cargar_anclas(f)
@@ -210,7 +219,7 @@ def ventana(spec, it, cfg, timeout_ataque):
         meta["resumen"] = resumen
         meta["anclas"] = [list(a) for a in anclas]
         with open(os.path.join(ldir, "sha256_recortes.txt"), "w", encoding="utf-8", newline="\n") as fh:
-            for f in sorted(glob.glob(os.path.join(rdir, "*.jsonl.gz"))):
+            for f in sorted(glob.glob(os.path.join(rdir, "*.gz"))):
                 fh.write("%s  %s\n" % (ext.sha256_file(f), os.path.basename(f)))
         meta["estado"] = "OK" if meta.get("lanzamiento_rc", 1) == 0 else "REVISAR"
     except Exception as ex:                              # noqa: BLE001 - se anota y se sigue
@@ -270,7 +279,7 @@ def fase_post(args):
     dest = args.crudo
     os.makedirs(dest, exist_ok=True)
     base = os.path.join(SRV, "datastore", "clients", CLIENTE)
-    for sub in ("monitoring", "monitoring_logs"):
+    for sub in ("monitoring", "monitoring_logs") + tuple(SUBS_EXTRA):
         d = os.path.join(dest, sub)
         if os.path.isdir(d):
             shutil.rmtree(d)
@@ -290,7 +299,7 @@ def main():
     global OUT, RAW
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--fase", choices=("run", "post"), default="run")
-    ap.add_argument("--cfg", choices=("E", "O"), default="E")
+    ap.add_argument("--cfg", choices=("E", "O", "S"), default="E")
     ap.add_argument("--only", default=",".join(PILOTO))
     ap.add_argument("--iters", default="1,2")
     ap.add_argument("--timeout", type=int, default=900)

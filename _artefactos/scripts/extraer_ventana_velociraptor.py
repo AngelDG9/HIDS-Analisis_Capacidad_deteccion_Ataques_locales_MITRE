@@ -193,6 +193,76 @@ def contar_anclas_exec_ebpf(lineas, anclas):
     return res
 
 
+# ------------------------------------------------------------------ lineas de auditd (audit.log subido tal cual por Generic.Collectors.File)
+_RX_AUDIT = re.compile(rb"msg=audit\((\d+(?:\.\d+)?):(\d+)\)")
+_RX_CAMPO = re.compile(r'(\w+)=("([^"]*)"|\S+)')
+
+
+def hora_audit(linea):
+    """Hora (UTC) de una linea de auditd (`msg=audit(EPOCH.ms:SEQ)`); None si no es una linea de auditd."""
+    m = _RX_AUDIT.search(linea)
+    return dt.datetime.fromtimestamp(float(m.group(1)), tz=dt.timezone.utc) if m else None
+
+
+def recortar_audit(lineas, t0, t1):
+    """Lineas de auditd con t0 <= hora <= t1 (las de un mismo evento comparten hora). Devuelve (dentro, n_sin_hora); lineas vacias se ignoran."""
+    dentro, sin_hora = [], 0
+    for l in lineas:
+        if not l.strip():
+            continue
+        h = hora_audit(l)
+        if h is None:
+            sin_hora += 1
+        elif t0 <= h <= t1:
+            dentro.append(l)
+    return dentro, sin_hora
+
+
+def _valor_audit(v, entrecomillado):
+    """auditd escribe en hexadecimal (sin comillas) los valores con espacios o caracteres raros."""
+    if entrecomillado is not None:
+        return entrecomillado
+    if len(v) >= 2 and len(v) % 2 == 0 and re.fullmatch(r"[0-9A-Fa-f]+", v):
+        try:
+            return bytes.fromhex(v).decode("utf-8", "replace")
+        except ValueError:
+            return v
+    return v
+
+
+def contar_anclas_audit(lineas, anclas):
+    """Anclas ESTRICTAS sobre auditd, por EVENTO (misma marca `msg=audit(ts:seq)`), solo eventos de comando (`key=audit-wazuh-c`, como la regla 80792 de Wazuh):
+    audit_exe -> basename de `exe=` == patron;  audit_cwd -> `cwd=` (registro CWD del mismo evento) empieza por la ruta (el `*` final = prefijo).  {senal_id: n_eventos}."""
+    ev = {}
+    for l in lineas:
+        m = _RX_AUDIT.search(l)
+        if not m:
+            continue
+        t = l.decode("utf-8", "replace")
+        d = ev.setdefault((m.group(1), m.group(2)), {"cmd": False, "exe": None, "cwd": None})
+        campos = {k: _valor_audit(v, q if q != "" or v.startswith('"') else None) for k, v, q in _RX_CAMPO.findall(t)}
+        if t.lstrip().startswith("type=SYSCALL"):
+            if "audit-wazuh-c" in campos.get("key", ""):
+                d["cmd"] = True
+            d["exe"] = campos.get("exe")
+        elif t.lstrip().startswith("type=CWD"):
+            d["cwd"] = campos.get("cwd")
+    res = {}
+    for sid, campo, patron in anclas:
+        n = 0
+        for d in ev.values():
+            if not d["cmd"]:
+                continue
+            if campo == "audit_cwd":
+                base = _base_cwd(patron)
+                if d["cwd"] is not None and (d["cwd"] == base or d["cwd"].startswith(base + "/")):
+                    n += 1
+            elif d["exe"] is not None and os.path.basename(d["exe"]) == patron:
+                n += 1
+        res[sid] = n
+    return res
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--monitoring", required=True)

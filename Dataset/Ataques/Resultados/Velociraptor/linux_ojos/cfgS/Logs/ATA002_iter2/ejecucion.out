@@ -1,0 +1,13 @@
+ATA002 · T1485 Data Destruction (dd) — GUID 38deee99-fd65-4031-bec8-bfa4f9f26146
+T0=2026-11-23T14:51:13Z
+--- estado final del objetivo ---
+-rw-r--r-- 1 angel angel 1048576 Nov 23 15:51 /home/angel/lab-legit/ATA002_scratch_dd.txt
+T1_LOCAL=2026-11-23T14:51:13Z
+
+--STDERR--
+1+0 records in
+1+0 records out
+1048576 bytes (1.0 MB, 1.0 MiB) copied, 0.000880128 s, 1.2 GB/s
+2048+0 records in
+2048+0 records out
+1048576 bytes (1.0 MB, 1.0 MiB) copied, 0.00720365 s, 146 MB/s
