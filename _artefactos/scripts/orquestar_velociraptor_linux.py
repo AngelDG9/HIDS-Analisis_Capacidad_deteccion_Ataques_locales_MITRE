@@ -125,6 +125,35 @@ def reglas_audit():
     return o.strip()
 
 
+MGR_VMX = r"D:\TFG-VMs\wazuh-server\wazuh-server.vmx"
+
+
+def manager_on():
+    """ATA039/ATA040 usan un daemon rsync en la VM manager (192.168.65.128), apagada en el resto de la pasada de Velociraptor: se enciende solo para ellos."""
+    rc, o, e = olx.run([olx.VMRUN, "-T", "ws", "list"], timeout=60)
+    if MGR_VMX.lower() not in o.lower():
+        rc, o, e = olx.run([olx.VMRUN, "-T", "ws", "start", MGR_VMX, "nogui"], timeout=300)
+        if rc != 0:
+            raise RuntimeError("no arranca la VM manager: %s %s" % (o.strip(), e.strip()))
+    if not olx.esperar_ssh(olx.IP_M, 300):
+        raise RuntimeError("la VM manager no responde por SSH")
+
+
+def manager_off():
+    olx.run([olx.VMRUN, "-T", "ws", "stop", MGR_VMX, "soft"], timeout=180)
+
+
+def esperar_reinicio_vr(antes, seg=720):
+    """ATA038: espera a que la victima vuelva con otro boot_id (el cliente de Velociraptor se comprueba despues con la marca FIN)."""
+    t = time.time()
+    while time.time() - t < seg:
+        b = olx.boot_id()
+        if b and b != antes:
+            return b
+        time.sleep(6)
+    raise RuntimeError("la victima no reinicia en %d s" % seg)
+
+
 def ventana(spec, it, cfg, timeout_ataque):
     ata, tag = spec["ata"], olx.tag_de(spec, it)
     ldir = os.path.join(OUT, "Logs", tag)
@@ -139,6 +168,9 @@ def ventana(spec, it, cfg, timeout_ataque):
     try:
         if sink:
             sink.start()
+        if ata in ("ATA039", "ATA040"):
+            manager_on()
+            olx.rsync_up()
         meta["tabla_servidor"] = FIJAR.get(cfg, fijar_cfg)(cfg)
         olx.vm_reset()
         if not olx.esperar_ssh(olx.IP_V, 300):
@@ -166,6 +198,9 @@ def ventana(spec, it, cfg, timeout_ataque):
             at = os.path.join(REPO, "Soporte", "Ataques", "atomic-red-team", "atomics", "T1048.002", "src")
             if os.path.isdir(at):
                 olx.scp_to(olx.IP_V, at, d_dest + "/", recursive=True)
+        if ata == "ATA047":                               # su prestaging arranca el sink dentro de la victima
+            olx.scp_to(olx.IP_V, olx.SINK, d_dest + "/")
+        olx.extras_pre(spec, d_dest)                      # material fijado (rclone, debs): no hace nada en los demas casos
         olx.ssh(olx.IP_V, "chmod +x %s/*.sh 2>/dev/null; true" % d_dest)
         rc, o, _ = olx.ssh(olx.IP_V, "sha256sum %s/%s" % (d_dest, spec["nombre"]))
         meta["sha256_en_victima"] = o.split()[0] if o.split() else ""
@@ -180,6 +215,8 @@ def ventana(spec, it, cfg, timeout_ataque):
                 raise RuntimeError("prestage rc=%s" % rc)
         # --- VENTANA
         cmd, entrada = olx.lanzar_local(spec, "", d_dest)
+        if ata == "ATA038":
+            meta["boot_id_antes"] = olx.boot_id()
         t_lanz = now_utc_dt()
         rc, o, e = olx.ssh(olx.IP_V, cmd, inp=entrada, timeout=timeout_ataque)
         meta["lanzamiento_rc"] = rc
@@ -187,7 +224,11 @@ def ventana(spec, it, cfg, timeout_ataque):
         m = re.search(r"T0=(\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ)", o)
         t0 = m.group(1) if m else iso(t_lanz)
         meta["t0_fuente"] = "marca T0= del ataque" if m else "reloj del host al lanzar"
-        time.sleep(30)
+        if ata == "ATA038":                               # t1 lo sella el operador TRAS el reinicio (como en Wazuh)
+            meta["boot_id_despues"] = esperar_reinicio_vr(meta.get("boot_id_antes", ""))
+            time.sleep(20)
+        else:
+            time.sleep(30)
         t1 = iso(now_utc_dt())
         meta["t0"], meta["t1"] = t0, t1
         with open(os.path.join(ldir, "times.log"), "w", encoding="utf-8", newline="\n") as fh:
@@ -200,6 +241,8 @@ def ventana(spec, it, cfg, timeout_ataque):
         if s is None:
             raise RuntimeError("la marca de FIN no llega al servidor: la ventana puede estar incompleta")
         meta["auditd_despues"] = reglas_audit()
+        if meta["auditd_despues"] != meta["auditd_antes"]:
+            raise RuntimeError("las reglas de auditd cambiaron durante la ventana (sin ojos fiables)")
         # --- RECORTE y anclas
         a0 = ext._iso(t0) - dt.timedelta(seconds=60)
         a1 = ext._iso(t1) + dt.timedelta(seconds=120)
@@ -229,6 +272,8 @@ def ventana(spec, it, cfg, timeout_ataque):
     finally:
         if sink:
             sink.stop()
+        if ata in ("ATA039", "ATA040"):
+            olx.rsync_down(ldir)
         meta["fin_utc"] = iso(now_utc_dt())
         meta["segundos"] = round(time.time() - t_ini)
         with open(os.path.join(ldir, "lanzamiento.json"), "w", encoding="utf-8", newline="\n") as fh:

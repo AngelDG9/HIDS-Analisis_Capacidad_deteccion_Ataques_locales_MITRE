@@ -1,7 +1,7 @@
 ---
 nombre: Velociraptor Linux - V1 (55 casos x 2) con auditd principal y EBPF guardado
 fecha: 2026-11-23
-estado: PROPUESTO - pendiente del OK del humano para lanzar la pasada (la preparacion y el ensayo no necesitan lanzarla)
+estado: PREPARADO Y ENSAYADO (2026-11-23) - V1-0 y V1-1 hechos; pendiente el OK del humano para lanzar V1-2 (110 ventanas, ~9 h)
 depende_de: Dataset/Ataques/Resultados/Velociraptor/linux_ojos/RESULTADO_OJOS.md (decision de los ojos) · _fases/velociraptor-linux/plan.md (V1)
 ---
 
@@ -43,3 +43,8 @@ Ninguno nuevo respecto a la pasada de ojos: snapshot `lab-listo-vr`, 5 reglas de
 
 ## 6. Lo que NO es V1
 No mide falsas alarmas (V1-L), no incluye reglas de deteccion externas (C2/C3, se repetiran sobre este crudo), ni Windows.
+
+## 7. Registro de ejecucion (2026-11-23)
+**V1-0 hecho.** `orquestar_velociraptor_linux.py` ya cubre lo que le faltaba frente al orquestador de Wazuh: daemon rsync en la VM manager (ATA039/040; la VM se enciende solo para ellos y se apaga al final), sumidero dentro de la victima (ATA047), material fijado (`extras_pre`: rclone, debs), espera del reinicio (ATA038) y **comprobacion de que las reglas de auditd no cambian durante la ventana** (si cambian, la ventana FALLA). Nuevo `orquestar_velociraptor_v1.py` (55 casos x 2; salida `linux_v1`). Tests del extractor: 11 pasan.
+**V1-1 hecho (ensayo, 7 casos, iter 1, resultados en `D:\TFG-VMs\ataques-velociraptor-linux-v1\ensayo`, fuera del repo):** ATA004 (sudo wrapper, para cron), ATA024 (sudo por stdin), ATA038 (reinicio), ATA039 (rsync), ATA047 (sumidero en la victima), ATA049 (rclone), ATA051 (paquetes GUI) -> **7/7 OK**, 5 reglas de auditd antes y despues en todos, marcas INI/FIN presentes, reinicio de ATA038 detectado (boot_id cambia).
+Observaciones: (1) ATA039 fallo en el primer intento (la marca de INICIO no llego en 480 s; primera ventana con la VM manager recien encendida) y salio bien en el reintento unico del orquestador: se registra, y en V1 el indice lista los reintentos. (2) Durante el reintento de ATA039 entre por SSH a la victima (`uptime`, `journalctl`) por error: ensayo, no dato de medida. (3) En ATA024, ATA047 y ATA051 auditd cuenta bastante mas anclas de exec que EBPF (p. ej. ATA051 `cwd`: 817 vs 223): hay que explicarlo en V1-5 (intentos de exec fallidos, que EBPF no ve, o perdida de eventos de EBPF bajo rafagas) antes de dar ningun numero por bueno.
