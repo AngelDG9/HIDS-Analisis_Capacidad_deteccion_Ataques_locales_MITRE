@@ -1,0 +1,75 @@
+=== VERIFICAR lab-listo-legit-vr ===
+[OK] sistema y disco
+    6.8.0-139-generic
+    Ubuntu 24.04.5 LTS
+    /dev/mapper/ubuntu--vg-ubuntu--lv  9.8G  4.9G  4.4G  53% /
+    Tue Nov 24 12:23:56 PM UTC 2026
+[OK] paquetes de Wazuh / carpeta
+    0
+    ls: cannot access '/var/ossec': No such file or directory
+    not-found
+    inactive
+[OK] cliente de Velociraptor
+    -rw------- 1 root root     1799 Nov 24 13:21 /etc/velociraptor.writeback.yaml
+    -rwxr-xr-x 1 root root 78329008 Nov 24 13:21 /usr/local/bin/velociraptor
+    
+    /etc/velociraptor:
+    total 12
+    drwxr-xr-x   2 root root 4096 Nov 24 13:21 .
+    drwxr-xr-x 110 root root 4096 Nov 24 13:21 ..
+    -rw-------   1 root root 2732 Nov 24 13:21 client.config.yaml
+    enabled
+[OK] auditd: reglas, config, ficheros
+    -a always,exit -F arch=b64 -S execve -F key=audit-wazuh-c
+    -a always,exit -F arch=b32 -S execve -F key=audit-wazuh-c
+    -a always,exit -F arch=b64 -S truncate,ftruncate,rename,creat,unlink,unlinkat,renameat,renameat2 -F key=audit-wazuh-w
+    -w /etc -p wa -k audit-wazuh-w
+    -w /home/angel/lab-legit -p wa -k audit-wazuh-w
+    7b6f8396d13ff701990fff563aa43074  /etc/audit/rules.d/tfg.rules
+    max_log_file = 8
+    num_logs = 120
+    max_log_file_action = ROTATE
+    -r--r-----  1 root adm    8388804 Oct 28 03:47 audit.log.1
+    -r--r-----  1 root adm    8388746 Oct 28 03:46 audit.log.2
+    -r--r-----  1 root adm    8388941 Oct 28 03:46 audit.log.3
+    -r--r-----  1 root adm    8388841 Oct 28 03:45 audit.log.4
+[OK] GHOSTS: carpeta y huellas
+    client_ctl.sh
+    CommandLine.dll
+    config
+    createdump
+    Descargas
+    Documentos
+    FileHelpers.dll
+    ghosts.client.linux
+    ghosts.client.linux.deps.json
+    ghosts.client.linux.dll
+    ghosts.client.linux.pdb
+    ghosts.client.linux.runtimeconfig.json
+    3e1a73a49f7e95fc52864a4c52e89e5af38a0644791bee2115a7ac96b742c659  /home/angel/ghosts-client/ghosts.client.linux
+    7405f546d168754e1e745d87a1400593ee24d80c485f771199f89cab40986977  /home/angel/ghosts-client/ghosts.client.linux.dll
+    e711bc932c036e466fb7ad6f4ad03c2cebc39666092baa551c4e656c12dbedcd  /home/angel/ghosts-client/config/timeline.json
+    application.example.yaml
+    application.json
+    blog-content.csv
+    blog-reply.csv
+    denylist.txt
+    dictionary.json
+    email-content.csv
+    email-reply.csv
+    emails-domain.json
+    emails-outside.json
+    email_targets.txt
+    first_names.txt
+    health.json
+    las
+[OK] units de GHOSTS legit (no deben existir)
+    fin
+[OK] red: ruta por defecto (no debe haber)
+    192.168.65.0/24 dev ens33 proto kernel scope link src 192.168.65.129 
+    ---
+    uid=0(root) gid=0(root) groups=0(root)
+[OK] cliente activo y registrado en el servidor
+    active
+    Nov 24 13:23:59 victima-linux velociraptor[1262]: [INFO] 2026-11-24T12:23:59Z File Ring Buffer: Enqueue {"header":"{\"ReadPointer\":50,\"WritePointer\":6275,\"M
+    Nov 24 13:23:59 victima-linux velociraptor[1262]: [INFO] 2026-11-24T12:23:59Z File Ring Buffer: Enqueue {"header":"{\"ReadPointer\":50,\"WritePointer\":579097,\
