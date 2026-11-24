@@ -68,7 +68,7 @@
 -$WatchState = Join-Path $env:TEMP 'opencode\tfg_watch_estado.json'
 +$Log = Join-Path $Base 'legitimo_host_control_vr.log'
 +$VigLog = Join-Path $Base 'vigilancia_legitimo_vr.log'
-+$WatchState = Join-Path $env:TEMP 'opencode\tfg_watch_estado_vr.json'
++$WatchState = 'D:\TFG-VMs\lab-logs\tfg_watch_estado_vr.json'   # ruta FIJA (no depende de $env:TEMP, que cambia segun quien lance la tarea)
 @@ -87 +68,9 @@
 -if (-not $ManagerPw) { $ManagerPw = if ($env:TFG_MANAGER_PW) { $env:TFG_MANAGER_PW } else { $GuestPw } }
 +if (-not $GuestPw)   { $GuestPw   = $env:TFG_MANAGER_PW }   # misma clave para todas las VMs; SOLO del entorno del proceso
@@ -177,6 +177,9 @@
 @@ -496,2 +443,0 @@
 -    Invoke-OnVm $Man 'bash /tmp/diag_wazuh.sh' $ManagerPw | Out-Null
 -    Invoke-OnVm $Man 'bash /tmp/logall_json_ctl.sh status' $ManagerPw | Out-Null
+@@ -523 +469 @@
+-      try { $j = Get-Content -Raw $WatchState | ConvertFrom-Json; foreach ($k in @($prev.Keys)) { if ($null -ne $j.$k) { $prev[$k] = $j.$k } } } catch { }
++      try { $j = Get-Content -Raw $WatchState | ConvertFrom-Json; foreach ($k in @($prev.Keys)) { if ($null -ne $j.$k) { $prev[$k] = $j.$k } } } catch { $leerErr = $_.Exception.Message }
 @@ -559,12 +505,13 @@
 -    # --- senales 2,3,4,5: manager ---------------------------------------
 -    $wm = Invoke-WatchManager
@@ -219,7 +222,7 @@
 -
 -    Add-Content -Path $VigLog -Value $line -Encoding utf8
 -    Add-Content -Path $Log -Value $line -Encoding utf8
-+    $line = "[$(TsUtc)] [watch] estado=$estadoTxt doing_age=$doingTxt bloque=$bloqueTxt mins_bloque=$minsBloque hb=$hbTxt cli=$($kaEdad)s srv=$($wm['servidor']) ebpf=$($archDelta)B tabla=$($wm['tabla']) df=$(if($dfGb -ge 0){"${dfGb}G"}else{'n/a'}) tasa=$($dfTasa)MB/h db=${dbMb}MB host=${hostGb}G wu=$($wu.Estado)/$($wu.Tipo) au=$(if($wu.NoAuto -eq 1){'1'}else{'0'}) noreb=$(if($wu.NoReboot -eq 1){'1'}else{'0'}) boot=$($wu.Boot) reps=$wuReps ram=post-hoc rec=post-hoc rot=post-hoc notas=$($notas -join ',')"
++    $line = "[$(TsUtc)] [watch] estado=$estadoTxt doing_age=$doingTxt bloque=$bloqueTxt mins_bloque=$minsBloque hb=$hbTxt prev=$($prev.archives)@$($prev.ts)$(if($leerErr){' ERR_estado='+$leerErr}) cli=$($kaEdad)s srv=$($wm['servidor']) ebpf=$($archDelta)B tabla=$($wm['tabla']) df=$(if($dfGb -ge 0){"${dfGb}G"}else{'n/a'}) tasa=$($dfTasa)MB/h db=${dbMb}MB host=${hostGb}G wu=$($wu.Estado)/$($wu.Tipo) au=$(if($wu.NoAuto -eq 1){'1'}else{'0'}) noreb=$(if($wu.NoReboot -eq 1){'1'}else{'0'}) boot=$($wu.Boot) reps=$wuReps ram=post-hoc rec=post-hoc rot=post-hoc notas=$($notas -join ',')"
 +
 +    Add-LineaSegura $VigLog $line
 +    Add-LineaSegura $Log $line

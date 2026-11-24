@@ -31,7 +31,7 @@ REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), 
 BASE = os.path.join(REPO, "Soporte", "Laboratorio", "legitimo_72h_vr")
 CONF = os.path.join(BASE, "legit_vr_config.json")
 HUELLA = os.path.join(BASE, "recetas_vr", "tabla_cfgS.sha256")
-ESTADO = os.path.join(os.environ.get("TEMP", "."), "opencode", "tfg_watch_ebpf_vr.json")   # distinto del estado del .ps1 (no se pisan)
+ESTADO = r"D:\TFG-VMs\lab-logs\tfg_watch_ebpf_vr.json"   # ruta FIJA (no depende de TEMP)
 
 
 def cfg():

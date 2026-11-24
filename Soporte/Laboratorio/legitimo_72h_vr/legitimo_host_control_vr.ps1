@@ -61,7 +61,7 @@ $Psql    = 'D:\TFG-VMs\material-ghosts\pgsql\bin\psql.exe'
 
 $Log = Join-Path $Base 'legitimo_host_control_vr.log'
 $VigLog = Join-Path $Base 'vigilancia_legitimo_vr.log'
-$WatchState = Join-Path $env:TEMP 'opencode\tfg_watch_estado_vr.json'
+$WatchState = 'D:\TFG-VMs\lab-logs\tfg_watch_estado_vr.json'   # ruta FIJA (no depende de $env:TEMP, que cambia segun quien lance la tarea)
 
 # --- Credenciales SOLO por entorno (nunca del fichero, nunca al log) -------
 if (-not $GuestPw)   { $GuestPw   = $env:TFG_GUEST_PW }
@@ -466,7 +466,7 @@ switch ($Phase) {
     # --- estado previo (persistencia de ALARMA y de <<2 chequeos>>) --------
     $prev = @{ ts = ''; archives = -1; alerts = -1; alarma_sig = ''; alarma_n = 0; cero_n = 0 }
     if (Test-Path $WatchState) {
-      try { $j = Get-Content -Raw $WatchState | ConvertFrom-Json; foreach ($k in @($prev.Keys)) { if ($null -ne $j.$k) { $prev[$k] = $j.$k } } } catch { }
+      try { $j = Get-Content -Raw $WatchState | ConvertFrom-Json; foreach ($k in @($prev.Keys)) { if ($null -ne $j.$k) { $prev[$k] = $j.$k } } } catch { $leerErr = $_.Exception.Message }
     }
 
     $cal = Get-BloqueEstado $now
@@ -580,7 +580,7 @@ switch ($Phase) {
     $bloqueTxt = if ($cal.estado -eq 'bloque') { 'si' } else { $cal.estado }
     $doingTxt = if ($doingAgeMin -ge 0) { "$($doingAgeMin)m" } else { 'n/a' }
     $hbTxt = if ($kaEdad -ge 0) { "$($kaEdad)s" } else { 'n/a' }
-    $line = "[$(TsUtc)] [watch] estado=$estadoTxt doing_age=$doingTxt bloque=$bloqueTxt mins_bloque=$minsBloque hb=$hbTxt cli=$($kaEdad)s srv=$($wm['servidor']) ebpf=$($archDelta)B tabla=$($wm['tabla']) df=$(if($dfGb -ge 0){"${dfGb}G"}else{'n/a'}) tasa=$($dfTasa)MB/h db=${dbMb}MB host=${hostGb}G wu=$($wu.Estado)/$($wu.Tipo) au=$(if($wu.NoAuto -eq 1){'1'}else{'0'}) noreb=$(if($wu.NoReboot -eq 1){'1'}else{'0'}) boot=$($wu.Boot) reps=$wuReps ram=post-hoc rec=post-hoc rot=post-hoc notas=$($notas -join ',')"
+    $line = "[$(TsUtc)] [watch] estado=$estadoTxt doing_age=$doingTxt bloque=$bloqueTxt mins_bloque=$minsBloque hb=$hbTxt prev=$($prev.archives)@$($prev.ts)$(if($leerErr){' ERR_estado='+$leerErr}) cli=$($kaEdad)s srv=$($wm['servidor']) ebpf=$($archDelta)B tabla=$($wm['tabla']) df=$(if($dfGb -ge 0){"${dfGb}G"}else{'n/a'}) tasa=$($dfTasa)MB/h db=${dbMb}MB host=${hostGb}G wu=$($wu.Estado)/$($wu.Tipo) au=$(if($wu.NoAuto -eq 1){'1'}else{'0'}) noreb=$(if($wu.NoReboot -eq 1){'1'}else{'0'}) boot=$($wu.Boot) reps=$wuReps ram=post-hoc rec=post-hoc rot=post-hoc notas=$($notas -join ',')"
 
     Add-LineaSegura $VigLog $line
     Add-LineaSegura $Log $line

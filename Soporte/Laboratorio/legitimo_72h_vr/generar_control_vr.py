@@ -143,6 +143,11 @@ s = rep(s, "ag=$($wm['agente_status']) mgr=$($wm['manager'])/$($wm['daemons']) a
 s = rep(s, "    $prev.archives = [int]$wm['archives_bytes']\n    $prev.alerts = [int]$wm['alerts_bytes']\n",
         "    $prev.archives = [int64]$wm['ebpf_bytes']\n    $prev.alerts = 0\n")
 s = rep(s, "hb=$hbTxt", "hb=$hbTxt")  # (sin cambios; comprueba que existe)
+s = rep(s, "$WatchState = Join-Path $env:TEMP 'opencode"+BS+"tfg_watch_estado_vr.json'", "$WatchState = 'D:"+BS+"TFG-VMs"+BS+"lab-logs"+BS+"tfg_watch_estado_vr.json'   # ruta FIJA (no depende de $env:TEMP, que cambia segun quien lance la tarea)")
+s = rep(s, "      try { $j = Get-Content -Raw $WatchState | ConvertFrom-Json; foreach ($k in @($prev.Keys)) { if ($null -ne $j.$k) { $prev[$k] = $j.$k } } } catch { }"+chr(10),
+        "      try { $j = Get-Content -Raw $WatchState | ConvertFrom-Json; foreach ($k in @($prev.Keys)) { if ($null -ne $j.$k) { $prev[$k] = $j.$k } } } catch { $leerErr = $_.Exception.Message }"+chr(10))
+s = rep(s, "cli=$($kaEdad)s srv=", "prev=$($prev.archives)@$($prev.ts)$(if($leerErr){' ERR_estado='+$leerErr}) cli=$($kaEdad)s srv=")
+
 REEMPL_LOG_A = "    Add-Content -Path $VigLog -Value $line -Encoding utf8"+chr(10)+"    Add-Content -Path $Log -Value $line -Encoding utf8"+chr(10)
 REEMPL_LOG_B = "    Add-LineaSegura $VigLog $line"+chr(10)+"    Add-LineaSegura $Log $line"+chr(10)
 s = rep(s, REEMPL_LOG_A, REEMPL_LOG_B)
