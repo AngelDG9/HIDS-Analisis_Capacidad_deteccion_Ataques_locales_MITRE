@@ -19,6 +19,29 @@ Guardar, **durante 72 h exactas de actividad normal** (la misma receta GHOSTS qu
 | Ventana **lunes 00:00Z -> jueves 00:00Z**, 72 h exactas; victima aislada (sin ruta por defecto); cero acceso a la victima dentro de `[t0,t1]` | **Denominador `M`** = filas de EBPF y eventos de auditd (se cuentan por hora del crudo), no `archives.json` |
 | Keepalive del invitado (heartbeat por la API de GHOSTS), vigilancia cada 30 min, parada ordenada tras la cosecha | Vigilancia: senales **del servidor de Velociraptor** (cliente conectado, filas EBPF/hora, disco), no del manager de Wazuh |
 
+## 2b. Matriz de comparabilidad con la ventana de Wazuh (`legitimo-v3`, 2-5 nov 2026) - revisada tras analizarla a fondo
+Regla: **todo lo que no sea el HIDS se replica tal cual**; lo que no pueda ser igual se **declara**.
+| Dimension | Wazuh (lo que se hizo) | V1-L | Estado |
+|---|---|---|---|
+| Maquina | `lab-listo-legit-v3` | `lab-listo-legit-vr` = esa misma menos Wazuh mas cliente VR (+ retencion de auditd) | IGUAL salvo HIDS |
+| Receta | `d1/d2/d3.json` (163/178/163 acciones = jornada 147/153/141 + campana 16/25/22), `bloques.env`, `calendario.json` | **mismos `d1/d2/d3.json` byte a byte** (ya dentro del snapshot; los JSON solo llevan horas, el mapa de fechas va aparte con `--t0`) | IGUAL |
+| Campana B6 | 11 casos no mutantes, 22 marcas, 17:05-17:50Z | la misma | IGUAL |
+| Ventana | lun 00:00Z -> jue 00:00Z, 72 h, sin cambio de hora | lun 30/11 -> jue 3/12 (CET, sin cambio de hora) | IGUAL |
+| Cadencia de tareas | Prep t0-45 min (revierte VM, G-1..G-12) - Arm t0-20 - timer del invitado t0-5 - Watch cada 30 min - Stop t1+10 (tras `cosecha.done`) | **las mismas 5 tareas** con sus horas | IGUAL |
+| Disciplina | 0 accesos a la victima en `[t0,t1]`; PC sin suspender; Windows Update re-pausado por cada `watch`; 4 tareas `TFG-Baseline-*` desactivadas | igual | IGUAL |
+| Guest | `tfg_keepalive.sh` v3, `client_ctl.sh`, GHOSTS v8.3.1, `cwd=/home/angel`, sin sudo, sin navegador | los mismos ficheros (no mencionan Wazuh) | IGUAL |
+| Servicios del PC | GHOSTS API+PostgreSQL, «internet local» (intranet, `web_access.log`) | los mismos | IGUAL |
+| Cosecha (t1+2) | UNICA sesion SSH al invitado: `recovery.log, keepalive.log, client.out, id.json, rotacion.estado, timeline.json, errores.log, campana_fp/**/{inicio,fin,hecho}.txt, crontab, ip route, df -h /` + `cosecha.done` + MANIFEST | **la misma lista** + el crudo de VR (subida de `audit.log*`, copia de `/var/log/audit/`, datastore del servidor) | IGUAL + extra |
+| Orden de cierre | cosechar -> `cosecha.done` -> parar -> copiar -> contar `M` -> (borrar fuente al final) | igual; **la fuente de VR no se borra nunca** | IGUAL |
+| Productos | `denominador_M.csv`, `ghosts_acciones.csv`, `campana_ventanas.tsv`, `campana_fp.csv`, `alertas_detalle.csv`, `ruleids_legitimos.csv`, `estabilidad_dia/hora.csv`, `veredicto_validez.md`, `incidencias.md`, `ventana_meta.md`, sellado | **mismos nombres y columnas** salvo `alertas_*`/`ruleids_*` (se generaran al aplicar C2/C3); `denominador_M.csv` con un ambito por ojo (EBPF, auditd) | IGUAL salvo alertas |
+| Validez | V1-V8, «valida / con incidencia / invalida» | las mismas reglas (adaptadas en §5) | IGUAL |
+| **Mejora sobre Wazuh** | `ghosts_acciones.csv` solo **por hora** (la BD de GHOSTS ya estaba parada al cerrar) | se exporta **por accion** antes de parar GHOSTS **y** el agregado por hora con el mismo script | MEJOR (se declara) |
+| HIDS y sus ojos | agente Wazuh (auditd + FIM + `df -P` cada 360 s + logcollector); manager VM encendida | cliente VR (EBPF + auditd subido); **sin manager** | INEVITABLE |
+| Huella propia | el agente Wazuh genera su ruido (`df -P`, etc.) | el cliente VR genera el suyo (`comm="velociraptor"`) | INEVITABLE (se declara) |
+| Denominador `M` | eventos del agente en `archives.json` (342 966 en 72 h) | filas EBPF y eventos de auditd por hora y por dia | INEVITABLE (otra definicion; comparables por **accion y hora**, no por cifra) |
+| Retencion de auditd | por defecto (Wazuh lo lee en vivo) | mas alta (D2) | DECLARADO (no cambia los eventos) |
+| Disco de la victima en vivo | lo daba el propio agente Wazuh | **por resolver en L2** (artifact de solo lectura o, si no existe, el guardia del keepalive + la extrapolacion de L3) | ABIERTO |
+
 ## 3. Decisiones (con su por que y alternativas descartadas)
 | # | Decision | Por que | Descartado |
 |---|---|---|---|
@@ -38,7 +61,7 @@ Guardar, **durante 72 h exactas de actividad normal** (la misma receta GHOSTS qu
 | **L3** | **Ensayo E0**: jornada d1 **comprimida** (como se hizo con Wazuh: 147 acciones en ~7 min) con los dos ojos; luego `stop`, cosecha completa y `revert` | 147/147 acciones; marcas INI/FIN llegan; filas EBPF y lineas de auditd medidas **por segundo**; crecimiento de disco en la VM extrapolado a 72 h **< 60 % del libre**; cosecha completa; revert OK. Si la extrapolacion no cabe, **no se arma** y se vuelve a decidir |
 | **L4** | **Armado** (domingo 29/11): `prep` + `arm`, receta con `--check`, `sha256sums.txt` y `bloques.env` **congelados antes de t0**, tareas registradas | G-1..G-12 equivalentes en OK; huellas selladas |
 | **L5** | **Ejecucion** 72 h: nadie toca la victima; vigilancia cada 30 min **solo con datos del servidor VR**; alarma visible si algo se desvia | ver V1-V8 |
-| **L6** | **Cosecha y cierre** a `t1+2 min` (antes de apagar): subida de `audit.log*` por VR, `scp` de `/var/log/audit/` y logs de GHOSTS, ledger de acciones (`exportar_acciones.sh`), copia integra del datastore del servidor VR con `MANIFEST.tsv`; despues parada ordenada. **Segunda copia en `C:`** y subida a git de lo pequeno | `cosecha.done`; sha256 de todo; 2 copias |
+| **L6** | **Cosecha y cierre** a `t1+2 min` (misma lista y mismo orden que Wazuh, §2b) (antes de apagar): subida de `audit.log*` por VR, `scp` de `/var/log/audit/` y logs de GHOSTS, ledger de acciones (`exportar_acciones.sh`), copia integra del datastore del servidor VR con `MANIFEST.tsv`; despues parada ordenada. **Segunda copia en `C:`** y subida a git de lo pequeno | `cosecha.done`; sha256 de todo; 2 copias |
 | **L7** | **Verificacion independiente** y veredicto de validez (§5), con un script nuevo y codigo propio sobre el crudo | veredicto escrito; todo numero sale de un script reproducible |
 
 ## 5. Validez de la ventana (V1..V8, adaptadas de Wazuh)
