@@ -38,3 +38,6 @@ Despues, **solo con la cosecha verificada**: `python exportar_denominador_vr.py 
 - Prep/arm ocurren de noche UTC (fuera de bloques): el cliente GHOSTS arranca pero no actua hasta las 08:00Z (igual que en Wazuh).
 - El ensayo mostro: ~98 MB/h de EBPF (~7 GB), auditd ~3,6-6,9 MB/h, disco de la VM ~5 MB/h (4,4 GB libres). Alarmas del watch: `df<3G` AVISO, `df<2G` ALARMA.
 - Defectos ya corregidos en el ensayo: ver `ensayo_E0_vr.md`.
+- **Ensayo general del `prep` real (24/11 20:00Z):** el primer intento fallo en G-7 porque la huella de la tabla incluia `"version"` (sello interno que cambia al reiniciar el servidor). Corregido en `legit_vr.py` (se excluye `version`; hallazgo 7 del ensayo) y comprobado tras un reinicio del servidor; el segundo intento paso G-1..G-12. G-2 midio 4 422 MB libres (mismo valor que el ensayo E0: 4 423).
+- No arrancar `arrancar_servidor.ps1` desde Git Bash en primer plano (el servidor hereda la salida y la llamada no vuelve): usar la herramienta PowerShell o `nohup`.
+- Los logs `legitimo_host_control_vr.log` y `vigilancia_legitimo_vr.log` ya contienen lineas del ensayo (24/11): los verificadores filtran por `[t0,t1]`.

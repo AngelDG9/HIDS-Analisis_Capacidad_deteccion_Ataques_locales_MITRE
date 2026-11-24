@@ -76,7 +76,9 @@ def tabla_json():
     rc, o, e = q("SELECT get_client_monitoring() AS t FROM scope()", 60)
     if rc != 0:
         raise RuntimeError("get_client_monitoring: %s" % e[-200:])
-    return json.dumps(json.loads(o)[0]["t"], sort_keys=True, ensure_ascii=True)
+    t = json.loads(o)[0]["t"]
+    t.pop("version", None)          # sello de tiempo interno: cambia al reiniciar el servidor aunque la tabla sea la misma (hallazgo del ensayo general 24/11)
+    return json.dumps(t, sort_keys=True, ensure_ascii=True)
 
 
 def tabla_hash():
