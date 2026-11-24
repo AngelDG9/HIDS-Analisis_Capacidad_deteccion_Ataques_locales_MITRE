@@ -1,0 +1,139 @@
+[2026-11-24T23:15:01Z] [prep] === START prep (host UTC 2026-11-24T23:15:01Z) t0=2026-11-25T00:00:00Z t1=2026-11-28T00:00:00Z ===
+[2026-11-24T23:15:01Z] [prep] G-1 OK: snapshot 'lab-listo-legit-vr' presente | Total snapshots: 8 base-limpia lab-listo lab-listo-legit fallo-2026-10-19-disco-lleno-NO-USAR lab-listo-legit-v2 lab-listo-legit-v3 lab-listo-legit-vr lab-listo-vr
+[2026-11-24T23:15:01Z] [prep] G-10: D_libre_gb=633.9 wuauserv_StartType=Disabled sesion=angel
+[2026-11-24T23:15:01Z] [prep] G-4 --check:
+receta v2: dias={1: 147, 2: 153, 3: 141} total=441 errores={1: 10, 2: 10, 3: 10} binarios_ok=34 hueco_max=1320s cwd=cd-por-accion handlers_browser=0
+campana B6: 11 casos, 63 acciones, 22 marcas, 17 binarios, 29 ATA
+RESULT=PASS
+[2026-11-24T23:15:01Z] [prep] G-4 OK: d1=0b2fa91c d2=0e0329cc d3=885a80b2 mapa=2026-11-25->d1,2026-11-26->d2,2026-11-27->d3
+[2026-11-24T23:15:15Z] [prep] G-12: ram_free_mb=2346 swap_mb=1915 ram_min_mb=1500
+[2026-11-24T23:15:15Z] [prep] G-12 AVISO (declarado): swap_mb=1915 != 0 (el plan asumia 0; no se toca la VM)
+Despliegue completado (cliente + nlog.config + d1/d2/d3 + calendario + carpetas).
+Arranque manual: bash /home/angel/ghosts-client/client_ctl.sh start
+[2026-11-24T23:16:33Z] [prep] G-2: df_free_mb=4424 inodos_libres_pct=84
+[2026-11-24T23:16:33Z] [prep] scp verificar_arreglos.sh -> angel@192.168.65.129 rc=0 
+[2026-11-24T23:16:34Z] [prep] G-3 verificar_arreglos:
+[2026-11-24T23:16:34Z] [prep] [angel@192.168.65.129] bash /tmp/verificar_arreglos.sh d8f5f1d1154601360e5d81c752ea50b034e915e10f9545625f4a5732352221fb 0b2fa91cdbc7f16cfc3e59e3ace7b67269d78de4279b641f4fbfae221b50c7df 0e0329cc979797f5fa63420a79a9d5d5af26ae6d4d6cec7dd961ed31adddc58a 885a80b2f698ed2e6cc4a249a5f36bdd6756a246352b01dc52953638db611345 c1241001831f4da0d2e4f5b1fc4876798c4e0579b3e30ae8fc256b8c919f8f9b; echo rc=$?
+nlog_console=Warn
+nlog_sha=d8f5f1d1154601360e5d81c752ea50b034e915e10f9545625f4a5732352221fb
+nlog_applog_archive=20
+client_ctl_cap=20
+keepalive_v3=1
+recetas=0b2fa91c,0e0329cc,885a80b2
+recetas_sha=0b2fa91cdbc7f16cfc3e59e3ace7b67269d78de4279b641f4fbfae221b50c7df,0e0329cc979797f5fa63420a79a9d5d5af26ae6d4d6cec7dd961ed31adddc58a,885a80b2f698ed2e6cc4a249a5f36bdd6756a246352b01dc52953638db611345
+timeline_activa=0b2fa91c
+timeline_huella=c18e28bb
+web_session=1
+receptor_navegador=none
+ram_free_mb=2287
+swap_mb=1915
+swap_estado=AVISO (swap_mb=1915 != 0; desviaciÃ³n declarada)
+timer=not-found
+df_free_mb=4422
+df_libre_pct=46
+df_inodes_libres_pct=84
+client_cwd=/home/angel
+keepalive_cwd=/home/angel
+carpetas_cwd=OK
+campana_fp=OK
+campana_fp_casos=0
+RESULT=PASS
+rc=0 nlog_console=Warn
+nlog_sha=d8f5f1d1154601360e5d81c752ea50b034e915e10f9545625f4a5732352221fb
+nlog_applog_archive=20
+client_ctl_cap=20
+keepalive_v3=1
+recetas=0b2fa91c,0e0329cc,885a80b2
+recetas_sha=0b2fa91cdbc7f16cfc3e59e3ace7b67269d78de4279b641f4fbfae221b50c7df,0e0329cc979797f5fa63420a79a9d5d5af26ae6d4d6cec7dd961ed31adddc58a,885a80b2f698ed2e6cc4a249a5f36bdd6756a246352b01dc52953638db611345
+timeline_activa=0b2fa91c
+timeline_huella=c18e28bb
+web_session=1
+receptor_navegador=none
+ram_free_mb=2287
+swap_mb=1915
+swap_estado=AVISO (swap_mb=1915 != 0; desviaciÃ³n declarada)
+timer=not-found
+df_free_mb=4422
+df_libre_pct=46
+df_inodes_libres_pct=84
+client_cwd=/home/angel
+keepalive_cwd=/home/angel
+carpetas_cwd=OK
+campana_fp=OK
+campana_fp_casos=0
+RESULT=PASS
+rc=0
+servidor YA en marcha
+proceso: 1 | puertos: 127.0.0.1:8889, 192.168.65.1:8000
+[2026-11-24T23:16:35Z] [prep] G-7 (VR) tabla de monitorizacion:
+huella_actual=b6f40046ba07223176e9f3e754ed9e7de9f35bf9d1940efb7fab5f373cbdd318
+huella_guardada=b6f40046ba07223176e9f3e754ed9e7de9f35bf9d1940efb7fab5f373cbdd318
+RESULT=PASS
+[2026-11-24T23:16:35Z] [prep] internet local: ya esta arriba (8080/9090/9092)
+[2026-11-24T23:16:35Z] [prep] GHOSTS API: ya esta arriba (5000)
+[2026-11-24T23:16:36Z] [prep] firewall: regla TFG-ghosts-5000 ya existe
+[2026-11-24T23:16:36Z] [prep] scp verificar_internet_local.sh -> angel@192.168.65.129 rc=0 
+[2026-11-24T23:16:41Z] [prep] G-8:
+[2026-11-24T23:16:41Z] [prep] [angel@192.168.65.129] bash /tmp/verificar_internet_local.sh
+=== 1) /etc/hosts ===
+192.168.65.1  intranet.local portal.local nube.local
+=== 2) POSITIVAS ===
+8080 root:     200
+8080 pdf:      200 size=633
+8080 zip:      200 size=311
+9090 paste:    200
+9092 put:      201
+9092 propfind: 207
+=== 3) NEGATIVA (debe FALLAR) ===
+ssh.exe : curl: (28) Resolving timed out after 4000 milliseconds
+En D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\legitimo_72h_vr\legitimo_host_con
+trol_vr.ps1: 112 Car cter: 28
++ ... ut = ($Pw | & $Ssh -i $Key -o StrictHostKeyChecking=accept-new $Targe ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (curl: (28) Reso...00 milliseconds:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+example.com: 000
+example.com: FALLA (ok, aislado) exit=28
+curl: (7) Failed to connect to 1.1.1.1 port 80 after 0 ms: Couldn't connect to server
+1.1.1.1:     000
+1.1.1.1: FALLA (ok, aislado) exit=7
+=== 4) RUTA ===
+192.168.65.0/24 dev ens33 proto kernel scope link src 192.168.65.129 
+=== FIN === === 1) /etc/hosts ===
+192.168.65.1  intranet.local portal.local nube.local
+=== 2) POSITIVAS ===
+8080 root:     200
+8080 pdf:      200 size=633
+8080 zip:      200 size=311
+9090 paste:    200
+9092 put:      201
+9092 propfind: 207
+=== 3) NEGATIVA (debe FALLAR) ===
+ssh.exe : curl: (28) Resolving timed out after 4000 milliseconds
+En D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\legitimo_72h_vr\legitimo_host_con
+trol_vr.ps1: 112 Car cter: 28
++ ... ut = ($Pw | & $Ssh -i $Key -o StrictHostKeyChecking=accept-new $Targe ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (curl: (28) Reso...00 milliseconds:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+example.com: 000
+example.com: FALLA (ok, aislado) exit=28
+curl: (7) Failed to connect to 1.1.1.1 port 80 after 0 ms: Couldn't connect to server
+1.1.1.1:     000
+1.1.1.1: FALLA (ok, aislado) exit=7
+=== 4) RUTA ===
+192.168.65.0/24 dev ens33 proto kernel scope link src 192.168.65.129 
+=== FIN ===
+[2026-11-24T23:17:17Z] [prep] G-5/G-6 (VR):
+ebpf_bytes_antes=1459600071 ebpf_bytes_despues=1460276441 crecimiento=676370 en 30s
+df_avail_kb=4613734 (~4.4 GB libres en la victima)
+RESULT=PASS
+[2026-11-24T23:17:17Z] [prep] G-11: machineids de victima-linux = 7c33a13a-fe89-4a56-bf3c-fcd499e1e557
+[2026-11-24T23:17:18Z] [prep] scp d1.json -> angel@192.168.65.129 rc=0 
+[2026-11-24T23:17:19Z] [prep] [timeline en la victima] 0b2fa91cdbc7f16cfc3e59e3ace7b67269d78de4279b641f4fbfae221b50c7df /home/angel/ghosts-client/config/timeline.json
+[2026-11-24T23:17:19Z] [prep] prep: timeline activa = 0b2fa91c (esperado d1=0b2fa91c)
+[2026-11-24T23:17:19Z] [prep] prep: rotacion.estado = 2026-11-25 (d¡a 1 ya colocado; no se rota el d¡a 1)
+[2026-11-24T23:17:26Z] [prep] H1(b) estado del watch sembrado: ebpf=1463695812B df_avail_kb=4613734 (archivo D:\TFG-VMs\lab-logs\tfg_watch_estado_vr.json)
+[2026-11-24T23:17:26Z] [prep] === END prep (laboratorio LISTO, cliente PARADO) ===

@@ -1,0 +1,4 @@
+c216b7be6f104da551c302d707a7e5a7126e97db33d3f1fc9d2c3b76cfa00093  /usr/local/bin/velociraptor
+33776228e918cfe5b436d1137361430bd7985360344dd2e694ac221722f8c2f8  /etc/velociraptor/client.config.yaml
+4f1836c7d080e67a971943fc42e9ed9d67852aba6263c2ed1575f830addbef81  /etc/audit/auditd.conf
+8c033b0508b0668ac4b74a9d2e3ababd6a47d0f8fe41196b259dc0606064cbb5  /etc/audit/rules.d/tfg.rules
