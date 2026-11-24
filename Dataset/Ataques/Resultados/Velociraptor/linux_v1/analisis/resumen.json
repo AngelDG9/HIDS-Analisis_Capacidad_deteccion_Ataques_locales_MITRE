@@ -1,0 +1,26 @@
+{
+ "senales_por_iteracion": 310,
+ "clases": {
+  "IGUAL": 237,
+  "FALLIDOS": 56,
+  "EBPF_MAS": 8,
+  "EBPF_MENOS": 9
+ },
+ "casos": 54,
+ "senales_vistas_AU": 302,
+ "senales_vistas_EBPF": 310,
+ "casos_con_todas_las_senales_AU": 50,
+ "casos_con_todas_las_senales_EBPF": 54,
+ "casos_con_alguna_senal_AU": 53,
+ "casos_con_alguna_senal_EBPF": 54,
+ "casos_con_ficheros_(iter1)": {
+  "A": 55,
+  "B": 13,
+  "AU": 30
+ },
+ "casos_con_red_(iter1)": {
+  "A": 21,
+  "B": 21,
+  "AU": 0
+ }
+}

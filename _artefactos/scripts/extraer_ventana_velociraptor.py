@@ -183,6 +183,10 @@ def contar_anclas_exec_ebpf(lineas, anclas):
                 if pwd == base or pwd.startswith(base + "/"):
                     n += 1
             else:
+                if "/" in patron:                          # la senal es una RUTA completa (p. ej. /usr/bin/cp): se compara la ruta entera
+                    if patron in (str(d.get("pathname", "")), str(d.get("cmdpath", ""))):
+                        n += 1
+                    continue
                 nombres = {os.path.basename(str(d.get("pathname", ""))), os.path.basename(str(d.get("cmdpath", "")))}
                 av = d.get("argv") or []
                 if av:
@@ -257,7 +261,7 @@ def contar_anclas_audit(lineas, anclas):
                 base = _base_cwd(patron)
                 if d["cwd"] is not None and (d["cwd"] == base or d["cwd"].startswith(base + "/")):
                     n += 1
-            elif d["exe"] is not None and os.path.basename(d["exe"]) == patron:
+            elif d["exe"] is not None and ((d["exe"] == patron) if "/" in patron else (os.path.basename(d["exe"]) == patron)):
                 n += 1
         res[sid] = n
     return res

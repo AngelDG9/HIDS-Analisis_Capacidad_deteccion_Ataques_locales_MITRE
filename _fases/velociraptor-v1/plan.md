@@ -1,7 +1,7 @@
 ---
 nombre: Velociraptor Linux - V1 (55 casos x 2) con auditd principal y EBPF guardado
 fecha: 2026-11-23
-estado: PREPARADO Y ENSAYADO (2026-11-23) - V1-0 y V1-1 hechos; pendiente el OK del humano para lanzar V1-2 (110 ventanas, ~9 h)
+estado: EJECUTADO y VERIFICADO (2026-11-24) - 110/110 ventanas OK, verificacion independiente OK; ver Dataset/Ataques/Resultados/Velociraptor/linux_v1/RESULTADO_V1.md
 depende_de: Dataset/Ataques/Resultados/Velociraptor/linux_ojos/RESULTADO_OJOS.md (decision de los ojos) · _fases/velociraptor-linux/plan.md (V1)
 ---
 

@@ -1,0 +1,2076 @@
+{
+ "ATA001_iter1": {
+  "pids_ataque": 12,
+  "filas_ebpf": 9151,
+  "A": {
+   "proc": 11,
+   "fich": 31,
+   "filas_total": 9012
+  },
+  "B": {
+   "proc": 11,
+   "filas_total": 1524
+  },
+  "AU": {
+   "filas_total": 610,
+   "proc": 11
+  }
+ },
+ "ATA001_iter2": {
+  "pids_ataque": 12,
+  "filas_ebpf": 9338,
+  "A": {
+   "proc": 11,
+   "fich": 31,
+   "filas_total": 9197
+  },
+  "B": {
+   "proc": 11,
+   "filas_total": 1539
+  },
+  "AU": {
+   "filas_total": 613,
+   "proc": 11
+  }
+ },
+ "ATA002_iter1": {
+  "pids_ataque": 10,
+  "filas_ebpf": 9183,
+  "A": {
+   "proc": 10,
+   "fich": 30,
+   "filas_total": 9044
+  },
+  "B": {
+   "proc": 10,
+   "filas_total": 1528
+  },
+  "AU": {
+   "filas_total": 611,
+   "proc": 10,
+   "fich": 2
+  }
+ },
+ "ATA002_iter2": {
+  "pids_ataque": 10,
+  "filas_ebpf": 9159,
+  "A": {
+   "proc": 10,
+   "fich": 30,
+   "filas_total": 9020
+  },
+  "B": {
+   "proc": 10,
+   "filas_total": 1531
+  },
+  "AU": {
+   "filas_total": 611,
+   "proc": 10,
+   "fich": 2
+  }
+ },
+ "ATA003_iter1": {
+  "pids_ataque": 7,
+  "filas_ebpf": 9065,
+  "A": {
+   "proc": 8,
+   "fich": 25,
+   "filas_total": 8923
+  },
+  "B": {
+   "proc": 8,
+   "filas_total": 1507
+  },
+  "AU": {
+   "filas_total": 616,
+   "proc": 8,
+   "fich": 10
+  }
+ },
+ "ATA003_iter2": {
+  "pids_ataque": 7,
+  "filas_ebpf": 9116,
+  "A": {
+   "proc": 8,
+   "fich": 25,
+   "filas_total": 8973
+  },
+  "B": {
+   "proc": 8,
+   "filas_total": 1524
+  },
+  "AU": {
+   "filas_total": 615,
+   "proc": 8,
+   "fich": 10
+  }
+ },
+ "ATA004_iter1": {
+  "pids_ataque": 8,
+  "filas_ebpf": 9372,
+  "A": {
+   "proc": 9,
+   "fich": 93,
+   "filas_total": 9231
+  },
+  "B": {
+   "proc": 9,
+   "filas_total": 1536
+  },
+  "AU": {
+   "filas_total": 607,
+   "proc": 9
+  }
+ },
+ "ATA004_iter2": {
+  "pids_ataque": 8,
+  "filas_ebpf": 9235,
+  "A": {
+   "proc": 9,
+   "fich": 93,
+   "filas_total": 9097
+  },
+  "B": {
+   "proc": 9,
+   "filas_total": 1490
+  },
+  "AU": {
+   "filas_total": 607,
+   "proc": 9
+  }
+ },
+ "ATA005_iter1": {
+  "pids_ataque": 15,
+  "filas_ebpf": 9367,
+  "A": {
+   "proc": 14,
+   "fich": 36,
+   "filas_total": 9205
+  },
+  "B": {
+   "proc": 14,
+   "fich": 22,
+   "filas_total": 1565
+  },
+  "AU": {
+   "filas_total": 638,
+   "proc": 14,
+   "fich": 22
+  }
+ },
+ "ATA005_iter2": {
+  "pids_ataque": 15,
+  "filas_ebpf": 9640,
+  "A": {
+   "proc": 14,
+   "fich": 36,
+   "filas_total": 9471
+  },
+  "B": {
+   "proc": 14,
+   "fich": 22,
+   "filas_total": 1648
+  },
+  "AU": {
+   "filas_total": 640,
+   "proc": 14,
+   "fich": 22
+  }
+ },
+ "ATA006_iter1": {
+  "pids_ataque": 10,
+  "filas_ebpf": 9273,
+  "A": {
+   "proc": 11,
+   "fich": 28,
+   "filas_total": 9132
+  },
+  "B": {
+   "proc": 11,
+   "fich": 2,
+   "filas_total": 1544
+  },
+  "AU": {
+   "filas_total": 622,
+   "proc": 11,
+   "fich": 5
+  }
+ },
+ "ATA006_iter2": {
+  "pids_ataque": 10,
+  "filas_ebpf": 9235,
+  "A": {
+   "proc": 11,
+   "fich": 28,
+   "filas_total": 9092
+  },
+  "B": {
+   "proc": 11,
+   "fich": 2,
+   "filas_total": 1496
+  },
+  "AU": {
+   "filas_total": 621,
+   "proc": 11,
+   "fich": 5
+  }
+ },
+ "ATA007_iter1": {
+  "pids_ataque": 8,
+  "filas_ebpf": 9935,
+  "A": {
+   "proc": 9,
+   "fich": 24,
+   "filas_total": 9782
+  },
+  "B": {
+   "proc": 9,
+   "filas_total": 1682
+  },
+  "AU": {
+   "filas_total": 688,
+   "proc": 9,
+   "fich": 3
+  }
+ },
+ "ATA007_iter2": {
+  "pids_ataque": 8,
+  "filas_ebpf": 12594,
+  "A": {
+   "proc": 9,
+   "fich": 24,
+   "filas_total": 12392
+  },
+  "B": {
+   "proc": 9,
+   "filas_total": 2017
+  },
+  "AU": {
+   "filas_total": 720,
+   "proc": 9,
+   "fich": 3
+  }
+ },
+ "ATA008_iter1": {
+  "pids_ataque": 4,
+  "filas_ebpf": 9918,
+  "A": {
+   "proc": 5,
+   "fich": 17,
+   "red": 1,
+   "filas_total": 9767
+  },
+  "B": {
+   "proc": 5,
+   "red": 1,
+   "filas_total": 1668
+  },
+  "AU": {
+   "filas_total": 684,
+   "proc": 5,
+   "fich": 1
+  }
+ },
+ "ATA008_iter2": {
+  "pids_ataque": 4,
+  "filas_ebpf": 12766,
+  "A": {
+   "proc": 5,
+   "fich": 17,
+   "red": 1,
+   "filas_total": 12563
+  },
+  "B": {
+   "proc": 5,
+   "red": 1,
+   "filas_total": 2036
+  },
+  "AU": {
+   "filas_total": 720,
+   "proc": 5,
+   "fich": 1
+  }
+ },
+ "ATA009_iter1": {
+  "pids_ataque": 6,
+  "filas_ebpf": 11936,
+  "A": {
+   "proc": 7,
+   "fich": 21,
+   "red": 1,
+   "filas_total": 11752
+  },
+  "B": {
+   "proc": 7,
+   "red": 1,
+   "filas_total": 1866
+  },
+  "AU": {
+   "filas_total": 643,
+   "proc": 7
+  }
+ },
+ "ATA009_iter2": {
+  "pids_ataque": 6,
+  "filas_ebpf": 9264,
+  "A": {
+   "proc": 7,
+   "fich": 21,
+   "red": 1,
+   "filas_total": 9123
+  },
+  "B": {
+   "proc": 7,
+   "red": 1,
+   "filas_total": 1513
+  },
+  "AU": {
+   "filas_total": 606,
+   "proc": 7
+  }
+ },
+ "ATA010_iter1": {
+  "pids_ataque": 6,
+  "filas_ebpf": 9347,
+  "A": {
+   "proc": 7,
+   "fich": 21,
+   "red": 1,
+   "filas_total": 9206
+  },
+  "B": {
+   "proc": 7,
+   "red": 1,
+   "filas_total": 1538
+  },
+  "AU": {
+   "filas_total": 610,
+   "proc": 7
+  }
+ },
+ "ATA010_iter2": {
+  "pids_ataque": 6,
+  "filas_ebpf": 9158,
+  "A": {
+   "proc": 7,
+   "fich": 21,
+   "red": 1,
+   "filas_total": 9019
+  },
+  "B": {
+   "proc": 7,
+   "red": 1,
+   "filas_total": 1510
+  },
+  "AU": {
+   "filas_total": 603,
+   "proc": 7
+  }
+ },
+ "ATA011_iter1": {
+  "pids_ataque": 13,
+  "filas_ebpf": 9172,
+  "A": {
+   "proc": 13,
+   "fich": 41,
+   "filas_total": 9024
+  },
+  "B": {
+   "proc": 13,
+   "filas_total": 1526
+  },
+  "AU": {
+   "filas_total": 609,
+   "proc": 13
+  }
+ },
+ "ATA011_iter2": {
+  "pids_ataque": 13,
+  "filas_ebpf": 9246,
+  "A": {
+   "proc": 13,
+   "fich": 41,
+   "filas_total": 9097
+  },
+  "B": {
+   "proc": 13,
+   "filas_total": 1540
+  },
+  "AU": {
+   "filas_total": 611,
+   "proc": 13
+  }
+ },
+ "ATA012_iter1": {
+  "pids_ataque": 12,
+  "filas_ebpf": 9691,
+  "A": {
+   "proc": 13,
+   "fich": 438,
+   "filas_total": 9544
+  },
+  "B": {
+   "proc": 13,
+   "filas_total": 1530
+  },
+  "AU": {
+   "filas_total": 615,
+   "proc": 13,
+   "exec_fallido": 3,
+   "fich": 1
+  }
+ },
+ "ATA012_iter2": {
+  "pids_ataque": 12,
+  "filas_ebpf": 9694,
+  "A": {
+   "proc": 13,
+   "fich": 438,
+   "filas_total": 9547
+  },
+  "B": {
+   "proc": 13,
+   "filas_total": 1525
+  },
+  "AU": {
+   "filas_total": 616,
+   "proc": 13,
+   "exec_fallido": 3,
+   "fich": 1
+  }
+ },
+ "ATA013_iter1": {
+  "pids_ataque": 6,
+  "filas_ebpf": 9151,
+  "A": {
+   "proc": 7,
+   "fich": 22,
+   "filas_total": 9013
+  },
+  "B": {
+   "proc": 7,
+   "filas_total": 1493
+  },
+  "AU": {
+   "filas_total": 608,
+   "proc": 7
+  }
+ },
+ "ATA013_iter2": {
+  "pids_ataque": 6,
+  "filas_ebpf": 9173,
+  "A": {
+   "proc": 7,
+   "fich": 22,
+   "filas_total": 9035
+  },
+  "B": {
+   "proc": 7,
+   "filas_total": 1507
+  },
+  "AU": {
+   "filas_total": 609,
+   "proc": 7
+  }
+ },
+ "ATA014_iter1": {
+  "pids_ataque": 16,
+  "filas_ebpf": 10120,
+  "A": {
+   "proc": 15,
+   "fich": 38,
+   "filas_total": 9962
+  },
+  "B": {
+   "proc": 15,
+   "filas_total": 1675
+  },
+  "AU": {
+   "filas_total": 693,
+   "proc": 15,
+   "fich": 1
+  }
+ },
+ "ATA014_iter2": {
+  "pids_ataque": 16,
+  "filas_ebpf": 10064,
+  "A": {
+   "proc": 15,
+   "fich": 38,
+   "filas_total": 9909
+  },
+  "B": {
+   "proc": 15,
+   "filas_total": 1701
+  },
+  "AU": {
+   "filas_total": 692,
+   "proc": 15,
+   "fich": 1
+  }
+ },
+ "ATA015_iter1": {
+  "pids_ataque": 18,
+  "filas_ebpf": 9320,
+  "A": {
+   "proc": 17,
+   "fich": 43,
+   "filas_total": 9174
+  },
+  "B": {
+   "proc": 17,
+   "filas_total": 1507
+  },
+  "AU": {
+   "filas_total": 620,
+   "proc": 17,
+   "fich": 2
+  }
+ },
+ "ATA015_iter2": {
+  "pids_ataque": 18,
+  "filas_ebpf": 9364,
+  "A": {
+   "proc": 17,
+   "fich": 43,
+   "filas_total": 9220
+  },
+  "B": {
+   "proc": 17,
+   "filas_total": 1532
+  },
+  "AU": {
+   "filas_total": 624,
+   "proc": 17,
+   "fich": 2
+  }
+ },
+ "ATA016_iter1": {
+  "pids_ataque": 20,
+  "filas_ebpf": 10179,
+  "A": {
+   "proc": 18,
+   "fich": 53,
+   "filas_total": 10020
+  },
+  "B": {
+   "proc": 18,
+   "fich": 3,
+   "filas_total": 1713
+  },
+  "AU": {
+   "filas_total": 697,
+   "proc": 18,
+   "fich": 5
+  }
+ },
+ "ATA016_iter2": {
+  "pids_ataque": 20,
+  "filas_ebpf": 10058,
+  "A": {
+   "proc": 18,
+   "fich": 53,
+   "filas_total": 9902
+  },
+  "B": {
+   "proc": 18,
+   "fich": 3,
+   "filas_total": 1699
+  },
+  "AU": {
+   "filas_total": 697,
+   "proc": 18,
+   "fich": 5
+  }
+ },
+ "ATA017_iter1": {
+  "pids_ataque": 19,
+  "filas_ebpf": 9393,
+  "A": {
+   "proc": 18,
+   "fich": 45,
+   "filas_total": 9244
+  },
+  "B": {
+   "proc": 18,
+   "fich": 2,
+   "filas_total": 1559
+  },
+  "AU": {
+   "filas_total": 629,
+   "proc": 18,
+   "fich": 6
+  }
+ },
+ "ATA017_iter2": {
+  "pids_ataque": 19,
+  "filas_ebpf": 9252,
+  "A": {
+   "proc": 18,
+   "fich": 45,
+   "filas_total": 9106
+  },
+  "B": {
+   "proc": 18,
+   "fich": 2,
+   "filas_total": 1514
+  },
+  "AU": {
+   "filas_total": 628,
+   "proc": 18,
+   "fich": 6
+  }
+ },
+ "ATA018_iter1": {
+  "pids_ataque": 17,
+  "filas_ebpf": 9415,
+  "A": {
+   "proc": 17,
+   "fich": 53,
+   "filas_total": 9274
+  },
+  "B": {
+   "proc": 17,
+   "filas_total": 1567
+  },
+  "AU": {
+   "filas_total": 620,
+   "proc": 17,
+   "fich": 1
+  }
+ },
+ "ATA018_iter2": {
+  "pids_ataque": 17,
+  "filas_ebpf": 9463,
+  "A": {
+   "proc": 17,
+   "fich": 53,
+   "filas_total": 9322
+  },
+  "B": {
+   "proc": 17,
+   "filas_total": 1567
+  },
+  "AU": {
+   "filas_total": 622,
+   "proc": 17,
+   "fich": 1
+  }
+ },
+ "ATA019_iter1": {
+  "pids_ataque": 18,
+  "filas_ebpf": 9316,
+  "A": {
+   "proc": 16,
+   "fich": 40,
+   "red": 1,
+   "filas_total": 9177
+  },
+  "B": {
+   "proc": 16,
+   "red": 1,
+   "filas_total": 1540
+  },
+  "AU": {
+   "filas_total": 617,
+   "proc": 16
+  }
+ },
+ "ATA019_iter2": {
+  "pids_ataque": 18,
+  "filas_ebpf": 9522,
+  "A": {
+   "proc": 16,
+   "fich": 40,
+   "red": 1,
+   "filas_total": 9377
+  },
+  "B": {
+   "proc": 16,
+   "red": 1,
+   "filas_total": 1566
+  },
+  "AU": {
+   "filas_total": 619,
+   "proc": 16
+  }
+ },
+ "ATA020_iter1": {
+  "pids_ataque": 10,
+  "filas_ebpf": 9332,
+  "A": {
+   "proc": 11,
+   "fich": 49,
+   "red": 4,
+   "filas_total": 9190
+  },
+  "B": {
+   "proc": 11,
+   "red": 4,
+   "filas_total": 1528
+  },
+  "AU": {
+   "filas_total": 608,
+   "proc": 11
+  }
+ },
+ "ATA020_iter2": {
+  "pids_ataque": 10,
+  "filas_ebpf": 9782,
+  "A": {
+   "proc": 11,
+   "fich": 49,
+   "red": 4,
+   "filas_total": 9628
+  },
+  "B": {
+   "proc": 11,
+   "red": 4,
+   "filas_total": 1665
+  },
+  "AU": {
+   "filas_total": 613,
+   "proc": 11
+  }
+ },
+ "ATA021_iter1": {
+  "pids_ataque": 75,
+  "filas_ebpf": 11173,
+  "A": {
+   "proc": 75,
+   "fich": 169,
+   "red": 1,
+   "filas_total": 11019
+  },
+  "B": {
+   "proc": 75,
+   "red": 1,
+   "filas_total": 1892
+  },
+  "AU": {
+   "filas_total": 764,
+   "proc": 75,
+   "fich": 1
+  }
+ },
+ "ATA021_iter2": {
+  "pids_ataque": 22,
+  "filas_ebpf": 10161,
+  "A": {
+   "proc": 22,
+   "fich": 63,
+   "red": 1,
+   "filas_total": 10011
+  },
+  "B": {
+   "proc": 22,
+   "red": 1,
+   "filas_total": 1722
+  },
+  "AU": {
+   "filas_total": 697,
+   "proc": 22,
+   "fich": 1
+  }
+ },
+ "ATA022_iter1": {
+  "pids_ataque": 34,
+  "filas_ebpf": 9941,
+  "A": {
+   "proc": 33,
+   "fich": 356,
+   "filas_total": 9733
+  },
+  "B": {
+   "proc": 33,
+   "fich": 57,
+   "filas_total": 1660
+  },
+  "AU": {
+   "filas_total": 674,
+   "proc": 33,
+   "fich": 31
+  }
+ },
+ "ATA022_iter2": {
+  "pids_ataque": 34,
+  "filas_ebpf": 9906,
+  "A": {
+   "proc": 33,
+   "fich": 356,
+   "filas_total": 9701
+  },
+  "B": {
+   "proc": 33,
+   "fich": 57,
+   "filas_total": 1668
+  },
+  "AU": {
+   "filas_total": 675,
+   "proc": 33,
+   "fich": 31
+  }
+ },
+ "ATA023_iter1": {
+  "pids_ataque": 13,
+  "filas_ebpf": 9608,
+  "A": {
+   "proc": 9,
+   "fich": 21,
+   "red": 1,
+   "filas_total": 9461
+  },
+  "B": {
+   "proc": 9,
+   "red": 1,
+   "filas_total": 1653
+  },
+  "AU": {
+   "filas_total": 613,
+   "proc": 9
+  }
+ },
+ "ATA023_iter2": {
+  "pids_ataque": 13,
+  "filas_ebpf": 9328,
+  "A": {
+   "proc": 9,
+   "fich": 21,
+   "red": 1,
+   "filas_total": 9189
+  },
+  "B": {
+   "proc": 9,
+   "red": 1,
+   "filas_total": 1546
+  },
+  "AU": {
+   "filas_total": 611,
+   "proc": 9
+  }
+ },
+ "ATA024_iter1": {
+  "pids_ataque": 58,
+  "filas_ebpf": 11681,
+  "A": {
+   "proc": 28,
+   "fich": 545,
+   "filas_total": 11515
+  },
+  "B": {
+   "proc": 28,
+   "fich": 39,
+   "filas_total": 1857
+  },
+  "AU": {
+   "filas_total": 885,
+   "proc": 28,
+   "fich": 110,
+   "exec_fallido": 20
+  }
+ },
+ "ATA024_iter2": {
+  "pids_ataque": 58,
+  "filas_ebpf": 14509,
+  "A": {
+   "proc": 28,
+   "fich": 545,
+   "filas_total": 14296
+  },
+  "B": {
+   "proc": 28,
+   "fich": 39,
+   "filas_total": 2254
+  },
+  "AU": {
+   "filas_total": 925,
+   "proc": 28,
+   "fich": 110,
+   "exec_fallido": 20
+  }
+ },
+ "ATA025_iter1": {
+  "pids_ataque": 24,
+  "filas_ebpf": 10677,
+  "A": {
+   "proc": 24,
+   "fich": 38,
+   "filas_total": 10533
+  },
+  "B": {
+   "proc": 24,
+   "filas_total": 1595
+  },
+  "AU": {
+   "filas_total": 635,
+   "proc": 24,
+   "exec_fallido": 6
+  }
+ },
+ "ATA025_iter2": {
+  "pids_ataque": 24,
+  "filas_ebpf": 10396,
+  "A": {
+   "proc": 24,
+   "fich": 38,
+   "filas_total": 10258
+  },
+  "B": {
+   "proc": 24,
+   "filas_total": 1556
+  },
+  "AU": {
+   "filas_total": 632,
+   "proc": 24,
+   "exec_fallido": 6
+  }
+ },
+ "ATA026_iter1": {
+  "pids_ataque": 19,
+  "filas_ebpf": 9273,
+  "A": {
+   "proc": 18,
+   "fich": 39,
+   "red": 3,
+   "filas_total": 9134
+  },
+  "B": {
+   "proc": 18,
+   "red": 3,
+   "filas_total": 1559
+  },
+  "AU": {
+   "filas_total": 619,
+   "proc": 18,
+   "exec_fallido": 3
+  }
+ },
+ "ATA026_iter2": {
+  "pids_ataque": 19,
+  "filas_ebpf": 9290,
+  "A": {
+   "proc": 18,
+   "fich": 39,
+   "red": 3,
+   "filas_total": 9151
+  },
+  "B": {
+   "proc": 18,
+   "red": 3,
+   "filas_total": 1560
+  },
+  "AU": {
+   "filas_total": 618,
+   "proc": 18,
+   "exec_fallido": 3
+  }
+ },
+ "ATA027_iter1": {
+  "pids_ataque": 65,
+  "filas_ebpf": 11548,
+  "A": {
+   "proc": 49,
+   "fich": 587,
+   "filas_total": 11379
+  },
+  "B": {
+   "proc": 49,
+   "filas_total": 1810
+  },
+  "AU": {
+   "filas_total": 722,
+   "proc": 49,
+   "fich": 1
+  }
+ },
+ "ATA027_iter2": {
+  "pids_ataque": 65,
+  "filas_ebpf": 12218,
+  "A": {
+   "proc": 49,
+   "fich": 587,
+   "filas_total": 12029
+  },
+  "B": {
+   "proc": 49,
+   "filas_total": 1987
+  },
+  "AU": {
+   "filas_total": 745,
+   "proc": 49,
+   "fich": 1
+  }
+ },
+ "ATA028_iter1": {
+  "pids_ataque": 14,
+  "filas_ebpf": 9377,
+  "A": {
+   "proc": 15,
+   "fich": 36,
+   "red": 2,
+   "filas_total": 9238
+  },
+  "B": {
+   "proc": 15,
+   "red": 2,
+   "filas_total": 1571
+  },
+  "AU": {
+   "filas_total": 619,
+   "proc": 15,
+   "exec_fallido": 3
+  }
+ },
+ "ATA028_iter2": {
+  "pids_ataque": 14,
+  "filas_ebpf": 12158,
+  "A": {
+   "proc": 15,
+   "fich": 36,
+   "red": 2,
+   "filas_total": 11970
+  },
+  "B": {
+   "proc": 15,
+   "red": 2,
+   "filas_total": 1926
+  },
+  "AU": {
+   "filas_total": 656,
+   "proc": 15,
+   "exec_fallido": 3
+  }
+ },
+ "ATA029_iter1": {
+  "pids_ataque": 34,
+  "filas_ebpf": 12822,
+  "A": {
+   "proc": 28,
+   "fich": 58,
+   "filas_total": 12618
+  },
+  "B": {
+   "proc": 28,
+   "filas_total": 2080
+  },
+  "AU": {
+   "filas_total": 739,
+   "proc": 28,
+   "fich": 4
+  }
+ },
+ "ATA029_iter2": {
+  "pids_ataque": 34,
+  "filas_ebpf": 10234,
+  "A": {
+   "proc": 28,
+   "fich": 58,
+   "filas_total": 10075
+  },
+  "B": {
+   "proc": 28,
+   "filas_total": 1743
+  },
+  "AU": {
+   "filas_total": 710,
+   "proc": 28,
+   "fich": 4
+  }
+ },
+ "ATA030_iter1": {
+  "pids_ataque": 19,
+  "filas_ebpf": 12788,
+  "A": {
+   "proc": 19,
+   "fich": 50,
+   "filas_total": 12584
+  },
+  "B": {
+   "proc": 19,
+   "filas_total": 2033
+  },
+  "AU": {
+   "filas_total": 736,
+   "proc": 19,
+   "fich": 2,
+   "exec_fallido": 6
+  }
+ },
+ "ATA030_iter2": {
+  "pids_ataque": 19,
+  "filas_ebpf": 10032,
+  "A": {
+   "proc": 19,
+   "fich": 50,
+   "filas_total": 9878
+  },
+  "B": {
+   "proc": 19,
+   "filas_total": 1704
+  },
+  "AU": {
+   "filas_total": 703,
+   "proc": 19,
+   "fich": 2,
+   "exec_fallido": 6
+  }
+ },
+ "ATA031_iter1": {
+  "pids_ataque": 63,
+  "filas_ebpf": 9710,
+  "A": {
+   "proc": 37,
+   "fich": 101,
+   "filas_total": 9563
+  },
+  "B": {
+   "proc": 37,
+   "filas_total": 1614
+  },
+  "AU": {
+   "filas_total": 665,
+   "proc": 37,
+   "fich": 27
+  }
+ },
+ "ATA031_iter2": {
+  "pids_ataque": 63,
+  "filas_ebpf": 9516,
+  "A": {
+   "proc": 37,
+   "fich": 101,
+   "filas_total": 9373
+  },
+  "B": {
+   "proc": 37,
+   "filas_total": 1587
+  },
+  "AU": {
+   "filas_total": 661,
+   "proc": 37,
+   "fich": 27
+  }
+ },
+ "ATA032_iter1": {
+  "pids_ataque": 17,
+  "filas_ebpf": 9271,
+  "A": {
+   "proc": 16,
+   "fich": 34,
+   "filas_total": 9127
+  },
+  "B": {
+   "proc": 16,
+   "fich": 2,
+   "filas_total": 1529
+  },
+  "AU": {
+   "filas_total": 629,
+   "proc": 16,
+   "fich": 6
+  }
+ },
+ "ATA032_iter2": {
+  "pids_ataque": 17,
+  "filas_ebpf": 9282,
+  "A": {
+   "proc": 16,
+   "fich": 34,
+   "filas_total": 9135
+  },
+  "B": {
+   "proc": 16,
+   "fich": 2,
+   "filas_total": 1506
+  },
+  "AU": {
+   "filas_total": 628,
+   "proc": 16,
+   "fich": 6
+  }
+ },
+ "ATA033_iter1": {
+  "pids_ataque": 15,
+  "filas_ebpf": 10069,
+  "A": {
+   "proc": 14,
+   "fich": 30,
+   "filas_total": 9912
+  },
+  "B": {
+   "proc": 14,
+   "filas_total": 1737
+  },
+  "AU": {
+   "filas_total": 689,
+   "proc": 14,
+   "fich": 3
+  }
+ },
+ "ATA033_iter2": {
+  "pids_ataque": 15,
+  "filas_ebpf": 9876,
+  "A": {
+   "proc": 14,
+   "fich": 30,
+   "filas_total": 9723
+  },
+  "B": {
+   "proc": 14,
+   "filas_total": 1667
+  },
+  "AU": {
+   "filas_total": 687,
+   "proc": 14,
+   "fich": 3
+  }
+ },
+ "ATA034_iter1": {
+  "pids_ataque": 33,
+  "filas_ebpf": 9498,
+  "A": {
+   "proc": 28,
+   "fich": 86,
+   "filas_total": 9349
+  },
+  "B": {
+   "proc": 28,
+   "filas_total": 1591
+  },
+  "AU": {
+   "filas_total": 629,
+   "proc": 28,
+   "fich": 1
+  }
+ },
+ "ATA034_iter2": {
+  "pids_ataque": 33,
+  "filas_ebpf": 9553,
+  "A": {
+   "proc": 28,
+   "fich": 86,
+   "filas_total": 9402
+  },
+  "B": {
+   "proc": 28,
+   "filas_total": 1584
+  },
+  "AU": {
+   "filas_total": 629,
+   "proc": 28,
+   "fich": 1
+  }
+ },
+ "ATA035_iter1": {
+  "pids_ataque": 15,
+  "filas_ebpf": 13043,
+  "A": {
+   "proc": 16,
+   "fich": 47,
+   "filas_total": 12846
+  },
+  "B": {
+   "proc": 16,
+   "filas_total": 2332
+  },
+  "AU": {
+   "filas_total": 989,
+   "proc": 16
+  }
+ },
+ "ATA035_iter2": {
+  "pids_ataque": 15,
+  "filas_ebpf": 12834,
+  "A": {
+   "proc": 16,
+   "fich": 47,
+   "filas_total": 12641
+  },
+  "B": {
+   "proc": 16,
+   "filas_total": 2283
+  },
+  "AU": {
+   "filas_total": 984,
+   "proc": 16
+  }
+ },
+ "ATA036_iter1": {
+  "pids_ataque": 25,
+  "filas_ebpf": 13034,
+  "A": {
+   "proc": 22,
+   "fich": 68,
+   "filas_total": 12840
+  },
+  "B": {
+   "proc": 22,
+   "filas_total": 2341
+  },
+  "AU": {
+   "filas_total": 993,
+   "proc": 22
+  }
+ },
+ "ATA036_iter2": {
+  "pids_ataque": 25,
+  "filas_ebpf": 13396,
+  "A": {
+   "proc": 22,
+   "fich": 68,
+   "filas_total": 13194
+  },
+  "B": {
+   "proc": 22,
+   "filas_total": 2462
+  },
+  "AU": {
+   "filas_total": 998,
+   "proc": 22
+  }
+ },
+ "ATA037_iter1": {
+  "pids_ataque": 65,
+  "filas_ebpf": 12562,
+  "A": {
+   "proc": 50,
+   "fich": 700,
+   "filas_total": 12377
+  },
+  "B": {
+   "proc": 50,
+   "fich": 1,
+   "filas_total": 1980
+  },
+  "AU": {
+   "filas_total": 800,
+   "proc": 50,
+   "fich": 1
+  }
+ },
+ "ATA037_iter2": {
+  "pids_ataque": 65,
+  "filas_ebpf": 12338,
+  "A": {
+   "proc": 50,
+   "fich": 700,
+   "filas_total": 12153
+  },
+  "B": {
+   "proc": 50,
+   "fich": 1,
+   "filas_total": 1934
+  },
+  "AU": {
+   "filas_total": 795,
+   "proc": 50,
+   "fich": 1
+  }
+ },
+ "ATA038_iter1": {
+  "pids_ataque": 15,
+  "filas_ebpf": 13458,
+  "A": {
+   "proc": 12,
+   "fich": 99,
+   "filas_total": 13262
+  },
+  "B": {
+   "proc": 12,
+   "filas_total": 2320
+  },
+  "AU": {
+   "filas_total": 1833,
+   "proc": 12
+  }
+ },
+ "ATA038_iter2": {
+  "pids_ataque": 15,
+  "filas_ebpf": 13186,
+  "A": {
+   "proc": 12,
+   "fich": 99,
+   "filas_total": 12993
+  },
+  "B": {
+   "proc": 12,
+   "filas_total": 2266
+  },
+  "AU": {
+   "filas_total": 1860,
+   "proc": 12
+  }
+ },
+ "ATA039_iter1": {
+  "pids_ataque": 19,
+  "filas_ebpf": 9480,
+  "A": {
+   "proc": 16,
+   "fich": 46,
+   "red": 3,
+   "filas_total": 9329
+  },
+  "B": {
+   "proc": 16,
+   "red": 3,
+   "fich": 2,
+   "filas_total": 1567
+  },
+  "AU": {
+   "filas_total": 625,
+   "proc": 16,
+   "fich": 1,
+   "exec_fallido": 3
+  }
+ },
+ "ATA039_iter2": {
+  "pids_ataque": 19,
+  "filas_ebpf": 9629,
+  "A": {
+   "proc": 16,
+   "fich": 46,
+   "red": 3,
+   "filas_total": 9479
+  },
+  "B": {
+   "proc": 16,
+   "red": 3,
+   "fich": 2,
+   "filas_total": 1620
+  },
+  "AU": {
+   "filas_total": 631,
+   "proc": 16,
+   "fich": 1,
+   "exec_fallido": 3
+  }
+ },
+ "ATA040_iter1": {
+  "pids_ataque": 15,
+  "filas_ebpf": 9230,
+  "A": {
+   "proc": 14,
+   "fich": 44,
+   "red": 2,
+   "filas_total": 9087
+  },
+  "B": {
+   "proc": 14,
+   "red": 2,
+   "filas_total": 1542
+  },
+  "AU": {
+   "filas_total": 615,
+   "proc": 14,
+   "exec_fallido": 3
+  }
+ },
+ "ATA040_iter2": {
+  "pids_ataque": 15,
+  "filas_ebpf": 9542,
+  "A": {
+   "proc": 14,
+   "fich": 44,
+   "red": 2,
+   "filas_total": 9395
+  },
+  "B": {
+   "proc": 14,
+   "red": 2,
+   "filas_total": 1595
+  },
+  "AU": {
+   "filas_total": 628,
+   "proc": 14,
+   "exec_fallido": 3
+  }
+ },
+ "ATA041_iter1": {
+  "pids_ataque": 21,
+  "filas_ebpf": 9371,
+  "A": {
+   "proc": 19,
+   "fich": 54,
+   "red": 1,
+   "filas_total": 9232
+  },
+  "B": {
+   "proc": 19,
+   "red": 1,
+   "filas_total": 1549
+  },
+  "AU": {
+   "filas_total": 618,
+   "proc": 19
+  }
+ },
+ "ATA041_iter2": {
+  "pids_ataque": 21,
+  "filas_ebpf": 9445,
+  "A": {
+   "proc": 19,
+   "fich": 54,
+   "red": 1,
+   "filas_total": 9303
+  },
+  "B": {
+   "proc": 19,
+   "red": 1,
+   "filas_total": 1529
+  },
+  "AU": {
+   "filas_total": 621,
+   "proc": 19
+  }
+ },
+ "ATA042_iter1": {
+  "pids_ataque": 11,
+  "filas_ebpf": 9215,
+  "A": {
+   "proc": 11,
+   "fich": 30,
+   "red": 1,
+   "filas_total": 9077
+  },
+  "B": {
+   "proc": 11,
+   "red": 1,
+   "filas_total": 1518
+  },
+  "AU": {
+   "filas_total": 611,
+   "proc": 11
+  }
+ },
+ "ATA042_iter2": {
+  "pids_ataque": 11,
+  "filas_ebpf": 12025,
+  "A": {
+   "proc": 11,
+   "fich": 30,
+   "red": 1,
+   "filas_total": 11837
+  },
+  "B": {
+   "proc": 11,
+   "red": 1,
+   "filas_total": 1901
+  },
+  "AU": {
+   "filas_total": 647,
+   "proc": 11
+  }
+ },
+ "ATA043_iter1": {
+  "pids_ataque": 11,
+  "filas_ebpf": 9301,
+  "A": {
+   "proc": 11,
+   "fich": 31,
+   "red": 1,
+   "filas_total": 9162
+  },
+  "B": {
+   "proc": 11,
+   "red": 1,
+   "filas_total": 1542
+  },
+  "AU": {
+   "filas_total": 615,
+   "proc": 11
+  }
+ },
+ "ATA043_iter2": {
+  "pids_ataque": 11,
+  "filas_ebpf": 9305,
+  "A": {
+   "proc": 11,
+   "fich": 31,
+   "red": 1,
+   "filas_total": 9164
+  },
+  "B": {
+   "proc": 11,
+   "red": 1,
+   "filas_total": 1528
+  },
+  "AU": {
+   "filas_total": 611,
+   "proc": 11
+  }
+ },
+ "ATA044_iter1": {
+  "pids_ataque": 84,
+  "filas_ebpf": 13382,
+  "A": {
+   "proc": 67,
+   "fich": 759,
+   "filas_total": 13181
+  },
+  "B": {
+   "proc": 67,
+   "filas_total": 2180
+  },
+  "AU": {
+   "filas_total": 894,
+   "proc": 67,
+   "fich": 1
+  }
+ },
+ "ATA044_iter2": {
+  "pids_ataque": 84,
+  "filas_ebpf": 14571,
+  "A": {
+   "proc": 67,
+   "fich": 759,
+   "filas_total": 14360
+  },
+  "B": {
+   "proc": 67,
+   "filas_total": 2310
+  },
+  "AU": {
+   "filas_total": 932,
+   "proc": 67,
+   "fich": 1
+  }
+ },
+ "ATA045_iter1": {
+  "pids_ataque": 20,
+  "filas_ebpf": 10238,
+  "A": {
+   "proc": 17,
+   "fich": 35,
+   "filas_total": 10096
+  },
+  "B": {
+   "proc": 17,
+   "filas_total": 1639
+  },
+  "AU": {
+   "filas_total": 658,
+   "proc": 17,
+   "exec_fallido": 3
+  }
+ },
+ "ATA045_iter2": {
+  "pids_ataque": 20,
+  "filas_ebpf": 9385,
+  "A": {
+   "proc": 17,
+   "fich": 35,
+   "filas_total": 9244
+  },
+  "B": {
+   "proc": 17,
+   "filas_total": 1559
+  },
+  "AU": {
+   "filas_total": 623,
+   "proc": 17,
+   "exec_fallido": 3
+  }
+ },
+ "ATA046_iter1": {
+  "pids_ataque": 53,
+  "filas_ebpf": 12777,
+  "A": {
+   "proc": 46,
+   "fich": 171,
+   "red": 19,
+   "filas_total": 12627
+  },
+  "B": {
+   "proc": 46,
+   "red": 19,
+   "filas_total": 2002
+  },
+  "AU": {
+   "filas_total": 873,
+   "proc": 46,
+   "exec_fallido": 54
+  }
+ },
+ "ATA046_iter2": {
+  "pids_ataque": 53,
+  "filas_ebpf": 12834,
+  "A": {
+   "proc": 46,
+   "fich": 171,
+   "red": 19,
+   "filas_total": 12684
+  },
+  "B": {
+   "proc": 46,
+   "red": 19,
+   "filas_total": 2007
+  },
+  "AU": {
+   "filas_total": 874,
+   "proc": 46,
+   "exec_fallido": 54
+  }
+ },
+ "ATA047_iter1": {
+  "pids_ataque": 384,
+  "filas_ebpf": 23682,
+  "A": {
+   "proc": 277,
+   "fich": 1523,
+   "red": 250,
+   "filas_total": 23528
+  },
+  "B": {
+   "proc": 277,
+   "red": 250,
+   "filas_total": 3408
+  },
+  "AU": {
+   "filas_total": 2409,
+   "proc": 382,
+   "exec_fallido": 1071
+  }
+ },
+ "ATA047_iter2": {
+  "pids_ataque": 410,
+  "filas_ebpf": 25481,
+  "A": {
+   "proc": 317,
+   "fich": 1798,
+   "red": 286,
+   "filas_total": 25330
+  },
+  "B": {
+   "proc": 317,
+   "red": 286,
+   "filas_total": 3644
+  },
+  "AU": {
+   "filas_total": 2411,
+   "proc": 408,
+   "exec_fallido": 1149
+  }
+ },
+ "ATA048_iter1": {
+  "pids_ataque": 42,
+  "filas_ebpf": 10683,
+  "A": {
+   "proc": 41,
+   "fich": 86,
+   "red": 8,
+   "filas_total": 10541
+  },
+  "B": {
+   "proc": 41,
+   "red": 8,
+   "filas_total": 1614
+  },
+  "AU": {
+   "filas_total": 667,
+   "proc": 41,
+   "exec_fallido": 24
+  }
+ },
+ "ATA048_iter2": {
+  "pids_ataque": 42,
+  "filas_ebpf": 11305,
+  "A": {
+   "proc": 41,
+   "fich": 86,
+   "red": 8,
+   "filas_total": 11166
+  },
+  "B": {
+   "proc": 41,
+   "red": 8,
+   "filas_total": 1622
+  },
+  "AU": {
+   "filas_total": 668,
+   "proc": 41,
+   "exec_fallido": 24
+  }
+ },
+ "ATA049_iter1": {
+  "pids_ataque": 13,
+  "filas_ebpf": 12430,
+  "A": {
+   "proc": 14,
+   "fich": 55,
+   "red": 21,
+   "filas_total": 12250
+  },
+  "B": {
+   "proc": 14,
+   "red": 21,
+   "filas_total": 2041
+  },
+  "AU": {
+   "filas_total": 838,
+   "proc": 15,
+   "fich": 1
+  }
+ },
+ "ATA049_iter2": {
+  "pids_ataque": 13,
+  "filas_ebpf": 12617,
+  "A": {
+   "proc": 15,
+   "fich": 57,
+   "red": 21,
+   "filas_total": 12440
+  },
+  "B": {
+   "proc": 15,
+   "red": 21,
+   "filas_total": 2039
+  },
+  "AU": {
+   "filas_total": 840,
+   "proc": 15,
+   "fich": 1
+  }
+ },
+ "ATA050_iter1": {
+  "pids_ataque": 9,
+  "filas_ebpf": 10828,
+  "A": {
+   "proc": 11,
+   "fich": 30,
+   "red": 1,
+   "filas_total": 10659
+  },
+  "B": {
+   "proc": 11,
+   "red": 1,
+   "filas_total": 1846
+  },
+  "AU": {
+   "filas_total": 759,
+   "proc": 11
+  }
+ },
+ "ATA050_iter2": {
+  "pids_ataque": 9,
+  "filas_ebpf": 10883,
+  "A": {
+   "proc": 11,
+   "fich": 30,
+   "red": 1,
+   "filas_total": 10717
+  },
+  "B": {
+   "proc": 11,
+   "red": 1,
+   "filas_total": 1872
+  },
+  "AU": {
+   "filas_total": 765,
+   "proc": 11
+  }
+ },
+ "ATA051_iter1": {
+  "pids_ataque": 506,
+  "filas_ebpf": 31106,
+  "A": {
+   "proc": 312,
+   "fich": 2881,
+   "filas_total": 29694
+  },
+  "B": {
+   "proc": 312,
+   "fich": 60,
+   "filas_total": 5071
+  },
+  "AU": {
+   "filas_total": 4741,
+   "proc": 312,
+   "exec_fallido": 747,
+   "fich": 348
+  }
+ },
+ "ATA051_iter2": {
+  "pids_ataque": 506,
+  "filas_ebpf": 31487,
+  "A": {
+   "proc": 312,
+   "fich": 2881,
+   "filas_total": 30075
+  },
+  "B": {
+   "proc": 312,
+   "fich": 60,
+   "filas_total": 5070
+  },
+  "AU": {
+   "filas_total": 4741,
+   "proc": 312,
+   "exec_fallido": 747,
+   "fich": 348
+  }
+ },
+ "ATA052_iter1": {
+  "pids_ataque": 503,
+  "filas_ebpf": 30813,
+  "A": {
+   "proc": 307,
+   "fich": 2879,
+   "filas_total": 29398
+  },
+  "B": {
+   "proc": 307,
+   "fich": 62,
+   "filas_total": 5050
+  },
+  "AU": {
+   "filas_total": 4737,
+   "proc": 310,
+   "exec_fallido": 744,
+   "fich": 350
+  }
+ },
+ "ATA052_iter2": {
+  "pids_ataque": 503,
+  "filas_ebpf": 31895,
+  "A": {
+   "proc": 310,
+   "fich": 2885,
+   "filas_total": 30471
+  },
+  "B": {
+   "proc": 310,
+   "fich": 62,
+   "filas_total": 5195
+  },
+  "AU": {
+   "filas_total": 4739,
+   "proc": 310,
+   "exec_fallido": 744,
+   "fich": 350
+  }
+ },
+ "ATA053_iter1": {
+  "pids_ataque": 510,
+  "filas_ebpf": 31460,
+  "A": {
+   "proc": 314,
+   "fich": 2891,
+   "filas_total": 30054
+  },
+  "B": {
+   "proc": 314,
+   "fich": 62,
+   "filas_total": 5098
+  },
+  "AU": {
+   "filas_total": 4742,
+   "proc": 314,
+   "exec_fallido": 744,
+   "fich": 350
+  }
+ },
+ "ATA053_iter2": {
+  "pids_ataque": 510,
+  "filas_ebpf": 34548,
+  "A": {
+   "proc": 314,
+   "fich": 2891,
+   "filas_total": 33088
+  },
+  "B": {
+   "proc": 314,
+   "fich": 62,
+   "filas_total": 5449
+  },
+  "AU": {
+   "filas_total": 4775,
+   "proc": 314,
+   "exec_fallido": 744,
+   "fich": 350
+  }
+ },
+ "ATA054_iter1": {
+  "pids_ataque": 40,
+  "filas_ebpf": 20326,
+  "A": {
+   "proc": 43,
+   "fich": 150,
+   "red": 2,
+   "filas_total": 20093
+  },
+  "B": {
+   "proc": 43,
+   "red": 2,
+   "filas_total": 3360
+  },
+  "AU": {
+   "filas_total": 1954,
+   "proc": 43,
+   "exec_fallido": 11
+  }
+ },
+ "ATA054_iter2": {
+  "pids_ataque": 40,
+  "filas_ebpf": 17231,
+  "A": {
+   "proc": 42,
+   "fich": 150,
+   "red": 2,
+   "filas_total": 17046
+  },
+  "B": {
+   "proc": 42,
+   "red": 2,
+   "filas_total": 2997
+  },
+  "AU": {
+   "filas_total": 1916,
+   "proc": 43,
+   "exec_fallido": 11
+  }
+ },
+ "ATA055_iter1": {
+  "pids_ataque": 35,
+  "filas_ebpf": 16995,
+  "A": {
+   "proc": 33,
+   "fich": 146,
+   "red": 1,
+   "filas_total": 16816
+  },
+  "B": {
+   "proc": 33,
+   "red": 1,
+   "fich": 1,
+   "filas_total": 2636
+  },
+  "AU": {
+   "filas_total": 1825,
+   "proc": 33,
+   "fich": 3,
+   "exec_fallido": 3
+  }
+ },
+ "ATA055_iter2": {
+  "pids_ataque": 35,
+  "filas_ebpf": 18294,
+  "A": {
+   "proc": 33,
+   "fich": 146,
+   "red": 1,
+   "filas_total": 18113
+  },
+  "B": {
+   "proc": 33,
+   "red": 1,
+   "fich": 1,
+   "filas_total": 3038
+  },
+  "AU": {
+   "filas_total": 1826,
+   "proc": 33,
+   "fich": 3,
+   "exec_fallido": 3
+  }
+ }
+}

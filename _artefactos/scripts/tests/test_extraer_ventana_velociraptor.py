@@ -111,3 +111,12 @@ def test_anclas_audit_cwd_en_hexadecimal():
     cwd_hex = "/home/angel/lab-attack/ATA 011".encode().hex().upper()
     l = [b'type=SYSCALL msg=audit(1.1:9): syscall=59 exe="/usr/bin/cp" key="audit-wazuh-c"', ("type=CWD msg=audit(1.1:9): cwd=%s" % cwd_hex).encode()]
     assert ev.contar_anclas_audit(l, [("S", "audit_cwd", "/home/angel/lab-attack/ATA 011/*")]) == {"S": 1}
+
+
+def test_anclas_con_ruta_completa_audit_y_ebpf():
+    # la senal puede ser una ruta completa (/usr/bin/cp): se compara la ruta ENTERA, no el nombre; una senal sin barra sigue comparando el nombre
+    anclas = [("S1", "audit_exe", "/usr/bin/cp"), ("S2", "audit_exe", "cp"), ("S3", "audit_exe", "/opt/cp")]
+    r = ev.contar_anclas_audit(_evento_exec("1.1", 1, "/usr/bin/cp", "/tmp"), anclas)
+    assert r == {"S1": 1, "S2": 1, "S3": 0}
+    fila = json.dumps({"System": {"EventName": "sched_process_exec"}, "EventData": {"pathname": "/usr/bin/cp", "cmdpath": "/usr/bin/cp", "argv": ["cp", "a"], "pwd": "/tmp"}}).encode()
+    assert ev.contar_anclas_exec_ebpf([fila], anclas) == {"S1": 1, "S2": 1, "S3": 0}
