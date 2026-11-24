@@ -26,6 +26,11 @@ if (Get-Proc) {
 } elseif (-not $Estado) {
   $esAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
   if (-not $esAdmin) { $env:__COMPAT_LAYER = 'RunAsInvoker' }     # el exe pide elevacion; sin admin se arranca como el usuario
+  # V1-L (auditoria L7): NO sobrescribir el log del arranque anterior (V3 lo usa como evidencia). Se archiva con sello de hora UTC.
+  $sello = (Get-Date).ToUniversalTime().ToString('yyyyMMddTHHmmssZ')
+  foreach ($f in @($Log, ($Log + '.err'))) {
+    if ((Test-Path $f) -and ((Get-Item $f).Length -gt 0)) { Move-Item -LiteralPath $f -Destination ($f + '.' + $sello) -Force }
+  }
   $p = Start-Process -FilePath $Exe -ArgumentList @('--config', $Cfg, 'frontend', '-v') -WorkingDirectory $Dir -WindowStyle Hidden `
        -RedirectStandardOutput $Log -RedirectStandardError ($Log + '.err') -PassThru
   Write-Output ("arrancado pid " + $p.Id)

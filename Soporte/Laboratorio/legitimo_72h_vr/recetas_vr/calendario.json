@@ -1,0 +1,196 @@
+{
+ "receta_version": 2,
+ "zona": "Europe/Madrid (CET=UTC+1 desde 2026-10-25)",
+ "dia_local": "09:00-18:00",
+ "jornada_utc": {
+  "on": "08:00:00",
+  "off": "17:00:00"
+ },
+ "bloques": [
+  {
+   "id": "B1",
+   "on": "08:00:00",
+   "off": "08:12:00",
+   "tipo": "trabajo",
+   "nombre": "Llegada",
+   "local": "09:00-09:12"
+  },
+  {
+   "id": "B2",
+   "on": "08:12:00",
+   "off": "10:00:00",
+   "tipo": "trabajo",
+   "nombre": "Correo y mañana",
+   "local": "09:12-11:00"
+  },
+  {
+   "id": "P1",
+   "on": "10:00:00",
+   "off": "10:20:00",
+   "tipo": "pausa",
+   "nombre": "Café",
+   "local": "11:00-11:20"
+  },
+  {
+   "id": "B3",
+   "on": "10:20:00",
+   "off": "13:00:00",
+   "tipo": "trabajo",
+   "nombre": "Documentos",
+   "local": "11:20-14:00"
+  },
+  {
+   "id": "P2",
+   "on": "13:00:00",
+   "off": "14:00:00",
+   "tipo": "pausa",
+   "nombre": "Comida",
+   "local": "14:00-15:00"
+  },
+  {
+   "id": "B4",
+   "on": "14:00:00",
+   "off": "16:15:00",
+   "tipo": "trabajo",
+   "nombre": "Reuniones y tarde",
+   "local": "15:00-17:15"
+  },
+  {
+   "id": "B5",
+   "on": "16:15:00",
+   "off": "17:00:00",
+   "tipo": "trabajo",
+   "nombre": "Cierre",
+   "local": "17:15-18:00"
+  },
+  {
+   "id": "B6",
+   "on": "17:05:00",
+   "off": "17:50:00",
+   "tipo": "campana",
+   "nombre": "Repaso del sistema",
+   "local": "18:05-18:50"
+  }
+ ],
+ "cuentas": {
+  "1": {
+   "B1": 11,
+   "B2": 33,
+   "B3": 56,
+   "B4": 35,
+   "B5": 12
+  },
+  "2": {
+   "B1": 11,
+   "B2": 39,
+   "B3": 48,
+   "B4": 43,
+   "B5": 12
+  },
+  "3": {
+   "B1": 11,
+   "B2": 29,
+   "B3": 60,
+   "B4": 29,
+   "B5": 12
+  }
+ },
+ "total_ventana": 441,
+ "campana": {
+  "version": 1,
+  "bloque": {
+   "id": "B6",
+   "on": "17:05:00",
+   "off": "17:50:00",
+   "tipo": "campana",
+   "nombre": "Repaso del sistema",
+   "local": "18:05-18:50"
+  },
+  "casos": 11,
+  "reparto": {
+   "d1": 3,
+   "d2": 4,
+   "d3": 4
+  },
+  "inicios": {
+   "d1": "17:06:00",
+   "d2": "17:17:00",
+   "d3": "17:11:00"
+  },
+  "separacion_min_s": 180,
+  "atribucion_s": {
+   "pre": 10,
+   "post": 60
+  },
+  "acciones": {
+   "d1": 16,
+   "d2": 25,
+   "d3": 22
+  },
+  "total_acciones": 63,
+  "execve": {
+   "total": 103,
+   "por_dia": {
+    "d1": 25,
+    "d2": 34,
+    "d3": 44
+   },
+   "hijos": {
+    "cp": 12,
+    "curl": 1
+   },
+   "metodo": "primer token por segmento, sin builtins (cd/echo/printf/true), +12 cp de xargs y +1 curl de timeout",
+   "nota": "proyección determinista desde campana_casos.csv; B10 lo sella"
+  },
+  "marcas": 22,
+  "fuente": "campana/campana_casos.csv",
+  "sha256_casos_md": "2003c9cc71624c40ca8a70931027b552bed15a17b9cc0044720c5801c99f2a49",
+  "no_mutante": true,
+  "efectos_declarados": [
+   "logger",
+   "descargas_http"
+  ]
+ },
+ "total_con_campana": 504,
+ "mapa_dias": {
+  "2026-11-30": 1,
+  "2026-12-01": 2,
+  "2026-12-02": 3
+ },
+ "regla_dia": "k = 1 + ((fecha_utc - fecha_t0) mod 3)",
+ "mapa_dias_como_se_pasa": "construir_receta_legitima.py --t0 AAAA-MM-DD  (o --mapa-dias a:1,b:2,c:3)",
+ "cwd": {
+  "base": "/home/angel",
+  "regla": "cd <carpeta> && <comando>",
+  "carpetas": [
+   "/home/angel",
+   "/home/angel/Documentos",
+   "/home/angel/Descargas",
+   "/home/angel/.cache/tfg-web",
+   "/home/angel/Documentos/informes",
+   "/home/angel/Documentos/actas",
+   "/home/angel/Documentos/correo",
+   "/home/angel/Documentos/copias"
+  ],
+  "nota": "ninguna acción se ejecuta en el directorio del cliente"
+ },
+ "errores": {
+  "por_dia": 10,
+  "familias": [
+   "ruta_mal",
+   "cp_dir",
+   "gzip",
+   "rm_inexistente",
+   "cat_dir",
+   "opcion"
+  ],
+  "registro": "/home/angel/Documentos/errores.log"
+ },
+ "hueco_max_intra_bloque_s": 1320,
+ "hueco_min_s": 40,
+ "pausas_largas_s": {
+  "B3": 1250,
+  "B4": 1210
+ },
+ "fuente": "_artefactos/scripts/construir_receta_legitima.py"
+}
