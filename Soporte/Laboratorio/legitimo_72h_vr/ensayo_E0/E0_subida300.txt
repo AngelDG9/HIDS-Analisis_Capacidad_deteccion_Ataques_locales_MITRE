@@ -1,0 +1,6 @@
+cc7b5bca85b997b6e5f9993b3f34e6d1526d3eea6a497ba5fe6abe26bef5eb46  /var/tmp/e0_prueba_300MB.bin
+/dev/mapper/ubuntu--vg-ubuntu--lv  9.8G  5.3G  4.0G  57% /
+flujo F.DC2UDD2TCOH5M FINISHED en 48 s
+subido: 314600700 bytes en disco, 314572800 descomprimidos, sha256 coincide: True
+borrado en la VM: ls: cannot access '/var/tmp/e0_prueba_300MB.bin': No such file or directory | /dev/mapper/ubuntu--vg-ubuntu--lv  9.8G  5.0G  4.3G  54% /
+RESULT=PASS

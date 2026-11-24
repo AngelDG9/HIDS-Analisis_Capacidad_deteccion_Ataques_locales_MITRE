@@ -1,0 +1,4 @@
+Filesystem                         Size  Used Avail Use% Mounted on
+/dev/mapper/ubuntu--vg-ubuntu--lv  9.8G  5.0G  4.3G  54% /
+Filesystem                        Inodes IUsed  IFree IUse% Mounted on
+/dev/mapper/ubuntu--vg-ubuntu--lv 655360 99286 556074   16% /

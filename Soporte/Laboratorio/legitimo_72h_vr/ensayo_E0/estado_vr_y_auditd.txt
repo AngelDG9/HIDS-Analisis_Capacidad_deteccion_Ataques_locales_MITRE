@@ -1,0 +1,31 @@
+c216b7be6f104da551c302d707a7e5a7126e97db33d3f1fc9d2c3b76cfa00093  /usr/local/bin/velociraptor
+33776228e918cfe5b436d1137361430bd7985360344dd2e694ac221722f8c2f8  /etc/velociraptor/client.config.yaml
+4f1836c7d080e67a971943fc42e9ed9d67852aba6263c2ed1575f830addbef81  /etc/audit/auditd.conf
+8c033b0508b0668ac4b74a9d2e3ababd6a47d0f8fe41196b259dc0606064cbb5  /etc/audit/rules.d/tfg.rules
+-a always,exit -F arch=b64 -S execve -F key=audit-wazuh-c
+-a always,exit -F arch=b32 -S execve -F key=audit-wazuh-c
+-a always,exit -F arch=b64 -S truncate,ftruncate,rename,creat,unlink,unlinkat,renameat,renameat2 -F key=audit-wazuh-w
+-w /etc -p wa -k audit-wazuh-w
+-w /home/angel/lab-legit -p wa -k audit-wazuh-w
+active
+active
+max_log_file = 8
+num_logs = 120
+max_log_file_action = ROTATE
+drwxr-x---  2 root adm       4096 2026-11-24T18:44:12Z .
+drwxrwxr-x 11 root syslog    4096 2026-11-24T13:32:09Z ..
+-rw-r-----  1 root adm    8301917 2026-11-24T20:31:36Z audit.log
+-r--r-----  1 root adm    8388984 2026-11-24T18:44:12Z audit.log.1
+-r--r-----  1 root adm    8388841 2026-10-28T03:45:48Z audit.log.10
+-r--r-----  1 root adm    8388657 2026-11-24T16:23:51Z audit.log.2
+-r--r-----  1 root adm    8388628 2026-11-24T13:35:57Z audit.log.3
+-r--r-----  1 root adm    8388794 2026-11-24T13:33:15Z audit.log.4
+-r--r-----  1 root adm    8388732 2026-11-24T13:32:46Z audit.log.5
+-r--r-----  1 root adm    8388612 2026-11-24T13:32:17Z audit.log.6
+-r--r-----  1 root adm    8388804 2026-10-28T03:47:06Z audit.log.7
+-r--r-----  1 root adm    8388746 2026-10-28T03:46:43Z audit.log.8
+-r--r-----  1 root adm    8388941 2026-10-28T03:46:18Z audit.log.9
+88M	/var/log/audit
+168M	/var/log
+du: cannot access '/var/tmp/Velociraptor_Buffer.bin': No such file or directory
+-- No entries --

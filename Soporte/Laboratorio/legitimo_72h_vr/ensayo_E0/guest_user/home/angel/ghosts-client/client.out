@@ -1,0 +1,27 @@
+             ('-. .-.               .-')    .-') _     .-')
+            ( OO )  /              ( OO ). (  OO) )   ( OO ).
+  ,----.    ,--. ,--. .-'),-----. (_)---\_)/     '._ (_)---\_)
+ '  .-./-') |  | |  |( OO'  .-.  '/    _ | |'--...__)/    _ |
+ |  |_( O- )|   .|  |/   |  | |  |\  :` `. '--.  .--'\  :` `.
+ |  | .--, \|       |\_) |  |\|  | '..`''.)   |  |    '..`''.)
+(|  | '. (_/|  .-.  |  \ |  | |  |.-._)   \   |  |   .-._)   \
+ |  '--'  | |  | |  |   `'  '-'  '\       /   |  |   \       /
+  `------'  `--' `--'     `-----'  `-----'    `--'    `-----'
+
+
+GHOSTS (ghosts.client.linux:8.0.0.0 [8.2.3.0]) running in production mode. Installed path: /home/angel/ghosts-client
+Connecting to http://192.168.65.1:5000/clientHub...
+Connection state: Disconnected
+Sleeping for 5055096 milliseconds until the next action time.
+Sleeping for 69855100 milliseconds until the next action time.
+Sleeping for 13155096 milliseconds until the next action time.
+Sleeping for 70575100 milliseconds until the next action time.
+Sleeping for 16215094 milliseconds until the next action time.
+Connected to http://192.168.65.1:5000/clientHub
+Peeking into queue...
+ID: 7c33a13a-fe89-4a56-bf3c-fcd499e1e557
+Heartbeat 2026-11-24T12:35:45.1964517Z
+Sleeping for 76750903 milliseconds until the next action time.
+Sleeping for 78239483 milliseconds until the next action time.
+Sleeping for 83639882 milliseconds until the next action time.
+Sleeping for 83699878 milliseconds until the next action time.

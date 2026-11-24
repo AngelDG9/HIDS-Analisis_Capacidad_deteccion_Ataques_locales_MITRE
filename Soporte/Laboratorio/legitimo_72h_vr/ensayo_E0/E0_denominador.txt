@@ -1,0 +1,35 @@
+{
+ "ebpf_filas": 902141,
+ "auditd_eventos_vr": 20198,
+ "auditd_lineas_vr": 111599,
+ "auditd_eventos_tar": 20198,
+ "auditd_vr_igual_tar": true,
+ "ficheros_audit_vr": [
+  "audit.log",
+  "audit.log.1",
+  "audit.log.10",
+  "audit.log.11",
+  "audit.log.2",
+  "audit.log.3",
+  "audit.log.4",
+  "audit.log.5",
+  "audit.log.6",
+  "audit.log.7",
+  "audit.log.8",
+  "audit.log.9"
+ ],
+ "ficheros_audit_tar": [
+  "audit.log",
+  "audit.log.1",
+  "audit.log.10",
+  "audit.log.2",
+  "audit.log.3",
+  "audit.log.4",
+  "audit.log.5",
+  "audit.log.6",
+  "audit.log.7",
+  "audit.log.8",
+  "audit.log.9"
+ ],
+ "horas": 7
+}

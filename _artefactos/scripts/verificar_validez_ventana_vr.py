@@ -153,7 +153,9 @@ def main():
     # ---------------------------------------------------------------- V5 aislamiento
     ruta = os.path.join(a.cosecha, "evidencia", "ip_route.txt")
     tx = open(ruta, encoding="utf-8", errors="replace").read() if os.path.isfile(ruta) else ""
-    res["V5 Aislamiento"] = ("PASS" if tx and "default" not in tx else "FAIL", "ip route sin `default`: %s" % ("si" if tx and "default" not in tx else "NO/ausente"))
+    rutas = tx.split("---")[0]                      # solo `ip route` (la salida de `ip addr` lleva la palabra «default» en «group default qlen»)
+    hay_default = any(l.strip().startswith("default") for l in rutas.splitlines())
+    res["V5 Aislamiento"] = ("PASS" if (rutas.strip() and not hay_default) else "FAIL", "`ip route` sin ruta `default`: %s (%d rutas)" % ("si" if (rutas.strip() and not hay_default) else "NO/ausente", len([l for l in rutas.splitlines() if l.strip()])))
 
     # ---------------------------------------------------------------- V6 crudo completo (manifest + copia2)
     man = os.path.join(a.cosecha, "MANIFEST.tsv")

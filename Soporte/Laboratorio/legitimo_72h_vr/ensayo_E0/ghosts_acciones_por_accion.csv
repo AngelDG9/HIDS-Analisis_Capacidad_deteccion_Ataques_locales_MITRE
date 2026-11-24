@@ -1,0 +1,657 @@
+id,machineid,createdutc,handler,command,commandarg,result,tags
+7917,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 14:00:00,Command,cd /home/angel/Documentos/actas && echo 'acta de reunion 1 del area (dia 1)' > /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt,,,
+7918,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 14:01:02,Command,cd /home/angel/Documentos/actas && cat /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt,,"acta de reunion 1 del area (dia 1)
+",
+7919,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 14:11:01,Command,cd /home/angel/Documentos && cat /home/angel/Documentos/actas 2>/dev/null; r=$?; [ $r -ne 0 ] && printf '%s\t%s\t%s\t%s\trc=%s\n' $(date -u +%FT%TZ) error cat_dir 'cat /home/angel/Documentos/actas' $r >> /home/angel/Documentos/errores.log,,"acta de reunion 1 del area (dia 1)
+",
+7920,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 14:11:49,Command,cd /home/angel/Documentos/informes && cat /home/angel/Documentos/informes/informe.bak; r=$?; printf '%s\t%s\t%s\t%s\trc=%s\n' $(date -u +%FT%TZ) reintento cat_dir 'cat /home/angel/Documentos/informes/informe.bak' $r >> /home/angel/Documentos/errores.log,,"acta de reunion 1 del area (dia 1)
+",
+7921,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 14:12:44,Command,cd /home/angel/Documentos/actas && wc -c /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt,,"acta de reunion 1 del area (dia 1)
+35 /home/angel/Documentos/actas/acta_1_2026-11-24.txt
+",
+7922,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 14:13:28,Command,cd /home/angel/Documentos/informes && rsync -a --delete /home/angel/Documentos/informes/ /home/angel/Documentos/copias/informes/,,"acta de reunion 1 del area (dia 1)
+35 /home/angel/Documentos/actas/acta_1_2026-11-24.txt
+",
+7923,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 14:14:27,Command,cd /home/angel/Documentos/actas && cp -f /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt /home/angel/Documentos/actas/compartida_1.txt,,"acta de reunion 1 del area (dia 1)
+35 /home/angel/Documentos/actas/acta_1_2026-11-24.txt
+",
+7924,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 14:22:22,Command,cd /home/angel/Documentos/actas && sha256sum /home/angel/Documentos/actas/compartida_1.txt,,"acta de reunion 1 del area (dia 1)
+35 /home/angel/Documentos/actas/acta_1_2026-11-24.txt
+1bbe0270a61c49a9d89b31558e6cb2e315ff8a6223277a90f91daec9cc0bc9f7  /home/angel/Documentos/actas/compartida_1.txt
+",
+7925,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 14:31:19,Command,cd /home/angel/Documentos/actas && ls -la /home/angel/Documentos/actas,,"acta de reunion 1 del area (dia 1)
+35 /home/angel/Documentos/actas/acta_1_2026-11-24.txt
+1bbe0270a61c49a9d89b31558e6cb2e315ff8a6223277a90f91daec9cc0bc9f7  /home/angel/Documentos/actas/compartida_1.txt
+total 16
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:14 .
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ..
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:00 acta_1_2026-11-24.txt
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:14 compartida_1.txt
+",
+7926,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 14:32:00,Command,cd /home/angel/Documentos/informes && echo 'borrador previo del informe del area' > /home/angel/Documentos/informes/borrador_previo.txt,,"acta de reunion 1 del area (dia 1)
+35 /home/angel/Documentos/actas/acta_1_2026-11-24.txt
+1bbe0270a61c49a9d89b31558e6cb2e315ff8a6223277a90f91daec9cc0bc9f7  /home/angel/Documentos/actas/compartida_1.txt
+total 16
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:14 .
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ..
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:00 acta_1_2026-11-24.txt
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:14 compartida_1.txt
+",
+7927,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 14:33:54,Command,cd /home/angel/Documentos/informes && shred -n 1 -z -u /home/angel/Documentos/informes/borrador_previo.txt,,"acta de reunion 1 del area (dia 1)
+35 /home/angel/Documentos/actas/acta_1_2026-11-24.txt
+1bbe0270a61c49a9d89b31558e6cb2e315ff8a6223277a90f91daec9cc0bc9f7  /home/angel/Documentos/actas/compartida_1.txt
+total 16
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:14 .
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ..
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:00 acta_1_2026-11-24.txt
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:14 compartida_1.txt
+",
+7928,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 14:34:51,Command,cd /home/angel/Documentos/actas && cp -f /home/angel/Documentos/actas/compartida_1.txt /home/angel/Documentos/compartidas/ 2>/dev/null; r=$?; [ $r -ne 0 ] && printf '%s\t%s\t%s\t%s\trc=%s\n' $(date -u +%FT%TZ) error cp_dir 'cp -f /home/angel/Documentos/actas/compartida_1.txt /home/angel/Documentos/compartidas/' $r >> /home/angel/Documentos/errores.log,,"acta de reunion 1 del area (dia 1)
+35 /home/angel/Documentos/actas/acta_1_2026-11-24.txt
+1bbe0270a61c49a9d89b31558e6cb2e315ff8a6223277a90f91daec9cc0bc9f7  /home/angel/Documentos/actas/compartida_1.txt
+total 16
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:14 .
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ..
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:00 acta_1_2026-11-24.txt
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:14 compartida_1.txt
+",
+7929,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 14:35:34,Command,cd /home/angel/Documentos/actas && cp -f /home/angel/Documentos/actas/compartida_1.txt /home/angel/Documentos/actas/compartida_copia.txt; r=$?; printf '%s\t%s\t%s\t%s\trc=%s\n' $(date -u +%FT%TZ) reintento cp_dir 'cp -f /home/angel/Documentos/actas/compartida_1.txt /home/angel/Documentos/actas/compartida_copia.txt' $r >> /home/angel/Documentos/errores.log,,"acta de reunion 1 del area (dia 1)
+35 /home/angel/Documentos/actas/acta_1_2026-11-24.txt
+1bbe0270a61c49a9d89b31558e6cb2e315ff8a6223277a90f91daec9cc0bc9f7  /home/angel/Documentos/actas/compartida_1.txt
+total 16
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:14 .
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ..
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:00 acta_1_2026-11-24.txt
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:14 compartida_1.txt
+",
+7930,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 14:36:36,Command,cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -T /home/angel/Documentos/actas/acta_1_$(date -u +%F).txt -o /dev/null -w '%{http_code}' http://nube.local:9092/nube/actas/,,"acta de reunion 1 del area (dia 1)
+35 /home/angel/Documentos/actas/acta_1_2026-11-24.txt
+1bbe0270a61c49a9d89b31558e6cb2e315ff8a6223277a90f91daec9cc0bc9f7  /home/angel/Documentos/actas/compartida_1.txt
+total 16
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:14 .
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ..
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:00 acta_1_2026-11-24.txt
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:14 compartida_1.txt
+201",
+7931,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 14:56:46,Command,cd /home/angel/Descargas && wget -q -O /home/angel/Descargas/manual_empleado_wget.pdf http://intranet.local:8080/descargas/manual_empleado.pdf,,"acta de reunion 1 del area (dia 1)
+35 /home/angel/Documentos/actas/acta_1_2026-11-24.txt
+1bbe0270a61c49a9d89b31558e6cb2e315ff8a6223277a90f91daec9cc0bc9f7  /home/angel/Documentos/actas/compartida_1.txt
+total 16
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:14 .
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ..
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:00 acta_1_2026-11-24.txt
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:14 compartida_1.txt
+201",
+7932,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 14:57:34,Command,cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -X PROPFIND -H 'Depth: 1' -o /home/angel/.cache/tfg-web/nube_listado.txt -w '%{http_code}' http://nube.local:9092/nube/,,"acta de reunion 1 del area (dia 1)
+35 /home/angel/Documentos/actas/acta_1_2026-11-24.txt
+1bbe0270a61c49a9d89b31558e6cb2e315ff8a6223277a90f91daec9cc0bc9f7  /home/angel/Documentos/actas/compartida_1.txt
+total 16
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:14 .
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ..
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:00 acta_1_2026-11-24.txt
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:14 compartida_1.txt
+201207",
+7933,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 14:58:29,Command,cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -T /home/angel/Documentos/informes/informe.txt -o /dev/null -w '%{http_code}' http://nube.local:9092/nube/informes/,,"acta de reunion 1 del area (dia 1)
+35 /home/angel/Documentos/actas/acta_1_2026-11-24.txt
+1bbe0270a61c49a9d89b31558e6cb2e315ff8a6223277a90f91daec9cc0bc9f7  /home/angel/Documentos/actas/compartida_1.txt
+total 16
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:14 .
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ..
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:00 acta_1_2026-11-24.txt
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:14 compartida_1.txt
+201207201",
+7934,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 15:08:59,Command,cd /home/angel/Documentos && ls -la --clasificar /home/angel/Documentos 2>/dev/null; r=$?; [ $r -ne 0 ] && printf '%s\t%s\t%s\t%s\trc=%s\n' $(date -u +%FT%TZ) error opcion 'ls -la --clasificar /home/angel/Documentos' $r >> /home/angel/Documentos/errores.log,,"acta de reunion 1 del area (dia 1)
+35 /home/angel/Documentos/actas/acta_1_2026-11-24.txt
+1bbe0270a61c49a9d89b31558e6cb2e315ff8a6223277a90f91daec9cc0bc9f7  /home/angel/Documentos/actas/compartida_1.txt
+total 16
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:14 .
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ..
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:00 acta_1_2026-11-24.txt
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:14 compartida_1.txt
+201207201",
+7935,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 15:14:50,Command,cd /home/angel/Documentos && ls -la --classify /home/angel/Documentos; r=$?; printf '%s\t%s\t%s\t%s\trc=%s\n' $(date -u +%FT%TZ) reintento opcion 'ls -la --classify /home/angel/Documentos' $r >> /home/angel/Documentos/errores.log,,"acta de reunion 1 del area (dia 1)
+35 /home/angel/Documentos/actas/acta_1_2026-11-24.txt
+1bbe0270a61c49a9d89b31558e6cb2e315ff8a6223277a90f91daec9cc0bc9f7  /home/angel/Documentos/actas/compartida_1.txt
+total 16
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:14 .
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ..
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:00 acta_1_2026-11-24.txt
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:14 compartida_1.txt
+201207201total 32
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ./
+drwxr-x--- 8 angel angel 4096 Oct 18 19:51 ../
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:35 actas/
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:45 campana_fp/
+drwxrwxr-x 3 angel angel 4096 Nov 24 15:13 copias/
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:47 correo/
+-rw-rw-r-- 1 angel angel  519 Nov 24 16:08 errores.log
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:33 informes/
+",
+7936,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 15:15:34,Command,cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -X PROPFIND -H 'Depth: 1' -o /home/angel/.cache/tfg-web/nube_actas.txt -w '%{http_code}' http://nube.local:9092/nube/actas/,,"acta de reunion 1 del area (dia 1)
+35 /home/angel/Documentos/actas/acta_1_2026-11-24.txt
+1bbe0270a61c49a9d89b31558e6cb2e315ff8a6223277a90f91daec9cc0bc9f7  /home/angel/Documentos/actas/compartida_1.txt
+total 16
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:14 .
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ..
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:00 acta_1_2026-11-24.txt
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:14 compartida_1.txt
+201207201total 32
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ./
+drwxr-x--- 8 angel angel 4096 Oct 18 19:51 ../
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:35 actas/
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:45 campana_fp/
+drwxrwxr-x 3 angel angel 4096 Nov 24 15:13 copias/
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:47 correo/
+-rw-rw-r-- 1 angel angel  519 Nov 24 16:08 errores.log
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:33 informes/
+207",
+7937,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 15:16:33,Command,"cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ayuda.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/portal_tarde.html -w '%{http_code}' http://intranet.local:8080/",,"acta de reunion 1 del area (dia 1)
+35 /home/angel/Documentos/actas/acta_1_2026-11-24.txt
+1bbe0270a61c49a9d89b31558e6cb2e315ff8a6223277a90f91daec9cc0bc9f7  /home/angel/Documentos/actas/compartida_1.txt
+total 16
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:14 .
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ..
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:00 acta_1_2026-11-24.txt
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:14 compartida_1.txt
+201207201total 32
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ./
+drwxr-x--- 8 angel angel 4096 Oct 18 19:51 ../
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:35 actas/
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:45 campana_fp/
+drwxrwxr-x 3 angel angel 4096 Nov 24 15:13 copias/
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:47 correo/
+-rw-rw-r-- 1 angel angel  519 Nov 24 16:08 errores.log
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:33 informes/
+207200",
+7938,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 15:17:14,Command,cd /home/angel/Descargas && timeout 5 curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -o /home/angel/.cache/tfg-web/intranet_tarde.html -w '%{http_code}' http://intranet.local:8080/,,"acta de reunion 1 del area (dia 1)
+35 /home/angel/Documentos/actas/acta_1_2026-11-24.txt
+1bbe0270a61c49a9d89b31558e6cb2e315ff8a6223277a90f91daec9cc0bc9f7  /home/angel/Documentos/actas/compartida_1.txt
+total 16
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:14 .
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ..
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:00 acta_1_2026-11-24.txt
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:14 compartida_1.txt
+201207201total 32
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ./
+drwxr-x--- 8 angel angel 4096 Oct 18 19:51 ../
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:35 actas/
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:45 campana_fp/
+drwxrwxr-x 3 angel angel 4096 Nov 24 15:13 copias/
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:47 correo/
+-rw-rw-r-- 1 angel angel  519 Nov 24 16:08 errores.log
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:33 informes/
+207200200",
+7939,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 15:18:11,Command,"cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/.cache/tfg-web/portal_tarde.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/noticias_tarde.html -w '%{http_code}' http://intranet.local:8080/noticias.html",,"acta de reunion 1 del area (dia 1)
+35 /home/angel/Documentos/actas/acta_1_2026-11-24.txt
+1bbe0270a61c49a9d89b31558e6cb2e315ff8a6223277a90f91daec9cc0bc9f7  /home/angel/Documentos/actas/compartida_1.txt
+total 16
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:14 .
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ..
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:00 acta_1_2026-11-24.txt
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:14 compartida_1.txt
+201207201total 32
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ./
+drwxr-x--- 8 angel angel 4096 Oct 18 19:51 ../
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:35 actas/
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:45 campana_fp/
+drwxrwxr-x 3 angel angel 4096 Nov 24 15:13 copias/
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:47 correo/
+-rw-rw-r-- 1 angel angel  519 Nov 24 16:08 errores.log
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:33 informes/
+207200200200",
+7940,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 15:18:54,Command,cd /home/angel/Descargas && tar -czf /home/angel/Descargas/informe_dia1.tar.gz -C /home/angel/Documentos/informes informe.txt,,"acta de reunion 1 del area (dia 1)
+35 /home/angel/Documentos/actas/acta_1_2026-11-24.txt
+1bbe0270a61c49a9d89b31558e6cb2e315ff8a6223277a90f91daec9cc0bc9f7  /home/angel/Documentos/actas/compartida_1.txt
+total 16
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:14 .
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ..
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:00 acta_1_2026-11-24.txt
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:14 compartida_1.txt
+201207201total 32
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ./
+drwxr-x--- 8 angel angel 4096 Oct 18 19:51 ../
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:35 actas/
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:45 campana_fp/
+drwxrwxr-x 3 angel angel 4096 Nov 24 15:13 copias/
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:47 correo/
+-rw-rw-r-- 1 angel angel  519 Nov 24 16:08 errores.log
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:33 informes/
+207200200200",
+7941,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 15:34:24,Command,cd /home/angel/Descargas && sha256sum /home/angel/Descargas/informe_dia1.tar.gz,,"acta de reunion 1 del area (dia 1)
+35 /home/angel/Documentos/actas/acta_1_2026-11-24.txt
+1bbe0270a61c49a9d89b31558e6cb2e315ff8a6223277a90f91daec9cc0bc9f7  /home/angel/Documentos/actas/compartida_1.txt
+total 16
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:14 .
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ..
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:00 acta_1_2026-11-24.txt
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:14 compartida_1.txt
+201207201total 32
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ./
+drwxr-x--- 8 angel angel 4096 Oct 18 19:51 ../
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:35 actas/
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:45 campana_fp/
+drwxrwxr-x 3 angel angel 4096 Nov 24 15:13 copias/
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:47 correo/
+-rw-rw-r-- 1 angel angel  519 Nov 24 16:08 errores.log
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:33 informes/
+207200200200d802a2102aff005584e4de551b6d8d2bc839e2997ee9f78deb46f8714c0babd6  /home/angel/Descargas/informe_dia1.tar.gz
+",
+7942,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 15:35:26,Command,cd /home/angel/Descargas && du -sh /home/angel/Descargas/informe_dia1.tar.gz,,"acta de reunion 1 del area (dia 1)
+35 /home/angel/Documentos/actas/acta_1_2026-11-24.txt
+1bbe0270a61c49a9d89b31558e6cb2e315ff8a6223277a90f91daec9cc0bc9f7  /home/angel/Documentos/actas/compartida_1.txt
+total 16
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:14 .
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ..
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:00 acta_1_2026-11-24.txt
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:14 compartida_1.txt
+201207201total 32
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ./
+drwxr-x--- 8 angel angel 4096 Oct 18 19:51 ../
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:35 actas/
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:45 campana_fp/
+drwxrwxr-x 3 angel angel 4096 Nov 24 15:13 copias/
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:47 correo/
+-rw-rw-r-- 1 angel angel  519 Nov 24 16:08 errores.log
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:33 informes/
+207200200200d802a2102aff005584e4de551b6d8d2bc839e2997ee9f78deb46f8714c0babd6  /home/angel/Descargas/informe_dia1.tar.gz
+4.0K	/home/angel/Descargas/informe_dia1.tar.gz
+",
+7943,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 15:43:42,Command,cd /home/angel/Descargas && ls -la /home/angel/Descargas,,"acta de reunion 1 del area (dia 1)
+35 /home/angel/Documentos/actas/acta_1_2026-11-24.txt
+1bbe0270a61c49a9d89b31558e6cb2e315ff8a6223277a90f91daec9cc0bc9f7  /home/angel/Documentos/actas/compartida_1.txt
+total 16
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:14 .
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ..
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:00 acta_1_2026-11-24.txt
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:14 compartida_1.txt
+201207201total 32
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ./
+drwxr-x--- 8 angel angel 4096 Oct 18 19:51 ../
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:35 actas/
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:45 campana_fp/
+drwxrwxr-x 3 angel angel 4096 Nov 24 15:13 copias/
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:47 correo/
+-rw-rw-r-- 1 angel angel  519 Nov 24 16:08 errores.log
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:33 informes/
+207200200200d802a2102aff005584e4de551b6d8d2bc839e2997ee9f78deb46f8714c0babd6  /home/angel/Descargas/informe_dia1.tar.gz
+4.0K	/home/angel/Descargas/informe_dia1.tar.gz
+total 24
+drwxrwxr-x 2 angel angel 4096 Nov 24 16:18 .
+drwxr-x--- 8 angel angel 4096 Oct 18 19:51 ..
+-rw-rw-r-- 1 angel angel  151 Nov 24 16:18 informe_dia1.tar.gz
+-rw-rw-r-- 1 angel angel  633 Nov 24 13:47 manual_empleado.pdf
+-rw-rw-r-- 1 angel angel  633 Oct 18 19:47 manual_empleado_wget.pdf
+-rw-rw-r-- 1 angel angel 1650 Nov 24 13:35 noticias.html
+",
+7944,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 15:55:45,Command,"cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e /home/angel/.cache/tfg-web/portal_tarde.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/Descargas/plantilla_dia1.csv -w '%{http_code}' http://intranet.local:8080/descargas/plantilla_informe.csv",,"acta de reunion 1 del area (dia 1)
+35 /home/angel/Documentos/actas/acta_1_2026-11-24.txt
+1bbe0270a61c49a9d89b31558e6cb2e315ff8a6223277a90f91daec9cc0bc9f7  /home/angel/Documentos/actas/compartida_1.txt
+total 16
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:14 .
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ..
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:00 acta_1_2026-11-24.txt
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:14 compartida_1.txt
+201207201total 32
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ./
+drwxr-x--- 8 angel angel 4096 Oct 18 19:51 ../
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:35 actas/
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:45 campana_fp/
+drwxrwxr-x 3 angel angel 4096 Nov 24 15:13 copias/
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:47 correo/
+-rw-rw-r-- 1 angel angel  519 Nov 24 16:08 errores.log
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:33 informes/
+207200200200d802a2102aff005584e4de551b6d8d2bc839e2997ee9f78deb46f8714c0babd6  /home/angel/Descargas/informe_dia1.tar.gz
+4.0K	/home/angel/Descargas/informe_dia1.tar.gz
+total 24
+drwxrwxr-x 2 angel angel 4096 Nov 24 16:18 .
+drwxr-x--- 8 angel angel 4096 Oct 18 19:51 ..
+-rw-rw-r-- 1 angel angel  151 Nov 24 16:18 informe_dia1.tar.gz
+-rw-rw-r-- 1 angel angel  633 Nov 24 13:47 manual_empleado.pdf
+-rw-rw-r-- 1 angel angel  633 Oct 18 19:47 manual_empleado_wget.pdf
+-rw-rw-r-- 1 angel angel 1650 Nov 24 13:35 noticias.html
+200",
+7945,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 15:56:33,Command,cd /home/angel/Descargas && wc -c /home/angel/Descargas/plantilla_dia1.csv,,"acta de reunion 1 del area (dia 1)
+35 /home/angel/Documentos/actas/acta_1_2026-11-24.txt
+1bbe0270a61c49a9d89b31558e6cb2e315ff8a6223277a90f91daec9cc0bc9f7  /home/angel/Documentos/actas/compartida_1.txt
+total 16
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:14 .
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ..
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:00 acta_1_2026-11-24.txt
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:14 compartida_1.txt
+201207201total 32
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ./
+drwxr-x--- 8 angel angel 4096 Oct 18 19:51 ../
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:35 actas/
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:45 campana_fp/
+drwxrwxr-x 3 angel angel 4096 Nov 24 15:13 copias/
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:47 correo/
+-rw-rw-r-- 1 angel angel  519 Nov 24 16:08 errores.log
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:33 informes/
+207200200200d802a2102aff005584e4de551b6d8d2bc839e2997ee9f78deb46f8714c0babd6  /home/angel/Descargas/informe_dia1.tar.gz
+4.0K	/home/angel/Descargas/informe_dia1.tar.gz
+total 24
+drwxrwxr-x 2 angel angel 4096 Nov 24 16:18 .
+drwxr-x--- 8 angel angel 4096 Oct 18 19:51 ..
+-rw-rw-r-- 1 angel angel  151 Nov 24 16:18 informe_dia1.tar.gz
+-rw-rw-r-- 1 angel angel  633 Nov 24 13:47 manual_empleado.pdf
+-rw-rw-r-- 1 angel angel  633 Oct 18 19:47 manual_empleado_wget.pdf
+-rw-rw-r-- 1 angel angel 1650 Nov 24 13:35 noticias.html
+200153 /home/angel/Descargas/plantilla_dia1.csv
+",
+7946,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 15:57:28,Command,cd /home/angel/Documentos/informes && gzip -d /home/angel/Documentos/informes/informe.bak 2>/dev/null; r=$?; [ $r -ne 0 ] && printf '%s\t%s\t%s\t%s\trc=%s\n' $(date -u +%FT%TZ) error gzip 'gzip -d /home/angel/Documentos/informes/informe.bak' $r >> /home/angel/Documentos/errores.log,,"acta de reunion 1 del area (dia 1)
+35 /home/angel/Documentos/actas/acta_1_2026-11-24.txt
+1bbe0270a61c49a9d89b31558e6cb2e315ff8a6223277a90f91daec9cc0bc9f7  /home/angel/Documentos/actas/compartida_1.txt
+total 16
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:14 .
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ..
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:00 acta_1_2026-11-24.txt
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:14 compartida_1.txt
+201207201total 32
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ./
+drwxr-x--- 8 angel angel 4096 Oct 18 19:51 ../
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:35 actas/
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:45 campana_fp/
+drwxrwxr-x 3 angel angel 4096 Nov 24 15:13 copias/
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:47 correo/
+-rw-rw-r-- 1 angel angel  519 Nov 24 16:08 errores.log
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:33 informes/
+207200200200d802a2102aff005584e4de551b6d8d2bc839e2997ee9f78deb46f8714c0babd6  /home/angel/Descargas/informe_dia1.tar.gz
+4.0K	/home/angel/Descargas/informe_dia1.tar.gz
+total 24
+drwxrwxr-x 2 angel angel 4096 Nov 24 16:18 .
+drwxr-x--- 8 angel angel 4096 Oct 18 19:51 ..
+-rw-rw-r-- 1 angel angel  151 Nov 24 16:18 informe_dia1.tar.gz
+-rw-rw-r-- 1 angel angel  633 Nov 24 13:47 manual_empleado.pdf
+-rw-rw-r-- 1 angel angel  633 Oct 18 19:47 manual_empleado_wget.pdf
+-rw-rw-r-- 1 angel angel 1650 Nov 24 13:35 noticias.html
+200153 /home/angel/Descargas/plantilla_dia1.csv
+",
+7947,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 15:58:12,Command,cd /home/angel/Documentos/informes && gzip -kf /home/angel/Documentos/informes/informe.bak; r=$?; printf '%s\t%s\t%s\t%s\trc=%s\n' $(date -u +%FT%TZ) reintento gzip 'gzip -kf /home/angel/Documentos/informes/informe.bak' $r >> /home/angel/Documentos/errores.log,,"acta de reunion 1 del area (dia 1)
+35 /home/angel/Documentos/actas/acta_1_2026-11-24.txt
+1bbe0270a61c49a9d89b31558e6cb2e315ff8a6223277a90f91daec9cc0bc9f7  /home/angel/Documentos/actas/compartida_1.txt
+total 16
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:14 .
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ..
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:00 acta_1_2026-11-24.txt
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:14 compartida_1.txt
+201207201total 32
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ./
+drwxr-x--- 8 angel angel 4096 Oct 18 19:51 ../
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:35 actas/
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:45 campana_fp/
+drwxrwxr-x 3 angel angel 4096 Nov 24 15:13 copias/
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:47 correo/
+-rw-rw-r-- 1 angel angel  519 Nov 24 16:08 errores.log
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:33 informes/
+207200200200d802a2102aff005584e4de551b6d8d2bc839e2997ee9f78deb46f8714c0babd6  /home/angel/Descargas/informe_dia1.tar.gz
+4.0K	/home/angel/Descargas/informe_dia1.tar.gz
+total 24
+drwxrwxr-x 2 angel angel 4096 Nov 24 16:18 .
+drwxr-x--- 8 angel angel 4096 Oct 18 19:51 ..
+-rw-rw-r-- 1 angel angel  151 Nov 24 16:18 informe_dia1.tar.gz
+-rw-rw-r-- 1 angel angel  633 Nov 24 13:47 manual_empleado.pdf
+-rw-rw-r-- 1 angel angel  633 Oct 18 19:47 manual_empleado_wget.pdf
+-rw-rw-r-- 1 angel angel 1650 Nov 24 13:35 noticias.html
+200153 /home/angel/Descargas/plantilla_dia1.csv
+",
+7948,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 16:02:41,Command,cd /home/angel/Descargas && sha256sum /home/angel/Descargas/plantilla_dia1.csv,,"acta de reunion 1 del area (dia 1)
+35 /home/angel/Documentos/actas/acta_1_2026-11-24.txt
+1bbe0270a61c49a9d89b31558e6cb2e315ff8a6223277a90f91daec9cc0bc9f7  /home/angel/Documentos/actas/compartida_1.txt
+total 16
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:14 .
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ..
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:00 acta_1_2026-11-24.txt
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:14 compartida_1.txt
+201207201total 32
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ./
+drwxr-x--- 8 angel angel 4096 Oct 18 19:51 ../
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:35 actas/
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:45 campana_fp/
+drwxrwxr-x 3 angel angel 4096 Nov 24 15:13 copias/
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:47 correo/
+-rw-rw-r-- 1 angel angel  519 Nov 24 16:08 errores.log
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:33 informes/
+207200200200d802a2102aff005584e4de551b6d8d2bc839e2997ee9f78deb46f8714c0babd6  /home/angel/Descargas/informe_dia1.tar.gz
+4.0K	/home/angel/Descargas/informe_dia1.tar.gz
+total 24
+drwxrwxr-x 2 angel angel 4096 Nov 24 16:18 .
+drwxr-x--- 8 angel angel 4096 Oct 18 19:51 ..
+-rw-rw-r-- 1 angel angel  151 Nov 24 16:18 informe_dia1.tar.gz
+-rw-rw-r-- 1 angel angel  633 Nov 24 13:47 manual_empleado.pdf
+-rw-rw-r-- 1 angel angel  633 Oct 18 19:47 manual_empleado_wget.pdf
+-rw-rw-r-- 1 angel angel 1650 Nov 24 13:35 noticias.html
+200153 /home/angel/Descargas/plantilla_dia1.csv
+93c8658868efabd20c27d68f8310d21c11f1dd378bf6c35d5921f5a03362d630  /home/angel/Descargas/plantilla_dia1.csv
+",
+7949,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 16:03:40,Command,"cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/ayuda_tarde.html -w '%{http_code}' http://intranet.local:8080/ayuda.html",,"acta de reunion 1 del area (dia 1)
+35 /home/angel/Documentos/actas/acta_1_2026-11-24.txt
+1bbe0270a61c49a9d89b31558e6cb2e315ff8a6223277a90f91daec9cc0bc9f7  /home/angel/Documentos/actas/compartida_1.txt
+total 16
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:14 .
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ..
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:00 acta_1_2026-11-24.txt
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:14 compartida_1.txt
+201207201total 32
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ./
+drwxr-x--- 8 angel angel 4096 Oct 18 19:51 ../
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:35 actas/
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:45 campana_fp/
+drwxrwxr-x 3 angel angel 4096 Nov 24 15:13 copias/
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:47 correo/
+-rw-rw-r-- 1 angel angel  519 Nov 24 16:08 errores.log
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:33 informes/
+207200200200d802a2102aff005584e4de551b6d8d2bc839e2997ee9f78deb46f8714c0babd6  /home/angel/Descargas/informe_dia1.tar.gz
+4.0K	/home/angel/Descargas/informe_dia1.tar.gz
+total 24
+drwxrwxr-x 2 angel angel 4096 Nov 24 16:18 .
+drwxr-x--- 8 angel angel 4096 Oct 18 19:51 ..
+-rw-rw-r-- 1 angel angel  151 Nov 24 16:18 informe_dia1.tar.gz
+-rw-rw-r-- 1 angel angel  633 Nov 24 13:47 manual_empleado.pdf
+-rw-rw-r-- 1 angel angel  633 Oct 18 19:47 manual_empleado_wget.pdf
+-rw-rw-r-- 1 angel angel 1650 Nov 24 13:35 noticias.html
+200153 /home/angel/Descargas/plantilla_dia1.csv
+93c8658868efabd20c27d68f8310d21c11f1dd378bf6c35d5921f5a03362d630  /home/angel/Descargas/plantilla_dia1.csv
+200",
+7950,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 16:13:19,Command,"cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -e http://intranet.local:8080/ayuda.html -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: es-ES,es;q=0.9,en;q=0.5' --compressed -o /home/angel/.cache/tfg-web/styles_tarde.css -w '%{http_code}' http://intranet.local:8080/styles.css",,"acta de reunion 1 del area (dia 1)
+35 /home/angel/Documentos/actas/acta_1_2026-11-24.txt
+1bbe0270a61c49a9d89b31558e6cb2e315ff8a6223277a90f91daec9cc0bc9f7  /home/angel/Documentos/actas/compartida_1.txt
+total 16
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:14 .
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ..
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:00 acta_1_2026-11-24.txt
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:14 compartida_1.txt
+201207201total 32
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ./
+drwxr-x--- 8 angel angel 4096 Oct 18 19:51 ../
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:35 actas/
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:45 campana_fp/
+drwxrwxr-x 3 angel angel 4096 Nov 24 15:13 copias/
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:47 correo/
+-rw-rw-r-- 1 angel angel  519 Nov 24 16:08 errores.log
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:33 informes/
+207200200200d802a2102aff005584e4de551b6d8d2bc839e2997ee9f78deb46f8714c0babd6  /home/angel/Descargas/informe_dia1.tar.gz
+4.0K	/home/angel/Descargas/informe_dia1.tar.gz
+total 24
+drwxrwxr-x 2 angel angel 4096 Nov 24 16:18 .
+drwxr-x--- 8 angel angel 4096 Oct 18 19:51 ..
+-rw-rw-r-- 1 angel angel  151 Nov 24 16:18 informe_dia1.tar.gz
+-rw-rw-r-- 1 angel angel  633 Nov 24 13:47 manual_empleado.pdf
+-rw-rw-r-- 1 angel angel  633 Oct 18 19:47 manual_empleado_wget.pdf
+-rw-rw-r-- 1 angel angel 1650 Nov 24 13:35 noticias.html
+200153 /home/angel/Descargas/plantilla_dia1.csv
+93c8658868efabd20c27d68f8310d21c11f1dd378bf6c35d5921f5a03362d630  /home/angel/Descargas/plantilla_dia1.csv
+200200",
+7951,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 16:14:00,Command,cd /home/angel/.cache/tfg-web && wc -l /home/angel/.cache/tfg-web/ayuda_tarde.html,,"acta de reunion 1 del area (dia 1)
+35 /home/angel/Documentos/actas/acta_1_2026-11-24.txt
+1bbe0270a61c49a9d89b31558e6cb2e315ff8a6223277a90f91daec9cc0bc9f7  /home/angel/Documentos/actas/compartida_1.txt
+total 16
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:14 .
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ..
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:00 acta_1_2026-11-24.txt
+-rw-rw-r-- 1 angel angel   35 Nov 24 15:14 compartida_1.txt
+201207201total 32
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 ./
+drwxr-x--- 8 angel angel 4096 Oct 18 19:51 ../
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:35 actas/
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:45 campana_fp/
+drwxrwxr-x 3 angel angel 4096 Nov 24 15:13 copias/
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:47 correo/
+-rw-rw-r-- 1 angel angel  519 Nov 24 16:08 errores.log
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:33 informes/
+207200200200d802a2102aff005584e4de551b6d8d2bc839e2997ee9f78deb46f8714c0babd6  /home/angel/Descargas/informe_dia1.tar.gz
+4.0K	/home/angel/Descargas/informe_dia1.tar.gz
+total 24
+drwxrwxr-x 2 angel angel 4096 Nov 24 16:18 .
+drwxr-x--- 8 angel angel 4096 Oct 18 19:51 ..
+-rw-rw-r-- 1 angel angel  151 Nov 24 16:18 informe_dia1.tar.gz
+-rw-rw-r-- 1 angel angel  633 Nov 24 13:47 manual_empleado.pdf
+-rw-rw-r-- 1 angel angel  633 Oct 18 19:47 manual_empleado_wget.pdf
+-rw-rw-r-- 1 angel angel 1650 Nov 24 13:35 noticias.html
+200153 /home/angel/Descargas/plantilla_dia1.csv
+93c8658868efabd20c27d68f8310d21c11f1dd378bf6c35d5921f5a03362d630  /home/angel/Descargas/plantilla_dia1.csv
+20020039 /home/angel/.cache/tfg-web/ayuda_tarde.html
+",
+7952,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 16:15:00,Command,cd /home/angel/Documentos/copias && tar -czf /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz -C /home/angel/Documentos informes actas,,,
+7953,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 16:15:55,Command,cd /home/angel/Documentos/copias && sha256sum /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz > /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz.sha256,,,
+7954,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 16:16:39,Command,cd /home/angel/Documentos/copias && cat /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz.sha256,,"dacf7986e80b836a4c09915b4962671f5caacc1eb7329eef0b74c50a916a8057  /home/angel/Documentos/copias/copia_2026-11-24.tar.gz
+",
+7955,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 16:17:38,Command,cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -T /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz -o /dev/null -w '%{http_code}' http://nube.local:9092/nube/copias/,,"dacf7986e80b836a4c09915b4962671f5caacc1eb7329eef0b74c50a916a8057  /home/angel/Documentos/copias/copia_2026-11-24.tar.gz
+201",
+7956,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 16:27:52,Command,cd /home/angel/Descargas && curl -sS -A 'TFG-Legit/1.0 (Linux; x86_64; sesion-web)' -b /home/angel/.cache/tfg-web/cookies.txt -X PROPFIND -H 'Depth: 1' -o /home/angel/.cache/tfg-web/copias_nube.txt -w '%{http_code}' http://nube.local:9092/nube/copias/,,"dacf7986e80b836a4c09915b4962671f5caacc1eb7329eef0b74c50a916a8057  /home/angel/Documentos/copias/copia_2026-11-24.tar.gz
+201207",
+7957,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 16:28:33,Command,cd /home/angel/Documentos && du -sh /home/angel/Documentos,,"dacf7986e80b836a4c09915b4962671f5caacc1eb7329eef0b74c50a916a8057  /home/angel/Documentos/copias/copia_2026-11-24.tar.gz
+20120768K	/home/angel/Documentos
+",
+7958,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 16:37:18,Command,cd /home/angel && df -h /,,"dacf7986e80b836a4c09915b4962671f5caacc1eb7329eef0b74c50a916a8057  /home/angel/Documentos/copias/copia_2026-11-24.tar.gz
+20120768K	/home/angel/Documentos
+Filesystem                         Size  Used Avail Use% Mounted on
+/dev/mapper/ubuntu--vg-ubuntu--lv  9.8G  5.0G  4.3G  54% /
+",
+7959,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 16:38:15,Command,cd /home/angel/Documentos/copias && cp -f /home/angel/Documentos/copias/copia_$(date -u +%F).tar.gz /home/angel/Descargas/copia_final_1.tar.gz,,"dacf7986e80b836a4c09915b4962671f5caacc1eb7329eef0b74c50a916a8057  /home/angel/Documentos/copias/copia_2026-11-24.tar.gz
+20120768K	/home/angel/Documentos
+Filesystem                         Size  Used Avail Use% Mounted on
+/dev/mapper/ubuntu--vg-ubuntu--lv  9.8G  5.0G  4.3G  54% /
+",
+7960,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 16:38:58,Command,cd /home/angel/Descargas && wc -c /home/angel/Descargas/copia_final_1.tar.gz,,"dacf7986e80b836a4c09915b4962671f5caacc1eb7329eef0b74c50a916a8057  /home/angel/Documentos/copias/copia_2026-11-24.tar.gz
+20120768K	/home/angel/Documentos
+Filesystem                         Size  Used Avail Use% Mounted on
+/dev/mapper/ubuntu--vg-ubuntu--lv  9.8G  5.0G  4.3G  54% /
+357 /home/angel/Descargas/copia_final_1.tar.gz
+",
+7961,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 16:46:24,Command,cd /home/angel/Descargas && rm -f /home/angel/Descargas/tmp_*.csv,,"dacf7986e80b836a4c09915b4962671f5caacc1eb7329eef0b74c50a916a8057  /home/angel/Documentos/copias/copia_2026-11-24.tar.gz
+20120768K	/home/angel/Documentos
+Filesystem                         Size  Used Avail Use% Mounted on
+/dev/mapper/ubuntu--vg-ubuntu--lv  9.8G  5.0G  4.3G  54% /
+357 /home/angel/Descargas/copia_final_1.tar.gz
+",
+7962,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 16:57:58,Command,cd /home/angel && date -u +%FT%TZ,,"dacf7986e80b836a4c09915b4962671f5caacc1eb7329eef0b74c50a916a8057  /home/angel/Documentos/copias/copia_2026-11-24.tar.gz
+20120768K	/home/angel/Documentos
+Filesystem                         Size  Used Avail Use% Mounted on
+/dev/mapper/ubuntu--vg-ubuntu--lv  9.8G  5.0G  4.3G  54% /
+357 /home/angel/Descargas/copia_final_1.tar.gz
+2026-11-24T16:57:58Z
+",
+7963,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 16:59:00,Command,cd /home/angel/Documentos && ls -la /home/angel/Documentos /home/angel/Descargas,,"dacf7986e80b836a4c09915b4962671f5caacc1eb7329eef0b74c50a916a8057  /home/angel/Documentos/copias/copia_2026-11-24.tar.gz
+20120768K	/home/angel/Documentos
+Filesystem                         Size  Used Avail Use% Mounted on
+/dev/mapper/ubuntu--vg-ubuntu--lv  9.8G  5.0G  4.3G  54% /
+357 /home/angel/Descargas/copia_final_1.tar.gz
+2026-11-24T16:57:58Z
+/home/angel/Descargas:
+total 32
+drwxrwxr-x 2 angel angel 4096 Nov 24 17:38 .
+drwxr-x--- 8 angel angel 4096 Oct 18 19:51 ..
+-rw-rw-r-- 1 angel angel  357 Nov 24 17:38 copia_final_1.tar.gz
+-rw-rw-r-- 1 angel angel  151 Nov 24 16:18 informe_dia1.tar.gz
+-rw-rw-r-- 1 angel angel  633 Nov 24 13:47 manual_empleado.pdf
+-rw-rw-r-- 1 angel angel  633 Oct 18 19:47 manual_empleado_wget.pdf
+-rw-rw-r-- 1 angel angel 1650 Nov 24 13:35 noticias.html
+-rw-rw-r-- 1 angel angel  153 Nov 24 16:55 plantilla_dia1.csv
+
+/home/angel/Documentos:
+total 32
+drwxrwxr-x 7 angel angel 4096 Nov 24 15:11 .
+drwxr-x--- 8 angel angel 4096 Oct 18 19:51 ..
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:35 actas
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:45 campana_fp
+drwxrwxr-x 3 angel angel 4096 Nov 24 17:15 copias
+drwxrwxr-x 2 angel angel 4096 Oct 28 03:47 correo
+-rw-rw-r-- 1 angel angel  786 Nov 24 16:58 errores.log
+drwxrwxr-x 2 angel angel 4096 Nov 24 15:33 informes
+",
+7964,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 17:06:00,Command,cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-01 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-01/inicio.txt,,,
+7965,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 17:06:08,Command,cd /home/angel/Documentos/campana_fp/C-01 && free -m > /home/angel/Documentos/campana_fp/C-01/free.txt,,,
+7966,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 17:06:14,Command,cd /home/angel/Documentos/campana_fp/C-01 && systemctl --failed --no-pager > /home/angel/Documentos/campana_fp/C-01/fallidos.txt,,,
+7967,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 17:06:24,Command,cd /home/angel/Documentos/campana_fp/C-01 && systemctl list-units --type=service --state=running --no-pager > /home/angel/Documentos/campana_fp/C-01/servicios.txt,,,
+7968,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 17:06:31,Command,cd /home/angel/Documentos/campana_fp/C-01 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-01/hecho.txt && wc -l /home/angel/Documentos/campana_fp/C-01/servicios.txt /home/angel/Documentos/campana_fp/C-01/free.txt /home/angel/Documentos/campana_fp/C-01/fallidos.txt >> /home/angel/Documentos/campana_fp/C-01/hecho.txt && cat /home/angel/Documentos/campana_fp/C-01/hecho.txt,,"RESULTADO=OK
+  30 /home/angel/Documentos/campana_fp/C-01/servicios.txt
+   3 /home/angel/Documentos/campana_fp/C-01/free.txt
+   3 /home/angel/Documentos/campana_fp/C-01/fallidos.txt
+  36 total
+",
+7969,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 17:06:40,Command,cd /home/angel/Documentos/campana_fp/C-01 && rm -f /home/angel/Documentos/campana_fp/C-01/servicios.txt /home/angel/Documentos/campana_fp/C-01/free.txt /home/angel/Documentos/campana_fp/C-01/fallidos.txt && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-01/fin.txt,,"RESULTADO=OK
+  30 /home/angel/Documentos/campana_fp/C-01/servicios.txt
+   3 /home/angel/Documentos/campana_fp/C-01/free.txt
+   3 /home/angel/Documentos/campana_fp/C-01/fallidos.txt
+  36 total
+",
+7970,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 17:15:20,Command,cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-02 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-02/inicio.txt,,"RESULTADO=OK
+  30 /home/angel/Documentos/campana_fp/C-01/servicios.txt
+   3 /home/angel/Documentos/campana_fp/C-01/free.txt
+   3 /home/angel/Documentos/campana_fp/C-01/fallidos.txt
+  36 total
+",
+7971,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 17:15:27,Command,cd /home/angel/Documentos/campana_fp/C-02 && ip -brief addr > /home/angel/Documentos/campana_fp/C-02/ip_addr.txt,,"RESULTADO=OK
+  30 /home/angel/Documentos/campana_fp/C-01/servicios.txt
+   3 /home/angel/Documentos/campana_fp/C-01/free.txt
+   3 /home/angel/Documentos/campana_fp/C-01/fallidos.txt
+  36 total
+",
+7972,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 17:15:36,Command,cd /home/angel/Documentos/campana_fp/C-02 && ip route > /home/angel/Documentos/campana_fp/C-02/ip_route.txt,,"RESULTADO=OK
+  30 /home/angel/Documentos/campana_fp/C-01/servicios.txt
+   3 /home/angel/Documentos/campana_fp/C-01/free.txt
+   3 /home/angel/Documentos/campana_fp/C-01/fallidos.txt
+  36 total
+",
+7973,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 17:15:41,Command,cd /home/angel/Documentos/campana_fp/C-02 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-02/hecho.txt && grep '192.168.65.' /home/angel/Documentos/campana_fp/C-02/ip_addr.txt >> /home/angel/Documentos/campana_fp/C-02/hecho.txt && cat /home/angel/Documentos/campana_fp/C-02/ip_route.txt >> /home/angel/Documentos/campana_fp/C-02/hecho.txt,,"RESULTADO=OK
+  30 /home/angel/Documentos/campana_fp/C-01/servicios.txt
+   3 /home/angel/Documentos/campana_fp/C-01/free.txt
+   3 /home/angel/Documentos/campana_fp/C-01/fallidos.txt
+  36 total
+",
+7974,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 17:15:49,Command,cd /home/angel/Documentos/campana_fp/C-02 && rm -f /home/angel/Documentos/campana_fp/C-02/ip_addr.txt /home/angel/Documentos/campana_fp/C-02/ip_route.txt && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-02/fin.txt,,"RESULTADO=OK
+  30 /home/angel/Documentos/campana_fp/C-01/servicios.txt
+   3 /home/angel/Documentos/campana_fp/C-01/free.txt
+   3 /home/angel/Documentos/campana_fp/C-01/fallidos.txt
+  36 total
+",
+7975,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 17:24:40,Command,cd /home/angel/Documentos/campana_fp && mkdir -p /home/angel/Documentos/campana_fp/C-03 && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-03/inicio.txt,,"RESULTADO=OK
+  30 /home/angel/Documentos/campana_fp/C-01/servicios.txt
+   3 /home/angel/Documentos/campana_fp/C-01/free.txt
+   3 /home/angel/Documentos/campana_fp/C-01/fallidos.txt
+  36 total
+",
+7976,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 17:24:48,Command,cd /home/angel/Documentos/campana_fp/C-03 && systemctl list-timers --all --no-pager > /home/angel/Documentos/campana_fp/C-03/timers.txt,,"RESULTADO=OK
+  30 /home/angel/Documentos/campana_fp/C-01/servicios.txt
+   3 /home/angel/Documentos/campana_fp/C-01/free.txt
+   3 /home/angel/Documentos/campana_fp/C-01/fallidos.txt
+  36 total
+",
+7977,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 17:24:55,Command,cd /home/angel/Documentos/campana_fp/C-03 && crontab -l > /home/angel/Documentos/campana_fp/C-03/crontab.txt 2>/dev/null; r=$?; printf 'crontab_rc=%s\n' $r > /home/angel/Documentos/campana_fp/C-03/crontab_rc.txt,,"RESULTADO=OK
+  30 /home/angel/Documentos/campana_fp/C-01/servicios.txt
+   3 /home/angel/Documentos/campana_fp/C-01/free.txt
+   3 /home/angel/Documentos/campana_fp/C-01/fallidos.txt
+  36 total
+",
+7978,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 17:25:04,Command,cd /home/angel/Documentos/campana_fp/C-03 && echo 'RESULTADO=OK' > /home/angel/Documentos/campana_fp/C-03/hecho.txt && wc -l /home/angel/Documentos/campana_fp/C-03/timers.txt >> /home/angel/Documentos/campana_fp/C-03/hecho.txt && cat /home/angel/Documentos/campana_fp/C-03/crontab_rc.txt >> /home/angel/Documentos/campana_fp/C-03/hecho.txt,,"RESULTADO=OK
+  30 /home/angel/Documentos/campana_fp/C-01/servicios.txt
+   3 /home/angel/Documentos/campana_fp/C-01/free.txt
+   3 /home/angel/Documentos/campana_fp/C-01/fallidos.txt
+  36 total
+",
+7979,7c33a13a-fe89-4a56-bf3c-fcd499e1e557,2026-11-24 17:25:09,Command,cd /home/angel/Documentos/campana_fp/C-03 && rm -f /home/angel/Documentos/campana_fp/C-03/timers.txt /home/angel/Documentos/campana_fp/C-03/crontab.txt /home/angel/Documentos/campana_fp/C-03/crontab_rc.txt && date -u +%FT%TZ > /home/angel/Documentos/campana_fp/C-03/fin.txt,,"RESULTADO=OK
+  30 /home/angel/Documentos/campana_fp/C-01/servicios.txt
+   3 /home/angel/Documentos/campana_fp/C-01/free.txt
+   3 /home/angel/Documentos/campana_fp/C-01/fallidos.txt
+  36 total
+",

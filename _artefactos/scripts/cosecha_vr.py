@@ -74,14 +74,18 @@ def f_acciones(a):
     sql = "copy (select * from history_timeline where createdutc >= '%s' and createdutc < '%s' order by createdutc) to stdout with csv header" % (t0s, t1s)
     p = subprocess.run([PSQL, "-h", "127.0.0.1", "-p", "5432", "-U", "ghosts", "-d", "ghosts", "-c", sql], capture_output=True, timeout=300)
     open(os.path.join(d, "ghosts_acciones_por_accion.csv"), "wb").write(p.stdout)
-    n = max(0, p.stdout.count(b"\n") - 1)
+    import csv
+    csv.field_size_limit(10 ** 9)
+    n = sum(1 for _ in csv.DictReader(io.StringIO(p.stdout.decode("utf-8", "replace"), newline="")))
     log("ledger POR ACCION: %d filas rc=%s %s" % (n, p.returncode, p.stderr.decode("utf-8", "replace").strip()[:120]))
     json.dump({"filas_por_accion": n}, open(os.path.join(d, "resumen.json"), "w"))
-    # BD de GHOSTS: copia del volcado completo de la tabla (por si hay que re-contar)
+    # volcado de history_timeline desde UN DIA antes de t0 (el historico anterior de la BD son las ventanas de Wazuh y ensayos: no es de esta ventana), comprimido
+    desde = (dt.datetime.strptime(a.t0, "%Y-%m-%dT%H:%M:%SZ") - dt.timedelta(days=1)).strftime("%Y-%m-%d %H:%M:%S")
     p2 = subprocess.run([PSQL, "-h", "127.0.0.1", "-p", "5432", "-U", "ghosts", "-d", "ghosts", "-c",
-                         "copy (select * from history_timeline order by createdutc) to stdout with csv header"], capture_output=True, timeout=600)
-    open(os.path.join(d, "history_timeline_completa.csv"), "wb").write(p2.stdout)
-    log("history_timeline completa: %d bytes" % len(p2.stdout))
+                         "copy (select * from history_timeline where createdutc >= '%s' order by createdutc) to stdout with csv header" % desde], capture_output=True, timeout=600)
+    with gzip.GzipFile(filename="", fileobj=open(os.path.join(d, "history_timeline_desde_t0-1dia.csv.gz"), "wb"), mode="wb", mtime=0) as g:
+        g.write(p2.stdout)
+    log("history_timeline desde %s: %d bytes sin comprimir" % (desde, len(p2.stdout)))
 
 
 def f_guest(a):

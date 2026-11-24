@@ -1,0 +1,19 @@
+[19:31:16Z] === acciones ===
+[19:31:16Z] ghosts_acciones.csv (por hora) rc=0 ['total acciones: total,,63']
+[19:31:16Z] ledger POR ACCION: 656 filas rc=0 
+[19:31:31Z] history_timeline completa: 779062546 bytes
+[19:31:31Z] === guest ===
+[19:31:32Z] tar usuario: rc=0 5632 bytes
+[19:31:32Z]    ficheros: 19
+[19:31:35Z] tar root (audit.log* + conf): rc=0 6013336 bytes tar: var/log/audit/audit.log: file changed as we read it
+[19:31:37Z] estado VR/auditd guardado (1750 bytes)
+[19:31:37Z] === marca-fin ===
+[19:32:07Z] marca FIN TFGMARKFINVR20261124T193137 vista en EBPF: True (tras 30 s)
+[19:32:07Z] === subida ===
+[19:32:07Z] subida de audit.log* por Velociraptor: flujo F.DC2UCDV7PSSD8
+[19:32:23Z] flujo F.DC2UCDV7PSSD8: estado=FINISHED tras 15 s
+[19:32:23Z]    24 ficheros subidos, 8 MB en el datastore
+[19:32:23Z] === datastore ===
+[19:32:23Z] datastore del cliente C.0421bea0cf56b59b copiado a D:/TFG-VMs/legitimo-vr-ensayo-E0\crudo_servidor
+[19:32:23Z] === manifest ===
+[19:32:27Z] MANIFEST.tsv: 209 ficheros; cosecha.done creado

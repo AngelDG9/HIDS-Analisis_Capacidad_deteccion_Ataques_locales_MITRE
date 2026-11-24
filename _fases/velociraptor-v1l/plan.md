@@ -2,7 +2,7 @@
 nombre: Velociraptor Linux - V1-L (72 h de actividad legitima) con auditd + EBPF
 version: 2 (tras la auditoria de las ventanas de Wazuh)
 fecha: 2026-11-24
-estado: PROPUESTO v2 - pendiente del OK del humano (fecha, compromiso de 3 dias, operador en vivo, disco externo)
+estado: L0-L3 EJECUTADOS Y VERIFICADOS (2026-11-24; ensayo E0 ver Soporte/Laboratorio/legitimo_72h_vr/ensayo_E0_vr.md) - plan APROBADO por el humano (fecha lun 30/11 -> jue 3/12, operador en vivo, disco externo pendiente) - falta L4 (armado el domingo 29/11)
 depende_de: _fases/auditoria-ventanas-wazuh/AUDITORIA.md - _fases/velociraptor-v1/plan.md (V1 cerrada) - Dataset/Ataques/Resultados/Velociraptor/linux_ojos/RESULTADO_OJOS.md - _fases/legitimo-v3/plan.md (la ventana de Wazuh que se replica)
 ---
 
@@ -91,3 +91,10 @@ Snapshot nuevo `lab-listo-legit-vr` (los demas **intactos**) con Wazuh fuera, cl
 
 ## 8. Lo que NO es V1-L
 No calcula falsos positivos (C2/C3), no incluye Windows, no toca la receta ni la metrica, no mezcla ataques (la campana B6 **si** va dentro, como en Wazuh).
+
+## 9. Registro de ejecucion (2026-11-24)
+- **L0 hecho** (host: `D:` 640 GB, suspension/hibernacion desactivadas, sin tareas antiguas, git limpio, copia de Wazuh en `C:`).
+- **L1 hecho**: `lab-listo-legit-vr` creado desde `lab-listo-legit-v3` y verificado (`construir_snapshot_legit_vr.py`; evidencia `Soporte/Laboratorio/legitimo_72h_vr/evidencia_L1/`). D2: `num_logs = 120`, `max_log_file = 8` MB.
+- **L2 hecho**: scripts `*_vr` generados con `generar_control_vr.py` (diff declarado en `DIFF_control_vs_wazuh.txt`; **0 ficheros de Wazuh modificados**), `legit_vr.py`, `cosecha_vr.py`, `exportar_denominador_vr.py`, `verificar_validez_ventana_vr.py`, `sellar_vr.py`, `registrar_tareas_vr.ps1` (sin contrasena). Receta: `d1/d2/d3` **identicos byte a byte** a los de Wazuh.
+- **L3 hecho** (ensayo real de 7 h): ver `ensayo_E0_vr.md`. **Puerta D2 cumplida** (disco: ~385 MB en 72 h sobre 4,4 GB). Defectos encontrados y corregidos: 6 (todos en mis scripts).
+- **Quedan L4-L7.** Decisiones del humano recibidas el 2026-11-24: fecha lun 30/11 -> jue 3/12, PC encendido y operador en vivo (yo), disco externo pendiente (no bloquea).

@@ -1,0 +1,9 @@
+# estabilidad_hora.csv | Velociraptor V1-L | filas EBPF y eventos de auditd por hora UTC del evento (sin FP: aun no hay reglas C2/C3)
+hora_utc,M_ebpf,M_auditd
+2026-11-24T13:00Z,99275,2372
+2026-11-24T14:00Z,143649,2998
+2026-11-24T15:00Z,144042,2994
+2026-11-24T16:00Z,140355,2782
+2026-11-24T17:00Z,150719,3653
+2026-11-24T18:00Z,149915,3608
+2026-11-24T19:00Z,74186,1791

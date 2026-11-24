@@ -1,0 +1,157 @@
+[2026-11-24T12:31:56Z] [prep] === START prep (host UTC 2026-11-24T12:31:56Z) t0=2026-11-24T13:20:00Z t1=2026-11-24T19:30:00Z ===
+[2026-11-24T12:31:57Z] [prep] G-1 OK: snapshot 'lab-listo-legit-vr' presente | Total snapshots: 8 base-limpia lab-listo lab-listo-legit fallo-2026-10-19-disco-lleno-NO-USAR lab-listo-legit-v2 lab-listo-legit-v3 lab-listo-legit-vr lab-listo-vr
+[2026-11-24T12:31:57Z] [prep] G-10: D_libre_gb=639.6 wuauserv_StartType=Manual sesion=angel
+[2026-11-24T12:31:57Z] [prep] G-10 AVISO (test): Windows Update NO esta pausado (se omite el bloqueo; T4 lo pausa antes de t0)
+[2026-11-24T12:31:57Z] [prep] G-4 --check:
+receta v2: dias={1: 147, 2: 153, 3: 141} total=441 errores={1: 10, 2: 10, 3: 10} binarios_ok=34 hueco_max=1320s cwd=cd-por-accion handlers_browser=0
+campana B6: 11 casos, 63 acciones, 22 marcas, 17 binarios, 29 ATA
+RESULT=PASS
+[2026-11-24T12:31:57Z] [prep] G-4 OK: d1=0b2fa91c d2=0e0329cc d3=885a80b2 mapa=2026-11-24->d1,2026-11-25->d2,2026-11-26->d3
+[2026-11-24T12:32:11Z] [prep] G-12: ram_free_mb=2337 swap_mb=1915 ram_min_mb=1500
+[2026-11-24T12:32:11Z] [prep] G-12 AVISO (declarado): swap_mb=1915 != 0 (el plan asumia 0; no se toca la VM)
+Despliegue completado (cliente + nlog.config + d1/d2/d3 + calendario + carpetas).
+Arranque manual: bash /home/angel/ghosts-client/client_ctl.sh start
+[2026-11-24T12:33:34Z] [prep] G-2: df_free_mb=4423 inodos_libres_pct=84
+[2026-11-24T12:33:34Z] [prep] scp verificar_arreglos.sh -> angel@192.168.65.129 rc=0 
+[2026-11-24T12:33:34Z] [prep] G-3 verificar_arreglos:
+[2026-11-24T12:33:34Z] [prep] [angel@192.168.65.129] bash /tmp/verificar_arreglos.sh d8f5f1d1154601360e5d81c752ea50b034e915e10f9545625f4a5732352221fb 0b2fa91cdbc7f16cfc3e59e3ace7b67269d78de4279b641f4fbfae221b50c7df 0e0329cc979797f5fa63420a79a9d5d5af26ae6d4d6cec7dd961ed31adddc58a 885a80b2f698ed2e6cc4a249a5f36bdd6756a246352b01dc52953638db611345 c1241001831f4da0d2e4f5b1fc4876798c4e0579b3e30ae8fc256b8c919f8f9b; echo rc=$?
+nlog_console=Warn
+nlog_sha=d8f5f1d1154601360e5d81c752ea50b034e915e10f9545625f4a5732352221fb
+nlog_applog_archive=20
+client_ctl_cap=20
+keepalive_v3=1
+recetas=0b2fa91c,0e0329cc,885a80b2
+recetas_sha=0b2fa91cdbc7f16cfc3e59e3ace7b67269d78de4279b641f4fbfae221b50c7df,0e0329cc979797f5fa63420a79a9d5d5af26ae6d4d6cec7dd961ed31adddc58a,885a80b2f698ed2e6cc4a249a5f36bdd6756a246352b01dc52953638db611345
+timeline_activa=0b2fa91c
+timeline_huella=c18e28bb
+web_session=1
+receptor_navegador=none
+ram_free_mb=2283
+swap_mb=1915
+swap_estado=AVISO (swap_mb=1915 != 0; desviaciÃ³n declarada)
+timer=not-found
+df_free_mb=4423
+df_libre_pct=46
+df_inodes_libres_pct=84
+client_cwd=/home/angel
+keepalive_cwd=/home/angel
+carpetas_cwd=OK
+campana_fp=OK
+campana_fp_casos=0
+RESULT=PASS
+rc=0 nlog_console=Warn
+nlog_sha=d8f5f1d1154601360e5d81c752ea50b034e915e10f9545625f4a5732352221fb
+nlog_applog_archive=20
+client_ctl_cap=20
+keepalive_v3=1
+recetas=0b2fa91c,0e0329cc,885a80b2
+recetas_sha=0b2fa91cdbc7f16cfc3e59e3ace7b67269d78de4279b641f4fbfae221b50c7df,0e0329cc979797f5fa63420a79a9d5d5af26ae6d4d6cec7dd961ed31adddc58a,885a80b2f698ed2e6cc4a249a5f36bdd6756a246352b01dc52953638db611345
+timeline_activa=0b2fa91c
+timeline_huella=c18e28bb
+web_session=1
+receptor_navegador=none
+ram_free_mb=2283
+swap_mb=1915
+swap_estado=AVISO (swap_mb=1915 != 0; desviaciÃ³n declarada)
+timer=not-found
+df_free_mb=4423
+df_libre_pct=46
+df_inodes_libres_pct=84
+client_cwd=/home/angel
+keepalive_cwd=/home/angel
+carpetas_cwd=OK
+campana_fp=OK
+campana_fp_casos=0
+RESULT=PASS
+rc=0
+servidor YA en marcha
+proceso: 1 | puertos: 127.0.0.1:8889, 192.168.65.1:8000
+[2026-11-24T12:33:36Z] [prep] G-7 (VR) tabla de monitorizacion:
+huella_actual=384b27bef7e0901d14af5a7041100801180c27348365331be625c635cf2646ae
+huella_guardada=384b27bef7e0901d14af5a7041100801180c27348365331be625c635cf2646ae
+RESULT=PASS
+Arrancando web8080 ...
+Arrancando sink9090 ...
+Arrancando webdav9092 ...
+Regla creada: TFG-web-8080 (TCP 8080 desde 192.168.65.0/24)
+Regla creada: TFG-sink-9090 (TCP 9090 desde 192.168.65.0/24)
+Regla creada: TFG-webdav-9092 (TCP 9092 desde 192.168.65.0/24)
+Comprobacion local:
+  8080 -> HTTP 200
+  9090 -> HTTP 200
+  9092 -> sin respuesta (Error en el servidor remoto: (404) No se encontr¢.)
+[2026-11-24T12:33:44Z] [prep] internet local lanzada
+Arrancando PostgreSQL...
+esperando que el servidor se inicie.... listo
+servidor iniciado
+Arrancando GHOSTS API en http://192.168.65.1:5000 ...
+API OK: HTTP 200
+[2026-11-24T12:34:01Z] [prep] servidor GHOSTS lanzado
+[2026-11-24T12:34:02Z] [prep] firewall: regla TFG-ghosts-5000 creada (TCP 5000 desde 192.168.65.0/24)
+[2026-11-24T12:34:02Z] [prep] scp verificar_internet_local.sh -> angel@192.168.65.129 rc=0 
+[2026-11-24T12:34:07Z] [prep] G-8:
+[2026-11-24T12:34:07Z] [prep] [angel@192.168.65.129] bash /tmp/verificar_internet_local.sh
+=== 1) /etc/hosts ===
+192.168.65.1  intranet.local portal.local nube.local
+=== 2) POSITIVAS ===
+8080 root:     200
+8080 pdf:      200 size=633
+8080 zip:      200 size=311
+9090 paste:    200
+9092 put:      201
+9092 propfind: 207
+=== 3) NEGATIVA (debe FALLAR) ===
+ssh.exe : curl: (28) Resolving timed out after 4002 milliseconds
+En D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\legitimo_72h_vr\legitimo_host_con
+trol_vr.ps1: 102 Car cter: 28
++ ... ut = ($Pw | & $Ssh -i $Key -o StrictHostKeyChecking=accept-new $Targe ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (curl: (28) Reso...02 milliseconds:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+example.com: 000
+example.com: FALLA (ok, aislado) exit=28
+curl: (7) Failed to connect to 1.1.1.1 port 80 after 0 ms: Couldn't connect to server
+1.1.1.1:     000
+1.1.1.1: FALLA (ok, aislado) exit=7
+=== 4) RUTA ===
+192.168.65.0/24 dev ens33 proto kernel scope link src 192.168.65.129 
+=== FIN === === 1) /etc/hosts ===
+192.168.65.1  intranet.local portal.local nube.local
+=== 2) POSITIVAS ===
+8080 root:     200
+8080 pdf:      200 size=633
+8080 zip:      200 size=311
+9090 paste:    200
+9092 put:      201
+9092 propfind: 207
+=== 3) NEGATIVA (debe FALLAR) ===
+ssh.exe : curl: (28) Resolving timed out after 4002 milliseconds
+En D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\Soporte\Laboratorio\legitimo_72h_vr\legitimo_host_con
+trol_vr.ps1: 102 Car cter: 28
++ ... ut = ($Pw | & $Ssh -i $Key -o StrictHostKeyChecking=accept-new $Targe ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (curl: (28) Reso...02 milliseconds:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+example.com: 000
+example.com: FALLA (ok, aislado) exit=28
+curl: (7) Failed to connect to 1.1.1.1 port 80 after 0 ms: Couldn't connect to server
+1.1.1.1:     000
+1.1.1.1: FALLA (ok, aislado) exit=7
+=== 4) RUTA ===
+192.168.65.0/24 dev ens33 proto kernel scope link src 192.168.65.129 
+=== FIN ===
+[2026-11-24T12:35:13Z] [prep] G-5/G-6 (VR):
+ebpf_bytes_antes=143823798 ebpf_bytes_despues=144508137 crecimiento=684339 en 60s
+df_avail_kb=4613734 (~4.4 GB libres en la victima)
+RESULT=PASS
+[2026-11-24T12:35:13Z] [prep] G-11: machineids de victima-linux = 7c33a13a-fe89-4a56-bf3c-fcd499e1e557
+[2026-11-24T12:35:15Z] [prep] scp d1.json -> angel@192.168.65.129 rc=0 
+[2026-11-24T12:35:15Z] [prep] [timeline en la victima] 0b2fa91cdbc7f16cfc3e59e3ace7b67269d78de4279b641f4fbfae221b50c7df /home/angel/ghosts-client/config/timeline.json
+[2026-11-24T12:35:15Z] [prep] prep: timeline activa = 0b2fa91c (esperado d1=0b2fa91c)
+[2026-11-24T12:35:16Z] [prep] prep: rotacion.estado = 2026-11-24 (d¡a 1 ya colocado; no se rota el d¡a 1)
+[2026-11-24T12:35:16Z] [prep] D:\TFG\HIDS-Analisis_Capacidad_deteccion_Ataques_locales_MITRE\_artefactos\scripts\legit_vr.py:188: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+[2026-11-24T12:35:16Z] [prep]   json.dump({"ts": dt.datetime.utcnow().isoformat() + "Z", "ebpf_bytes": bytes_ebpf(c)}, open(ESTADO, "w", encoding="utf-8"))
+[2026-11-24T12:35:16Z] [prep] estado de la vigilancia sembrado: C:\Users\angel\AppData\Local\Temp\opencode\tfg_watch_ebpf_vr.json
+[2026-11-24T12:35:16Z] [prep] === END prep (laboratorio LISTO, cliente PARADO) ===
