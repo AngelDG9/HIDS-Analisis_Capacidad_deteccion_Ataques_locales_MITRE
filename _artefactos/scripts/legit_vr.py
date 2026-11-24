@@ -182,6 +182,21 @@ def cmd_gate(a):
     sys.exit(0 if not fallos else 1)
 
 
+def cmd_sellar_vm(a):
+    """Lee por SSH (SOLO ANTES de t0) las huellas de la configuracion de la VM y las guarda en recetas_vr/vm_config.sha256 (V7)."""
+    import shlex
+    import orquestar_ataques_linux as olx
+    cmd = "sha256sum /usr/local/bin/velociraptor /etc/velociraptor/client.config.yaml /etc/audit/auditd.conf /etc/audit/rules.d/tfg.rules"
+    rc, o, e = olx.ssh(olx.IP_V, "sudo -S -p '' bash -c %s" % shlex.quote(cmd), inp=olx.PW + "\n", timeout=60)
+    lin = [l for l in o.splitlines() if re.match(r"^[0-9a-f]{64}\s+/", l)]
+    if rc != 0 or len(lin) != 4:
+        print("FALLO: no se pudieron leer las 4 huellas (rc=%s)" % rc)
+        sys.exit(1)
+    os.makedirs(os.path.join(BASE, "recetas_vr"), exist_ok=True)
+    open(os.path.join(BASE, "recetas_vr", "vm_config.sha256"), "w", encoding="utf-8", newline="\n").write("\n".join(lin) + "\n")
+    print("\n".join(lin))
+
+
 def cmd_seed(a):
     c = fijar_cliente()
     os.makedirs(os.path.dirname(ESTADO), exist_ok=True)
@@ -199,5 +214,6 @@ if __name__ == "__main__":
     g = sp.add_parser("gate")
     g.add_argument("--espera", type=int, default=60)
     sp.add_parser("seed")
+    sp.add_parser("sellar-vm")
     a = ap.parse_args()
-    {"watch": cmd_watch, "tabla": cmd_tabla, "gate": cmd_gate, "seed": cmd_seed}[a.cmd](a)
+    {"watch": cmd_watch, "tabla": cmd_tabla, "gate": cmd_gate, "seed": cmd_seed, "sellar-vm": cmd_sellar_vm}[a.cmd](a)

@@ -148,7 +148,7 @@ def f_subida(a):
     c = legit_vr.fijar_cliente()
     out = os.path.join(a.out, "audit_subida_vr")
     os.makedirs(out, exist_ok=True)
-    rc, o, e = legit_vr.q("SELECT collect_client(client_id='%s', artifacts='Generic.Collectors.File', env=dict(Root='/', collectionSpec=\"Glob\\n/var/log/audit/audit.log*\")) AS f FROM scope()" % c, 120)
+    rc, o, e = legit_vr.q("SELECT collect_client(client_id='%s', artifacts='Generic.Collectors.File', env=dict(Root='/', collectionSpec=\"Glob\n/var/log/audit/audit.log*\")) AS f FROM scope()" % c, 120)
     m = re.search(r"F\.[A-Z0-9]+", o)
     if not m:
         raise SystemExit("no se pudo lanzar la subida: %s" % e[-200:])
