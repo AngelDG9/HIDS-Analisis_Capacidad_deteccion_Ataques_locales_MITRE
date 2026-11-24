@@ -34,8 +34,8 @@ Si el servidor VR cae: la tarea lo reinicia (archiva su log); el cliente guarda 
 `TFG_MANAGER_PW=... python cosecha_vr.py --t0 2026-11-25T00:00:00Z --t1 2026-11-28T00:00:00Z --out D:\TFG-VMs\legitimo-vr-2026-11-25` (fases: acciones -> guest -> marca-fin -> subida -> datastore -> manifest). Si `marca-fin` no se ve: NO se para nada.
 Despues, **solo con la cosecha verificada** (en este orden):
 1. `exportar_denominador_vr.py --cosecha D:\TFG-VMs\legitimo-vr-2026-11-25 --t0 ... --t1 ... --out <DIR>\productos` (usa SOLO el flujo de subida de esta cosecha).
-2. Copia a `C:\TFG-copiaelociraptor-v1l\V1L_cosecha.zip` (zip del directorio de la cosecha; contiene `MANIFEST.tsv` en la raiz) y comprobacion (`testzip`).
-3. `verificar_validez_ventana_vr.py --cosecha ... --copia2 C:\TFG-copiaelociraptor-v1l\V1L_cosecha.zip --t0 ... --t1 ... --informe <DIR>\productoseredicto_validez.md` (V7 compara con `sha256sums_vr.txt`).
+2. Copia a `C:\TFG-copia\velociraptor-v1l\V1L_cosecha.zip` (zip del directorio de la cosecha; contiene `MANIFEST.tsv` en la raiz) y comprobacion (`testzip`).
+3. `verificar_validez_ventana_vr.py --cosecha ... --copia2 C:\TFG-copia\velociraptor-v1l\V1L_cosecha.zip --t0 ... --t1 ... --informe <DIR>\productos\veredicto_validez.md` (V7 compara con `sha256sums_vr.txt`).
 4. Parar la VM (soft) y **despues** `vmrun snapshot ... post-legit-vr-2026-11-28` (la VM apagada).
 5. `legitimo_host_control_vr.ps1 -Phase cleanup`, `registrar_tareas_vr.ps1 -Eliminar`, `Set-Service wuauserv -StartupType Manual`.
 6. `git commit/push` de los productos pequenos (`ventana_meta.md`, `incidencias.md`, `veredicto_validez.md`, csv) y segunda copia de TODO en `C:`; pedir al humano el disco externo.
