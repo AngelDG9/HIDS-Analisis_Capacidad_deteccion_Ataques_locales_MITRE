@@ -100,7 +100,12 @@ s = cut(s, "    # --- G-5: agente dentro ---------------------------------------
 s = cut(s, "    # --- G-9: sonda de rotacion (aviso) ---------------------------------",
         "    Invoke-Vmrun @('-T','ws','listSnapshots',$Victim) | Out-Null",
         """    # --- H1(b): sembrar el estado de la vigilancia (primer chequeo sin delta falso) -------
-    & $Py $LegitVr seed 2>&1 | ForEach-Object { Write-Log "$_" }
+    $seed = Invoke-WatchVR -SinEstado
+    $seedObj = [ordered]@{ ts = TsUtc; archives = [int64]$seed['ebpf_bytes']; alerts = 0; alarma_sig = ''; alarma_n = 0; cero_n = 0 }
+    $seedDir = Split-Path $WatchState
+    if (-not (Test-Path $seedDir)) { New-Item -ItemType Directory -Force -Path $seedDir | Out-Null }
+    $seedObj | ConvertTo-Json | Set-Content -Path $WatchState -Encoding utf8
+    Write-Log "H1(b) estado del watch sembrado: ebpf=$($seedObj.archives)B df_avail_kb=$($seed['df_avail_kb']) (archivo $WatchState)"
 
 """)
 
@@ -119,7 +124,8 @@ s = cut(s, "    # --- senales 2,3,4,5: manager ---------------------------------
     if ($wm['servidor'] -ne 'active') { $nivel = 2; $notas.Add('servidor_VR_caido') }
     if ($wm['tabla'] -eq 'DISTINTA') { $nivel = 2; $notas.Add('tabla_cambiada') }
 
-    $archDelta = [int]$wm['ebpf_delta']
+    $ebNow = [int64]$wm['ebpf_bytes']
+    $archDelta = if ([int64]$prev.archives -ge 0) { $ebNow - [int64]$prev.archives } else { -1 }
     $alertDelta = $archDelta
     if ($archDelta -eq 0) { $prev.cero_n = [int]$prev.cero_n + 1 } elseif ($archDelta -gt 0) { $prev.cero_n = 0 }
     if ($prev.cero_n -ge 2 -and $cal.estado -eq 'bloque') { $nivel = 2; $notas.Add('sin_eventos') }
@@ -135,8 +141,20 @@ s = cut(s, "    # --- senales 2,3,4,5: manager ---------------------------------
 s = rep(s, "ag=$($wm['agente_status']) mgr=$($wm['manager'])/$($wm['daemons']) arch=$($archDelta)B dia=$($alertDelta)B ",
         "cli=$($kaEdad)s srv=$($wm['servidor']) ebpf=$($archDelta)B tabla=$($wm['tabla']) ")
 s = rep(s, "    $prev.archives = [int]$wm['archives_bytes']\n    $prev.alerts = [int]$wm['alerts_bytes']\n",
-        "    $prev.archives = [int]$wm['ebpf_bytes']\n    $prev.alerts = 0\n")
+        "    $prev.archives = [int64]$wm['ebpf_bytes']\n    $prev.alerts = 0\n")
 s = rep(s, "hb=$hbTxt", "hb=$hbTxt")  # (sin cambios; comprueba que existe)
+REEMPL_LOG_A = "    Add-Content -Path $VigLog -Value $line -Encoding utf8"+chr(10)+"    Add-Content -Path $Log -Value $line -Encoding utf8"+chr(10)
+REEMPL_LOG_B = "    Add-LineaSegura $VigLog $line"+chr(10)+"    Add-LineaSegura $Log $line"+chr(10)
+s = rep(s, REEMPL_LOG_A, REEMPL_LOG_B)
+FUNC = (
+"function Add-LineaSegura([string]$Path, [string]$Linea) {"+chr(10)+
+"  # V1-L: Windows puede bloquear un fichero un instante (antivirus, lector); se reintenta y, si no, se deja en un fichero de rescate"+chr(10)+
+"  for ($i = 1; $i -le 6; $i++) {"+chr(10)+
+"    try { Add-Content -Path $Path -Value $Linea -Encoding utf8 -ErrorAction Stop; return } catch { Start-Sleep -Seconds 2 }"+chr(10)+
+"  }"+chr(10)+
+"  Add-Content -Path ($Path + '.rescate') -Value $Linea -Encoding utf8"+chr(10)+
+"}"+chr(10)+chr(10)+"function TsUtc {")
+s = rep(s, "function TsUtc {", FUNC)
 
 # ------------------------------------------------------------------ stop / cleanup / status
 s = rep(s, 'Write-Log "victima parada (soft). El manager SIGUE encendido para la extraccion."',

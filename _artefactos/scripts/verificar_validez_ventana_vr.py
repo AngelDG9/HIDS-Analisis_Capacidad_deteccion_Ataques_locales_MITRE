@@ -115,7 +115,9 @@ def main():
     res["V2 Actividad"] = ("PASS" if ok2 else "FAIL", "acciones=%d por dia=%s cumplimiento%%=%s fuera_de_bloque=%d %s" % (tot, dict(por_dia), cumplim, len(fuera), fuera[:3]))
 
     # ---------------------------------------------------------------- V3 servidor y cliente (log de vigilancia)
-    lin = [l for l in open(a.vig, encoding="utf-8", errors="replace")] if os.path.isfile(a.vig) else []
+    # el watch escribe cada chequeo en el log de vigilancia Y en el de control: se leen los dos y se quitan duplicados (robusto si uno no se pudo escribir)
+    fuentes = [a.vig, os.path.join(BASE, "legitimo_host_control_vr.log")]
+    lin = sorted({l for f in fuentes if os.path.isfile(f) for l in open(f, encoding="utf-8-sig", errors="replace")})
     ts = []
     alarmas = servidor_caido = 0
     for l in lin:
@@ -193,6 +195,10 @@ def main():
     except Exception as ex:                                       # noqa: BLE001
         th = " | tabla no comprobable (%s)" % str(ex)[:60]
         ok7 = False
+    sums = subprocess.run([sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), "sellar_vr.py"), "check"], capture_output=True)
+    sl = sums.stdout.decode("utf-8", "replace").strip().splitlines()
+    ok7 = ok7 and sums.returncode == 0
+    th += " | sha256sums_vr: %s" % (sl[-1] if sl else "sin salida")
     res["V7 Sin cambios"] = ("PASS" if ok7 else "FAIL", v7 + th)
 
     # ---------------------------------------------------------------- V8 host estable

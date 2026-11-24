@@ -69,13 +69,21 @@
 +$Log = Join-Path $Base 'legitimo_host_control_vr.log'
 +$VigLog = Join-Path $Base 'vigilancia_legitimo_vr.log'
 +$WatchState = Join-Path $env:TEMP 'opencode\tfg_watch_estado_vr.json'
-@@ -87 +68 @@
+@@ -87 +68,9 @@
 -if (-not $ManagerPw) { $ManagerPw = if ($env:TFG_MANAGER_PW) { $env:TFG_MANAGER_PW } else { $GuestPw } }
 +if (-not $GuestPw)   { $GuestPw   = $env:TFG_MANAGER_PW }   # misma clave para todas las VMs; SOLO del entorno del proceso
-@@ -128 +109 @@
++
++function Add-LineaSegura([string]$Path, [string]$Linea) {
++  # V1-L: Windows puede bloquear un fichero un instante (antivirus, lector); se reintenta y, si no, se deja en un fichero de rescate
++  for ($i = 1; $i -le 6; $i++) {
++    try { Add-Content -Path $Path -Value $Linea -Encoding utf8 -ErrorAction Stop; return } catch { Start-Sleep -Seconds 2 }
++  }
++  Add-Content -Path ($Path + '.rescate') -Value $Linea -Encoding utf8
++}
+@@ -128 +117 @@
 -  $f = Join-Path $Base 'sha256sums.txt'
 +  $f = Join-Path $BaseW 'sha256sums.txt'     # sellado de Wazuh (solo lectura); los ficheros VR van en sha256sums_vr.txt
-@@ -219,3 +200,4 @@
+@@ -219,3 +208,4 @@
 -function Invoke-WatchManager {
 -  Copy-ToVm (Join-Path $Base 'watch_manager.py') $Man | Out-Null
 -  $out = Invoke-OnVm $Man 'python3 /tmp/watch_manager.py' $ManagerPw -SinLog
@@ -83,20 +91,20 @@
 +  # Lee SOLO el servidor de Velociraptor y el datastore del PC. No hay SSH a la victima.
 +  $a = @($LegitVr, 'watch'); if ($SinEstado) { $a += '--sin-estado' }
 +  $out = & $Py @a 2>&1 | Out-String
-@@ -223 +205 @@
+@@ -223 +213 @@
 -  foreach ($l in (($out | Out-String) -split "`r?`n")) {
 +  foreach ($l in ($out -split "`r?`n")) {
-@@ -320 +302 @@
+@@ -320 +310 @@
 -    $chk = & python (Join-Path $Repo '_artefactos\scripts\construir_receta_legitima.py') --check 2>&1 | Out-String
 +    $chk = & python (Join-Path $Repo '_artefactos\scripts\construir_receta_legitima.py') --check --t0 ([datetime]::Parse($T0).ToUniversalTime().ToString('yyyy-MM-dd')) --out-dir $Recetas 2>&1 | Out-String
-@@ -337 +318,0 @@
+@@ -337 +326,0 @@
 -    Invoke-Vmrun @('-T','ws','start',$Manager,'nogui')         | Out-Null
-@@ -339 +319,0 @@
+@@ -339 +327,0 @@
 -    if (-not (Wait-VmSsh $Man 300)) { Write-Log 'FALLO: no hay SSH al manager'; exit 31 }
-@@ -351 +331 @@
+@@ -351 +339 @@
 -    & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Ghosts 'deploy_client.ps1')
 +    & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Ghosts 'deploy_client_vr.ps1')
-@@ -375,19 +355,5 @@
+@@ -375,19 +363,5 @@
 -    # --- manager: arranque, higiene y logall_json ON ---------------------
 -    Copy-ToVm (Join-Path $Ghosts 'arrancar_manager.sh') $Man
 -    Copy-ToVm (Join-Path $Ghosts 'logall_json_ctl.sh')  $Man
@@ -121,7 +129,7 @@
 +    $tb = & $Py $LegitVr tabla check 2>&1 | Out-String
 +    Write-Log "G-7 (VR) tabla de monitorizacion:`n$($tb.Trim())"
 +    if ($tb -notmatch 'RESULT=PASS') { Write-Log "G-7 FALLO: la tabla del servidor no es la configuracion S fijada (legit_vr.py tabla fijar)"; exit 44 }
-@@ -417,5 +383,4 @@
+@@ -417,5 +391,4 @@
 -    # --- G-5: agente dentro ---------------------------------------------
 -    $ag = Invoke-OnVm $Vic "pgrep -c -f wazuh-agentd" '' -SinLog
 -    $ac = Invoke-OnVm $Man 'bash /tmp/estado_manager.sh' $ManagerPw -SinLog
@@ -131,7 +139,7 @@
 +    $gate = & $Py $LegitVr gate --espera 60 2>&1 | Out-String
 +    Write-Log "G-5/G-6 (VR):`n$($gate.Trim())"
 +    if ($gate -notmatch 'RESULT=PASS') { Write-Log "G-5/G-6 FALLO: el cliente de Velociraptor no esta operativo"; exit 43 }
-@@ -439,32 +404,2 @@
+@@ -439,28 +412,3 @@
 -    # --- G-9: sonda de rotacion (aviso) ---------------------------------
 -    $rot = Invoke-OnVm $Man 'sudo -S -p '''' ls -la --time-style=+%H:%M /var/ossec/logs/archives/*/*/ossec-archive-*.json.gz 2>/dev/null | tail -2' $ManagerPw -SinLog
 -    Write-Log "G-9 (informativo) ultimo .gz: $((([string]$rot) -replace '\s+',' ').Trim())"
@@ -160,16 +168,16 @@
 -      alarma_n    = 0
 -      cero_n      = 0
 -    }
--    $seedDir = Split-Path $WatchState
--    if (-not (Test-Path $seedDir)) { New-Item -ItemType Directory -Force -Path $seedDir | Out-Null }
--    $seedObj | ConvertTo-Json | Set-Content -Path $WatchState -Encoding utf8
--    Write-Log "H1(b) estado del watch sembrado: archives=$($seedObj.archives)B alerts=$($seedObj.alerts)B df_edad_min=$($seed['df_muestras_edad_min']) (archivo $WatchState)"
 +    # --- H1(b): sembrar el estado de la vigilancia (primer chequeo sin delta falso) -------
-+    & $Py $LegitVr seed 2>&1 | ForEach-Object { Write-Log "$_" }
-@@ -496,2 +430,0 @@
++    $seed = Invoke-WatchVR -SinEstado
++    $seedObj = [ordered]@{ ts = TsUtc; archives = [int64]$seed['ebpf_bytes']; alerts = 0; alarma_sig = ''; alarma_n = 0; cero_n = 0 }
+@@ -470 +418 @@
+-    Write-Log "H1(b) estado del watch sembrado: archives=$($seedObj.archives)B alerts=$($seedObj.alerts)B df_edad_min=$($seed['df_muestras_edad_min']) (archivo $WatchState)"
++    Write-Log "H1(b) estado del watch sembrado: ebpf=$($seedObj.archives)B df_avail_kb=$($seed['df_avail_kb']) (archivo $WatchState)"
+@@ -496,2 +443,0 @@
 -    Invoke-OnVm $Man 'bash /tmp/diag_wazuh.sh' $ManagerPw | Out-Null
 -    Invoke-OnVm $Man 'bash /tmp/logall_json_ctl.sh status' $ManagerPw | Out-Null
-@@ -559,12 +492,12 @@
+@@ -559,12 +505,13 @@
 -    # --- senales 2,3,4,5: manager ---------------------------------------
 -    $wm = Invoke-WatchManager
 -    $kaEdad = if ($wm['agente_ka_edad_s']) { [int]$wm['agente_ka_edad_s'] } else { -1 }
@@ -191,36 +199,43 @@
 +    if ($wm['servidor'] -ne 'active') { $nivel = 2; $notas.Add('servidor_VR_caido') }
 +    if ($wm['tabla'] -eq 'DISTINTA') { $nivel = 2; $notas.Add('tabla_cambiada') }
 +
-+    $archDelta = [int]$wm['ebpf_delta']
++    $ebNow = [int64]$wm['ebpf_bytes']
++    $archDelta = if ([int64]$prev.archives -ge 0) { $ebNow - [int64]$prev.archives } else { -1 }
 +    $alertDelta = $archDelta
 +    if ($archDelta -eq 0) { $prev.cero_n = [int]$prev.cero_n + 1 } elseif ($archDelta -gt 0) { $prev.cero_n = 0 }
-@@ -575,2 +508 @@
+@@ -575,2 +522 @@
 -    $dfTasa = $wm['df_tasa_mb_h']
 -    $dfEdad = [int]$wm['df_muestras_edad_min']
 +    $dfTasa = 'n/a'
-@@ -580,6 +511,0 @@
+@@ -580,6 +525,0 @@
 -    if ($dfTasa -ne 'none' -and $dfTasa -ne $null -and $dfTasa -ne '') {
 -      $t = [double]$dfTasa
 -      if ($t -lt -1024) { $nivel = 2; $notas.Add('tasa<-1G/h') }
 -      elseif ($t -lt -500) { if ($nivel -lt 1) { $nivel = 1 }; $notas.Add('tasa<-500M/h') }
 -    }
 -    if ($dfEdad -gt 20 -and $dfAvailKb -ge 0) { if ($nivel -lt 1) { $nivel = 1 }; $notas.Add('df_viejo') }
-@@ -643 +569 @@
+@@ -643,4 +583,4 @@
 -    $line = "[$(TsUtc)] [watch] estado=$estadoTxt doing_age=$doingTxt bloque=$bloqueTxt mins_bloque=$minsBloque hb=$hbTxt ag=$($wm['agente_status']) mgr=$($wm['manager'])/$($wm['daemons']) arch=$($archDelta)B dia=$($alertDelta)B df=$(if($dfGb -ge 0){"${dfGb}G"}else{'n/a'}) tasa=$($dfTasa)MB/h db=${dbMb}MB host=${hostGb}G wu=$($wu.Estado)/$($wu.Tipo) au=$(if($wu.NoAuto -eq 1){'1'}else{'0'}) noreb=$(if($wu.NoReboot -eq 1){'1'}else{'0'}) boot=$($wu.Boot) reps=$wuReps ram=post-hoc rec=post-hoc rot=post-hoc notas=$($notas -join ',')"
+-
+-    Add-Content -Path $VigLog -Value $line -Encoding utf8
+-    Add-Content -Path $Log -Value $line -Encoding utf8
 +    $line = "[$(TsUtc)] [watch] estado=$estadoTxt doing_age=$doingTxt bloque=$bloqueTxt mins_bloque=$minsBloque hb=$hbTxt cli=$($kaEdad)s srv=$($wm['servidor']) ebpf=$($archDelta)B tabla=$($wm['tabla']) df=$(if($dfGb -ge 0){"${dfGb}G"}else{'n/a'}) tasa=$($dfTasa)MB/h db=${dbMb}MB host=${hostGb}G wu=$($wu.Estado)/$($wu.Tipo) au=$(if($wu.NoAuto -eq 1){'1'}else{'0'}) noreb=$(if($wu.NoReboot -eq 1){'1'}else{'0'}) boot=$($wu.Boot) reps=$wuReps ram=post-hoc rec=post-hoc rot=post-hoc notas=$($notas -join ',')"
-@@ -671,2 +597,2 @@
++
++    Add-LineaSegura $VigLog $line
++    Add-LineaSegura $Log $line
+@@ -671,2 +611,2 @@
 -    $prev.archives = [int]$wm['archives_bytes']
 -    $prev.alerts = [int]$wm['alerts_bytes']
-+    $prev.archives = [int]$wm['ebpf_bytes']
++    $prev.archives = [int64]$wm['ebpf_bytes']
 +    $prev.alerts = 0
-@@ -680 +606 @@
+@@ -680 +620 @@
 -    Write-Log "victima parada (soft). El manager SIGUE encendido para la extraccion."
 +    Write-Log "victima parada (soft). V1-L: usar SOLO despues de verificar la cosecha (no hay parada automatica)."
-@@ -714,2 +640 @@
+@@ -714,2 +654 @@
 -    $manUp = Test-VmEnMarcha $Manager
 -    Write-Log "cleanup: victima_en_marcha=$vicUp manager_en_marcha=$manUp"
 +    Write-Log "cleanup: victima_en_marcha=$vicUp"
-@@ -722,7 +647 @@
+@@ -722,7 +661 @@
 -    if ($manUp) {
 -      Invoke-OnVm $Man 'bash /tmp/logall_json_ctl.sh off' $ManagerPw | Out-Null
 -      Invoke-OnVm $Man 'bash /tmp/logall_json_ctl.sh status' $ManagerPw | Out-Null
@@ -229,7 +244,7 @@
 -      Write-Log "cleanup: manager APAGADO -> se omite logall/diff remoto (H1c, sin SSH)"
 -    }
 +    # V1-L: no hay manager ni logall_json. La equivalencia de configuracion (tabla, auditd.conf, client.config) se comprueba con legit_vr.py y en la cosecha.
-@@ -730 +648,0 @@
+@@ -730 +662,0 @@
 -    if ($manUp)    { Invoke-Vmrun @('-T','ws','stop',$Manager,'soft') | Out-Null }
-@@ -746 +663,0 @@
+@@ -746 +677,0 @@
 -    Invoke-OnVm $Man 'bash /tmp/logall_json_ctl.sh status' $ManagerPw | Out-Null

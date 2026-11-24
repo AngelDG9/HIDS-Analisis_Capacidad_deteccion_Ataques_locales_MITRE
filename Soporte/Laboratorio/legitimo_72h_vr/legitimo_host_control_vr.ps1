@@ -67,6 +67,14 @@ $WatchState = Join-Path $env:TEMP 'opencode\tfg_watch_estado_vr.json'
 if (-not $GuestPw)   { $GuestPw   = $env:TFG_GUEST_PW }
 if (-not $GuestPw)   { $GuestPw   = $env:TFG_MANAGER_PW }   # misma clave para todas las VMs; SOLO del entorno del proceso
 
+function Add-LineaSegura([string]$Path, [string]$Linea) {
+  # V1-L: Windows puede bloquear un fichero un instante (antivirus, lector); se reintenta y, si no, se deja en un fichero de rescate
+  for ($i = 1; $i -le 6; $i++) {
+    try { Add-Content -Path $Path -Value $Linea -Encoding utf8 -ErrorAction Stop; return } catch { Start-Sleep -Seconds 2 }
+  }
+  Add-Content -Path ($Path + '.rescate') -Value $Linea -Encoding utf8
+}
+
 function TsUtc { (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ') }
 
 function Write-Log([string]$msg) {
@@ -402,7 +410,12 @@ switch ($Phase) {
     Write-Log "prep: rotacion.estado = $fechaT0 (día 1 ya colocado; no se rota el día 1)"
 
     # --- H1(b): sembrar el estado de la vigilancia (primer chequeo sin delta falso) -------
-    & $Py $LegitVr seed 2>&1 | ForEach-Object { Write-Log "$_" }
+    $seed = Invoke-WatchVR -SinEstado
+    $seedObj = [ordered]@{ ts = TsUtc; archives = [int64]$seed['ebpf_bytes']; alerts = 0; alarma_sig = ''; alarma_n = 0; cero_n = 0 }
+    $seedDir = Split-Path $WatchState
+    if (-not (Test-Path $seedDir)) { New-Item -ItemType Directory -Force -Path $seedDir | Out-Null }
+    $seedObj | ConvertTo-Json | Set-Content -Path $WatchState -Encoding utf8
+    Write-Log "H1(b) estado del watch sembrado: ebpf=$($seedObj.archives)B df_avail_kb=$($seed['df_avail_kb']) (archivo $WatchState)"
 
     Invoke-Vmrun @('-T','ws','listSnapshots',$Victim) | Out-Null
     Write-Log "=== END prep (laboratorio LISTO, cliente PARADO) ==="
@@ -498,7 +511,8 @@ switch ($Phase) {
     if ($wm['servidor'] -ne 'active') { $nivel = 2; $notas.Add('servidor_VR_caido') }
     if ($wm['tabla'] -eq 'DISTINTA') { $nivel = 2; $notas.Add('tabla_cambiada') }
 
-    $archDelta = [int]$wm['ebpf_delta']
+    $ebNow = [int64]$wm['ebpf_bytes']
+    $archDelta = if ([int64]$prev.archives -ge 0) { $ebNow - [int64]$prev.archives } else { -1 }
     $alertDelta = $archDelta
     if ($archDelta -eq 0) { $prev.cero_n = [int]$prev.cero_n + 1 } elseif ($archDelta -gt 0) { $prev.cero_n = 0 }
     if ($prev.cero_n -ge 2 -and $cal.estado -eq 'bloque') { $nivel = 2; $notas.Add('sin_eventos') }
@@ -568,8 +582,8 @@ switch ($Phase) {
     $hbTxt = if ($kaEdad -ge 0) { "$($kaEdad)s" } else { 'n/a' }
     $line = "[$(TsUtc)] [watch] estado=$estadoTxt doing_age=$doingTxt bloque=$bloqueTxt mins_bloque=$minsBloque hb=$hbTxt cli=$($kaEdad)s srv=$($wm['servidor']) ebpf=$($archDelta)B tabla=$($wm['tabla']) df=$(if($dfGb -ge 0){"${dfGb}G"}else{'n/a'}) tasa=$($dfTasa)MB/h db=${dbMb}MB host=${hostGb}G wu=$($wu.Estado)/$($wu.Tipo) au=$(if($wu.NoAuto -eq 1){'1'}else{'0'}) noreb=$(if($wu.NoReboot -eq 1){'1'}else{'0'}) boot=$($wu.Boot) reps=$wuReps ram=post-hoc rec=post-hoc rot=post-hoc notas=$($notas -join ',')"
 
-    Add-Content -Path $VigLog -Value $line -Encoding utf8
-    Add-Content -Path $Log -Value $line -Encoding utf8
+    Add-LineaSegura $VigLog $line
+    Add-LineaSegura $Log $line
     Write-Output $line
 
     # --- alarma visible --------------------------------------------------
@@ -594,7 +608,7 @@ switch ($Phase) {
     }
 
     $prev.ts = TsUtc
-    $prev.archives = [int]$wm['ebpf_bytes']
+    $prev.archives = [int64]$wm['ebpf_bytes']
     $prev.alerts = 0
     $prev | ConvertTo-Json | Set-Content -Path $WatchState -Encoding utf8
   }
