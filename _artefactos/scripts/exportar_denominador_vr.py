@@ -81,7 +81,12 @@ def lineas_ebpf(cosecha):
 def bytes_audit_vr(cosecha):
     """Contenido (descomprimido) de cada audit.log* subido por Velociraptor: {nombre: bytes}."""
     r = {}
-    for p in glob.glob(os.path.join(cosecha, "crudo_servidor", "collections", "*", "uploads", "auto", "var", "log", "audit", "audit.log*")):
+    # el datastore del cliente guarda TODOS sus flujos (ensayos, pruebas): solo se usa el de la subida de ESTA cosecha (audit_subida_vr/subida.json)
+    flujo = "*"
+    sj = os.path.join(cosecha, "audit_subida_vr", "subida.json")
+    if os.path.isfile(sj):
+        flujo = json.load(open(sj, encoding="utf-8")).get("flow_id") or "*"
+    for p in glob.glob(os.path.join(cosecha, "crudo_servidor", "collections", flujo, "uploads", "auto", "var", "log", "audit", "audit.log*")):
         if p.endswith(".chunk"):
             continue
         b = open(p, "rb").read()

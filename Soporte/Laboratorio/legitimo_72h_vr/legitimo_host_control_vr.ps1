@@ -66,6 +66,8 @@ $WatchState = 'D:\TFG-VMs\lab-logs\tfg_watch_estado_vr.json'   # ruta FIJA (no d
 # --- Credenciales SOLO por entorno (nunca del fichero, nunca al log) -------
 if (-not $GuestPw)   { $GuestPw   = $env:TFG_GUEST_PW }
 if (-not $GuestPw)   { $GuestPw   = $env:TFG_MANAGER_PW }   # misma clave para todas las VMs; SOLO del entorno del proceso
+# los procesos de larga duracion que lanza el prep (GHOSTS, internet local) NO deben heredar la contrasena en su entorno durante 72 h
+Remove-Item Env:TFG_MANAGER_PW -ErrorAction SilentlyContinue; Remove-Item Env:TFG_GUEST_PW -ErrorAction SilentlyContinue
 
 function Add-LineaSegura([string]$Path, [string]$Linea) {
   # V1-L: Windows puede bloquear un fichero un instante (antivirus, lector); se reintenta y, si no, se deja en un fichero de rescate
@@ -302,7 +304,11 @@ switch ($Phase) {
         # bloqueo con `-Test`, que no viaja a la ventana.
         Write-Log "G-10 AVISO (test): Windows Update NO esta pausado (se omite el bloqueo; T4 lo pausa antes de t0)"
       } else {
-        Write-Log "G-10 FALLO: Windows Update NO esta pausado (ejecuta pausar_windows_update.ps1 pausar)"; exit 47
+        # V1-L: Windows devuelve wuauserv a Manual a los 3-10 min; el operador lo repausa AQUI y vuelve a comprobar (la pausa es una accion declarada del HOST)
+        & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Base 'pausar_windows_update.ps1') pausar 2>&1 | Out-Null
+        $wu = (Get-Service wuauserv -ErrorAction SilentlyContinue).StartType
+        Write-Log "G-10: tras repausar, wuauserv_StartType=$wu"
+        if ("$wu" -ne 'Disabled') { Write-Log "G-10 FALLO: no se pudo pausar Windows Update"; exit 47 }
       }
     }
 
@@ -322,8 +328,8 @@ switch ($Phase) {
     Write-Log ("G-4 OK: d1=$($sha[1].Substring(0,8)) d2=$($sha[2].Substring(0,8)) d3=$($sha[3].Substring(0,8)) mapa=$mapaTxt")
 
     # --- revert + start --------------------------------------------------
-    Invoke-Vmrun @('-T','ws','revertToSnapshot',$Victim,$Snap) | Out-Null
-    Invoke-Vmrun @('-T','ws','start',$Victim,'nogui')          | Out-Null
+    if (@(Invoke-Vmrun @('-T','ws','revertToSnapshot',$Victim,$Snap))[-1] -ne 0) { Write-Log 'FALLO: revertToSnapshot'; exit 34 }
+    if (@(Invoke-Vmrun @('-T','ws','start',$Victim,'nogui'))[-1] -ne 0) { Write-Log 'FALLO: start de la victima'; exit 34 }
     if (-not (Wait-VmSsh $Vic 300)) { Write-Log 'FALLO: no hay SSH a la victima'; exit 31 }
 
     # --- G-12: RAM de la victima (y swap, que se declara) ----------------
@@ -389,7 +395,7 @@ switch ($Phase) {
     if ($netTxt -match 'default via') { Write-Log "G-8 FALLO: la victima tiene ruta por defecto (NAT conectado)"; exit 45 }
 
     # --- G-5/G-6 (VR): cliente conectado, filas de EBPF llegando y disco de la victima legible (DiskSpace) --
-    $gate = & $Py $LegitVr gate --espera 60 2>&1 | Out-String
+    $gate = & $Py $LegitVr gate --espera 240 2>&1 | Out-String
     Write-Log "G-5/G-6 (VR):`n$($gate.Trim())"
     if ($gate -notmatch 'RESULT=PASS') { Write-Log "G-5/G-6 FALLO: el cliente de Velociraptor no esta operativo"; exit 43 }
 

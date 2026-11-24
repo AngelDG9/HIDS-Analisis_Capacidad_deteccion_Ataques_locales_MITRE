@@ -19,8 +19,9 @@ FICHEROS = [
     VR + "/legitimo_host_control_vr.ps1", VR + "/registrar_tareas_vr.ps1", VR + "/pausar_windows_update.ps1", VR + "/generar_control_vr.py",
     VR + "/legit_vr_config.json", VR + "/recetas_vr/d1.json", VR + "/recetas_vr/d2.json", VR + "/recetas_vr/d3.json",
     VR + "/recetas_vr/bloques.env", VR + "/recetas_vr/calendario.json", VR + "/recetas_vr/tabla_cfgS.sha256", VR + "/recetas_vr/vm_config.sha256",
-    "_artefactos/scripts/legit_vr.py", "_artefactos/scripts/cosecha_vr.py", "_artefactos/scripts/exportar_denominador_vr.py",
-    "_artefactos/scripts/verificar_validez_ventana_vr.py", "_artefactos/scripts/sellar_vr.py", "_artefactos/scripts/construir_snapshot_legit_vr.py",
+    "_artefactos/scripts/legit_vr.py", "_artefactos/scripts/orquestar_velociraptor_linux.py", "_artefactos/scripts/probar_ojos_velociraptor.py",
+    "_artefactos/scripts/extraer_ventana_velociraptor.py", "_artefactos/scripts/orquestar_ataques_linux.py",   # modulos que importa el vigilante
+    # (cosecha_vr, exportar_denominador_vr, verificar_validez_ventana_vr y sellar_vr SOLO actuan despues de t1: no se sellan; un arreglo posterior no invalida la ventana)
     "Soporte/Laboratorio/ghosts/deploy_client_vr.ps1", "Soporte/Laboratorio/velociraptor/arrancar_servidor.ps1",
     # de Wazuh, reutilizados tal cual (se sellan para probar que no cambian)
     W + "/guest/tfg_keepalive.sh", W + "/guest/verificar_arreglos.sh", W + "/guest/instalar_tarea_invitado.sh",

@@ -93,7 +93,7 @@ s = cut(s, "    # --- manager: arranque, higiene y logall_json ON --------------
 """)
 s = cut(s, "    # --- G-5: agente dentro ---------------------------------------------", "exit 43 }\n",
         """    # --- G-5/G-6 (VR): cliente conectado, filas de EBPF llegando y disco de la victima legible (DiskSpace) --
-    $gate = & $Py $LegitVr gate --espera 60 2>&1 | Out-String
+    $gate = & $Py $LegitVr gate --espera 240 2>&1 | Out-String
     Write-Log "G-5/G-6 (VR):`n$($gate.Trim())"
     if ($gate -notmatch 'RESULT=PASS') { Write-Log "G-5/G-6 FALLO: el cliente de Velociraptor no esta operativo"; exit 43 }
 """, incluir_fin=True)
@@ -170,6 +170,22 @@ s = cut(s, "    if ($manUp) {\n      Invoke-OnVm $Man 'bash /tmp/logall_json_ctl
         "    # V1-L: no hay manager ni logall_json. La equivalencia de configuracion (tabla, auditd.conf, client.config) se comprueba con legit_vr.py y en la cosecha.\n")
 s = rep(s, "    if ($manUp)    { Invoke-Vmrun @('-T','ws','stop',$Manager,'soft') | Out-Null }\n", "")
 s = rep(s, "    Invoke-OnVm $Man 'bash /tmp/logall_json_ctl.sh status' $ManagerPw | Out-Null\n", "")
+
+# ---- V1-L (revision independiente 24/11): rc de revert/start comprobado, G-10 con auto-pausa, entorno sin contrasena para los procesos largos
+REV_A = "    Invoke-Vmrun @('-T','ws','revertToSnapshot',$Victim,$Snap) | Out-Null"+chr(10)+"    Invoke-Vmrun @('-T','ws','start',$Victim,'nogui')          | Out-Null"+chr(10)
+REV_B = ("    if (@(Invoke-Vmrun @('-T','ws','revertToSnapshot',$Victim,$Snap))[-1] -ne 0) { Write-Log 'FALLO: revertToSnapshot'; exit 34 }"+chr(10)+
+         "    if (@(Invoke-Vmrun @('-T','ws','start',$Victim,'nogui'))[-1] -ne 0) { Write-Log 'FALLO: start de la victima'; exit 34 }"+chr(10))
+s = rep(s, REV_A, REV_B)
+G10_A = "        Write-Log \"G-10 FALLO: Windows Update NO esta pausado (ejecuta pausar_windows_update.ps1 pausar)\"; exit 47"+chr(10)
+G10_B = ("        # V1-L: Windows devuelve wuauserv a Manual a los 3-10 min; el operador lo repausa AQUI y vuelve a comprobar (la pausa es una accion declarada del HOST)"+chr(10)+
+         "        & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Base 'pausar_windows_update.ps1') pausar 2>&1 | Out-Null"+chr(10)+
+         "        $wu = (Get-Service wuauserv -ErrorAction SilentlyContinue).StartType"+chr(10)+
+         "        Write-Log \"G-10: tras repausar, wuauserv_StartType=$wu\""+chr(10)+
+         "        if (\"$wu\" -ne 'Disabled') { Write-Log \"G-10 FALLO: no se pudo pausar Windows Update\"; exit 47 }"+chr(10))
+s = rep(s, G10_A, G10_B)
+ENV_A = "if (-not $GuestPw)   { $GuestPw   = $env:TFG_MANAGER_PW }   # misma clave para todas las VMs; SOLO del entorno del proceso"+chr(10)
+ENV_B = ENV_A + "# los procesos de larga duracion que lanza el prep (GHOSTS, internet local) NO deben heredar la contrasena en su entorno durante 72 h"+chr(10)+"Remove-Item Env:TFG_MANAGER_PW -ErrorAction SilentlyContinue; Remove-Item Env:TFG_GUEST_PW -ErrorAction SilentlyContinue"+chr(10)
+s = rep(s, ENV_A, ENV_B)
 
 # ------------------------------------------------------------------ comprobaciones finales
 for prohibido in ("$Man ", "$Manager", "$ManagerPw", "wazuh", "ossec", "logall"):   # `archives` queda solo como nombre interno de un campo del estado

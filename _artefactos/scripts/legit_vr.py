@@ -20,6 +20,7 @@ import json
 import os
 import re
 import socket
+import subprocess
 import sys
 import time
 
@@ -46,7 +47,10 @@ def fijar_cliente():
 
 
 def q(vql, t=120):
-    rc, o, e = vr.vr_query(vql, timeout=t)
+    try:
+        rc, o, e = vr.vr_query(vql, timeout=t)
+    except subprocess.TimeoutExpired:                 # la API (8001) puede colgarse aunque el puerto 8000 responda: no debe tumbar el chequeo
+        return 124, "", "TIMEOUT"
     return rc, o, e
 
 
@@ -76,7 +80,10 @@ def tabla_json():
     rc, o, e = q("SELECT get_client_monitoring() AS t FROM scope()", 60)
     if rc != 0:
         raise RuntimeError("get_client_monitoring: %s" % e[-200:])
-    t = json.loads(o)[0]["t"]
+    try:
+        t = json.loads(o)[0]["t"]
+    except (ValueError, IndexError, KeyError, TypeError):
+        raise RuntimeError("get_client_monitoring devolvio algo ilegible")
     t.pop("version", None)          # sello de tiempo interno: cambia al reiniciar el servidor aunque la tabla sea la misma (hallazgo del ensayo general 24/11)
     return json.dumps(t, sort_keys=True, ensure_ascii=True)
 
@@ -169,9 +176,14 @@ def cmd_gate(a):
     if not esperado or tabla_hash() != esperado:
         fallos.append("la tabla de monitorizacion no es la configuracion S fijada")
     b0 = bytes_ebpf(c)
-    time.sleep(a.espera)
-    b1 = bytes_ebpf(c)
-    print("ebpf_bytes_antes=%d ebpf_bytes_despues=%d crecimiento=%d en %ds" % (b0, b1, b1 - b0, a.espera))
+    t_ini = time.time()
+    b1 = b0
+    while time.time() - t_ini < a.espera:           # las filas llegan POR LOTES: se espera hasta ver crecimiento (no un minuto fijo)
+        time.sleep(10)
+        b1 = bytes_ebpf(c)
+        if b1 > b0:
+            break
+    print("ebpf_bytes_antes=%d ebpf_bytes_despues=%d crecimiento=%d en %ds" % (b0, b1, b1 - b0, int(time.time() - t_ini)))
     if b1 <= b0:
         fallos.append("no llegan filas de EBPF (el fichero de hoy no crece)")
     kb = disco_kb(c)

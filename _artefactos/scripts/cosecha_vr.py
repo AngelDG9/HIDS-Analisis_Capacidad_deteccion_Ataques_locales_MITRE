@@ -7,7 +7,8 @@ Fases (--fase todo las ejecuta en este orden; cada una imprime lo que hace):
   acciones   ledger de GHOSTS: agregado por hora (con `exportar_acciones.sh`, como Wazuh) + una fila POR ACCION (history_timeline). Antes de parar GHOSTS.
   guest      ficheros de la victima: la lista de Wazuh (recovery.log, keepalive.log, client.out, id.json, rotacion.estado, timeline.json,
              errores.log, campana_fp/**, crontab, ip route, df) + `/var/log/audit` + auditd.conf/rules.d + huellas del cliente VR (NO se copia su config)
-  marca-fin  emite la marca FIN (UNICA marca tras t1) y espera a verla en EBPF y en auditd: garantiza que lo anterior a t1 llego
+  host       evidencia del PC: logs de vigilancia y control, ALARMA_*, web_access/sink de la «internet local», logs de GHOSTS y de PostgreSQL
+  marca-fin  emite la marca FIN (UNICA marca tras t1) y espera a verla en EBPF: garantiza que lo anterior a t1 llego (auditd se comprueba despues en V1)
   subida     sube `audit.log*` por Velociraptor (Generic.Collectors.File; el ojo «oficial» de auditd)
   datastore  copia INTEGRA de monitoring, monitoring_logs y collections del cliente + server.log* del servidor
   manifest   MANIFEST.tsv con sha256 de todo + `cosecha.done`
@@ -79,6 +80,8 @@ def f_acciones(a):
     n = sum(1 for _ in csv.DictReader(io.StringIO(p.stdout.decode("utf-8", "replace"), newline="")))
     log("ledger POR ACCION: %d filas rc=%s %s" % (n, p.returncode, p.stderr.decode("utf-8", "replace").strip()[:120]))
     json.dump({"filas_por_accion": n}, open(os.path.join(d, "resumen.json"), "w"))
+    if (p.returncode != 0 or n == 0) and not a.ensayo:
+        raise SystemExit("el ledger por accion esta vacio o psql fallo (rc=%s): NO se sigue; arranca PostgreSQL de GHOSTS y repite --fase acciones" % p.returncode)
     # volcado de history_timeline desde UN DIA antes de t0 (el historico anterior de la BD son las ventanas de Wazuh y ensayos: no es de esta ventana), comprimido
     desde = (dt.datetime.strptime(a.t0, "%Y-%m-%dT%H:%M:%SZ") - dt.timedelta(days=1)).strftime("%Y-%m-%d %H:%M:%S")
     p2 = subprocess.run([PSQL, "-h", "127.0.0.1", "-p", "5432", "-U", "ghosts", "-d", "ghosts", "-c",
@@ -112,6 +115,24 @@ def f_guest(a):
     rc, o, e = sudo_bin(cmd, timeout=300)
     open(os.path.join(d, "estado_vr_y_auditd.txt"), "wb").write(o)
     log("estado VR/auditd guardado (%d bytes)" % len(o))
+
+
+def f_host(a):
+    d = os.path.join(a.out, "evidencia_host")
+    os.makedirs(d, exist_ok=True)
+    base_vr = os.path.join(REPO, "Soporte", "Laboratorio", "legitimo_72h_vr")
+    fuentes = []
+    for pat in ("legitimo_host_control_vr.log*", "vigilancia_legitimo_vr.log*", "ALARMA_*.txt", "windows_update_pausa.log"):
+        fuentes += glob.glob(os.path.join(base_vr, pat))
+    for pat in ("tfg_watch_*.json", "web_access.log", "sink_http.log", "sink_webdav.log", "*.out.log", "*.err.log"):
+        fuentes += glob.glob(os.path.join(r"D:%sTFG-VMs%slab-logs" % (chr(92), chr(92)), pat))
+    fuentes += glob.glob(os.path.join(r"D:%sTFG-VMs%smaterial-ghosts%slogs" % (chr(92), chr(92), chr(92)), "*.log"))
+    n = 0
+    for f in sorted(set(fuentes)):
+        origen = os.path.basename(os.path.dirname(f))
+        shutil.copy2(f, os.path.join(d, "%s__%s" % (origen, os.path.basename(f))))
+        n += 1
+    log("evidencia del PC: %d ficheros copiados a %s" % (n, d))
 
 
 def marca_en(fichero_dia_dir, marca):
@@ -204,7 +225,7 @@ def f_manifest(a):
     log("MANIFEST.tsv: %d ficheros; cosecha.done creado" % (len(lin) - 1))
 
 
-FASES = [("acciones", f_acciones), ("guest", f_guest), ("marca-fin", f_marca), ("subida", f_subida), ("datastore", f_datastore), ("manifest", f_manifest)]
+FASES = [("acciones", f_acciones), ("guest", f_guest), ("host", f_host), ("marca-fin", f_marca), ("subida", f_subida), ("datastore", f_datastore), ("manifest", f_manifest)]
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)

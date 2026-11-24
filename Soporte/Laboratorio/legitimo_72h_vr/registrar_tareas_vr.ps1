@@ -53,7 +53,7 @@ function New-TfgTask($name, $exe, $arg, [datetime]$at, $repeticionMin, $durHoras
   Write-Host ("registrada: {0}  local={1}  UTC={2}  cada {3} min" -f $name, $at.ToString('yyyy-MM-dd HH:mm'), $at.ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ'), $repeticionMin)
 }
 
-New-TfgTask $WATCH 'powershell.exe' ("-NoProfile -ExecutionPolicy Bypass -File `"$Ctl`" -Phase watch -T0 $T0 -T1 $T1") $t0l 30 $durHoras 1
-New-TfgTask $SERV  'powershell.exe' ("-NoProfile -ExecutionPolicy Bypass -File `"$Srv`"") $t0l.AddMinutes(-60) 30 ($durHoras + 1) 1
+New-TfgTask $WATCH 'powershell.exe' ("-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$Ctl`" -Phase watch -T0 $T0 -T1 $T1") $t0l 30 $durHoras 1
+New-TfgTask $SERV  'powershell.exe' ("-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$Srv`"") $t0l.AddMinutes(-60) 30 ($durHoras + 1) 1
 Write-Host ''
 Write-Host 'RECUERDA: Prep, Arm y la cosecha los ejecuta el operador en vivo (contrasena solo en memoria). No hay tarea de parada.'

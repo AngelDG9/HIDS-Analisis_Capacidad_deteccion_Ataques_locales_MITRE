@@ -111,12 +111,12 @@ def main():
     except (OSError, KeyError, ValueError):
         pass
     cumplim = {d: round(100.0 * por_dia.get(d, 0) / v, 1) for d, v in esperado.items() if t0.strftime("%Y-%m-%d") <= d <= t1.strftime("%Y-%m-%d")}
-    ok2 = bool(tot) and not fuera and all(v >= 90 for v in cumplim.values())
+    ok2 = bool(tot) and not fuera and bool(cumplim) and all(v >= 90 for v in cumplim.values())   # sin ningun dia evaluado NO es PASS
     res["V2 Actividad"] = ("PASS" if ok2 else "FAIL", "acciones=%d por dia=%s cumplimiento%%=%s fuera_de_bloque=%d %s" % (tot, dict(por_dia), cumplim, len(fuera), fuera[:3]))
 
     # ---------------------------------------------------------------- V3 servidor y cliente (log de vigilancia)
     # el watch escribe cada chequeo en el log de vigilancia Y en el de control: se leen los dos y se quitan duplicados (robusto si uno no se pudo escribir)
-    fuentes = [a.vig, os.path.join(BASE, "legitimo_host_control_vr.log")]
+    fuentes = [a.vig, os.path.join(BASE, "legitimo_host_control_vr.log")] + glob.glob(a.vig + ".rescate") + glob.glob(os.path.join(BASE, "legitimo_host_control_vr.log.rescate"))
     lin = sorted({l for f in fuentes if os.path.isfile(f) for l in open(f, encoding="utf-8-sig", errors="replace")})
     ts = []
     alarmas = servidor_caido = 0
@@ -130,8 +130,10 @@ def main():
             alarmas += 1 if m.group(2) == "ALARMA" else 0
             servidor_caido += 0 if "srv=active" in l else 1
     huecos = [(b - a_).total_seconds() / 60 for a_, b in zip(ts, ts[1:])]
-    res["V3 Servidor y cliente"] = ("PASS" if (ts and alarmas == 0 and servidor_caido == 0 and max(huecos + [0]) <= 31) else "INCIDENCIA",
-                                    "chequeos=%d alarmas=%d servidor_caido=%d hueco_max=%.1f min" % (len(ts), alarmas, servidor_caido, max(huecos + [0])))
+    # el ultimo chequeo debe estar a <=35 min de t1 y el primero a <=35 min de t0: si el watch se hubiera parado, no habria huecos que medir entre chequeos
+    cubre = bool(ts) and (ts[0] - t0).total_seconds() <= 35 * 60 and (t1 - ts[-1]).total_seconds() <= 35 * 60
+    res["V3 Servidor y cliente"] = ("PASS" if (ts and cubre and alarmas == 0 and servidor_caido == 0 and max(huecos + [0]) <= 31) else "INCIDENCIA",
+                                    "chequeos=%d alarmas=%d servidor_caido=%d hueco_max=%.1f min; cubre t0..t1 (primero a %.0f min de t0, ultimo a %.0f min de t1): %s" % (len(ts), alarmas, servidor_caido, max(huecos + [0]), ((ts[0] - t0).total_seconds() / 60) if ts else -1, ((t1 - ts[-1]).total_seconds() / 60) if ts else -1, cubre))
 
     # ---------------------------------------------------------------- V4 0 contaminacion (sesiones del operador en auditd)
     sesiones = []
@@ -169,9 +171,17 @@ def main():
             else:
                 n_ok += 1
     cop = ""
-    if a.copia2 and os.path.isfile(os.path.join(a.copia2, "MANIFEST.tsv")):
+    if a.copia2 and a.copia2.lower().endswith(".zip") and os.path.isfile(a.copia2) and os.path.isfile(man):
+        import zipfile
+        with zipfile.ZipFile(a.copia2) as z:
+            malo = z.testzip()
+            igual = "MANIFEST.tsv" in z.namelist() and z.read("MANIFEST.tsv") == open(man, "rb").read()
+        cop = "copia2 ZIP %s (testzip=%s; MANIFEST %s)" % (os.path.basename(a.copia2), malo, "== igual" if igual else "DISTINTO")
+        if malo is not None:
+            cop = cop.replace("==", "!=")
+    elif a.copia2 and os.path.isfile(os.path.join(a.copia2, "MANIFEST.tsv")):
         cop = "copia2 MANIFEST %s" % ("== igual" if open(man, "rb").read() == open(os.path.join(a.copia2, "MANIFEST.tsv"), "rb").read() else "DISTINTO")
-    ok6 = os.path.isfile(man) and not mal and os.path.isfile(os.path.join(a.cosecha, "cosecha.done")) and (not a.copia2 or "igual" in cop)
+    ok6 = os.path.isfile(man) and not mal and os.path.isfile(os.path.join(a.cosecha, "cosecha.done")) and (not a.copia2 or ("== igual" in cop))
     res["V6 Crudo completo"] = ("PASS" if ok6 else "FAIL", "ficheros con sha256 OK=%d mal=%d cosecha.done=%s %s" % (n_ok, len(mal), os.path.isfile(os.path.join(a.cosecha, "cosecha.done")), cop))
 
     # ---------------------------------------------------------------- V7 sin cambios a mitad
@@ -205,7 +215,7 @@ def main():
 
     # ---------------------------------------------------------------- V8 host estable
     ps = ("$b=(Get-CimInstance Win32_OperatingSystem).LastBootUpTime.ToUniversalTime().ToString('s'); "
-          "$e=@(Get-WinEvent -FilterHashtable @{LogName='System';ProviderName='Microsoft-Windows-Kernel-Power';Id=41,42,107;StartTime=[datetime]'%s'} -ErrorAction SilentlyContinue).Count; \"$b|$e\"" % a.t0.rstrip("Z"))
+          "$e=@(Get-WinEvent -FilterHashtable @{LogName='System';ProviderName='Microsoft-Windows-Kernel-Power';Id=41,42,107;StartTime=([datetime]::SpecifyKind([datetime]'%s',[DateTimeKind]::Utc)).ToLocalTime();EndTime=([datetime]::SpecifyKind([datetime]'%s',[DateTimeKind]::Utc)).ToLocalTime()} -ErrorAction SilentlyContinue).Count; \"$b|$e\"" % (a.t0.rstrip("Z"), a.t1.rstrip("Z")))
     try:
         o = subprocess.run(["powershell", "-NoProfile", "-Command", ps], capture_output=True, timeout=120).stdout.decode("utf-8", "replace").strip()
         boot, ke = o.split("|")
