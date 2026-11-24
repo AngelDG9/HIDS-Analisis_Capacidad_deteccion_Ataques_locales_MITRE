@@ -2,7 +2,7 @@
 nombre: Velociraptor Linux - V1-L (72 h de actividad legitima) con auditd + EBPF
 version: 2 (tras la auditoria de las ventanas de Wazuh)
 fecha: 2026-11-24
-estado: L0-L3 EJECUTADOS Y VERIFICADOS (2026-11-24; ensayo E0 ver Soporte/Laboratorio/legitimo_72h_vr/ensayo_E0_vr.md) - plan APROBADO por el humano (fecha lun 30/11 -> jue 3/12, operador en vivo, disco externo pendiente) - falta L4 (armado el domingo 29/11)
+estado: ARMANDO (2026-11-24 noche) - ventana REAL 25/11 00:00Z -> 28/11 00:00Z (decision del humano; ver §10); L0-L3 hechos y verificados; ejecucion segun Soporte/Laboratorio/legitimo_72h_vr/RUNBOOK_V1L.md
 depende_de: _fases/auditoria-ventanas-wazuh/AUDITORIA.md - _fases/velociraptor-v1/plan.md (V1 cerrada) - Dataset/Ataques/Resultados/Velociraptor/linux_ojos/RESULTADO_OJOS.md - _fases/legitimo-v3/plan.md (la ventana de Wazuh que se replica)
 ---
 
@@ -98,3 +98,6 @@ No calcula falsos positivos (C2/C3), no incluye Windows, no toca la receta ni la
 - **L2 hecho**: scripts `*_vr` generados con `generar_control_vr.py` (diff declarado en `DIFF_control_vs_wazuh.txt`; **0 ficheros de Wazuh modificados**), `legit_vr.py`, `cosecha_vr.py`, `exportar_denominador_vr.py`, `verificar_validez_ventana_vr.py`, `sellar_vr.py`, `registrar_tareas_vr.ps1` (sin contrasena). Receta: `d1/d2/d3` **identicos byte a byte** a los de Wazuh.
 - **L3 hecho** (ensayo real de 7 h): ver `ensayo_E0_vr.md`. **Puerta D2 cumplida** (disco: ~385 MB en 72 h sobre 4,4 GB). Defectos encontrados y corregidos: 6 (todos en mis scripts).
 - **Quedan L4-L7.** Decisiones del humano recibidas el 2026-11-24: fecha lun 30/11 -> jue 3/12, PC encendido y operador en vivo (yo), disco externo pendiente (no bloquea).
+
+## 10. Cambio de fecha (decision del humano, 2026-11-24 ~20:00Z)
+Con L0-L3 terminados y verificados, el humano decide **empezar hoy**: `t0 = 2026-11-25T00:00:00Z` -> `t1 = 2026-11-28T00:00:00Z` (miercoles -> viernes) en vez de lunes 30/11 -> jueves 3/12. Motivo: los 5 dias de margen de D4 eran para preparar y ensayar, y ya esta hecho; esperar solo retrasa la entrega. **Se declara en la memoria**: la ventana de Wazuh fue lunes-miercoles; la de Velociraptor, miercoles-viernes. La receta son tres jornadas de oficina genericas (08:00-17:00Z + campana B6 17:05-17:50Z), sin dependencia del dia de la semana. Compromisos: PC encendido, sin suspender y sin tocar la VM hasta el sabado 28/11 de madrugada; operador en vivo (yo) a las 23:15Z y 23:40Z del 24/11 y a las 00:02Z del 28/11; Windows Update lo gestiona el operador. Pasos exactos: `RUNBOOK_V1L.md`.
