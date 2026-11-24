@@ -1,0 +1,10 @@
+ATA051 · T1113 Screen Capture (xwd sobre Xvfb) — ART adaptado
+T0=2026-11-24T03:26:47Z
+--- xwd -root -out /home/angel/lab-attack/ATA051/captura_pantalla.xwd ---
+xwd_rc=0
+--- revision con xwud (timeout 3; el visor es interactivo) ---
+captura_bytes=4099179
+cabecera_xwd=0000006b00000007
+3271c3b2a0916bbbe44fbab53d9e9b79ae11824311fc0679b2208a88992566c7  /home/angel/lab-attack/ATA051/captura_pantalla.xwd
+SCREEN_CAPTURE=OK
+T1_LOCAL=2026-11-24T03:26:51Z

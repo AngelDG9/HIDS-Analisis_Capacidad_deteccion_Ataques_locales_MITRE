@@ -1,0 +1,168 @@
+{
+ "tag": "ATA053_iter1",
+ "ata": "ATA053",
+ "iter": 1,
+ "cfg": "S",
+ "tabla": [
+  "Linux.Events.EBPF"
+ ],
+ "hids": "velociraptor-0.77.3",
+ "snapshot": "lab-listo-vr",
+ "lanzador": "systemd-run --uid=angel --pipe --wait (SSH solo inicia)",
+ "inicio_utc": "2026-11-24T03:41:26Z",
+ "script_sha256": "687c367a8d7555753de36b6b42adfabd286797e9bf3be422631b73f578fb1bdf",
+ "tabla_servidor": [
+  "Generic.Client.Stats",
+  "Linux.Events.EBPF"
+ ],
+ "marca_ini_seg": 4,
+ "marca_ini": "TFGMARKINIATA053_iter1S1795491716",
+ "reloj_victima": "2026-11-24T03:43:31Z",
+ "reloj_host": "2026-11-24T03:43:31Z",
+ "auditd_antes": "-a always,exit -F arch=b64 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b32 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b64 -S truncate,ftruncate,rename,creat,unlink,unlinkat,renameat,renameat2 -F key=audit-wazuh-w\n-w /etc -p wa -k audit-wazuh-w\n-w /home/angel/lab-legit -p wa -k audit-wazuh-w",
+ "sha256_en_victima": "687c367a8d7555753de36b6b42adfabd286797e9bf3be422631b73f578fb1bdf",
+ "prestage_rc": 0,
+ "lanzamiento_rc": 0,
+ "t0_fuente": "marca T0= del ataque",
+ "t0": "2026-11-24T03:43:43Z",
+ "t1": "2026-11-24T03:44:21Z",
+ "marca_fin_seg": 25,
+ "marca_fin": "TFGMARKFINATA053_iter1S1795491986",
+ "auditd_despues": "-a always,exit -F arch=b64 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b32 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b64 -S truncate,ftruncate,rename,creat,unlink,unlinkat,renameat,renameat2 -F key=audit-wazuh-w\n-w /etc -p wa -k audit-wazuh-w\n-w /home/angel/lab-legit -p wa -k audit-wazuh-w",
+ "coleccion_audit": {
+  "flow_id": "F.DC2GHARGK7K54",
+  "flow_estado": "FINISHED",
+  "ficheros": {
+   "audit.log": {
+    "bytes_zlib": 281198,
+    "bytes": 4885179
+   },
+   "audit.log.1": {
+    "bytes_zlib": 686888,
+    "bytes": 8388711
+   },
+   "audit.log.1.chunk": {
+    "bytes_en_disco": 360
+   },
+   "audit.log.2": {
+    "bytes_zlib": 647973,
+    "bytes": 8388770
+   },
+   "audit.log.2.chunk": {
+    "bytes_en_disco": 360
+   },
+   "audit.log.chunk": {
+    "bytes_en_disco": 200
+   }
+  }
+ },
+ "audit": {
+  "lineas_totales": 96919,
+  "lineas_ventana": 25066,
+  "sin_hora": 0,
+  "anclas_audit_estricto": {
+   "T1056.002-S1": 1,
+   "T1056.002-S2": 2,
+   "T1056.002-S3": 816
+  }
+ },
+ "resumen": {
+  "Linux.Events.ProcessExecutions": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1056.002-S1": 0,
+    "T1056.002-S2": 0,
+    "T1056.002-S3": 0
+   }
+  },
+  "Linux.Events.EBPF": {
+   "filas": 31460,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1056.002-S1": 48,
+    "T1056.002-S2": 74,
+    "T1056.002-S3": 246
+   },
+   "anclas_exec_estricto": {
+    "T1056.002-S1": 1,
+    "T1056.002-S2": 2,
+    "T1056.002-S3": 225
+   }
+  },
+  "Linux.Events.TrackProcesses": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1056.002-S1": 0,
+    "T1056.002-S2": 0,
+    "T1056.002-S3": 0
+   }
+  },
+  "Linux.Events.Journal": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1056.002-S1": 0,
+    "T1056.002-S2": 0,
+    "T1056.002-S3": 0
+   }
+  },
+  "Linux.Events.DNS": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1056.002-S1": 0,
+    "T1056.002-S2": 0,
+    "T1056.002-S3": 0
+   }
+  },
+  "Linux.Events.HTTPConnections": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1056.002-S1": 0,
+    "T1056.002-S2": 0,
+    "T1056.002-S3": 0
+   }
+  },
+  "Linux.Events.SSHLogin": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1056.002-S1": 0,
+    "T1056.002-S2": 0,
+    "T1056.002-S3": 0
+   }
+  },
+  "Linux.Events.SSHBruteforce": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1056.002-S1": 0,
+    "T1056.002-S2": 0,
+    "T1056.002-S3": 0
+   }
+  }
+ },
+ "anclas": [
+  [
+   "T1056.002-S1",
+   "audit_exe",
+   "xinput"
+  ],
+  [
+   "T1056.002-S2",
+   "audit_exe",
+   "xdotool"
+  ],
+  [
+   "T1056.002-S3",
+   "audit_cwd",
+   "/home/angel/lab-attack/ATA053/*"
+  ]
+ ],
+ "estado": "OK",
+ "fin_utc": "2026-11-24T03:47:15Z",
+ "segundos": 348
+}

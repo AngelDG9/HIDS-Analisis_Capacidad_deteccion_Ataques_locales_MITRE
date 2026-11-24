@@ -1,0 +1,167 @@
+{
+ "tag": "ATA054_iter2",
+ "ata": "ATA054",
+ "iter": 2,
+ "cfg": "S",
+ "tabla": [
+  "Linux.Events.EBPF"
+ ],
+ "hids": "velociraptor-0.77.3",
+ "snapshot": "lab-listo-vr",
+ "lanzador": "systemd-run --uid=angel --pipe --wait (SSH solo inicia)",
+ "inicio_utc": "2026-11-24T03:58:54Z",
+ "script_sha256": "3e6e24ee7784d4a47feda62f05add011f0f139021ad17ffb9bc0bdba07890710",
+ "tabla_servidor": [
+  "Generic.Client.Stats",
+  "Linux.Events.EBPF"
+ ],
+ "marca_ini_seg": 4,
+ "marca_ini": "TFGMARKINIATA054_iter2S1795492763",
+ "reloj_victima": "2026-11-24T04:00:59Z",
+ "reloj_host": "2026-11-24T04:00:59Z",
+ "auditd_antes": "-a always,exit -F arch=b64 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b32 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b64 -S truncate,ftruncate,rename,creat,unlink,unlinkat,renameat,renameat2 -F key=audit-wazuh-w\n-w /etc -p wa -k audit-wazuh-w\n-w /home/angel/lab-legit -p wa -k audit-wazuh-w",
+ "sha256_en_victima": "3e6e24ee7784d4a47feda62f05add011f0f139021ad17ffb9bc0bdba07890710",
+ "lanzamiento_rc": 0,
+ "t0_fuente": "marca T0= del ataque",
+ "t0": "2026-11-24T04:01:02Z",
+ "t1": "2026-11-24T04:01:38Z",
+ "marca_fin_seg": 13,
+ "marca_fin": "TFGMARKFINATA054_iter2S1795493023",
+ "auditd_despues": "-a always,exit -F arch=b64 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b32 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b64 -S truncate,ftruncate,rename,creat,unlink,unlinkat,renameat,renameat2 -F key=audit-wazuh-w\n-w /etc -p wa -k audit-wazuh-w\n-w /home/angel/lab-legit -p wa -k audit-wazuh-w",
+ "coleccion_audit": {
+  "flow_id": "F.DC2GPBCJV14V6",
+  "flow_estado": "FINISHED",
+  "ficheros": {
+   "audit.log": {
+    "bytes_zlib": 48376,
+    "bytes": 656761
+   },
+   "audit.log.1": {
+    "bytes_zlib": 684221,
+    "bytes": 8388684
+   },
+   "audit.log.1.chunk": {
+    "bytes_en_disco": 360
+   },
+   "audit.log.2": {
+    "bytes_zlib": 647973,
+    "bytes": 8388770
+   },
+   "audit.log.2.chunk": {
+    "bytes_en_disco": 360
+   },
+   "audit.log.chunk": {
+    "bytes_en_disco": 40
+   }
+  }
+ },
+ "audit": {
+  "lineas_totales": 81428,
+  "lineas_ventana": 9557,
+  "sin_hora": 0,
+  "anclas_audit_estricto": {
+   "T1498.002-S1": 3,
+   "T1498.002-S2": 33,
+   "T1498.002-S3": 53
+  }
+ },
+ "resumen": {
+  "Linux.Events.ProcessExecutions": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1498.002-S1": 0,
+    "T1498.002-S2": 0,
+    "T1498.002-S3": 0
+   }
+  },
+  "Linux.Events.EBPF": {
+   "filas": 17231,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1498.002-S1": 66,
+    "T1498.002-S2": 301,
+    "T1498.002-S3": 66
+   },
+   "anclas_exec_estricto": {
+    "T1498.002-S1": 3,
+    "T1498.002-S2": 22,
+    "T1498.002-S3": 41
+   }
+  },
+  "Linux.Events.TrackProcesses": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1498.002-S1": 0,
+    "T1498.002-S2": 0,
+    "T1498.002-S3": 0
+   }
+  },
+  "Linux.Events.Journal": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1498.002-S1": 0,
+    "T1498.002-S2": 0,
+    "T1498.002-S3": 0
+   }
+  },
+  "Linux.Events.DNS": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1498.002-S1": 0,
+    "T1498.002-S2": 0,
+    "T1498.002-S3": 0
+   }
+  },
+  "Linux.Events.HTTPConnections": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1498.002-S1": 0,
+    "T1498.002-S2": 0,
+    "T1498.002-S3": 0
+   }
+  },
+  "Linux.Events.SSHLogin": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1498.002-S1": 0,
+    "T1498.002-S2": 0,
+    "T1498.002-S3": 0
+   }
+  },
+  "Linux.Events.SSHBruteforce": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1498.002-S1": 0,
+    "T1498.002-S2": 0,
+    "T1498.002-S3": 0
+   }
+  }
+ },
+ "anclas": [
+  [
+   "T1498.002-S1",
+   "audit_exe",
+   "perl"
+  ],
+  [
+   "T1498.002-S2",
+   "audit_exe",
+   "ip"
+  ],
+  [
+   "T1498.002-S3",
+   "audit_cwd",
+   "/home/angel/lab-attack/ATA054/*"
+  ]
+ ],
+ "estado": "OK",
+ "fin_utc": "2026-11-24T04:04:21Z",
+ "segundos": 327
+}
