@@ -1,0 +1,12 @@
+ATA030 · T1560.001 Archive via Utility (tar + gzip) — custom
+T0=2026-11-23T23:35:17Z
+--- contenido del archivo (tar -tzf) ---
+staging/
+staging/credenciales_servicio.txt
+staging/informe_interno.txt
+staging/clientes.csv
+miembros_de_datos=3
+--- sha256 del archivo ---
+9e385a57233f10e19b86b0b5e180977051c5de2d700307339573930b6b781f9c  /home/angel/lab-attack/ATA030/collected_ATA030.tar.gz
+ARCHIVADO=OK (tar.gz creado y con los 3 ficheros del material)
+T1_LOCAL=2026-11-23T23:35:18Z

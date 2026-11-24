@@ -1,0 +1,160 @@
+{
+ "tag": "ATA030_iter2",
+ "ata": "ATA030",
+ "iter": 2,
+ "cfg": "S",
+ "tabla": [
+  "Linux.Events.EBPF"
+ ],
+ "hids": "velociraptor-0.77.3",
+ "snapshot": "lab-listo-vr",
+ "lanzador": "systemd-run --uid=angel --pipe --wait (SSH solo inicia)",
+ "inicio_utc": "2026-11-23T23:32:35Z",
+ "script_sha256": "b47fc87deaa56274c3bbd67edf69d64cde269a361ccac27827a4ff9b21e7bcfe",
+ "tabla_servidor": [
+  "Generic.Client.Stats",
+  "Linux.Events.EBPF"
+ ],
+ "marca_ini_seg": 33,
+ "marca_ini": "TFGMARKINIATA030_iter2S1795476791",
+ "reloj_victima": "2026-11-23T23:35:15Z",
+ "reloj_host": "2026-11-23T23:35:15Z",
+ "auditd_antes": "-a always,exit -F arch=b64 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b32 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b64 -S truncate,ftruncate,rename,creat,unlink,unlinkat,renameat,renameat2 -F key=audit-wazuh-w\n-w /etc -p wa -k audit-wazuh-w\n-w /home/angel/lab-legit -p wa -k audit-wazuh-w",
+ "sha256_en_victima": "b47fc87deaa56274c3bbd67edf69d64cde269a361ccac27827a4ff9b21e7bcfe",
+ "lanzamiento_rc": 0,
+ "t0_fuente": "marca T0= del ataque",
+ "t0": "2026-11-23T23:35:17Z",
+ "t1": "2026-11-23T23:35:48Z",
+ "marca_fin_seg": 9,
+ "marca_fin": "TFGMARKFINATA030_iter2S1795477073",
+ "auditd_despues": "-a always,exit -F arch=b64 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b32 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b64 -S truncate,ftruncate,rename,creat,unlink,unlinkat,renameat,renameat2 -F key=audit-wazuh-w\n-w /etc -p wa -k audit-wazuh-w\n-w /home/angel/lab-legit -p wa -k audit-wazuh-w",
+ "coleccion_audit": {
+  "flow_id": "F.DC2CSMK5ICSAO",
+  "flow_estado": "FINISHED",
+  "ficheros": {
+   "audit.log": {
+    "bytes_zlib": 661126,
+    "bytes": 7834068
+   },
+   "audit.log.1": {
+    "bytes_zlib": 647973,
+    "bytes": 8388770
+   },
+   "audit.log.1.chunk": {
+    "bytes_en_disco": 360
+   },
+   "audit.log.chunk": {
+    "bytes_en_disco": 320
+   }
+  }
+ },
+ "audit": {
+  "lineas_totales": 75656,
+  "lineas_ventana": 4299,
+  "sin_hora": 0,
+  "anclas_audit_estricto": {
+   "T1560.001-S1": 0,
+   "T1560.001-S2": 0,
+   "T1560.001-S3": 24
+  }
+ },
+ "resumen": {
+  "Linux.Events.ProcessExecutions": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1560.001-S1": 0,
+    "T1560.001-S2": 0,
+    "T1560.001-S3": 0
+   }
+  },
+  "Linux.Events.EBPF": {
+   "filas": 10032,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1560.001-S1": 9,
+    "T1560.001-S2": 9,
+    "T1560.001-S3": 43
+   },
+   "anclas_exec_estricto": {
+    "T1560.001-S1": 0,
+    "T1560.001-S2": 0,
+    "T1560.001-S3": 18
+   }
+  },
+  "Linux.Events.TrackProcesses": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1560.001-S1": 0,
+    "T1560.001-S2": 0,
+    "T1560.001-S3": 0
+   }
+  },
+  "Linux.Events.Journal": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1560.001-S1": 0,
+    "T1560.001-S2": 0,
+    "T1560.001-S3": 0
+   }
+  },
+  "Linux.Events.DNS": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1560.001-S1": 0,
+    "T1560.001-S2": 0,
+    "T1560.001-S3": 0
+   }
+  },
+  "Linux.Events.HTTPConnections": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1560.001-S1": 0,
+    "T1560.001-S2": 0,
+    "T1560.001-S3": 0
+   }
+  },
+  "Linux.Events.SSHLogin": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1560.001-S1": 0,
+    "T1560.001-S2": 0,
+    "T1560.001-S3": 0
+   }
+  },
+  "Linux.Events.SSHBruteforce": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1560.001-S1": 0,
+    "T1560.001-S2": 0,
+    "T1560.001-S3": 0
+   }
+  }
+ },
+ "anclas": [
+  [
+   "T1560.001-S1",
+   "audit_exe",
+   "/usr/bin/tar"
+  ],
+  [
+   "T1560.001-S2",
+   "audit_exe",
+   "/usr/bin/gzip"
+  ],
+  [
+   "T1560.001-S3",
+   "audit_cwd",
+   "/home/angel/lab-attack/ATA030/*"
+  ]
+ ],
+ "estado": "OK",
+ "fin_utc": "2026-11-23T23:38:39Z",
+ "segundos": 364
+}

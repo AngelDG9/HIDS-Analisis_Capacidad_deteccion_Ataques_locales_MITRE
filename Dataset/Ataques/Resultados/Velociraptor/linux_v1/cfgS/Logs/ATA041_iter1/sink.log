@@ -1,0 +1,2 @@
+# sink_http arrancado 2026-11-24T01:30:36Z bind=192.168.65.1 port=9090
+2026-11-24T01:32:39Z POST /exfil/ATA041 from=192.168.65.129 len=256 sha256=62e9eb3c0feaca9079cfbd3335fecbbf3ee1fef89bccd68aec9c9dba1898f3d3 content_type=application/octet-stream

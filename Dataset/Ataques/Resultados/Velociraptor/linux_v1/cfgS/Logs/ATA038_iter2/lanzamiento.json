@@ -1,0 +1,184 @@
+{
+ "tag": "ATA038_iter2",
+ "ata": "ATA038",
+ "iter": 2,
+ "cfg": "S",
+ "tabla": [
+  "Linux.Events.EBPF"
+ ],
+ "hids": "velociraptor-0.77.3",
+ "snapshot": "lab-listo-vr",
+ "lanzador": "systemd-run --uid=angel --pipe --wait (SSH solo inicia)",
+ "inicio_utc": "2026-11-24T01:00:47Z",
+ "script_sha256": "554cd462fb831c1b2153dd0ea0e9ce3fc30a00550e4bdc068b2879df58190ec9",
+ "tabla_servidor": [
+  "Generic.Client.Stats",
+  "Linux.Events.EBPF"
+ ],
+ "marca_ini_seg": 4,
+ "marca_ini": "TFGMARKINIATA038_iter2S1795482077",
+ "reloj_victima": "2026-11-24T01:02:52Z",
+ "reloj_host": "2026-11-24T01:02:52Z",
+ "auditd_antes": "-a always,exit -F arch=b64 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b32 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b64 -S truncate,ftruncate,rename,creat,unlink,unlinkat,renameat,renameat2 -F key=audit-wazuh-w\n-w /etc -p wa -k audit-wazuh-w\n-w /home/angel/lab-legit -p wa -k audit-wazuh-w",
+ "sha256_en_victima": "554cd462fb831c1b2153dd0ea0e9ce3fc30a00550e4bdc068b2879df58190ec9",
+ "boot_id_antes": "bc2d9c9f-ee69-4904-927a-93322d651edc",
+ "lanzamiento_rc": 0,
+ "t0_fuente": "marca T0= del ataque",
+ "boot_id_despues": "67a7c1b8-21fe-4f5a-ad8f-bd70e9da1837",
+ "t0": "2026-11-24T01:02:55Z",
+ "t1": "2026-11-24T01:04:25Z",
+ "marca_fin_seg": 13,
+ "marca_fin": "TFGMARKFINATA038_iter2S1795482390",
+ "auditd_despues": "-a always,exit -F arch=b64 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b32 -S execve -F key=audit-wazuh-c\n-a always,exit -F arch=b64 -S truncate,ftruncate,rename,creat,unlink,unlinkat,renameat,renameat2 -F key=audit-wazuh-w\n-w /etc -p wa -k audit-wazuh-w\n-w /home/angel/lab-legit -p wa -k audit-wazuh-w",
+ "coleccion_audit": {
+  "flow_id": "F.DC2E68QT7KTDQ",
+  "flow_estado": "FINISHED",
+  "ficheros": {
+   "audit.log": {
+    "bytes_zlib": 83090,
+    "bytes": 990947
+   },
+   "audit.log.1": {
+    "bytes_zlib": 704186,
+    "bytes": 8388653
+   },
+   "audit.log.1.chunk": {
+    "bytes_en_disco": 360
+   },
+   "audit.log.2": {
+    "bytes_zlib": 647973,
+    "bytes": 8388770
+   },
+   "audit.log.2.chunk": {
+    "bytes_en_disco": 360
+   },
+   "audit.log.chunk": {
+    "bytes_en_disco": 40
+   }
+  }
+ },
+ "audit": {
+  "lineas_totales": 82724,
+  "lineas_ventana": 10849,
+  "sin_hora": 0,
+  "anclas_audit_estricto": {
+   "T1529-S1": 0,
+   "T1529-S2": 11,
+   "T1529-S3": 0,
+   "T1529-S4": 0
+  }
+ },
+ "resumen": {
+  "Linux.Events.ProcessExecutions": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1529-S1": 0,
+    "T1529-S2": 0,
+    "T1529-S3": 0,
+    "T1529-S4": 0
+   }
+  },
+  "Linux.Events.EBPF": {
+   "filas": 13186,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1529-S1": 22,
+    "T1529-S2": 27,
+    "T1529-S3": 0,
+    "T1529-S4": 0
+   },
+   "anclas_exec_estricto": {
+    "T1529-S1": 0,
+    "T1529-S2": 11,
+    "T1529-S3": 0,
+    "T1529-S4": 0
+   }
+  },
+  "Linux.Events.TrackProcesses": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1529-S1": 0,
+    "T1529-S2": 0,
+    "T1529-S3": 0,
+    "T1529-S4": 0
+   }
+  },
+  "Linux.Events.Journal": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1529-S1": 0,
+    "T1529-S2": 0,
+    "T1529-S3": 0,
+    "T1529-S4": 0
+   }
+  },
+  "Linux.Events.DNS": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1529-S1": 0,
+    "T1529-S2": 0,
+    "T1529-S3": 0,
+    "T1529-S4": 0
+   }
+  },
+  "Linux.Events.HTTPConnections": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1529-S1": 0,
+    "T1529-S2": 0,
+    "T1529-S3": 0,
+    "T1529-S4": 0
+   }
+  },
+  "Linux.Events.SSHLogin": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1529-S1": 0,
+    "T1529-S2": 0,
+    "T1529-S3": 0,
+    "T1529-S4": 0
+   }
+  },
+  "Linux.Events.SSHBruteforce": {
+   "filas": 0,
+   "sin_hora": 0,
+   "anclas_generico": {
+    "T1529-S1": 0,
+    "T1529-S2": 0,
+    "T1529-S3": 0,
+    "T1529-S4": 0
+   }
+  }
+ },
+ "anclas": [
+  [
+   "T1529-S1",
+   "audit_exe",
+   "/usr/bin/systemctl"
+  ],
+  [
+   "T1529-S2",
+   "audit_cwd",
+   "/home/angel/lab-attack/ATA038/*"
+  ],
+  [
+   "T1529-S3",
+   "rule_id",
+   "503"
+  ],
+  [
+   "T1529-S4",
+   "rule_id",
+   "504"
+  ]
+ ],
+ "estado": "OK",
+ "fin_utc": "2026-11-24T01:06:54Z",
+ "segundos": 367
+}

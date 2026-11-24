@@ -1,0 +1,5 @@
+2ad637b8797a4c6e22a5da27f698f31c9da4088367df78a795414d1a6721d9e6  /home/angel/lab-share/incoming/ATA040/clientes.csv
+b5c25b1a11f3e25998ed228122476a0352b894f14221cc9a94257705601a810d  /home/angel/lab-share/incoming/ATA040/nominas.csv
+1011daaaa9e7a03a133476dad85bec06a61f30d21a13150b598105a8e35de115  /home/angel/lab-share/incoming/ATA040/facturas.csv
+3a2ec5e23f32f1203db558707d582e0dc377f8737b6bb0318a1d6104b5692073  /home/angel/lab-share/export/rrhh/nominas_2026.csv
+d17919414100fba23b9fbaf1cc69efee434469e07ff5ca01f9274eaff7529a0c  /home/angel/lab-share/export/finanzas/ventas_2026.csv
