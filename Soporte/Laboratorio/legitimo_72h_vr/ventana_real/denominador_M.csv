@@ -1,0 +1,5 @@
+# denominador_M.csv | Velociraptor V1-L | metrica_version=1 boveda_version=2 | desde=2026-11-25T00:00:00Z hasta=2026-11-28T00:00:00Z | ebpf=Linux.Events.EBPF (filas por hora del evento) auditd=subida de audit.log* por Velociraptor (eventos por msg=audit(ts:seq)) | borde=[t0,t1] inclusivo
+metrica_version,boveda_version,ambito,eventos,primer_ts,ultimo_ts
+1,2,ebpf,10657709,2026-11-25T00:00:01Z,2026-11-27T23:59:57Z
+1,2,auditd_eventos,247309,2026-11-25T00:00:01Z,2026-11-27T23:59:50Z
+1,2,auditd_lineas,1371623,,

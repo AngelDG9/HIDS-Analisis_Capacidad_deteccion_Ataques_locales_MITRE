@@ -1,0 +1,5 @@
+# estabilidad_dia.csv | Velociraptor V1-L | por dia UTC del evento
+dia,M_ebpf,M_auditd
+2026-11-25,3574109,82378
+2026-11-26,3547737,82528
+2026-11-27,3535863,82403
