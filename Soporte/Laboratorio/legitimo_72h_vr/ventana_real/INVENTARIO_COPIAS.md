@@ -32,3 +32,7 @@ c6a67c693c3d6119411775c87967921d632cdcbe06705304a494fc0a00671bd7  velociraptor-v
 200bb538a58c3f17dc070a2d65400f4a6a544314016354f706d13fec2b262157  velociraptor-v1/ataques-velociraptor-linux-piloto.zip  12993939
 b0c59b5bfb0b4ef97140b2412afe2c81ec00ba8f1b40488d2ce0b6c51ccf4bc9  velociraptor-v1/crudo_v1_completo.zip  302258919
 ```
+
+## Extra (2026-11-28, tras cerrar la ventana)
+Logs de la VM no incluidos en la cosecha (`/var/log` sin audit, journal de todos los arranques, dmesg, last, dpkg, servicios): original `D:\TFG-VMs\legitimo-vr-2026-11-25\evidencia_vm_extra` -> copia `C:\TFG-copiaelociraptor-v1l\VM_evidencia_extra_post_ventana.zip`. Se extrajeron encendiendo la VM despues de t1 (servidor VR parado para no ensuciar el datastore); el journal cubre 22/09 -> 28/11 00:36Z. La VM quedo apagada; el estado de referencia sigue siendo el snapshot `post-legit-vr-2026-11-28`.
+`a62fa2fd238274696554ad8c1617968db1ef76adf16a9af2f55d52ca14dadadb  VM_evidencia_extra_post_ventana.zip`
